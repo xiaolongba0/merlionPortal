@@ -67,13 +67,13 @@ public class Product implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "price")
     private Double price;
-    @JoinColumn(name = "Company_companyId", referencedColumnName = "companyId")
+    @JoinColumn(name = "companyId", referencedColumnName = "companyId")
     @ManyToOne(optional = false)
-    private Company companycompanyId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
-    private List<ProductSOLineItem> productSOLineItemList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
-    private List<ProductPOLineItem> productPOLineItemList;
+    private Company companyId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productproductId")
+    private List<QuotationLineItem> quotationLineItemList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productproductId")
+    private List<ProductOrderLineItem> productOrderLineItemList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productproductId")
     private List<Component> componentList;
 
@@ -138,30 +138,30 @@ public class Product implements Serializable {
         this.price = price;
     }
 
-    public Company getCompanycompanyId() {
-        return companycompanyId;
+    public Company getCompanyId() {
+        return companyId;
     }
 
-    public void setCompanycompanyId(Company companycompanyId) {
-        this.companycompanyId = companycompanyId;
-    }
-
-    @XmlTransient
-    public List<ProductSOLineItem> getProductSOLineItemList() {
-        return productSOLineItemList;
-    }
-
-    public void setProductSOLineItemList(List<ProductSOLineItem> productSOLineItemList) {
-        this.productSOLineItemList = productSOLineItemList;
+    public void setCompanyId(Company companyId) {
+        this.companyId = companyId;
     }
 
     @XmlTransient
-    public List<ProductPOLineItem> getProductPOLineItemList() {
-        return productPOLineItemList;
+    public List<QuotationLineItem> getQuotationLineItemList() {
+        return quotationLineItemList;
     }
 
-    public void setProductPOLineItemList(List<ProductPOLineItem> productPOLineItemList) {
-        this.productPOLineItemList = productPOLineItemList;
+    public void setQuotationLineItemList(List<QuotationLineItem> quotationLineItemList) {
+        this.quotationLineItemList = quotationLineItemList;
+    }
+
+    @XmlTransient
+    public List<ProductOrderLineItem> getProductOrderLineItemList() {
+        return productOrderLineItemList;
+    }
+
+    public void setProductOrderLineItemList(List<ProductOrderLineItem> productOrderLineItemList) {
+        this.productOrderLineItemList = productOrderLineItemList;
     }
 
     @XmlTransient

@@ -17,6 +17,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -106,12 +108,16 @@ public class SystemUser implements Serializable {
     @Size(max = 45)
     @Column(name = "credit")
     private String credit;
-    @JoinColumn(name = "UserRole_userRoleId", referencedColumnName = "userRoleId")
-    @ManyToOne(optional = false)
-    private UserRole userRoleuserRoleId;
+    @JoinTable(name = "SystemUser_has_UserRole", joinColumns = {
+        @JoinColumn(name = "systemUserId", referencedColumnName = "systemUserId")}, inverseJoinColumns = {
+        @JoinColumn(name = "userRoleId", referencedColumnName = "userRoleId")})
+    @ManyToMany
+    private List<UserRole> userRoleList;
     @JoinColumn(name = "Company_companyId", referencedColumnName = "companyId")
     @ManyToOne(optional = false)
     private Company companycompanyId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "systemUserId")
+    private List<ProductOrder> productOrderList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "systemUsersystemUserId")
     private List<SystemLog> systemLogList;
 
@@ -250,12 +256,13 @@ public class SystemUser implements Serializable {
         this.credit = credit;
     }
 
-    public UserRole getUserRoleuserRoleId() {
-        return userRoleuserRoleId;
+    @XmlTransient
+    public List<UserRole> getUserRoleList() {
+        return userRoleList;
     }
 
-    public void setUserRoleuserRoleId(UserRole userRoleuserRoleId) {
-        this.userRoleuserRoleId = userRoleuserRoleId;
+    public void setUserRoleList(List<UserRole> userRoleList) {
+        this.userRoleList = userRoleList;
     }
 
     public Company getCompanycompanyId() {
@@ -264,6 +271,15 @@ public class SystemUser implements Serializable {
 
     public void setCompanycompanyId(Company companycompanyId) {
         this.companycompanyId = companycompanyId;
+    }
+
+    @XmlTransient
+    public List<ProductOrder> getProductOrderList() {
+        return productOrderList;
+    }
+
+    public void setProductOrderList(List<ProductOrder> productOrderList) {
+        this.productOrderList = productOrderList;
     }
 
     @XmlTransient

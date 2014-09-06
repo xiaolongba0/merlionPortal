@@ -13,14 +13,17 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -30,25 +33,25 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author manliqi
  */
 @Entity
-@Table(name = "ProductPOHeader")
+@Table(name = "ProductOrder")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "ProductPOHeader.findAll", query = "SELECT p FROM ProductPOHeader p"),
-    @NamedQuery(name = "ProductPOHeader.findByProductPOId", query = "SELECT p FROM ProductPOHeader p WHERE p.productPOId = :productPOId"),
-    @NamedQuery(name = "ProductPOHeader.findByCreatedDate", query = "SELECT p FROM ProductPOHeader p WHERE p.createdDate = :createdDate"),
-    @NamedQuery(name = "ProductPOHeader.findBySalesPersonId", query = "SELECT p FROM ProductPOHeader p WHERE p.salesPersonId = :salesPersonId"),
-    @NamedQuery(name = "ProductPOHeader.findByPrice", query = "SELECT p FROM ProductPOHeader p WHERE p.price = :price"),
-    @NamedQuery(name = "ProductPOHeader.findByStatus", query = "SELECT p FROM ProductPOHeader p WHERE p.status = :status"),
-    @NamedQuery(name = "ProductPOHeader.findByShipTo", query = "SELECT p FROM ProductPOHeader p WHERE p.shipTo = :shipTo"),
-    @NamedQuery(name = "ProductPOHeader.findByBillTo", query = "SELECT p FROM ProductPOHeader p WHERE p.billTo = :billTo"),
-    @NamedQuery(name = "ProductPOHeader.findByContactPersonPhoneNumber", query = "SELECT p FROM ProductPOHeader p WHERE p.contactPersonPhoneNumber = :contactPersonPhoneNumber"),
-    @NamedQuery(name = "ProductPOHeader.findByContactPersonName", query = "SELECT p FROM ProductPOHeader p WHERE p.contactPersonName = :contactPersonName"),
-    @NamedQuery(name = "ProductPOHeader.findByClientSystemUsersystemUserId", query = "SELECT p FROM ProductPOHeader p WHERE p.clientSystemUsersystemUserId = :clientSystemUsersystemUserId")})
-public class ProductPOHeader implements Serializable {
+    @NamedQuery(name = "ProductOrder.findAll", query = "SELECT p FROM ProductOrder p"),
+    @NamedQuery(name = "ProductOrder.findByProductPOId", query = "SELECT p FROM ProductOrder p WHERE p.productPOId = :productPOId"),
+    @NamedQuery(name = "ProductOrder.findByCreatedDate", query = "SELECT p FROM ProductOrder p WHERE p.createdDate = :createdDate"),
+    @NamedQuery(name = "ProductOrder.findBySalesPersonId", query = "SELECT p FROM ProductOrder p WHERE p.salesPersonId = :salesPersonId"),
+    @NamedQuery(name = "ProductOrder.findByPrice", query = "SELECT p FROM ProductOrder p WHERE p.price = :price"),
+    @NamedQuery(name = "ProductOrder.findByStatus", query = "SELECT p FROM ProductOrder p WHERE p.status = :status"),
+    @NamedQuery(name = "ProductOrder.findByShipTo", query = "SELECT p FROM ProductOrder p WHERE p.shipTo = :shipTo"),
+    @NamedQuery(name = "ProductOrder.findByBillTo", query = "SELECT p FROM ProductOrder p WHERE p.billTo = :billTo"),
+    @NamedQuery(name = "ProductOrder.findByContactPersonPhoneNumber", query = "SELECT p FROM ProductOrder p WHERE p.contactPersonPhoneNumber = :contactPersonPhoneNumber"),
+    @NamedQuery(name = "ProductOrder.findByContactPersonName", query = "SELECT p FROM ProductOrder p WHERE p.contactPersonName = :contactPersonName"),
+    @NamedQuery(name = "ProductOrder.findByCreatorId", query = "SELECT p FROM ProductOrder p WHERE p.creatorId = :creatorId")})
+public class ProductOrder implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "productPOId")
     private Integer productPOId;
     @Column(name = "createdDate")
@@ -60,9 +63,8 @@ public class ProductPOHeader implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "price")
     private Double price;
-    @Size(max = 45)
     @Column(name = "status")
-    private String status;
+    private Integer status;
     @Size(max = 45)
     @Column(name = "shipTo")
     private String shipTo;
@@ -75,25 +77,19 @@ public class ProductPOHeader implements Serializable {
     @Size(max = 45)
     @Column(name = "contactPersonName")
     private String contactPersonName;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "Client_SystemUser_systemUserId")
-    private int clientSystemUsersystemUserId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productPOHeaderproductPOId")
-    private List<ProductSOHeader> productSOHeaderList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productPOHeader")
-    private List<ProductPOLineItem> productPOLineItemList;
+    @Column(name = "creatorId")
+    private Integer creatorId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productOrderproductPOId")
+    private List<ProductOrderLineItem> productOrderLineItemList;
+    @JoinColumn(name = "systemUserId", referencedColumnName = "systemUserId")
+    @ManyToOne(optional = false)
+    private SystemUser systemUserId;
 
-    public ProductPOHeader() {
+    public ProductOrder() {
     }
 
-    public ProductPOHeader(Integer productPOId) {
+    public ProductOrder(Integer productPOId) {
         this.productPOId = productPOId;
-    }
-
-    public ProductPOHeader(Integer productPOId, int clientSystemUsersystemUserId) {
-        this.productPOId = productPOId;
-        this.clientSystemUsersystemUserId = clientSystemUsersystemUserId;
     }
 
     public Integer getProductPOId() {
@@ -128,11 +124,11 @@ public class ProductPOHeader implements Serializable {
         this.price = price;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -168,30 +164,29 @@ public class ProductPOHeader implements Serializable {
         this.contactPersonName = contactPersonName;
     }
 
-    public int getClientSystemUsersystemUserId() {
-        return clientSystemUsersystemUserId;
+    public Integer getCreatorId() {
+        return creatorId;
     }
 
-    public void setClientSystemUsersystemUserId(int clientSystemUsersystemUserId) {
-        this.clientSystemUsersystemUserId = clientSystemUsersystemUserId;
-    }
-
-    @XmlTransient
-    public List<ProductSOHeader> getProductSOHeaderList() {
-        return productSOHeaderList;
-    }
-
-    public void setProductSOHeaderList(List<ProductSOHeader> productSOHeaderList) {
-        this.productSOHeaderList = productSOHeaderList;
+    public void setCreatorId(Integer creatorId) {
+        this.creatorId = creatorId;
     }
 
     @XmlTransient
-    public List<ProductPOLineItem> getProductPOLineItemList() {
-        return productPOLineItemList;
+    public List<ProductOrderLineItem> getProductOrderLineItemList() {
+        return productOrderLineItemList;
     }
 
-    public void setProductPOLineItemList(List<ProductPOLineItem> productPOLineItemList) {
-        this.productPOLineItemList = productPOLineItemList;
+    public void setProductOrderLineItemList(List<ProductOrderLineItem> productOrderLineItemList) {
+        this.productOrderLineItemList = productOrderLineItemList;
+    }
+
+    public SystemUser getSystemUserId() {
+        return systemUserId;
+    }
+
+    public void setSystemUserId(SystemUser systemUserId) {
+        this.systemUserId = systemUserId;
     }
 
     @Override
@@ -204,10 +199,10 @@ public class ProductPOHeader implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ProductPOHeader)) {
+        if (!(object instanceof ProductOrder)) {
             return false;
         }
-        ProductPOHeader other = (ProductPOHeader) object;
+        ProductOrder other = (ProductOrder) object;
         if ((this.productPOId == null && other.productPOId != null) || (this.productPOId != null && !this.productPOId.equals(other.productPOId))) {
             return false;
         }
@@ -216,7 +211,7 @@ public class ProductPOHeader implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.ProductPOHeader[ productPOId=" + productPOId + " ]";
+        return "entity.ProductOrder[ productPOId=" + productPOId + " ]";
     }
     
 }
