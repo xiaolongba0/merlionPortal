@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package merlionportal.ci.administrationmodule;
 
 import entity.SystemUser;
+import entity.UserRole;
 import javax.ejb.Local;
-import util.accessRightControl.Right;
 
 /**
  *
@@ -16,5 +15,10 @@ import util.accessRightControl.Right;
  */
 @Local
 public interface CheckAccessRightBeanLocal {
-     public boolean userHasRight(SystemUser user, Right right);
+
+    public boolean userHasRight(SystemUser user, int right);
+
+    public boolean roleHasRight(UserRole role, int right);
+
+    public void roleToggleRight(UserRole role, int right, boolean approve);
 }

@@ -16,15 +16,26 @@ import javax.ejb.Local;
  */
 @Local
 public interface SuperUserBeanLocal {
+
+    public boolean createSystemAdminUser(String firstName, String lastName, String emailAddress, String postalAddress, String contactNumber, String salution, String userType, int companyId, int creatorid);
+
+    public boolean createSystemAdminRole(int creatorId, int companyId, String roleName, String description);
+
+    public boolean unlockSystemAdminUser(int creatorId, int systemAdminId);
+
+    public boolean activateSystemAdminUser(int creatorId, int systemAdminId);
+
+    public boolean terminateSystemAdminUser(int creatorId, int systemAdminId);
+
+    public boolean changePasswordUponLogin(int creatorId, int systemAdminId);
+
+    public ArrayList getAllSystemAdminUser();
+
+    public ArrayList<SystemUser> getAllSystemAdminUserFromCompany(int companyId);
+
+    public boolean assignRoleToSystemAdmin(int creatorId, int userId, ArrayList roles);
     
-    public boolean createRole(String roleName, String description, ArrayList rights);
-    public boolean createSystemAdminUser(String firstName,String lastName,String emailAddress,String password,String postalAddress,String contactNumber,String salution,String userType, int userRole, int companyId);
-    public boolean unlockSystemAdminUser(int systemAdminId);
-    public boolean activateSystemAdminUser(int systemAdminId);
-    public boolean terminateSystemAdminUser(int systemAdminId);
-    public boolean changePasswordUponLogin(int systemAdminId);
-    public ArrayList<SystemUser> getAllSystemAdminUser();
-    public ArrayList<SystemUser> getAllSystemAdminUserFromCompany(int companyId); 
+    
     
 
     

@@ -31,7 +31,7 @@ public class Right {
     
 
     //CRMS 
-    public static final int cananGenerateServicePO = 1030;
+    public static final int canGenerateServicePO = 1030;
     public static final int canUpdateCustomerCredit = 1031;
     public static final int canGenerateServiceSO = 1032;
     public static final int canGenerateQuotationRequest = 1033;
