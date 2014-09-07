@@ -2,7 +2,9 @@ package merlionportal.ci.administrationmodule;
 
 import entity.SystemUser;
 import entity.UserRole;
+import java.io.Serializable;
 import java.util.List;
+import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import util.accessRightControl.Right;
 
@@ -11,9 +13,10 @@ import util.accessRightControl.Right;
  * @author manliqi
  */
 @Stateless
-public class CheckAccessRightBean implements CheckAccessRightBeanLocal {
+@LocalBean
+public class CheckAccessRightBean implements Serializable {
 
-    @Override
+    
     public boolean userHasRight(SystemUser user, int right) {
         List<UserRole> roles = user.getUserRoleList();
         if (roles != null) {
@@ -26,7 +29,6 @@ public class CheckAccessRightBean implements CheckAccessRightBeanLocal {
         return false;
     }
 
-    @Override
     public boolean roleHasRight(UserRole role, int right) {
 
         boolean hasRight = false;
@@ -176,7 +178,6 @@ public class CheckAccessRightBean implements CheckAccessRightBeanLocal {
         return hasRight;
     }
 
-    @Override
     public void roleToggleRight(UserRole role, int right, boolean approve) {
         switch (right) {
             case Right.canGeneratePO:
