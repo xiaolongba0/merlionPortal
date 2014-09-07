@@ -25,21 +25,23 @@ public class MerlionPortalFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-        String newPage = "";
-
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
         String requestURI = ((HttpServletRequest) request).getRequestURI();
         boolean redirect = false;
+        String newPage = "";
 
-
+        //Switch to HTTPS
+        if (httpRequest.getServerPort() != 8181) {
+            httpResponse.sendRedirect(httpResponse.encodeRedirectURL("https://" + request.getServerName() + ":8181" + requestURI));
+        } else {
 //        if (requestURI != null && requestURI.length() > 0) {
 //        }
-
-        if (redirect) {
+            if (redirect) {
 //            httpServletResponse.sendRedirect(newPage);
-        } else {
-            chain.doFilter(request, response);
+            } else {
+                chain.doFilter(request, response);
+            }
         }
     }
 }
