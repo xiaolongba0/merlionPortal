@@ -72,8 +72,6 @@ public class Company implements Serializable {
         @JoinColumn(name = "userRoleId", referencedColumnName = "userRoleId")})
     @ManyToMany
     private List<UserRole> userRoleList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "companyId")
-    private List<Product> productList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "companycompanyId")
     private List<SystemUser> systemUserList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "companyId")
@@ -149,15 +147,6 @@ public class Company implements Serializable {
 
     public void setUserRoleList(List<UserRole> userRoleList) {
         this.userRoleList = userRoleList;
-    }
-
-    @XmlTransient
-    public List<Product> getProductList() {
-        return productList;
-    }
-
-    public void setProductList(List<Product> productList) {
-        this.productList = productList;
     }
 
     @XmlTransient

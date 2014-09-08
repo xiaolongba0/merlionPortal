@@ -7,6 +7,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -19,6 +20,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -35,7 +38,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Quotation.findByQuotationId", query = "SELECT q FROM Quotation q WHERE q.quotationId = :quotationId"),
     @NamedQuery(name = "Quotation.findByDescription", query = "SELECT q FROM Quotation q WHERE q.description = :description"),
     @NamedQuery(name = "Quotation.findByCustomerId", query = "SELECT q FROM Quotation q WHERE q.customerId = :customerId"),
-    @NamedQuery(name = "Quotation.findByStatus", query = "SELECT q FROM Quotation q WHERE q.status = :status")})
+    @NamedQuery(name = "Quotation.findByStatus", query = "SELECT q FROM Quotation q WHERE q.status = :status"),
+    @NamedQuery(name = "Quotation.findByCreateDate", query = "SELECT q FROM Quotation q WHERE q.createDate = :createDate"),
+    @NamedQuery(name = "Quotation.findByCompany", query = "SELECT q FROM Quotation q WHERE q.company = :company")})
 public class Quotation implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -50,6 +55,11 @@ public class Quotation implements Serializable {
     private Integer customerId;
     @Column(name = "status")
     private Integer status;
+    @Column(name = "createDate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createDate;
+    @Column(name = "company")
+    private Integer company;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "quotationquotationId")
     private List<QuotationLineItem> quotationLineItemList;
 
@@ -90,6 +100,22 @@ public class Quotation implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Integer getCompany() {
+        return company;
+    }
+
+    public void setCompany(Integer company) {
+        this.company = company;
     }
 
     @XmlTransient

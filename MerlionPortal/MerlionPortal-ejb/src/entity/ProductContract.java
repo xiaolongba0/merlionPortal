@@ -7,6 +7,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -22,6 +23,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -60,9 +63,9 @@ public class ProductContract implements Serializable {
     @Size(max = 45)
     @Column(name = "validity")
     private String validity;
-    @Size(max = 45)
     @Column(name = "createDate")
-    private String createDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createDate;
     @Size(max = 45)
     @Column(name = "creatorId")
     private String creatorId;
@@ -131,11 +134,11 @@ public class ProductContract implements Serializable {
         this.validity = validity;
     }
 
-    public String getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 

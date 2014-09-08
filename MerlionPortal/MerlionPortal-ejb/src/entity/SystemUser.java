@@ -53,7 +53,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "SystemUser.findByCreatedDate", query = "SELECT s FROM SystemUser s WHERE s.createdDate = :createdDate"),
     @NamedQuery(name = "SystemUser.findByUserType", query = "SELECT s FROM SystemUser s WHERE s.userType = :userType"),
     @NamedQuery(name = "SystemUser.findByActivated", query = "SELECT s FROM SystemUser s WHERE s.activated = :activated"),
-    @NamedQuery(name = "SystemUser.findByTerminated", query = "SELECT s FROM SystemUser s WHERE s.terminated = :terminated"),
     @NamedQuery(name = "SystemUser.findByCredit", query = "SELECT s FROM SystemUser s WHERE s.credit = :credit")})
 public class SystemUser implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -101,10 +100,6 @@ public class SystemUser implements Serializable {
     @NotNull
     @Column(name = "activated")
     private boolean activated;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "terminated")
-    private boolean terminated;
     @Size(max = 45)
     @Column(name = "credit")
     private String credit;
@@ -128,12 +123,11 @@ public class SystemUser implements Serializable {
         this.systemUserId = systemUserId;
     }
 
-    public SystemUser(Integer systemUserId, String emailAddress, String userType, boolean activated, boolean terminated) {
+    public SystemUser(Integer systemUserId, String emailAddress, String userType, boolean activated) {
         this.systemUserId = systemUserId;
         this.emailAddress = emailAddress;
         this.userType = userType;
         this.activated = activated;
-        this.terminated = terminated;
     }
 
     public Integer getSystemUserId() {
@@ -238,14 +232,6 @@ public class SystemUser implements Serializable {
 
     public void setActivated(boolean activated) {
         this.activated = activated;
-    }
-
-    public boolean getTerminated() {
-        return terminated;
-    }
-
-    public void setTerminated(boolean terminated) {
-        this.terminated = terminated;
     }
 
     public String getCredit() {

@@ -15,8 +15,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -40,7 +38,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Product.findByDescription", query = "SELECT p FROM Product p WHERE p.description = :description"),
     @NamedQuery(name = "Product.findByProductType", query = "SELECT p FROM Product p WHERE p.productType = :productType"),
     @NamedQuery(name = "Product.findByCurrency", query = "SELECT p FROM Product p WHERE p.currency = :currency"),
-    @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price")})
+    @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price"),
+    @NamedQuery(name = "Product.findByCompanyId", query = "SELECT p FROM Product p WHERE p.companyId = :companyId")})
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -67,9 +66,8 @@ public class Product implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "price")
     private Double price;
-    @JoinColumn(name = "companyId", referencedColumnName = "companyId")
-    @ManyToOne(optional = false)
-    private Company companyId;
+    @Column(name = "companyId")
+    private Integer companyId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productproductId")
     private List<QuotationLineItem> quotationLineItemList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productproductId")
@@ -138,11 +136,11 @@ public class Product implements Serializable {
         this.price = price;
     }
 
-    public Company getCompanyId() {
+    public Integer getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(Company companyId) {
+    public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
     }
 
