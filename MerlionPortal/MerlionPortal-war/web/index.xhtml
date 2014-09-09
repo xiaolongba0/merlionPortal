@@ -5,28 +5,33 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <c:set var="root" value="${request.contextPath}"/>
-        <title>Welcome</title>
-    </h:head>
-    <h:body>
-        <h1>MerLION Portal</h1>
-        <h2>User Login</h2>
-        <h:form>
-            <h:panelGrid columns="3" cellpadding="5">
-                <h:outputText value="Username: " />
-                <p:inputText id="firstname" value="#{userView.firstname}">
-                </p:inputText>
-                <h:outputText id="out1" value="#{userView.firstname}" />
 
-                <h:outputText value="Password: " />
-                <p:inputText id="surname" value="#{userView.lastname}">
-                </p:inputText>
-                <h:outputText id="out2" value="#{userView.lastname}" />
-            </h:panelGrid>
-            <h:commandButton value="Submit" id="ajax" action="dashboard" ></h:commandButton>
-        </h:form>
-    </h:body>
+    <ui:composition template="template.xhtml">
+        <ui:param name="pageName" value="Index" />
+
+        <!-- Override Content -->
+        <ui:define name="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h2>Login</h2>
+                        <div class="input-group form-control-spacing">
+                            <div class="input-group-addon input-addon-fixedwidth">Username</div>
+                            <input type="text" id="usernameInput" value="#{loginBean.username}" class="form-control" placeholder="Enter your username" />
+                        </div>
+
+                        <div class="input-group form-control-spacing">
+                            <div class="input-group-addon input-addon-fixedwidth">Password</div>
+                            <input type="password" id="passwordInput" value="#{loginBean.password}" class="form-control" placeholder="Enter your password" />
+                        </div>
+                        <h:commandButton value="Login" id="ajax" action="dashboard" styleClass="btn btn-success" ></h:commandButton>
+                    </div>
+                </div>
+            </div>
+        </ui:define>
+
+    </ui:composition>
 </html>
 
