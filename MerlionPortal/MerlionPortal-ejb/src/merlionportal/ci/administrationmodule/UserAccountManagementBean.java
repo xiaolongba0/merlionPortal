@@ -39,11 +39,9 @@ public class UserAccountManagementBean {
 
     //if operator is null return 0, if access denied return -1, sucess return 1
     public int createSystemAdminRole(Integer operatorId, Integer companyId) {
-        System.out.println("===================1=================");
+       
         
         SystemUser operator = em.find(SystemUser.class, operatorId);
-        System.out.println(operator.getSystemUserId());
-        System.out.println("===================2=================");
 
         if (operator != null) {
             if (checkAccessRightBean.userHasRight(operator, Right.canManageUser)) {
@@ -94,6 +92,7 @@ public class UserAccountManagementBean {
         company.setContactPersonName(contactPersonName);
         company.setEmailAddress(emailAddress);
         company.setDescription(description);
+        
 
         em.persist(company);
         return 1;

@@ -41,7 +41,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Company.findByContactNumber", query = "SELECT c FROM Company c WHERE c.contactNumber = :contactNumber"),
     @NamedQuery(name = "Company.findByContactPersonName", query = "SELECT c FROM Company c WHERE c.contactPersonName = :contactPersonName"),
     @NamedQuery(name = "Company.findByEmailAddress", query = "SELECT c FROM Company c WHERE c.emailAddress = :emailAddress"),
-    @NamedQuery(name = "Company.findByDescription", query = "SELECT c FROM Company c WHERE c.description = :description")})
+    @NamedQuery(name = "Company.findByDescription", query = "SELECT c FROM Company c WHERE c.description = :description"),
+    @NamedQuery(name = "Company.findByPackage1", query = "SELECT c FROM Company c WHERE c.package1 = :package1")})
 public class Company implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -67,6 +68,8 @@ public class Company implements Serializable {
     @Size(max = 45)
     @Column(name = "description")
     private String description;
+    @Column(name = "package")
+    private Integer package1;
     @JoinTable(name = "Company_has_UserRole", joinColumns = {
         @JoinColumn(name = "companyId", referencedColumnName = "companyId")}, inverseJoinColumns = {
         @JoinColumn(name = "userRoleId", referencedColumnName = "userRoleId")})
@@ -138,6 +141,14 @@ public class Company implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getPackage1() {
+        return package1;
+    }
+
+    public void setPackage1(Integer package1) {
+        this.package1 = package1;
     }
 
     @XmlTransient
