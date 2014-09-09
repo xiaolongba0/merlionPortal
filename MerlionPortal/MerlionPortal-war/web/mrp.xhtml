@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Home</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form id="formMain">
+            <h1>MyPrimeFacesOrganizer - Powered by PrimeFaces 5.0</h1>
+            <p:menubar>
+                <p:menuitem value="MRP II" url="mrp.xhtml" />
+                <p:menuitem value="View All Products" url="viewAllProducts.xhtml" />
+                <p:menuitem value="Add New Product" url="addNewProduct.xhtml" />
+            </p:menubar>
+            <br/>
+            <p:panel header="Welcome">
+                Welcome to MyPrimeFacesOrganizer. This simple application demonstrates the capability of PrimeFaces in helping developers to build RIA rapidly.
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
