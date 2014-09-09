@@ -30,16 +30,12 @@ public class UserAccountManagementBean {
     @PersistenceContext
     EntityManager em;
 
-    @EJB
-    private CheckAccessRightBean checkAccessRightBean;
-
     private SystemUser operator;
 
     //Used by super user
     //if operator is null return 0, if access denied return -1, sucess return 1
     public int createSystemAdminRole(Integer companyId) {
-       
-        
+
         UserRole superRole = new UserRole();
         superRole.setRoleName("systemadmin");
 
@@ -66,9 +62,9 @@ public class UserAccountManagementBean {
             System.out.println("Company is null");
             return 0;
         }
-                     
+
     }
-    
+
 /// Used by anyone
     public int registerNewCompany(String name, String address, String contactNumber, String contactPersonName, String emailAddress, String description, Integer package1) {
         Company company = new Company();
@@ -79,16 +75,14 @@ public class UserAccountManagementBean {
         company.setEmailAddress(emailAddress);
         company.setDescription(description);
         company.setPackage1(package1);
-        
 
         em.persist(company);
         return 1;
     }
 
-
     //Used by company system Admin
     public int createCompanySystemAdminUser(String firstName, String lastName, String emailAddress, String password, String postalAddress,
-            String contactNumber, String salution, String userType,Integer companyId) {
+            String contactNumber, String salution, String userType, Integer companyId) {
         SystemUser user = new SystemUser();
         user.setFirstName(firstName);
         user.setLastName(lastName);
@@ -98,31 +92,99 @@ public class UserAccountManagementBean {
         user.setContactNumber(contactNumber);
         user.setSalution(salution);
         user.setUserType(userType);
-        
+
         Company company = getCompany(companyId);
-        if(company!=null){
+        if (company != null) {
             user.setCompanycompanyId(company);
-        }
-        else{
+        } else {
             return 0;
         }
-        
+
         List<UserRole> roles = new ArrayList<>();
         UserRole role = em.find(UserRole.class, "2");
         roles.add(role);
         user.setUserRoleList(roles);
-        
+
         em.persist(user);
-        em.flush(); 
+        em.flush();
         em.merge(company);
         em.merge(role);
         return 1;
 
     }
 
-    public int createCompanyRole() {
-        return 0;
+    public int createCompanyRole(Integer companyId, String roleName, String description, boolean canGeneratePO, boolean canGenerateSO, boolean canGenerateQuotationAndProductContract, boolean canGenerateSalesReport,
+            boolean canManageUser, boolean canUseForecast, boolean canManageProductAndComponent, boolean canGenerateMRPList, boolean canGenerateServicePO, boolean canUpdateCustomerCredit, boolean canGenerateServiceSO,
+            boolean canGenerateQuotationRequest, boolean canManageServiceCatalog, boolean canGenerateServiceQuotationAndContract, boolean canManageKeyAccount,
+            boolean canManageTransportationAsset, boolean canManageTransportationOrder, boolean canManageLocation, boolean canManageAssetType, boolean canUseHRFunction,
+            boolean canManageWarehouse, boolean canManageStockAuditProcess, boolean canManageStockTransportOrder, boolean canManageReceivingGoods,
+            boolean canManageOrderFulfillment, boolean canManageBid, boolean canManagePost) {
 
+        UserRole companyRole = new UserRole();
+        companyRole.setRoleName(roleName);
+        companyRole.setDescription(description);
+
+        companyRole.setCanGeneratePO(canGeneratePO);
+        companyRole.setCanGenerateSO(canGenerateSO);
+        companyRole.setCanGenerateQuotationAndProductContract(canGenerateQuotationAndProductContract);
+        companyRole.setCanGenerateSalesReport(canGenerateSalesReport);
+
+        companyRole.setCanManageUser(canManageUser);
+
+        companyRole.setCanUseForecast(canUseForecast);
+        companyRole.setCanManageProductAndComponent(canManageProductAndComponent);
+        companyRole.setCanGenerateMRPList(canGenerateMRPList);
+
+        companyRole.setCanGenerateServicePO(canGenerateServicePO);
+        companyRole.setCanUpdateCustomerCredit(canUpdateCustomerCredit);
+        companyRole.setCanGenerateServiceSO(canGenerateServiceSO);
+        companyRole.setCanGenerateQuotationRequest(canGenerateQuotationRequest);
+        companyRole.setCanManageServiceCatalog(canManageServiceCatalog);
+        companyRole.setCanGenerateServiceQuotationAndContract(canGenerateServiceQuotationAndContract);
+        companyRole.setCanManageKeyAccount(canManageKeyAccount);
+
+        companyRole.setCanManageTransportationAsset(canManageTransportationAsset);
+        companyRole.setCanManageTransportationOrder(canManageTransportationOrder);
+        companyRole.setCanManageLocation(canManageLocation);
+        companyRole.setCanManageAssetType(canManageAssetType);
+        companyRole.setCanUseHRFunction(canUseHRFunction);
+
+        companyRole.setCanManageWarehouse(canManageWarehouse);
+        companyRole.setCanManageStockAuditProcess(canManageStockAuditProcess);
+        companyRole.setCanManageStockTransportOrder(canManageStockTransportOrder);
+        companyRole.setCanManageReceivingGoods(canManageReceivingGoods);
+        companyRole.setCanManageOrderFulfillment(canManageOrderFulfillment);
+
+        companyRole.setCanManageBid(canManageBid);
+        companyRole.setCanManagePost(canManagePost);
+
+        List<Company> companies = new ArrayList<>();
+        Company company = getCompany(companyId);
+        if (company != null) {
+            companies.add(company);
+            companyRole.setCompanyList(companies);
+
+            List<UserRole> roles = new ArrayList<>();
+            roles.add(companyRole);
+
+            company.setUserRoleList(roles);
+
+            em.persist(companyRole);
+            em.flush();
+            em.merge(company);
+
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    private SystemUser getOperator(Integer operatorId) {
+        return em.find(SystemUser.class, operatorId);
+    }
+
+    private Company getCompany(Integer companyId) {
+        return em.find(Company.class, companyId);
     }
 
     public int createCompanySystemUser() {
@@ -148,13 +210,6 @@ public class UserAccountManagementBean {
     public int changePasswordUponLogin(int systemAdminId) {
         return 0;
 
-    }
-    private SystemUser getOperator(Integer operatorId){
-        return em.find(SystemUser.class, operatorId);
-    }
-
-    private Company getCompany(Integer companyId) {
-        return em.find(Company.class, companyId);
     }
 
 }
