@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Register Company</title>
     </h:head>
@@ -30,6 +31,14 @@
                 <p:outputLabel style="font-weight: bold" value="Company Description :"/>
                 <p:inputText required="true" requiredMessage="Field is required." id="companyDescription" value="#{userAccountManagedBean.description}" />
                 <br/>
+                <p:outputLabel for="basic" style="font-weight: bold" value="Package Choice" />
+                <p:selectOneListbox id="basic" value="#{userAccountManagedBean.package1}">
+                    <f:selectItem itemLabel="Package for 1PL" itemValue="1" />
+                    <f:selectItem itemLabel="Package for 2PL" itemValue="2" />
+                    <f:selectItem itemLabel="Package for 3PL" itemValue="3" />
+                    <f:selectItem itemLabel="Package for 4PL" itemValue="4" />
+                </p:selectOneListbox>
+
                 <p:commandButton value="Submit" id="ajax" update="growl" actionListener="#{userAccountManagedBean.registerNewCompany}" styleClass="ui-priority-primary" />
             </h:panelGrid>
         </h:form>

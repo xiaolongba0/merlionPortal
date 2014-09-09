@@ -15,8 +15,6 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import util.accessRightControl.Right;
 
 /**
  *
@@ -37,54 +35,42 @@ public class UserAccountManagementBean {
 
     private SystemUser operator;
 
+    //Used by super user
     //if operator is null return 0, if access denied return -1, sucess return 1
-    public int createSystemAdminRole(Integer operatorId, Integer companyId) {
+    public int createSystemAdminRole(Integer companyId) {
        
         
-        SystemUser operator = em.find(SystemUser.class, operatorId);
+        UserRole superRole = new UserRole();
+        superRole.setRoleName("systemadmin");
 
-        if (operator != null) {
-            if (checkAccessRightBean.userHasRight(operator, Right.canManageUser)) {
-                UserRole superRole = new UserRole();
-                superRole.setRoleName("systemadmin");
+        superRole.setCanManageUser(true);
+        Company company = em.find(Company.class, companyId);
+        if (company != null) {
 
-                superRole.setCanManageUser(true);
-                Company company = em.find(Company.class, companyId);
-                if (company != null) {
+            List<Company> companies = new ArrayList();
+            companies.add(company);
+            superRole.setCompanyList(companies);
+            superRole.setDescription("systemadmin for company " + company.getName());
+            em.persist(superRole);
+            em.flush();
 
-                    List<Company> companies = new ArrayList();
-                    companies.add(company);
-                    superRole.setCompanyList(companies);
-                    superRole.setDescription("systemadmin for company " + company.getName());
-                    em.persist(superRole);
-                    em.flush();
+            List<UserRole> roles = new ArrayList();
+            roles.add(superRole);
+            company.setUserRoleList(roles);
 
-                    List<UserRole> roles = new ArrayList();
-                    roles.add(superRole);
-                    company.setUserRoleList(roles);
-
-                    em.persist(superRole);
-                    em.flush();
-                    em.merge(company);
-                } else {
-                    System.out.println("Company is null");
-                }
-                return 1;
-            }
-            return -1;
+            em.persist(superRole);
+            em.flush();
+            em.merge(company);
+            return 1;
+        } else {
+            System.out.println("Company is null");
+            return 0;
         }
-        return 0;
-
+                     
     }
-    private SystemUser getOperator(Integer operatorId){
-        return em.find(SystemUser.class, operatorId);
-    }
-
-    private Company getCompany(Integer companyId) {
-        return em.find(Company.class, companyId);
-    }
-
-    public int registerNewCompany(String name, String address, String contactNumber, String contactPersonName, String emailAddress, String description) {
+    
+/// Used by anyone
+    public int registerNewCompany(String name, String address, String contactNumber, String contactPersonName, String emailAddress, String description, Integer package1) {
         Company company = new Company();
         company.setName(name);
         company.setAddress(address);
@@ -92,20 +78,45 @@ public class UserAccountManagementBean {
         company.setContactPersonName(contactPersonName);
         company.setEmailAddress(emailAddress);
         company.setDescription(description);
+        company.setPackage1(package1);
         
 
         em.persist(company);
         return 1;
     }
 
-    public int assignSystemAdminRoleToUser() {
-        return 0;
-
-    }
 
     //Used by company system Admin
-    public int createCompanySystemAdminUser() {
-        return 0;
+    public int createCompanySystemAdminUser(String firstName, String lastName, String emailAddress, String password, String postalAddress,
+            String contactNumber, String salution, String userType,Integer companyId) {
+        SystemUser user = new SystemUser();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmailAddress(emailAddress);
+        user.setPassword(password);
+        user.setPostalAddress(postalAddress);
+        user.setContactNumber(contactNumber);
+        user.setSalution(salution);
+        user.setUserType(userType);
+        
+        Company company = getCompany(companyId);
+        if(company!=null){
+            user.setCompanycompanyId(company);
+        }
+        else{
+            return 0;
+        }
+        
+        List<UserRole> roles = new ArrayList<>();
+        UserRole role = em.find(UserRole.class, "2");
+        roles.add(role);
+        user.setUserRoleList(roles);
+        
+        em.persist(user);
+        em.flush(); 
+        em.merge(company);
+        em.merge(role);
+        return 1;
 
     }
 
@@ -124,19 +135,26 @@ public class UserAccountManagementBean {
 
     }
 
-    public int unlockUser(int creatorId, int systemAdminId) {
+    public int unlockUser(int systemAdminId) {
         return 0;
 
     }
 
-    public int activateUser(int creatorId, int systemAdminId) {
+    public int activateUser(int systemAdminId) {
         return 0;
 
     }
 
-    public int changePasswordUponLogin(int creatorId, int systemAdminId) {
+    public int changePasswordUponLogin(int systemAdminId) {
         return 0;
 
+    }
+    private SystemUser getOperator(Integer operatorId){
+        return em.find(SystemUser.class, operatorId);
+    }
+
+    private Company getCompany(Integer companyId) {
+        return em.find(Company.class, companyId);
     }
 
 }
