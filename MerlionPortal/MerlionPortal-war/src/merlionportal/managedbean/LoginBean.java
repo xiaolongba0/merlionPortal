@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package merlionportal.managedbean;
 
 import merlionportal.utility.MD5Generator;
 import entity.SystemUser;
 import java.util.Date;
+import java.util.HashMap;
 import javax.ejb.EJB;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -49,8 +51,8 @@ public class LoginBean {
         if (username != null) {
             if (password != null) {
                 if (tries <= 5) {
-                    SystemUser user = loginSessionBean.verifyAccount(username, MD5Generator.hash(password));
-                    if (user == null) {
+                    HashMap<String, Integer> sessionMap = loginSessionBean.verifyAccount(username, MD5Generator.hash(password));
+                    if (sessionMap == null) {
                         //Login failed
                         if (tries == 0) {
                             request.getSession().setAttribute("firstLoginTry", new Date().getTime());
@@ -62,7 +64,8 @@ public class LoginBean {
                         //Login Successful
                         tries = 0;
                         request.getSession().setAttribute("logintries", tries);
-                        request.getSession().setAttribute("loginedUser", user); //session to store logined user object
+                        request.getSession().setAttribute("userId", sessionMap.get("userId"));
+                        request.getSession().setAttribute("companyId", sessionMap.get("companyId"));
                     }
                 } else {
                     //Sorry you have tried more than 5 times...
