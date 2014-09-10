@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-import com.merlionportal.utility.MD5Generator;
+import merlionportal.utility.MD5Generator;
 import entity.SystemUser;
 import java.util.Date;
 import javax.ejb.EJB;
