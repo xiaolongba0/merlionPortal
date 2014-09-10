@@ -1,5 +1,6 @@
 package merlionportal.managedbean;
 
+import entity.Product;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -19,6 +20,9 @@ public class ProductManagerBean {
     private String productType;
     private String currency;
     private Double price;
+    private Integer companyId = 12345;
+    private Double productId;
+    private Product product;
     
    // private String venue;
    // private String systemUser;
@@ -30,6 +34,14 @@ public class ProductManagerBean {
         productNameLength = "Current product name length is less than 4.";
     }
 
+        public Double getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Double productId) {
+        this.productId = productId;
+    }
+    
     public String getProductName() {
         return productName;
     }
@@ -109,13 +121,26 @@ public class ProductManagerBean {
     public void setNewProductId(Integer newProductId) {
         this.newProductId = newProductId;
     }
+    
+    
+    //ok. But see if user input (in xhtml) can be in Integer type directly.
+    public void deleteProduct(ActionEvent product) {
+          try {
+              int pdtID = productId.intValue();
+              productSessionBean.deleteProducts(companyId, pdtID);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+       }
+ }
+    
 
     public void saveNewProduct(ActionEvent product) {
  
       //  Integer venueId = Integer.valueOf(venue);
       //  Integer systemUserId = Integer.valueOf(systemUser);
         try {
-            newProductId = productSessionBean.addNewProduct(productName, description, productType, currency, price /*, venueId, systemUserId*/);
+            //companyId =(Integer)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
+            newProductId = productSessionBean.addNewProduct(productName, description, productType, currency, price, companyId /*, venueId, systemUserId*/);
             statusMessage = "New Product Saved Successfully";
      //   } catch (VenueConflictException vex) {
       //      statusMessage = "Venue Conflict Exception";
@@ -125,6 +150,19 @@ public class ProductManagerBean {
        }
     }
 
+    
+    ////////////////////////////////////////////////////////////////
+        public Product getAProduct() {
+//        companyId=(Integer)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
+         int pdtID = productId.intValue();
+         product = productSessionBean.getAProduct(companyId, pdtID);
+        return product;
+    } 
+        
+        
+    
+    
+    
     public void doAjaxCountProductNameLength() {
         if (productName != null) {
             productNameLength = Integer.toString(productName.length());
