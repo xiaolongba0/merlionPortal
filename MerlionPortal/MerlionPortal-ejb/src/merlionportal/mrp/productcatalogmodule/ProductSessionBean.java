@@ -5,6 +5,7 @@ import entity.Product;
 //import entity.Venue;
 //import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.Query;
@@ -39,14 +40,51 @@ public class ProductSessionBean {
         return query.getResultList();
     }
 
-   /* public List<Event> getMyEvents(Long systemUserId) {
-        SystemUser systemUser = getSystemUser(systemUserId);
-        Query query = entityManager.createQuery("SELECT e FROM Event e WHERE e.systemUser = :inSytemUser");
-        query.setParameter("inSytemUser", systemUser);
+    
+    // Notes: take in companyId automatically after Login, later change to getMyProducts(Integer companyId)
+     public List<Product> getMyProducts(Integer companyId){
+        Query query = entityManager.createQuery("SELECT p FROM Product p WHERE p.companyId = :inCompanyId");
+        query.setParameter("inCompanyId", companyId);
         return query.getResultList();
-    }*/
+    }
+     
+  
+     
+//Return a selected product for user to view
+         public Product getAProduct(Integer companyID, Integer productID){
+             
+            Query query = entityManager.createQuery("SELECT p FROM Product p WHERE p.companyId = :inCompanyId");
+            query.setParameter("inCompanyId", companyID);
+            List<Product> allmyproducts = query.getResultList();
+       
+         for(Product p: allmyproducts){
+           if(Objects.equals(p.getProductId(), productID)){
+               return p;
+           }
+       }
+        return null;
+    }
+     
+      
+      
+     public Boolean deleteProducts(Integer companyID, Integer productID){
+       
+        Query query = entityManager.createQuery("SELECT p FROM Product p WHERE p.companyId = :inCompanyId");
+        query.setParameter("inCompanyId", companyID);
+        List<Product> allmyproducts = query.getResultList();
+       
+         for(Product p: allmyproducts){
+           if(Objects.equals(p.getProductId(), productID)){
+               entityManager.remove(p);
+               entityManager.flush(); 
+               return true;
+           }
+       }
+        return false;
+     }
+     
 
-        public Integer addNewProduct(String productName, String description, String productType, String currency, Double price/*, Integer companyId, Integer componentId*/) {
+        public Integer addNewProduct(String productName, String description, String productType, String currency, Double price, Integer companyId/*, Integer companyId, Integer componentId*/) {
 
        // Company company = new Company(companyId);
         Product product = new Product();
@@ -55,9 +93,8 @@ public class ProductSessionBean {
         product.setProductType(productType);
         product.setCurrency(currency);
         product.setPrice(price);
+        product.setCompanyId(companyId);
         
-        //hard code company id
-       // product.setCompanyId(12345);
        // product.setComponent(getComponent(componentId));
            // product.setCompany(company);
  
@@ -69,5 +106,9 @@ public class ProductSessionBean {
       //  entityManager.merge(company);
         return product.getProductId();
 
+    }
+
+    public void deleteProducts(Integer companyId, Double productId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
