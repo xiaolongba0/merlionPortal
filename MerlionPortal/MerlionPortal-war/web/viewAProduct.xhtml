@@ -2,10 +2,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>View All Products</title>
+        <title>View A Product</title>
         <style type="text/css">
             .gritter-notice-wrapper {
                 left:200px;
@@ -22,11 +22,21 @@
                 <p:menuitem value="Add New Product" url="addNewProduct.xhtml" />
                 <p:menuitem value="Delete Product" url="deleteProduct.xhtml" />
                 <p:menuitem value="View A Product" url="viewAProduct.xhtml" />
+                <p:menuitem value="Edit A Product" url="editProduct.xhtml" />
             </p:menubar>
             <br/>
-            <p:panel header="View All Products">
+            <p:panel id="panel" header="View A Product">
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/spinner.gif" />
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:messages />
                 <p:panelGrid>
-                                       <p:row>
+                    <p:row>
                         <p:column>
                             <p:outputLabel for="productId" style="font-weight: bold" value="Product Id: " />
                         </p:column>
@@ -40,32 +50,72 @@
                         </p:column>
                     </p:row>
                 </p:panelGrid>
-                
-                <p:dataTable var="product" value="#{productManagerBean.aProduct}" paginator="true" rows="5" emptyMessage="No product">
-                    <p:column headerText="Product ID">
-                        <h:outputText value="#{productManagerBean.aProduct.productId}" />
-                    </p:column>
-                    <p:column headerText="Product Name" sortBy="#{product.productName}">
-                        <h:outputText value="#{product.productName}" />
-                    </p:column>
-                    <p:column headerText="Product Description" sortBy="#{product.description}">
-                        <h:outputText value="#{product.description}" />
-                    </p:column>
-                    <p:column headerText="Product Type" sortBy="#{product.productType}">
-                        <h:outputText value="#{product.productType}" />
-                    </p:column>
-                    <p:column headerText="Product Currency" sortBy="#{product.currency}">
-                        <h:outputText value="#{product.currency}" />
-                    </p:column>
-                    <p:column headerText="Product Price" sortBy="#{product.price}">
-                        <h:outputText value="#{product.price}" />
-                    </p:column>
-                </p:dataTable>
+                <p:commandButton id="btn" value="View The Product" update="panel" actionListener="#{productManagerBean.viewAProduct}" ajax="true" />
+                <Br/><Br/><Br/><Br/><Br/>
+                <p:panelGrid>
+                    <f:facet name="header">
+        <p:row>
+            <p:column colspan="7">The product details</p:column>
+        </p:row>
+    </f:facet>
+                        <p:row>
+                        <p:column>
+                            <h:outputText value="Product ID: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productManagerBean.productId}" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="Product Name: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productManagerBean.productName}" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="Description: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productManagerBean.description}" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column headerText="Product Type" >
+                            <h:outputText value="Product Type: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productManagerBean.productType}" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="Currency: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productManagerBean.currency}" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="Price: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{productManagerBean.price}" />
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>   
             </p:panel>
         </h:form>
     </h:body>
-</html>
-
+</html>                 
 
 
 

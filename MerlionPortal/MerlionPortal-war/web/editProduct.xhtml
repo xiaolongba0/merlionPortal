@@ -5,7 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Add New Product</title>
+        <title>Edit a Product</title>
         <style type="text/css">
             .gritter-notice-wrapper {
                 left:200px;
@@ -25,7 +25,7 @@
                 <p:menuitem value="Edit A Product" url="editProduct.xhtml" />
             </p:menubar>
             <br/>
-            <p:panel id="panel" header="Add New Product">
+            <p:panel id="panel" header="Edit a Product">
                 <p:ajaxStatus style="width:16px;height:16px;">
                     <f:facet name="start">
                         <h:graphicImage value="/images/spinner.gif" />
@@ -66,13 +66,6 @@
                         <p:column>
                             <p:outputLabel for="productType" style="font-weight: bold" value="Product Type: " />
                         </p:column>
-                        
-                 <!--  Try Drop down
-                 <p:selectOneMenu id="productType" value="#{productManagerBean.productType}" style="width:150px">
-                <f:selectItem itemLabel="Select Product Type" itemValue="" noSelectionOption="true" />
-                <f:selectItems value="#{productManagerBean.types}" />
-            </p:selectOneMenu>-->
-                        
                         <p:column>
                             <p:inputText required="true" label="Product Type" requiredMessage="Product Type is required." id="productType" value="#{productManagerBean.productType}">
                                 <f:validateLength minimum="1" maximum="19"/>
@@ -119,4 +112,6 @@
         </h:form>
     </h:body>
 </html>                 
+
+
 
