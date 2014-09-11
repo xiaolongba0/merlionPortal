@@ -5,7 +5,7 @@ function addRight(e) {
     var id = $(e).attr("id");
     if (rightsArray.indexOf(id) === -1) {
         rightsArray.push(id);
-        $("#"+id+"Input").val(true);
+        $("[id$='"+id+"Input"+"']").val(true);
         var addedRight = "addedright-" + id;
         $("#addedRights").append($("<div>")
                 .attr("id", addedRight)
@@ -16,7 +16,7 @@ function addRight(e) {
                 }, function(e) {
                     rightsArray.splice(rightsArray.indexOf(e.data.rightId),1);
                     $("#" + e.data.id).remove();
-                    $("#"+e.data.rightId+"Input").val(false);
+                    $("[id$='"+e.data.rightId+"Input"+"']").val(false);
                 })).append(" ");
     }
 }
