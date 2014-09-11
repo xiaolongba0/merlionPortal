@@ -107,6 +107,42 @@ public class ProductSessionBean {
         return product.getProductId();
 
     }
+        
+        
+        public Integer editProduct(String productName, String description, String productType, String currency, Double price, Integer companyID, Integer productID/*, Integer companyId, Integer componentId*/) {
+
+        Query query = entityManager.createQuery("SELECT p FROM Product p WHERE p.companyId = :inCompanyId");
+        query.setParameter("inCompanyId", companyID);
+        List<Product> allmyproducts = query.getResultList();
+       Product pdt = new Product();
+         for(Product p: allmyproducts){
+           if(Objects.equals(p.getProductId(), productID)){
+               pdt = p;
+             }
+       }
+     
+       // Company company = new Company(companyId);
+        pdt.setProductName(productName);
+        pdt.setDescription(description);
+        pdt.setProductType(productType);
+        pdt.setCurrency(currency);
+        pdt.setPrice(price);
+     
+        
+       // product.setComponent(getComponent(componentId));
+           // product.setCompany(company);
+ 
+
+        entityManager.merge(pdt);
+        entityManager.flush();
+
+      // company.getProductList().add(product);
+      //  entityManager.merge(company);
+        return pdt.getProductId();
+
+    }
+        
+        
 
     public void deleteProducts(Integer companyId, Double productId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
