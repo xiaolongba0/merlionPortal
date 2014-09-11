@@ -82,9 +82,8 @@ public class UserAccountManagerBean {
     public void registerNewCompany(ActionEvent event) {
 
         int result = uamb.registerNewCompany(companyName, emailAddress, contactNumber, contactPersonName, emailAddress, description, package1);
-        if (result == 1) {
+        if (result > 0) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Company Registered!", "Please wait for our system administrator to contact you."));
-
         }
     }
 

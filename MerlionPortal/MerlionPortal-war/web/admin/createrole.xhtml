@@ -3,39 +3,191 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
 
     <c:set var="root" value="${request.contextPath}" />
     <ui:composition template="${root}/templates/templateadmin.xhtml">
         <ui:param name="pageName" value="Create Role" />
         <!-- Override Content -->
         <ui:define name="content">
-            <div class="container">
-                <div class="alert alert-blue">
-                    <h2 class="roleTitle">Order Entry System</h2>
-                    <div class="badge alert-default">Generate Purchase Order <i class="glyphicon glyphicon-plus"></i></div>
-                    <div class="badge alert-default">Generate Purchase Order <i class="glyphicon glyphicon-plus"></i></div>
-                    <div class="badge alert-default">Generate Purchase Order <i class="glyphicon glyphicon-plus"></i></div>
+            <c:set var="root" value="${request.contextPath}" />
+            <script type="text/javascript" src="${root}/js/manageroles.js"></script>
+            <h:form>
+                <div class="container">
+                    <h2>Create Role</h2>
+                    <div class="row spacing">
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <div class="input-group-addon">Role Name:</div>
+                                <h:inputText value="#{createRole.roleName}" styleClass="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <div class="input-group-addon">Description:</div>
+                                <h:inputText value="#{createRole.roleDescription}" styleClass="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row spacing">
+                        <div class="col-md-10">
+                            <h2>Add Rights</h2>
+                            <div id="addedRights">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row spacing">
+                        <div class="col-md-10">
+                            <!-- Common Infrastructure -->
+                            <div class="btn-group btn-group-lg">
+                                <button type="button" class="btn btn-success dropdown-toggle rights-btn" data-toggle="dropdown">
+                                    Common Infrastructure <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu rights-menu" role="menu">
+                                    <li><a id="ciMU" href="#" onclick="addRight(this);">Manage User</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- OES -->
+                            <div class="btn-group btn-group-lg">
+                                <button type="button" class="btn btn-warning dropdown-toggle rights-btn" data-toggle="dropdown">
+                                    Order Entry System <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu rights-menu" role="menu">
+                                    <li><a id="oesGPO" href="#" onclick="addRight(this);">Generate Purchase Order</a></li>
+                                    <li><a id="oesGSO" href="#" onclick="addRight(this);">Generate Sales Order</a></li>
+                                    <li><a id="oesGQ" href="#" onclick="addRight(this);">Generate Quotation</a></li>
+                                    <li><a id="oesSR" href="#" onclick="addRight(this);">Generate Sales Report</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row spacing">
+                        <div class="col-md-10">
+                            <!-- MRP II -->
+                            <div class="btn-group btn-group-lg">
+                                <button type="button" class="btn btn-primary dropdown-toggle rights-btn" data-toggle="dropdown">
+                                    Material Resource Planning II <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu rights-menu" role="menu">
+                                    <li><a id="mrpUF" href="#" onclick="addRight(this);">Use Forecast</a></li>
+                                    <li><a id="mrpMPC" href="#" onclick="addRight(this);">Manage Product and Component</a></li>
+                                    <li><a id="mrpGML" href="#" onclick="addRight(this);">Generate MRP List</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- CRMS -->
+                            <div class="btn-group btn-group-lg">
+                                <button type="button" class="btn btn-danger dropdown-toggle rights-btn" data-toggle="dropdown">
+                                    Customer Relationship Management System <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu rights-menu" role="menu">
+                                    <li><a id="crmsUCS" href="#" onclick="addRight(this);">Update Customer Credit</a></li>
+                                    <li><a id="crmsGSPO" href="#" onclick="addRight(this);">Generate Service Purchase Order</a></li>
+                                    <li><a id="crmsGSSO" href="#" onclick="addRight(this);">Generate Service Sales Order</a></li>
+                                    <li><a id="crmsGQR" href="#" onclick="addRight(this);">Generate Quotation Request</a></li>
+                                    <li><a id="crmsMSC" href="#" onclick="addRight(this);">Manage Service Catalog</a></li>
+                                    <li><a id="crmsMKA" href="#" onclick="addRight(this);">Manage Key Account</a></li>
+                                    <li><a id="crmsGSQC" href="#" onclick="addRight(this);">Generate Service Quotation and Contract</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row spacing">
+                        <div class="col-md-10">
+                            <!-- TMS -->
+                            <div class="btn-group btn-group-lg">
+                                <button type="button" class="btn btn-warning dropdown-toggle rights-btn" data-toggle="dropdown">
+                                    Transport Management System <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu rights-menu" role="menu">
+                                    <li><a id="tmsMTA" href="#" onclick="addRight(this);">Manage Transportation Asset</a></li>
+                                    <li><a id="tmsMTO" href="#" onclick="addRight(this);">Manage Transportation Order</a></li>
+                                    <li><a id="tmsML" href="#" onclick="addRight(this);">Manage Location</a></li>
+                                    <li><a id="tmsMAT" href="#" onclick="addRight(this);">Manage Asset Type</a></li>
+                                    <li><a id="tmsUHF" href="#" onclick="addRight(this);">Use HR Function</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- WMS -->
+                            <div class="btn-group btn-group-lg">
+                                <button type="button" class="btn btn-primary dropdown-toggle rights-btn" data-toggle="dropdown">
+                                    Warehouse Management System <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu rights-menu" role="menu">
+                                    <li><a id="wmsMW" href="#" onclick="addRight(this);">Manage Warehouse</a></li>
+                                    <li><a id="wmsMSA" href="#" onclick="addRight(this);">Manage Stock Audit</a></li>
+                                    <li><a id="wmsMSTO" href="#" onclick="addRight(this);">Manage Stock Transport Order</a></li>
+                                    <li><a id="wmsMRG" href="#" onclick="addRight(this);">Manage Receiving Goods</a></li>
+                                    <li><a id="wmsMOF" href="#" onclick="addRight(this);">Manage Order Fulfillment</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row spacing">
+                        <div class="col-md-10">
+                            <!-- GRNS -->
+                            <div class="btn-group btn-group-lg">
+                                <button type="button" class="btn btn-success dropdown-toggle rights-btn" data-toggle="dropdown">
+                                    Global Rates Negotiation System <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu rights-menu" role="menu">
+                                    <li><a id="grnsMB" href="#" onclick="addRight(this);">Manage Bid</a></li>
+                                    <li><a id="grnsMP" href="#" onclick="addRight(this);">Manage Post</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row spacing">
+                        <div class="col-md-10">
+                            <p:growl id="growl" life="2000" />
+                            <div class="pull-right">
+                                <p:commandButton value="Create Role" id="ajax" update="growl" icon="ui-icon-check" actionListener="#{userAccountManagedBean.createRole}" styleClass="btn btn-success" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hidden Attributes -->
+                    <div class="hide">
+                        <!-- Common Infrastructure -->
+                        <h:inputHidden id="ciMUInput" value="#{createRole.canManageUser}" />
+                        <!-- Order Entry System -->
+                        <h:inputHidden id="oesGPOInput" value="#{createRole.canGeneratePO}" />
+                        <h:inputHidden id="oesGSOInput" value="#{createRole.canGenerateSO}" />
+                        <h:inputHidden id="oesGQInput" value="#{createRole.canGenerateQuotationAndProductContract}" />
+                        <h:inputHidden id="oesSRInput" value="#{createRole.canGenerateSalesReport}" />
+                        <!-- MRP II -->
+                        <h:inputHidden id="mrpUFInput" value="#{createRole.canUseForecast}" />
+                        <h:inputHidden id="mrpMPCInput" value="#{createRole.canManageProductAndComponent}" />
+                        <h:inputHidden id="mrpGMLInput" value="#{createRole.canGenerateMRPList}" />
+                        <!-- CRMS -->
+                        <h:inputHidden id="crmsGSPOInput" value="#{createRole.canGenerateServicePO}" />
+                        <h:inputHidden id="crmsUCSInput" value="#{createRole.canUpdateCustomerCredit}" />
+                        <h:inputHidden id="crmsGSSOInput" value="#{createRole.canGenerateServiceSO}" />
+                        <h:inputHidden id="crmsGQRInput" value="#{createRole.canGenerateQuotationRequest}" />
+                        <h:inputHidden id="crmsMSCInput" value="#{createRole.canManageServiceCatalog}" />
+                        <h:inputHidden id="crmsMKAInput" value="#{createRole.canManageKeyAccount}" />
+                        <h:inputHidden id="crmsGSQCInput" value="#{createRole.canGenerateServiceQuotationAndContract}" />
+                        <!-- TMS -->
+                        <h:inputHidden id="tmsMTAInput" value="#{createRole.canManageTransportationAsset}" />
+                        <h:inputHidden id="tmsMTOInput" value="#{createRole.canManageTransportationOrder}" />
+                        <h:inputHidden id="tmsMLInput" value="#{createRole.canManageLocation}" />
+                        <h:inputHidden id="tmsMATInput" value="#{createRole.canManageAssetType}" />
+                        <h:inputHidden id="tmsUHFInput" value="#{createRole.canUseHRFunction}" />
+                        <!-- WMS -->
+                        <h:inputHidden id="wmsMWInput" value="#{createRole.canManageWarehouse}" />
+                        <h:inputHidden id="wmsMSAInput" value="#{createRole.canManageStockAuditProcess}" />
+                        <h:inputHidden id="wmsMSTOInput" value="#{createRole.canManageStockTransportOrder}" />
+                        <h:inputHidden id="wmsMRGInput" value="#{createRole.canManageReceivingGoods}" />
+                        <h:inputHidden id="wmsMOFInput" value="#{createRole.canManageOrderFulfillment}" />
+                        <!-- GRNS -->
+                        <h:inputHidden id="grnsMBInput" value="#{createRole.canManageBid}" />
+                        <h:inputHidden id="grnsMPInput" value="#{createRole.canManagePost}" />
+                    </div>
                 </div>
-                <div class="alert alert-purple">
-                    <h2 class="roleTitle">Common Infrastructure</h2>
-                </div>
-                <div class="alert alert-orange">
-                    <h2 class="roleTitle">Material Resource Planning II</h2>
-                </div>
-                <div class="alert alert-green">
-                    <h2 class="roleTitle">Customer Relationship Management System</h2>
-                </div>
-                <div class="alert alert-yellow">
-                    <h2 class="roleTitle">Transport Management System</h2>
-                </div>
-                <div class="alert alert-blue">
-                    <h2 class="roleTitle">Warehouse Management System</h2>
-                </div>
-                <div class="alert alert-purple">
-                    <h2 class="roleTitle">Global Rates Negotiation System</h2>
-                </div>
-            </div>
+            </h:form>
         </ui:define>
     </ui:composition>
 </html>

@@ -2,6 +2,11 @@
     margin-top:5px;
     margin-bottom:5px;
 }
+
+.pointer{
+    cursor:pointer;
+}
+
 .input-addon-fixedwidth{
     width:120px;
 }
@@ -56,6 +61,27 @@ h4.service-cost{
     border-color: #faebcc;
 }
 
+.font-brightred{
+    color:#ED2E38;
+}
+
 h2.roleTitle{
     font-size:12pt;
+}
+
+.spacing{
+    margin-top:5px;
+    margin-bottom:5px;
+}
+.rights-btn{
+    min-width:400px;
+}
+.rights-item{
+    font-family: Arial;
+    font-weight:400;
+    font-size:12pt;
+    padding:8px;
+}
+ul.rights-menu li{
+    min-width:400px;
 }

@@ -5,19 +5,23 @@
  */
 package merlionportal.managedbean;
 
+import java.io.IOException;
 import merlionportal.utility.MD5Generator;
-import entity.SystemUser;
 import java.util.Date;
 import java.util.HashMap;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import merlionportal.ci.administrationmodule.LoginSessionBean;
 
+@ManagedBean
 @Named(value = "loginBean")
 @ViewScoped
 public class LoginBean {
@@ -31,15 +35,15 @@ public class LoginBean {
     HttpServletRequest request = (HttpServletRequest) context.getRequest();
     HttpServletResponse response = (HttpServletResponse) context.getResponse();
 
-    private void Login(HttpServletRequest request, HttpServletResponse response) {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+    public void login(ActionEvent event) {
+
         int tries = 0;
-        if (request.getSession().getAttribute("logintries") != null) {
-            tries = (int) request.getSession().getAttribute("logintries");
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("logintries")) {
+
+            tries = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("logintries");
             if (tries > 5) {
                 //Reset tries after 30 minutes
-                Long startTry = (long) request.getSession().getAttribute("firstLoginTry");
+                Long startTry = (long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("firstLoginTry");
                 startTry += 1800000; //30 minutes
                 Long nowDate = new Date().getTime();
                 if (nowDate > startTry) {
@@ -47,39 +51,38 @@ public class LoginBean {
                 }
             }
         }
-
+        
         if (username != null) {
             if (password != null) {
                 if (tries <= 5) {
                     HashMap<String, Integer> sessionMap = loginSessionBean.verifyAccount(username, MD5Generator.hash(password));
                     if (sessionMap == null) {
                         //Login failed
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Wrong username/password!", "Please try again"));
                         if (tries == 0) {
-                            request.getSession().setAttribute("firstLoginTry", new Date().getTime());
+                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("firstLoginTry", new Date().getTime());
                         }
                         tries += 1;
                         //Set number of tries
-                        request.getSession().setAttribute("logintries", tries);
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("logintries", tries);
                     } else {
                         //Login Successful
                         tries = 0;
-                        request.getSession().setAttribute("logintries", tries);
-                        request.getSession().setAttribute("userId", sessionMap.get("userId"));
-                        request.getSession().setAttribute("companyId", sessionMap.get("companyId"));
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("logintries", tries);
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("userId", sessionMap.get("userId"));
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("companyId", sessionMap.get("companyId"));
+                        try {
+                            FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath()+"/admin/dashboard.xhtml");
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
                     }
                 } else {
                     //Sorry you have tried more than 5 times...
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Sorry you have try more than 5 times!", "Please wait for 30 minutes before trying again."));
                 }
             }
         }
-    }
-
-    public LoginBean() {
-    }
-
-    public void loginInformation() {
-        loginSessionBean.verifyAccount(username, password);
-
     }
 
     //<editor-fold defaultstate="collapsed" desc="getters and setters">

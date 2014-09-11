@@ -8,19 +8,19 @@ package merlionportal.managedbean;
 import entity.UserRole;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.inject.Named;
-import javax.enterprise.context.Dependent;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.RoleManagementBean;
 
 /**
  *
  * @author manliqi
  */
-@Named(value = "userRoleManagerBean")
-@Dependent
+@ManagedBean(name = "createRole")
+@ViewScoped
 public class UserRoleManagerBean {
 
     /**
@@ -28,9 +28,9 @@ public class UserRoleManagerBean {
      */
     @EJB
     private RoleManagementBean rmb;
-    
+
     private Integer userCompanyId;
-    
+
     private String roleName;
     private String roleDescription;
     private boolean canGeneratePO;
@@ -62,7 +62,7 @@ public class UserRoleManagerBean {
     private boolean canManagePost;
 
     private List<UserRole> roles;
-    
+
     public UserRoleManagerBean() {
         canGeneratePO = false;
         canGenerateSO = false;
@@ -129,16 +129,16 @@ public class UserRoleManagerBean {
         }
 
     }
-     public List<UserRole> getRoles(){
+
+    public List<UserRole> getRoles() {
         //Integer operatorId = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
         //Integer company = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
         Integer operatorId = 3;
         Integer companyId = 2;
-        
+
         return rmb.viewAllRoles(operatorId, companyId);
-  
+
     }
-     
 
     //    <editor-fold defaultstate="collapsed" desc="getters and setters">
     public Integer getUserCompanyId() {
@@ -380,6 +380,6 @@ public class UserRoleManagerBean {
     public void setCanManagePost(boolean canManagePost) {
         this.canManagePost = canManagePost;
     }
-     //</editor-fold>
+    //</editor-fold>
 
 }

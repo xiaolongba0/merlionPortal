@@ -12,6 +12,10 @@
         <filter-name>MerlionPortalFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    <listener>
+        <description>ServletContextListener</description>
+        <listener-class>merlionportal.listener.MerlionPortalContextListener</listener-class>
+    </listener>
     <servlet>
         <servlet-name>facesServlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
