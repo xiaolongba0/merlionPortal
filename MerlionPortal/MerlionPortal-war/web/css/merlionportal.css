@@ -19,3 +19,43 @@ h4.service-cost{
     font-family:Arial;
     color:#bbb;
 }
+
+
+.alert-default{
+    background-color:#bababa;
+    border-color: #aaa;
+    cursor:pointer;
+}
+
+.alert-purple{
+    background-color:#dbd9f7;
+    color: #50318f;
+    border-color: #dfbcf1;
+}
+
+.alert-blue{
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.alert-orange{
+    color: #8f5f31;
+    background-color: #f9efcb;
+    border-color: #f1e0bc;
+}
+.alert-green {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.alert-yellow {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+
+h2.roleTitle{
+    font-size:12pt;
+}
