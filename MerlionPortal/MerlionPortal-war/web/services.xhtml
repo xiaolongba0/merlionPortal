@@ -81,26 +81,26 @@
                                 <h:panelGrid columns="3" cellpadding="5">
 
                                     <h:outputLabel style="font-weight: bold" value="Company Name :"/>
-                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyName" value="#{userAccountManagedBean.companyName}" />
+                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyName" value="#{userAccountManagerBean.companyName}" />
 
                                     <br/>
                                     <h:outputLabel style="font-weight: bold" value="Company Address :"/>
-                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyAddress" value="#{userAccountManagedBean.companyAddress}" />
+                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyAddress" value="#{userAccountManagerBean.companyAddress}" />
                                     <br/>
                                     <h:outputLabel style="font-weight: bold" value="Contact Person Name :"/>
-                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyContactPersonName" value="#{userAccountManagedBean.contactPersonName}" />
+                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyContactPersonName" value="#{userAccountManagerBean.contactPersonName}" />
                                     <br/>
                                     <h:outputLabel style="font-weight: bold" value="Contact Number :"/>
-                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyContactNumber" value="#{userAccountManagedBean.contactNumber}" />
+                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyContactNumber" value="#{userAccountManagerBean.contactNumber}" />
                                     <br/>
                                     <h:outputLabel style="font-weight: bold" value="Email Address :"/>
-                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyEmailAddress" value="#{userAccountManagedBean.emailAddress}" />
+                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyEmailAddress" value="#{userAccountManagerBean.emailAddress}" />
                                     <br/>
                                     <h:outputLabel style="font-weight: bold" value="Company Description :"/>
-                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyDescription" value="#{userAccountManagedBean.description}" />
+                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyDescription" value="#{userAccountManagerBean.description}" />
                                     <br/>
                                     <h:outputLabel for="basic" style="font-weight: bold" value="Package Choice" />
-                                    <h:selectOneListbox styleClass="form-control" id="basic" value="#{userAccountManagedBean.package1}">
+                                    <h:selectOneListbox styleClass="form-control" id="basic" value="#{userAccountManagerBean.package1}">
                                         <f:selectItem itemLabel="Package for 1PL Manufacturing" itemValue="1" />
                                         <f:selectItem itemLabel="Package for 1PL Non-Manufacturing" itemValue="2" />
                                         <f:selectItem itemLabel="Package for 2PL" itemValue="3" />
@@ -111,7 +111,7 @@
                             </div>
                             <div class="modal-footer">
 
-                                <p:commandButton value="Register" styleClass="btn btn-success" actionListener="#{userAccountManagedBean.registerNewCompany}" ajax="true"></p:commandButton>
+                                <p:commandButton value="Register" styleClass="btn btn-success" actionListener="#{userAccountManagerBean.registerNewCompany}" ajax="true"></p:commandButton>
                                 <p:commandButton value="Close" styleClass="btn btn-warning" pt:data-dismiss="modal"></p:commandButton>
 
 
