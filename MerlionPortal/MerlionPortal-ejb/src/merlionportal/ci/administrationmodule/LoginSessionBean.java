@@ -21,23 +21,20 @@ public class LoginSessionBean {
     EntityManager em;
     private int tryouts = 0;
 
-
     public HashMap<String, Integer> verifyAccount(String username, String password) {
         Query q = em.createNamedQuery("SystemUser.findByEmailAddress").setParameter("emailAddress", username);
-        SystemUser user = (SystemUser) q.getSingleResult();
-        
-        HashMap<String, Integer> sessionMap = new HashMap<String, Integer>();
-
-        //       if (user != null && lockAccount != true) {
-        if (user != null) {
+        if (q.getResultList().isEmpty()) {
+            return null;
+        } else {
+            SystemUser user = (SystemUser) q.getResultList().get(0);
+            HashMap<String, Integer> sessionMap = new HashMap<String, Integer>();
             String corrPassword = user.getPassword();
             if (password.equals(corrPassword)) {
-
                 sessionMap.put("userId", user.getSystemUserId());
                 sessionMap.put("companyId", user.getCompanycompanyId().getCompanyId());
                 return sessionMap;
             }
+            return null;
         }
-        return null;
     }
 }

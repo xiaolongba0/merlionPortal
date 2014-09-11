@@ -9,6 +9,7 @@ import entity.Company;
 import entity.SystemUser;
 import entity.UserRole;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -35,6 +36,46 @@ public class UserAccountManagementBean {
     @EJB
     private CheckAccessRightBean carb;
 
+    public SystemUser getUser(int userid) {
+        SystemUser user = null;
+        Query q = em.createNamedQuery("SystemUser.findBySystemUserId").setParameter("systemUserId", userid);
+        if (!q.getResultList().isEmpty()) {
+            user = (SystemUser) q.getResultList().get(0);
+        }
+        return user;
+    }
+
+    public boolean checkSuperUser() {
+        Query q = em.createNamedQuery("SystemUser.findByUserType").setParameter("userType", "superuser");
+        List<SystemUser> superUserList = q.getResultList();
+        return superUserList.isEmpty();
+    }
+
+    public void createSuperUser(String password, int companyId) {
+        SystemUser superUser = new SystemUser();
+        superUser.setFirstName("Administrator");
+        superUser.setLastName("MerlionPortal");
+        superUser.setEmailAddress("a0084692@nus.edu.sg");
+        superUser.setPostalAddress("1 Computing Drive NUS");
+        superUser.setPassword(password);
+        superUser.setContactNumber("+65 9888 8888");
+        superUser.setSalution("Mr.");
+        superUser.setLocked(false);
+        superUser.setResetPasswordUponLogin(false);
+        superUser.setCreatedDate(new Date());
+        superUser.setUserType("superuser");
+        superUser.setActivated(true);
+        superUser.setCredit("");
+        Company company = em.find(Company.class, companyId);
+        if (company != null) {
+            superUser.setCompanycompanyId(company);
+            em.persist(superUser);
+            em.flush();
+        } else {
+            //Something is very wrong
+        }
+    }
+
     // Used by anyone
     public int registerNewCompany(String name, String address, String contactNumber, String contactPersonName, String emailAddress, String description, Integer package1) {
 
@@ -48,7 +89,13 @@ public class UserAccountManagementBean {
         company.setPackage1(package1);
 
         em.persist(company);
-        return 1;
+        em.flush();
+        em.refresh(company);
+        if (company.getCompanyId() == null) {
+            return -1;
+        } else {
+            return company.getCompanyId();
+        }
     }
 
     //Used by super user
@@ -96,7 +143,6 @@ public class UserAccountManagementBean {
         }
     }
 
-    
     public int createCompanySystemUser(Integer operatorId, ArrayList<Integer> userRoleIds, String firstName, String lastName, String emailAddress, String password, String postalAddress,
             String contactNumber, String salution, String userType, Integer companyId) {
         SystemUser operator = em.find(SystemUser.class, operatorId);
@@ -112,30 +158,29 @@ public class UserAccountManagementBean {
                 user.setContactNumber(contactNumber);
                 user.setSalution(salution);
                 user.setUserType(userType);
-                
+
                 Company company = getCompany(companyId);
                 if (company != null) {
                     user.setCompanycompanyId(company);
                 } else {
                     return 0;
                 }
-                
+
                 List<UserRole> roles = new ArrayList<>();
-                
+
                 Query q = em.createNamedQuery("UserRole.findByUserRoleId");
                 //Set Parameter part Missing here
                 UserRole role = (UserRole) q.getSingleResult();
                 roles.add(role);
                 user.setUserRoleList(roles);
 
-                
                 em.persist(user);
                 em.flush();
                 em.merge(company);
                 em.merge(role);
 
                 return 1;
-                
+
             } else {
                 return -1;
             }
@@ -154,32 +199,27 @@ public class UserAccountManagementBean {
         return em.find(Company.class, companyId);
     }
 
- 
-
     public int unlockUser(int systemAdminId, Integer userId) {
-SystemUser operator = em.find(SystemUser.class, systemAdminId);
+        SystemUser operator = em.find(SystemUser.class, systemAdminId);
         if (operator != null) {
             if (carb.userHasRight(operator, Right.canManageUser)) {
                 SystemUser user = em.find(SystemUser.class, userId);
-                if (user !=null){
-                user.setLocked(false);
-                
-                em.merge(user);
-                em.flush();
-                return 1;
+                if (user != null) {
+                    user.setLocked(false);
+
+                    em.merge(user);
+                    em.flush();
+                    return 1;
                 }
                 return 0;
-            }
-            else{
+            } else {
                 return -1;
             }
-        }
-        else{
+        } else {
             return 0;
         }
 
     }
-
 
     public int changePasswordUponLogin(Integer systemAdminId, Integer userId) {
         return 0;
