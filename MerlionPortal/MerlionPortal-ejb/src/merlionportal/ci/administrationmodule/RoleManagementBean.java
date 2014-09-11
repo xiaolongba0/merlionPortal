@@ -171,6 +171,8 @@ public class RoleManagementBean {
         return null;
         
     }
+    
+    
 
     private SystemUser getOperator(Integer operatorId) {
         return em.find(SystemUser.class, operatorId);

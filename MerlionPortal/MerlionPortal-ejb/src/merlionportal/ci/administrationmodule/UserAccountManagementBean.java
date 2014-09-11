@@ -156,17 +156,32 @@ public class UserAccountManagementBean {
 
  
 
-    public int unlockUser(int systemAdminId) {
-        return 0;
+    public int unlockUser(int systemAdminId, Integer userId) {
+SystemUser operator = em.find(SystemUser.class, systemAdminId);
+        if (operator != null) {
+            if (carb.userHasRight(operator, Right.canManageUser)) {
+                SystemUser user = em.find(SystemUser.class, userId);
+                if (user !=null){
+                user.setLocked(false);
+                
+                em.merge(user);
+                em.flush();
+                return 1;
+                }
+                return 0;
+            }
+            else{
+                return -1;
+            }
+        }
+        else{
+            return 0;
+        }
 
     }
 
-    public int activateUser(int systemAdminId) {
-        return 0;
 
-    }
-
-    public int changePasswordUponLogin(int systemAdminId) {
+    public int changePasswordUponLogin(Integer systemAdminId, Integer userId) {
         return 0;
 
     }
