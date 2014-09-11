@@ -34,6 +34,11 @@ public class RoleManagementBean {
     @EJB
     private CheckAccessRightBean carb;
 
+    
+    public boolean isSuperUser(int userid){
+        return true;
+    }
+    
     //Used by super user
     //if operator is null return 0, if access denied return -1, sucess return 1
     public int createSystemAdminRole(Integer operatorId, Integer companyId) {
@@ -86,10 +91,17 @@ public class RoleManagementBean {
             boolean canManageOrderFulfillment, boolean canManageBid, boolean canManagePost) {
 
         SystemUser operator = em.find(SystemUser.class, operatorId);
+        boolean canRun = false;
 
         if (operator != null) {
+            if (operator.getUserType().equals("superuser")) {
+                canRun = true;
+            }
             if (carb.userHasRight(operator, Right.canManageUser)) {
+                canRun = true;
+            }
 
+            if (canRun) {
                 UserRole companyRole = new UserRole();
                 companyRole.setRoleName(roleName);
                 companyRole.setDescription(description);
@@ -149,30 +161,29 @@ public class RoleManagementBean {
 
                 }
             } else {
+                //Access Denied
                 return -1;
             }
+
         } else {
             return 0;
         }
 
     }
 
-    
-    public List<UserRole> viewAllRoles(Integer operatorId, Integer companyId){
+    public List<UserRole> viewAllRoles(Integer operatorId, Integer companyId) {
         SystemUser operator = em.find(SystemUser.class, operatorId);
         if (operator != null) {
             if (carb.userHasRight(operator, Right.canManageUser)) {
                 Query q = em.createQuery("SELECT u FROM UserRole u LEFT JOIN Company_has_UserRole c ON u.userRoleId = c.userRoleId WHERE c.companyId = :companyId");
                 q.setParameter("companyId", companyId);
-                  
-            return q.getResultList();
+
+                return q.getResultList();
             }
         }
         return null;
-        
+
     }
-    
-    
 
     private SystemUser getOperator(Integer operatorId) {
         return em.find(SystemUser.class, operatorId);

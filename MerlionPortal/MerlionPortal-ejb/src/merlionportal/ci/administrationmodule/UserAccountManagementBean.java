@@ -17,6 +17,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import util.accessRightControl.Right;
 
 /**
@@ -52,27 +54,55 @@ public class UserAccountManagementBean {
     }
 
     public void createSuperUser(String password, int companyId) {
-        SystemUser superUser = new SystemUser();
-        superUser.setFirstName("Administrator");
-        superUser.setLastName("MerlionPortal");
-        superUser.setEmailAddress("a0084692@nus.edu.sg");
-        superUser.setPostalAddress("1 Computing Drive NUS");
-        superUser.setPassword(password);
-        superUser.setContactNumber("+65 9888 8888");
-        superUser.setSalution("Mr.");
-        superUser.setLocked(false);
-        superUser.setResetPasswordUponLogin(false);
-        superUser.setCreatedDate(new Date());
-        superUser.setUserType("superuser");
-        superUser.setActivated(true);
-        superUser.setCredit("");
-        Company company = em.find(Company.class, companyId);
-        if (company != null) {
-            superUser.setCompanycompanyId(company);
-            em.persist(superUser);
-            em.flush();
-        } else {
-            //Something is very wrong
+        System.out.println("CREATE SUPER USER!!!");
+        try {
+            SystemUser superUser = new SystemUser();
+            superUser.setFirstName("Administrator");
+            superUser.setLastName("MerlionPortal");
+            superUser.setEmailAddress("a0084692@nus.edu.sg");
+            superUser.setPostalAddress("1 Computing Drive NUS");
+            superUser.setPassword(password);
+            superUser.setContactNumber("+65 9888 8888");
+            superUser.setSalution("Mr.");
+            superUser.setLocked(false);
+            superUser.setResetPasswordUponLogin(false);
+            superUser.setCreatedDate(new Date());
+            superUser.setUserType("superuser");
+            superUser.setActivated(true);
+            superUser.setCredit("");
+            Company company = em.find(Company.class, companyId);
+            if (company != null) {
+                superUser.setCompanycompanyId(company);
+                em.persist(superUser);
+            } else {
+                //Something is very wrong
+            }
+
+            SystemUser testUser = new SystemUser();
+            testUser.setFirstName("TEST");
+            testUser.setLastName("TES555T");
+            testUser.setEmailAddress("aaaaaaa@nus.edu.sg");
+            testUser.setPostalAddress("1 Computing Drive NUS");
+            testUser.setPassword(password);
+            testUser.setContactNumber("+65 9888 8888");
+            testUser.setSalution("Mr.");
+            testUser.setLocked(false);
+            testUser.setResetPasswordUponLogin(false);
+            testUser.setCreatedDate(new Date());
+            testUser.setUserType("a");
+            testUser.setActivated(true);
+            testUser.setCredit("");
+            if (company != null) {
+                testUser.setCompanycompanyId(company);
+                em.persist(testUser);
+                em.flush();
+            } else {
+                //Something is very wrong
+            }
+        } catch (ConstraintViolationException cve) {
+            for (ConstraintViolation cv : cve.getConstraintViolations()) {
+                System.out.println(cv.getRootBean().toString() + ":" + cv.getMessage());
+            }
         }
     }
 
