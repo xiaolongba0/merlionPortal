@@ -6,7 +6,10 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+
 
     <ui:composition template="templates/template.xhtml">
 
@@ -24,7 +27,7 @@
                                 <h2 class="service-title">1PL Provider</h2>
                                 <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vitae scelerisque orci. Nam auctor odio ipsum, vel elementum ex suscipit in. Nam lorem massa, consequat ut euismod et, aliquet nec ante. Donec ultricies ex dapibus lorem congue, in placerat libero eleifend. Aliquam elit nisi, rhoncus pretium justo a, scelerisque condimentum magna. In fermentum ante nec lorem porttitor, vel scelerisque tellus placerat. Integer auctor sem non varius iaculis. Mauris luctus elit sem, nec venenatis ligula vestibulum non. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. .</div>
                                 <h4 class="service-cost">$75/yr</h4>
-                                <button class="btn btn-success" id="1plBuyBtn">Buy Now</button>
+                                <button class="btn btn-success" id="1plBuyBtn" onclick="toggleModal();">Buy Now</button>
                             </div>
                         </div>
                     </div>
@@ -35,7 +38,7 @@
                                 <h2 class="service-title">2PL Provider</h2>
                                 <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vitae scelerisque orci. Nam auctor odio ipsum, vel elementum ex suscipit in. Nam lorem massa, consequat ut euismod et, aliquet nec ante. Donec ultricies ex dapibus lorem congue, in placerat libero eleifend. Aliquam elit nisi, rhoncus pretium justo a, scelerisque condimentum magna. In fermentum ante nec lorem porttitor, vel scelerisque tellus placerat. Integer auctor sem non varius iaculis. Mauris luctus elit sem, nec venenatis ligula vestibulum non. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. .</div>
                                 <h4 class="service-cost">$155/yr</h4>
-                                <button class="btn btn-success" id="2plBuyBtn">Buy Now</button>
+                                <button class="btn btn-success" id="2plBuyBtn" onclick="toggleModal();">Buy Now</button>
                             </div>
                         </div>
                     </div>
@@ -46,7 +49,7 @@
                                 <h2 class="service-title">3PL Provider</h2>
                                 <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vitae scelerisque orci. Nam auctor odio ipsum, vel elementum ex suscipit in. Nam lorem massa, consequat ut euismod et, aliquet nec ante. Donec ultricies ex dapibus lorem congue, in placerat libero eleifend. Aliquam elit nisi, rhoncus pretium justo a, scelerisque condimentum magna. In fermentum ante nec lorem porttitor, vel scelerisque tellus placerat. Integer auctor sem non varius iaculis. Mauris luctus elit sem, nec venenatis ligula vestibulum non. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. .</div>
                                 <h4 class="service-cost">$300/yr</h4>
-                                <button class="btn btn-success" id="3plBuyBtn">Buy Now</button>
+                                <button class="btn btn-success" id="3plBuyBtn" onclick="toggleModal();">Buy Now</button>
                             </div>
                         </div>
                     </div>
@@ -57,12 +60,73 @@
                                 <h2 class="service-title">4PL Provider</h2>
                                 <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vitae scelerisque orci. Nam auctor odio ipsum, vel elementum ex suscipit in. Nam lorem massa, consequat ut euismod et, aliquet nec ante. Donec ultricies ex dapibus lorem congue, in placerat libero eleifend. Aliquam elit nisi, rhoncus pretium justo a, scelerisque condimentum magna. In fermentum ante nec lorem porttitor, vel scelerisque tellus placerat. Integer auctor sem non varius iaculis. Mauris luctus elit sem, nec venenatis ligula vestibulum non. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. .</div>
                                 <h4 class="service-cost">$500/yr</h4>
-                                <button class="btn btn-success" id="4plBuyBtn">Buy Now</button>
+                                <button class="btn btn-success" id="4plBuyBtn" onclick="toggleModal();">Buy Now</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <h:form>
+                <div id="buyModal" class="modal fade">
+                    <div class="modal-dialog">
+
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h2 class="modal-title">Buy now!</h2>
+                            </div>
+                            <div class="modal-body">
+                                <h2>Register Company Information</h2>
+                                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                                <h:panelGrid columns="3" cellpadding="5">
+
+                                    <h:outputLabel style="font-weight: bold" value="Company Name :"/>
+                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyName" value="#{userAccountManagedBean.companyName}" />
+
+                                    <br/>
+                                    <h:outputLabel style="font-weight: bold" value="Company Address :"/>
+                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyAddress" value="#{userAccountManagedBean.companyAddress}" />
+                                    <br/>
+                                    <h:outputLabel style="font-weight: bold" value="Contact Person Name :"/>
+                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyContactPersonName" value="#{userAccountManagedBean.contactPersonName}" />
+                                    <br/>
+                                    <h:outputLabel style="font-weight: bold" value="Contact Number :"/>
+                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyContactNumber" value="#{userAccountManagedBean.contactNumber}" />
+                                    <br/>
+                                    <h:outputLabel style="font-weight: bold" value="Email Address :"/>
+                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyEmailAddress" value="#{userAccountManagedBean.emailAddress}" />
+                                    <br/>
+                                    <h:outputLabel style="font-weight: bold" value="Company Description :"/>
+                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyDescription" value="#{userAccountManagedBean.description}" />
+                                    <br/>
+                                    <h:outputLabel for="basic" style="font-weight: bold" value="Package Choice" />
+                                    <h:selectOneListbox styleClass="form-control" id="basic" value="#{userAccountManagedBean.package1}">
+                                        <f:selectItem itemLabel="Package for 1PL Manufacturing" itemValue="1" />
+                                        <f:selectItem itemLabel="Package for 1PL Non-Manufacturing" itemValue="2" />
+                                        <f:selectItem itemLabel="Package for 2PL" itemValue="3" />
+                                        <f:selectItem itemLabel="Package for 3PL and 4PL" itemValue="4" />
+                                    </h:selectOneListbox>
+
+                                </h:panelGrid>
+                            </div>
+                            <div class="modal-footer">
+
+                                <p:commandButton value="Register" styleClass="btn btn-success" actionListener="#{userAccountManagedBean.registerNewCompany}" ajax="true"></p:commandButton>
+                                <p:commandButton value="Close" styleClass="btn btn-warning" pt:data-dismiss="modal"></p:commandButton>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </h:form>
+            <script type="text/javascript">
+                function toggleModal() {
+                    $("#buyModal").modal('show');
+                }
+            </script>
         </ui:define>
 
     </ui:composition>
