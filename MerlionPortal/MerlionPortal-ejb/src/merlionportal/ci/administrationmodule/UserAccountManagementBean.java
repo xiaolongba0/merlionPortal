@@ -15,6 +15,8 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import util.accessRightControl.Right;
 
 /**
  *
@@ -30,43 +32,12 @@ public class UserAccountManagementBean {
     @PersistenceContext
     EntityManager em;
 
-    private SystemUser operator;
+    @EJB
+    private CheckAccessRightBean carb;
 
-    //Used by super user
-    //if operator is null return 0, if access denied return -1, sucess return 1
-    public int createSystemAdminRole(Integer companyId) {
-
-        UserRole superRole = new UserRole();
-        superRole.setRoleName("systemadmin");
-
-        superRole.setCanManageUser(true);
-        Company company = em.find(Company.class, companyId);
-        if (company != null) {
-
-            List<Company> companies = new ArrayList();
-            companies.add(company);
-            superRole.setCompanyList(companies);
-            superRole.setDescription("systemadmin for company " + company.getName());
-            em.persist(superRole);
-            em.flush();
-
-            List<UserRole> roles = new ArrayList();
-            roles.add(superRole);
-            company.setUserRoleList(roles);
-
-            em.persist(superRole);
-            em.flush();
-            em.merge(company);
-            return 1;
-        } else {
-            System.out.println("Company is null");
-            return 0;
-        }
-
-    }
-
-/// Used by anyone
+    // Used by anyone
     public int registerNewCompany(String name, String address, String contactNumber, String contactPersonName, String emailAddress, String description, Integer package1) {
+
         Company company = new Company();
         company.setName(name);
         company.setAddress(address);
@@ -80,103 +51,99 @@ public class UserAccountManagementBean {
         return 1;
     }
 
-    //Used by company system Admin
-    public int createCompanySystemAdminUser(String firstName, String lastName, String emailAddress, String password, String postalAddress,
+    //Used by super user
+    public int createCompanySystemAdminUser(Integer operatorId, String firstName, String lastName, String emailAddress, String password, String postalAddress,
             String contactNumber, String salution, String userType, Integer companyId) {
-        SystemUser user = new SystemUser();
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmailAddress(emailAddress);
-        user.setPassword(password);
-        user.setPostalAddress(postalAddress);
-        user.setContactNumber(contactNumber);
-        user.setSalution(salution);
-        user.setUserType(userType);
 
-        Company company = getCompany(companyId);
-        if (company != null) {
-            user.setCompanycompanyId(company);
+        SystemUser operator = em.find(SystemUser.class, operatorId);
+        if (operator != null) {
+            if (carb.userHasRight(operator, Right.canManageUser)) {
+
+                SystemUser user = new SystemUser();
+                user.setFirstName(firstName);
+                user.setLastName(lastName);
+                user.setEmailAddress(emailAddress);
+                user.setPassword(password);
+                user.setPostalAddress(postalAddress);
+                user.setContactNumber(contactNumber);
+                user.setSalution(salution);
+                user.setUserType(userType);
+
+                Company company = getCompany(companyId);
+                if (company != null) {
+                    user.setCompanycompanyId(company);
+                } else {
+                    return 0;
+                }
+
+                List<UserRole> roles = new ArrayList<>();
+                UserRole role = em.find(UserRole.class, 2);
+                roles.add(role);
+                user.setUserRoleList(roles);
+
+                em.persist(user);
+                em.flush();
+                em.merge(company);
+                em.merge(role);
+
+                return 1;
+            } else {
+                return -1;
+            }
         } else {
+
             return 0;
         }
-
-        List<UserRole> roles = new ArrayList<>();
-        UserRole role = em.find(UserRole.class, "2");
-        roles.add(role);
-        user.setUserRoleList(roles);
-
-        em.persist(user);
-        em.flush();
-        em.merge(company);
-        em.merge(role);
-        return 1;
-
     }
 
-    public int createCompanyRole(Integer companyId, String roleName, String description, boolean canGeneratePO, boolean canGenerateSO, boolean canGenerateQuotationAndProductContract, boolean canGenerateSalesReport,
-            boolean canManageUser, boolean canUseForecast, boolean canManageProductAndComponent, boolean canGenerateMRPList, boolean canGenerateServicePO, boolean canUpdateCustomerCredit, boolean canGenerateServiceSO,
-            boolean canGenerateQuotationRequest, boolean canManageServiceCatalog, boolean canGenerateServiceQuotationAndContract, boolean canManageKeyAccount,
-            boolean canManageTransportationAsset, boolean canManageTransportationOrder, boolean canManageLocation, boolean canManageAssetType, boolean canUseHRFunction,
-            boolean canManageWarehouse, boolean canManageStockAuditProcess, boolean canManageStockTransportOrder, boolean canManageReceivingGoods,
-            boolean canManageOrderFulfillment, boolean canManageBid, boolean canManagePost) {
+    
+    public int createCompanySystemUser(Integer operatorId, ArrayList<Integer> userRoleIds, String firstName, String lastName, String emailAddress, String password, String postalAddress,
+            String contactNumber, String salution, String userType, Integer companyId) {
+        SystemUser operator = em.find(SystemUser.class, operatorId);
+        if (operator != null) {
+            if (carb.userHasRight(operator, Right.canManageUser)) {
 
-        UserRole companyRole = new UserRole();
-        companyRole.setRoleName(roleName);
-        companyRole.setDescription(description);
+                SystemUser user = new SystemUser();
+                user.setFirstName(firstName);
+                user.setLastName(lastName);
+                user.setEmailAddress(emailAddress);
+                user.setPassword(password);
+                user.setPostalAddress(postalAddress);
+                user.setContactNumber(contactNumber);
+                user.setSalution(salution);
+                user.setUserType(userType);
+                
+                Company company = getCompany(companyId);
+                if (company != null) {
+                    user.setCompanycompanyId(company);
+                } else {
+                    return 0;
+                }
+                
+                List<UserRole> roles = new ArrayList<>();
+                
+                Query q = em.createNamedQuery("UserRole.findByUserRoleId");
+                //Set Parameter part Missing here
+                UserRole role = (UserRole) q.getSingleResult();
+                roles.add(role);
+                user.setUserRoleList(roles);
 
-        companyRole.setCanGeneratePO(canGeneratePO);
-        companyRole.setCanGenerateSO(canGenerateSO);
-        companyRole.setCanGenerateQuotationAndProductContract(canGenerateQuotationAndProductContract);
-        companyRole.setCanGenerateSalesReport(canGenerateSalesReport);
+                
+                em.persist(user);
+                em.flush();
+                em.merge(company);
+                em.merge(role);
 
-        companyRole.setCanManageUser(canManageUser);
-
-        companyRole.setCanUseForecast(canUseForecast);
-        companyRole.setCanManageProductAndComponent(canManageProductAndComponent);
-        companyRole.setCanGenerateMRPList(canGenerateMRPList);
-
-        companyRole.setCanGenerateServicePO(canGenerateServicePO);
-        companyRole.setCanUpdateCustomerCredit(canUpdateCustomerCredit);
-        companyRole.setCanGenerateServiceSO(canGenerateServiceSO);
-        companyRole.setCanGenerateQuotationRequest(canGenerateQuotationRequest);
-        companyRole.setCanManageServiceCatalog(canManageServiceCatalog);
-        companyRole.setCanGenerateServiceQuotationAndContract(canGenerateServiceQuotationAndContract);
-        companyRole.setCanManageKeyAccount(canManageKeyAccount);
-
-        companyRole.setCanManageTransportationAsset(canManageTransportationAsset);
-        companyRole.setCanManageTransportationOrder(canManageTransportationOrder);
-        companyRole.setCanManageLocation(canManageLocation);
-        companyRole.setCanManageAssetType(canManageAssetType);
-        companyRole.setCanUseHRFunction(canUseHRFunction);
-
-        companyRole.setCanManageWarehouse(canManageWarehouse);
-        companyRole.setCanManageStockAuditProcess(canManageStockAuditProcess);
-        companyRole.setCanManageStockTransportOrder(canManageStockTransportOrder);
-        companyRole.setCanManageReceivingGoods(canManageReceivingGoods);
-        companyRole.setCanManageOrderFulfillment(canManageOrderFulfillment);
-
-        companyRole.setCanManageBid(canManageBid);
-        companyRole.setCanManagePost(canManagePost);
-
-        List<Company> companies = new ArrayList<>();
-        Company company = getCompany(companyId);
-        if (company != null) {
-            companies.add(company);
-            companyRole.setCompanyList(companies);
-
-            List<UserRole> roles = new ArrayList<>();
-            roles.add(companyRole);
-
-            company.setUserRoleList(roles);
-
-            em.persist(companyRole);
-            em.flush();
-            em.merge(company);
-
-            return 1;
+                return 1;
+                
+            } else {
+                return -1;
+            }
         } else {
+
             return 0;
         }
+
     }
 
     private SystemUser getOperator(Integer operatorId) {
@@ -187,15 +154,7 @@ public class UserAccountManagementBean {
         return em.find(Company.class, companyId);
     }
 
-    public int createCompanySystemUser() {
-        return 0;
-
-    }
-
-    public int assignRoleToCompanySystemUser() {
-        return 0;
-
-    }
+ 
 
     public int unlockUser(int systemAdminId) {
         return 0;
