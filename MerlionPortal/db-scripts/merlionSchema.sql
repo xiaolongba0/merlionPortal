@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`Company` (
   `contactPersonName` VARCHAR(45) NULL DEFAULT NULL,
   `emailAddress` VARCHAR(45) NULL DEFAULT NULL,
   `description` VARCHAR(45) NULL DEFAULT NULL,
+  `package` INT NULL,
   PRIMARY KEY (`companyId`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -29,7 +30,7 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `merlionLogisticDB`.`UserRole`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`UserRole` (
-  `userRoleId` INT(11) NOT NULL,
+  `userRoleId` INT(11) NOT NULL AUTO_INCREMENT,
   `roleName` VARCHAR(45) NOT NULL,
   `description` VARCHAR(45) NULL DEFAULT NULL,
   `canGeneratePO` TINYINT(1) NOT NULL DEFAULT 0,
@@ -59,7 +60,6 @@ CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`UserRole` (
   `canManageKeyAccount` TINYINT(1) NOT NULL DEFAULT 0,
   `canManageBid` TINYINT(1) NOT NULL DEFAULT 0,
   `canManagePost` TINYINT(1) NOT NULL DEFAULT 0,
-  `canCreateRole` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`userRoleId`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -71,7 +71,7 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`Message` (
   `messageId` INT(11) NOT NULL AUTO_INCREMENT,
   `messageTitle` VARCHAR(45) NULL DEFAULT NULL,
-  `messageType` INT NULL,
+  `messageType` VARCHAR(45) NULL DEFAULT NULL,
   `messageBody` VARCHAR(45) NULL DEFAULT NULL,
   `sender` INT NULL DEFAULT NULL,
   `receiver` INT NULL DEFAULT NULL,
@@ -92,108 +92,8 @@ CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`Product` (
   `productType` VARCHAR(45) NOT NULL,
   `currency` VARCHAR(45) NULL DEFAULT NULL,
   `price` DOUBLE NULL DEFAULT NULL,
-  `Company_companyId` INT(64) NOT NULL,
-  PRIMARY KEY (`productId`),
-  INDEX `fk_Product_Company1_idx` (`Company_companyId` ASC),
-  CONSTRAINT `fk_Product_Company1`
-    FOREIGN KEY (`Company_companyId`)
-    REFERENCES `merlionLogisticDB`.`Company` (`companyId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `merlionLogisticDB`.`ProductPOHeader`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`ProductPOHeader` (
-  `productPOId` INT(11) NOT NULL,
-  `createdDate` TIMESTAMP NULL DEFAULT NULL,
-  `salesPersonId` VARCHAR(45) NULL DEFAULT NULL,
-  `price` DOUBLE NULL DEFAULT NULL,
-  `status` VARCHAR(45) NULL DEFAULT NULL,
-  `shipTo` VARCHAR(45) NULL DEFAULT NULL,
-  `billTo` VARCHAR(45) NULL DEFAULT NULL,
-  `contactPersonPhoneNumber` VARCHAR(45) NULL DEFAULT NULL,
-  `contactPersonName` VARCHAR(45) NULL DEFAULT NULL,
-  `Client_SystemUser_systemUserId` INT(11) NOT NULL,
-  PRIMARY KEY (`productPOId`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `merlionLogisticDB`.`ProductPOLineItem`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`ProductPOLineItem` (
-  `Product_productId` INT(11) NOT NULL,
-  `ProductPOHeader_productPOId` INT(11) NOT NULL,
-  `quantity` INT(11) NULL DEFAULT NULL,
-  PRIMARY KEY (`Product_productId`, `ProductPOHeader_productPOId`),
-  INDEX `fk_Product_has_ProductPOHeader_ProductPOHeader1_idx` (`ProductPOHeader_productPOId` ASC),
-  INDEX `fk_Product_has_ProductPOHeader_Product1_idx` (`Product_productId` ASC),
-  CONSTRAINT `fk_Product_has_ProductPOHeader_Product1`
-    FOREIGN KEY (`Product_productId`)
-    REFERENCES `merlionLogisticDB`.`Product` (`productId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Product_has_ProductPOHeader_ProductPOHeader1`
-    FOREIGN KEY (`ProductPOHeader_productPOId`)
-    REFERENCES `merlionLogisticDB`.`ProductPOHeader` (`productPOId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `merlionLogisticDB`.`ProductSOHeader`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`ProductSOHeader` (
-  `productSOId` INT(11) NOT NULL,
-  `createdDate` TIMESTAMP NULL DEFAULT NULL,
-  `price` DOUBLE NULL DEFAULT NULL,
-  `status` VARCHAR(45) NULL DEFAULT NULL,
-  `shipTo` VARCHAR(45) NULL DEFAULT NULL,
-  `billTo` VARCHAR(45) NULL DEFAULT NULL,
-  `contactPersonPhoneNumber` VARCHAR(45) NULL DEFAULT NULL,
-  `contactPersonName` VARCHAR(45) NULL DEFAULT NULL,
-  `text` VARCHAR(45) NULL DEFAULT NULL,
-  `ProductPOHeader_productPOId` INT(11) NOT NULL,
-  `staffId` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`productSOId`),
-  INDEX `fk_ProductSOHeader_ProductPOHeader1_idx` (`ProductPOHeader_productPOId` ASC),
-  CONSTRAINT `fk_ProductSOHeader_ProductPOHeader1`
-    FOREIGN KEY (`ProductPOHeader_productPOId`)
-    REFERENCES `merlionLogisticDB`.`ProductPOHeader` (`productPOId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `merlionLogisticDB`.`ProductSOLineItem`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`ProductSOLineItem` (
-  `Product_productId` INT(11) NOT NULL,
-  `ProductSOHeader_productSOId` INT(11) NOT NULL,
-  `status` VARCHAR(45) NULL DEFAULT NULL,
-  `quantity` INT(11) NULL DEFAULT NULL,
-  PRIMARY KEY (`Product_productId`, `ProductSOHeader_productSOId`),
-  INDEX `fk_Product_has_ProductSOHeader_ProductSOHeader1_idx` (`ProductSOHeader_productSOId` ASC),
-  INDEX `fk_Product_has_ProductSOHeader_Product1_idx` (`Product_productId` ASC),
-  CONSTRAINT `fk_Product_has_ProductSOHeader_Product1`
-    FOREIGN KEY (`Product_productId`)
-    REFERENCES `merlionLogisticDB`.`Product` (`productId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Product_has_ProductSOHeader_ProductSOHeader1`
-    FOREIGN KEY (`ProductSOHeader_productSOId`)
-    REFERENCES `merlionLogisticDB`.`ProductSOHeader` (`productSOId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  `companyId` INT NULL,
+  PRIMARY KEY (`productId`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -215,22 +115,40 @@ CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`SystemUser` (
   `createdDate` TIMESTAMP NULL DEFAULT NULL,
   `userType` VARCHAR(45) NOT NULL,
   `activated` TINYINT(1) NOT NULL,
-  `terminated` TINYINT(1) NOT NULL,
   `credit` VARCHAR(45) NULL,
   `Company_companyId` INT(11) NOT NULL,
-  `UserRole_userRoleId` INT(11) NOT NULL,
   PRIMARY KEY (`systemUserId`),
   UNIQUE INDEX `emailAddress_UNIQUE` (`emailAddress` ASC),
   INDEX `fk_SystemUser_Company1_idx` (`Company_companyId` ASC),
-  INDEX `fk_SystemUser_UserRole1_idx` (`UserRole_userRoleId` ASC),
   CONSTRAINT `fk_SystemUser_Company1`
     FOREIGN KEY (`Company_companyId`)
     REFERENCES `merlionLogisticDB`.`Company` (`companyId`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_SystemUser_UserRole1`
-    FOREIGN KEY (`UserRole_userRoleId`)
-    REFERENCES `merlionLogisticDB`.`UserRole` (`userRoleId`)
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `merlionLogisticDB`.`ProductOrder`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`ProductOrder` (
+  `productPOId` INT(11) NOT NULL AUTO_INCREMENT,
+  `createdDate` TIMESTAMP NULL DEFAULT NULL,
+  `salesPersonId` VARCHAR(45) NULL DEFAULT NULL,
+  `price` DOUBLE NULL DEFAULT NULL,
+  `status` INT NULL DEFAULT NULL,
+  `shipTo` VARCHAR(45) NULL DEFAULT NULL,
+  `billTo` VARCHAR(45) NULL DEFAULT NULL,
+  `contactPersonPhoneNumber` VARCHAR(45) NULL DEFAULT NULL,
+  `contactPersonName` VARCHAR(45) NULL DEFAULT NULL,
+  `systemUserId` INT(11) NOT NULL,
+  `creatorId` INT NULL,
+  PRIMARY KEY (`productPOId`),
+  INDEX `fk_ProductPOHeader_SystemUser1_idx` (`systemUserId` ASC),
+  CONSTRAINT `fk_ProductPOHeader_SystemUser1`
+    FOREIGN KEY (`systemUserId`)
+    REFERENCES `merlionLogisticDB`.`SystemUser` (`systemUserId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -260,7 +178,7 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `merlionLogisticDB`.`Supplier`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`Supplier` (
-  `supplierCompanyId` INT NOT NULL,
+  `supplierCompanyId` INT NOT NULL AUTO_INCREMENT,
   `contactPerson` VARCHAR(45) NULL,
   `contactNumber` VARCHAR(45) NULL,
   `description` VARCHAR(45) NULL,
@@ -273,7 +191,7 @@ ENGINE = InnoDB;
 -- Table `merlionLogisticDB`.`Component`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`Component` (
-  `componentId` INT NOT NULL,
+  `componentId` INT NOT NULL AUTO_INCREMENT,
   `componentName` VARCHAR(45) NULL,
   `description` VARCHAR(45) NULL,
   `cost` DOUBLE NULL,
@@ -293,6 +211,351 @@ CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`Component` (
   CONSTRAINT `fk_Component_Product1`
     FOREIGN KEY (`Product_productId`)
     REFERENCES `merlionLogisticDB`.`Product` (`productId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `merlionLogisticDB`.`SystemUser_has_UserRole`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`SystemUser_has_UserRole` (
+  `systemUserId` INT(11) NOT NULL,
+  `userRoleId` INT(11) NOT NULL,
+  PRIMARY KEY (`systemUserId`, `userRoleId`),
+  INDEX `fk_SystemUser_has_UserRole_UserRole1_idx` (`userRoleId` ASC),
+  INDEX `fk_SystemUser_has_UserRole_SystemUser1_idx` (`systemUserId` ASC),
+  CONSTRAINT `fk_SystemUser_has_UserRole_SystemUser1`
+    FOREIGN KEY (`systemUserId`)
+    REFERENCES `merlionLogisticDB`.`SystemUser` (`systemUserId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_SystemUser_has_UserRole_UserRole1`
+    FOREIGN KEY (`userRoleId`)
+    REFERENCES `merlionLogisticDB`.`UserRole` (`userRoleId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `merlionLogisticDB`.`ProductOrderLineItem`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`ProductOrderLineItem` (
+  `line` INT NOT NULL AUTO_INCREMENT,
+  `status` VARCHAR(45) NULL,
+  `quantity` INT NULL,
+  `Product_productId` INT(11) NOT NULL,
+  `ProductOrder_productPOId` INT(11) NOT NULL,
+  INDEX `fk_ProductOrderLineItem_Product1_idx` (`Product_productId` ASC),
+  INDEX `fk_ProductOrderLineItem_ProductOrder1_idx` (`ProductOrder_productPOId` ASC),
+  PRIMARY KEY (`line`),
+  CONSTRAINT `fk_ProductOrderLineItem_Product1`
+    FOREIGN KEY (`Product_productId`)
+    REFERENCES `merlionLogisticDB`.`Product` (`productId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ProductOrderLineItem_ProductOrder1`
+    FOREIGN KEY (`ProductOrder_productPOId`)
+    REFERENCES `merlionLogisticDB`.`ProductOrder` (`productPOId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `merlionLogisticDB`.`ProductContract`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`ProductContract` (
+  `productContractId` INT NOT NULL AUTO_INCREMENT,
+  `contractTerm` VARCHAR(255) NULL,
+  `status` INT NULL,
+  `validity` VARCHAR(45) NULL,
+  `createDate` TIMESTAMP NULL,
+  `creatorId` VARCHAR(45) NULL,
+  `discountRate` VARCHAR(255) NULL,
+  `clientId` INT NOT NULL,
+  `companyId` INT(11) NOT NULL,
+  `signedContract` BLOB NULL,
+  `quotationId` INT NOT NULL,
+  PRIMARY KEY (`productContractId`),
+  INDEX `fk_ProductContract_Company1_idx` (`companyId` ASC),
+  CONSTRAINT `fk_ProductContract_Company1`
+    FOREIGN KEY (`companyId`)
+    REFERENCES `merlionLogisticDB`.`Company` (`companyId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `merlionLogisticDB`.`Company_has_UserRole`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`Company_has_UserRole` (
+  `companyId` INT(11) NOT NULL,
+  `userRoleId` INT(11) NOT NULL,
+  PRIMARY KEY (`companyId`, `userRoleId`),
+  INDEX `fk_Company_has_UserRole_UserRole1_idx` (`userRoleId` ASC),
+  INDEX `fk_Company_has_UserRole_Company1_idx` (`companyId` ASC),
+  CONSTRAINT `fk_Company_has_UserRole_Company1`
+    FOREIGN KEY (`companyId`)
+    REFERENCES `merlionLogisticDB`.`Company` (`companyId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Company_has_UserRole_UserRole1`
+    FOREIGN KEY (`userRoleId`)
+    REFERENCES `merlionLogisticDB`.`UserRole` (`userRoleId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `merlionLogisticDB`.`Quotation`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`Quotation` (
+  `quotationId` INT NOT NULL AUTO_INCREMENT,
+  `description` VARCHAR(45) NULL,
+  `customerId` INT NULL,
+  `status` INT NULL,
+  `createDate` TIMESTAMP NULL,
+  `company` INT NULL,
+  PRIMARY KEY (`quotationId`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `merlionLogisticDB`.`QuotationLineItem`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`QuotationLineItem` (
+  `line` INT NOT NULL AUTO_INCREMENT,
+  `lineItemPrice` DOUBLE NULL,
+  `Quotation_quotationId` INT NOT NULL,
+  `Product_productId` INT(11) NOT NULL,
+  PRIMARY KEY (`line`),
+  INDEX `fk_QuotationLineItem_Quotation1_idx` (`Quotation_quotationId` ASC),
+  INDEX `fk_QuotationLineItem_Product1_idx` (`Product_productId` ASC),
+  CONSTRAINT `fk_QuotationLineItem_Quotation1`
+    FOREIGN KEY (`Quotation_quotationId`)
+    REFERENCES `merlionLogisticDB`.`Quotation` (`quotationId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_QuotationLineItem_Product1`
+    FOREIGN KEY (`Product_productId`)
+    REFERENCES `merlionLogisticDB`.`Product` (`productId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `merlionLogisticDB`.`Location`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`Location` (
+  `locationId` INT NOT NULL,
+  `locationName` VARCHAR(45) NULL,
+  `locationPosition` VARCHAR(255) NULL,
+  `ProductContract_productContractId` INT NOT NULL,
+  PRIMARY KEY (`locationId`),
+  INDEX `fk_Location_ProductContract1_idx` (`ProductContract_productContractId` ASC),
+  CONSTRAINT `fk_Location_ProductContract1`
+    FOREIGN KEY (`ProductContract_productContractId`)
+    REFERENCES `merlionLogisticDB`.`ProductContract` (`productContractId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `merlionLogisticDB`.`TransporationAsset`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`TransporationAsset` (
+  `assetId` INT NOT NULL,
+  `capacity` VARCHAR(45) NULL,
+  `assetType` VARCHAR(45) NULL,
+  `price` INT NULL,
+  `speed` INT NULL,
+  `status` VARCHAR(45) NULL,
+  `isAvailable` TINYINT(1) NULL,
+  `isMaintain` TINYINT(1) NULL,
+  `routeId` INT NULL,
+  `Location_locationId` INT NOT NULL,
+  PRIMARY KEY (`assetId`),
+  INDEX `fk_TransporationAsset_Location1_idx` (`Location_locationId` ASC),
+  CONSTRAINT `fk_TransporationAsset_Location1`
+    FOREIGN KEY (`Location_locationId`)
+    REFERENCES `merlionLogisticDB`.`Location` (`locationId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `merlionLogisticDB`.`TransportationOrder`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`TransportationOrder` (
+  `transportationOrderId` INT NOT NULL,
+  `companyId` INT NULL,
+  `creatorId` INT NULL,
+  `referenceId` INT NULL,
+  `referenceType` INT NULL,
+  `origin` VARCHAR(45) NULL,
+  `destination` VARCHAR(45) NULL,
+  `timeStart` VARCHAR(45) NULL,
+  `timeEnd` VARCHAR(45) NULL,
+  `cargoType` VARCHAR(45) NULL,
+  `cargoWeight` VARCHAR(45) NULL,
+  PRIMARY KEY (`transportationOrderId`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `merlionLogisticDB`.`TransportationLog`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`TransportationLog` (
+  `logId` INT NOT NULL,
+  `action` VARCHAR(255) NULL,
+  `timeStamp` TIMESTAMP NULL,
+  `TransportationOrder_transportationOrderId` INT NOT NULL,
+  PRIMARY KEY (`logId`),
+  INDEX `fk_TransportationLog_TransportationOrder1_idx` (`TransportationOrder_transportationOrderId` ASC),
+  CONSTRAINT `fk_TransportationLog_TransportationOrder1`
+    FOREIGN KEY (`TransportationOrder_transportationOrderId`)
+    REFERENCES `merlionLogisticDB`.`TransportationOrder` (`transportationOrderId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `merlionLogisticDB`.`Route`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`Route` (
+  `routeId` INT NOT NULL,
+  `routeType` VARCHAR(45) NULL,
+  `origin` VARCHAR(45) NULL,
+  `destination` VARCHAR(45) NULL,
+  `distance` VARCHAR(45) NULL,
+  PRIMARY KEY (`routeId`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `merlionLogisticDB`.`AssetSchedule`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`AssetSchedule` (
+  `scheduleId` INT NOT NULL,
+  `startDate` VARCHAR(45) NULL,
+  `endDate` VARCHAR(45) NULL,
+  `TransporationAsset_assetId` INT NOT NULL,
+  PRIMARY KEY (`scheduleId`),
+  INDEX `fk_AssetSchedule_TransporationAsset1_idx` (`TransporationAsset_assetId` ASC),
+  CONSTRAINT `fk_AssetSchedule_TransporationAsset1`
+    FOREIGN KEY (`TransporationAsset_assetId`)
+    REFERENCES `merlionLogisticDB`.`TransporationAsset` (`assetId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `merlionLogisticDB`.`TransportationOperator`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`TransportationOperator` (
+  `operatorId` INT NOT NULL,
+  `isAvailable` TINYINT(1) NULL,
+  `operatorStatus` VARCHAR(45) NULL,
+  `operatorType` VARCHAR(45) NULL,
+  `AssetSchedule_scheduleId` INT NOT NULL,
+  PRIMARY KEY (`operatorId`),
+  INDEX `fk_TransportationOperator_AssetSchedule1_idx` (`AssetSchedule_scheduleId` ASC),
+  CONSTRAINT `fk_TransportationOperator_AssetSchedule1`
+    FOREIGN KEY (`AssetSchedule_scheduleId`)
+    REFERENCES `merlionLogisticDB`.`AssetSchedule` (`scheduleId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `merlionLogisticDB`.`OperatorSchedule`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`OperatorSchedule` (
+  `operatorScheduleId` INT NOT NULL,
+  `startDate` VARCHAR(45) NULL,
+  `endDate` VARCHAR(45) NULL,
+  `TransportationOperator_operatorId` INT NOT NULL,
+  PRIMARY KEY (`operatorScheduleId`),
+  INDEX `fk_OperatorSchedule_TransportationOperator1_idx` (`TransportationOperator_operatorId` ASC),
+  CONSTRAINT `fk_OperatorSchedule_TransportationOperator1`
+    FOREIGN KEY (`TransportationOperator_operatorId`)
+    REFERENCES `merlionLogisticDB`.`TransportationOperator` (`operatorId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `merlionLogisticDB`.`MaintenanceLog`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`MaintenanceLog` (
+  `maintenanceLogId` INT NOT NULL,
+  `operatorId` VARCHAR(45) NULL,
+  `cost` VARCHAR(45) NULL,
+  `description` VARCHAR(45) NULL,
+  `TransporationAsset_assetId` INT NOT NULL,
+  PRIMARY KEY (`maintenanceLogId`),
+  INDEX `fk_MaintenanceLog_TransporationAsset1_idx` (`TransporationAsset_assetId` ASC),
+  CONSTRAINT `fk_MaintenanceLog_TransporationAsset1`
+    FOREIGN KEY (`TransporationAsset_assetId`)
+    REFERENCES `merlionLogisticDB`.`TransporationAsset` (`assetId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `merlionLogisticDB`.`TransporationAsset_has_TransportationOrder`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`TransporationAsset_has_TransportationOrder` (
+  `TransporationAsset_assetId` INT NOT NULL,
+  `TransportationOrder_transportationOrderId` INT NOT NULL,
+  PRIMARY KEY (`TransporationAsset_assetId`, `TransportationOrder_transportationOrderId`),
+  INDEX `fk_TransporationAsset_has_TransportationOrder_Transportatio_idx` (`TransportationOrder_transportationOrderId` ASC),
+  INDEX `fk_TransporationAsset_has_TransportationOrder_Transporation_idx` (`TransporationAsset_assetId` ASC),
+  CONSTRAINT `fk_TransporationAsset_has_TransportationOrder_TransporationAs1`
+    FOREIGN KEY (`TransporationAsset_assetId`)
+    REFERENCES `merlionLogisticDB`.`TransporationAsset` (`assetId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_TransporationAsset_has_TransportationOrder_TransportationO1`
+    FOREIGN KEY (`TransportationOrder_transportationOrderId`)
+    REFERENCES `merlionLogisticDB`.`TransportationOrder` (`transportationOrderId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `merlionLogisticDB`.`TransporationAsset_has_Route`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`TransporationAsset_has_Route` (
+  `TransporationAsset_assetId` INT NOT NULL,
+  `Route_routeId` INT NOT NULL,
+  PRIMARY KEY (`TransporationAsset_assetId`, `Route_routeId`),
+  INDEX `fk_TransporationAsset_has_Route_Route1_idx` (`Route_routeId` ASC),
+  INDEX `fk_TransporationAsset_has_Route_TransporationAsset1_idx` (`TransporationAsset_assetId` ASC),
+  CONSTRAINT `fk_TransporationAsset_has_Route_TransporationAsset1`
+    FOREIGN KEY (`TransporationAsset_assetId`)
+    REFERENCES `merlionLogisticDB`.`TransporationAsset` (`assetId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_TransporationAsset_has_Route_Route1`
+    FOREIGN KEY (`Route_routeId`)
+    REFERENCES `merlionLogisticDB`.`Route` (`routeId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
