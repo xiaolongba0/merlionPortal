@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package merlionportal.managedbean;
+package merlionportal.managedbean.ci;
 
 import entity.Company;
 import entity.SystemUser;
