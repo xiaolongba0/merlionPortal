@@ -91,9 +91,7 @@ public class SystemUser implements Serializable {
     @Column(name = "createdDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
+    @Size(max = 45)
     @Column(name = "userType")
     private String userType;
     @Basic(optional = false)
@@ -123,10 +121,9 @@ public class SystemUser implements Serializable {
         this.systemUserId = systemUserId;
     }
 
-    public SystemUser(Integer systemUserId, String emailAddress, String userType, boolean activated) {
+    public SystemUser(Integer systemUserId, String emailAddress, boolean activated) {
         this.systemUserId = systemUserId;
         this.emailAddress = emailAddress;
-        this.userType = userType;
         this.activated = activated;
     }
 
