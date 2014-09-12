@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Edit a Product</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form id="formMain">
+            <h1>Welcome to MRP II page</h1>
+            <p:menubar>
+                <p:menuitem value="MRP II" url="mrp.xhtml" />
+                <p:menuitem value="View All Products" url="viewallproducts.xhtml" />
+                <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
+                <p:menuitem value="Delete Product" url="deleteproduct.xhtml" />
+                <p:menuitem value="View A Product" url="viewaproduct.xhtml" />
+                <p:menuitem value="Edit A Product" url="editproduct.xhtml" />
+            </p:menubar>
+            <br/>
+            <p:panel id="panel" header="Edit a Product">
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/spinner.gif" />
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:messages />
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="productName" style="font-weight: bold" value="Product Name: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Product Name" requiredMessage="Product Name is required." id="productName" value="#{productManagerBean.productName}">
+                                <f:validateLength minimum="4" maximum="16" />
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="productName" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="description" style="font-weight: bold" value="Description: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Description" requiredMessage="Description is required." id="description" value="#{productManagerBean.description}">
+                                <f:validateLength minimum="1" maximum="19" />
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="description" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="productType" style="font-weight: bold" value="Product Type: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Product Type" requiredMessage="Product Type is required." id="productType" value="#{productManagerBean.productType}">
+                                <f:validateLength minimum="1" maximum="19"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="productType" />
+                        </p:column>
+                    </p:row>
+
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="currency" style="font-weight: bold" value="Currency: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Currency" requiredMessage="Currency is required." id="currency" value="#{productManagerBean.currency}">
+                                <f:validateLength minimum="1" maximum="19"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="currency" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="price" style="font-weight: bold" value="Price: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Price" requiredMessage="Price is required." id="price" value="#{productManagerBean.price}">
+                                <f:validateLength minimum="1" maximum="19"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="price" />
+                        </p:column>
+                    </p:row>
+
+
+                </p:panelGrid>
+                <p:commandButton id="btn" value="Save New Product" update="panel" actionListener="#{productManagerBean.saveNewProduct}" ajax="true" />
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>                 
+
+
+
