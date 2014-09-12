@@ -5,6 +5,7 @@
  */
 package merlionportal.managedbean;
 
+import entity.Company;
 import entity.SystemUser;
 import entity.UserRole;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.administrationmodule.GetCompanySessionBean;
 import merlionportal.ci.administrationmodule.RoleManagementBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementBean;
 
@@ -30,14 +32,16 @@ public class UserRoleManagerBean implements Serializable {
 
     @EJB
     private RoleManagementBean rmb;
-    
+
     @EJB
     UserAccountManagementBean uamb;
+    @EJB
+    GetCompanySessionBean gcsb;
 
     private SystemUser loginedUser;
-    
-    private Integer userCompanyId;
-    private int selectCompanyId;
+
+    private List<Company> companys;
+    private Integer selectCompanyId;
 
     private String roleName;
     private String roleDescription;
@@ -100,7 +104,7 @@ public class UserRoleManagerBean implements Serializable {
         canManageBid = false;
         canManagePost = false;
     }
-    
+
     @PostConstruct
     public void init() {
         boolean redirect = true;
@@ -117,28 +121,13 @@ public class UserRoleManagerBean implements Serializable {
                 ex.printStackTrace();
             }
         }
-    }
-
-    public void createSystemAdminRole(ActionEvent event) {
-//        Integer operatorId = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
-        Integer operatorId = 2;
-        int result = rmb.createSystemAdminRole(operatorId, userCompanyId);
-
-        if (result == 1) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "System Admin Role created for this company!", ""));
-        } else if (result == -1) {
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Access Denied!", "You do not have sufficient right to perform this action!"));
-        } else {
-            //redirect to login page
-
-        }
+        companys = (List<Company>) gcsb.getCompanies();
     }
 
     public void createRole(ActionEvent event) {
         Integer operatorId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
         Integer companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
-        if(rmb.isSuperUser(operatorId)){
+        if (rmb.isSuperUser(operatorId)) {
             companyId = selectCompanyId;
         }
         int result = rmb.createCompanyRole(operatorId, companyId, roleName, roleDescription, canGeneratePO, canGenerateSO, canGenerateQuotationAndProductContract, canGenerateSalesReport, canManageUser, canUseForecast, canManageProductAndComponent, canGenerateMRPList, canGenerateServicePO, canUpdateCustomerCredit, canGenerateServiceSO, canGenerateQuotationRequest, canManageServiceCatalog, canGenerateServiceQuotationAndContract, canManageKeyAccount, canManageTransportationAsset, canManageTransportationOrder, canManageLocation, canManageAssetType, canUseHRFunction, canManageWarehouse, canManageStockAuditProcess, canManageStockTransportOrder, canManageReceivingGoods, canManageOrderFulfillment, canManageBid, canManagePost);
@@ -167,15 +156,6 @@ public class UserRoleManagerBean implements Serializable {
     }
 
     //    <editor-fold defaultstate="collapsed" desc="getters and setters">
-    
-    public Integer getUserCompanyId() {
-        return userCompanyId;
-    }
-
-    public void setUserCompanyId(Integer userCompanyId) {
-        this.userCompanyId = userCompanyId;
-    }
-
     public String getRoleName() {
         return roleName;
     }
@@ -407,8 +387,8 @@ public class UserRoleManagerBean implements Serializable {
     public void setCanManagePost(boolean canManagePost) {
         this.canManagePost = canManagePost;
     }
-    //</editor-fold>
 
+    //</editor-fold>
     public SystemUser getLoginedUser() {
         return loginedUser;
     }
@@ -417,12 +397,24 @@ public class UserRoleManagerBean implements Serializable {
         this.loginedUser = loginedUser;
     }
 
-    public int getSelectCompanyId() {
+    public List<Company> getCompanys() {
+        return companys;
+    }
+
+    public void setCompanys(List<Company> companys) {
+        this.companys = companys;
+    }
+
+    public Integer getSelectCompanyId() {
         return selectCompanyId;
     }
 
-    public void setSelectCompanyId(int selectCompanyId) {
+    public void setSelectCompanyId(Integer selectCompanyId) {
         this.selectCompanyId = selectCompanyId;
     }
+
+    
+
+    
 
 }

@@ -4,7 +4,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <c:set var="root" value="${request.contextPath}" />
     <ui:composition template="${root}/templates/templateadmin.xhtml">
@@ -37,6 +38,18 @@
                             </div>
                         </div>
                     </div>
+                     <c:if test ="#{dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:panel header="Select Company" style="margin-bottom:10px;">
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel for="company" value="Company:  " />
+                                <h:selectOneMenu id="company" value="#{createRole.selectCompanyId}"  style="width:250px" styleClass="form-control">
+                                    <f:selectItem itemLabel="Select Company . . ." itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{createRole.companys}" var="company" itemLabel="#{company.name}"  itemValue="#{company.companyId}"/>
+                                </h:selectOneMenu>
+                            </h:panelGrid>
+                        </p:panel>
+                    </c:if>
+
                     <div class="row spacing">
                         <div class="col-md-10">
                             <!-- Common Infrastructure -->
@@ -142,9 +155,9 @@
 
                     <div class="row spacing">
                         <div class="col-md-10">
-                            <p:growl id="growl" life="2000" />
+                            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                             <div class="pull-right">
-                                <p:commandButton value="Create Role" id="ajax" update="growl" icon="ui-icon-check" actionListener="#{userAccountManagedBean.createRole}" styleClass="btn btn-success" />
+                                <p:commandButton value="Create Role" id="ajax" icon="ui-icon-check" actionListener="#{createRole.createRole}" styleClass="btn btn-success" />
                             </div>
                         </div>
                     </div>
