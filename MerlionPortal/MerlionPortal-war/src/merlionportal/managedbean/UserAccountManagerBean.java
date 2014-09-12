@@ -18,7 +18,7 @@ import merlionportal.utility.MD5Generator;
  *
  * @author manliqi
  */
-@Named(value = "userAccountManagedBean")
+@Named(value = "userAccountManagerBean")
 @ViewScoped
 public class UserAccountManagerBean {
 
