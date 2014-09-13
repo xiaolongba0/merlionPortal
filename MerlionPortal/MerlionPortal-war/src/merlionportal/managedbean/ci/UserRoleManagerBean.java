@@ -145,15 +145,7 @@ public class UserRoleManagerBean implements Serializable {
 
     }
 
-    public List<UserRole> getRoles() {
-        //Integer operatorId = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
-        //Integer company = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
-        Integer operatorId = 3;
-        Integer companyId = 2;
 
-        return rmb.viewAllRoles(operatorId, companyId);
-
-    }
 
     //    <editor-fold defaultstate="collapsed" desc="getters and setters">
     public String getRoleName() {

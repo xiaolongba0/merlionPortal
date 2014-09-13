@@ -3,13 +3,77 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
     <c:set var="root" value="${request.contextPath}" />
     <ui:composition template="${root}/templates/templateadmin.xhtml">
         <ui:param name="pageName" value="Create User" />
         <!-- Override Content -->
         <ui:define name="content">
+            <h:form>
+                <div class="container" >
+
+                    <h2>Create New User</h2>
+
+                    <p:panel header="Create User" style="margin-bottom:10px;" >
+                        <c:if test ="#{dashboardBean.loginedUser.userType == 'superuser'}">
+
+                            <h:panelGrid columns="1" cellpadding="5">
+                                <p:outputLabel for="company" value="Company:  " />
+                                <h:selectOneMenu required="true" requiredMessage="Please select the company" id="company" value="#{createUserManagerBean.selectCompanyId}" styleClass="form-control">
+                                    <p:ajax listener="#{createUserManagerBean.onCompanyChange}" update="roles" />
+                                    <f:selectItem itemLabel="Select Company . . ." itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{createUserManagerBean.companys}" var="company" itemLabel="#{company.name}"  itemValue="#{company.companyId}"/>
+                                </h:selectOneMenu>
+
+                            </h:panelGrid>
+                        </c:if>
+                        <br/>
+                        <h:panelGrid columns="4" cellpadding="5">
+                            <p:outputLabel style="font-weight: bold"  value="Salutation: "/>
+                            <h:inputText required="true" requiredMessage="Field is required" value="#{createUserManagerBean.salution}" styleClass="form-control" />
+
+                            <p:outputLabel style="font-weight: bold" value="First Name: "/>
+                            <h:inputText required="true" requiredMessage="Field is required" value="#{createUserManagerBean.firstName}" styleClass="form-control" />
+
+                            <p:outputLabel style="font-weight: bold" value="Last Name: "/>
+                            <h:inputText required="true" requiredMessage="Field is required" value="#{createUserManagerBean.lastName}" styleClass="form-control" />
+
+                            <p:outputLabel style="font-weight: bold" value="Email Address: "/>
+                            <h:inputText required="true" requiredMessage="Field is required" value="#{createUserManagerBean.emailAddress}" styleClass="form-control" />
+
+                            <p:outputLabel style="font-weight: bold" value="Password: "/>
+                            <h:inputText required="true" requiredMessage="Field is required" value="#{createUserManagerBean.password}" styleClass="form-control" />
+
+                            <p:outputLabel style="font-weight: bold" value="Postal Address: "/>
+                            <h:inputText required="true" requiredMessage="Field is required" value="#{createUserManagerBean.postalAddress}" styleClass="form-control" />
+
+                            <p:outputLabel style="font-weight: bold" value="Contact Number: "/>
+                            <h:inputText required="true" requiredMessage="Field is required" value="#{createUserManagerBean.contactNumber}" styleClass="form-control" />
+
+
+                            <p:outputLabel value="Credit:" style="font-weight: bold"/>
+                            <h:selectOneMenu required="true" requiredMessage="Please select credit" id="credit" value="#{createUserManagerBean.credit}" styleClass="form-control">
+                                <f:selectItem itemLabel="Not Applicable" itemValue="Not Applicable" />
+                                <f:selectItem itemLabel="Pass" itemValue="Pass" />
+                                <f:selectItem itemLabel="Fail" itemValue="Fail" />
+                            </h:selectOneMenu>
+
+                        </h:panelGrid>
+                        <p:outputLabel value="Select Roles:" style="font-weight: bold"/>
+                        <p:selectCheckboxMenu id="roles" value="#{createUserManagerBean.selectedRoles}" label="Roles"
+                                              filter="true" filterMatchMode="startsWith" panelStyle="width:400px" style="width:250px">
+                            <f:selectItems value="#{createUserManagerBean.roles}" var="role" itemLabel="#{role.roleName}" itemValue="#{role.userRoleId}"/>
+                        </p:selectCheckboxMenu>
+
+
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                        <p:commandButton id="ajax" actionListener="#{createUserManagerBean.createSystemUser}" value="Create User" styleClass="btn btn-success" icon="ui-icon-check"/>
+                    </p:panel>
+                </div>
+            </h:form>
 
         </ui:define>
     </ui:composition>

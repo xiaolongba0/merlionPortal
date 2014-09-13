@@ -1,17 +1,13 @@
 package merlionportal.managedbean.ci;
 
-import entity.Company;
 import entity.SystemUser;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import merlionportal.ci.administrationmodule.GetCompanySessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 
 @ManagedBean(name = "dashboardBean")
