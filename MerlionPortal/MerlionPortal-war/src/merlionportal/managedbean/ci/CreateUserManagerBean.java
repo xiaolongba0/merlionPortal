@@ -31,7 +31,7 @@ import merlionportal.utility.MD5Generator;
  */
 @Named(value = "createUserManagerBean")
 @ViewScoped
-public class createUserManagerBean {
+public class CreateUserManagerBean {
 
     private SystemUser loginedUser;
 
@@ -63,7 +63,7 @@ public class createUserManagerBean {
     /**
      * Creates a new instance of createUserManagerBean
      */
-    public createUserManagerBean() {
+    public CreateUserManagerBean() {
     }
 
     @PostConstruct
