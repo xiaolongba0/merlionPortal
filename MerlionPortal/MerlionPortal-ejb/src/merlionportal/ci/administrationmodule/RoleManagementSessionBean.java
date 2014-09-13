@@ -34,53 +34,15 @@ public class RoleManagementSessionBean {
     @EJB
     private CheckAccessRightBean carb;
 
-    
-    public boolean isSuperUser(int userid){
-        return true;
-    }
-    
-    //Used by super user
-    //if operator is null return 0, if access denied return -1, sucess return 1
-    public int createSystemAdminRole(Integer operatorId, Integer companyId) {
-        SystemUser operator = em.find(SystemUser.class, operatorId);
-        if (operator != null) {
-            if (carb.userHasRight(operator, Right.canManageUser)) {
-
-                UserRole superRole = new UserRole();
-                superRole.setRoleName("systemadmin");
-
-                superRole.setCanManageUser(true);
-                Company company = em.find(Company.class, companyId);
-                if (company != null) {
-
-                    List<Company> companies = new ArrayList();
-                    companies.add(company);
-                    superRole.setCompanyList(companies);
-                    superRole.setDescription("systemadmin for company " + company.getName());
-                    em.persist(superRole);
-                    em.flush();
-
-                    List<UserRole> roles = new ArrayList();
-                    roles.add(superRole);
-                    company.setUserRoleList(roles);
-
-                    em.persist(superRole);
-                    em.flush();
-                    em.merge(company);
-                    return 1;
-                } else {
-                    System.out.println("Company is null");
-                    return 0;
-                }
-            } else {
-                return -1;
+    public boolean isSuperUser(int userid) {
+        SystemUser user = em.find(SystemUser.class, userid);
+        if (user != null) {
+            if (user.getUserType().equals("superuser")) {
+                return true;
             }
-        } else {
-            System.out.println("Operator is null");
-            return 0;
-
         }
 
+        return false;
     }
 
     public int createCompanyRole(Integer operatorId, Integer companyId, String roleName, String description, boolean canGeneratePO, boolean canGenerateSO, boolean canGenerateQuotationAndProductContract, boolean canGenerateSalesReport,
@@ -139,6 +101,11 @@ public class RoleManagementSessionBean {
 
                 companyRole.setCanManageBid(canManageBid);
                 companyRole.setCanManagePost(canManagePost);
+                //Add a list of user but empty
+                List<SystemUser> userList = new ArrayList<>();
+
+                //Add a list of company
+                companyRole.setSystemUserList(userList);
 
                 List<Company> companies = new ArrayList<>();
                 Company company = getCompany(companyId);
@@ -149,7 +116,7 @@ public class RoleManagementSessionBean {
                     List<UserRole> roles = new ArrayList<>();
                     roles.add(companyRole);
 
-                    company.setUserRoleList(roles);
+                    company.getUserRoleList().add(companyRole);
 
                     em.persist(companyRole);
                     em.flush();
@@ -171,19 +138,6 @@ public class RoleManagementSessionBean {
 
     }
 
-    public List<UserRole> viewAllRoles(Integer operatorId, Integer companyId) {
-        SystemUser operator = em.find(SystemUser.class, operatorId);
-        if (operator != null) {
-            if (carb.userHasRight(operator, Right.canManageUser)) {
-                Query q = em.createQuery("SELECT u FROM UserRole u LEFT JOIN Company_has_UserRole c ON u.userRoleId = c.userRoleId WHERE c.companyId = :companyId");
-                q.setParameter("companyId", companyId);
-
-                return q.getResultList();
-            }
-        }
-        return null;
-
-    }
 
     private SystemUser getOperator(Integer operatorId) {
         return em.find(SystemUser.class, operatorId);

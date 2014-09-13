@@ -17,8 +17,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import util.accessRightControl.Right;
 
 /**
@@ -88,6 +86,9 @@ public class UserAccountManagementSessionBean {
         company.setEmailAddress(emailAddress);
         company.setDescription(description);
         company.setPackage1(package1);
+        
+        List<UserRole> roles = new ArrayList<>();
+        company.setUserRoleList(roles);
 
         em.persist(company);
         em.flush();
@@ -99,13 +100,22 @@ public class UserAccountManagementSessionBean {
         }
     }
 
-    //Used by super user
-    public int createCompanySystemAdminUser(Integer operatorId, String firstName, String lastName, String emailAddress, String password, String postalAddress,
-            String contactNumber, String salution, String userType, Integer companyId) {
+    //Used by super user and company superuser
+    public int createSystemUser(Integer operatorId, Integer companyId, List<Integer> roles, String firstName, String lastName, String emailAddress, String password, String postalAddress,
+            String contactNumber, String salution, String credit) {
 
         SystemUser operator = em.find(SystemUser.class, operatorId);
+        boolean canRun = false;
         if (operator != null) {
+            if (operator.getUserType().equals("superuser")) {
+                canRun = true;
+            }
+
             if (carb.userHasRight(operator, Right.canManageUser)) {
+                canRun = true;
+            }
+
+            if (canRun) {
 
                 SystemUser user = new SystemUser();
                 user.setFirstName(firstName);
@@ -115,81 +125,44 @@ public class UserAccountManagementSessionBean {
                 user.setPostalAddress(postalAddress);
                 user.setContactNumber(contactNumber);
                 user.setSalution(salution);
-                user.setUserType(userType);
+                user.setLocked(false);
+                user.setResetPasswordUponLogin(true);
+                user.setCreatedDate(new Date());
+                user.setActivated(true);
+                user.setCredit(credit);
 
                 Company company = getCompany(companyId);
                 if (company != null) {
                     user.setCompanycompanyId(company);
                 } else {
+                    System.out.println("Company is null");
+
                     return 0;
                 }
+                ArrayList<UserRole> userRoles = new ArrayList<>();
+                for (Object o : roles) {
+                    Integer roleId = (Integer) o;
+                    Query q = em.createNamedQuery("UserRole.findByUserRoleId").setParameter("userRoleId", roleId);
+                    UserRole userRole = (UserRole) q.getSingleResult();
+                    userRoles.add(userRole);
+                    em.merge(userRole);
+                }
 
-                List<UserRole> roles = new ArrayList<>();
-                UserRole role = em.find(UserRole.class, 2);
-                roles.add(role);
-                user.setUserRoleList(roles);
+                user.setUserRoleList(userRoles);
 
                 em.persist(user);
                 em.flush();
                 em.merge(company);
-                em.merge(role);
 
                 return 1;
             } else {
+
                 return -1;
             }
         } else {
-
+            System.out.println("Operator is null");
             return 0;
         }
-    }
-
-    public int createCompanySystemUser(Integer operatorId, ArrayList<Integer> userRoleIds, String firstName, String lastName, String emailAddress, String password, String postalAddress,
-            String contactNumber, String salution, String userType, Integer companyId) {
-        SystemUser operator = em.find(SystemUser.class, operatorId);
-        if (operator != null) {
-            if (carb.userHasRight(operator, Right.canManageUser)) {
-
-                SystemUser user = new SystemUser();
-                user.setFirstName(firstName);
-                user.setLastName(lastName);
-                user.setEmailAddress(emailAddress);
-                user.setPassword(password);
-                user.setPostalAddress(postalAddress);
-                user.setContactNumber(contactNumber);
-                user.setSalution(salution);
-                user.setUserType(userType);
-
-                Company company = getCompany(companyId);
-                if (company != null) {
-                    user.setCompanycompanyId(company);
-                } else {
-                    return 0;
-                }
-
-                List<UserRole> roles = new ArrayList<>();
-
-                Query q = em.createNamedQuery("UserRole.findByUserRoleId");
-                //Set Parameter part Missing here
-                UserRole role = (UserRole) q.getSingleResult();
-                roles.add(role);
-                user.setUserRoleList(roles);
-
-                em.persist(user);
-                em.flush();
-                em.merge(company);
-                em.merge(role);
-
-                return 1;
-
-            } else {
-                return -1;
-            }
-        } else {
-
-            return 0;
-        }
-
     }
 
     private SystemUser getOperator(Integer operatorId) {
@@ -202,8 +175,18 @@ public class UserAccountManagementSessionBean {
 
     public int unlockUser(int systemAdminId, Integer userId) {
         SystemUser operator = em.find(SystemUser.class, systemAdminId);
+        boolean canRun = false;
         if (operator != null) {
+            if (operator.getUserType().equals("superuser")) {
+                canRun = true;
+            }
+
             if (carb.userHasRight(operator, Right.canManageUser)) {
+                canRun = true;
+            }
+
+            if (canRun) {
+
                 SystemUser user = em.find(SystemUser.class, userId);
                 if (user != null) {
                     user.setLocked(false);
@@ -212,19 +195,50 @@ public class UserAccountManagementSessionBean {
                     em.flush();
                     return 1;
                 }
+                System.out.println("The user looking for is null");
                 return 0;
             } else {
+                System.out.println("Access Denied");
                 return -1;
             }
         } else {
+            System.out.println("Operator is null");
             return 0;
         }
 
     }
 
     public int changePasswordUponLogin(Integer systemAdminId, Integer userId) {
+        SystemUser operator = em.find(SystemUser.class, systemAdminId);
+        boolean canRun = false;
+        if (operator != null) {
+            if (operator.getUserType().equals("superuser")) {
+                canRun = true;
+            }
+
+            if (carb.userHasRight(operator, Right.canManageUser)) {
+                canRun = true;
+            }
+
+            if (canRun) {
+                SystemUser user = em.find(SystemUser.class, userId);
+                if (user != null) {
+                    user.setResetPasswordUponLogin(true);
+
+                    em.merge(user);
+                    em.flush();
+                    return 1;
+                }
+                System.out.println("The user looking for is null");
+                return 0;
+
+            }
+            System.out.println("Access Denied");
+            return -1;
+
+        }
+        System.out.println("Operator is null");
         return 0;
 
     }
-
 }
