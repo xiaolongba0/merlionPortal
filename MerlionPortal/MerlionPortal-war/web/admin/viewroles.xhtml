@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <c:set var="root" value="${request.contextPath}" />
+    <ui:composition template="${root}/templates/templateadmin.xhtml">
+        <ui:param name="pageName" value="Create Role" />
+        <!-- Override Content -->
+        <ui:define name="content">
+            <c:set var="root" value="${request.contextPath}" />
+            <div class="container" >
+
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <p:panel header="View Roles" style="margin-bottom:10px;">
+                    <h:form>
+                        <!--                Only should company selection if it is super user-->
+
+                        <c:if test ="#{viewCompanyRoles.loginedUser.userType == 'superuser'}">
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel for="company" value="Company:" />
+                                <h:selectOneMenu id="company" value="#{viewCompanyRoles.selectCompanyId}"  style="width:250px" styleClass="form-control">
+                                    <p:ajax listener="#{viewCompanyRoles.onCompanyChange}" update="rolesData" />
+                                    <f:selectItem itemLabel="Select Company . . ." itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{viewCompanyRoles.companys}" var="company" itemLabel="#{company.name}"  itemValue="#{company.companyId}"/>
+                                </h:selectOneMenu>
+                            </h:panelGrid>
+                        </c:if>
+
+                        <!--Display Role information accordingly-->
+
+                        <p:dataTable id="rolesData" var="role" value="#{viewCompanyRoles.roles}" rows="10"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="20,50,100">
+                            <p:column headerText="roleName">
+                                <h:outputText value="#{role.roleName}" />
+                            </p:column>
+
+                            <p:column headerText="description">
+                                <h:outputText value="#{role.description}" />
+                            </p:column>
+
+                            <!--                        <p:column headerText="ManageUser">
+                                                        <h:outputText value="#{role.canManageUser}" />
+                                                    </p:column>
+                            
+                                                    <p:column headerText="Generate PO">
+                                                        <h:outputText value="#{role.canGeneratePO}" />
+                                                    </p:column>
+                                                    <p:column headerText="Generate SO">
+                                                        <h:outputText value="#{role.canGenerateSO}" />
+                                                    </p:column>
+                                                    <p:column headerText="Generate Quotation">
+                                                        <h:outputText value="#{role.canGenerateQuotationAndProductContract}" />
+                                                    </p:column>
+                                                    <p:column headerText="Use Forecast">
+                                                        <h:outputText value="#{role.canUseForecast}" />
+                                                    </p:column>
+                                                    <p:column headerText="Manage Product &amp; Component">
+                                                        <h:outputText value="#{role.canManageProductAndComponent}" />
+                                                    </p:column>
+                                                    <p:column headerText="Generate Service PO">
+                                                        <h:outputText value="#{role.canGenerateServicePO}" />
+                                                    </p:column>
+                                                    <p:column headerText="Update Customer Credit">
+                                                        <h:outputText value="#{role.canUpdateCustomerCredit}" />
+                                                    </p:column>
+                                                    <p:column headerText="Generate Service SO">
+                                                        <h:outputText value="#{role.canGenerateServiceSO}" />
+                                                    </p:column>
+                                                    <p:column headerText="Generate Quotation Request">
+                                                        <h:outputText value="#{role.canGenerateQuotationRequest}" />
+                                                    </p:column>
+                                                    <p:column headerText="Generate Service Quotation &amp; Contract">
+                                                        <h:outputText value="#{role.canGenerateServiceQuotationAndContract}" />
+                                                    </p:column>
+                                                    <p:column headerText="Manage Transportation Asset">
+                                                        <h:outputText value="#{role.canManageTransportationAsset}" />
+                                                    </p:column>
+                                                    <p:column headerText="Manage Transportation Order">
+                                                        <h:outputText value="#{role.canManageTransportationOrder}" />
+                                                    </p:column>
+                                                    <p:column headerText="Manage Location">
+                                                        <h:outputText value="#{role.canManageLocation}" />
+                                                    </p:column>
+                                                    <p:column headerText="Manage Asset Type">
+                                                        <h:outputText value="#{role.canManageAssetType}" />
+                                                    </p:column>
+                                                    <p:column headerText="Use HR Function">
+                                                        <h:outputText value="#{role.canUseHRFunction}" />
+                                                    </p:column>
+                                                
+                                                    <p:column headerText="Manage Warehouse">
+                                                        <h:outputText value="#{role.canManageWarehouse}" />
+                                                    </p:column>
+                                                    <p:column headerText="Manage Stock Audit">
+                                                        <h:outputText value="#{role.canManageStockAuditProcess}" />
+                                                    </p:column>-->
+                        </p:dataTable>
+                    </h:form>
+                </p:panel>
+
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>
