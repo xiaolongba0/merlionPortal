@@ -65,7 +65,7 @@ public class UserAccountManagementSessionBean {
         superUser.setCreatedDate(new Date());
         superUser.setUserType("superuser");
         superUser.setActivated(true);
-        superUser.setCredit("");
+        superUser.setCredit("Not Applicable");
         Company company = em.find(Company.class, companyId);
         if (company != null) {
             superUser.setCompanycompanyId(company);
