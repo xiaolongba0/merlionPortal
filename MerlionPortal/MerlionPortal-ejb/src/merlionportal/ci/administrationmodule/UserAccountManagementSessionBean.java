@@ -27,7 +27,7 @@ import util.accessRightControl.Right;
  */
 @Stateless
 @LocalBean
-public class UserAccountManagementBean {
+public class UserAccountManagementSessionBean {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")

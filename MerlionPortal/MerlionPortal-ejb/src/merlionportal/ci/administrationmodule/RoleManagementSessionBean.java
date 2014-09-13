@@ -24,7 +24,7 @@ import util.accessRightControl.Right;
  */
 @Stateless
 @LocalBean
-public class RoleManagementBean {
+public class RoleManagementSessionBean {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
