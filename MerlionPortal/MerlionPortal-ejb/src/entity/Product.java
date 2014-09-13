@@ -39,7 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Product.findByProductType", query = "SELECT p FROM Product p WHERE p.productType = :productType"),
     @NamedQuery(name = "Product.findByCurrency", query = "SELECT p FROM Product p WHERE p.currency = :currency"),
     @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price"),
-    @NamedQuery(name = "Product.findByCompanyId", query = "SELECT p FROM Product p WHERE p.companyId = :companyId")})
+    @NamedQuery(name = "Product.findByCompanyId", query = "SELECT p FROM Product p WHERE p.companyId = :companyId"),
+    @NamedQuery(name = "Product.findByCategory", query = "SELECT p FROM Product p WHERE p.category = :category")})
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -68,6 +69,9 @@ public class Product implements Serializable {
     private Double price;
     @Column(name = "companyId")
     private Integer companyId;
+    @Size(max = 45)
+    @Column(name = "category")
+    private String category;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productproductId")
     private List<QuotationLineItem> quotationLineItemList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productproductId")
@@ -142,6 +146,14 @@ public class Product implements Serializable {
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     @XmlTransient
