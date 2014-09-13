@@ -14,6 +14,10 @@
         <ui:define name="content">
             <h:form>
                 <h2>Hi, #{dashboardBean.loginedUser.firstName}</h2>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="${root}/viewallproducts.xhtml">View Products</a></li>
+                    <li><a href="${root}/administration.xhtml">View Subscribers</a></li>
+                </ul>
             </h:form>
         </ui:define>
 
