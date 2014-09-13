@@ -19,8 +19,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.GetCompanySessionBean;
-import merlionportal.ci.administrationmodule.RoleManagementBean;
-import merlionportal.ci.administrationmodule.UserAccountManagementBean;
+import merlionportal.ci.administrationmodule.RoleManagementSessionBean;
+import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 
 /**
  *
@@ -31,10 +31,10 @@ import merlionportal.ci.administrationmodule.UserAccountManagementBean;
 public class UserRoleManagerBean implements Serializable {
 
     @EJB
-    private RoleManagementBean rmb;
+    RoleManagementSessionBean rmb;
 
     @EJB
-    UserAccountManagementBean uamb;
+    UserAccountManagementSessionBean uamb;
     @EJB
     GetCompanySessionBean gcsb;
 

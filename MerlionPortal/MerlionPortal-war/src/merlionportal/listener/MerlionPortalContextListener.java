@@ -3,13 +3,13 @@ package merlionportal.listener;
 import javax.ejb.EJB;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import merlionportal.ci.administrationmodule.UserAccountManagementBean;
+import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.utility.MD5Generator;
 
 public class MerlionPortalContextListener implements ServletContextListener {
 
     @EJB
-    UserAccountManagementBean uamb;
+    UserAccountManagementSessionBean uamb;
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {

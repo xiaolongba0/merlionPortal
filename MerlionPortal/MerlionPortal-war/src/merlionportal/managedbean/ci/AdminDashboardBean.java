@@ -12,7 +12,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import merlionportal.ci.administrationmodule.GetCompanySessionBean;
-import merlionportal.ci.administrationmodule.UserAccountManagementBean;
+import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 
 @ManagedBean(name = "dashboardBean")
 @ViewScoped
@@ -22,7 +22,7 @@ public class AdminDashboardBean implements Serializable {
     
 
     @EJB
-    UserAccountManagementBean uamb;
+    UserAccountManagementSessionBean uamb;
     
 
     public AdminDashboardBean() {

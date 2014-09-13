@@ -11,7 +11,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import merlionportal.ci.administrationmodule.UserAccountManagementBean;
+import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.utility.MD5Generator;
 
 /**
@@ -26,7 +26,7 @@ public class UserAccountManagerBean {
      * Creates a new instance of UserAccountManagerBean
      */
     @EJB
-    private UserAccountManagementBean uamb;
+    private UserAccountManagementSessionBean uamb;
 
     private FacesContext ctx;
 
