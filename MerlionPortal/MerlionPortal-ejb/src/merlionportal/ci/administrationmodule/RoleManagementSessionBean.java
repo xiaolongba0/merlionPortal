@@ -179,6 +179,72 @@ public class RoleManagementSessionBean {
         }
     }
 
+    public int updateRole(int operatorId, UserRole changedRole) {
+        SystemUser operator = em.find(SystemUser.class, operatorId);
+        boolean canRun = false;
+
+        if (operator != null) {
+            if (operator.getUserType().equals("superuser")) {
+                canRun = true;
+            }
+            if (carb.userHasRight(operator, Right.canManageUser)) {
+                canRun = true;
+            }
+            if (canRun) {
+                int roleId = changedRole.getUserRoleId();
+
+                UserRole userRole = em.find(UserRole.class, roleId);
+                userRole.setRoleName(changedRole.getRoleName());
+
+                userRole.setRoleName(changedRole.getRoleName());
+                userRole.setDescription(changedRole.getDescription() );
+
+                userRole.setCanGeneratePO(changedRole.getCanGeneratePO() );
+                userRole.setCanGenerateSO(changedRole.getCanGenerateSO() );
+                userRole.setCanGenerateQuotationAndProductContract(changedRole.getCanGenerateQuotationAndProductContract() );
+                userRole.setCanGenerateSalesReport(changedRole.getCanGenerateSalesReport() );
+
+                userRole.setCanManageUser(changedRole.getCanManageUser() );
+
+                userRole.setCanUseForecast(changedRole.getCanUseForecast() );
+                userRole.setCanManageProductAndComponent(changedRole.getCanManageProductAndComponent() );
+                userRole.setCanGenerateMRPList(changedRole.getCanGenerateMRPList() );
+
+                userRole.setCanGenerateServicePO(changedRole.getCanGenerateServicePO() );
+                userRole.setCanUpdateCustomerCredit(changedRole.getCanUpdateCustomerCredit() );
+                userRole.setCanGenerateServiceSO(changedRole.getCanGenerateServiceSO() );
+                userRole.setCanGenerateQuotationRequest(changedRole.getCanGenerateQuotationRequest() );
+                userRole.setCanManageServiceCatalog(changedRole.getCanManageServiceCatalog() );
+                userRole.setCanGenerateServiceQuotationAndContract(changedRole.getCanGenerateServiceQuotationAndContract() );
+                userRole.setCanManageKeyAccount(changedRole.getCanManageKeyAccount() );
+
+                userRole.setCanManageTransportationAsset(changedRole.getCanManageTransportationAsset() );
+                userRole.setCanManageTransportationOrder(changedRole.getCanManageTransportationOrder() );
+                userRole.setCanManageLocation(changedRole.getCanManageLocation() );
+                userRole.setCanManageAssetType(changedRole.getCanManageAssetType() );
+                userRole.setCanUseHRFunction(changedRole.getCanUseHRFunction() );
+
+                userRole.setCanManageWarehouse(changedRole.getCanManageWarehouse());
+                userRole.setCanManageStockAuditProcess(changedRole.getCanManageStockAuditProcess() );
+                userRole.setCanManageStockTransportOrder(changedRole.getCanManageStockTransportOrder() );
+                userRole.setCanManageReceivingGoods(changedRole.getCanManageReceivingGoods() );
+                userRole.setCanManageOrderFulfillment(changedRole.getCanManageOrderFulfillment() );
+
+                userRole.setCanManageBid(changedRole.getCanManageBid() );
+                userRole.setCanManagePost(changedRole.getCanManagePost() );
+                
+                em.merge(userRole);
+                return 1;
+            }
+            System.out.println("Access Denied");
+            return -1;
+
+        }
+        System.out.println("Operator is null");
+        return 0;
+    }
+    
+
     private SystemUser getOperator(Integer operatorId) {
         return em.find(SystemUser.class, operatorId);
     }
