@@ -137,7 +137,47 @@ public class RoleManagementSessionBean {
         }
 
     }
+//Return -2 if cannot delete
 
+    public int deleteCompanyRole(int operatorId, int roleId) {
+        SystemUser operator = em.find(SystemUser.class, operatorId);
+        boolean canRun = false;
+
+        if (operator != null) {
+            if (operator.getUserType().equals("superuser")) {
+                canRun = true;
+            }
+            if (carb.userHasRight(operator, Right.canManageUser)) {
+                canRun = true;
+            }
+            if (canRun) {
+                UserRole userRole = em.find(UserRole.class, roleId);
+                if (userRole != null) {
+                    if (userRole.getSystemUserList() != null) {
+                        System.out.println("There are users in this role");
+                        return -2;
+                    } else {
+                        for (Object o : userRole.getCompanyList()) {
+                            Company company = (Company) o;
+                            if (company.getUserRoleList().contains(userRole)) {
+                                company.getUserRoleList().remove(userRole);
+                                em.merge(company);
+                            }
+                        }
+                        em.remove(userRole);
+                        em.flush();
+                        return 1;
+                    }
+                }
+            }
+            System.out.println("Access Denied");
+
+            return -1;
+        } else {
+            System.out.println("Operator is null");
+            return 0;
+        }
+    }
 
     private SystemUser getOperator(Integer operatorId) {
         return em.find(SystemUser.class, operatorId);
