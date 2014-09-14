@@ -58,70 +58,141 @@
 
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h2>Role detail</h2>
+                                        <h3>Role detail</h3>
                                     </div>
                                     <div class="modal-body">
-                                        <p:outputPanel id="roleDetail" style="text-align:center;">
-                                            <p:panelGrid  columns="4" rendered="#{not empty viewCompanyRoles.selectedRole}">
 
-                                                <h:outputText value="Manage User" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageUser}" />
-                                                <h:outputText value="Generate PO" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canGeneratePO}" />
-                                                <h:outputText value="Generate SO" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canGenerateSO}" />
-                                                <h:outputText value="Generate Quotation" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canGenerateQuotationAndProductContract}" />
-                                                <h:outputText value="Generate Sales Report" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canGenerateSalesReport}" />
-                                                <h:outputText value="Use Forecast" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canUseForecast}" />
-                                                <h:outputText value="Manage Product &amp; Component" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageProductAndComponent}" />
-                                                <h:outputText value="Generate MRP List" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canGenerateMRPList}" />
-                                                <h:outputText value="Generate Service PO" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canGenerateServicePO}" />
-                                                <h:outputText value="Update Customer Credit" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canUpdateCustomerCredit}" />
-                                                <h:outputText value="Generate Service SO" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canGenerateServiceSO}" />
-                                                <h:outputText value="Generate Quotation Request" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canGenerateQuotationRequest}" />
-                                                <h:outputText value="Manage Service Catalog" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageServiceCatalog}" />
-                                                <h:outputText value="Generate Service Quotation &amp; Contract" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canGenerateServiceQuotationAndContract}" />
-                                                <h:outputText value="Manage Transportation Asset" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageTransportationAsset}" />
-                                                <h:outputText value="Manage Transportation Order" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageTransportationOrder}" />
-                                                <h:outputText value="Manage Location" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageLocation}" />
-                                                <h:outputText value="Manage Asset Type" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageAssetType}" />
-                                                <h:outputText value="Use HR Function" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canUseHRFunction}" />
-                                                <h:outputText value="Manage Warehouse" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageWarehouse}" />
-                                                <h:outputText value="Manage Stock Audit Process" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageStockAuditProcess}" />
-                                                <h:outputText value="Manage Stock Transport Order" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageStockTransportOrder}" />
-                                                <h:outputText value="Manage Receiving Goods" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageReceivingGoods}" />
-                                                <h:outputText value="Manage Order Fulfilment" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageOrderFulfillment}" />
-                                                <h:outputText value="Manage Key Account" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageKeyAccount}" />
-                                                <h:outputText value="Manage Bid" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageBid}" />
-                                                <h:outputText value="Manage Post" />
-                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManagePost}" />
-                                            </p:panelGrid>
+                                        <p:outputPanel id="roleDetail" style="text-align:left;">
+                                            <h:form>
+
+                                                <p:panelGrid  columns="2" rendered="#{not empty viewCompanyRoles.selectedRole}">
+
+                                                    <h:outputText value="Role Name" />
+                                                    <p:inplace  editor="true">
+                                                        <p:inputText value="#{viewCompanyRoles.selectedRole.roleName}" required="true" label="text" />
+                                                    </p:inplace>
+                                                    <h:outputText value="Role Description" />
+                                                    <p:inplace editor="true">
+                                                        <p:inputText value="#{viewCompanyRoles.selectedRole.description}" required="true" label="text" />
+                                                    </p:inplace>
+                                                    <h:outputText value="Manage User" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canManageUser}" editor="true">
+                                                        <p:selectBooleanButton  value="#{viewCompanyRoles.selectedRole.canManageUser}" onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+
+                                                    <h:outputText value="Generate PO" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canGeneratePO}" editor="true">
+                                                        <p:selectBooleanButton  value="#{viewCompanyRoles.selectedRole.canGeneratePO}" onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+
+                                                    <h:outputText value="Generate SO" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canGenerateSO}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canGenerateSO}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Generate Quotation" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canGenerateQuotationAndProductContract}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canGenerateQuotationAndProductContract}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Generate Sales Report" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canGenerateSalesReport}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canGenerateSalesReport}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Use Forecast" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canUseForecast}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canUseForecast}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Manage Product &amp; Component" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canManageProductAndComponent}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canManageProductAndComponent}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Generate MRP List" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canGenerateMRPList}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canGenerateMRPList}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Generate Service PO" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canGenerateServicePO}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canGenerateServicePO}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Update Customer Credit" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canUpdateCustomerCredit}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canUpdateCustomerCredit}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Generate Service SO" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canGenerateServiceSO}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canGenerateServiceSO}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Generate Quotation Request" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canGenerateQuotationRequest}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canGenerateQuotationRequest}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Manage Service Catalog" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canManageServiceCatalog}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canManageServiceCatalog}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Generate Service Quotation &amp; Contract" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canGenerateServiceQuotationAndContract}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canGenerateServiceQuotationAndContract}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Manage Transportation Asset" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canManageTransportationAsset}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canManageTransportationAsset}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Manage Transportation Order" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canManageTransportationOrder}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canManageTransportationOrder}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Manage Location" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canManageLocation}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canManageLocation}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Manage Asset Type" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canManageAssetType}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canManageAssetType}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Use HR Function" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canUseHRFunction}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canUseHRFunction}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Manage Warehouse" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canManageWarehouse}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canManageWarehouse}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Manage Stock Audit Process" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canManageStockAuditProcess}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canManageStockAuditProcess}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Manage Stock Transport Order" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canManageStockTransportOrder}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canManageStockTransportOrder}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Manage Receiving Goods" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canManageReceivingGoods}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canManageReceivingGoods}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Manage Order Fulfilment" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canManageOrderFulfillment}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canManageOrderFulfillment}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Manage Key Account" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canManageKeyAccount}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canManageKeyAccount}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Manage Bid" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canManageBid}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canManageBid}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                    <h:outputText value="Manage Post" />
+                                                    <p:inplace label="#{viewCompanyRoles.selectedRole.canManagePost}" editor="true">
+                                                        <p:selectBooleanButton value="#{viewCompanyRoles.selectedRole.canManagePost}"  onLabel="true" offLabel="false" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                                                    </p:inplace>
+                                                </p:panelGrid>
+                                            </h:form>
                                         </p:outputPanel>
+
                                     </div>
                                     <div class="modal-footer">
+                                        <p:growl id="growl" showDetail="true" sticky="true" />
+                                        <p:commandButton value="Update" update="growl" styleClass="btn btn-success" actionListener="#{viewCompanyRoles.updateRole}"></p:commandButton>
                                         <p:commandButton value="Close" styleClass="btn btn-warning" pt:data-dismiss="modal"></p:commandButton>
                                     </div>
                                 </div>

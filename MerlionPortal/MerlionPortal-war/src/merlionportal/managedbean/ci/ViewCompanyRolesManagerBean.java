@@ -109,6 +109,22 @@ public class ViewCompanyRolesManagerBean {
         }
     }
 
+    public void updateRole() {
+        int result = 0;
+        if (selectedRole != null) {
+            result = rmsb.updateRole(loginedUser.getSystemUserId(), selectedRole);
+        }
+        if (result == 1) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Role Updated!", "This user role is updated"));
+
+        } else if (result == -1) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Access Denied!", "You do not have sufficient right to perform this action."));
+
+        } else {
+//            redirect to login page
+        }
+    }
+
     public int getCompanyId() {
         return companyId;
     }
