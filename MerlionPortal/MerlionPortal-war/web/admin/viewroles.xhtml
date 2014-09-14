@@ -5,7 +5,8 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
     <c:set var="root" value="${request.contextPath}" />
     <ui:composition template="${root}/templates/templateadmin.xhtml">
@@ -15,10 +16,9 @@
             <c:set var="root" value="${request.contextPath}" />
             <div class="container" >
 
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 <p:panel header="View Roles" style="margin-bottom:10px;">
                     <h:form>
-                        <!--                Only should company selection if it is super user-->
+                        <!--Only should company selection if it is super user-->
 
                         <c:if test ="#{viewCompanyRoles.loginedUser.userType == 'superuser'}">
                             <h:panelGrid columns="2" cellpadding="5">
@@ -32,11 +32,18 @@
                         </c:if>
 
                         <!--Display Role information accordingly-->
+                        <p:contextMenu for="rolesData">
+                            <p:menuitem value="View detail" update="roleDetail" icon="ui-icon-search" oncomplete="toggleModal();"/>
+                            <p:menuitem value="Delete" update="rolesData" icon="ui-icon-close" actionListener="#{viewCompanyRoles.deleteRole}"/>
+                        </p:contextMenu>
 
-                        <p:dataTable id="rolesData" var="role" value="#{viewCompanyRoles.roles}" rows="10"
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+                        <p:dataTable id="rolesData" var="role" rowKey="#{role.userRoleId}" value="#{viewCompanyRoles.roles}"
                                      paginator="true"
-                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     rowsPerPageTemplate="20,50,100">
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="20,50,100"
+                                     selection="#{viewCompanyRoles.selectedRole}" selectionMode="single" >
                             <p:column headerText="roleName">
                                 <h:outputText value="#{role.roleName}" />
                             </p:column>
@@ -45,64 +52,88 @@
                                 <h:outputText value="#{role.description}" />
                             </p:column>
 
-                            <!--                        <p:column headerText="ManageUser">
-                                                        <h:outputText value="#{role.canManageUser}" />
-                                                    </p:column>
-                            
-                                                    <p:column headerText="Generate PO">
-                                                        <h:outputText value="#{role.canGeneratePO}" />
-                                                    </p:column>
-                                                    <p:column headerText="Generate SO">
-                                                        <h:outputText value="#{role.canGenerateSO}" />
-                                                    </p:column>
-                                                    <p:column headerText="Generate Quotation">
-                                                        <h:outputText value="#{role.canGenerateQuotationAndProductContract}" />
-                                                    </p:column>
-                                                    <p:column headerText="Use Forecast">
-                                                        <h:outputText value="#{role.canUseForecast}" />
-                                                    </p:column>
-                                                    <p:column headerText="Manage Product &amp; Component">
-                                                        <h:outputText value="#{role.canManageProductAndComponent}" />
-                                                    </p:column>
-                                                    <p:column headerText="Generate Service PO">
-                                                        <h:outputText value="#{role.canGenerateServicePO}" />
-                                                    </p:column>
-                                                    <p:column headerText="Update Customer Credit">
-                                                        <h:outputText value="#{role.canUpdateCustomerCredit}" />
-                                                    </p:column>
-                                                    <p:column headerText="Generate Service SO">
-                                                        <h:outputText value="#{role.canGenerateServiceSO}" />
-                                                    </p:column>
-                                                    <p:column headerText="Generate Quotation Request">
-                                                        <h:outputText value="#{role.canGenerateQuotationRequest}" />
-                                                    </p:column>
-                                                    <p:column headerText="Generate Service Quotation &amp; Contract">
-                                                        <h:outputText value="#{role.canGenerateServiceQuotationAndContract}" />
-                                                    </p:column>
-                                                    <p:column headerText="Manage Transportation Asset">
-                                                        <h:outputText value="#{role.canManageTransportationAsset}" />
-                                                    </p:column>
-                                                    <p:column headerText="Manage Transportation Order">
-                                                        <h:outputText value="#{role.canManageTransportationOrder}" />
-                                                    </p:column>
-                                                    <p:column headerText="Manage Location">
-                                                        <h:outputText value="#{role.canManageLocation}" />
-                                                    </p:column>
-                                                    <p:column headerText="Manage Asset Type">
-                                                        <h:outputText value="#{role.canManageAssetType}" />
-                                                    </p:column>
-                                                    <p:column headerText="Use HR Function">
-                                                        <h:outputText value="#{role.canUseHRFunction}" />
-                                                    </p:column>
-                                                
-                                                    <p:column headerText="Manage Warehouse">
-                                                        <h:outputText value="#{role.canManageWarehouse}" />
-                                                    </p:column>
-                                                    <p:column headerText="Manage Stock Audit">
-                                                        <h:outputText value="#{role.canManageStockAuditProcess}" />
-                                                    </p:column>-->
                         </p:dataTable>
+                        <div id="detailModal" class="modal fade">
+                            <div class="modal-dialog">
+
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h2>Role detail</h2>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p:outputPanel id="roleDetail" style="text-align:center;">
+                                            <p:panelGrid  columns="4" rendered="#{not empty viewCompanyRoles.selectedRole}">
+
+                                                <h:outputText value="Manage User" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageUser}" />
+                                                <h:outputText value="Generate PO" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canGeneratePO}" />
+                                                <h:outputText value="Generate SO" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canGenerateSO}" />
+                                                <h:outputText value="Generate Quotation" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canGenerateQuotationAndProductContract}" />
+                                                <h:outputText value="Generate Sales Report" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canGenerateSalesReport}" />
+                                                <h:outputText value="Use Forecast" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canUseForecast}" />
+                                                <h:outputText value="Manage Product &amp; Component" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageProductAndComponent}" />
+                                                <h:outputText value="Generate MRP List" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canGenerateMRPList}" />
+                                                <h:outputText value="Generate Service PO" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canGenerateServicePO}" />
+                                                <h:outputText value="Update Customer Credit" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canUpdateCustomerCredit}" />
+                                                <h:outputText value="Generate Service SO" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canGenerateServiceSO}" />
+                                                <h:outputText value="Generate Quotation Request" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canGenerateQuotationRequest}" />
+                                                <h:outputText value="Manage Service Catalog" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageServiceCatalog}" />
+                                                <h:outputText value="Generate Service Quotation &amp; Contract" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canGenerateServiceQuotationAndContract}" />
+                                                <h:outputText value="Manage Transportation Asset" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageTransportationAsset}" />
+                                                <h:outputText value="Manage Transportation Order" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageTransportationOrder}" />
+                                                <h:outputText value="Manage Location" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageLocation}" />
+                                                <h:outputText value="Manage Asset Type" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageAssetType}" />
+                                                <h:outputText value="Use HR Function" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canUseHRFunction}" />
+                                                <h:outputText value="Manage Warehouse" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageWarehouse}" />
+                                                <h:outputText value="Manage Stock Audit Process" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageStockAuditProcess}" />
+                                                <h:outputText value="Manage Stock Transport Order" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageStockTransportOrder}" />
+                                                <h:outputText value="Manage Receiving Goods" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageReceivingGoods}" />
+                                                <h:outputText value="Manage Order Fulfilment" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageOrderFulfillment}" />
+                                                <h:outputText value="Manage Key Account" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageKeyAccount}" />
+                                                <h:outputText value="Manage Bid" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManageBid}" />
+                                                <h:outputText value="Manage Post" />
+                                                <h:outputText value="#{viewCompanyRoles.selectedRole.canManagePost}" />
+                                            </p:panelGrid>
+                                        </p:outputPanel>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <p:commandButton value="Close" styleClass="btn btn-warning" pt:data-dismiss="modal"></p:commandButton>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </h:form>
+                    <script type="text/javascript">
+                        function toggleModal() {
+                            $("#detailModal").modal('show');
+                        }
+                    </script>
                 </p:panel>
 
             </div>
