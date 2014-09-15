@@ -5,19 +5,33 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui">
-
-    <c:set var="root" value="${request.contextPath}" />
     <ui:composition template="${root}/templates/templateadmin.xhtml">
         <ui:param name="pageName" value="Dashboard" />
 
         <!-- Override Content -->
         <ui:define name="content">
+            <c:set var="root" value="${request.contextPath}" />
             <h:form>
-                <h2>Hi, #{dashboardBean.loginedUser.firstName}</h2>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="${root}/viewallproducts.xhtml">View Products</a></li>
-                    <li><a href="${root}/administration.xhtml">View Subscribers</a></li>
-                </ul>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h2>Hi, #{dashboardBean.loginedUser.firstName}</h2>
+                            <ul class="list-group">
+                                <li class="list-group-item"><a href="${root}/viewallproducts.xhtml">View Products</a></li>
+                                <li class="list-group-item"><a href="${root}/administration.xhtml">View Subscribers</a></li>
+                                <li class="list-group-item"><a href="#">MRP II</a></li>
+                                <li class="list-group-item"><a href="#">TMS</a></li>
+                                <li class="list-group-item"><a href="#">GRNS</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-8">
+                            <c:if test="${dashboardBean.loginedUser.userType eq 'superuser'}">
+                                <h2>View Logs</h2>
+                            </c:if>
+                            <h2>Inbox</h2>
+                        </div>
+                    </div>
+                </div>
             </h:form>
         </ui:define>
 

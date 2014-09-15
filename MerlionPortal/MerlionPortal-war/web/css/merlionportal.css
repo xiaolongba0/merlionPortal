@@ -85,3 +85,8 @@ h2.roleTitle{
 ul.rights-menu li{
     min-width:400px;
 }
+
+.loader{
+    width:16px;
+    height:auto;
+}
