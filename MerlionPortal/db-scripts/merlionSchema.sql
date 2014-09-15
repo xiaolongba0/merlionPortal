@@ -93,6 +93,7 @@ CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`Product` (
   `currency` VARCHAR(45) NULL DEFAULT NULL,
   `price` DOUBLE NULL DEFAULT NULL,
   `companyId` INT NULL,
+  `category` VARCHAR(45) NULL,
   PRIMARY KEY (`productId`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -112,8 +113,8 @@ CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`SystemUser` (
   `salution` VARCHAR(45) NULL DEFAULT NULL,
   `locked` TINYINT(1) NULL DEFAULT NULL,
   `resetPasswordUponLogin` TINYINT(1) NULL DEFAULT NULL,
-  `createdDate` TIMESTAMP NULL DEFAULT NULL,
-  `userType` VARCHAR(45) NOT NULL,
+  `createdDate` DATETIME NULL DEFAULT NULL,
+  `userType` VARCHAR(45) NULL,
   `activated` TINYINT(1) NOT NULL,
   `credit` VARCHAR(45) NULL,
   `Company_companyId` INT(11) NOT NULL,
@@ -134,7 +135,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`ProductOrder` (
   `productPOId` INT(11) NOT NULL AUTO_INCREMENT,
-  `createdDate` TIMESTAMP NULL DEFAULT NULL,
+  `createdDate` DATETIME NULL DEFAULT NULL,
   `salesPersonId` VARCHAR(45) NULL DEFAULT NULL,
   `price` DOUBLE NULL DEFAULT NULL,
   `status` INT NULL DEFAULT NULL,
@@ -160,7 +161,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`SystemLog` (
   `logId` INT(11) NOT NULL AUTO_INCREMENT,
-  `logTime` TIMESTAMP NULL DEFAULT NULL,
+  `logTime` DATETIME NULL DEFAULT NULL,
   `action` VARCHAR(255) NULL DEFAULT NULL,
   `SystemUser_systemUserId` INT(11) NOT NULL,
   PRIMARY KEY (`logId`),
@@ -273,7 +274,7 @@ CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`ProductContract` (
   `contractTerm` VARCHAR(255) NULL,
   `status` INT NULL,
   `validity` VARCHAR(45) NULL,
-  `createDate` TIMESTAMP NULL,
+  `createDate` DATETIME NULL,
   `creatorId` VARCHAR(45) NULL,
   `discountRate` VARCHAR(255) NULL,
   `clientId` INT NOT NULL,
@@ -321,7 +322,7 @@ CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`Quotation` (
   `description` VARCHAR(45) NULL,
   `customerId` INT NULL,
   `status` INT NULL,
-  `createDate` TIMESTAMP NULL,
+  `createDate` DATETIME NULL,
   `company` INT NULL,
   PRIMARY KEY (`quotationId`))
 ENGINE = InnoDB;
@@ -418,7 +419,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `merlionLogisticDB`.`TransportationLog` (
   `logId` INT NOT NULL,
   `action` VARCHAR(255) NULL,
-  `timeStamp` TIMESTAMP NULL,
+  `timeStamp` DATETIME NULL,
   `TransportationOrder_transportationOrderId` INT NOT NULL,
   PRIMARY KEY (`logId`),
   INDEX `fk_TransportationLog_TransportationOrder1_idx` (`TransportationOrder_transportationOrderId` ASC),
