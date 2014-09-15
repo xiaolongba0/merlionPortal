@@ -27,21 +27,16 @@ public class ResetPasswordBean {
         //GENERATE NEW PASSWORD AND SAVE TO DATABASE
         Random random = new Random();
         String newPassword = MD5Generator.hash(Integer.toString(random.nextInt(5000) + 1000)).substring(0, 15);
-        System.out.println("New Password:" + newPassword);
-        System.out.println("Email:" + email);
-        String sender = "a0083602@nus.edu.sg";
+        String sender = "merlionportal@nus.edu.sg";
         String[] recipients = {email};
         String subject = "Password Reset";
 
-        String content = "<h2>Hi user,</h2><p>You have request a password reset for your account at" + email + ". Please kindly use your new password below to login to your account.<br/><br/>"
-                + "<strong>" + newPassword + "</strong>"
+        String content = "<h2>Hi user,</h2><p>You have request a password reset for your account at " + email + ". Please kindly use your new password below to login to your account.<br/><br/>"
+                + "Password; <strong>" + newPassword + "</strong><br/><br/>"
                 + " Thank you. <br/><br/>Best Regards,<br/>Administrator, Merlion Portal";
-        System.out.println("Loading!");
         if (Postman.sendMail(sender, recipients, subject, content)) {
-            System.out.println("Success!");
             requestContext.execute("success()");
         } else {
-            System.out.println("Fail!");
             requestContext.execute("fail()");
         }
     }
