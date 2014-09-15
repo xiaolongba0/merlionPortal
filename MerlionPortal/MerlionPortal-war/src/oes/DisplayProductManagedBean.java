@@ -62,7 +62,7 @@ public class DisplayProductManagedBean {
         if (selectedProducts == null) {
             System.out.println("WRONG!!!!!!!! DIDNT SAVE THE VALUE!!!");
         } else {
-            newRequest = quotationMB.requestForQuotation(companyId, 1);
+//            newRequest = quotationMB.requestForQuotation(companyId, 1);
             System.out.println("Sting is empty array");
             System.out.println("selected product 1==================" + selectedProducts[0]);
             System.out.println("Quotation*****************" + newRequest.getQuotationId());
@@ -82,7 +82,7 @@ public class DisplayProductManagedBean {
     }
 
     public List<String> getTypes() {
-        types=quotationMB.getAllTypes();
+//        types=quotationMB.getAllTypes();
         return types;
     }
 

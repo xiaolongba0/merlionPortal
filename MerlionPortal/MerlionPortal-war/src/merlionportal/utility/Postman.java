@@ -22,7 +22,7 @@ public class Postman {
             Properties props = new Properties();
             InternetAddress sender = null;
             InternetAddress[] destination = null;
-            props.put("mail.smtp.host", "maila.nus.edu.sg");
+            props.put("mail.smtp.host", "mailc.nus.edu.sg");
             props.put("mail.smtp.port", "25");
             session = Session.getDefaultInstance(props);
             msg = new MimeMessage(session);
