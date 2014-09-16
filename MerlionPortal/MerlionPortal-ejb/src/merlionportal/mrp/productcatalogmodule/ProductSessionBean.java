@@ -79,12 +79,13 @@ public class ProductSessionBean {
         return false;
     }
 
-    public Integer addNewProduct(String productName, String description, String productType, String currency, Double price, Integer companyId) {
+    public Integer addNewProduct(String productName, String description, String category, String productType, String currency, Double price, Integer companyId) {
 
         // Company company = new Company(companyId);
         product = new Product();
         product.setProductName(productName);
         product.setDescription(description);
+         product.setCategory(category);
         product.setProductType(productType);
         product.setCurrency(currency);
         product.setPrice(price);
@@ -141,7 +142,7 @@ public class ProductSessionBean {
     
     */
 
-    public Integer editProduct(String productName, String description, String productType, String currency, Double price, Integer companyID, Integer productID/*, Integer companyId, Integer componentId*/) {
+    public Integer editProduct(String productName, String description, String category, String productType, String currency, Double price, Integer companyID, Integer productID/*, Integer companyId, Integer componentId*/) {
 
         Query query = entityManager.createQuery("SELECT p FROM Product p WHERE p.companyId = :inCompanyId");
         query.setParameter("inCompanyId", companyID);
@@ -156,6 +157,7 @@ public class ProductSessionBean {
         // Company company = new Company(companyId);
         pdt.setProductName(productName);
         pdt.setDescription(description);
+        pdt.setCategory(category);
         pdt.setProductType(productType);
         pdt.setCurrency(currency);
         pdt.setPrice(price);
@@ -171,32 +173,7 @@ public class ProductSessionBean {
 
     }
 
-    public Integer editProducttt(String productName, Integer companyID, Integer productID/*, Integer companyId, Integer componentId*/) {
-
-        Query query = entityManager.createQuery("SELECT p FROM Product p WHERE p.companyId = :inCompanyId");
-        query.setParameter("inCompanyId", companyID);
-        List<Product> allmyproducts = query.getResultList();
-        Product pdt = new Product();
-        for (Product p : allmyproducts) {
-            if (Objects.equals(p.getProductId(), productID)) {
-                pdt = p;
-            }
-        }
-
-        // Company company = new Company(companyId);
-        pdt.setProductName(productName);
-
-        // product.setComponent(getComponent(componentId));
-        // product.setCompany(company);
-        entityManager.merge(pdt);
-        entityManager.flush();
-
-        // company.getProductList().add(product);
-        //  entityManager.merge(company);
-        return pdt.getProductId();
-
-    }
-
+   
     public void deleteProducts(Integer companyId, Double productId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
