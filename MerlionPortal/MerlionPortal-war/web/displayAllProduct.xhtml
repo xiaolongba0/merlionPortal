@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <title>All Products</title>
     </h:head>
@@ -13,12 +14,9 @@
             <p:growl id="messages"/>        
             <p:menubar>
                 <p:menuitem value="HOME" url="oesIndexPage.xhtml"/>
-                <p:submenu label="PRODUCTS" >
-                    <p:menuitem value="View All Products" url="displayAllProducts.xhtml" />
-                    <p:menuitem value="Search Products" url="displayAllProducts.xhtml" />
-                </p:submenu>
+                <p:menuitem value="PRODUCTS" url="displayAllProduct.xhtml" />
                 <p:submenu label="QUOTATION" >
-                    <p:menuitem value="View All Request" url="displayAllProducts.xhtml" />
+                    <p:menuitem value="View All Request" url="viewallrequest.xhtml" />
                     <p:menuitem value="View Quotation" url="displayAllProducts.xhtml" />
                     <p:menuitem value="Quotation Status" url="displayAllProducts.xhtml" />
                 </p:submenu>
@@ -34,8 +32,8 @@
             <br/>
         </h:form>
         <h:form>
-            <p:dataTable var="product" sortMode="multiple" value="#{displayProductManagedBean.products}" 
-                         widgetVar="produtsTalbe"
+            <p:dataTable id="productSelect" var="product" sortMode="multiple" value="#{displayProductManagedBean.products}" 
+                         widgetVar="productsTable"
                          selection="#{displayProductManagedBean.selectedProducts}"
                          filteredValue="#{displayProductManagedBean.filteredProducts}"
                          emptyMessage="No product found with given criteria"
@@ -47,11 +45,10 @@
                         <p:inputText id="globalFilter" onkeyup="PF('productsTable').filter()" />
                     </p:outputPanel>
                 </f:facet>
-
-                <p:column sortBy="#{product.productId}" 
-                          filterBy="#{product.productId}" 
-                          filterMatchMode="exact" headerText="SKU" 
-                          selectionMode="multiple">
+                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                <p:column  
+                    filterBy="#{product.productId}" 
+                    filterMatchMode="exact" headerText="SKU" >
                     <h:outputText value="#{product.productId}" />
                 </p:column>
 
@@ -63,30 +60,29 @@
                     <h:outputText value="#{product.description}" />
                 </p:column>
 
-                <p:column filterBy="#{product.productType}" filterMatchMode="in" headerText="Type">
+                <p:column filterBy="#{product.category}" filterMatchMode="in" headerText="Category">
                     <f:facet name="filter">
                         <p:selectCheckboxMenu label="Select" 
                                               onchange="PF('produtsTalbe').filter()" 
                                               panelStyle="width:150px" scrollHeight="150">
-                            <f:selectItems value="#{displayProductManagedBean.types}" />
+                            <f:selectItems value="#{displayProductManagedBean.categories}" />
                         </p:selectCheckboxMenu>
                     </f:facet>
-                    <h:outputText value="#{product.productType}" />
+                    <h:outputText value="#{product.category}" />
                 </p:column>
 
                 <p:column headerText="Currency" >
                     <h:outputText value="#{product.currency}" />
                 </p:column>
 
-                <p:column headerText="Price" >
+                <p:column sortBy="#{product.price}" headerText="Price" >
                     <h:outputText value="#{product.price}" />
                 </p:column>
             </p:dataTable>
-        </h:form>
-        <br></br>
-        <h:form>
-            <p:commandButton value="Reset" type="reset" />
-            <p:commandButton value="Request For Quotation" id="submitRequest" actionListener="#{displayProductManagedBean.submitRequest()}" ajax="ture" />
+            <br></br>
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <p:commandButton value="Request For Quotation" id="submitRequest" update=":form:selectedDetail" process="productSelect"  actionListener="#{displayProductManagedBean.submitRequest}" ajax="ture" />
+
         </h:form>
     </h:body>
 </html>
