@@ -62,6 +62,20 @@
                             <p:message for="description" />
                         </p:column>
                     </p:row>
+                                        <p:row>
+                        <p:column>
+                            <h:outputLabel for="category" style="font-weight: bold" value="Product Category:   *" />
+                        </p:column>
+                        <p:column>                        
+                            <h:selectOneMenu id="category" value="#{productManagedBean.category}" required="true" label="Product Category">
+                                <f:selectItem itemLabel="Select Product Category" itemValue="" noSelectionOption="true" />
+                                <f:selectItem itemLabel="Fresh Products" itemValue="Fresh Products" />
+                                <f:selectItem itemLabel="Frozen Products" itemValue="Frozen Products" />
+                            </h:selectOneMenu>
+                            <p:message for="category" />
+                            <h:outputText value="#{productManagedBean.category}" />
+                        </p:column>
+                    </p:row> 
                     <p:row>
                         <p:column>
                             <h:outputLabel for="productType" style="font-weight: bold" value="Product Type:   *" />

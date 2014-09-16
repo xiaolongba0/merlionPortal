@@ -61,7 +61,16 @@
                     </p:cellEditor>
                 </p:column>
                 
-                
+                      <p:column headerText="Product Category">
+           <p:cellEditor>
+               <f:facet name="output"><h:outputText value="#{product.category}" /></f:facet>
+               <f:facet name="input">
+                   <h:selectOneMenu value="#{product.category}" style="width:100%">
+                       <f:selectItems value="#{productViewEditManagedBean.categories}" var="category" itemLabel="#{category}" itemValue="#{category}" />
+                   </h:selectOneMenu>
+               </f:facet>
+           </p:cellEditor>
+       </p:column> 
                 
                 <p:column headerText="Product Type">
            <p:cellEditor>
