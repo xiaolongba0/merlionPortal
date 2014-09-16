@@ -2,7 +2,6 @@ package merlionportal.managedbean.ci;
 
 import java.util.Random;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.inject.Named;
 import merlionportal.utility.MD5Generator;
@@ -10,7 +9,6 @@ import merlionportal.utility.Postman;
 import org.primefaces.context.RequestContext;
 
 @Named(value = "resetPasswordBean")
-@ManagedBean
 @RequestScoped
 public class ResetPasswordBean {
 
