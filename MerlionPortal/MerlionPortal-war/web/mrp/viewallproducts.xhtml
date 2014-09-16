@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>View All Products</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form id="formMain">
+            <h1>Welcome to MRP II page</h1>
+            <p:menubar>
+                <p:menuitem value="MRP II" url="mrp.xhtml" />
+                <p:menuitem value="View All Products" url="viewallproducts.xhtml" />
+                <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
+                <p:menuitem value="Delete Product" url="deleteproduct.xhtml" />
+                <p:menuitem value="View A Product" url="viewaproduct.xhtml" />
+                <p:menuitem value="Edit A Product" url="editproduct.xhtml" />
+            </p:menubar>
+            <br/>
+        </h:form>
+        <h:form id="form">
+            <p:growl id="msgs" showDetail="true"/>   
+
+            <p:dataTable id="products" var="product" value="#{dtProductDataTable.myCompanyProducts}" editable="true" style="margin-bottom:20px">
+
+
+                <f:facet name="header">
+                    View and Edit Products
+                </f:facet>
+
+                <p:ajax event="rowEdit" listener="#{dtProductDataTable.onRowEdit}" update=":form:msgs" />
+                <p:ajax event="rowEditCancel" listener="#{dtProductDataTable.onRowCancel}" update=":form:msgs" />
+
+
+                <p:column headerText="Product ID">
+                    <h:outputText value="#{product.productId}" />
+                </p:column>
+
+
+
+                <p:column headerText="Product Name">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{product.productName}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{product.productName}" style="width:100%" label="Product Name"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Product Description">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{product.description}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{product.description}" style="width:100%" label="Product Description"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                
+                
+                
+                <p:column headerText="Product Type">
+           <p:cellEditor>
+               <f:facet name="output"><h:outputText value="#{product.productType}" /></f:facet>
+               <f:facet name="input">
+                   <h:selectOneMenu value="#{product.productType}" style="width:100%">
+                       <f:selectItems value="#{dtProductDataTable.productTypes}" var="productType" itemLabel="#{productType}" itemValue="#{productType}" />
+                   </h:selectOneMenu>
+               </f:facet>
+           </p:cellEditor>
+       </p:column>
+                
+                
+                               <p:column headerText="Product Currency">
+           <p:cellEditor>
+               <f:facet name="output"><h:outputText value="#{product.currency}" /></f:facet>
+               <f:facet name="input">
+                   <h:selectOneMenu value="#{product.currency}" style="width:100%">
+                       <f:selectItems value="#{dtProductDataTable.currencies}" var="currency" itemLabel="#{currency}" itemValue="#{currency}" />
+                   </h:selectOneMenu>
+               </f:facet>
+           </p:cellEditor>
+       </p:column> 
+                
+
+                <p:column headerText="Product Price">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{product.price}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{product.price}" style="width:100%" label="Product Price"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column style="width:32px">
+                    <p:rowEditor />
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+    </h:body>
+</html>
+
