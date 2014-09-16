@@ -3,16 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package oes;
 
 import entity.Product;
 import entity.Quotation;
 import entity.QuotationLineItem;
-import java.sql.Timestamp;
+import entity.SystemUser;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
@@ -26,6 +27,7 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 public class QuotationManagerSessionBean {
+
     @PersistenceContext(unitName = "MerlionPortal-ejbPU")
     private EntityManager em;
 
@@ -35,7 +37,7 @@ public class QuotationManagerSessionBean {
 
     public QuotationManagerSessionBean() {
     }
-    
+
     public List<Product> displayAllProducts(int companyId) {
         List<Product> allProduct = new ArrayList<>();
         Query q = em.createNamedQuery("Product.findByCompanyId").setParameter("companyId", companyId);
@@ -47,84 +49,118 @@ public class QuotationManagerSessionBean {
         return allProduct;
     }
 
-    public Product searchForProductById(int productId, int companyId) {
-        Query q = em.createQuery("SELECT p FROM Product p WHERE "
-                + "p.productId = :productId AND p.companyId = :companyId");
-        product = (Product) q.getSingleResult();
-        return product;
-    }
+    public List<String> getAllTypes() {
+        List<String> types = new ArrayList();
+        List<String> uniTypes = new ArrayList();
+        Product p;
+        for (Object o : this.displayAllProducts(1)) {
+            p = (Product) o;
+            types.add(p.getCategory());
 
-    public List<Product> searchProductByName(int companyId, String productName) {
-        List<Product> result = new ArrayList();
-        List<Product> allProduct = this.displayAllProducts(companyId);
-        for (Object o : allProduct) {
-            Product p = (Product) o;
-            if (this.checkContains(p.getProductName(), productName)) {
-                result.add(p);
-            }
         }
-        return result;
+        Set<String> uniqueGas = new HashSet(types);
+        uniTypes.addAll(uniqueGas);
+
+        return uniTypes;
+
     }
 
-    public void requestForQuotation(int companyId, int customerId, String description) {
-       
-            quotation = new Quotation();
-            quotation.setCompany(companyId);
-            quotation.setCustomerId(customerId);
-            quotation.setStatus(1);//stage 1 request for quoation;
-             List<QuotationLineItem> itemList=new ArrayList();//the list is empty
-            quotation.setQuotationLineItemList(itemList);
-            quotation.setDescription(description);
-            Calendar cal = Calendar.getInstance();
-            Timestamp currentDate = (Timestamp) cal.getTime();
-            quotation.setCreateDate(currentDate);
-            em.persist(quotation);
-        
+    public Quotation requestForQuotation(int companyId, int customerId) {
+        System.out.println("GeneratedRequest Start====================");
+
+        quotation = new Quotation();
+        quotation.setCompany(companyId);
+        quotation.setCustomerId(customerId);
+        quotation.setStatus(1);//stage 1 request for quoation;
+        List<QuotationLineItem> itemList = new ArrayList();//the list is empty
+        quotation.setQuotationLineItemList(itemList);
+        //quotation.setDescription(description);
+        Date date = new Date();
+        // Timestamp currentDate = new Timestamp(date.getTime());
+        quotation.setCreateDate(date);
+        em.persist(quotation);
+        System.out.println("Finished generating request for quotation ********");
+        return quotation;
+
     }
 
-    public Boolean createLineItem(int companyId,int productId, Quotation myQuotation) {
+    public Date getCurrentTime() {
+        Date date = new Date();
+        return date;
+    }
+
+    public void createLineItem(int companyId, Product product, Quotation myQuotation) {
 
         lineItem = new QuotationLineItem();
-        product = this.findProduct(companyId,productId);
         lineItem.setProductproductId(product);
         lineItem.setQuotationquotationId(myQuotation);
         em.merge(myQuotation);
         myQuotation.getQuotationLineItemList().add(lineItem);
         em.persist(lineItem);
-        em.persist(myQuotation);
-        return true;
-    }
-    
-    public List<Quotation> viewAllRequestForQuotation(int companyId){
-       List<Quotation> result= new ArrayList();
-       Query q=em.createQuery("SELECT q FROM Quotation q WHERE q.company = :companyId AND q.status =:2");
-       for(Object o: q.getResultList()){
-           quotation = (Quotation)o;
-           result.add(quotation);
-       }
-       return result;
-    }
-        public List<Quotation> viewAllRequestForQuotation(int companyId,int clientId){
-       List<Quotation> result= new ArrayList();
-       Query q=em.createQuery("SELECT q FROM Quotation q WHERE q.company = :companyId "
-               + "AND q.status =:2 AND q.customerId =:clientId");
-       for(Object o: q.getResultList()){
-           quotation = (Quotation)o;
-           result.add(quotation);
-       }
-       return result;
-    }
-    
-    
-    public Boolean deleteRequest(int quotationId){
-        quotation=this.findQuotation(quotationId);
-        if(quotation!=null){
-        em.remove(this.findQuotation(quotationId));
-        return true;
-        }
-        return false;
+        em.merge(myQuotation);
     }
 
+    public List<Quotation> viewAllRequestForQuotation(int companyId) {
+        List<Quotation> result = new ArrayList();
+        Query q = em.createNamedQuery("Quotation.findByCompany").setParameter("company", companyId);
+        for (Object o : q.getResultList()) {
+            quotation = (Quotation) o;
+            result.add(quotation);
+        }
+        return result;
+    }
+
+    public List<Quotation> viewAllRequestForQuotation(int companyId, int clientId) {
+        List<Quotation> result = new ArrayList();
+        Query q = em.createQuery("SELECT q FROM Quotation q WHERE q.company = :company ADN customerId := clientId");
+        for (Object o : q.getResultList()) {
+            quotation = (Quotation) o;
+            result.add(quotation);
+        }
+        return result;
+    }
+
+    public SystemUser findCustomer(int customerId) {
+        SystemUser customer = (SystemUser) em.createNamedQuery("SystemUser.findBySystemUserId").setParameter("systemUserId", customerId).getSingleResult();
+        return customer;
+    }
+
+    public Boolean deleteRequest(int quotationId) {
+        quotation = this.findQuotation(quotationId);
+        em.remove(quotation);
+        return true;
+
+    }
+
+    public void generateQuotation(Quotation myQuotation, String Description) {
+        myQuotation.setDescription(Description);
+        Date date = this.getCurrentTime();
+        myQuotation.setCreateDate(date);
+        myQuotation.setStatus(2);
+        em.merge(myQuotation);
+
+    }
+    public Boolean checkPrice(Quotation myQuotation){
+        List<QuotationLineItem> myLine;
+        myLine=myQuotation.getQuotationLineItemList();
+        for(Object o: myLine){
+            QuotationLineItem q= (QuotationLineItem)o;
+            if(q.getLineItemPrice()==null){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public void setLineItemPrice(QuotationLineItem myItem,Double myPrice){
+        myItem.setLineItemPrice(myPrice);
+        em.merge(myItem);
+        
+    }
+    
+    public void updateObject(){
+        em.flush();
+    }
 
     //======================= Private Functions=================================
 
@@ -135,13 +171,13 @@ public class QuotationManagerSessionBean {
     }
 
     private Product findProduct(int companyId, int productId) {
-         Product result = (Product) em.createQuery("SELECT p FROM Product p WHERE "
+        Product result = (Product) em.createQuery("SELECT p FROM Product p WHERE "
                 + "p.companyId =:companyId AND p.productId =:productId").getSingleResult();
         return result;
     }
-    
-    private Quotation findQuotation(int quotationId){
-        Quotation result = (Quotation)em.find(Quotation.class, quotationId);
+
+    private Quotation findQuotation(int quotationId) {
+        Quotation result = (Quotation) em.find(Quotation.class, quotationId);
         return result;
     }
 
