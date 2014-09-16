@@ -13,9 +13,9 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import merlionportal.ci.administrationmodule.GetCompanySessionBean;
 import merlionportal.ci.administrationmodule.GetCompanyUserSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
@@ -25,7 +25,7 @@ import merlionportal.utility.MD5Generator;
  *
  * @author manliqi
  */
-@ManagedBean(name = "viewUserManagerBean")
+@Named(value = "viewUserManagerBean")
 @ViewScoped
 public class ViewUserManagerBean {
 
@@ -47,8 +47,7 @@ public class ViewUserManagerBean {
     private List<SystemUser> filteredUsers;
     private SystemUser selectedUser;
     private Integer companyId;
-    
-    private UserRole selectedRole;
+   
 
     public ViewUserManagerBean() {
     }
@@ -124,12 +123,14 @@ public class ViewUserManagerBean {
 //            direct to login page
         }
     }
-    public void detachRole(){
+    public void detachRole( UserRole role){
+        System.err.println("Called!");
         int result = 0;
         if (selectedUser != null) {
-            result = uamb.detachRoleFromUser(loginedUser.getSystemUserId(), selectedUser.getSystemUserId(),  selectedRole.getUserRoleId());
+            result = uamb.detachRoleFromUser(loginedUser.getSystemUserId(), selectedUser.getSystemUserId(),  role.getUserRoleId());
         }
         if (result == 1) {
+            selectedUser = uamb.getUser(selectedUser.getSystemUserId());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Role Detached!", "This role is detached from this user."));
 
         } else if (result == -1) {
@@ -197,12 +198,5 @@ public class ViewUserManagerBean {
         this.filteredUsers = filteredUsers;
     }
 
-    public UserRole getSelectedRole() {
-        return selectedRole;
-    }
-
-    public void setSelectedRole(UserRole selectedRole) {
-        this.selectedRole = selectedRole;
-    }
 
 }

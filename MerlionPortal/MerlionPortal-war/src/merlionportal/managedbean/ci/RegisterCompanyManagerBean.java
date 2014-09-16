@@ -11,13 +11,15 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 
 /**
  *
  * @author manliqi
  */
-@ManagedBean(name = "userAccountManagerBean")
+@Named(value = "userAccountManagerBean")
+@ManagedBean
 @ViewScoped
 public class RegisterCompanyManagerBean {
 

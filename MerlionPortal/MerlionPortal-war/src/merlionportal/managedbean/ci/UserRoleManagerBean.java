@@ -14,10 +14,10 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import merlionportal.ci.administrationmodule.GetCompanySessionBean;
 import merlionportal.ci.administrationmodule.RoleManagementSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
@@ -26,7 +26,7 @@ import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
  *
  * @author manliqi
  */
-@ManagedBean(name = "createRole")
+@Named(value = "createRole")
 @ViewScoped
 public class UserRoleManagerBean implements Serializable {
 

@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 
-@ManagedBean(name = "dashboardBean")
+@Named(value = "dashboardBean")
 @ViewScoped
 public class AdminDashboardBean implements Serializable {
 
