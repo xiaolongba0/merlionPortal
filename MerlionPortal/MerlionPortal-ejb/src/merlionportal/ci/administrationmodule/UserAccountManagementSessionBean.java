@@ -86,9 +86,11 @@ public class UserAccountManagementSessionBean {
         company.setEmailAddress(emailAddress);
         company.setDescription(description);
         company.setPackage1(package1);
-        
+
         List<UserRole> roles = new ArrayList<>();
         company.setUserRoleList(roles);
+        List<SystemUser> users = new ArrayList<>();
+        company.setSystemUserList(users);
 
         em.persist(company);
         em.flush();
@@ -134,6 +136,7 @@ public class UserAccountManagementSessionBean {
                 Company company = getCompany(companyId);
                 if (company != null) {
                     user.setCompanycompanyId(company);
+                    company.getSystemUserList().add(user);
                 } else {
                     System.out.println("Company is null");
 
@@ -149,10 +152,9 @@ public class UserAccountManagementSessionBean {
                 }
 
                 user.setUserRoleList(userRoles);
-
+                em.merge(company);
                 em.persist(user);
                 em.flush();
-                em.merge(company);
 
                 return 1;
             } else {
@@ -173,7 +175,7 @@ public class UserAccountManagementSessionBean {
         return em.find(Company.class, companyId);
     }
 
-    public int unlockUser(int systemAdminId, Integer userId) {
+    public int deleteSystemUser(int systemAdminId, Integer userId) {
         SystemUser operator = em.find(SystemUser.class, systemAdminId);
         boolean canRun = false;
         if (operator != null) {
@@ -189,11 +191,25 @@ public class UserAccountManagementSessionBean {
 
                 SystemUser user = em.find(SystemUser.class, userId);
                 if (user != null) {
-                    user.setLocked(false);
-
-                    em.merge(user);
+                    Company company = user.getCompanycompanyId();
+                    if (company.getSystemUserList().contains(user)) {
+                        company.getSystemUserList().remove(user);
+                        em.merge(company);
+                        em.flush();
+                    }
+                    for (Object o : user.getUserRoleList()) {
+                        UserRole role = (UserRole) o;
+                        if (role.getSystemUserList().contains(user)) {
+                            role.getSystemUserList().remove(user);
+                            em.merge(role);
+                            em.refresh(role);
+                            em.flush();
+                        }
+                    }
+                    em.remove(user);
                     em.flush();
                     return 1;
+
                 }
                 System.out.println("The user looking for is null");
                 return 0;
@@ -208,7 +224,7 @@ public class UserAccountManagementSessionBean {
 
     }
 
-    public int changePasswordUponLogin(Integer systemAdminId, Integer userId) {
+    public int updateUserInfo(Integer systemAdminId, SystemUser updatedUser) {
         SystemUser operator = em.find(SystemUser.class, systemAdminId);
         boolean canRun = false;
         if (operator != null) {
@@ -221,9 +237,19 @@ public class UserAccountManagementSessionBean {
             }
 
             if (canRun) {
-                SystemUser user = em.find(SystemUser.class, userId);
+                SystemUser user = em.find(SystemUser.class, updatedUser.getSystemUserId());
                 if (user != null) {
-                    user.setResetPasswordUponLogin(true);
+                    user.setFirstName(updatedUser.getFirstName());
+                    user.setLastName(updatedUser.getLastName());
+                    user.setEmailAddress(updatedUser.getEmailAddress());
+                    user.setPassword(updatedUser.getPassword());
+                    user.setPostalAddress(updatedUser.getPostalAddress());
+                    user.setContactNumber(updatedUser.getContactNumber());
+                    user.setSalution(updatedUser.getSalution());
+                    user.setLocked(updatedUser.getLocked());
+                    user.setResetPasswordUponLogin(updatedUser.getResetPasswordUponLogin());
+                    user.setActivated(updatedUser.getActivated());
+                    user.setCredit(updatedUser.getCredit());
 
                     em.merge(user);
                     em.flush();
@@ -240,5 +266,44 @@ public class UserAccountManagementSessionBean {
         System.out.println("Operator is null");
         return 0;
 
+    }
+
+    public int detachRoleFromUser(Integer systemAdminId, Integer userId, Integer roleId) {
+        SystemUser operator = em.find(SystemUser.class, systemAdminId);
+        boolean canRun = false;
+        if (operator != null) {
+            if (operator.getUserType().equals("superuser")) {
+                canRun = true;
+            }
+
+            if (carb.userHasRight(operator, Right.canManageUser)) {
+                canRun = true;
+            }
+
+            if (canRun) {
+                SystemUser user = em.find(SystemUser.class, userId);
+                if (user != null) {
+                    UserRole role = em.find(UserRole.class, roleId);
+                    if (role != null) {
+                        if (user.getUserRoleList().contains(role)) {
+                            user.getUserRoleList().remove(role);
+                            role.getSystemUserList().remove(user);
+                            em.merge(role);
+                            em.merge(user);
+                            em.flush();
+                            return 1;
+                        }
+                    }
+                    System.out.println("role is null");
+                    return 0;
+                }
+                System.out.println("user is null");
+                return 0;
+            }
+            System.out.println("Access Denied");
+            return -1;
+        }
+        System.out.println("operator is null");
+        return 0;
     }
 }
