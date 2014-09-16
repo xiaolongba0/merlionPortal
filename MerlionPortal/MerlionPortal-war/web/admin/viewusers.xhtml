@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+    <c:set var="root" value="${request.contextPath}" />
+    <ui:composition template="${root}/templates/templateadmin.xhtml">
+        <ui:param name="pageName" value="View User" />
+
+        <!-- Override Content -->
+        <ui:define name="content">
+            <div class="container" >
+                <p:panel header="View Roles" style="margin-bottom:10px;">
+                    <h:form>
+                        <!--Only should company selection if it is super user-->
+
+                        <c:if test ="#{viewUserManagerBean.loginedUser.userType == 'superuser'}">
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel for="company" value="Company:" />
+                                <h:selectOneMenu id="company" value="#{viewUserManagerBean.selectCompanyId}"  style="width:250px" styleClass="form-control">
+                                    <p:ajax listener="#{viewUserManagerBean.onCompanyChange}" update="usersData" />
+                                    <f:selectItem itemLabel="Select Company . . ." itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{viewUserManagerBean.companys}" var="company" itemLabel="#{company.name}"  itemValue="#{company.companyId}"/>
+                                </h:selectOneMenu>
+                            </h:panelGrid>
+                        </c:if>
+                        <p:contextMenu for="usersData">
+                            <p:menuitem value="View detail" update="userDetail" icon="ui-icon-search" oncomplete="toggleModal();"/>
+                            <p:menuitem value="Delete user" update="usersData" icon="ui-icon-close" actionListener="#{viewUserManagerBean.deleteUser}"/>
+                        </p:contextMenu>
+
+                        <p:messages id="messages"  showDetail="true" autoUpdate="true" closable="true" />
+                        <p:dataTable id="usersData" var="user" rowKey="#{user.systemUserId}" value="#{viewUserManagerBean.companyUsers}" widgetVar="usersTable"
+                                     emptyMessage="No users found with given criteria" filteredValue="#{viewUserManagerBean.filteredUsers}"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="20,50,100"
+                                     selection="#{viewUserManagerBean.selectedUser}" selectionMode="single">
+
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h:outputText value="Search all fields:" />
+                                    <p:inputText id="globalFilter" onkeyup="PF('usersTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                                </p:outputPanel>
+                            </f:facet>
+                            <p:column filterBy="#{user.systemUserId}" headerText="User Id"  filterMatchMode="contains">
+                                <h:outputText value="#{user.systemUserId}" />
+                            </p:column>
+                            <p:column filterBy="#{user.salution}" headerText="Salutation"  filterMatchMode="contains">
+                                <h:outputText value="#{user.salution}" />
+                            </p:column>
+                            <p:column filterBy="#{user.firstName}" headerText="First Name"  filterMatchMode="contains">
+                                <h:outputText value="#{user.firstName}" />
+                            </p:column>
+                            <p:column filterBy="#{user.lastName}" headerText="Last Name"  filterMatchMode="contains">
+                                <h:outputText value="#{user.lastName}" />
+                            </p:column>
+                            <p:column filterBy="#{user.emailAddress}" headerText="Email Address"  filterMatchMode="contains">
+                                <h:outputText value="#{user.emailAddress}" />
+                            </p:column>
+                            <p:column filterBy="#{user.postalAddress}" headerText="Postal Address"  filterMatchMode="contains">
+                                <h:outputText value="#{user.postalAddress}" />
+                            </p:column>
+                            <p:column filterBy="#{user.contactNumber}" headerText="Contact Number"  filterMatchMode="contains">
+                                <h:outputText value="#{user.contactNumber}" />
+                            </p:column>
+                            <p:column filterBy="#{user.credit}" headerText="Credit"  filterMatchMode="contains">
+                                <h:outputText value="#{user.credit}" />
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <div id="detailModal" class="modal fade">
+                            <div class="modal-dialog">
+
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3>Role detail</h3>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <p:outputPanel id="userDetail" style="text-align:left;">
+                                            <h:form>
+
+                                                <p:panelGrid  columns="2" rendered="#{not empty viewUserManagerBean.selectedUser}">
+                                                    <h:outputText value="User ID:" />
+                                                    <p:outputLabel value="#{viewUserManagerBean.selectedUser.systemUserId}" />
+                                                    <h:outputText value="Salutation" />
+                                                    <p:inplace  editor="true">
+                                                        <p:inputText value="#{viewUserManagerBean.selectedUser.salution}" required="true" label="text" />
+                                                    </p:inplace> 
+                                                    <h:outputText value="First Name" />
+                                                    <p:inplace  editor="true">
+                                                        <p:inputText value="#{viewUserManagerBean.selectedUser.firstName}" required="true" label="text" />
+                                                    </p:inplace> 
+                                                    <h:outputText value="Last Name" />
+                                                    <p:inplace  editor="true">
+                                                        <p:inputText value="#{viewUserManagerBean.selectedUser.lastName}" required="true" label="text" />
+                                                    </p:inplace> 
+                                                    <h:outputText value="Email Address" />
+                                                    <p:inplace  editor="true">
+                                                        <p:inputText value="#{viewUserManagerBean.selectedUser.emailAddress}" required="true" label="text" />
+                                                    </p:inplace> 
+                                                    <h:outputText value="Password" />
+                                                    <p:inplace  editor="true">
+                                                        <p:inputText value="#{viewUserManagerBean.selectedUser.password}" required="true" label="text" />
+                                                    </p:inplace> 
+                                                    <h:outputText value="Postal Address" />
+                                                    <p:inplace  editor="true">
+                                                        <p:inputText value="#{viewUserManagerBean.selectedUser.postalAddress}" required="true" label="text" />
+                                                    </p:inplace> 
+                                                    <h:outputText value="Contact Number" />
+                                                    <p:inplace  editor="true">
+                                                        <p:inputText value="#{viewUserManagerBean.selectedUser.contactNumber}" required="true" label="text" />
+                                                    </p:inplace> 
+                                                    <h:outputText value="Credit" />
+                                                    <p:inplace  editor="true">
+                                                        <h:selectOneMenu value="#{viewUserManagerBean.selectedUser.credit}" required="true">
+                                                            <f:selectItem itemLabel="Not Applicable" itemValue="Not Applicable" />
+                                                            <f:selectItem itemLabel="Pass" itemValue="Pass" />
+                                                            <f:selectItem itemLabel="Fail" itemValue="Fail" />
+                                                        </h:selectOneMenu>
+                                                    </p:inplace> 
+                                                    <h:outputText value="Locked" />
+                                                    <p:inplace  editor="true">
+                                                        <p:selectBooleanButton  value="#{viewUserManagerBean.selectedUser.locked}" onLabel="Locked" offLabel="Unlocked" style="width:80px"/>
+                                                    </p:inplace> 
+                                                    <h:outputText value="Activated" />
+                                                    <p:inplace  editor="true">
+                                                        <p:selectBooleanButton  value="#{viewUserManagerBean.selectedUser.activated}" onLabel="Activated" offLabel="Deactivated" style="width:80px"/>
+                                                    </p:inplace> 
+                                                    <h:outputText value="Reset Password Upon Login" />
+                                                    <p:inplace  editor="true">
+                                                        <p:selectBooleanButton  value="#{viewUserManagerBean.selectedUser.resetPasswordUponLogin}" onLabel="Reset" offLabel="Don't Reset" style="width:80px"/>
+                                                    </p:inplace> 
+                                                    <h:outputText value="Created Date" />
+                                                    <p:outputLabel value="#{viewUserManagerBean.selectedUser.createdDate}"  />
+
+                                                </p:panelGrid>
+                                                <h:form>
+                                                    <p:messages id="messages"  showDetail="true" autoUpdate="true" closable="true" />
+                                                     <p:dataTable id="roleData" var="role" rowKey="#{role.userRoleId}" value="#{viewUserManagerBean.selectedUser.userRoleList}" 
+                                                                 selection="#{viewUserManagerBean.selectedRole}" selectionMode="single">
+                                                        <p:column headerText="Role Name">
+                                                            <p:outputLabel value="#{role.roleName}" />
+                                                        </p:column>
+                                                         <p:column headerText="Detach">
+                                                             <p:commandButton icon="ui-icon-close" actionListener="#{viewUserManagerBean.detachRole}" styleClass="btn btn-danger" />
+                                                         </p:column>
+                                                    </p:dataTable>
+                                                </h:form>
+                                            </h:form>
+
+                                        </p:outputPanel>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <p:growl id="growl" showDetail="true" sticky="true" />
+                                        <p:commandButton value="Update" update="growl" styleClass="btn btn-success" actionListener="#{viewUserManagerBean.updateUser}"></p:commandButton>
+                                        <p:commandButton value="Close" styleClass="btn btn-warning" pt:data-dismiss="modal"></p:commandButton>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </h:form>
+                    <script type="text/javascript">
+                        function toggleModal() {
+                            $("#detailModal").modal('show');
+                        }
+                    </script>
+                </p:panel>
+            </div>
+        </ui:define>
+
+    </ui:composition>
+</html>

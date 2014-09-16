@@ -15,10 +15,10 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.inject.Named;
-import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.GetCompanyRoleSessionBean;
 import merlionportal.ci.administrationmodule.GetCompanySessionBean;
 import merlionportal.ci.administrationmodule.RoleManagementSessionBean;
@@ -29,7 +29,7 @@ import merlionportal.utility.MD5Generator;
  *
  * @author manliqi
  */
-@Named(value = "createUserManagerBean")
+@ManagedBean(name = "createUserManagerBean")
 @ViewScoped
 public class CreateUserManagerBean {
 

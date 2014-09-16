@@ -16,40 +16,41 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import merlionportal.ci.administrationmodule.GetCompanyRoleSessionBean;
 import merlionportal.ci.administrationmodule.GetCompanySessionBean;
-import merlionportal.ci.administrationmodule.RoleManagementSessionBean;
+import merlionportal.ci.administrationmodule.GetCompanyUserSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.utility.MD5Generator;
 
 /**
  *
  * @author manliqi
  */
-@ManagedBean(name = "viewCompanyRoles")
+@ManagedBean(name = "viewUserManagerBean")
 @ViewScoped
-public class ViewCompanyRolesManagerBean {
+public class ViewUserManagerBean {
 
-    @EJB
-    GetCompanyRoleSessionBean gcrsb;
+    /**
+     * Creates a new instance of ViewUserManagerBean
+     */
     @EJB
     UserAccountManagementSessionBean uamb;
     @EJB
     GetCompanySessionBean gcsb;
     @EJB
-    RoleManagementSessionBean rmsb;
+    GetCompanyUserSessionBean gcusb;
 
-    private Integer companyId;
     private SystemUser loginedUser;
     private List<Company> companys;
     private Integer selectCompanyId;
 
+    private List<SystemUser> companyUsers;
+    private List<SystemUser> filteredUsers;
+    private SystemUser selectedUser;
+    private Integer companyId;
+    
     private UserRole selectedRole;
-    private List<UserRole> roles;
 
-    /**
-     * Creates a new instance of ViewCompanyRoles
-     */
-    public ViewCompanyRolesManagerBean() {
+    public ViewUserManagerBean() {
     }
 
     @PostConstruct
@@ -74,9 +75,9 @@ public class ViewCompanyRolesManagerBean {
             companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
             if (companyId != null) {
 
-                roles = gcrsb.getAllRolesInCompany(companyId);
-                if (roles == null) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "No Record!", "There is not any role created yet"));
+                companyUsers = gcusb.getAllUsersInCompany(companyId);
+                if (companyUsers == null) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "No Record!", "There is no user created yet"));
 
                 }
             }
@@ -85,21 +86,18 @@ public class ViewCompanyRolesManagerBean {
 
     public void onCompanyChange() {
         if (selectCompanyId != null) {
-            roles = gcrsb.getAllRolesInCompany(selectCompanyId);
+            companyUsers = gcusb.getAllUsersInCompany(selectCompanyId);
         }
 
     }
 
-    public void deleteRole() {
+    public void deleteUser() {
         int result = 0;
-        if (selectedRole != null) {
-            result = rmsb.deleteCompanyRole(loginedUser.getSystemUserId(), selectedRole.getUserRoleId());
+        if (selectedUser != null) {
+            result = uamb.deleteSystemUser(loginedUser.getSystemUserId(), selectedUser.getSystemUserId());
         }
         if (result == 1) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Deleted!", "This Role is deleted."));
-
-        } else if (result == -2) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Unsuccessful!", "Cannot deleted this role as there are users assigned to this role."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Deleted!", "This user is deleted."));
 
         } else if (result == -1) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Access Denied!", "You do not have sufficient right to perform this action."));
@@ -108,29 +106,39 @@ public class ViewCompanyRolesManagerBean {
 //            direct to login page
         }
     }
-
-    public void updateRole() {
+    
+    public void updateUser(){
         int result = 0;
-        if (selectedRole != null) {
-            result = rmsb.updateRole(loginedUser.getSystemUserId(), selectedRole);
+        if (selectedUser != null) {
+            String pass = selectedUser.getPassword();
+            selectedUser.setPassword(MD5Generator.hash(pass));
+            result = uamb.updateUserInfo(loginedUser.getSystemUserId(), selectedUser);
         }
         if (result == 1) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Role Updated!", "This user role is updated"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Updated!", "This user is updated."));
 
         } else if (result == -1) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Access Denied!", "You do not have sufficient right to perform this action."));
 
         } else {
-//            redirect to login page
+//            direct to login page
         }
     }
+    public void detachRole(){
+        int result = 0;
+        if (selectedUser != null) {
+            result = uamb.detachRoleFromUser(loginedUser.getSystemUserId(), selectedUser.getSystemUserId(),  selectedRole.getUserRoleId());
+        }
+        if (result == 1) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Role Detached!", "This role is detached from this user."));
 
-    public int getCompanyId() {
-        return companyId;
-    }
+        } else if (result == -1) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Access Denied!", "You do not have sufficient right to perform this action."));
 
-    public void setCompanyId(int companyId) {
-        this.companyId = companyId;
+        } else {
+//            direct to login page
+        }
+        
     }
 
     public SystemUser getLoginedUser() {
@@ -157,12 +165,36 @@ public class ViewCompanyRolesManagerBean {
         this.selectCompanyId = selectCompanyId;
     }
 
-    public List<UserRole> getRoles() {
-        return roles;
+    public List<SystemUser> getCompanyUsers() {
+        return companyUsers;
     }
 
-    public void setRoles(List<UserRole> roles) {
-        this.roles = roles;
+    public void setCompanyUsers(List<SystemUser> companyUsers) {
+        this.companyUsers = companyUsers;
+    }
+
+    public SystemUser getSelectedUser() {
+        return selectedUser;
+    }
+
+    public void setSelectedUser(SystemUser selectedUser) {
+        this.selectedUser = selectedUser;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
+    public List<SystemUser> getFilteredUsers() {
+        return filteredUsers;
+    }
+
+    public void setFilteredUsers(List<SystemUser> filteredUsers) {
+        this.filteredUsers = filteredUsers;
     }
 
     public UserRole getSelectedRole() {
