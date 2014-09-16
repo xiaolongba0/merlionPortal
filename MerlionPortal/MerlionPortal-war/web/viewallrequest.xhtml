@@ -2,7 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>All Pending Requests</title>
     </h:head>
@@ -23,12 +25,42 @@
                     <p:menuitem value="Retrieve Saved Order" url="displayAllProducts.xhtml" />
                 </p:submenu>
                 <p:submenu label="REPORTS" >
-
                 </p:submenu>
-
             </p:menubar>
             <br/>
         </h:form>
+        <h:form>  
+            <p:dataTable id="allRequest" var="newRequest" value="#{quotationManagedBean.allQuotation}" selectionMode="single" selection="#{quotationManagedBean.selectedRequest}" rowKey="#{newRequest.quotationId}">
+                <p:column  
+                    filterBy="#{newRequest.quotationId}" 
+                    filterMatchMode="exact" headerText="Quotation Id" >
+                    <h:outputText value="#{newRequest.quotationId}" />
+                </p:column>
+                <p:column  
+                    filterBy="#{newRequest.customerId}" 
+                    filterMatchMode="exact" headerText="Customer" >
+                    <h:outputText value="#{newRequest.customerId}" />
+                </p:column>
+                <p:column headerText="Create Date">
+                    <h:outputText value="#{newRequest.createDate}" />
+                </p:column>
+            </p:dataTable>
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <c:if test="#{quotationManagedBean.userId==1}">
+                <br></br>
+                <p:commandButton action="#{quotationManagedBean.showRequest()}" value="View Request">
+                    <f:param name="pageId" value="1" />
+                </p:commandButton>        
+            </c:if>
+
+            <c:if test="#{quotationManagedBean.userId==1}">
+                <br></br>
+                <p:commandButton action="#{quotationManagedBean.editQuotation()}" value="Generate Quotation">
+                </p:commandButton>        
+            </c:if>
+        </h:form>
+
+
     </h:body>
 </html>
 
