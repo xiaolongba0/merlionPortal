@@ -40,6 +40,7 @@ public class ProductViewEditManagedBean {
     
     private String productName;
     private String description;
+    private String category;
     private String productType;
     private String currency;
     private Double price;
@@ -47,6 +48,7 @@ public class ProductViewEditManagedBean {
     private Product product;
     private final static String[] productTypes;
     private final static String[] currencies;
+    private final static String[] categories;
     
     
     public ProductViewEditManagedBean() {
@@ -85,8 +87,9 @@ public class ProductViewEditManagedBean {
         currencies[18] = "Norwegian Krone (NOK)";
         currencies[19] = "Mexican Peso (MXN)";
         
-        
-        
+        categories = new String[2];
+         categories[0] = "Fresh Products";
+        categories[1] = "Frozen Products";
     }
     
        public String[] getProductTypes() {
@@ -95,6 +98,10 @@ public class ProductViewEditManagedBean {
        
           public String[] getCurrencies() {
         return currencies;
+    }
+          
+        public String[] getCategories() {
+        return categories;
     }
        
        
@@ -122,6 +129,14 @@ public class ProductViewEditManagedBean {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    
+     public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getProductType() {
@@ -166,7 +181,7 @@ public class ProductViewEditManagedBean {
         product = new Product();
         product = (Product) event.getObject();
           System.err.println("product.getProductName(): " + product.getProductName());
-            productSessionBean.editProduct(product.getProductName(), product.getDescription(), product.getProductType(), product.getCurrency(), product.getPrice(), companyId, product.getProductId());
+            productSessionBean.editProduct(product.getProductName(), product.getDescription(), product.getCategory(), product.getProductType(), product.getCurrency(), product.getPrice(), companyId, product.getProductId());
             FacesContext.getCurrentInstance().addMessage(null, msg);
     }
      

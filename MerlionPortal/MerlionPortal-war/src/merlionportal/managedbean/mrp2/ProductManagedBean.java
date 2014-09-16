@@ -28,6 +28,7 @@ public class ProductManagedBean {
     private ProductSessionBean productSessionBean;
     private String productName;
     private String description;
+     private String category;
     private String productType;
     private String currency;
     private Double price;
@@ -78,6 +79,14 @@ public class ProductManagedBean {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    
+       public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getProductType() {
@@ -217,7 +226,7 @@ public class ProductManagedBean {
         //  Integer systemUserId = Integer.valueOf(systemUser);
         try {
             //companyId =(Integer)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
-            newProductId = productSessionBean.addNewProduct(productName, description, productType, currency, price, companyId);
+            newProductId = productSessionBean.addNewProduct(productName, description, category, productType, currency, price, companyId);
             statusMessage = "New Product Saved Successfully";
      //   } catch (VenueConflictException vex) {
             //      statusMessage = "Venue Conflict Exception";
@@ -262,6 +271,7 @@ public class ProductManagedBean {
             productId = productTemp.getProductId().doubleValue();
             productName = productTemp.getProductName();
             description = productTemp.getDescription();
+            category = productTemp.getCategory();
             productType = productTemp.getProductType();
             currency = productTemp.getCurrency();
             price = productTemp.getPrice();
@@ -269,8 +279,6 @@ public class ProductManagedBean {
             ex.printStackTrace();
         }
     }
-    
-        ////////////////////////////////////////////////////////////////editing
 
     
     
