@@ -41,7 +41,7 @@
                             <p:outputLabel for="productId" style="font-weight: bold" value="Product Id: " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="Product Id" requiredMessage="Product Id is required." id="productId" value="#{productManagerBean.productId}">
+                            <p:inputText required="true" label="Product Id" requiredMessage="Product Id is required." id="productId" value="#{productManagedBean.productId}">
                                 <f:validateLength minimum="1" maximum="16" />
                             </p:inputText>
                         </p:column>
@@ -50,7 +50,7 @@
                         </p:column>
                     </p:row>
                 </p:panelGrid>
-                <p:commandButton id="btn" value="Delete Product" update="panel" actionListener="#{productManagerBean.deleteProduct}" ajax="true" />
+                <p:commandButton id="btn" value="Delete Product" update="panel" actionListener="#{productManagedBean.deleteProduct}" ajax="true" />
             </p:panel>
         </h:form>
     </h:body>

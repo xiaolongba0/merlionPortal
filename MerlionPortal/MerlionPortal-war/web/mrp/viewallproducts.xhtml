@@ -30,15 +30,15 @@
         <h:form id="form">
             <p:growl id="msgs" showDetail="true"/>   
 
-            <p:dataTable id="products" var="product" value="#{dtProductDataTable.myCompanyProducts}" editable="true" style="margin-bottom:20px">
+            <p:dataTable id="products" var="product" value="#{productViewEditManagedBean.myCompanyProducts}" editable="true" style="margin-bottom:20px">
 
 
                 <f:facet name="header">
                     View and Edit Products
                 </f:facet>
 
-                <p:ajax event="rowEdit" listener="#{dtProductDataTable.onRowEdit}" update=":form:msgs" />
-                <p:ajax event="rowEditCancel" listener="#{dtProductDataTable.onRowCancel}" update=":form:msgs" />
+                <p:ajax event="rowEdit" listener="#{productViewEditManagedBean.onRowEdit}" update=":form:msgs" />
+                <p:ajax event="rowEditCancel" listener="#{productViewEditManagedBean.onRowCancel}" update=":form:msgs" />
 
 
                 <p:column headerText="Product ID">
@@ -68,7 +68,7 @@
                <f:facet name="output"><h:outputText value="#{product.productType}" /></f:facet>
                <f:facet name="input">
                    <h:selectOneMenu value="#{product.productType}" style="width:100%">
-                       <f:selectItems value="#{dtProductDataTable.productTypes}" var="productType" itemLabel="#{productType}" itemValue="#{productType}" />
+                       <f:selectItems value="#{productViewEditManagedBean.productTypes}" var="productType" itemLabel="#{productType}" itemValue="#{productType}" />
                    </h:selectOneMenu>
                </f:facet>
            </p:cellEditor>
@@ -80,7 +80,7 @@
                <f:facet name="output"><h:outputText value="#{product.currency}" /></f:facet>
                <f:facet name="input">
                    <h:selectOneMenu value="#{product.currency}" style="width:100%">
-                       <f:selectItems value="#{dtProductDataTable.currencies}" var="currency" itemLabel="#{currency}" itemValue="#{currency}" />
+                       <f:selectItems value="#{productViewEditManagedBean.currencies}" var="currency" itemLabel="#{currency}" itemValue="#{currency}" />
                    </h:selectOneMenu>
                </f:facet>
            </p:cellEditor>

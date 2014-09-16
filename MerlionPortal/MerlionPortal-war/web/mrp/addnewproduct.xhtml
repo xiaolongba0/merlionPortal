@@ -41,7 +41,7 @@
                             <p:outputLabel for="productName" style="font-weight: bold" value="Product Name: " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="Product Name" requiredMessage="Product Name is required." id="productName" value="#{productManagerBean.productName}">
+                            <p:inputText required="true" label="Product Name" requiredMessage="Product Name is required." id="productName" value="#{productManagedBean.productName}">
                                 <f:validateLength minimum="4" maximum="16" />
                             </p:inputText>
                         </p:column>
@@ -54,7 +54,7 @@
                             <p:outputLabel for="description" style="font-weight: bold" value="Description: " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="Description" requiredMessage="Description is required." id="description" value="#{productManagerBean.description}">
+                            <p:inputText required="true" label="Description" requiredMessage="Description is required." id="description" value="#{productManagedBean.description}">
                                 <f:validateLength minimum="1" maximum="19" />
                             </p:inputText>
                         </p:column>
@@ -67,13 +67,13 @@
                             <h:outputLabel for="productType" style="font-weight: bold" value="Product Type:   *" />
                         </p:column>
                         <p:column>                        
-                            <h:selectOneMenu id="productType" value="#{productManagerBean.productType}" required="true" label="Product Type">
+                            <h:selectOneMenu id="productType" value="#{productManagedBean.productType}" required="true" label="Product Type">
                                 <f:selectItem itemLabel="Select Product Type" itemValue="" noSelectionOption="true" />
                                 <f:selectItem itemLabel="Manufacturing" itemValue="Manufacturing" />
                                 <f:selectItem itemLabel="Non-Manufacturing" itemValue="Non-Manufacturing" />
                             </h:selectOneMenu>
                             <p:message for="productType" />
-                            <h:outputText value="#{productManagerBean.productType}" />
+                            <h:outputText value="#{productManagedBean.productType}" />
                         </p:column>
                     </p:row>  
                     
@@ -82,7 +82,7 @@
                             <h:outputLabel for="currency" style="font-weight: bold" value="Currency:   *" />
                         </p:column>
                         <p:column>                        
-                            <h:selectOneMenu id="currency" value="#{productManagerBean.currency}" required="true" label="Currency">
+                            <h:selectOneMenu id="currency" value="#{productManagedBean.currency}" required="true" label="Currency">
                                 <f:selectItem itemLabel="Select Currency" itemValue="" noSelectionOption="true" />
                                  
                                <f:selectItem itemLabel="US Dollar (USD)" itemValue="USD" />
@@ -108,7 +108,7 @@
                                 <f:selectItem itemLabel="Mexican Peso (MXN)" itemValue="MXN" />
                             </h:selectOneMenu>
                             <p:message for="currency" />
-                            <h:outputText value="#{productManagerBean.currency}" />
+                            <h:outputText value="#{productManagedBean.currency}" />
                         </p:column>
                     </p:row>  
 
@@ -117,7 +117,7 @@
                             <p:outputLabel for="price" style="font-weight: bold" value="Price: " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="Price" requiredMessage="Price is required." id="price" value="#{productManagerBean.price}">
+                            <p:inputText required="true" label="Price" requiredMessage="Price is required." id="price" value="#{productManagedBean.price}">
                                 <f:validateLength minimum="1" maximum="19"/>
                             </p:inputText>
                         </p:column>
@@ -126,7 +126,7 @@
                         </p:column>
                     </p:row>
                 </p:panelGrid>
-                <p:commandButton id="btn" value="Save New Product" update="panel" actionListener="#{productManagerBean.saveNewProduct}" ajax="true" />
+                <p:commandButton id="btn" value="Save New Product" update="panel" actionListener="#{productManagedBean.saveNewProduct}" ajax="true" />
             </p:panel>
 
             
