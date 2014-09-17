@@ -6,7 +6,6 @@
 package merlionportal.managedbean.ci;
 
 import java.io.IOException;
-import merlionportal.utility.MD5Generator;
 import java.util.Date;
 import java.util.HashMap;
 import javax.ejb.EJB;
@@ -16,8 +15,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import merlionportal.ci.administrationmodule.CheckAccessRightBean;
 import merlionportal.ci.administrationmodule.LoginSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.utility.MD5Generator;
+import util.accessRightControl.Right;
 
 @ManagedBean
 @Named(value = "loginBean")
@@ -26,15 +28,16 @@ public class LoginBean {
 
     private String username;
     private String password;
-    
+
     private boolean locked;
     private boolean needsReset;
-    
+
     @EJB
     LoginSessionBean loginSessionBean;
     @EJB
     UserAccountManagementSessionBean uamsb;
-
+    @EJB
+    CheckAccessRightBean checkRight;
 
     public void login(ActionEvent event) {
 
@@ -52,7 +55,7 @@ public class LoginBean {
                 }
             }
         }
-        
+
         if (username != null) {
             if (password != null) {
                 if (tries <= 5) {
@@ -73,10 +76,28 @@ public class LoginBean {
                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("userId", sessionMap.get("userId"));
                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("companyId", sessionMap.get("companyId"));
                         try {
-                            FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath()+"/admin/dashboard.xhtml");
+//                            check if user is locked
+                            if (uamsb.checkLocked((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"))) {
+                                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
+
+                            } //                            check if user needs reset
+                            else if (uamsb.checkResetPasswordUponLogin((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"))) {
+                                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/resetpassword.xhtml");
+                            } //                            Check if it is admin or user
+                            else {
+                                if (uamsb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")).getUserType().equals("superuser")) {
+                                    FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/admin/dashboard.xhtml");
+                                } else if (checkRight.userHasRight(uamsb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")), Right.canManageUser)) {
+                                    FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/admin/dashboard.xhtml");
+                                } else {
+                                    FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/user/dashboard.xhtml");
+                                }
+
+                            }
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
+
                     }
                 } else {
                     //Sorry you have tried more than 5 times...
@@ -86,15 +107,7 @@ public class LoginBean {
         }
     }
 
-    public void checkLocked(){
-        locked = uamsb.checkLocked((int)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
-    }
-    
-    public void checkResetPassword(){
-        needsReset = uamsb.checkResetPasswordUponLogin((int)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
-    }
-    
-    //<editor-fold defaultstate="collapsed" desc="getters and setters">
+//<editor-fold defaultstate="collapsed" desc="getters and setters">
     public String getUsername() {
         return username;
     }
@@ -110,6 +123,7 @@ public class LoginBean {
     public void setPassword(String password) {
         this.password = password;
     }
+
     public boolean isLocked() {
         return locked;
     }
@@ -127,5 +141,4 @@ public class LoginBean {
     }
 //</editor-fold>
 
-    
 }
