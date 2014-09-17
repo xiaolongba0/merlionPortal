@@ -4,7 +4,7 @@ import entity.SystemUser;
 import java.util.Random;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.bean.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.utility.MD5Generator;
@@ -12,7 +12,7 @@ import merlionportal.utility.Postman;
 import org.primefaces.context.RequestContext;
 
 @Named(value = "resetPasswordBean")
-@RequestScoped
+@ViewScoped
 public class ResetPasswordBean {
 
     private String email;
