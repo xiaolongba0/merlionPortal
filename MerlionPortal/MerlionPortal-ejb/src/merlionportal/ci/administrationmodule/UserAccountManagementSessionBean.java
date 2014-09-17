@@ -306,4 +306,37 @@ public class UserAccountManagementSessionBean {
         System.out.println("operator is null");
         return 0;
     }
+
+    public int addRoleToUser(Integer systemAdminId, Integer userId, Integer roleId) {
+        SystemUser operator = em.find(SystemUser.class, systemAdminId);
+        boolean canRun = false;
+        if (operator != null) {
+            if (operator.getUserType().equals("superuser")) {
+                canRun = true;
+            }
+
+            if (carb.userHasRight(operator, Right.canManageUser)) {
+                canRun = true;
+            }
+
+            if (canRun) {
+                SystemUser user = em.find(SystemUser.class, userId);
+                if (user != null) {
+                    UserRole role = em.find(UserRole.class, roleId);
+                    user.getUserRoleList().add(role);
+                    role.getSystemUserList().add(user);
+                    em.merge(role);
+                    em.merge(user);
+                    return 1;
+                }
+                System.out.println("User is null");
+                return 0;
+            }
+            System.out.println("Access Denied");
+            return 1;
+        }
+
+        System.out.println("System Admin is null");
+        return 0;
+    }
 }

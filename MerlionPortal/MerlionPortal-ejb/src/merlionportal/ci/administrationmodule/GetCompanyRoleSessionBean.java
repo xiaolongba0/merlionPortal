@@ -13,6 +13,7 @@ import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -35,5 +36,13 @@ public class GetCompanyRoleSessionBean {
       }
       System.out.println("There is no roles defined for this company");
       return null;
+    }
+    
+    public UserRole getOneRole (Integer userRoleId){
+        if(userRoleId != null){
+            Query q = em.createNamedQuery("UserRole.findByUserRoleId").setParameter("userRoleId", userRoleId);
+            return (UserRole)q.getSingleResult();
+        }
+        return null;
     }
 }
