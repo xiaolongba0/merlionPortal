@@ -29,8 +29,7 @@ public class LoginBean {
     private String username;
     private String password;
 
-    private boolean locked;
-    private boolean needsReset;
+  
 
     @EJB
     LoginSessionBean loginSessionBean;
@@ -82,7 +81,7 @@ public class LoginBean {
 
                             } //                            check if user needs reset
                             else if (uamsb.checkResetPasswordUponLogin((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"))) {
-                                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/resetpassword.xhtml");
+                                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/changepassword.xhtml");
                             } //                            Check if it is admin or user
                             else {
                                 if (uamsb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")).getUserType().equals("superuser")) {
@@ -124,21 +123,7 @@ public class LoginBean {
         this.password = password;
     }
 
-    public boolean isLocked() {
-        return locked;
-    }
-
-    public void setLocked(boolean locked) {
-        this.locked = locked;
-    }
-
-    public boolean isNeedsReset() {
-        return needsReset;
-    }
-
-    public void setNeedsReset(boolean needsReset) {
-        this.needsReset = needsReset;
-    }
+  
 //</editor-fold>
 
 }
