@@ -17,6 +17,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.LoginSessionBean;
+import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 
 @ManagedBean
 @Named(value = "loginBean")
@@ -25,8 +26,14 @@ public class LoginBean {
 
     private String username;
     private String password;
+    
+    private boolean locked;
+    private boolean needsReset;
+    
     @EJB
     LoginSessionBean loginSessionBean;
+    @EJB
+    UserAccountManagementSessionBean uamsb;
 
 
     public void login(ActionEvent event) {
@@ -79,6 +86,14 @@ public class LoginBean {
         }
     }
 
+    public void checkLocked(){
+        locked = uamsb.checkLocked((int)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
+    }
+    
+    public void checkResetPassword(){
+        needsReset = uamsb.checkResetPasswordUponLogin((int)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
+    }
+    
     //<editor-fold defaultstate="collapsed" desc="getters and setters">
     public String getUsername() {
         return username;
@@ -95,5 +110,22 @@ public class LoginBean {
     public void setPassword(String password) {
         this.password = password;
     }
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    public boolean isNeedsReset() {
+        return needsReset;
+    }
+
+    public void setNeedsReset(boolean needsReset) {
+        this.needsReset = needsReset;
+    }
 //</editor-fold>
+
+    
 }
