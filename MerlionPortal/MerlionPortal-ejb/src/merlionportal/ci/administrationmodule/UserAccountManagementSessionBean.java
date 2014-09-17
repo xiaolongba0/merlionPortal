@@ -52,9 +52,12 @@ public class UserAccountManagementSessionBean {
     }
 
     public SystemUser getUserByEmail(String email){
-        SystemUser user = null;
         Query q = em.createNamedQuery("SystemUser.findByEmailAddress").setParameter("emailAddress", email);
-        return (SystemUser)q.getSingleResult();
+        if (!q.getResultList().isEmpty()) {
+              SystemUser user = (SystemUser) q.getResultList().get(0);
+            return user;
+        }
+        return null;
         
     }
     public void createSuperUser(String password, int companyId) {
