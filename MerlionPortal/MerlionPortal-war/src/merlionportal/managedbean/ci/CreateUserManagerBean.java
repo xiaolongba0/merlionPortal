@@ -25,6 +25,7 @@ import merlionportal.ci.administrationmodule.GetCompanySessionBean;
 import merlionportal.ci.administrationmodule.RoleManagementSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.utility.MD5Generator;
+import merlionportal.utility.Postman;
 
 /**
  *
@@ -109,8 +110,16 @@ public class CreateUserManagerBean {
                 System.out.println("Access Denied");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Access Denied!", "You do not have sufficient right to perform this action!"));
             } else if (result == 1) {
+                String sender = "merlionportal@nus.edu.sg";
+                String[] receipient = {emailAddress};
+                String subject = "Merlion Portal Activation";
+                String message = "Dear Client,<br/><br/>Your account is set up.<br/>Your username is " + emailAddress + ".<br/>You may log in now.<br/><br/>Best Regards,<br/>Administrator<br/>Merlion Portal";
+                boolean success = Postman.sendMail(sender, receipient, subject, message);
+                if (success){
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New System User Added!", ""));
-
+                }else{
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Activation email is not sent!", ""));
+                }
             } else {
                 // direct to login page
             }
