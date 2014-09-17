@@ -29,10 +29,11 @@
             <br/>
         </h:form>
         <h:form>  
-            <p:dataTable id="allRequest" var="quotation" value="#{quotationManagedBean.allProcceQuotation}" 
-                         widgetVar="quotationTable"
+            <p:dataTable id="allQuotation" var="quotation" value="#{quotationManagedBean.allProcceQuotation}" 
+                         filteredValue="#{displayProductManagedBean.filteredProducts}"
                          selectionMode="single" selection="#{quotationManagedBean.selectedQuotation}" 
                          rowKey="#{quotation.quotationId}"
+                         widgetVar="quotationTable"
                          emptyMessage="No quotation found with given criteria">
                 <p:column  
                     filterBy="#{quotation.quotationId}" 
@@ -58,10 +59,8 @@
                     <h:outputText value="#{quotation.createDate}" />
                 </p:column>
             </p:dataTable> 
-        </h:form>
-        <h:form>
             <br></br>
-            <p:commandButton action="viewquotationinfor.xhtml" value="View Quotation">
+            <p:commandButton action="#{quotationManagedBean.viewQuotation()}" value="View Quotation">
             </p:commandButton>  
         </h:form>
     </h:body>
