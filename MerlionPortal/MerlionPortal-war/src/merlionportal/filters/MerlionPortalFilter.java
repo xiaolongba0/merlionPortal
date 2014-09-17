@@ -36,9 +36,14 @@ public class MerlionPortalFilter implements Filter {
             httpResponse.sendRedirect(httpResponse.encodeRedirectURL("https://" + request.getServerName() + ":8181" + requestURI));
         } else {
 //        if (requestURI != null && requestURI.length() > 0) {
+            if(requestURI.contains("/oes/")){
+                //check for right
+                // if check has error
+                
+            }
 //        }
             if (redirect) {
-//            httpServletResponse.sendRedirect(newPage);
+            httpResponse.sendRedirect(newPage);
             } else {
                 chain.doFilter(request, response);
             }

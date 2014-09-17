@@ -50,7 +50,7 @@ public class ResetPasswordBean {
                 requestContext.execute("fail('Your account is locked. Fail to update password')");
             } else {
                 //Set Password to user's password and save to database.
-                if (uamsb.updateUserPassword(user.getSystemUserId(), newPassword)) {
+                if (uamsb.updateUserPassword(user.getSystemUserId(), MD5Generator.hash(newPassword))) {
                     //Send Email
                     String sender = "merlionportal@nus.edu.sg";
                     String[] recipients = {email};
