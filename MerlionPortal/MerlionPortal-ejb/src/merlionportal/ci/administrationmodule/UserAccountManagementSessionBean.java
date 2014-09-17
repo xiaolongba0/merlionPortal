@@ -50,6 +50,15 @@ public class UserAccountManagementSessionBean {
         List<SystemUser> superUserList = q.getResultList();
         return superUserList.isEmpty();
     }
+    
+    public boolean isSystemAdminUser(Integer userId){
+        Query q = em.createNamedQuery("SystemUser.findBySystemUserId").setParameter("systemUserId", userId);
+        if (!q.getResultList().isEmpty()) {
+            SystemUser user = (SystemUser) q.getSingleResult();
+            return carb.userHasRight(user, Right.canManageUser);
+        }
+        return false;
+    }
 
     public SystemUser getUserByEmail(String email) {
         Query q = em.createNamedQuery("SystemUser.findByEmailAddress").setParameter("emailAddress", email);
