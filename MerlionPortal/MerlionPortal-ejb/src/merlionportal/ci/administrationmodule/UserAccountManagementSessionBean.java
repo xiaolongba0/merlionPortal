@@ -55,10 +55,11 @@ public class UserAccountManagementSessionBean {
         Query q = em.createNamedQuery("SystemUser.findByEmailAddress").setParameter("emailAddress", email);
 
         if (!q.getResultList().isEmpty()) {
-              SystemUser user = (SystemUser) q.getResultList().get(0);
+            SystemUser user = (SystemUser) q.getResultList().get(0);
             return user;
         }
         return null;
+
     }
 
     public void createSuperUser(String password, int companyId) {
@@ -360,5 +361,26 @@ public class UserAccountManagementSessionBean {
 
         System.out.println("System Admin is null");
         return 0;
+    }
+
+    public boolean checkLocked(Integer userId) {
+        boolean result = false;
+        SystemUser user = (SystemUser) em.find(SystemUser.class, userId);
+        if (user != null) {
+            if (user.getLocked()) {
+                result = true;
+            }
+        }
+        return result;
+    }
+    public boolean checkResetPasswordUponLogin(Integer userId ){
+        boolean result = false;
+        SystemUser user = (SystemUser) em.find(SystemUser.class, userId);
+        if (user != null) {
+            if (user.getResetPasswordUponLogin()) {
+                result = true;
+            }
+        }
+        return result;
     }
 }
