@@ -51,15 +51,16 @@ public class UserAccountManagementSessionBean {
         return superUserList.isEmpty();
     }
 
-    public SystemUser getUserByEmail(String email){
+    public SystemUser getUserByEmail(String email) {
         Query q = em.createNamedQuery("SystemUser.findByEmailAddress").setParameter("emailAddress", email);
+
         if (!q.getResultList().isEmpty()) {
               SystemUser user = (SystemUser) q.getResultList().get(0);
             return user;
         }
         return null;
-        
     }
+
     public void createSuperUser(String password, int companyId) {
         SystemUser superUser = new SystemUser();
         superUser.setFirstName("Administrator");
@@ -108,6 +109,18 @@ public class UserAccountManagementSessionBean {
             return -1;
         } else {
             return company.getCompanyId();
+        }
+    }
+
+    public boolean updateUserPassword(int userid, String password) {
+        SystemUser user = em.find(SystemUser.class, userid);
+        user.setPassword(password);
+        try {
+            em.persist(user);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
