@@ -38,130 +38,154 @@
                             </div>
                         </div>
                     </div>
-                     <c:if test ="#{dashboardBean.loginedUser.userType == 'superuser'}">
+                    <c:if test ="#{dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:panel header="Select Company" style="margin-bottom:10px;">
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:outputLabel for="company" value="Company:  " />
                                 <h:selectOneMenu id="company" value="#{createRole.selectCompanyId}"  style="width:250px" styleClass="form-control">
+                                    <p:ajax listener="#{createRole.checkCompanyPackage}" update="subsystem" />
                                     <f:selectItem itemLabel="Select Company . . ." itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{createRole.companys}" var="company" itemLabel="#{company.name}"  itemValue="#{company.companyId}"/>
                                 </h:selectOneMenu>
                             </h:panelGrid>
                         </p:panel>
                     </c:if>
-
-                    <div class="row spacing">
-                        <div class="col-md-10">
-                            <!-- Common Infrastructure -->
-                            <div class="btn-group btn-group-lg">
-                                <button type="button" class="btn btn-success dropdown-toggle rights-btn" data-toggle="dropdown">
-                                    Common Infrastructure <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu rights-menu" role="menu">
-                                    <li><a id="ciMU" href="#" onclick="addRight(this);">Manage User</a></li>
-                                </ul>
-                            </div>
-
-                            <!-- OES -->
-                            <div class="btn-group btn-group-lg">
-                                <button type="button" class="btn btn-warning dropdown-toggle rights-btn" data-toggle="dropdown">
-                                    Order Entry System <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu rights-menu" role="menu">
-                                    <li><a id="oesGPO" href="#" onclick="addRight(this);">Generate Purchase Order</a></li>
-                                    <li><a id="oesGSO" href="#" onclick="addRight(this);">Generate Sales Order</a></li>
-                                    <li><a id="oesGQ" href="#" onclick="addRight(this);">Generate Quotation</a></li>
-                                    <li><a id="oesSR" href="#" onclick="addRight(this);">Generate Sales Report</a></li>
-                                </ul>
+                    <h:panelGroup id="subsystem" >
+                        <div class="row spacing">
+                            <div class="col-md-10">
+                                <!-- Common Infrastructure -->
+                                <div class="btn-group btn-group-lg">
+                                    <button type="button" class="btn btn-success dropdown-toggle rights-btn" data-toggle="dropdown">
+                                        Common Infrastructure <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu rights-menu" role="menu">
+                                        <li><a id="ciMU" href="#" onclick="addRight(this);">Manage User</a></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row spacing">
-                        <div class="col-md-10">
-                            <!-- MRP II -->
-                            <div class="btn-group btn-group-lg">
-                                <button type="button" class="btn btn-primary dropdown-toggle rights-btn" data-toggle="dropdown">
-                                    Material Resource Planning II <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu rights-menu" role="menu">
-                                    <li><a id="mrpUF" href="#" onclick="addRight(this);">Use Forecast</a></li>
-                                    <li><a id="mrpMPC" href="#" onclick="addRight(this);">Manage Product and Component</a></li>
-                                    <li><a id="mrpGML" href="#" onclick="addRight(this);">Generate MRP List</a></li>
-                                </ul>
+                        <!-- OES -->
+                        <c:if test="#{createRole.companyPackage == 1 || createRole.companyPackage == 2}">
+                            <div class="row spacing">
+                                <div class="col-md-10">
+                                    <div class="btn-group btn-group-lg">
+                                        <button type="button" class="btn btn-warning dropdown-toggle rights-btn" data-toggle="dropdown">
+                                            Order Entry System <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu rights-menu" role="menu">
+                                            <li><a id="oesGPO" href="#" onclick="addRight(this);">Generate Purchase Order</a></li>
+                                            <li><a id="oesGSO" href="#" onclick="addRight(this);">Generate Sales Order</a></li>
+                                            <li><a id="oesGQ" href="#" onclick="addRight(this);">Generate Quotation</a></li>
+                                            <li><a id="oesSR" href="#" onclick="addRight(this);">Generate Sales Report</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
+                        </c:if>
 
-                            <!-- CRMS -->
-                            <div class="btn-group btn-group-lg">
-                                <button type="button" class="btn btn-danger dropdown-toggle rights-btn" data-toggle="dropdown">
-                                    Customer Relationship Management System <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu rights-menu" role="menu">
-                                    <li><a id="crmsUCS" href="#" onclick="addRight(this);">Update Customer Credit</a></li>
-                                    <li><a id="crmsGSPO" href="#" onclick="addRight(this);">Generate Service Purchase Order</a></li>
-                                    <li><a id="crmsGSSO" href="#" onclick="addRight(this);">Generate Service Sales Order</a></li>
-                                    <li><a id="crmsGQR" href="#" onclick="addRight(this);">Generate Quotation Request</a></li>
-                                    <li><a id="crmsMSC" href="#" onclick="addRight(this);">Manage Service Catalog</a></li>
-                                    <li><a id="crmsMKA" href="#" onclick="addRight(this);">Manage Key Account</a></li>
-                                    <li><a id="crmsGSQC" href="#" onclick="addRight(this);">Generate Service Quotation and Contract</a></li>
-                                </ul>
+                        <c:if test="#{createRole.companyPackage == 1}">
+
+                            <div class="row spacing">
+                                <div class="col-md-10">
+
+                                    <!-- MRP II -->
+                                    <div class="btn-group btn-group-lg">
+                                        <button type="button" class="btn btn-primary dropdown-toggle rights-btn" data-toggle="dropdown">
+                                            Material Resource Planning II <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu rights-menu" role="menu">
+                                            <li><a id="mrpUF" href="#" onclick="addRight(this);">Use Forecast</a></li>
+                                            <li><a id="mrpMPC" href="#" onclick="addRight(this);">Manage Product and Component</a></li>
+                                            <li><a id="mrpGML" href="#" onclick="addRight(this);">Generate MRP List</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
+
+
+                        <div class="row spacing">
+                            <div class="col-md-10">
+                                <!-- CRMS -->
+                                <div class="btn-group btn-group-lg">
+                                    <button type="button" class="btn btn-danger dropdown-toggle rights-btn" data-toggle="dropdown">
+                                        Customer Relationship Management System <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu rights-menu" role="menu">
+                                        <li><a id="crmsUCS" href="#" onclick="addRight(this);">Update Customer Credit</a></li>
+                                        <li><a id="crmsGSPO" href="#" onclick="addRight(this);">Generate Service Purchase Order</a></li>
+                                        <li><a id="crmsGSSO" href="#" onclick="addRight(this);">Generate Service Sales Order</a></li>
+                                        <li><a id="crmsGQR" href="#" onclick="addRight(this);">Generate Quotation Request</a></li>
+                                        <li><a id="crmsMSC" href="#" onclick="addRight(this);">Manage Service Catalog</a></li>
+                                        <li><a id="crmsMKA" href="#" onclick="addRight(this);">Manage Key Account</a></li>
+                                        <li><a id="crmsGSQC" href="#" onclick="addRight(this);">Generate Service Quotation and Contract</a></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row spacing">
-                        <div class="col-md-10">
-                            <!-- TMS -->
-                            <div class="btn-group btn-group-lg">
-                                <button type="button" class="btn btn-warning dropdown-toggle rights-btn" data-toggle="dropdown">
-                                    Transport Management System <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu rights-menu" role="menu">
-                                    <li><a id="tmsMTA" href="#" onclick="addRight(this);">Manage Transportation Asset</a></li>
-                                    <li><a id="tmsMTO" href="#" onclick="addRight(this);">Manage Transportation Order</a></li>
-                                    <li><a id="tmsML" href="#" onclick="addRight(this);">Manage Location</a></li>
-                                    <li><a id="tmsMAT" href="#" onclick="addRight(this);">Manage Asset Type</a></li>
-                                    <li><a id="tmsUHF" href="#" onclick="addRight(this);">Use HR Function</a></li>
-                                </ul>
-                            </div>
 
-                            <!-- WMS -->
-                            <div class="btn-group btn-group-lg">
-                                <button type="button" class="btn btn-primary dropdown-toggle rights-btn" data-toggle="dropdown">
-                                    Warehouse Management System <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu rights-menu" role="menu">
-                                    <li><a id="wmsMW" href="#" onclick="addRight(this);">Manage Warehouse</a></li>
-                                    <li><a id="wmsMSA" href="#" onclick="addRight(this);">Manage Stock Audit</a></li>
-                                    <li><a id="wmsMSTO" href="#" onclick="addRight(this);">Manage Stock Transport Order</a></li>
-                                    <li><a id="wmsMRG" href="#" onclick="addRight(this);">Manage Receiving Goods</a></li>
-                                    <li><a id="wmsMOF" href="#" onclick="addRight(this);">Manage Order Fulfillment</a></li>
-                                </ul>
+                        <div class="row spacing">
+                            <div class="col-md-10">
+                                <!-- TMS -->
+                                <div class="btn-group btn-group-lg">
+                                    <button type="button" class="btn btn-warning dropdown-toggle rights-btn" data-toggle="dropdown">
+                                        Transport Management System <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu rights-menu" role="menu">
+                                        <li><a id="tmsMTA" href="#" onclick="addRight(this);">Manage Transportation Asset</a></li>
+                                        <li><a id="tmsMTO" href="#" onclick="addRight(this);">Manage Transportation Order</a></li>
+                                        <li><a id="tmsML" href="#" onclick="addRight(this);">Manage Location</a></li>
+                                        <li><a id="tmsMAT" href="#" onclick="addRight(this);">Manage Asset Type</a></li>
+                                        <li><a id="tmsUHF" href="#" onclick="addRight(this);">Use HR Function</a></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row spacing">
-                        <div class="col-md-10">
-                            <!-- GRNS -->
-                            <div class="btn-group btn-group-lg">
-                                <button type="button" class="btn btn-success dropdown-toggle rights-btn" data-toggle="dropdown">
-                                    Global Rates Negotiation System <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu rights-menu" role="menu">
-                                    <li><a id="grnsMB" href="#" onclick="addRight(this);">Manage Bid</a></li>
-                                    <li><a id="grnsMP" href="#" onclick="addRight(this);">Manage Post</a></li>
-                                </ul>
+
+                        <c:if test="#{createRole.companyPackage == 1||createRole.companyPackage == 2 ||createRole.companyPackage == 4}">
+                            <div class="row spacing">
+                                <div class="col-md-10"><!-- WMS -->
+                                    <div class="btn-group btn-group-lg">
+                                        <button type="button" class="btn btn-primary dropdown-toggle rights-btn" data-toggle="dropdown">
+                                            Warehouse Management System <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu rights-menu" role="menu">
+                                            <li><a id="wmsMW" href="#" onclick="addRight(this);">Manage Warehouse</a></li>
+                                            <li><a id="wmsMSA" href="#" onclick="addRight(this);">Manage Stock Audit</a></li>
+                                            <li><a id="wmsMSTO" href="#" onclick="addRight(this);">Manage Stock Transport Order</a></li>
+                                            <li><a id="wmsMRG" href="#" onclick="addRight(this);">Manage Receiving Goods</a></li>
+                                            <li><a id="wmsMOF" href="#" onclick="addRight(this);">Manage Order Fulfillment</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
+
+                        <c:if test="#{createRole.companyPackage == 3 || createRole.companyPackage == 4}">
+                            <div class="row spacing">
+                                <div class="col-md-10">
+                                    <!-- GRNS -->
+                                    <div class="btn-group btn-group-lg">
+                                        <button type="button" class="btn btn-success dropdown-toggle rights-btn" data-toggle="dropdown">
+                                            Global Rates Negotiation System <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu rights-menu" role="menu">
+                                            <li><a id="grnsMB" href="#" onclick="addRight(this);">Manage Bid</a></li>
+                                            <li><a id="grnsMP" href="#" onclick="addRight(this);">Manage Post</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
+                        <div class="row spacing">
+                            <div class="col-md-10">
+                                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                                <div class="pull-right">
+                                    <p:commandButton value="Create Role" id="ajax" icon="ui-icon-check" actionListener="#{createRole.createRole}" styleClass="btn btn-success" />
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row spacing">
-                        <div class="col-md-10">
-                            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                            <div class="pull-right">
-                                <p:commandButton value="Create Role" id="ajax" icon="ui-icon-check" actionListener="#{createRole.createRole}" styleClass="btn btn-success" />
-                            </div>
-                        </div>
-                    </div>
-
+                    </h:panelGroup>
                     <!-- Hidden Attributes -->
                     <div class="hide">
                         <!-- Common Infrastructure -->
