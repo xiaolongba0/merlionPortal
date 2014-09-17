@@ -34,6 +34,7 @@ public class ChangePasswordManagerBean {
     private ChangePasswordSessionBean changePasswordBean;
 
     private SystemUser loginedUser;
+    private String existingPassword;
     private String password;
     private String confirmPassword;
 
@@ -60,28 +61,45 @@ public class ChangePasswordManagerBean {
     }
 
     public void changePassword() {
+        if (existingPassword == null) {
+            existingPassword = "";
+        }
+        if (confirmPassword == null) {
+            confirmPassword = "";
+        }
+        if (password == null) {
+            password = "";
+        }
         RequestContext requestContext = RequestContext.getCurrentInstance();
         boolean result = false;
-        if (password.equals(confirmPassword)) {
-            result = changePasswordBean.changeToNewPassword(MD5Generator.hash(password), loginedUser.getSystemUserId());
-
-            if (result) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PasswordChanged", ""));
-                try {
-                    if (uamb.isSystemAdminUser(loginedUser.getSystemUserId())) {
-                        FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/admin/dashboard.xhtml");
-                    } else {
-                        FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/user/dashboard.xhtml");
-
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+        if (changePasswordBean.checkExistingPassword(loginedUser.getSystemUserId(), MD5Generator.hash(existingPassword))) {
+            if (password.equals("")) {
+                requestContext.execute("fail('Please enter new password.')");
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Something is very wrong!", "Change password unsuccesful"));
+                if (password.equals(confirmPassword)) {
+                    result = changePasswordBean.changeToNewPassword(MD5Generator.hash(password), loginedUser.getSystemUserId());
+
+                    if (result) {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PasswordChanged", ""));
+                        try {
+                            if (uamb.isSystemAdminUser(loginedUser.getSystemUserId())) {
+                                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/admin/dashboard.xhtml");
+                            } else {
+                                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/user/dashboard.xhtml");
+
+                            }
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    } else {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Something is very wrong!", "Change password unsuccesful"));
+                    }
+                } else {
+                    requestContext.execute("fail('New Password mismatch. Please try again.')");
+                }
             }
-        }else{
-            requestContext.execute("fail()");
+        } else {
+            requestContext.execute("fail('Existing Password is wrong. Please try again.')");
         }
     }
 
@@ -109,6 +127,13 @@ public class ChangePasswordManagerBean {
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
-//</editor-fold>
 
+    public String getExistingPassword() {
+        return existingPassword;
+    }
+
+    public void setExistingPassword(String existingPassword) {
+        this.existingPassword = existingPassword;
+    }
+//</editor-fold>
 }
