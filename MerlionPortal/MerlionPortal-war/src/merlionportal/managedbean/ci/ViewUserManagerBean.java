@@ -9,6 +9,7 @@ import entity.Company;
 import entity.SystemUser;
 import entity.UserRole;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -16,6 +17,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import merlionportal.ci.administrationmodule.GetCompanyRoleSessionBean;
 import merlionportal.ci.administrationmodule.GetCompanySessionBean;
 import merlionportal.ci.administrationmodule.GetCompanyUserSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
@@ -38,6 +40,8 @@ public class ViewUserManagerBean {
     GetCompanySessionBean gcsb;
     @EJB
     GetCompanyUserSessionBean gcusb;
+    @EJB
+    GetCompanyRoleSessionBean gcrsb;
 
     private SystemUser loginedUser;
     private List<Company> companys;
@@ -47,7 +51,9 @@ public class ViewUserManagerBean {
     private List<SystemUser> filteredUsers;
     private SystemUser selectedUser;
     private Integer companyId;
-   
+
+    private List<UserRole> rolesToDisplay;
+    private Integer roleToAdd;
 
     public ViewUserManagerBean() {
     }
@@ -105,8 +111,9 @@ public class ViewUserManagerBean {
 //            direct to login page
         }
     }
-    
-    public void updateUser(){
+
+    public void updateUser() {
+
         int result = 0;
         if (selectedUser != null) {
             String pass = selectedUser.getPassword();
@@ -123,14 +130,14 @@ public class ViewUserManagerBean {
 //            direct to login page
         }
     }
-    public void detachRole( UserRole role){
-        System.err.println("Called!");
+
+    public void detachRole(UserRole role) {
         int result = 0;
         if (selectedUser != null) {
-            result = uamb.detachRoleFromUser(loginedUser.getSystemUserId(), selectedUser.getSystemUserId(),  role.getUserRoleId());
+            result = uamb.detachRoleFromUser(loginedUser.getSystemUserId(), selectedUser.getSystemUserId(), role.getUserRoleId());
         }
         if (result == 1) {
-            selectedUser = uamb.getUser(selectedUser.getSystemUserId());
+            selectedUser.getUserRoleList().remove(role);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Role Detached!", "This role is detached from this user."));
 
         } else if (result == -1) {
@@ -139,7 +146,51 @@ public class ViewUserManagerBean {
         } else {
 //            direct to login page
         }
-        
+
+    }
+
+    public void addRole() {
+        int result = 0;
+        if (selectedUser != null) {
+            result = uamb.addRoleToUser(loginedUser.getSystemUserId(), selectedUser.getSystemUserId(), roleToAdd);
+        }
+        if (result == 1) {
+            
+            selectedUser.getUserRoleList().add(gcrsb.getOneRole(roleToAdd));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Role Added!", "This role is added to this user."));
+
+        } else if (result == -1) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Access Denied!", "You do not have sufficient right to perform this action."));
+
+        } else {
+//            direct to login page
+        }
+    }
+
+    public void refreshDisplayedRoles() {
+        System.err.println("here");
+        if (selectCompanyId != null) {
+            rolesToDisplay = (List<UserRole>)gcrsb.getAllRolesInCompany(selectCompanyId);
+            System.out.println("rolesToDisplay" + rolesToDisplay.get(0).toString());
+            for (Object o : selectedUser.getUserRoleList()) {
+                UserRole hasRole = (UserRole) o;
+                System.out.println("Role!!!!!!!!!!!!!!");
+
+                if (rolesToDisplay.contains(hasRole)) {
+                    System.out.println("has role");
+                    rolesToDisplay.remove(hasRole);
+                }
+            }
+        } else {
+            rolesToDisplay = gcrsb.getAllRolesInCompany(companyId);
+            for (Object o : selectedUser.getUserRoleList()) {
+                UserRole hasRole = (UserRole) o;
+                if (rolesToDisplay.contains(hasRole)) {
+                    System.out.println("has role");
+                    rolesToDisplay.remove(hasRole);
+                }
+            }
+        }
     }
 
     public SystemUser getLoginedUser() {
@@ -197,6 +248,24 @@ public class ViewUserManagerBean {
     public void setFilteredUsers(List<SystemUser> filteredUsers) {
         this.filteredUsers = filteredUsers;
     }
+
+    public List<UserRole> getRolesToDisplay() {
+        return rolesToDisplay;
+    }
+
+    public void setRolesToDisplay(List<UserRole> rolesToDisplay) {
+        this.rolesToDisplay = rolesToDisplay;
+    }
+
+    public Integer getRoleToAdd() {
+        return roleToAdd;
+    }
+
+    public void setRoleToAdd(Integer roleToAdd) {
+        this.roleToAdd = roleToAdd;
+    }
+
+    
 
 
 }
