@@ -62,7 +62,7 @@ public class UserAccountManagementSessionBean {
 
     public SystemUser getUserByEmail(String email) {
         Query q = em.createNamedQuery("SystemUser.findByEmailAddress").setParameter("emailAddress", email);
-
+ 
         if (!q.getResultList().isEmpty()) {
             SystemUser user = (SystemUser) q.getResultList().get(0);
             return user;
