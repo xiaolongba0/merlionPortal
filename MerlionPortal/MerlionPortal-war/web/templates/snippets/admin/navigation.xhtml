@@ -17,9 +17,19 @@
                         </div>
                         <div class="navbar-collapse collapse">
                             <ul class="nav navbar-nav">
-                                <li class="active"><a href="${root}/admin/index.xhtml">Dashboard</a></li>
-                                <li><a href="${root}/admin/createuser.xhtml">Users</a></li>
-                                <li><a href="${root}/admin/createrole.xhtml">Roles</a></li>
+                                <li><a href="${root}/admin/index.xhtml">Dashboard</a></li>
+                                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Users<span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="${root}/admin/createuser.xhtml">Create User</a></li>
+                                        <li><a href="${root}/admin/viewusers.xhtml">View Users</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Roles<span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="${root}/admin/createrole.xhtml">Create Role</a></li>
+                                        <li><a href="${root}/admin/viewroles.xhtml">View Roles</a></li>
+                                    </ul>
+                                </li>
                             </ul>
                         </div><!--/.nav-collapse -->
                     </div>
