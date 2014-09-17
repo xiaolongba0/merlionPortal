@@ -50,7 +50,6 @@ public class CreateUserManagerBean {
 
     private List<Company> companys;
     private List<UserRole> roles;
-    
 
     @EJB
     UserAccountManagementSessionBean uamb;
@@ -60,7 +59,7 @@ public class CreateUserManagerBean {
     GetCompanySessionBean gcsb;
     @EJB
     GetCompanyRoleSessionBean gcrsb;
-            
+
     /**
      * Creates a new instance of createUserManagerBean
      */
@@ -84,9 +83,8 @@ public class CreateUserManagerBean {
             }
         }
         companys = (List<Company>) gcsb.getCompanies();
-        if(loginedUser.getUserType().equals("")){
-            roles = gcrsb.getAllRolesInCompany((Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId"));
-        }
+
+        roles = gcrsb.getAllRolesInCompany((Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId"));
 
     }
 
@@ -101,7 +99,7 @@ public class CreateUserManagerBean {
             }
             ArrayList<String> roleList = new ArrayList<String>(Arrays.asList(selectedRoles));
             ArrayList<Integer> roleListInt = new ArrayList<>();
-            for(Object o:roleList){
+            for (Object o : roleList) {
                 int i = Integer.parseInt((String) o);
                 roleListInt.add(i);
             }
@@ -120,9 +118,10 @@ public class CreateUserManagerBean {
         }
 
     }
+
     public void onCompanyChange() {
-        if(selectCompanyId != null){
-          roles = gcrsb.getAllRolesInCompany(selectCompanyId);
+        if (selectCompanyId != null) {
+            roles = gcrsb.getAllRolesInCompany(selectCompanyId);
         }
     }
 
@@ -142,7 +141,6 @@ public class CreateUserManagerBean {
         this.selectedRoles = selectedRoles;
     }
 
- 
     public String getFirstName() {
         return firstName;
     }

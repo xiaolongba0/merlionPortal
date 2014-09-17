@@ -18,6 +18,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import merlionportal.ci.administrationmodule.CheckCompanyPackageSessionBean;
 import merlionportal.ci.administrationmodule.GetCompanySessionBean;
 import merlionportal.ci.administrationmodule.RoleManagementSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
@@ -42,6 +43,11 @@ public class UserRoleManagerBean implements Serializable {
 
     private List<Company> companys;
     private Integer selectCompanyId;
+
+    @EJB
+    CheckCompanyPackageSessionBean ccpsb;
+
+    private int companyPackage;
 
     private String roleName;
     private String roleDescription;
@@ -122,6 +128,7 @@ public class UserRoleManagerBean implements Serializable {
             }
         }
         companys = (List<Company>) gcsb.getCompanies();
+        companyPackage = ccpsb.checkCompanyPackage((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId"));
     }
 
     public void createRole(ActionEvent event) {
@@ -145,7 +152,15 @@ public class UserRoleManagerBean implements Serializable {
 
     }
 
+    public void checkCompanyPackage() {
+        Integer operatorId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
+        Integer companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
+        if (rmb.isSuperUser(operatorId)) {
+            companyId = selectCompanyId;
+        }
+        companyPackage = ccpsb.checkCompanyPackage(companyId);
 
+    }
 
     //    <editor-fold defaultstate="collapsed" desc="getters and setters">
     public String getRoleName() {
@@ -405,8 +420,12 @@ public class UserRoleManagerBean implements Serializable {
         this.selectCompanyId = selectCompanyId;
     }
 
-    
+    public int getCompanyPackage() {
+        return companyPackage;
+    }
 
-    
+    public void setCompanyPackage(int companyPackage) {
+        this.companyPackage = companyPackage;
+    }
 
 }

@@ -78,7 +78,6 @@ public class ChangePasswordManagerBean {
             }
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Something is very wrong!", "Change password unsuccesful"));
-
         }
     }
 }
