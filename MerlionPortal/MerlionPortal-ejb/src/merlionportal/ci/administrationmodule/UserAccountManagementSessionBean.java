@@ -51,6 +51,12 @@ public class UserAccountManagementSessionBean {
         return superUserList.isEmpty();
     }
 
+    public SystemUser getUserByEmail(String email){
+        SystemUser user = null;
+        Query q = em.createNamedQuery("SystemUser.findByEmailAddress").setParameter("emailAddress", email);
+        return (SystemUser)q.getSingleResult();
+        
+    }
     public void createSuperUser(String password, int companyId) {
         SystemUser superUser = new SystemUser();
         superUser.setFirstName("Administrator");
