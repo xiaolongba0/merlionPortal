@@ -33,22 +33,31 @@ public class ProductManagedBean {
     private String currency;
     private Double price;
     private Integer companyId = 12345;
+   
     private Double productId;
     private Product productTemp;
     
     private List<Product> products;
     
-  /*  private String componentName;
+   private String componentName;
     private String componentDescription;
     private Integer componentQuantity;
     private String componentCurrency;
     private Double componentCost;
-    private Integer componentLeadTime;*/
+    private Integer componentLeadTime;
+    
+        private String contactPerson;
+    private String contactNumber;
+    private String supplierDescription;
+    private String contactEmail;
+
+    
 
 
     private String productNameLength;
     private String statusMessage;
     private Integer newProductId;
+    private Integer newComponentId;
  //   private Integer newComponentId;
     
     //private String types = "Manufacturing" + "Non-manufacturing";
@@ -112,17 +121,8 @@ public class ProductManagedBean {
     public void setPrice(Double price) {
         this.price = price;
     }
-    
- /*  Used for 
-    public String getTypes() {
-        return types;
-    }
-
-    public void setTypes(String types) {
-        this.types = types;
-    }*/
-    
-    /*    public String getComponentName() {
+  
+   public String getComponentName() {
         return componentName;
     }
 
@@ -170,7 +170,62 @@ public class ProductManagedBean {
         this.componentLeadTime = componentLeadTime;
     }
     
-    */
+
+        public String getContactPerson() {
+        return contactPerson;
+    }
+
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
+    }
+    
+    
+         public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+    
+             public String getSupplierDescription() {
+        return supplierDescription;
+    }
+
+    public void setSupplierDescription(String supplierDescription) {
+        this.supplierDescription = supplierDescription;
+    }
+    
+             public String getContactEmail() {
+        return contactEmail;
+    }
+
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
+    }
+    
+ 
+    
+    
+    public void saveNewComponent(ActionEvent component) {
+
+      //  Integer venueId = Integer.valueOf(venue);
+        //  Integer systemUserId = Integer.valueOf(systemUser);
+        try {
+            //companyId =(Integer)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
+            int pdtTempId = productId.intValue();
+            newComponentId = productSessionBean.addNewComponent(componentName, componentDescription, componentQuantity, componentCurrency, componentCost, componentLeadTime, contactPerson, contactNumber, supplierDescription, contactEmail, companyId, pdtTempId);
+            statusMessage = "New Component Saved Successfully";
+     //   } catch (VenueConflictException vex) {
+            //      statusMessage = "Venue Conflict Exception";
+            //       newProductId = -1L;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    
+   
     public void setProductNameLength(String productNameLength) {
         this.productNameLength = productNameLength;
     }
