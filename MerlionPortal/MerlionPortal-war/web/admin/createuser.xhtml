@@ -17,7 +17,15 @@
 
                     <h2>Create New User</h2>
 
-                    <p:panel header="Create User" style="margin-bottom:10px;" >
+                    <p:panel id="createuser" header="Create User" style="margin-bottom:10px;" >
+                        <p:ajaxStatus style="width:16px;height:16px;">
+                            <f:facet name="start">
+                                <h:graphicImage value="/img/load.gif" />
+                            </f:facet>
+                            <f:facet name="complete">
+                                <h:outputText value="" />
+                            </f:facet>
+                        </p:ajaxStatus>
                         <c:if test ="#{createUserManagerBean.loginedUser.userType == 'superuser'}">
 
                             <h:panelGrid columns="1" cellpadding="5">
@@ -72,7 +80,7 @@
                             <img id="loadingImg" src="img/load.gif" class="loader hide" />
                         </div>
                         <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                        <p:commandButton id="ajax" actionListener="#{createUserManagerBean.createSystemUser}" value="Create User" styleClass="btn btn-success" icon="ui-icon-check"/>
+                        <p:commandButton id="ajax" actionListener="#{createUserManagerBean.createSystemUser}" value="Create User" update="createuser" styleClass="btn btn-success" icon="ui-icon-check"/>
                     </p:panel>
                 </div>
             </h:form>
