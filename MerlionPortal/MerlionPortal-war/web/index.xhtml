@@ -30,6 +30,7 @@
                                 <div class="input-group-addon input-addon-fixedwidth">Password</div>
                                 <h:inputSecret id="passwordInput" value="#{loginBean.password}" styleClass="form-control" pt:placeholder="Enter your password" />
                             </div>
+                            <p:commandLink value="Forget your password?" action="/resetpassword.xhtml" />
                             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
                             <p:commandButton value="Login" id="ajax" actionListener="#{loginBean.login}" styleClass="btn btn-success" ></p:commandButton>
                         </div>
