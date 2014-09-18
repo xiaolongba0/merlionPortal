@@ -26,6 +26,7 @@ import merlionportal.ci.administrationmodule.RoleManagementSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.utility.MD5Generator;
 import merlionportal.utility.Postman;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -110,15 +111,18 @@ public class CreateUserManagerBean {
                 System.out.println("Access Denied");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Access Denied!", "You do not have sufficient right to perform this action!"));
             } else if (result == 1) {
+                RequestContext requestContext = RequestContext.getCurrentInstance();
                 String sender = "merlionportal@nus.edu.sg";
-                String[] receipient = {emailAddress};
-                String subject = "Merlion Portal Activation";
-                String message = "Dear Client,<br/><br/>Your account is set up.<br/>Your username is " + emailAddress + ".<br/>You may log in now.<br/><br/>Best Regards,<br/>Administrator<br/>Merlion Portal";
-                boolean success = Postman.sendMail(sender, receipient, subject, message);
-                if (success){
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New System User Added!", ""));
-                }else{
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Activation email is not sent!", ""));
+                String[] recipients = {emailAddress};
+                String subject = "System User Account";
+
+                String content = "<h2>Hi user" +lastName+ " " + firstName + ",</h2><p>A new account has been created for you. <br/> Please kindly use your email " + emailAddress + " and the password below to login to your account.<br/><br/>"
+                        + "Password: <strong>" + password + "</strong><br/><br/>"
+                        + " Thank you. <br/><br/>Best Regards,<br/>Administrator, Merlion Portal";
+                if (Postman.sendMail(sender, recipients, subject, content)) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New System User Added!", "Email notification is sent to user."));
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "New System User Added!", "Failed to send Email notification to user."));
                 }
             } else {
                 // direct to login page

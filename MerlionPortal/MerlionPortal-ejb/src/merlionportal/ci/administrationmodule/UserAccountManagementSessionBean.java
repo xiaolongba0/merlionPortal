@@ -50,8 +50,8 @@ public class UserAccountManagementSessionBean {
         List<SystemUser> superUserList = q.getResultList();
         return superUserList.isEmpty();
     }
-    
-    public boolean isSystemAdminUser(Integer userId){
+
+    public boolean isSystemAdminUser(Integer userId) {
         Query q = em.createNamedQuery("SystemUser.findBySystemUserId").setParameter("systemUserId", userId);
         if (!q.getResultList().isEmpty()) {
             SystemUser user = (SystemUser) q.getSingleResult();
@@ -62,7 +62,7 @@ public class UserAccountManagementSessionBean {
 
     public SystemUser getUserByEmail(String email) {
         Query q = em.createNamedQuery("SystemUser.findByEmailAddress").setParameter("emailAddress", email);
- 
+
         if (!q.getResultList().isEmpty()) {
             SystemUser user = (SystemUser) q.getResultList().get(0);
             return user;
@@ -141,255 +141,322 @@ public class UserAccountManagementSessionBean {
         SystemUser operator = em.find(SystemUser.class, operatorId);
         boolean canRun = false;
         if (operator != null) {
-            if (operator.getUserType().equals("superuser")) {
-                canRun = true;
+            if (operator.getUserType() != null) {
+                if (operator.getUserType().equals("superuser")) {
+                    canRun = true;
+                }
             }
 
-            if (carb.userHasRight(operator, Right.canManageUser)) {
-                canRun = true;
-            }
+        if (carb.userHasRight(operator, Right.canManageUser)) {
+            canRun = true;
+        }
 
-            if (canRun) {
+        if (canRun) {
 
-                SystemUser user = new SystemUser();
-                user.setFirstName(firstName);
-                user.setLastName(lastName);
-                user.setEmailAddress(emailAddress);
-                user.setPassword(password);
-                user.setPostalAddress(postalAddress);
-                user.setContactNumber(contactNumber);
-                user.setSalution(salution);
-                user.setLocked(false);
-                user.setResetPasswordUponLogin(true);
-                user.setCreatedDate(new Date());
-                user.setActivated(true);
-                user.setCredit(credit);
+            SystemUser user = new SystemUser();
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setEmailAddress(emailAddress);
+            user.setPassword(password);
+            user.setPostalAddress(postalAddress);
+            user.setContactNumber(contactNumber);
+            user.setSalution(salution);
+            user.setLocked(false);
+            user.setResetPasswordUponLogin(true);
+            user.setCreatedDate(new Date());
+            user.setActivated(true);
+            user.setCredit(credit);
 
-                Company company = getCompany(companyId);
-                if (company != null) {
-                    user.setCompanycompanyId(company);
-                    company.getSystemUserList().add(user);
-                } else {
-                    System.out.println("Company is null");
-
-                    return 0;
-                }
-                ArrayList<UserRole> userRoles = new ArrayList<>();
-                for (Object o : roles) {
-                    Integer roleId = (Integer) o;
-                    Query q = em.createNamedQuery("UserRole.findByUserRoleId").setParameter("userRoleId", roleId);
-                    UserRole userRole = (UserRole) q.getSingleResult();
-                    userRoles.add(userRole);
-                    em.merge(userRole);
-                }
-
-                user.setUserRoleList(userRoles);
-                em.merge(company);
-                em.persist(user);
-                em.flush();
-
-                return 1;
+            Company company = getCompany(companyId);
+            if (company != null) {
+                user.setCompanycompanyId(company);
+                company.getSystemUserList().add(user);
             } else {
+                System.out.println("Company is null");
 
-                return -1;
+                return 0;
             }
+            ArrayList<UserRole> userRoles = new ArrayList<>();
+            for (Object o : roles) {
+                Integer roleId = (Integer) o;
+                Query q = em.createNamedQuery("UserRole.findByUserRoleId").setParameter("userRoleId", roleId);
+                UserRole userRole = (UserRole) q.getSingleResult();
+                userRoles.add(userRole);
+                em.merge(userRole);
+            }
+
+            user.setUserRoleList(userRoles);
+            em.merge(company);
+            em.persist(user);
+            em.flush();
+
+            return 1;
         } else {
-            System.out.println("Operator is null");
-            return 0;
+
+            return -1;
         }
     }
 
-    private SystemUser getOperator(Integer operatorId) {
-        return em.find(SystemUser.class, operatorId);
+    
+        else {
+            System.out.println("Operator is null");
+        return 0;
+    }
+}
+
+private SystemUser 
+
+getOperator(Integer operatorId) {
+        return em.find(SystemUser.class  
+
+, operatorId);
     }
 
-    private Company getCompany(Integer companyId) {
-        return em.find(Company.class, companyId);
+    private Company 
+
+getCompany(Integer companyId) {
+        return em.find(Company.class  
+
+, companyId);
     }
 
-    public int deleteSystemUser(int systemAdminId, Integer userId) {
-        SystemUser operator = em.find(SystemUser.class, systemAdminId);
+    public 
+
+int deleteSystemUser(int systemAdminId, Integer userId) {
+        SystemUser operator = em.find(SystemUser.class  
+
+    , systemAdminId);
         boolean canRun = false;
-        if (operator != null) {
+    if (operator
+
+    
+        != null) {
             if (operator.getUserType().equals("superuser")) {
-                canRun = true;
-            }
+            canRun = true;
+        }
 
-            if (carb.userHasRight(operator, Right.canManageUser)) {
-                canRun = true;
-            }
+        if (carb.userHasRight(operator, Right.canManageUser)) {
+            canRun = true;
+        }
 
-            if (canRun) {
+        if (canRun) {
 
-                SystemUser user = em.find(SystemUser.class, userId);
-                if (user != null) {
-                    Company company = user.getCompanycompanyId();
-                    if (company.getSystemUserList().contains(user)) {
-                        company.getSystemUserList().remove(user);
-                        em.merge(company);
+            SystemUser user = em.find(SystemUser.class, userId);
+            if (user != null) {
+                Company company = user.getCompanycompanyId();
+                if (company.getSystemUserList().contains(user)) {
+                    company.getSystemUserList().remove(user);
+                    em.merge(company);
+                    em.flush();
+                }
+                for (Object o : user.getUserRoleList()) {
+                    UserRole role = (UserRole) o;
+                    if (role.getSystemUserList().contains(user)) {
+                        role.getSystemUserList().remove(user);
+                        em.merge(role);
+                        em.refresh(role);
                         em.flush();
                     }
-                    for (Object o : user.getUserRoleList()) {
-                        UserRole role = (UserRole) o;
-                        if (role.getSystemUserList().contains(user)) {
-                            role.getSystemUserList().remove(user);
-                            em.merge(role);
-                            em.refresh(role);
-                            em.flush();
-                        }
-                    }
-                    em.remove(user);
-                    em.flush();
-                    return 1;
-
                 }
-                System.out.println("The user looking for is null");
-                return 0;
-            } else {
-                System.out.println("Access Denied");
-                return -1;
+                em.remove(user);
+                em.flush();
+                return 1;
+
             }
+            System.out.println("The user looking for is null");
+            return 0;
         } else {
+            System.out.println("Access Denied");
+            return -1;
+        }
+    }
+
+    
+        else {
             System.out.println("Operator is null");
+        return 0;
+    }
+
+}
+
+public 
+
+int updateUserInfo(Integer systemAdminId, SystemUser updatedUser) {
+        SystemUser operator = em.find(SystemUser.class  
+
+    , systemAdminId);
+        boolean canRun = false;
+    if (operator
+
+    
+        != null) {
+            if (operator.getUserType().equals("superuser")) {
+            canRun = true;
+        }
+
+        if (carb.userHasRight(operator, Right.canManageUser)) {
+            canRun = true;
+        }
+
+        if (canRun) {
+            SystemUser user = em.find(SystemUser.class, updatedUser.getSystemUserId());
+            if (user != null) {
+                user.setFirstName(updatedUser.getFirstName());
+                user.setLastName(updatedUser.getLastName());
+                user.setEmailAddress(updatedUser.getEmailAddress());
+                user.setPassword(updatedUser.getPassword());
+                user.setPostalAddress(updatedUser.getPostalAddress());
+                user.setContactNumber(updatedUser.getContactNumber());
+                user.setSalution(updatedUser.getSalution());
+                user.setLocked(updatedUser.getLocked());
+                user.setResetPasswordUponLogin(updatedUser.getResetPasswordUponLogin());
+                user.setActivated(updatedUser.getActivated());
+                user.setCredit(updatedUser.getCredit());
+
+                em.merge(user);
+                em.flush();
+                return 1;
+            }
+            System.out.println("The user looking for is null");
+            return 0;
+
+        }
+        System.out.println("Access Denied");
+        return -1;
+
+    }
+
+    System.out.println (
+    "Operator is null");
+
+return 0;
+
+    }
+
+    public 
+
+int detachRoleFromUser(Integer systemAdminId, Integer userId, Integer roleId) {
+        SystemUser operator = em.find(SystemUser.class  
+
+    , systemAdminId);
+        boolean canRun = false;
+    if (operator
+
+    
+        != null) {
+            if (operator.getUserType().equals("superuser")) {
+            canRun = true;
+        }
+
+        if (carb.userHasRight(operator, Right.canManageUser)) {
+            canRun = true;
+        }
+
+        if (canRun) {
+            SystemUser user = em.find(SystemUser.class, userId);
+            if (user != null) {
+                UserRole role = em.find(UserRole.class, roleId);
+                if (role != null) {
+                    if (user.getUserRoleList().contains(role)) {
+                        user.getUserRoleList().remove(role);
+                        role.getSystemUserList().remove(user);
+                        em.merge(role);
+                        em.merge(user);
+                        em.flush();
+                        return 1;
+                    }
+                }
+                System.out.println("role is null");
+                return 0;
+            }
+            System.out.println("user is null");
             return 0;
         }
-
+        System.out.println("Access Denied");
+        return -1;
     }
 
-    public int updateUserInfo(Integer systemAdminId, SystemUser updatedUser) {
-        SystemUser operator = em.find(SystemUser.class, systemAdminId);
-        boolean canRun = false;
-        if (operator != null) {
-            if (operator.getUserType().equals("superuser")) {
-                canRun = true;
-            }
+    System.out.println (
+    "operator is null");
 
-            if (carb.userHasRight(operator, Right.canManageUser)) {
-                canRun = true;
-            }
-
-            if (canRun) {
-                SystemUser user = em.find(SystemUser.class, updatedUser.getSystemUserId());
-                if (user != null) {
-                    user.setFirstName(updatedUser.getFirstName());
-                    user.setLastName(updatedUser.getLastName());
-                    user.setEmailAddress(updatedUser.getEmailAddress());
-                    user.setPassword(updatedUser.getPassword());
-                    user.setPostalAddress(updatedUser.getPostalAddress());
-                    user.setContactNumber(updatedUser.getContactNumber());
-                    user.setSalution(updatedUser.getSalution());
-                    user.setLocked(updatedUser.getLocked());
-                    user.setResetPasswordUponLogin(updatedUser.getResetPasswordUponLogin());
-                    user.setActivated(updatedUser.getActivated());
-                    user.setCredit(updatedUser.getCredit());
-
-                    em.merge(user);
-                    em.flush();
-                    return 1;
-                }
-                System.out.println("The user looking for is null");
-                return 0;
-
-            }
-            System.out.println("Access Denied");
-            return -1;
-
-        }
-        System.out.println("Operator is null");
-        return 0;
-
+return 0;
     }
 
-    public int detachRoleFromUser(Integer systemAdminId, Integer userId, Integer roleId) {
-        SystemUser operator = em.find(SystemUser.class, systemAdminId);
+    public 
+
+int addRoleToUser(Integer systemAdminId, Integer userId, Integer roleId) {
+        SystemUser operator = em.find(SystemUser.class  
+
+    , systemAdminId);
         boolean canRun = false;
-        if (operator != null) {
+    if (operator
+
+    
+        != null) {
             if (operator.getUserType().equals("superuser")) {
-                canRun = true;
-            }
-
-            if (carb.userHasRight(operator, Right.canManageUser)) {
-                canRun = true;
-            }
-
-            if (canRun) {
-                SystemUser user = em.find(SystemUser.class, userId);
-                if (user != null) {
-                    UserRole role = em.find(UserRole.class, roleId);
-                    if (role != null) {
-                        if (user.getUserRoleList().contains(role)) {
-                            user.getUserRoleList().remove(role);
-                            role.getSystemUserList().remove(user);
-                            em.merge(role);
-                            em.merge(user);
-                            em.flush();
-                            return 1;
-                        }
-                    }
-                    System.out.println("role is null");
-                    return 0;
-                }
-                System.out.println("user is null");
-                return 0;
-            }
-            System.out.println("Access Denied");
-            return -1;
+            canRun = true;
         }
-        System.out.println("operator is null");
-        return 0;
+
+        if (carb.userHasRight(operator, Right.canManageUser)) {
+            canRun = true;
+        }
+
+        if (canRun) {
+            SystemUser user = em.find(SystemUser.class, userId);
+            if (user != null) {
+                UserRole role = em.find(UserRole.class, roleId);
+                user.getUserRoleList().add(role);
+                role.getSystemUserList().add(user);
+                em.merge(role);
+                em.merge(user);
+                return 1;
+            }
+            System.out.println("User is null");
+            return 0;
+        }
+        System.out.println("Access Denied");
+        return 1;
     }
 
-    public int addRoleToUser(Integer systemAdminId, Integer userId, Integer roleId) {
-        SystemUser operator = em.find(SystemUser.class, systemAdminId);
-        boolean canRun = false;
-        if (operator != null) {
-            if (operator.getUserType().equals("superuser")) {
-                canRun = true;
-            }
+    System.out.println (
+    "System Admin is null");
 
-            if (carb.userHasRight(operator, Right.canManageUser)) {
-                canRun = true;
-            }
-
-            if (canRun) {
-                SystemUser user = em.find(SystemUser.class, userId);
-                if (user != null) {
-                    UserRole role = em.find(UserRole.class, roleId);
-                    user.getUserRoleList().add(role);
-                    role.getSystemUserList().add(user);
-                    em.merge(role);
-                    em.merge(user);
-                    return 1;
-                }
-                System.out.println("User is null");
-                return 0;
-            }
-            System.out.println("Access Denied");
-            return 1;
-        }
-
-        System.out.println("System Admin is null");
-        return 0;
+return 0;
     }
 
     public boolean checkLocked(Integer userId) {
         boolean result = false;
-        SystemUser user = (SystemUser) em.find(SystemUser.class, userId);
-        if (user != null) {
+        SystemUser 
+
+user = (SystemUser) em.find(SystemUser.class  
+
+    , userId);
+        if (user
+
+    
+        != null) {
             if (user.getLocked()) {
-                result = true;
-            }
+            result = true;
         }
-        return result;
     }
-    public boolean checkResetPasswordUponLogin(Integer userId ){
+    return result ;
+}
+
+public boolean checkResetPasswordUponLogin(Integer userId) {
         boolean result = false;
-        SystemUser user = (SystemUser) em.find(SystemUser.class, userId);
-        if (user != null) {
+        SystemUser 
+
+user = (SystemUser) em.find(SystemUser.class  
+
+    , userId);
+        if (user
+
+    
+        != null) {
             if (user.getResetPasswordUponLogin()) {
-                result = true;
-            }
+            result = true;
         }
-        return result;
     }
+    return result ;
+}
 }

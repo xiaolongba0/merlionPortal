@@ -15,7 +15,6 @@ import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import util.accessRightControl.Right;
 
 /**
@@ -37,8 +36,10 @@ public class RoleManagementSessionBean {
     public boolean isSuperUser(int userid) {
         SystemUser user = em.find(SystemUser.class, userid);
         if (user != null) {
-            if (user.getUserType().equals("superuser")) {
-                return true;
+            if (user.getUserType() != null) {
+                if (user.getUserType().equals("superuser")) {
+                    return true;
+                }
             }
         }
 
@@ -197,42 +198,42 @@ public class RoleManagementSessionBean {
                 userRole.setRoleName(changedRole.getRoleName());
 
                 userRole.setRoleName(changedRole.getRoleName());
-                userRole.setDescription(changedRole.getDescription() );
+                userRole.setDescription(changedRole.getDescription());
 
-                userRole.setCanGeneratePO(changedRole.getCanGeneratePO() );
-                userRole.setCanGenerateSO(changedRole.getCanGenerateSO() );
-                userRole.setCanGenerateQuotationAndProductContract(changedRole.getCanGenerateQuotationAndProductContract() );
-                userRole.setCanGenerateSalesReport(changedRole.getCanGenerateSalesReport() );
+                userRole.setCanGeneratePO(changedRole.getCanGeneratePO());
+                userRole.setCanGenerateSO(changedRole.getCanGenerateSO());
+                userRole.setCanGenerateQuotationAndProductContract(changedRole.getCanGenerateQuotationAndProductContract());
+                userRole.setCanGenerateSalesReport(changedRole.getCanGenerateSalesReport());
 
-                userRole.setCanManageUser(changedRole.getCanManageUser() );
+                userRole.setCanManageUser(changedRole.getCanManageUser());
 
-                userRole.setCanUseForecast(changedRole.getCanUseForecast() );
-                userRole.setCanManageProductAndComponent(changedRole.getCanManageProductAndComponent() );
-                userRole.setCanGenerateMRPList(changedRole.getCanGenerateMRPList() );
+                userRole.setCanUseForecast(changedRole.getCanUseForecast());
+                userRole.setCanManageProductAndComponent(changedRole.getCanManageProductAndComponent());
+                userRole.setCanGenerateMRPList(changedRole.getCanGenerateMRPList());
 
-                userRole.setCanGenerateServicePO(changedRole.getCanGenerateServicePO() );
-                userRole.setCanUpdateCustomerCredit(changedRole.getCanUpdateCustomerCredit() );
-                userRole.setCanGenerateServiceSO(changedRole.getCanGenerateServiceSO() );
-                userRole.setCanGenerateQuotationRequest(changedRole.getCanGenerateQuotationRequest() );
-                userRole.setCanManageServiceCatalog(changedRole.getCanManageServiceCatalog() );
-                userRole.setCanGenerateServiceQuotationAndContract(changedRole.getCanGenerateServiceQuotationAndContract() );
-                userRole.setCanManageKeyAccount(changedRole.getCanManageKeyAccount() );
+                userRole.setCanGenerateServicePO(changedRole.getCanGenerateServicePO());
+                userRole.setCanUpdateCustomerCredit(changedRole.getCanUpdateCustomerCredit());
+                userRole.setCanGenerateServiceSO(changedRole.getCanGenerateServiceSO());
+                userRole.setCanGenerateQuotationRequest(changedRole.getCanGenerateQuotationRequest());
+                userRole.setCanManageServiceCatalog(changedRole.getCanManageServiceCatalog());
+                userRole.setCanGenerateServiceQuotationAndContract(changedRole.getCanGenerateServiceQuotationAndContract());
+                userRole.setCanManageKeyAccount(changedRole.getCanManageKeyAccount());
 
-                userRole.setCanManageTransportationAsset(changedRole.getCanManageTransportationAsset() );
-                userRole.setCanManageTransportationOrder(changedRole.getCanManageTransportationOrder() );
-                userRole.setCanManageLocation(changedRole.getCanManageLocation() );
-                userRole.setCanManageAssetType(changedRole.getCanManageAssetType() );
-                userRole.setCanUseHRFunction(changedRole.getCanUseHRFunction() );
+                userRole.setCanManageTransportationAsset(changedRole.getCanManageTransportationAsset());
+                userRole.setCanManageTransportationOrder(changedRole.getCanManageTransportationOrder());
+                userRole.setCanManageLocation(changedRole.getCanManageLocation());
+                userRole.setCanManageAssetType(changedRole.getCanManageAssetType());
+                userRole.setCanUseHRFunction(changedRole.getCanUseHRFunction());
 
                 userRole.setCanManageWarehouse(changedRole.getCanManageWarehouse());
-                userRole.setCanManageStockAuditProcess(changedRole.getCanManageStockAuditProcess() );
-                userRole.setCanManageStockTransportOrder(changedRole.getCanManageStockTransportOrder() );
-                userRole.setCanManageReceivingGoods(changedRole.getCanManageReceivingGoods() );
-                userRole.setCanManageOrderFulfillment(changedRole.getCanManageOrderFulfillment() );
+                userRole.setCanManageStockAuditProcess(changedRole.getCanManageStockAuditProcess());
+                userRole.setCanManageStockTransportOrder(changedRole.getCanManageStockTransportOrder());
+                userRole.setCanManageReceivingGoods(changedRole.getCanManageReceivingGoods());
+                userRole.setCanManageOrderFulfillment(changedRole.getCanManageOrderFulfillment());
 
-                userRole.setCanManageBid(changedRole.getCanManageBid() );
-                userRole.setCanManagePost(changedRole.getCanManagePost() );
-                
+                userRole.setCanManageBid(changedRole.getCanManageBid());
+                userRole.setCanManagePost(changedRole.getCanManagePost());
+
                 em.merge(userRole);
                 return 1;
             }
@@ -243,7 +244,6 @@ public class RoleManagementSessionBean {
         System.out.println("Operator is null");
         return 0;
     }
-    
 
     private SystemUser getOperator(Integer operatorId) {
         return em.find(SystemUser.class, operatorId);

@@ -17,6 +17,7 @@ public class ChangePasswordSessionBean {
         boolean result = false;
         SystemUser user = em.find(SystemUser.class, userId);
         user.setPassword(password);
+        user.setResetPasswordUponLogin(false);
         try {
             em.merge(user);
             result = true;
