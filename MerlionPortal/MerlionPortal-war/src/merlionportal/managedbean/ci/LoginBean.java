@@ -29,8 +29,6 @@ public class LoginBean {
     private String username;
     private String password;
 
-  
-
     @EJB
     LoginSessionBean loginSessionBean;
     @EJB
@@ -84,8 +82,10 @@ public class LoginBean {
                                 FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/changepassword.xhtml");
                             } //                            Check if it is admin or user
                             else {
-                                if (uamsb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")).getUserType().equals("superuser")) {
-                                    FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/admin/dashboard.xhtml");
+                                if (uamsb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")).getUserType() != null) {
+                                    if (uamsb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")).getUserType().equals("superuser")) {
+                                        FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/admin/dashboard.xhtml");
+                                    }
                                 } else if (checkRight.userHasRight(uamsb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")), Right.canManageUser)) {
                                     FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/admin/dashboard.xhtml");
                                 } else {
@@ -123,7 +123,5 @@ public class LoginBean {
         this.password = password;
     }
 
-  
 //</editor-fold>
-
 }
