@@ -20,14 +20,14 @@
                     <div class="row spacing">
                         <div class="col-md-5">
                             <div class="input-group">
-                                <div class="input-group-addon">Role Name:</div>
-                                <h:inputText value="#{createRole.roleName}" styleClass="form-control" />
+                                <div class="input-group-addon">Role Name * :</div>
+                                <h:inputText required="ture" requiredMessage="Role Name is required" value="#{createRole.roleName}" styleClass="form-control"  />
                             </div>
                         </div>
                         <div class="col-md-5">
                             <div class="input-group">
-                                <div class="input-group-addon">Description:</div>
-                                <h:inputText value="#{createRole.roleDescription}" styleClass="form-control" />
+                                <div class="input-group-addon">Description * :</div>
+                                <h:inputText  required="ture" requiredMessage="Description is required" value="#{createRole.roleDescription}" styleClass="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -41,9 +41,9 @@
                     <c:if test ="#{dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:panel header="Select Company" style="margin-bottom:10px;">
                             <h:panelGrid columns="2" cellpadding="5">
-                                <p:outputLabel for="company" value="Company:  " />
-                                <h:selectOneMenu id="company" value="#{createRole.selectCompanyId}"  style="width:250px" styleClass="form-control">
-                                    <p:ajax listener="#{createRole.checkCompanyPackage}" update="subsystem" />
+                                <p:outputLabel for="company" value="Company" />
+                                <h:selectOneMenu id="company" value="#{createRole.selectCompanyId}"  style="width:250px" styleClass="form-control" required="true" requiredMessage="Please select a company">
+                                    <p:ajax listener="#{createRole.checkCompanyPackage}" update="subsystem"  />
                                     <f:selectItem itemLabel="Select Company . . ." itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{createRole.companys}" var="company" itemLabel="#{company.name}"  itemValue="#{company.companyId}"/>
                                 </h:selectOneMenu>

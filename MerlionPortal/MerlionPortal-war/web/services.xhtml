@@ -76,7 +76,7 @@
                                 <h2 class="modal-title">Buy now!</h2>
                             </div>
                             <div id="body" class="modal-body">
-                                <h2>Register Company Information</h2>
+                                <h3>Register Company Information</h3>
                                 <p:ajaxStatus style="width:16px;height:16px;">
                                     <f:facet name="start">
                                         <h:graphicImage value="/img/load.gif" />
@@ -88,27 +88,27 @@
                                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
                                 <h:panelGrid columns="3" cellpadding="5">
 
-                                    <h:outputLabel style="font-weight: bold" value="Company Name :"/>
-                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyName" value="#{userAccountManagerBean.companyName}" />
+                                    <h:outputLabel style="font-weight: bold" value="Company Name * "/>
+                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Company Name is required." id="companyName" value="#{userAccountManagerBean.companyName}" />
 
                                     <br/>
-                                    <h:outputLabel style="font-weight: bold" value="Company Address :"/>
-                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyAddress" value="#{userAccountManagerBean.companyAddress}" />
+                                    <h:outputLabel style="font-weight: bold" value="Company Address * "/>
+                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Company Address is required." id="companyAddress" value="#{userAccountManagerBean.companyAddress}" />
                                     <br/>
-                                    <h:outputLabel style="font-weight: bold" value="Contact Person Name :"/>
-                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyContactPersonName" value="#{userAccountManagerBean.contactPersonName}" />
+                                    <h:outputLabel style="font-weight: bold" value="Contact Person Name * "/>
+                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Contact Person Name is required." id="companyContactPersonName" value="#{userAccountManagerBean.contactPersonName}" />
                                     <br/>
-                                    <h:outputLabel style="font-weight: bold" value="Contact Number :"/>
-                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyContactNumber" value="#{userAccountManagerBean.contactNumber}" />
+                                    <h:outputLabel style="font-weight: bold" value="Contact Number * "/>
+                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Contact Number is required." id="companyContactNumber" value="#{userAccountManagerBean.contactNumber}" />
                                     <br/>
-                                    <h:outputLabel style="font-weight: bold" value="Email Address :"/>
-                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyEmailAddress" value="#{userAccountManagerBean.emailAddress}" />
+                                    <h:outputLabel style="font-weight: bold" value="Email Address * "/>
+                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Email Address is required." id="companyEmailAddress" value="#{userAccountManagerBean.emailAddress}" />
                                     <br/>
-                                    <h:outputLabel style="font-weight: bold" value="Company Description :"/>
-                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Field is required." id="companyDescription" value="#{userAccountManagerBean.description}" />
+                                    <h:outputLabel style="font-weight: bold" value="Company Description * "/>
+                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Company Description is required." id="companyDescription" value="#{userAccountManagerBean.description}" />
                                     <br/>
-                                    <h:outputLabel for="basic" style="font-weight: bold" value="Package Choice" />
-                                    <h:selectOneListbox styleClass="form-control" id="basic" value="#{userAccountManagerBean.package1}">
+                                    <h:outputLabel for="basic" style="font-weight: bold" value="Package Choice * " />
+                                    <h:selectOneListbox styleClass="form-control" id="basic" value="#{userAccountManagerBean.package1}" required="true" requiredMessage="Package choice is required.">
                                         <f:selectItem itemLabel="Package for 1PL Manufacturing" itemValue="1" />
                                         <f:selectItem itemLabel="Package for 1PL Non-Manufacturing" itemValue="2" />
                                         <f:selectItem itemLabel="Package for 2PL" itemValue="3" />
