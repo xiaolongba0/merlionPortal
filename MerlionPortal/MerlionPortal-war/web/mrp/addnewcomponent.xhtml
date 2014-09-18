@@ -1,0 +1,221 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Add New Product</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form id="formMain">
+            <h1>Welcome to MRP II page</h1>
+            <p:menubar>
+                <p:menuitem value="MRP II" url="mrp.xhtml" />
+                <p:menuitem value="View All Products" url="viewallproducts.xhtml" />
+                <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
+                <p:menuitem value="Delete Product" url="deleteproduct.xhtml" />
+                <p:menuitem value="View A Product" url="viewaproduct.xhtml" />
+                <p:menuitem value="Edit A Product" url="editproduct.xhtml" />
+                <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
+            </p:menubar>
+            <br/>
+            <p:panel id="panel" header="Add Component">
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start">
+                        <h:graphicImage value="/images/spinner.gif" />
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:messages />
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="productId" style="font-weight: bold" value="Product Id: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Product Id" requiredMessage="Product Id is required." id="productId" value="#{productManagedBean.productId}">
+                                <f:validateLength minimum="1" maximum="16" />
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="productId" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="componentName" style="font-weight: bold" value="Component Name: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Component Name" requiredMessage="Component Name is required." id="componentName" value="#{productManagedBean.componentName}">
+                                <f:validateLength minimum="4" maximum="16" />
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="componentName" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="componentDescription" style="font-weight: bold" value="Component Description: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="ComponentDescription" requiredMessage="Description is required." id="componentDescription" value="#{productManagedBean.componentDescription}">
+                                <f:validateLength minimum="1" maximum="19" />
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="componentDescription" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="componentQuantity" style="font-weight: bold" value="Component Quantity: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Component Quantity" requiredMessage="Component Quantity is required." id="componentQuantity" value="#{productManagedBean.componentQuantity}">
+                                <f:validateLength minimum="1" maximum="19"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="componentQuantity" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel for="componentCurrency" style="font-weight: bold" value="Component Currency:   *" />
+                        </p:column>
+                        <p:column>                        
+                            <h:selectOneMenu id="componentCurrency" value="#{productManagedBean.componentCurrency}" required="true" label="Component Currency">
+                                <f:selectItem itemLabel="Select Currency" itemValue="" noSelectionOption="true" />
+
+                                <f:selectItem itemLabel="US Dollar (USD)" itemValue="USD" />
+                                <f:selectItem itemLabel="European Euro (EUR)" itemValue="EUR" />
+                                <f:selectItem itemLabel="Japan Yen (JPY)" itemValue="JPY" />
+                                <f:selectItem itemLabel="Pound Sterling (GBP)" itemValue="GBP" />
+                                <f:selectItem itemLabel="Australian Dollar (AUD)" itemValue="AUD" />
+                                <f:selectItem itemLabel="Swiss Franc (CHF)" itemValue="CHF" />
+                                <f:selectItem itemLabel="Canadian Dollar (CAD)" itemValue="CAD" />
+                                <f:selectItem itemLabel="Hong Kong Dollar (HKD)" itemValue="HKD" />
+                                <f:selectItem itemLabel="Swedish Krona (SEK)" itemValue="SEK" />
+                                <f:selectItem itemLabel="New Zealand Dollar (NZD)" itemValue="NZD" />
+
+                                <f:selectItem itemLabel="South African Rand (ZAR)" itemValue="ZAR" />
+                                <f:selectItem itemLabel="Russian Ruble (RUB)" itemValue="RUB" />
+                                <f:selectItem itemLabel="Indian Rupee (INR)" itemValue="INR" />
+                                <f:selectItem itemLabel="Singapore Dollar (SGD)" itemValue="SGD" />
+                                <f:selectItem itemLabel="Bulgarian Lev (BGN)" itemValue="BGN" />
+                                <f:selectItem itemLabel="Chinese Yuan Renminbi (CNY)" itemValue="CNT" />
+                                <f:selectItem itemLabel="Thailand Baht (THB)" itemValue="THB" />
+                                <f:selectItem itemLabel="Hungary Forint(HUF)" itemValue="HUF" />   
+                                <f:selectItem itemLabel="Norwegian Krone (NOK)" itemValue="NOK" />
+                                <f:selectItem itemLabel="Mexican Peso (MXN)" itemValue="MXN" />
+                            </h:selectOneMenu>
+                            <p:message for="componentCurrency" />
+                            <h:outputText value="#{productManagedBean.componentCurrency}" />
+                        </p:column>
+                    </p:row>  
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="componentCost" style="font-weight: bold" value="Component Cost: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Component Cost" requiredMessage="Component Cost is required." id="componentCost" value="#{productManagedBean.componentCost}">
+                                <f:validateLength minimum="1" maximum="19"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="componentCost" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="componentLeadTime" style="font-weight: bold" value="Component LeadTime: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Component LeadTime" requiredMessage="Component LeadTime is required." id="componentLeadTime" value="#{productManagedBean.componentLeadTime}">
+                                <f:validateLength minimum="1" maximum="19"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="componentLeadTime" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="contactPerson" style="font-weight: bold" value="Contact Person: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Contact Person" requiredMessage="Contact Person is required." id="contactPerson" value="#{productManagedBean.contactPerson}">
+                                <f:validateLength minimum="1" maximum="19"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="contactPerson" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="contactNumber" style="font-weight: bold" value="Contact Number: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Contact Number" requiredMessage="Contact Number is required." id="contactNumber" value="#{productManagedBean.contactNumber}">
+                                <f:validateLength minimum="1" maximum="19"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="contactNumber" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="supplierDescription" style="font-weight: bold" value="Supplier Description: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Supplier Description" requiredMessage="Supplier Description is required." id="supplierDescription" value="#{productManagedBean.supplierDescription}">
+                                <f:validateLength minimum="1" maximum="19"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="supplierDescription" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="contactEmail" style="font-weight: bold" value="Contact Email: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Contact Email" requiredMessage="Component LeadTime is required." id="contactEmail" value="#{productManagedBean.contactEmail}">
+                                <f:validateLength minimum="1" maximum="19"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="contactEmail" />
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+                <p:commandButton id="snc" value="Save New Component" update="panel" actionListener="#{productManagedBean.saveNewComponent}" ajax="true" />
+            </p:panel>
+     </h:form>
+    </h:body>
+</html>                 
+
+

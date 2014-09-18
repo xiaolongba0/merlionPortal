@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>View BOM for a Product</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form id="formMain">
+            <h1>Welcome to MRP II page</h1>
+            <p:menubar>
+                <p:menuitem value="MRP II" url="mrp.xhtml" />
+                <p:menuitem value="View All Products" url="viewallproducts.xhtml" />
+                <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
+                <p:menuitem value="Delete Product" url="deleteproduct.xhtml" />
+                <p:menuitem value="View A Product" url="viewaproduct.xhtml" />
+                <p:menuitem value="Edit A Product" url="editproduct.xhtml" />
+                <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
+                <p:menuitem value="View and Edit BOM" url="viewbom.xhtml" />
+            </p:menubar>
+            <br/>
+        </h:form>
+
+
+
+
+        <!-- add in product Id   -->
+        <h:form>
+            <p:panelGrid>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="productId" style="font-weight: bold" value="Product Id: " />
+                    </p:column>
+                    <p:column>
+                        <p:inputText required="true" label="Product Id" requiredMessage="Product Id is required." id="productId" value="#{productComponentViewEditManagedBean.productId}">
+                            <f:validateLength minimum="1" maximum="16" />
+                        </p:inputText>
+                    </p:column>
+                    <p:column>
+                        <p:message for="productId" />
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </h:form>
+
+
+
+
+
+
+
+
+
+
+
+
+        <h:form id="form">
+            <p:growl id="msgs" showDetail="true"/>   
+
+            <p:dataTable id="components" var="component1" value="#{productComponentViewEditManagedBean.components}" editable="true" style="margin-bottom:20px">
+
+
+                <f:facet name="header">
+                    View and Edit BOM for a product
+                </f:facet>
+                <!--note: havent handle supplier info for viewing and editing -->
+
+                <p:ajax event="rowEdit" listener="#{productComponentViewEditManagedBean.onRowEdit}" update=":form:msgs" />
+                <p:ajax event="rowEditCancel" listener="#{productComponentViewEditManagedBean.onRowCancel}" update=":form:msgs" />
+
+
+                <p:column headerText="Component ID">
+                    <h:outputText value="#{component1.componentId}" />
+                </p:column>
+
+
+
+                <p:column headerText="Component Name">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{component1.componentName}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{component1.componentName}" style="width:100%" label="Component Name"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+
+
+
+                <p:column headerText="Component Description">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{component1.description}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{component1.description}" style="width:100%" label="Component Description"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Component Quantity">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{component1.quantity}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{component1.quantity}" style="width:100%" label="Component Quantity"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Component Currency">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{component1.currency}" /></f:facet>
+                        <f:facet name="input">
+                            <h:selectOneMenu value="#{component1.currency}" style="width:100%">
+                                <f:selectItems value="#{productComponentViewEditManagedBean.currencies}" var="currency" itemLabel="#{currency}" itemValue="#{currency}" />
+                            </h:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column> 
+
+                <p:column headerText="Component Cost">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{component1.cost}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{component1.cost}" style="width:100%" label="Component Cost"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Component leadTime">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{component1.leadTime}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{component1.leadTime}" style="width:100%" label="Component leadTime"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+
+                <p:column style="width:32px">
+                    <p:rowEditor />
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+    </h:body>
+</html>
+
+
