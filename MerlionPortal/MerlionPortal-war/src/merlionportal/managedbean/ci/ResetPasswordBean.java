@@ -52,12 +52,12 @@ public class ResetPasswordBean {
                 //Set Password to user's password and save to database.
                 if (uamsb.updateUserPassword(user.getSystemUserId(), MD5Generator.hash(newPassword))) {
                     //Send Email
-                    String sender = "a0084692@nus.edu.sg";
+                    String sender = "merlionportal@nus.edu.sg";
                     String[] recipients = {email};
                     String subject = "Password Reset";
 
                     String content = "<h2>Hi user,</h2><p>You have request a password reset for your account at " + email + ". Please kindly use your new password below to login to your account.<br/><br/>"
-                            + "Password; <strong>" + newPassword + "</strong><br/><br/>"
+                            + "Password: <strong>" + newPassword + "</strong><br/><br/>"
                             + " Thank you. <br/><br/>Best Regards,<br/>Administrator, Merlion Portal";
                     if (Postman.sendMail(sender, recipients, subject, content)) {
                         requestContext.execute("success()");
