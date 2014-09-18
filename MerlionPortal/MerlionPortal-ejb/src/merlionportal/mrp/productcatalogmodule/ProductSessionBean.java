@@ -1,6 +1,9 @@
 package merlionportal.mrp.productcatalogmodule;
 
+import entity.Component;
 import entity.Product;
+import entity.Supplier;
+import java.util.ArrayList;
 //import entity.SystemUser;
 //import entity.Venue;
 //import java.sql.Timestamp;
@@ -19,7 +22,8 @@ public class ProductSessionBean {
 
     @PersistenceContext
     private EntityManager entityManager;
- //   private ArrayList<Component> componentList;
+    private ArrayList<Component> componentList; //componentList refers to BOM of a product
+    //  private ArrayList<Component> components; //components refers to list of components that a supplier offers
     private Product product;
 
     /*   public List<Venue> getAllVenues() {
@@ -47,6 +51,19 @@ public class ProductSessionBean {
         query.setParameter("inCompanyId", companyId);
         return query.getResultList();
     }
+    
+    
+    
+        // Notes: take in companyId automatically after Login, later change to getMyProducts(Integer companyId)
+    public List<Component> getComponentsForAProduct(Integer companyId, Integer productId) {
+        Product productTemp = entityManager.find(Product.class, productId);
+        return productTemp.getComponentList();
+    }
+    
+    
+    
+    
+    
 
 //Return a selected product for user to view
     public Product getAProduct(Integer companyID, Integer productID) {
@@ -85,19 +102,18 @@ public class ProductSessionBean {
         product = new Product();
         product.setProductName(productName);
         product.setDescription(description);
-         product.setCategory(category);
+        product.setCategory(category);
         product.setProductType(productType);
         product.setCurrency(currency);
         product.setPrice(price);
         product.setCompanyId(companyId);
 
-        ////editing...on 14 Sep 2014
-    //    if (productType.equals("Manufacturing")) {
-     //       componentList = new ArrayList<Component>();
-     //   }
-
+        componentList = new ArrayList<Component>();
         // product.setComponent(getComponent(componentId));
         // product.setCompany(company);
+
+        product.setComponentList(componentList);
+
         entityManager.persist(product);
         entityManager.flush();
 
@@ -107,9 +123,11 @@ public class ProductSessionBean {
 
     }
 
-    ////editing...on 14 Sep 2014
-    /*
-    public Integer addNewComponent(String componentName, String description, Integer quantity, String currency, Double cost, Integer leadTime, Integer companyId, Integer productId) {
+    ////when adding a component, adding in supplier's details too
+    //After suppliers account can be set up. this function searches through supplier's company Id, then set the id as the same as supplier's company Id
+    ////do a actionlistener after product
+    public Integer addNewComponent(String componentName, String description, Integer quantity, String currency, Double cost, Integer leadTime, String contactPerson, String contactNumber, String supplierDescription, String contactEmail, Integer companyId, Integer productId) {
+
         Query query = entityManager.createQuery("SELECT p FROM Product p WHERE p.companyId = :inCompanyId");
 
         query.setParameter("inCompanyId", companyId);
@@ -120,27 +138,46 @@ public class ProductSessionBean {
                 pdt = p;
             }
         }
-        // Company company = new Company(companyId);
+
+           Supplier supplier = new Supplier();
+        supplier.setContactPerson(contactPerson);
+        supplier.setContactNumber(contactNumber);
+        supplier.setDescription(supplierDescription);
+        supplier.setContactEmail(contactEmail);
+
+        entityManager.persist(supplier);
+        entityManager.flush();
+        
+        
         Component component = new Component();
+        component.setComponentName(componentName);
         component.setDescription(description);
         component.setQuantity(quantity);
         component.setCurrency(currency);
         component.setCost(cost);
         component.setLeadTime(leadTime);
-        component.setProductproductId(product);
-
-        componentList.add(component);
-        product.setComponentList(componentList);
-
-//debug....use merge?
-        entityManager.merge(pdt);
+        component.setProductproductId(pdt);
+        component.setSuppliersupplierCompanyId(supplier); 
+        
+        
+        entityManager.persist(component);
+       entityManager.flush();
+      
+       pdt.getComponentList().add(component);
+         entityManager.merge(pdt);
         entityManager.flush();
 
-        return pdt.getProductId();
+        // later search supplier, add new component into it.
+        //  if(){
+        //       components = new ArrayList<Component>();
+        //  }
+        //identify by supplier companies' id
+        //treat them as 1 to 1?
+        //component.setSuppliersupplierCompanyId(supplier);
+
+        return component.getComponentId();
 
     }
-    
-    */
 
     public Integer editProduct(String productName, String description, String category, String productType, String currency, Double price, Integer companyID, Integer productID/*, Integer companyId, Integer componentId*/) {
 
@@ -172,8 +209,55 @@ public class ProductSessionBean {
         return pdt.getProductId();
 
     }
+    
+    
+    
+    ////Editting
+    public Integer editComponent(String componentName, String description, Double cost, String currency, Integer quantity, Integer leadTime,/* String contactPerson, String contactNumber, String supplierDescription, String contactEmail,*/ Integer companyID, Integer productID, Integer componentID) {
 
-   
+        Query query = entityManager.createQuery("SELECT p FROM Product p WHERE p.companyId = :inCompanyId");
+        query.setParameter("inCompanyId", companyID);
+        List<Product> allmyproducts = query.getResultList();
+        Product pdt = new Product();
+        for (Product p : allmyproducts) {
+            if (Objects.equals(p.getProductId(), productID)) {
+                pdt = p;
+            }
+        }
+        
+        
+        Component component = entityManager.find(Component.class, componentID);
+     
+        component.setComponentName(componentName);
+        component.setDescription(description);
+        component.setCost(cost);
+        component.setCurrency(currency);
+        component.setQuantity(quantity);
+        component.setLeadTime(leadTime);
+     /*   component.getSuppliersupplierCompanyId().setContactPerson(contactPerson);
+        component.getSuppliersupplierCompanyId().setContactNumber(contactNumber);
+        component.getSuppliersupplierCompanyId().setDescription(supplierDescription);
+        component.getSuppliersupplierCompanyId().setContactEmail(contactEmail);*/
+    
+
+        // product.setComponent(getComponent(componentId));
+        // product.setCompany(company);
+        entityManager.merge(component);
+        entityManager.flush();
+
+        // company.getProductList().add(product);
+        //  entityManager.merge(company);
+        return component.getComponentId();
+
+    }
+    
+    
+    
+    
+    
+    
+    
+
     public void deleteProducts(Integer companyId, Double productId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
