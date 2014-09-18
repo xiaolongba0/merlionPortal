@@ -52,7 +52,7 @@ public class ResetPasswordBean {
                 //Set Password to user's password and save to database.
                 if (uamsb.updateUserPassword(user.getSystemUserId(), MD5Generator.hash(newPassword))) {
                     //Send Email
-                    String sender = "merlionportal@nus.edu.sg";
+                    String sender = "a0084692@nus.edu.sg";
                     String[] recipients = {email};
                     String subject = "Password Reset";
 

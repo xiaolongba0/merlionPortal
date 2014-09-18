@@ -57,8 +57,10 @@ public class RoleManagementSessionBean {
         boolean canRun = false;
 
         if (operator != null) {
-            if (operator.getUserType().equals("superuser")) {
-                canRun = true;
+            if (operator.getUserType() != null) {
+                if (operator.getUserType().equals("superuser")) {
+                    canRun = true;
+                }
             }
             if (carb.userHasRight(operator, Right.canManageUser)) {
                 canRun = true;
@@ -145,8 +147,10 @@ public class RoleManagementSessionBean {
         boolean canRun = false;
 
         if (operator != null) {
-            if (operator.getUserType().equals("superuser")) {
-                canRun = true;
+            if (operator.getUserType() != null) {
+                if (operator.getUserType().equals("superuser")) {
+                    canRun = true;
+                }
             }
             if (carb.userHasRight(operator, Right.canManageUser)) {
                 canRun = true;
@@ -185,8 +189,10 @@ public class RoleManagementSessionBean {
         boolean canRun = false;
 
         if (operator != null) {
-            if (operator.getUserType().equals("superuser")) {
-                canRun = true;
+            if (operator.getUserType() != null) {
+                if (operator.getUserType().equals("superuser")) {
+                    canRun = true;
+                }
             }
             if (carb.userHasRight(operator, Right.canManageUser)) {
                 canRun = true;

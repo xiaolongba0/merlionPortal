@@ -83,20 +83,23 @@
                             </div>
                         </c:if>
 
-                        <c:if test="#{createRole.companyPackage == 1}">
-
+                        <c:if test="#{createRole.companyPackage == 1 || createRole.companyPackage == 2}">
                             <div class="row spacing">
                                 <div class="col-md-10">
 
                                     <!-- MRP II -->
                                     <div class="btn-group btn-group-lg">
                                         <button type="button" class="btn btn-primary dropdown-toggle rights-btn" data-toggle="dropdown">
-                                            Material Resource Planning II <span class="caret"></span>
+                                            Material Requirement Planning II <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu rights-menu" role="menu">
-                                            <li><a id="mrpUF" href="#" onclick="addRight(this);">Use Forecast</a></li>
+
                                             <li><a id="mrpMPC" href="#" onclick="addRight(this);">Manage Product and Component</a></li>
-                                            <li><a id="mrpGML" href="#" onclick="addRight(this);">Generate MRP List</a></li>
+                                            <c:if test="#{createRole.companyPackage == 1}">
+                                                <li><a id="mrpUF" href="#" onclick="addRight(this);">Use Forecast</a></li>
+                                                <li><a id="mrpGML" href="#" onclick="addRight(this);">Generate MRP List</a></li>
+                                            </c:if>
+
                                         </ul>
                                     </div>
                                 </div>
