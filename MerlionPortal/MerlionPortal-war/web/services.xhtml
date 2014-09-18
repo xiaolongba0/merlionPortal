@@ -66,7 +66,7 @@
                     </div>
                 </div>
             </div>
-            <h:form>
+            <h:form >
                 <div id="buyModal" class="modal fade">
                     <div class="modal-dialog">
 
@@ -75,8 +75,16 @@
                                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                 <h2 class="modal-title">Buy now!</h2>
                             </div>
-                            <div class="modal-body">
+                            <div id="body" class="modal-body">
                                 <h2>Register Company Information</h2>
+                                <p:ajaxStatus style="width:16px;height:16px;">
+                                    <f:facet name="start">
+                                        <h:graphicImage value="/img/load.gif" />
+                                    </f:facet>
+                                    <f:facet name="complete">
+                                        <h:outputText value="" />
+                                    </f:facet>
+                                </p:ajaxStatus>
                                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
                                 <h:panelGrid columns="3" cellpadding="5">
 

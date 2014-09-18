@@ -12,6 +12,8 @@ import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.utility.Postman;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -53,7 +55,19 @@ public class RegisterCompanyManagerBean {
 
         int result = uamb.registerNewCompany(companyName, emailAddress, contactNumber, contactPersonName, emailAddress, description, package1);
         if (result > 0) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Company Registered!", "Please wait for our system administrator to contact you."));
+            RequestContext requestContext = RequestContext.getCurrentInstance();
+                String sender = "merlionportal@nus.edu.sg";
+                String[] recipients = {emailAddress};
+                String subject = "System User Account";
+
+                String content = "<h2>Hi " +contactPersonName+ " ,</h2><p>Thank you for registering with Merlion Portal.<br/>Our system administrator has received your registration. Please wait for us to contact you. <br/><br/>"
+                        + " Thank you. <br/><br/>Best Regards,<br/>Administrator, Merlion Portal";
+                if (Postman.sendMail(sender, recipients, subject, content)) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Company Registered!", "Please check our confirmation email sent to you and wait for our system administrator to contact you."));
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Company Registered!", "Please wait for our system administrator to contact you. "));
+                }
+         
         }
     }
 
