@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -36,7 +37,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Component.findByCost", query = "SELECT c FROM Component c WHERE c.cost = :cost"),
     @NamedQuery(name = "Component.findByCurrency", query = "SELECT c FROM Component c WHERE c.currency = :currency"),
     @NamedQuery(name = "Component.findByQuantity", query = "SELECT c FROM Component c WHERE c.quantity = :quantity"),
-    @NamedQuery(name = "Component.findByLeadTime", query = "SELECT c FROM Component c WHERE c.leadTime = :leadTime")})
+    @NamedQuery(name = "Component.findByLeadTime", query = "SELECT c FROM Component c WHERE c.leadTime = :leadTime"),
+    @NamedQuery(name = "Component.findBySupplierCompanyId", query = "SELECT c FROM Component c WHERE c.supplierCompanyId = :supplierCompanyId"),
+    @NamedQuery(name = "Component.findBySupplierContactEamil", query = "SELECT c FROM Component c WHERE c.supplierContactEamil = :supplierContactEamil"),
+    @NamedQuery(name = "Component.findBySupplierContactPerson", query = "SELECT c FROM Component c WHERE c.supplierContactPerson = :supplierContactPerson"),
+    @NamedQuery(name = "Component.findBySupplierContactNumber", query = "SELECT c FROM Component c WHERE c.supplierContactNumber = :supplierContactNumber")})
 public class Component implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -60,9 +65,19 @@ public class Component implements Serializable {
     private Integer quantity;
     @Column(name = "leadTime")
     private Integer leadTime;
-    @JoinColumn(name = "Supplier_supplierCompanyId", referencedColumnName = "supplierCompanyId")
-    @ManyToOne(optional = false)
-    private Supplier suppliersupplierCompanyId;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "supplierCompanyId")
+    private int supplierCompanyId;
+    @Size(max = 45)
+    @Column(name = "supplierContactEamil")
+    private String supplierContactEamil;
+    @Size(max = 45)
+    @Column(name = "supplierContactPerson")
+    private String supplierContactPerson;
+    @Size(max = 45)
+    @Column(name = "supplierContactNumber")
+    private String supplierContactNumber;
     @JoinColumn(name = "Product_productId", referencedColumnName = "productId")
     @ManyToOne(optional = false)
     private Product productproductId;
@@ -72,6 +87,11 @@ public class Component implements Serializable {
 
     public Component(Integer componentId) {
         this.componentId = componentId;
+    }
+
+    public Component(Integer componentId, int supplierCompanyId) {
+        this.componentId = componentId;
+        this.supplierCompanyId = supplierCompanyId;
     }
 
     public Integer getComponentId() {
@@ -130,12 +150,36 @@ public class Component implements Serializable {
         this.leadTime = leadTime;
     }
 
-    public Supplier getSuppliersupplierCompanyId() {
-        return suppliersupplierCompanyId;
+    public int getSupplierCompanyId() {
+        return supplierCompanyId;
     }
 
-    public void setSuppliersupplierCompanyId(Supplier suppliersupplierCompanyId) {
-        this.suppliersupplierCompanyId = suppliersupplierCompanyId;
+    public void setSupplierCompanyId(int supplierCompanyId) {
+        this.supplierCompanyId = supplierCompanyId;
+    }
+
+    public String getSupplierContactEamil() {
+        return supplierContactEamil;
+    }
+
+    public void setSupplierContactEamil(String supplierContactEamil) {
+        this.supplierContactEamil = supplierContactEamil;
+    }
+
+    public String getSupplierContactPerson() {
+        return supplierContactPerson;
+    }
+
+    public void setSupplierContactPerson(String supplierContactPerson) {
+        this.supplierContactPerson = supplierContactPerson;
+    }
+
+    public String getSupplierContactNumber() {
+        return supplierContactNumber;
+    }
+
+    public void setSupplierContactNumber(String supplierContactNumber) {
+        this.supplierContactNumber = supplierContactNumber;
     }
 
     public Product getProductproductId() {
