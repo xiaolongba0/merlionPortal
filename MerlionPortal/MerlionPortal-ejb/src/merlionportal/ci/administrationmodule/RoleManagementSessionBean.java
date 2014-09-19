@@ -9,6 +9,7 @@ import entity.Company;
 import entity.SystemUser;
 import entity.UserRole;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;

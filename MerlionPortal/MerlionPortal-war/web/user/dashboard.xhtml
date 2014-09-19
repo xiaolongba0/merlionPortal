@@ -10,10 +10,43 @@
         <title>Home Page</title>
     </h:head>
     <h:body>
-        <ul class="">
-            <li><a href="${root}/viewallproducts.xhtml">View Services</a></li>
-            <li><a href="${root}/viewallproducts.xhtml">View Profile</a></li>
-        </ul>
+        <h:form>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2">
+                        <h2>Hi, #{dashboardBean.loginedUser.firstName}</h2>
+                        <ul class="list-group">
+                                <c:if test ="#{dashboardBean.loginedUser.userType == 'superuser'}">
+                                    <li class="list-group-item"><a href="${root}/admin/viewallsubscribers.xhtml">View Subscribers</a></li>
+                                </c:if>
+                                <c:if test ="#{dashboardBean.canUseOES() || dashboardBean.loginedUser.userType == 'superuser'}">
+                                    <li class="list-group-item"><a href="${root}/oes/oesIndexPage.xhtml">OES</a></li>
+                                </c:if>
+                                <c:if test ="#{dashboardBean.canUseMRP() || dashboardBean.loginedUser.userType == 'superuser'}">
+                                    <li class="list-group-item"><a href="${root}/mrp/mrp.xhtml">MRP II</a></li>
+                                </c:if>
+                                <c:if test ="#{dashboardBean.canUseTMS() || dashboardBean.loginedUser.userType == 'superuser'}">
+                                    <li class="list-group-item"><a href="#">TMS</a></li>
+                                </c:if>
+                                <c:if test ="#{dashboardBean.canUseCRMS() || dashboardBean.loginedUser.userType == 'superuser'}">
+                                    <li class="list-group-item"><a href="#">CRMS</a></li>
+                                </c:if>
+                                <c:if test ="#{dashboardBean.canUseWMS() || dashboardBean.loginedUser.userType == 'superuser'}">
+                                    <li class="list-group-item"><a href="#">WMS</a></li>
+                                </c:if>
+                                <c:if test ="#{dashboardBean.canUseGRNS() || dashboardBean.loginedUser.userType == 'superuser'}">
+                                    <li class="list-group-item"><a href="#">GRNS</a></li>
+                                </c:if>
+
+                            </ul>
+                    </div>
+                    <div class="col-md-8">
+                        <h2>View My Logs</h2>
+                        <h2>Inbox</h2>
+                    </div>
+                </div>
+            </div>
+        </h:form>
 
     </h:body>
 </html>

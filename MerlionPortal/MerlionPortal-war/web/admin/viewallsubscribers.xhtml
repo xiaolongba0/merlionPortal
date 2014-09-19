@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <c:set var="root" value="${request.contextPath}" />
+    <ui:composition template="${root}/templates/templateadmin.xhtml">
+        <ui:param name="pageName" value="View Subscribers" />
+
+        <!-- Override Content -->
+        <ui:define name="content">
+            <div class="container" >
+                <h2>View Subscribers</h2>
+                <h:form>
+                    <p:dataTable var="company" value="#{getAllSubscribersInfo.companys}" widgetVar="companyTable"
+                                 emptyMessage="No subscriber found with given criteria" filteredValue="#{getAllSubscribersInfo.filteredCompanys}">
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Search all fields:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('companyTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:column filterBy="#{company.companyId}" headerText="ID" filterMatchMode="contains">
+                            <h:outputText value="#{company.companyId}" />
+                        </p:column>
+
+                        <p:column filterBy="#{company.name}" headerText="Company Name" filterMatchMode="contains">
+                            <h:outputText value="#{company.name}" />
+                        </p:column>
+
+                        <p:column filterBy="#{company.contactPersonName}" headerText="Contact Person" filterMatchMode="contains">
+                            <h:outputText value="#{company.contactPersonName}" />
+                        </p:column>
+
+                        <p:column filterBy="#{company.emailAddress}" headerText="Email Address" filterMatchMode="contains">
+                            <h:outputText value="#{company.emailAddress}" />
+                        </p:column>
+
+                        <p:column filterBy="#{company.contactNumber}" headerText="Contact Number" filterMatchMode="contains">
+                            <h:outputText value="#{company.contactNumber}" />
+                        </p:column>
+                        
+                        <p:column filterBy="#{company.package1}" headerText="Package Choice" filterMatchMode="contains">
+                            <f:facet name="filter">
+                                <p:selectOneButton onchange="PF('companyTable').filter()">
+                                    <f:selectItem itemLabel="All" itemValue="" />
+                                    <f:selectItem itemLabel="Manu 1PL" itemValue="1" />
+                                    <f:selectItem itemLabel="Non-Manu 1PL" itemValue="2" />
+                                    <f:selectItem itemLabel="2PL" itemValue="3" />
+                                    <f:selectItem itemLabel="3/4/5PL" itemValue="4" />
+                                </p:selectOneButton>
+                            </f:facet>
+                            <h:outputText value="#{company.package1}" />
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
+            </div>
+        </ui:define>
+
+    </ui:composition>
+</html>
