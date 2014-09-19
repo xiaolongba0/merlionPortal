@@ -29,20 +29,20 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author manliqi
  */
 @Entity
-@Table(name = "StorageLocation")
+@Table(name = "StorageType")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "StorageLocation.findAll", query = "SELECT s FROM StorageLocation s"),
-    @NamedQuery(name = "StorageLocation.findByStorageLocationId", query = "SELECT s FROM StorageLocation s WHERE s.storageLocationId = :storageLocationId"),
-    @NamedQuery(name = "StorageLocation.findByName", query = "SELECT s FROM StorageLocation s WHERE s.name = :name"),
-    @NamedQuery(name = "StorageLocation.findByDescription", query = "SELECT s FROM StorageLocation s WHERE s.description = :description")})
-public class StorageLocation implements Serializable {
+    @NamedQuery(name = "StorageType.findAll", query = "SELECT s FROM StorageType s"),
+    @NamedQuery(name = "StorageType.findByStorageTypeId", query = "SELECT s FROM StorageType s WHERE s.storageTypeId = :storageTypeId"),
+    @NamedQuery(name = "StorageType.findByName", query = "SELECT s FROM StorageType s WHERE s.name = :name"),
+    @NamedQuery(name = "StorageType.findByDescription", query = "SELECT s FROM StorageType s WHERE s.description = :description")})
+public class StorageType implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "storageLocationId")
-    private Integer storageLocationId;
+    @Column(name = "storageTypeId")
+    private Integer storageTypeId;
     @Size(max = 45)
     @Column(name = "name")
     private String name;
@@ -55,19 +55,19 @@ public class StorageLocation implements Serializable {
     @ManyToOne(optional = false)
     private Warehouse warehousewarehouseId;
 
-    public StorageLocation() {
+    public StorageType() {
     }
 
-    public StorageLocation(Integer storageLocationId) {
-        this.storageLocationId = storageLocationId;
+    public StorageType(Integer storageTypeId) {
+        this.storageTypeId = storageTypeId;
     }
 
-    public Integer getStorageLocationId() {
-        return storageLocationId;
+    public Integer getStorageTypeId() {
+        return storageTypeId;
     }
 
-    public void setStorageLocationId(Integer storageLocationId) {
-        this.storageLocationId = storageLocationId;
+    public void setStorageTypeId(Integer storageTypeId) {
+        this.storageTypeId = storageTypeId;
     }
 
     public String getName() {
@@ -106,18 +106,18 @@ public class StorageLocation implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (storageLocationId != null ? storageLocationId.hashCode() : 0);
+        hash += (storageTypeId != null ? storageTypeId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof StorageLocation)) {
+        if (!(object instanceof StorageType)) {
             return false;
         }
-        StorageLocation other = (StorageLocation) object;
-        if ((this.storageLocationId == null && other.storageLocationId != null) || (this.storageLocationId != null && !this.storageLocationId.equals(other.storageLocationId))) {
+        StorageType other = (StorageType) object;
+        if ((this.storageTypeId == null && other.storageTypeId != null) || (this.storageTypeId != null && !this.storageTypeId.equals(other.storageTypeId))) {
             return false;
         }
         return true;
@@ -125,7 +125,7 @@ public class StorageLocation implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.StorageLocation[ storageLocationId=" + storageLocationId + " ]";
+        return "entity.StorageType[ storageTypeId=" + storageTypeId + " ]";
     }
     
 }
