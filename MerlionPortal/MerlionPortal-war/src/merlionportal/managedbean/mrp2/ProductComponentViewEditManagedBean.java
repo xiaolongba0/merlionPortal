@@ -36,10 +36,10 @@ public class ProductComponentViewEditManagedBean {
     private String currency;
     private Double cost;
     private Integer leadTime;
-    private String contactPerson;
-    private String contactNumber;
-    private String supplierDescription;
-    private String contactEmail;
+    private int supplierCompanyId;
+    private String supplierContactPerson;
+    private String supplierContactNumber;
+    private String supplierContactEmail;
 
     private Double productId = 1.0;
     private final static String[] currencies;
@@ -149,38 +149,42 @@ public class ProductComponentViewEditManagedBean {
         this.leadTime = leadTimeTemp;
     }
 
-  /*  public String getContactPerson() {
-        return component1.getSuppliersupplierCompanyId().getContactPerson();
+ public int getSupplierCompanyId() {
+        return supplierCompanyId;
     }
 
-    public void setContactPerson(String contactPerson) {
-        component1.getSuppliersupplierCompanyId().setContactPerson(contactPerson);
+    public void setSupplierCompanyId(int supplierCompanyId) {
+        this.supplierCompanyId = supplierCompanyId;
     }
 
-    public String getContactNumber() {
-        return contactNumber;
+    public String getSupplierContactEmail() {
+        return supplierContactEmail;
     }
 
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
+    public void setSupplierContactEmail(String supplierContactEmail) {
+        this.supplierContactEmail = supplierContactEmail;
     }
 
-    public String getSupplierDescription() {
-        return supplierDescription;
+    public String getSupplierContactPerson() {
+        return supplierContactPerson;
     }
 
-    public void setSupplierDescription(String supplierDescription) {
-        this.supplierDescription = supplierDescription;
+    public void setSupplierContactPerson(String supplierContactPerson) {
+        this.supplierContactPerson = supplierContactPerson;
     }
 
-    public String getContactEmail() {
-        return contactEmail;
+    public String getSupplierContactNumber() {
+        return supplierContactNumber;
     }
 
-    public void setContactEmail(String contactEmail) {
-        this.contactEmail = contactEmail;
+    public void setSupplierContactNumber(String supplierContactNumber) {
+        this.supplierContactNumber = supplierContactNumber;
     }
-*/
+
+
+    
+    
+    
     public List<Component> getComponents() {
         return components;
     }
@@ -191,7 +195,7 @@ public class ProductComponentViewEditManagedBean {
         component = (Component) event.getObject();
         //  System.err.println("product.getProductName(): " + product.getProductName());
         int pdtTempId = productId.intValue();
-        productSessionBean.editComponent(component.getComponentName(), component.getDescription(), component.getCost(), component.getCurrency(), component.getQuantity(), component.getLeadTime(),/* component.getSuppliersupplierCompanyId().getContactPerson(), component.getSuppliersupplierCompanyId().getContactNumber(), component.getSuppliersupplierCompanyId().getDescription(), component.getSuppliersupplierCompanyId().getContactEmail(),*/ companyId, pdtTempId, component.getComponentId());
+        productSessionBean.editComponent(component.getComponentName(), component.getDescription(), component.getCost(), component.getCurrency(), component.getQuantity(), component.getLeadTime(), component.getSupplierCompanyId() , component.getSupplierContactPerson(), component.getSupplierContactNumber(), component.getSupplierContactEmail(), companyId, pdtTempId, component.getComponentId());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
