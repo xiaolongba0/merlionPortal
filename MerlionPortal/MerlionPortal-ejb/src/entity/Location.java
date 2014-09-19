@@ -49,9 +49,9 @@ public class Location implements Serializable {
     @Size(max = 255)
     @Column(name = "locationPosition")
     private String locationPosition;
-    @JoinColumn(name = "ProductContract_productContractId", referencedColumnName = "productContractId")
+    @JoinColumn(name = "Company_companyId", referencedColumnName = "companyId")
     @ManyToOne(optional = false)
-    private ProductContract productContractproductContractId;
+    private Company companycompanyId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "locationlocationId")
     private List<TransporationAsset> transporationAssetList;
 
@@ -86,12 +86,12 @@ public class Location implements Serializable {
         this.locationPosition = locationPosition;
     }
 
-    public ProductContract getProductContractproductContractId() {
-        return productContractproductContractId;
+    public Company getCompanycompanyId() {
+        return companycompanyId;
     }
 
-    public void setProductContractproductContractId(ProductContract productContractproductContractId) {
-        this.productContractproductContractId = productContractproductContractId;
+    public void setCompanycompanyId(Company companycompanyId) {
+        this.companycompanyId = companycompanyId;
     }
 
     @XmlTransient
