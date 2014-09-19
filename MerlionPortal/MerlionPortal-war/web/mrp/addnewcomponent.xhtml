@@ -24,6 +24,7 @@
                 <p:menuitem value="View A Product" url="viewaproduct.xhtml" />
                 <p:menuitem value="Edit A Product" url="editproduct.xhtml" />
                 <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
+                <p:menuitem value="View and Edit BOM" url="viewbom.xhtml" />
             </p:menubar>
             <br/>
             <p:panel id="panel" header="Add Component">
@@ -154,68 +155,64 @@
                             <p:message for="componentLeadTime" />
                         </p:column>
                     </p:row>
-
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="contactPerson" style="font-weight: bold" value="Contact Person: " />
+                            <p:outputLabel for="supplierCompanyId" style="font-weight: bold" value="Supplier Company ID: " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="Contact Person" requiredMessage="Contact Person is required." id="contactPerson" value="#{productManagedBean.contactPerson}">
+                            <p:inputText required="true" label="Supplier Company ID" requiredMessage="Supplier Company ID is required." id="supplierCompanyId" value="#{productManagedBean.supplierCompanyId}">
                                 <f:validateLength minimum="1" maximum="19"/>
                             </p:inputText>
                         </p:column>
                         <p:column>
-                            <p:message for="contactPerson" />
+                            <p:message for="supplierCompanyId" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="supplierContactPerson" style="font-weight: bold" value="Supplier Contact Person: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Supplier Contact Person" requiredMessage="Supplier Contact Person is required." id="supplierContactPerson" value="#{productManagedBean.supplierContactPerson}">
+                                <f:validateLength minimum="1" maximum="19"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="supplierContactPerson" />
                         </p:column>
                     </p:row>
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="contactNumber" style="font-weight: bold" value="Contact Number: " />
+                            <p:outputLabel for="supplierContactNumber" style="font-weight: bold" value="Supplier Contact Number: " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="Contact Number" requiredMessage="Contact Number is required." id="contactNumber" value="#{productManagedBean.contactNumber}">
+                            <p:inputText required="true" label="Supplier Contact Number" requiredMessage="Supplier Contact Number is required." id="supplierContactNumber" value="#{productManagedBean.supplierContactNumber}">
                                 <f:validateLength minimum="1" maximum="19"/>
                             </p:inputText>
                         </p:column>
                         <p:column>
-                            <p:message for="contactNumber" />
+                            <p:message for="supplierContactNumber" />
                         </p:column>
                     </p:row>
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="supplierDescription" style="font-weight: bold" value="Supplier Description: " />
+                            <p:outputLabel for="supplierContactEmail" style="font-weight: bold" value="Supplier Contact Email: " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="Supplier Description" requiredMessage="Supplier Description is required." id="supplierDescription" value="#{productManagedBean.supplierDescription}">
+                            <p:inputText required="true" label="Supplier Contact Email" requiredMessage="Supplier Contact Email is required." id="supplierContactEmail" value="#{productManagedBean.supplierContactEmail}">
                                 <f:validateLength minimum="1" maximum="19"/>
                             </p:inputText>
                         </p:column>
                         <p:column>
-                            <p:message for="supplierDescription" />
-                        </p:column>
-                    </p:row>
-
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="contactEmail" style="font-weight: bold" value="Contact Email: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="Contact Email" requiredMessage="Component LeadTime is required." id="contactEmail" value="#{productManagedBean.contactEmail}">
-                                <f:validateLength minimum="1" maximum="19"/>
-                            </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="contactEmail" />
+                            <p:message for="supplierContactEmail" />
                         </p:column>
                     </p:row>
 
                 </p:panelGrid>
                 <p:commandButton id="snc" value="Save New Component" update="panel" actionListener="#{productManagedBean.saveNewComponent}" ajax="true" />
             </p:panel>
-     </h:form>
+        </h:form>
     </h:body>
-</html>                 
-
-
+</html>    

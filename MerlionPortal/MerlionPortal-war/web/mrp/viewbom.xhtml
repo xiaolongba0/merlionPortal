@@ -45,9 +45,11 @@
                             <f:validateLength minimum="1" maximum="16" />
                         </p:inputText>
                     </p:column>
+                    
+       <!--             <p:commandButton value ="View BOM" update="form" icon ="ui-ion-check" />      -->
                     <p:column>
                         <p:message for="productId" />
-                    </p:column>
+                    </p:column> 
                 </p:row>
             </p:panelGrid>
         </h:form>
@@ -132,6 +134,38 @@
                         <f:facet name="input"><p:inputText value="#{component1.leadTime}" style="width:100%" label="Component leadTime"/></f:facet>
                     </p:cellEditor>
                 </p:column>
+                
+                
+                
+                
+                
+                
+                
+                <p:column headerText="Component Supplier Company ID">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{component1.supplierCompanyId}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{component1.supplierCompanyId}" style="width:100%" label="Component supplier Company ID"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Supplier Contact Person">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{component1.supplierContactPerson}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{component1.supplierContactPerson}" style="width:100%" label="Supplier Contact Person"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Supplier Contact Number">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{component1.supplierContactNumber}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{component1.supplierContactNumber}" style="width:100%" label="Supplier Contact Number"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Supplier Contact Email">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{component1.supplierContactEmail}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{component1.supplierContactEmail}" style="width:100%" label="Supplier Contact Email"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                
 
 
                 <p:column style="width:32px">
