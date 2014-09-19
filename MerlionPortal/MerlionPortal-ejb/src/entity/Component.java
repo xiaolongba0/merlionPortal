@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Component.findByQuantity", query = "SELECT c FROM Component c WHERE c.quantity = :quantity"),
     @NamedQuery(name = "Component.findByLeadTime", query = "SELECT c FROM Component c WHERE c.leadTime = :leadTime"),
     @NamedQuery(name = "Component.findBySupplierCompanyId", query = "SELECT c FROM Component c WHERE c.supplierCompanyId = :supplierCompanyId"),
-    @NamedQuery(name = "Component.findBySupplierContactEamil", query = "SELECT c FROM Component c WHERE c.supplierContactEamil = :supplierContactEamil"),
+    @NamedQuery(name = "Component.findBySupplierContactEmail", query = "SELECT c FROM Component c WHERE c.supplierContactEmail = :supplierContactEmail"),
     @NamedQuery(name = "Component.findBySupplierContactPerson", query = "SELECT c FROM Component c WHERE c.supplierContactPerson = :supplierContactPerson"),
     @NamedQuery(name = "Component.findBySupplierContactNumber", query = "SELECT c FROM Component c WHERE c.supplierContactNumber = :supplierContactNumber")})
 public class Component implements Serializable {
@@ -70,8 +70,8 @@ public class Component implements Serializable {
     @Column(name = "supplierCompanyId")
     private int supplierCompanyId;
     @Size(max = 45)
-    @Column(name = "supplierContactEamil")
-    private String supplierContactEamil;
+    @Column(name = "supplierContactEmail")
+    private String supplierContactEmail;
     @Size(max = 45)
     @Column(name = "supplierContactPerson")
     private String supplierContactPerson;
@@ -158,12 +158,12 @@ public class Component implements Serializable {
         this.supplierCompanyId = supplierCompanyId;
     }
 
-    public String getSupplierContactEamil() {
-        return supplierContactEamil;
+    public String getSupplierContactEmail() {
+        return supplierContactEmail;
     }
 
-    public void setSupplierContactEamil(String supplierContactEamil) {
-        this.supplierContactEamil = supplierContactEamil;
+    public void setSupplierContactEmail(String supplierContactEmail) {
+        this.supplierContactEmail = supplierContactEmail;
     }
 
     public String getSupplierContactPerson() {

@@ -76,6 +76,8 @@ public class Company implements Serializable {
     @ManyToMany
     private List<UserRole> userRoleList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "companycompanyId")
+    private List<Warehouse> warehouseList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "companycompanyId")
     private List<SystemUser> systemUserList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "companycompanyId")
     private List<Location> locationList;
@@ -158,6 +160,15 @@ public class Company implements Serializable {
 
     public void setUserRoleList(List<UserRole> userRoleList) {
         this.userRoleList = userRoleList;
+    }
+
+    @XmlTransient
+    public List<Warehouse> getWarehouseList() {
+        return warehouseList;
+    }
+
+    public void setWarehouseList(List<Warehouse> warehouseList) {
+        this.warehouseList = warehouseList;
     }
 
     @XmlTransient

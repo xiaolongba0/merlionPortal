@@ -70,13 +70,13 @@ public class TransporationAsset implements Serializable {
     private Boolean isMaintain;
     @Column(name = "routeId")
     private Integer routeId;
+    @ManyToMany(mappedBy = "transporationAssetList")
+    private List<Route> routeList;
     @JoinTable(name = "TransporationAsset_has_TransportationOrder", joinColumns = {
         @JoinColumn(name = "TransporationAsset_assetId", referencedColumnName = "assetId")}, inverseJoinColumns = {
         @JoinColumn(name = "TransportationOrder_transportationOrderId", referencedColumnName = "transportationOrderId")})
     @ManyToMany
     private List<TransportationOrder> transportationOrderList;
-    @ManyToMany(mappedBy = "transporationAssetList")
-    private List<Route> routeList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "transporationAssetassetId")
     private List<AssetSchedule> assetScheduleList;
     @JoinColumn(name = "Location_locationId", referencedColumnName = "locationId")
@@ -165,21 +165,21 @@ public class TransporationAsset implements Serializable {
     }
 
     @XmlTransient
-    public List<TransportationOrder> getTransportationOrderList() {
-        return transportationOrderList;
-    }
-
-    public void setTransportationOrderList(List<TransportationOrder> transportationOrderList) {
-        this.transportationOrderList = transportationOrderList;
-    }
-
-    @XmlTransient
     public List<Route> getRouteList() {
         return routeList;
     }
 
     public void setRouteList(List<Route> routeList) {
         this.routeList = routeList;
+    }
+
+    @XmlTransient
+    public List<TransportationOrder> getTransportationOrderList() {
+        return transportationOrderList;
+    }
+
+    public void setTransportationOrderList(List<TransportationOrder> transportationOrderList) {
+        this.transportationOrderList = transportationOrderList;
     }
 
     @XmlTransient
