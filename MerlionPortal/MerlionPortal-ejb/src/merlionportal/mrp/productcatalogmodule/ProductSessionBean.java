@@ -2,11 +2,7 @@ package merlionportal.mrp.productcatalogmodule;
 
 import entity.Component;
 import entity.Product;
-import entity.Supplier;
 import java.util.ArrayList;
-//import entity.SystemUser;
-//import entity.Venue;
-//import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 import javax.ejb.Stateless;
@@ -14,7 +10,6 @@ import javax.ejb.LocalBean;
 import javax.persistence.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-//import util.exception.VenueConflictException;
 
 @Stateless
 @LocalBean
@@ -51,19 +46,12 @@ public class ProductSessionBean {
         query.setParameter("inCompanyId", companyId);
         return query.getResultList();
     }
-    
-    
-    
-        // Notes: take in companyId automatically after Login, later change to getMyProducts(Integer companyId)
+
+    // Notes: take in companyId automatically after Login, later change to getMyProducts(Integer companyId)
     public List<Component> getComponentsForAProduct(Integer companyId, Integer productId) {
         Product productTemp = entityManager.find(Product.class, productId);
         return productTemp.getComponentList();
     }
-    
-    
-    
-    
-    
 
 //Return a selected product for user to view
     public Product getAProduct(Integer companyID, Integer productID) {
@@ -126,7 +114,7 @@ public class ProductSessionBean {
     ////when adding a component, adding in supplier's details too
     //After suppliers account can be set up. this function searches through supplier's company Id, then set the id as the same as supplier's company Id
     ////do a actionlistener after product
-    public Integer addNewComponent(String componentName, String description, Integer quantity, String currency, Double cost, Integer leadTime, String contactPerson, String contactNumber, String supplierDescription, String contactEmail, Integer companyId, Integer productId) {
+    public Integer addNewComponent(String componentName, String description, Integer quantity, String currency, Double cost, Integer leadTime, int supplierCompanyId, String contactPerson, String contactNumber, String contactEmail, Integer companyId, Integer productId) {
 
         Query query = entityManager.createQuery("SELECT p FROM Product p WHERE p.companyId = :inCompanyId");
 
@@ -138,17 +126,6 @@ public class ProductSessionBean {
                 pdt = p;
             }
         }
-
-           Supplier supplier = new Supplier();
-        supplier.setContactPerson(contactPerson);
-        supplier.setContactNumber(contactNumber);
-        supplier.setDescription(supplierDescription);
-        supplier.setContactEmail(contactEmail);
-
-        entityManager.persist(supplier);
-        entityManager.flush();
-        
-        
         Component component = new Component();
         component.setComponentName(componentName);
         component.setDescription(description);
@@ -156,24 +133,21 @@ public class ProductSessionBean {
         component.setCurrency(currency);
         component.setCost(cost);
         component.setLeadTime(leadTime);
+
+        component.setSupplierCompanyId(supplierCompanyId);
+
+        component.setSupplierContactPerson(contactPerson);
+        component.setSupplierContactEmail(contactNumber);
+        component.setSupplierContactNumber(contactEmail);
         component.setProductproductId(pdt);
-        component.setSuppliersupplierCompanyId(supplier); 
-        
-        
+
+        ///check later (19 sep)
         entityManager.persist(component);
-       entityManager.flush();
-      
-       pdt.getComponentList().add(component);
-         entityManager.merge(pdt);
         entityManager.flush();
 
-        // later search supplier, add new component into it.
-        //  if(){
-        //       components = new ArrayList<Component>();
-        //  }
-        //identify by supplier companies' id
-        //treat them as 1 to 1?
-        //component.setSuppliersupplierCompanyId(supplier);
+        pdt.getComponentList().add(component);
+        entityManager.merge(pdt);
+        entityManager.flush();
 
         return component.getComponentId();
 
@@ -191,7 +165,6 @@ public class ProductSessionBean {
             }
         }
 
-        // Company company = new Company(companyId);
         pdt.setProductName(productName);
         pdt.setDescription(description);
         pdt.setCategory(category);
@@ -199,21 +172,16 @@ public class ProductSessionBean {
         pdt.setCurrency(currency);
         pdt.setPrice(price);
 
-        // product.setComponent(getComponent(componentId));
-        // product.setCompany(company);
+  
         entityManager.merge(pdt);
         entityManager.flush();
 
-        // company.getProductList().add(product);
-        //  entityManager.merge(company);
         return pdt.getProductId();
 
     }
-    
-    
-    
+
     ////Editting
-    public Integer editComponent(String componentName, String description, Double cost, String currency, Integer quantity, Integer leadTime,/* String contactPerson, String contactNumber, String supplierDescription, String contactEmail,*/ Integer companyID, Integer productID, Integer componentID) {
+    public Integer editComponent(String componentName, String description, Double cost, String currency, Integer quantity, Integer leadTime, int supplierCompanyId, String contactPerson, String contactNumber, String contactEmail,Integer companyID, Integer productID, Integer componentID) {
 
         Query query = entityManager.createQuery("SELECT p FROM Product p WHERE p.companyId = :inCompanyId");
         query.setParameter("inCompanyId", companyID);
@@ -224,21 +192,26 @@ public class ProductSessionBean {
                 pdt = p;
             }
         }
-        
-        
+
         Component component = entityManager.find(Component.class, componentID);
-     
+
         component.setComponentName(componentName);
         component.setDescription(description);
         component.setCost(cost);
         component.setCurrency(currency);
         component.setQuantity(quantity);
         component.setLeadTime(leadTime);
-     /*   component.getSuppliersupplierCompanyId().setContactPerson(contactPerson);
-        component.getSuppliersupplierCompanyId().setContactNumber(contactNumber);
-        component.getSuppliersupplierCompanyId().setDescription(supplierDescription);
-        component.getSuppliersupplierCompanyId().setContactEmail(contactEmail);*/
-    
+      
+        component.setSupplierCompanyId(supplierCompanyId);
+
+        component.setSupplierContactPerson(contactPerson);
+        component.setSupplierContactEmail(contactNumber);
+        component.setSupplierContactNumber(contactEmail);
+        
+        /*   component.getSuppliersupplierCompanyId().setContactPerson(contactPerson);
+         component.getSuppliersupplierCompanyId().setContactNumber(contactNumber);
+         component.getSuppliersupplierCompanyId().setDescription(supplierDescription);
+         component.getSuppliersupplierCompanyId().setContactEmail(contactEmail);*/
 
         // product.setComponent(getComponent(componentId));
         // product.setCompany(company);
@@ -250,13 +223,6 @@ public class ProductSessionBean {
         return component.getComponentId();
 
     }
-    
-    
-    
-    
-    
-    
-    
 
     public void deleteProducts(Integer companyId, Double productId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
