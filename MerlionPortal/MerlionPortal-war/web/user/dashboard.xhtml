@@ -1,21 +1,21 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html lang="en"
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>Home Page</title>
-    </h:head>
-    <h:body>
-        <h:form>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-2">
-                        <h2>Hi, #{dashboardBean.loginedUser.firstName}</h2>
-                        <ul class="list-group">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="${root}/templates/templateuser.xhtml">
+        <ui:param name="pageName" value="Dashboard" />
+
+        <!-- Override Content -->
+        <ui:define name="content">
+            <c:set var="root" value="${request.contextPath}" />
+            <h:form>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h2>Hi, #{dashboardBean.loginedUser.firstName}</h2>
+                            <ul class="list-group">
                                 <c:if test ="#{dashboardBean.loginedUser.userType == 'superuser'}">
                                     <li class="list-group-item"><a href="${root}/admin/viewallsubscribers.xhtml">View Subscribers</a></li>
                                 </c:if>
@@ -39,15 +39,15 @@
                                 </c:if>
 
                             </ul>
-                    </div>
-                    <div class="col-md-8">
-                        <h2>View My Logs</h2>
-                        <h2>Inbox</h2>
+                        </div>
+                        <div class="col-md-8">
+                            <h2>View My Logs</h2>
+                            <h2>Inbox</h2>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </h:form>
+            </h:form>
+        </ui:define>
 
-    </h:body>
+    </ui:composition>
 </html>
-

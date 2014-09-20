@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition>
+            <c:set var="root" value="${request.contextPath}" />
+            <nav>
+                <div class="navbar navbar-default navbar-static-top" role="navigation">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="${root}/index.xhtml">Merlion Portal</a>
+                        </div>
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                <li><a href="${root}/user/dashboard.xhtml">Dashboard</a></li>
+                                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Coming Soon<span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#">Coming Soon</a></li>
+                                        <li><a href="#">Coming Soon</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Coming Soon<span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#">Coming Soon</a></li>
+                                        <li><a href="#">Coming Soon</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <h:form>
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li><h:commandLink ><i class="glyphicon glyphicon-envelope"></i></h:commandLink></li>
+                                    <li><h:commandLink actionListener="#{logoutManagerBean.logout}">Logout</h:commandLink></li>
+                                </ul>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </ui:composition>
+    </h:body>
+</html>
+

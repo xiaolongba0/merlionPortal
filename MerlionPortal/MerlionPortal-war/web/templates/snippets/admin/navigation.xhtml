@@ -17,7 +17,7 @@
                         </div>
                         <div class="navbar-collapse collapse">
                             <ul class="nav navbar-nav">
-                                <li><a href="${root}/admin/index.xhtml">Dashboard</a></li>
+                                <li><a href="${root}/admin/dashboard.xhtml">Dashboard</a></li>
                                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Users<span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a href="${root}/admin/createuser.xhtml">Create User</a></li>
@@ -33,6 +33,7 @@
                             </ul>
                             <h:form>
                                 <ul class="nav navbar-nav navbar-right">
+                                    <li><h:commandLink ><i class="glyphicon glyphicon-envelope"></i></h:commandLink></li>
                                     <li><h:commandLink actionListener="#{logoutManagerBean.logout}">Logout</h:commandLink></li>
                                 </ul>
                             </h:form>
