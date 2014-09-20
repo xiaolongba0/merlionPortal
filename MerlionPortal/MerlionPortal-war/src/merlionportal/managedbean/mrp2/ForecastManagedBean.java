@@ -3,19 +3,20 @@ package merlionportal.managedbean.mrp2;
 
 import entity.Product;
 import java.util.List;
-import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
-import javax.inject.Named;
-import javax.faces.view.ViewScoped;
-import merlionportal.mrp.forecastingmodule.ForecastSessionBean;
 
+import java.io.Serializable;
+import javax.ejb.EJB;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+import merlionportal.mrp.forecastingmodule.ForecastSessionBean;
+ 
 /**
  *
  * @author yao
  */
 @Named(value = "forecastManagedBean")
 @ViewScoped
-public class ForecastManagedBean {
+public class ForecastManagedBean implements Serializable{
     @EJB
     ForecastSessionBean forecastSessionBean;
     
@@ -23,17 +24,7 @@ public class ForecastManagedBean {
     Integer productId;
     Product product;
     List<Product> products;
-    
-    public ForecastManagedBean() {
-    }
-    
-  //    @PostConstruct
-  //  public void init() {
-   //     products = forecastSessionBean.getMyProducts(companyId);
-  //  }
-    
-    //Show purchasing histroy on an monthly basis
-    //hard code the data
+   
         public Integer getProductId() {
         return productId;
     }
