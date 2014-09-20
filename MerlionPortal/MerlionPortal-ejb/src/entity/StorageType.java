@@ -50,7 +50,7 @@ public class StorageType implements Serializable {
     @Size(max = 45)
     @Column(name = "description")
     private String description;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "storageLocationstorageLocationId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "storageTypestorageTypeId")
     private List<StorageBin> storageBinList;
     @JoinColumn(name = "Warehouse_warehouseId", referencedColumnName = "warehouseId")
     @ManyToOne(optional = false)

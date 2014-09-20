@@ -32,7 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ProductOrderLineItem.findAll", query = "SELECT p FROM ProductOrderLineItem p"),
     @NamedQuery(name = "ProductOrderLineItem.findByLine", query = "SELECT p FROM ProductOrderLineItem p WHERE p.line = :line"),
     @NamedQuery(name = "ProductOrderLineItem.findByStatus", query = "SELECT p FROM ProductOrderLineItem p WHERE p.status = :status"),
-    @NamedQuery(name = "ProductOrderLineItem.findByQuantity", query = "SELECT p FROM ProductOrderLineItem p WHERE p.quantity = :quantity")})
+    @NamedQuery(name = "ProductOrderLineItem.findByQuantity", query = "SELECT p FROM ProductOrderLineItem p WHERE p.quantity = :quantity"),
+    @NamedQuery(name = "ProductOrderLineItem.findByPrice", query = "SELECT p FROM ProductOrderLineItem p WHERE p.price = :price")})
 public class ProductOrderLineItem implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -45,6 +46,9 @@ public class ProductOrderLineItem implements Serializable {
     private String status;
     @Column(name = "quantity")
     private Integer quantity;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "price")
+    private Double price;
     @JoinColumn(name = "ProductOrder_productPOId", referencedColumnName = "productPOId")
     @ManyToOne(optional = false)
     private ProductOrder productOrderproductPOId;
@@ -81,6 +85,14 @@ public class ProductOrderLineItem implements Serializable {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public ProductOrder getProductOrderproductPOId() {

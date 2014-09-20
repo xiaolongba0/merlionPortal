@@ -52,9 +52,8 @@ public class TransporationAsset implements Serializable {
     @Basic(optional = false)
     @Column(name = "assetId")
     private Integer assetId;
-    @Size(max = 45)
     @Column(name = "capacity")
-    private String capacity;
+    private Integer capacity;
     @Size(max = 45)
     @Column(name = "assetType")
     private String assetType;
@@ -101,11 +100,11 @@ public class TransporationAsset implements Serializable {
         this.assetId = assetId;
     }
 
-    public String getCapacity() {
+    public Integer getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(String capacity) {
+    public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
 

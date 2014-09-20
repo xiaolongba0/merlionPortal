@@ -54,9 +54,8 @@ public class Route implements Serializable {
     @Size(max = 45)
     @Column(name = "destination")
     private String destination;
-    @Size(max = 45)
     @Column(name = "distance")
-    private String distance;
+    private Integer distance;
     @JoinTable(name = "TransporationAsset_has_Route", joinColumns = {
         @JoinColumn(name = "Route_routeId", referencedColumnName = "routeId")}, inverseJoinColumns = {
         @JoinColumn(name = "TransporationAsset_assetId", referencedColumnName = "assetId")})
@@ -102,11 +101,11 @@ public class Route implements Serializable {
         this.destination = destination;
     }
 
-    public String getDistance() {
+    public Integer getDistance() {
         return distance;
     }
 
-    public void setDistance(String distance) {
+    public void setDistance(Integer distance) {
         this.distance = distance;
     }
 

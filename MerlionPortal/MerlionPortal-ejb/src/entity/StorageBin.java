@@ -56,9 +56,9 @@ public class StorageBin implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "maxWeight")
     private Double maxWeight;
-    @JoinColumn(name = "StorageLocation_storageLocationId", referencedColumnName = "storageTypeId")
+    @JoinColumn(name = "StorageType_storageTypeId", referencedColumnName = "storageTypeId")
     @ManyToOne(optional = false)
-    private StorageType storageLocationstorageLocationId;
+    private StorageType storageTypestorageTypeId;
 
     public StorageBin() {
     }
@@ -115,12 +115,12 @@ public class StorageBin implements Serializable {
         this.maxWeight = maxWeight;
     }
 
-    public StorageType getStorageLocationstorageLocationId() {
-        return storageLocationstorageLocationId;
+    public StorageType getStorageTypestorageTypeId() {
+        return storageTypestorageTypeId;
     }
 
-    public void setStorageLocationstorageLocationId(StorageType storageLocationstorageLocationId) {
-        this.storageLocationstorageLocationId = storageLocationstorageLocationId;
+    public void setStorageTypestorageTypeId(StorageType storageTypestorageTypeId) {
+        this.storageTypestorageTypeId = storageTypestorageTypeId;
     }
 
     @Override

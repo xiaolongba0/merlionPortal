@@ -35,7 +35,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TransportationLog.findAll", query = "SELECT t FROM TransportationLog t"),
     @NamedQuery(name = "TransportationLog.findByLogId", query = "SELECT t FROM TransportationLog t WHERE t.logId = :logId"),
     @NamedQuery(name = "TransportationLog.findByAction", query = "SELECT t FROM TransportationLog t WHERE t.action = :action"),
-    @NamedQuery(name = "TransportationLog.findByTimeStamp", query = "SELECT t FROM TransportationLog t WHERE t.timeStamp = :timeStamp")})
+    @NamedQuery(name = "TransportationLog.findByActionMessage", query = "SELECT t FROM TransportationLog t WHERE t.actionMessage = :actionMessage"),
+    @NamedQuery(name = "TransportationLog.findByTimeStamp", query = "SELECT t FROM TransportationLog t WHERE t.timeStamp = :timeStamp"),
+    @NamedQuery(name = "TransportationLog.findByOperatorId", query = "SELECT t FROM TransportationLog t WHERE t.operatorId = :operatorId")})
 public class TransportationLog implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -46,9 +48,14 @@ public class TransportationLog implements Serializable {
     @Size(max = 255)
     @Column(name = "action")
     private String action;
+    @Size(max = 255)
+    @Column(name = "actionMessage")
+    private String actionMessage;
     @Column(name = "timeStamp")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timeStamp;
+    @Column(name = "operatorId")
+    private Integer operatorId;
     @JoinColumn(name = "TransportationOrder_transportationOrderId", referencedColumnName = "transportationOrderId")
     @ManyToOne(optional = false)
     private TransportationOrder transportationOrdertransportationOrderId;
@@ -76,12 +83,28 @@ public class TransportationLog implements Serializable {
         this.action = action;
     }
 
+    public String getActionMessage() {
+        return actionMessage;
+    }
+
+    public void setActionMessage(String actionMessage) {
+        this.actionMessage = actionMessage;
+    }
+
     public Date getTimeStamp() {
         return timeStamp;
     }
 
     public void setTimeStamp(Date timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    public Integer getOperatorId() {
+        return operatorId;
+    }
+
+    public void setOperatorId(Integer operatorId) {
+        this.operatorId = operatorId;
     }
 
     public TransportationOrder getTransportationOrdertransportationOrderId() {

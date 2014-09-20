@@ -15,8 +15,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -36,7 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Location.findAll", query = "SELECT l FROM Location l"),
     @NamedQuery(name = "Location.findByLocationId", query = "SELECT l FROM Location l WHERE l.locationId = :locationId"),
     @NamedQuery(name = "Location.findByLocationName", query = "SELECT l FROM Location l WHERE l.locationName = :locationName"),
-    @NamedQuery(name = "Location.findByLocationPosition", query = "SELECT l FROM Location l WHERE l.locationPosition = :locationPosition")})
+    @NamedQuery(name = "Location.findByLocationType", query = "SELECT l FROM Location l WHERE l.locationType = :locationType"),
+    @NamedQuery(name = "Location.findByCompanyId", query = "SELECT l FROM Location l WHERE l.companyId = :companyId")})
 public class Location implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -47,12 +46,12 @@ public class Location implements Serializable {
     @Size(max = 45)
     @Column(name = "locationName")
     private String locationName;
-    @Size(max = 255)
-    @Column(name = "locationPosition")
-    private String locationPosition;
-    @JoinColumn(name = "Company_companyId", referencedColumnName = "companyId")
-    @ManyToOne(optional = false)
-    private Company companycompanyId;
+    @Size(max = 45)
+    @Column(name = "locationType")
+    private String locationType;
+    @Size(max = 45)
+    @Column(name = "companyId")
+    private String companyId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "locationlocationId")
     private List<TransporationAsset> transporationAssetList;
 
@@ -79,20 +78,20 @@ public class Location implements Serializable {
         this.locationName = locationName;
     }
 
-    public String getLocationPosition() {
-        return locationPosition;
+    public String getLocationType() {
+        return locationType;
     }
 
-    public void setLocationPosition(String locationPosition) {
-        this.locationPosition = locationPosition;
+    public void setLocationType(String locationType) {
+        this.locationType = locationType;
     }
 
-    public Company getCompanycompanyId() {
-        return companycompanyId;
+    public String getCompanyId() {
+        return companyId;
     }
 
-    public void setCompanycompanyId(Company companycompanyId) {
-        this.companycompanyId = companycompanyId;
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
     }
 
     @XmlTransient

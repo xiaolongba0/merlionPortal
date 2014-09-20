@@ -7,6 +7,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -18,6 +19,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -64,18 +67,17 @@ public class TransportationOrder implements Serializable {
     @Size(max = 45)
     @Column(name = "destination")
     private String destination;
-    @Size(max = 45)
     @Column(name = "timeStart")
-    private String timeStart;
-    @Size(max = 45)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timeStart;
     @Column(name = "timeEnd")
-    private String timeEnd;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timeEnd;
     @Size(max = 45)
     @Column(name = "cargoType")
     private String cargoType;
-    @Size(max = 45)
     @Column(name = "cargoWeight")
-    private String cargoWeight;
+    private Integer cargoWeight;
     @ManyToMany(mappedBy = "transportationOrderList")
     private List<TransporationAsset> transporationAssetList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "transportationOrdertransportationOrderId")
@@ -144,19 +146,19 @@ public class TransportationOrder implements Serializable {
         this.destination = destination;
     }
 
-    public String getTimeStart() {
+    public Date getTimeStart() {
         return timeStart;
     }
 
-    public void setTimeStart(String timeStart) {
+    public void setTimeStart(Date timeStart) {
         this.timeStart = timeStart;
     }
 
-    public String getTimeEnd() {
+    public Date getTimeEnd() {
         return timeEnd;
     }
 
-    public void setTimeEnd(String timeEnd) {
+    public void setTimeEnd(Date timeEnd) {
         this.timeEnd = timeEnd;
     }
 
@@ -168,11 +170,11 @@ public class TransportationOrder implements Serializable {
         this.cargoType = cargoType;
     }
 
-    public String getCargoWeight() {
+    public Integer getCargoWeight() {
         return cargoWeight;
     }
 
-    public void setCargoWeight(String cargoWeight) {
+    public void setCargoWeight(Integer cargoWeight) {
         this.cargoWeight = cargoWeight;
     }
 

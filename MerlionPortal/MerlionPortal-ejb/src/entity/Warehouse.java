@@ -15,8 +15,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -36,11 +34,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Warehouse.findAll", query = "SELECT w FROM Warehouse w"),
     @NamedQuery(name = "Warehouse.findByWarehouseId", query = "SELECT w FROM Warehouse w WHERE w.warehouseId = :warehouseId"),
     @NamedQuery(name = "Warehouse.findByName", query = "SELECT w FROM Warehouse w WHERE w.name = :name"),
+    @NamedQuery(name = "Warehouse.findByDescription", query = "SELECT w FROM Warehouse w WHERE w.description = :description"),
     @NamedQuery(name = "Warehouse.findByCountry", query = "SELECT w FROM Warehouse w WHERE w.country = :country"),
     @NamedQuery(name = "Warehouse.findByCity", query = "SELECT w FROM Warehouse w WHERE w.city = :city"),
     @NamedQuery(name = "Warehouse.findByStreet", query = "SELECT w FROM Warehouse w WHERE w.street = :street"),
-    @NamedQuery(name = "Warehouse.findByBlock", query = "SELECT w FROM Warehouse w WHERE w.block = :block"),
-    @NamedQuery(name = "Warehouse.findByZipcode", query = "SELECT w FROM Warehouse w WHERE w.zipcode = :zipcode")})
+    @NamedQuery(name = "Warehouse.findByZipcode", query = "SELECT w FROM Warehouse w WHERE w.zipcode = :zipcode"),
+    @NamedQuery(name = "Warehouse.findByCompanyId", query = "SELECT w FROM Warehouse w WHERE w.companyId = :companyId")})
 public class Warehouse implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -52,6 +51,9 @@ public class Warehouse implements Serializable {
     @Column(name = "name")
     private String name;
     @Size(max = 45)
+    @Column(name = "description")
+    private String description;
+    @Size(max = 45)
     @Column(name = "country")
     private String country;
     @Size(max = 45)
@@ -60,14 +62,10 @@ public class Warehouse implements Serializable {
     @Size(max = 45)
     @Column(name = "street")
     private String street;
-    @Size(max = 45)
-    @Column(name = "block")
-    private String block;
     @Column(name = "zipcode")
     private Integer zipcode;
-    @JoinColumn(name = "Company_companyId", referencedColumnName = "companyId")
-    @ManyToOne(optional = false)
-    private Company companycompanyId;
+    @Column(name = "companyId")
+    private Integer companyId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "warehousewarehouseId")
     private List<StorageType> storageTypeList;
 
@@ -94,6 +92,14 @@ public class Warehouse implements Serializable {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getCountry() {
         return country;
     }
@@ -118,14 +124,6 @@ public class Warehouse implements Serializable {
         this.street = street;
     }
 
-    public String getBlock() {
-        return block;
-    }
-
-    public void setBlock(String block) {
-        this.block = block;
-    }
-
     public Integer getZipcode() {
         return zipcode;
     }
@@ -134,12 +132,12 @@ public class Warehouse implements Serializable {
         this.zipcode = zipcode;
     }
 
-    public Company getCompanycompanyId() {
-        return companycompanyId;
+    public Integer getCompanyId() {
+        return companyId;
     }
 
-    public void setCompanycompanyId(Company companycompanyId) {
-        this.companycompanyId = companycompanyId;
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 
     @XmlTransient
