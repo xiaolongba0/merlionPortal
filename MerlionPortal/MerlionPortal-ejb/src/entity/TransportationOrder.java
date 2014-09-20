@@ -13,6 +13,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
@@ -21,7 +23,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -49,8 +50,8 @@ import javax.xml.bind.annotation.XmlTransient;
 public class TransportationOrder implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "transportationOrderId")
     private Integer transportationOrderId;
     @Column(name = "companyId")
@@ -79,7 +80,7 @@ public class TransportationOrder implements Serializable {
     @Column(name = "cargoWeight")
     private Integer cargoWeight;
     @ManyToMany(mappedBy = "transportationOrderList")
-    private List<TransporationAsset> transporationAssetList;
+    private List<TransportationAsset> transportationAssetList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "transportationOrdertransportationOrderId")
     private List<TransportationLog> transportationLogList;
 
@@ -179,12 +180,12 @@ public class TransportationOrder implements Serializable {
     }
 
     @XmlTransient
-    public List<TransporationAsset> getTransporationAssetList() {
-        return transporationAssetList;
+    public List<TransportationAsset> getTransportationAssetList() {
+        return transportationAssetList;
     }
 
-    public void setTransporationAssetList(List<TransporationAsset> transporationAssetList) {
-        this.transporationAssetList = transporationAssetList;
+    public void setTransportationAssetList(List<TransportationAsset> transportationAssetList) {
+        this.transportationAssetList = transportationAssetList;
     }
 
     @XmlTransient

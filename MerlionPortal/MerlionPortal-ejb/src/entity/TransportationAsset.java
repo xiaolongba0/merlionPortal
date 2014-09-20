@@ -32,20 +32,20 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author manliqi
  */
 @Entity
-@Table(name = "TransporationAsset")
+@Table(name = "TransportationAsset")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TransporationAsset.findAll", query = "SELECT t FROM TransporationAsset t"),
-    @NamedQuery(name = "TransporationAsset.findByAssetId", query = "SELECT t FROM TransporationAsset t WHERE t.assetId = :assetId"),
-    @NamedQuery(name = "TransporationAsset.findByCapacity", query = "SELECT t FROM TransporationAsset t WHERE t.capacity = :capacity"),
-    @NamedQuery(name = "TransporationAsset.findByAssetType", query = "SELECT t FROM TransporationAsset t WHERE t.assetType = :assetType"),
-    @NamedQuery(name = "TransporationAsset.findByPrice", query = "SELECT t FROM TransporationAsset t WHERE t.price = :price"),
-    @NamedQuery(name = "TransporationAsset.findBySpeed", query = "SELECT t FROM TransporationAsset t WHERE t.speed = :speed"),
-    @NamedQuery(name = "TransporationAsset.findByStatus", query = "SELECT t FROM TransporationAsset t WHERE t.status = :status"),
-    @NamedQuery(name = "TransporationAsset.findByIsAvailable", query = "SELECT t FROM TransporationAsset t WHERE t.isAvailable = :isAvailable"),
-    @NamedQuery(name = "TransporationAsset.findByIsMaintain", query = "SELECT t FROM TransporationAsset t WHERE t.isMaintain = :isMaintain"),
-    @NamedQuery(name = "TransporationAsset.findByRouteId", query = "SELECT t FROM TransporationAsset t WHERE t.routeId = :routeId")})
-public class TransporationAsset implements Serializable {
+    @NamedQuery(name = "TransportationAsset.findAll", query = "SELECT t FROM TransportationAsset t"),
+    @NamedQuery(name = "TransportationAsset.findByAssetId", query = "SELECT t FROM TransportationAsset t WHERE t.assetId = :assetId"),
+    @NamedQuery(name = "TransportationAsset.findByCapacity", query = "SELECT t FROM TransportationAsset t WHERE t.capacity = :capacity"),
+    @NamedQuery(name = "TransportationAsset.findByAssetType", query = "SELECT t FROM TransportationAsset t WHERE t.assetType = :assetType"),
+    @NamedQuery(name = "TransportationAsset.findByPrice", query = "SELECT t FROM TransportationAsset t WHERE t.price = :price"),
+    @NamedQuery(name = "TransportationAsset.findBySpeed", query = "SELECT t FROM TransportationAsset t WHERE t.speed = :speed"),
+    @NamedQuery(name = "TransportationAsset.findByStatus", query = "SELECT t FROM TransportationAsset t WHERE t.status = :status"),
+    @NamedQuery(name = "TransportationAsset.findByIsAvailable", query = "SELECT t FROM TransportationAsset t WHERE t.isAvailable = :isAvailable"),
+    @NamedQuery(name = "TransportationAsset.findByIsMaintain", query = "SELECT t FROM TransportationAsset t WHERE t.isMaintain = :isMaintain"),
+    @NamedQuery(name = "TransportationAsset.findByRouteId", query = "SELECT t FROM TransportationAsset t WHERE t.routeId = :routeId")})
+public class TransportationAsset implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,7 +70,7 @@ public class TransporationAsset implements Serializable {
     private Boolean isMaintain;
     @Column(name = "routeId")
     private Integer routeId;
-    @ManyToMany(mappedBy = "transporationAssetList")
+    @ManyToMany(mappedBy = "transportationAssetList")
     private List<Route> routeList;
     @JoinTable(name = "TransporationAsset_has_TransportationOrder", joinColumns = {
         @JoinColumn(name = "TransporationAsset_assetId", referencedColumnName = "assetId")}, inverseJoinColumns = {
@@ -85,10 +85,10 @@ public class TransporationAsset implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "transporationAssetassetId")
     private List<MaintenanceLog> maintenanceLogList;
 
-    public TransporationAsset() {
+    public TransportationAsset() {
     }
 
-    public TransporationAsset(Integer assetId) {
+    public TransportationAsset(Integer assetId) {
         this.assetId = assetId;
     }
 
@@ -218,10 +218,10 @@ public class TransporationAsset implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TransporationAsset)) {
+        if (!(object instanceof TransportationAsset)) {
             return false;
         }
-        TransporationAsset other = (TransporationAsset) object;
+        TransportationAsset other = (TransportationAsset) object;
         if ((this.assetId == null && other.assetId != null) || (this.assetId != null && !this.assetId.equals(other.assetId))) {
             return false;
         }
@@ -230,7 +230,7 @@ public class TransporationAsset implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.TransporationAsset[ assetId=" + assetId + " ]";
+        return "entity.TransportationAsset[ assetId=" + assetId + " ]";
     }
     
 }

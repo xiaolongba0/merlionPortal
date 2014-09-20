@@ -52,7 +52,7 @@ public class MaintenanceLog implements Serializable {
     private String description;
     @JoinColumn(name = "TransporationAsset_assetId", referencedColumnName = "assetId")
     @ManyToOne(optional = false)
-    private TransporationAsset transporationAssetassetId;
+    private TransportationAsset transporationAssetassetId;
 
     public MaintenanceLog() {
     }
@@ -93,11 +93,11 @@ public class MaintenanceLog implements Serializable {
         this.description = description;
     }
 
-    public TransporationAsset getTransporationAssetassetId() {
+    public TransportationAsset getTransporationAssetassetId() {
         return transporationAssetassetId;
     }
 
-    public void setTransporationAssetassetId(TransporationAsset transporationAssetassetId) {
+    public void setTransporationAssetassetId(TransportationAsset transporationAssetassetId) {
         this.transporationAssetassetId = transporationAssetassetId;
     }
 

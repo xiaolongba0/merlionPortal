@@ -60,7 +60,7 @@ public class Route implements Serializable {
         @JoinColumn(name = "Route_routeId", referencedColumnName = "routeId")}, inverseJoinColumns = {
         @JoinColumn(name = "TransporationAsset_assetId", referencedColumnName = "assetId")})
     @ManyToMany
-    private List<TransporationAsset> transporationAssetList;
+    private List<TransportationAsset> transportationAssetList;
 
     public Route() {
     }
@@ -110,12 +110,12 @@ public class Route implements Serializable {
     }
 
     @XmlTransient
-    public List<TransporationAsset> getTransporationAssetList() {
-        return transporationAssetList;
+    public List<TransportationAsset> getTransportationAssetList() {
+        return transportationAssetList;
     }
 
-    public void setTransporationAssetList(List<TransporationAsset> transporationAssetList) {
-        this.transporationAssetList = transporationAssetList;
+    public void setTransportationAssetList(List<TransportationAsset> transportationAssetList) {
+        this.transportationAssetList = transportationAssetList;
     }
 
     @Override

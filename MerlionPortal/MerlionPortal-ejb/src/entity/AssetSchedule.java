@@ -54,7 +54,7 @@ public class AssetSchedule implements Serializable {
     private Date endDate;
     @JoinColumn(name = "TransporationAsset_assetId", referencedColumnName = "assetId")
     @ManyToOne(optional = false)
-    private TransporationAsset transporationAssetassetId;
+    private TransportationAsset transporationAssetassetId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "assetSchedulescheduleId")
     private List<TransportationOperator> transportationOperatorList;
 
@@ -89,11 +89,11 @@ public class AssetSchedule implements Serializable {
         this.endDate = endDate;
     }
 
-    public TransporationAsset getTransporationAssetassetId() {
+    public TransportationAsset getTransporationAssetassetId() {
         return transporationAssetassetId;
     }
 
-    public void setTransporationAssetassetId(TransporationAsset transporationAssetassetId) {
+    public void setTransporationAssetassetId(TransportationAsset transporationAssetassetId) {
         this.transporationAssetassetId = transporationAssetassetId;
     }
 
