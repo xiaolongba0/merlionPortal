@@ -51,11 +51,11 @@ public class QuotationManagerSessionBean {
         return allProduct;
     }
 
-    public List<String> getAllTypes() {
+    public List<String> getAllTypes(int companyId) {
         List<String> types = new ArrayList();
         List<String> uniTypes = new ArrayList();
         Product p;
-        for (Object o : this.displayAllProducts(1)) {
+        for (Object o : this.displayAllProducts(companyId)) {
             p = (Product) o;
             types.add(p.getCategory());
 
