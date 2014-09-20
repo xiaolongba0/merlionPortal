@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Add New Warehouse</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form id="formMain">
+            <h1>Welcome to WMS page</h1>
+            <p:menubar>
+                <p:menuitem value="WMS" url="wmsindex.xhtml" />
+                <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
+                <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
+            </p:menubar>
+            <br/>
+
+            <p:panel id="panel" header="Add New Product">
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start">
+                        <h:graphicImage value="/img/load.gif" />
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="warehouseName" style="font-weight: bold" value="Warehouse Name: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Warehouse Name" requiredMessage="Warehouse Name is required." id="warehouseName" value="#{assetManagedBean.warehouseName}">
+                                <f:validateLength minimum="4" maximum="16" />
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="warehouseName" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel for="country" style="font-weight: bold" value="Country:   *" />
+                        </p:column>
+                        <p:column>                        
+                            <h:selectOneMenu id="country" value="#{assetManagedBean.country}" required="true" label="country">
+                                <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />
+                                <f:selectItem itemLabel="Spain" itemValue="Spain" />
+                                <f:selectItem itemLabel="Japan" itemValue="Japan" />
+                                <f:selectItem itemLabel="USA" itemValue="USA" />
+                                <f:selectItem itemLabel="Australia" itemValue="Australia" />
+                                <f:selectItem itemLabel="France" itemValue="France" />
+                                <f:selectItem itemLabel="Singapore" itemValue="Singapore" />
+                                <f:selectItem itemLabel="Hong Kong" itemValue="Hong Kong" />
+                                <f:selectItem itemLabel="China" itemValue="China" />
+                                <f:selectItem itemLabel="New Zealand" itemValue="New Zeland" />
+                            </h:selectOneMenu>
+                            <p:message for="country" />
+                            <h:outputText value="#{assetManagedBean.country}" />
+                        </p:column>
+                    </p:row>  
+
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel for="city" style="font-weight: bold" value="City:   *" />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="City" requiredMessage="City is required." id="city" value="#{assetManagedBean.city}">
+                                <f:validateLength minimum="1" maximum="19" />
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="city" />
+                        </p:column>
+                    </p:row>  
+
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel for="street" style="font-weight: bold" value="Street:   *" />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="street" requiredMessage="Street is required." id="street" value="#{assetManagedBean.street}">
+                                <f:validateLength minimum="1" maximum="19" />
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="street" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel for="zipcode" style="font-weight: bold" value="Zipcode:   *" />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="zipcode" requiredMessage="Zipcode is required." id="zipcode" value="#{assetManagedBean.zipcode}">
+                                <f:validateLength minimum="1" maximum="19" />
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="zipcode" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel for="description" style="font-weight: bold" value="Description:   *" />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="description" requiredMessage="Description is required." id="description" value="#{assetManagedBean.description}">
+                                <f:validateLength minimum="1" maximum="100" />
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="description" />
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <p:commandButton id="btn" value="Create New Warehouse" update="panel" actionListener="#{assetManagedBean.createNewWarehouse}" ajax="true" />
+
+            </p:panel>
+
+        </h:form>
+    </h:body>
+</html>                 
+
