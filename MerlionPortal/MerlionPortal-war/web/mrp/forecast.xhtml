@@ -25,10 +25,10 @@
             </p:menubar>
 
             <p:panel header="Select a Product for Forecasting" style="margin-bottom:10px;">
-                <h:panelGrid columns="2" cellpadding="5">
+                <h:panelGrid columns="4" cellpadding="5">
                     <p:outputLabel for="product" value="Please select a product for forecasting: " />
                     <p:selectOneMenu required="true" id="product" value="#{forecastManagedBean.productId}" styleClass="form-control">
-                 <!--       <p:ajax listener="#{dropdownView.onCountryChange}" update="city" />   -->
+                     
                         <f:selectItem itemLabel="Select a product" itemValue="" noSelectionOption="true" />
                         <f:selectItems value="#{forecastManagedBean.products}"  var="product" itemLabel="#{product.productName}"  itemValue="#{product.productId}"/>
                     </p:selectOneMenu>
@@ -36,10 +36,17 @@
                 </h:panelGrid>
 
                 <p:separator />
+          
+                
+                
+                
 
-            <!--    <p:commandButton value="Submit" update="msgs" actionListener="#{dropdownView.displayLocation}" icon="ui-icon-check" />   -->
+              
             </p:panel>
         </h:form>
+        
+     <p:chart type="line" model="#{forecastShowHistoryManagedBean.purchaseHistory}" style="height:300px" />
+        
     </h:body>
 </html>
 
