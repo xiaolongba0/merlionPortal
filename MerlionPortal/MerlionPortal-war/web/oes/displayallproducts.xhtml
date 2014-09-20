@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>All Products</title>
+    </h:head>
+    <h:body>
+        <h1> All Products</h1>
+        <h:form id="formMain">  
+            <p:growl id="messages"/>        
+            <p:menubar>
+                <p:menuitem value="HOME" url="oesindexpage.xhtml"/>
+                <p:menuitem value="PRODUCTS" url="displayallproducts.xhtml" />
+                <p:submenu label="QUOTATION" >
+                    <p:menuitem value="View All Request" url="viewallrequests.xhtml" />
+                    <p:menuitem value="View Quotation" url="displayallquotations.xhtml" />
+                </p:submenu>
+                <p:submenu label="ORDERS" >
+                    <p:menuitem value="Create Order" url="pogeneration.xhtml" />
+                    <p:menuitem value="Retrieve Saved Order" url="displayallproducts.xhtml" />
+                </p:submenu>
+                <p:submenu label="REPORTS" >
+                </p:submenu>
+            </p:menubar>
+            <br/>
+        </h:form>
+        <h:form>
+            <p:dataTable id="productSelect" var="product" sortMode="multiple" value="#{displayProductManagedBean.products}" 
+                         widgetVar="productsTable"
+                         selection="#{displayProductManagedBean.selectedProducts}"
+                         filteredValue="#{displayProductManagedBean.filteredProducts}"
+                         emptyMessage="No product found with given criteria"
+                         rowKey="#{product.productId}">
+
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Search all fields:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('productsTable').filter()" />
+                    </p:outputPanel>
+                </f:facet>
+                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                <p:column  
+                    filterBy="#{product.productId}" 
+                    filterMatchMode="exact" headerText="SKU" >
+                    <h:outputText value="#{product.productId}" />
+                </p:column>
+
+                <p:column  filterBy="#{product.productName}" filterMatchMode="contains" headerText="Name Of Product">
+                    <h:outputText value="#{product.productName}" />
+                </p:column>
+
+                <p:column  filterBy="#{product.description}" filterMatchMode="contains" headerText="Description">
+                    <h:outputText value="#{product.description}" />
+                </p:column>
+
+                <p:column filterBy="#{product.category}" filterMatchMode="in" headerText="Category">
+                    <f:facet name="filter">
+                        <p:selectCheckboxMenu label="Select" 
+                                              onchange="PF('produtsTalbe').filter()" 
+                                              panelStyle="width:150px" scrollHeight="150">
+                            <f:selectItems value="#{displayProductManagedBean.categories}" />
+                        </p:selectCheckboxMenu>
+                    </f:facet>
+                    <h:outputText value="#{product.category}" />
+                </p:column>
+
+                <p:column headerText="Currency" >
+                    <h:outputText value="#{product.currency}" />
+                </p:column>
+
+                <p:column sortBy="#{product.price}" headerText="Price" >
+                    <h:outputText value="#{product.price}" />
+                </p:column>
+            </p:dataTable>
+            <br></br>
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <p:commandButton value="Request For Quotation" id="submitRequest" update=":form:selectedDetail" process="productSelect"  actionListener="#{displayProductManagedBean.submitRequest}" ajax="ture" />
+
+        </h:form>
+    </h:body>
+</html>
+

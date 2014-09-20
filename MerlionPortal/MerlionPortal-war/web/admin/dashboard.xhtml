@@ -21,7 +21,7 @@
                                     <li class="list-group-item"><a href="${root}/admin/viewallsubscribers.xhtml">View Subscribers</a></li>
                                 </c:if>
                                 <c:if test ="#{dashboardBean.canUseOES() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                    <li class="list-group-item"><a href="${root}/oes/oesIndexPage.xhtml">OES</a></li>
+                                    <li class="list-group-item"><a href="${root}/oes/oesindexpage.xhtml">OES</a></li>
                                 </c:if>
                                 <c:if test ="#{dashboardBean.canUseMRP() || dashboardBean.loginedUser.userType == 'superuser'}">
                                     <li class="list-group-item"><a href="${root}/mrp/mrp.xhtml">MRP II</a></li>
