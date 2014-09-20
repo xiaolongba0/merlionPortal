@@ -3,20 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package merlionportal.managedbean.oes;
 
 import entity.Quotation;
 import entity.QuotationLineItem;
 import entity.SystemUser;
+import java.io.IOException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import merlionportal.oes.quotationmanagementmodule.CheckCustomerRoleSessionBean;
 import merlionportal.oes.quotationmanagementmodule.QuotationManagerSessionBean;
 import org.primefaces.event.RowEditEvent;
 
@@ -30,11 +32,13 @@ public class QuotationManagedBean implements Serializable {
 
     @EJB
     private QuotationManagerSessionBean quotationMB;
+    @EJB
+    private CheckCustomerRoleSessionBean ccrsb;
 
     private Quotation selectedRequest;
     private List<Quotation> allQuotation;
-    private int companyId = 1;
-    private int userId = 1;
+    private Integer companyId;
+    private Integer userId;
     private List<QuotationLineItem> listItem;
     private SystemUser cutomer;
     private String inputText;
@@ -44,13 +48,38 @@ public class QuotationManagedBean implements Serializable {
     private List<QuotationLineItem> qlistItem;
     private Quotation filteredQuotation;
     private Quotation selectedQuotation;
+
     /**
      * Creates a new instance of QuotationManagedBean
      */
     public QuotationManagedBean() {
     }
-    
-    
+
+    @PostConstruct
+    public void init() {
+        boolean redirect = true;
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
+            userId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
+            companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
+
+            if (userId != null) {
+                redirect = false;
+            }
+        }
+        if (redirect) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+    }
+
+    public boolean checkUserIsCustomer() {
+        return ccrsb.checkUserIsCustomer(userId);
+    }
+
     public Quotation getSelectedRequest() {
         return selectedRequest;
     }
@@ -72,16 +101,16 @@ public class QuotationManagedBean implements Serializable {
 
         if (selectedRequest == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please select one request ."));
-            return "viewallrequest.xhtml";
+            return "viewallrequests.xhtml";
         }
-        return "displayRequestInfor.xhtml";
+        return "displayrequestinfor.xhtml";
     }
 
     public String editQuotation() {
 
         if (selectedRequest == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please select one request ."));
-            return "viewallrequest.xhtml";
+            return "viewallrequests.xhtml";
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "View", "Action Accepted"));
         }
@@ -92,7 +121,7 @@ public class QuotationManagedBean implements Serializable {
     public String deletRequest() {
         System.out.println("Deleted quotation Id " + selectedRequest.getQuotationId());
         quotationMB.deleteRequest(selectedRequest.getQuotationId());
-        return "viewallrequest.xhtml";
+        return "viewallrequests.xhtml";
 
     }
 
@@ -282,6 +311,6 @@ public class QuotationManagedBean implements Serializable {
 
     public String goBackToall() {
         selectedQuotation = null;
-        return "displayallquotation.xhtml";
+        return "displayallquotations.xhtml";
     }
 }

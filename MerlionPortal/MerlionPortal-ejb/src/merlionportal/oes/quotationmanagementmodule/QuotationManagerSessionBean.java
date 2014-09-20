@@ -116,7 +116,7 @@ public class QuotationManagerSessionBean {
     public List<Quotation> viewAllRequestForQuotation(int companyId, int clientId) {
         List<Quotation> result = new ArrayList();
         Query q = em.createQuery("SELECT q FROM Quotation q WHERE q.company = :companyId AND q.customerId = :clientId AND q.status = :mystatus ").setParameter("clientId", clientId);
-        q.setParameter("compmayId", companyId);
+        q.setParameter("companyId", companyId);
         q.setParameter("mystatus", 1);
 
         for (Object o : q.getResultList()) {

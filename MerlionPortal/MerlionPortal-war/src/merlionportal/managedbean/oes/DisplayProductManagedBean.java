@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package merlionportal.managedbean.oes;
 
 import entity.Product;
 import entity.Quotation;
+import java.io.IOException;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -27,19 +28,43 @@ public class DisplayProductManagedBean {
 
     @EJB
     private QuotationManagerSessionBean quotationMB;
+
+   
     private List<Product> products;
     private List<Product> selectedProducts;
     private Quotation newRequest;
-    private int companyId = 1;
-    private int userId=1;
+    private Integer companyId;
+    private Integer userId;
     private List<Product> filteredProducts;
     private List<String> categories;
 
     public DisplayProductManagedBean() {
     }
+
     /**
      * Creates a new instance of DisplayProductManagedBean
      */
+    @PostConstruct
+    public void init() {
+        boolean redirect = true;
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
+            userId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
+            companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
+
+            if (userId != null) {
+                redirect = false;
+            }
+        }
+        if (redirect) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+    }
+
     public List<Product> getProducts() {
         this.products = quotationMB.displayAllProducts(companyId);
         return this.products;
@@ -66,19 +91,18 @@ public class DisplayProductManagedBean {
     }
 
     public void submitRequest(ActionEvent event) {
-        if (selectedProducts == null||selectedProducts.isEmpty()) {
+        if (selectedProducts == null || selectedProducts.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please select at least one product ."));
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Request generated."));
-            newRequest=quotationMB.requestForQuotation(companyId, userId);
-            for(Object o: selectedProducts){
-                Product p=(Product)o;
+            newRequest = quotationMB.requestForQuotation(companyId, userId);
+            for (Object o : selectedProducts) {
+                Product p = (Product) o;
                 quotationMB.createLineItem(companyId, p, newRequest);
             }
         }
-            selectedProducts.clear();
+        selectedProducts.clear();
     }
-    
 
     public List<Product> getFilteredProducts() {
         return filteredProducts;
