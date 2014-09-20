@@ -41,7 +41,7 @@ public class ProductComponentViewEditManagedBean {
     private String supplierContactNumber;
     private String supplierContactEmail;
 
-    private Double productId = 1.0;
+    private Double productId = 2.0;
     private final static String[] currencies;
 
     public ProductComponentViewEditManagedBean() {
