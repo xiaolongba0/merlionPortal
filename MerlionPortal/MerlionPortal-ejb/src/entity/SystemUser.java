@@ -109,8 +109,6 @@ public class SystemUser implements Serializable {
     @JoinColumn(name = "Company_companyId", referencedColumnName = "companyId")
     @ManyToOne(optional = false)
     private Company companycompanyId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "systemUserId")
-    private List<ProductOrder> productOrderList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "systemUsersystemUserId")
     private List<SystemLog> systemLogList;
 
@@ -254,15 +252,6 @@ public class SystemUser implements Serializable {
 
     public void setCompanycompanyId(Company companycompanyId) {
         this.companycompanyId = companycompanyId;
-    }
-
-    @XmlTransient
-    public List<ProductOrder> getProductOrderList() {
-        return productOrderList;
-    }
-
-    public void setProductOrderList(List<ProductOrder> productOrderList) {
-        this.productOrderList = productOrderList;
     }
 
     @XmlTransient

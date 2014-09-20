@@ -16,8 +16,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -46,7 +44,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ProductOrder.findByBillTo", query = "SELECT p FROM ProductOrder p WHERE p.billTo = :billTo"),
     @NamedQuery(name = "ProductOrder.findByContactPersonPhoneNumber", query = "SELECT p FROM ProductOrder p WHERE p.contactPersonPhoneNumber = :contactPersonPhoneNumber"),
     @NamedQuery(name = "ProductOrder.findByContactPersonName", query = "SELECT p FROM ProductOrder p WHERE p.contactPersonName = :contactPersonName"),
-    @NamedQuery(name = "ProductOrder.findByCreatorId", query = "SELECT p FROM ProductOrder p WHERE p.creatorId = :creatorId")})
+    @NamedQuery(name = "ProductOrder.findByCreatorId", query = "SELECT p FROM ProductOrder p WHERE p.creatorId = :creatorId"),
+    @NamedQuery(name = "ProductOrder.findByQuotationId", query = "SELECT p FROM ProductOrder p WHERE p.quotationId = :quotationId"),
+    @NamedQuery(name = "ProductOrder.findByCompanyId", query = "SELECT p FROM ProductOrder p WHERE p.companyId = :companyId")})
 public class ProductOrder implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -57,9 +57,8 @@ public class ProductOrder implements Serializable {
     @Column(name = "createdDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
-    @Size(max = 45)
     @Column(name = "salesPersonId")
-    private String salesPersonId;
+    private Integer salesPersonId;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "price")
     private Double price;
@@ -79,11 +78,12 @@ public class ProductOrder implements Serializable {
     private String contactPersonName;
     @Column(name = "creatorId")
     private Integer creatorId;
+    @Column(name = "quotationId")
+    private Integer quotationId;
+    @Column(name = "companyId")
+    private Integer companyId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productOrderproductPOId")
     private List<ProductOrderLineItem> productOrderLineItemList;
-    @JoinColumn(name = "systemUserId", referencedColumnName = "systemUserId")
-    @ManyToOne(optional = false)
-    private SystemUser systemUserId;
 
     public ProductOrder() {
     }
@@ -108,11 +108,11 @@ public class ProductOrder implements Serializable {
         this.createdDate = createdDate;
     }
 
-    public String getSalesPersonId() {
+    public Integer getSalesPersonId() {
         return salesPersonId;
     }
 
-    public void setSalesPersonId(String salesPersonId) {
+    public void setSalesPersonId(Integer salesPersonId) {
         this.salesPersonId = salesPersonId;
     }
 
@@ -172,6 +172,22 @@ public class ProductOrder implements Serializable {
         this.creatorId = creatorId;
     }
 
+    public Integer getQuotationId() {
+        return quotationId;
+    }
+
+    public void setQuotationId(Integer quotationId) {
+        this.quotationId = quotationId;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
     @XmlTransient
     public List<ProductOrderLineItem> getProductOrderLineItemList() {
         return productOrderLineItemList;
@@ -179,14 +195,6 @@ public class ProductOrder implements Serializable {
 
     public void setProductOrderLineItemList(List<ProductOrderLineItem> productOrderLineItemList) {
         this.productOrderLineItemList = productOrderLineItemList;
-    }
-
-    public SystemUser getSystemUserId() {
-        return systemUserId;
-    }
-
-    public void setSystemUserId(SystemUser systemUserId) {
-        this.systemUserId = systemUserId;
     }
 
     @Override
