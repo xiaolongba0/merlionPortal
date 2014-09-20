@@ -3,12 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package merlionportal.managedbean.mrp2;
 
-import javax.inject.Named;
 import entity.Product;
-import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -25,19 +22,18 @@ import org.primefaces.event.RowEditEvent;
  * @author yao
  */
 @ViewScoped
-@ManagedBean(name="productViewEditManagedBean")
+@ManagedBean(name = "productViewEditManagedBean")
 public class ProductViewEditManagedBean {
 
     /**
      * Creates a new instance of ProductViewEditManagedBean
      */
-    
     @EJB
     private ProductSessionBean productSessionBean;
     private Integer companyId = 12345;
 
     private List<Product> products;
-    
+
     private String productName;
     private String description;
     private String category;
@@ -49,22 +45,20 @@ public class ProductViewEditManagedBean {
     private final static String[] productTypes;
     private final static String[] currencies;
     private final static String[] categories;
-    
-    
+
     public ProductViewEditManagedBean() {
     }
-    
-     @PostConstruct
-    public void init()
-    {
+
+    @PostConstruct
+    public void init() {
         products = productSessionBean.getMyProducts(companyId);
     }
 
-    static{
+    static {
         productTypes = new String[2];
         productTypes[0] = "Manufacturing";
         productTypes[1] = "Non-Manufacturing";
-        
+
         currencies = new String[20];
         currencies[0] = "US Dollar (USD)";
         currencies[1] = "European Euro (EUR)";
@@ -86,28 +80,36 @@ public class ProductViewEditManagedBean {
         currencies[17] = "Hungary Forint(HUF)";
         currencies[18] = "Norwegian Krone (NOK)";
         currencies[19] = "Mexican Peso (MXN)";
-        
-        categories = new String[2];
-         categories[0] = "Fresh Products";
-        categories[1] = "Frozen Products";
+
+        categories = new String[12];
+        categories[0] = "Food - Fresh Products";
+        categories[1] = "Food - Frozen Products";
+        categories[2] = "Food - Normal Products";
+        categories[3] = "Beverages";
+        categories[4] = "Retail and Apparel";
+        categories[5] = "Automotive";
+        categories[6] = "Household Products";
+        categories[7] = "Children Products";
+        categories[8] = "Personal Care Products";
+        categories[9] = "Electronics";
+        categories[10] = "Semi-Finished Products";
+        categories[11] = "Raw Materials";
+
     }
-    
-       public String[] getProductTypes() {
+
+    public String[] getProductTypes() {
         return productTypes;
     }
-       
-          public String[] getCurrencies() {
+
+    public String[] getCurrencies() {
         return currencies;
     }
-          
-        public String[] getCategories() {
+
+    public String[] getCategories() {
         return categories;
     }
-       
-       
-       
-    
-     public Double getProductId() {
+
+    public Double getProductId() {
         return productId;
     }
 
@@ -130,8 +132,8 @@ public class ProductViewEditManagedBean {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-     public String getCategory() {
+
+    public String getCategory() {
         return category;
     }
 
@@ -162,48 +164,40 @@ public class ProductViewEditManagedBean {
     public void setPrice(Double price) {
         this.price = price;
     }
-     
-    
+
     public List<Product> getProducts() {
         products = productSessionBean.getAllProducts();
         return products;
     }
-    
+
     public List<Product> getMyCompanyProducts() {
 //        companyId=(Integer)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
-         
+
         return products;
-    }  
-    
-        
-      public void onRowEdit(RowEditEvent event) {
+    }
+
+    public void onRowEdit(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Product Edited");
         product = new Product();
         product = (Product) event.getObject();
-          System.err.println("product.getProductName(): " + product.getProductName());
-            productSessionBean.editProduct(product.getProductName(), product.getDescription(), product.getCategory(), product.getProductType(), product.getCurrency(), product.getPrice(), companyId, product.getProductId());
-            FacesContext.getCurrentInstance().addMessage(null, msg);
+        System.err.println("product.getProductName(): " + product.getProductName());
+        productSessionBean.editProduct(product.getProductName(), product.getDescription(), product.getCategory(), product.getProductType(), product.getCurrency(), product.getPrice(), companyId, product.getProductId());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-     
+
     public void onRowCancel(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Edit Cancelled");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-    
-    
-     public void onCellEdit(CellEditEvent event) {
+
+    public void onCellEdit(CellEditEvent event) {
         Object oldValue = event.getOldValue();
         Object newValue = event.getNewValue();
-         
-        if(newValue != null && !newValue.equals(oldValue)) {
+
+        if (newValue != null && !newValue.equals(oldValue)) {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
     }
-    
-    
+
 }
-
-
-
-
