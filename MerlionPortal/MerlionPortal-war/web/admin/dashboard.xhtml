@@ -33,7 +33,7 @@
                                     <li class="list-group-item"><a href="#">CRMS</a></li>
                                 </c:if>
                                 <c:if test ="#{dashboardBean.canUseWMS() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                    <li class="list-group-item"><a href="#">WMS</a></li>
+                                    <li class="list-group-item"><a href="${root}/wms/wmsindex.xhtml">WMS</a></li>
                                 </c:if>
                                 <c:if test ="#{dashboardBean.canUseGRNS() || dashboardBean.loginedUser.userType == 'superuser'}">
                                     <li class="list-group-item"><a href="#">GRNS</a></li>
