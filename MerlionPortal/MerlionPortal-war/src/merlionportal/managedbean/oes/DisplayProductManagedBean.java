@@ -121,4 +121,13 @@ public class DisplayProductManagedBean {
     public void setCategories(List<String> categories) {
         this.categories = categories;
     }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+    
 }
