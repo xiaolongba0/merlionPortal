@@ -113,7 +113,7 @@ public class DisplayProductManagedBean {
     }
 
     public List<String> getCategories() {
-        categories = quotationMB.getAllTypes();
+        categories = quotationMB.getAllTypes(companyId);
 
         return categories;
     }
