@@ -45,14 +45,14 @@
                 </p:column>
             </p:dataTable>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-            <c:if test="#{quotationManagedBean.userId==1}">
-                <br></br>
-                <p:commandButton action="#{quotationManagedBean.showRequest()}" value="View Request">
-                    <f:param name="pageId" value="1" />
-                </p:commandButton>        
-            </c:if>
 
-            <c:if test="#{quotationManagedBean.userId==1}">
+            <br></br>
+            <p:commandButton action="#{quotationManagedBean.showRequest()}" value="View Request">
+                <f:param name="pageId" value="1" />
+            </p:commandButton>        
+
+
+            <c:if test="#{not quotationManagedBean.checkUserIsCustomer()}">
                 <br></br>
                 <p:commandButton action="#{quotationManagedBean.editQuotation()}" value="Generate Quotation">
                 </p:commandButton>        

@@ -56,7 +56,7 @@
                     <h:outputText value="#{product.description}" />
                 </p:column>
 
-                <p:column filterBy="#{product.category}" filterMatchMode="in" headerText="Category">
+                <p:column filterBy="#{product.category}" filterMatchMode="contains" headerText="Category">
                     <f:facet name="filter">
                         <p:selectCheckboxMenu label="Select" 
                                               onchange="PF('produtsTalbe').filter()" 
