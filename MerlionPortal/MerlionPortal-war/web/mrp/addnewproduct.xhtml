@@ -27,7 +27,7 @@
                 <p:menuitem value="View and Edit BOM" url="viewbom.xhtml" />
             </p:menubar>
             <br/>
-            
+
             <p:panel id="panel" header="Add New Product">
                 <p:ajaxStatus style="width:16px;height:16px;">
                     <f:facet name="start">
@@ -72,8 +72,18 @@
                         <p:column>                        
                             <h:selectOneMenu id="category" value="#{productManagedBean.category}" required="true" label="Product Category">
                                 <f:selectItem itemLabel="Select Product Category" itemValue="" noSelectionOption="true" />
-                                <f:selectItem itemLabel="Fresh Products" itemValue="Fresh Products" />
-                                <f:selectItem itemLabel="Frozen Products" itemValue="Frozen Products" />
+                                <f:selectItem itemLabel="Food - Fresh Products" itemValue="Fresh Products" />
+                                <f:selectItem itemLabel="Food - Frozen Products" itemValue="Food - Frozen Products" />
+                                <f:selectItem itemLabel="Food - Normal Products" itemValue="Food - Normal Products" />
+                                <f:selectItem itemLabel="Beverages" itemValue="Beverages" />
+                                <f:selectItem itemLabel="Retail and Apparel" itemValue="Retail and Apparel" />
+                                <f:selectItem itemLabel="Automotive" itemValue="Automotive" />
+                                <f:selectItem itemLabel="Household Products" itemValue="Household Products" />
+                                <f:selectItem itemLabel="Children Products" itemValue="Children Products" />
+                                <f:selectItem itemLabel="Personal Care Products" itemValue="Personal Care Products" />
+                                <f:selectItem itemLabel="Electronics" itemValue="Electronics" />
+                                <f:selectItem itemLabel="Semi-Finished Products" itemValue="Semi-Finished Products" />  
+                                <f:selectItem itemLabel="Raw Materials" itemValue="Raw Materials" />  
                             </h:selectOneMenu>
                             <p:message for="category" />
                             <h:outputText value="#{productManagedBean.category}" />
@@ -145,7 +155,7 @@
 
                 </p:panelGrid>
                 <p:commandButton id="btn" value="Save New Product" update="panel" actionListener="#{productManagedBean.saveNewProduct}" ajax="true" />
-              
+
             </p:panel>
 
         </h:form>
