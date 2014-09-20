@@ -53,7 +53,7 @@ public class RegisterCompanyManagerBean {
     
     public void registerNewCompany(ActionEvent event) {
 
-        int result = uamb.registerNewCompany(companyName, emailAddress, contactNumber, contactPersonName, emailAddress, description, package1);
+        int result = uamb.registerNewCompany(companyName, companyAddress, contactNumber, contactPersonName, emailAddress, description, package1);
         if (result > 0) {
             RequestContext requestContext = RequestContext.getCurrentInstance();
                 String sender = "merlionportal@nus.edu.sg";
