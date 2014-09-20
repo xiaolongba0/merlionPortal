@@ -35,23 +35,30 @@
 
         <!-- add in product Id   -->
         <h:form>
-            <p:panelGrid>
-                <p:row>
-                    <p:column>
-                        <p:outputLabel for="productId" style="font-weight: bold" value="Product Id: " />
-                    </p:column>
-                    <p:column>
-                        <p:inputText required="true" label="Product Id" requiredMessage="Product Id is required." id="productId" value="#{productComponentViewEditManagedBean.productId}">
-                            <f:validateLength minimum="1" maximum="16" />
-                        </p:inputText>
-                    </p:column>
-                    
-       <!--             <p:commandButton value ="View BOM" update="form" icon ="ui-ion-check" />      -->
-                    <p:column>
-                        <p:message for="productId" />
-                    </p:column> 
-                </p:row>
-            </p:panelGrid>
+            <p:panel>
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="productId" style="font-weight: bold" value="Product Id: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Product Id" requiredMessage="Product Id is required." id="productId" value="#{productComponentViewEditManagedBean.productId}">
+                                <f:validateLength minimum="1" maximum="16" />
+                            </p:inputText>
+                        </p:column>
+
+
+                        <p:column>
+                            <p:message for="productId" />
+                        </p:column> 
+                    </p:row>
+
+                </p:panelGrid>
+
+                <!-- doesnt work, check later  -->
+                <p:commandButton value ="View BOM" actionListener="#{productComponentViewEditManagedBean.init}" ajax="true"/> 
+
+            </p:panel>
         </h:form>
 
 
@@ -134,13 +141,13 @@
                         <f:facet name="input"><p:inputText value="#{component1.leadTime}" style="width:100%" label="Component leadTime"/></f:facet>
                     </p:cellEditor>
                 </p:column>
-                
-                
-                
-                
-                
-                
-                
+
+
+
+
+
+
+
                 <p:column headerText="Component Supplier Company ID">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{component1.supplierCompanyId}" /></f:facet>
@@ -165,7 +172,7 @@
                         <f:facet name="input"><p:inputText value="#{component1.supplierContactEmail}" style="width:100%" label="Supplier Contact Email"/></f:facet>
                     </p:cellEditor>
                 </p:column>
-                
+
 
 
                 <p:column style="width:32px">

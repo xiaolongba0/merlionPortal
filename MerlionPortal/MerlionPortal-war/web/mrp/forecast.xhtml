@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">  
+    
+    <h:head>
+        <title>Forecasting</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            
+             <h1>Welcome to MRP II page</h1>
+            <p:menubar>
+                <p:menuitem value="MRP II" url="mrp.xhtml" />
+                <p:menuitem value="View All Products" url="viewallproducts.xhtml" />
+                <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
+                <p:menuitem value="Delete Product" url="deleteproduct.xhtml" />
+                <p:menuitem value="View A Product" url="viewaproduct.xhtml" />
+                <p:menuitem value="Edit A Product" url="editproduct.xhtml" />
+                <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
+                <p:menuitem value="Forecasting" url="forecast.xhtml" />
+                
+            </p:menubar>
+
+            <p:panel header="Select a Product for Forecasting" style="margin-bottom:10px;">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="product" value="Please select a product for forecasting: " />
+                    <p:selectOneMenu required="true" id="product" value="#{forecastManagedBean.productId}" styleClass="form-control">
+                 <!--       <p:ajax listener="#{dropdownView.onCountryChange}" update="city" />   -->
+                        <f:selectItem itemLabel="Select a product" itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{forecastManagedBean.products}"  var="product" itemLabel="#{product.productName}"  itemValue="#{product.productId}"/>
+                    </p:selectOneMenu>
+
+                </h:panelGrid>
+
+                <p:separator />
+
+            <!--    <p:commandButton value="Submit" update="msgs" actionListener="#{dropdownView.displayLocation}" icon="ui-icon-check" />   -->
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
+
