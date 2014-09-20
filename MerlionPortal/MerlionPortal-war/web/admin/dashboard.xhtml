@@ -13,40 +13,62 @@
             <c:set var="root" value="${request.contextPath}" />
             <h:form>
                 <div class="container">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <h2>Hi, #{dashboardBean.loginedUser.firstName}</h2>
-                            <ul class="list-group">
-                                <c:if test ="#{dashboardBean.loginedUser.userType == 'superuser'}">
-                                    <li class="list-group-item"><a href="${root}/admin/viewallsubscribers.xhtml">View Subscribers</a></li>
-                                </c:if>
-                                <c:if test ="#{dashboardBean.canUseOES() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                    <li class="list-group-item"><a href="${root}/oes/oesindexpage.xhtml">OES</a></li>
-                                </c:if>
-                                <c:if test ="#{dashboardBean.canUseMRP() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                    <li class="list-group-item"><a href="${root}/mrp/mrp.xhtml">MRP II</a></li>
-                                </c:if>
-                                <c:if test ="#{dashboardBean.canUseTMS() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                    <li class="list-group-item"><a href="#">TMS</a></li>
-                                </c:if>
-                                <c:if test ="#{dashboardBean.canUseCRMS() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                    <li class="list-group-item"><a href="#">CRMS</a></li>
-                                </c:if>
-                                <c:if test ="#{dashboardBean.canUseWMS() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                    <li class="list-group-item"><a href="${root}/wms/wmsindex.xhtml">WMS</a></li>
-                                </c:if>
-                                <c:if test ="#{dashboardBean.canUseGRNS() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                    <li class="list-group-item"><a href="#">GRNS</a></li>
-                                </c:if>
 
-                            </ul>
-                        </div>
-                        <div class="col-md-8">
-                            <c:if test="#{dashboardBean.loginedUser.userType eq 'superuser'}">
-                                <h2>View Logs</h2>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>Hi, #{dashboardBean.loginedUser.firstName}</h2>
+                            <c:if test ="#{dashboardBean.loginedUser.userType == 'superuser'}">
+                                <a href="${root}/admin/viewallsubscribers.xhtml" >
+                                    <img src="../img/viewsubstile.jpg" alt="..."/>
+                                </a>
                             </c:if>
-                            <h2>Inbox</h2>
+
+                            <c:if test ="#{dashboardBean.canUseOES() || dashboardBean.loginedUser.userType == 'superuser'}">
+                                <a href="${root}/oes/oesindexpage.xhtml" >
+                                    <img src="../img/oestile.jpg" alt="..."/>
+                                </a>
+                            </c:if>
+
+                            <c:if test ="#{dashboardBean.canUseWMS() || dashboardBean.loginedUser.userType == 'superuser'}">
+                                <a href="${root}/wms/wmsindex.xhtml" >
+                                    <img src="../img/wmstile.jpg" alt="..."/>
+                                </a>                                
+                            </c:if>
+
+                            <c:if test ="#{dashboardBean.canUseCRMS() || dashboardBean.loginedUser.userType == 'superuser'}">
+                                <a href="#" >
+                                    <img src="../img/crmstile.jpg" alt="..."/>
+                                </a>                                                                                                
+                            </c:if>
+
+                            <c:if test ="#{dashboardBean.canUseTMS() || dashboardBean.loginedUser.userType == 'superuser'}">
+                                <a href="#" >
+                                    <img src="../img/tmstile.jpg" alt="..."/>
+                                </a>
+                            </c:if>
+
+                            <c:if test ="#{dashboardBean.canUseMRP() || dashboardBean.loginedUser.userType == 'superuser'}">
+                                <a href="${root}/mrp/mrp.xhtml" >
+                                    <img src="../img/mrptile.jpg" alt="..."/>
+                                </a>                                
+                            </c:if>
+
+                            <c:if test ="#{dashboardBean.canUseGRNS() || dashboardBean.loginedUser.userType == 'superuser'}">
+
+                                <a href="#" >
+                                    <img src="../img/grnstile.jpg" alt="..."/>
+                                </a>
+                            </c:if>
+
+
                         </div>
+
+                    </div>
+                    <div class="col-md-8">
+                        <c:if test="#{dashboardBean.loginedUser.userType eq 'superuser'}">
+                            <h2>View Logs</h2>
+                        </c:if>
+                       
                     </div>
                 </div>
             </h:form>
