@@ -35,6 +35,18 @@ public class ProductSessionBean {
      SystemUser systemUser = entityManager.find(SystemUser.class, systemUserId);
      return systemUser;
      }*/
+    
+    public Boolean ifCanAdd(String productName){
+        Query query = entityManager.createQuery("SELECT p FROM Product p WHERE p.productName = :inProductName");
+        query.setParameter("inProductName", productName);
+        List<Product> productTemp = query.getResultList();
+        if(productTemp.isEmpty()){
+            return true;
+        }
+        
+        return false;
+    }
+    
     public List<Product> getAllProducts() {
         Query query = entityManager.createQuery("SELECT e FROM Product e");
         return query.getResultList();
