@@ -46,8 +46,8 @@ public class PurchaseOrderManagerSessionBean {
         return null;
     }
 
-    public void createPO(String shipto, String billto,
-            int companyId, int customerId, int quotationId, String cName, String cNumber) {
+    public ProductOrder createPO(String shipto,int companyId, int customerId, 
+            int quotationId, String cName, String cNumber) {
         System.out.println("+++++++++++++++++++GeneratePO Start====================");
         po = new ProductOrder();
         Date date = new Date();
@@ -56,31 +56,22 @@ public class PurchaseOrderManagerSessionBean {
         po.setProductOrderLineItemList(itemLiest);
         po.setStatus(1);
         po.setShipTo(shipto);
-        po.setBillTo(billto);
         po.setCompanyId(companyId);
         po.setQuotationId(quotationId);
         po.setCreatorId(customerId);
         em.persist(po);
         em.flush();
         System.out.println("Finished generating PO  ********");
+        return po;
 
     }
 
-    public void setList(int quotation, ProductOrder mypo) {
-        Quotation myQuotation = em.find(Quotation.class, quotation);
-        for (Object o : myQuotation.getQuotationLineItemList()) {
-            QuotationLineItem q = (QuotationLineItem) o;
-            pLineItem = new ProductOrderLineItem();
-            pLineItem.setStatus("valid");
-            pLineItem.setProductOrderproductPOId(mypo);
-            pLineItem.setPrice(q.getLineItemPrice());
-            pLineItem.setProductproductId(q.getProductproductId());
-            em.persist(pLineItem);
-            mypo.getProductOrderLineItemList().add(pLineItem);
-            em.merge(mypo);
-            em.flush();
-
-        }
+    public void createProductList(ProductOrderLineItem pLine, ProductOrder mypo) {
+        pLine.setProductOrderproductPOId(mypo);
+        em.persist(pLine);
+        mypo.getProductOrderLineItemList().add(pLine);
+        em.merge(mypo);
+        em.flush();
     }
 
     public void rejectLineItem(ProductOrderLineItem poLine, String reason) {
@@ -139,5 +130,10 @@ public class PurchaseOrderManagerSessionBean {
         }
             return poList;
         }
+    
+    public void saveOrder(ProductOrder mypo){
+        mypo.setStatus(4);
+        em.merge(mypo);
+    }
 
 }
