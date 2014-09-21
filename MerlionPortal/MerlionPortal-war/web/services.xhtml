@@ -102,7 +102,9 @@
                                     <h:inputText styleClass="form-control" required="true" requiredMessage="Contact Number is required." id="companyContactNumber" value="#{userAccountManagerBean.contactNumber}" />
                                     <br/>
                                     <h:outputLabel style="font-weight: bold" value="Email Address * "/>
-                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Email Address is required." id="companyEmailAddress" value="#{userAccountManagerBean.emailAddress}" />
+                                    <h:inputText styleClass="form-control" required="true" requiredMessage="Email Address is required." id="companyEmailAddress" value="#{userAccountManagerBean.emailAddress}">
+                                        <f:validator validatorId="custom.emailValidator" />
+                                    </h:inputText>
                                     <br/>
                                     <h:outputLabel style="font-weight: bold" value="Company Description * "/>
                                     <h:inputText styleClass="form-control" required="true" requiredMessage="Company Description is required." id="companyDescription" value="#{userAccountManagerBean.description}" />
@@ -119,7 +121,7 @@
                             </div>
                             <div class="modal-footer">
 
-                                <p:commandButton value="Register" styleClass="btn btn-success" actionListener="#{userAccountManagerBean.registerNewCompany}" ajax="true"></p:commandButton>
+                                <p:commandButton value="Register" styleClass="btn btn-success" actionListener="#{userAccountManagerBean.registerNewCompany}" ajax="true" validateClient="true" ></p:commandButton>
                                 <p:commandButton value="Close" styleClass="btn btn-warning" pt:data-dismiss="modal"></p:commandButton>
 
 
@@ -134,6 +136,20 @@
                 function toggleModal() {
                     $("#buyModal").modal('show');
                 }
+            </script>
+            <script type="text/javascript">
+                PrimeFaces.validator['custom.emailValidator'] = {
+                    pattern: /\S+@\S+/,
+                    validate: function(element, value) {
+                        //use element.data() to access validation metadata, in this case there is none.
+                        if (!this.pattern.test(value)) {
+                            throw {
+                                summary: 'Validation Error',
+                                detail: value + ' is not a valid email.'
+                            }
+                        }
+                    }
+                };
             </script>
         </ui:define>
 
