@@ -6,6 +6,7 @@
 package merlionportal.managedbean.wms;
 
 import entity.SystemUser;
+import entity.Warehouse;
 import java.io.IOException;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -29,8 +30,8 @@ public class AssetManagedBean {
     private AssetManagementSessionBean assetManagementSessionBean;
     @EJB
     private UserAccountManagementSessionBean uamb;
-    private String statusMessage;
     private Integer newWarehouseId;
+    private Integer warehouseId;
     private String warehouseName;
     private String country;
     private String city;
@@ -38,7 +39,8 @@ public class AssetManagedBean {
     private String description;
     private Integer zipcode;
     private Integer companyId;
-
+    private Warehouse warehouse;
+    
     private SystemUser loginedUser;
 
     /**
@@ -66,22 +68,12 @@ public class AssetManagedBean {
         }
 
     }
-
-    public SystemUser getLoginedUser() {
-        return loginedUser;
-    }
-
-    public void setLoginedUser(SystemUser loginedUser) {
-        this.loginedUser = loginedUser;
-    }
-
-    public void createNewWarehouse(ActionEvent warehouse) {
+    
+        public void createNewWarehouse(ActionEvent warehouse) {
 
         try {
             System.out.println("[INSIDE WAR FILE]===========================Create New Warehouse");
-            // companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
             newWarehouseId = assetManagementSessionBean.addNewWarehouse(warehouseName, country, city, street, description, zipcode, companyId);
-            statusMessage = "New warehouse created successfully";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Warehouse Added!", ""));
 
             System.out.println("[WAR FILE]===========================Create New Warehouse");
@@ -89,13 +81,23 @@ public class AssetManagedBean {
             ex.printStackTrace();
         }
     }
-
-    public String getStatusMessage() {
-        return statusMessage;
+        
+    public void deleteWarehouse(Warehouse warehouse) {
+        try {
+            warehouseId = warehouse.getWarehouseId();
+            System.out.println("[In WAR FILE - Delete Warehouse Function] Warehouse ID========== :" + warehouseId);
+            assetManagementSessionBean.deleteWarehouse(companyId, warehouseId);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
-    public void setStatusMessage(String statusMessage) {
-        this.statusMessage = statusMessage;
+    public SystemUser getLoginedUser() {
+        return loginedUser;
+    }
+
+    public void setLoginedUser(SystemUser loginedUser) {
+        this.loginedUser = loginedUser;
     }
 
     public Integer getNewWarehouseId() {
