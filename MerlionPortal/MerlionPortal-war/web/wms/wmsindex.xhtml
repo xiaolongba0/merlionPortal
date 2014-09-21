@@ -14,7 +14,7 @@
             .ui-layout, .ui-layout-doc, .ui-layout-unit, .ui-layout-wrap, .ui-layout-bd, .ui-layout-hd{
                 border: none;
             }
-            
+
 
         </style>
     </h:head>
@@ -27,11 +27,14 @@
 
                     <p:menu>
                         <p:submenu label =" Manage Your Warehouse">
-                <p:menuitem value="WMS" url="wmsindex.xhtml" />
-                <p:submenu label="Warehouse" >
-                    <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
-                    <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
-                </p:submenu>
+                            <p:menuitem value="WMS" url="wmsindex.xhtml" />
+                            <p:submenu label="Warehouse" >
+                                <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
+                                <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
+                            </p:submenu>
+                            <p:submenu label="Storage Type" >
+                                <p:menuitem value="Add Storage Type" url="addnewstoragetype.xhtml" />
+                            </p:submenu>
                         </p:submenu>
                     </p:menu>
 
@@ -39,7 +42,7 @@
 
                 <p:layoutUnit position="center">   
                     <p:panel header="Welcome">
-                           
+
                         Welcome to WMS system!
                         <Br/><Br/><Br/>
                         WMS system empowers your organization to: 

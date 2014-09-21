@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Add New Storage Type</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form id="formMain">
+            <h1>Welcome to WMS!</h1>
+            <p:menubar>
+                <p:menuitem value="HOME" url="wmsindex.xhtml"/>
+
+                <p:submenu label="Warehouse" >
+                    <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
+                    <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
+                </p:submenu>
+                <p:submenu label="Storage Type" >
+                    <p:menuitem value="Add Storage Type" url="addnewstoragetype.xhtml" />
+                </p:submenu>
+            </p:menubar>
+            <br/>
+            <p:panel id="panel" header="Add Storage Type">
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start">
+                        <h:graphicImage value="/img/load.gif" />
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:panelGrid>
+
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel for="warehouseId" style="font-weight: bold" value="Warehouse ID:   *" />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="warehouseId" requiredMessage="WarehouseID is required." id="warehouseId" value="#{assetManagedBean.warehouseId}">
+                                <f:validateLength minimum="1" maximum="19" />
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="warehouseId" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="storageTypeName" style="font-weight: bold" value="StorageTypeName* : " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="storageTypeName" requiredMessage="StorageType is required." id="storageTypeName" value="#{assetManagedBean.storageTypeName}">
+                                <f:validateLength minimum="1" maximum="25" />
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="storageTypeName" />
+                        </p:column>
+                    </p:row>  
+
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel for="description" style="font-weight: bold" value="Description:   *" />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="description" requiredMessage="Description is required." id="description" value="#{assetManagedBean.storagetDescription}">
+                                <f:validateLength minimum="1" maximum="100" />
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="description" />
+                        </p:column>
+                    </p:row>  
+
+                </p:panelGrid>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <p:commandButton id="btn" value="Create New Storage Type" update="panel" actionListener="#{assetManagedBean.createNewStorageType}" ajax="true" />
+            </p:panel>
+
+        </h:form>
+    </h:body>
+</html>                 
+

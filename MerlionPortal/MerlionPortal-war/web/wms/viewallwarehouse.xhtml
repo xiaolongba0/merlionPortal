@@ -10,7 +10,7 @@
     <h:body>
         <h1> View My Warehouses</h1>
         <h:form id="formMain">  
-            <p:growl id="messages"/>        
+            <p:growl id="msgs" showDetail="true"/>       
             <p:menubar>
                 <p:menuitem value="HOME" url="wmsindex.xhtml"/>
 
@@ -18,12 +18,14 @@
                     <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
                     <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
                 </p:submenu>
-
+                <p:submenu label="Storage Type" >
+                    <p:menuitem value="Add Storage Type" url="addnewstoragetype.xhtml" />
+                </p:submenu>
             </p:menubar>
             <br/>
         </h:form>
         <h:form>
-            <p:dataTable id="allwarehouses" var="warehouse" sortMode="multiple" value="#{assetViewEditManagedBean.warehouses}" 
+            <p:dataTable id="warehouse" var="warehouse" sortMode="multiple" editable="true" value="#{assetViewEditManagedBean.warehouses}" 
                          widgetVar="warehousesTable"
                          emptyMessage="No warehouse found"
                          rowKey="#{warehouses.warehouseId}">
@@ -34,44 +36,67 @@
                         <p:inputText id="globalFilter" onkeyup="PF('warehousesTable').filter()" />
                     </p:outputPanel>
                 </f:facet>
-                    
-                <p:column  
-                    filterBy="#{warehouse.warehouseId}" filterMatchMode="exact" headerText="Warehouse ID" >
+
+                <p:ajax event="rowEdit" listener="#{assetViewEditManagedBean.onRowEdit}"/>
+                <p:ajax event="rowEditCancel" listener="#{assetViewEditManagedBean.onRowCancel}"/>
+
+                <p:column headerText = "Delete Warehouse">
+                    <p:commandButton action="#{assetManagedBean.deleteWarehouse(warehouse)}" value="Delete">
+                    </p:commandButton> 
+                </p:column>
+                <p:column filterBy="#{warehouse.warehouseId}" filterMatchMode="exact" headerText="Warehouse ID" >
                     <h:outputText value="#{warehouse.warehouseId}" />
                 </p:column>
 
                 <p:column  filterBy="#{warehouse.name}" filterMatchMode="contains" headerText="Name Of Warehouse">
-                    <h:outputText value="#{warehouse.name}" />
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{warehouse.name}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{warehouse.name}" style="width:100%" label="Name Of Warehouse"/></f:facet>
+                    </p:cellEditor>
                 </p:column>
 
                 <p:column  filterBy="#{warehouse.country}" filterMatchMode="contains" headerText="Country">
-                    <h:outputText value="#{warehouse.country}" />
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{warehouse.country}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{warehouse.country}" style="width:100%" label="Country"/></f:facet>
+                    </p:cellEditor>
                 </p:column>
 
                 <p:column  filterBy="#{warehouse.city}" filterMatchMode="contains" headerText="City">
-                    <h:outputText value="#{warehouse.city}" />
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{warehouse.city}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{warehouse.city}" style="width:100%" label="City"/></f:facet>
+                    </p:cellEditor>
                 </p:column>
 
                 <p:column  filterBy="#{warehouse.street}" filterMatchMode="contains" headerText="Street">
-                    <h:outputText value="#{warehouse.street}" />
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{warehouse.street}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{warehouse.street}" style="width:100%" label="Street"/></f:facet>
+                    </p:cellEditor>
                 </p:column>
 
                 <p:column  filterBy="#{warehouse.zipcode}" filterMatchMode="contains" headerText="ZipCode">
-                    <h:outputText value="#{warehouse.zipcode}" />
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{warehouse.zipcode}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{warehouse.zipcode}" style="width:100%" label="ZipCode"/></f:facet>
+                    </p:cellEditor>
                 </p:column>
 
                 <p:column  headerText="Description">
-                    <h:outputText value="#{warehouse.description}" />
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{warehouse.description}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{warehouse.description}" style="width:100%" label="Description"/></f:facet>
+                    </p:cellEditor>
                 </p:column>
-                
-                <p:column headerText = "Delete Warehouse">
-                    <p:commandButton action="#{assetManagedBean.deleteWarehouse(warehouse)}" value="Delete">
-                </p:commandButton> 
+
+                <p:column style="width:32px">
+                    <p:rowEditor />
                 </p:column>
-                
+
             </p:dataTable>
             <br></br>
-            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
         </h:form>
     </h:body>
 </html>

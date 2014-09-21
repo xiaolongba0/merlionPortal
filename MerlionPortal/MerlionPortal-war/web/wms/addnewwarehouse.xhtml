@@ -18,15 +18,17 @@
             <h1>Welcome to WMS!</h1>
             <p:menubar>
                 <p:menuitem value="HOME" url="wmsindex.xhtml"/>
-                
+
                 <p:submenu label="Warehouse" >
                     <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
                     <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
                 </p:submenu>
-                
+                <p:submenu label="Storage Type" >
+                    <p:menuitem value="Add Storage Type" url="addnewstoragetype.xhtml" />
+                </p:submenu>
             </p:menubar>
             <br/>
-            <p:panel id="panel" header="Add New Product">
+            <p:panel id="panel" header="Add New Warehouse">
                 <p:ajaxStatus style="width:16px;height:16px;">
                     <f:facet name="start">
                         <h:graphicImage value="/img/load.gif" />
@@ -53,7 +55,12 @@
                         <p:column>
                             <h:outputLabel for="country" style="font-weight: bold" value="Country:   *" />
                         </p:column>
-                        <p:column>                        
+                        <p:column>
+                            <p:inputText required="true" label="country" requiredMessage="Country is required." id="country" value="#{assetManagedBean.country}">
+                                <f:validateLength minimum="1" maximum="19" />
+                            </p:inputText>
+                            </p:column>
+                            <!--
                             <h:selectOneMenu id="country" value="#{assetManagedBean.country}" required="true" label="country">
                                 <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />
                                 <f:selectItem itemLabel="Spain" itemValue="Spain" />
@@ -67,6 +74,8 @@
                                 <f:selectItem itemLabel="New Zealand" itemValue="New Zeland" />
                                 <f:selectItem itemLabel="Taiwan" itemValue="Taiwan" />
                             </h:selectOneMenu>
+                            -->
+                             <p:column>
                             <p:message for="country" />
                             <h:outputText value="#{assetManagedBean.country}" />
                         </p:column>
