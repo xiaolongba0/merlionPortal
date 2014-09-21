@@ -15,14 +15,17 @@
     </h:head>
     <h:body>
         <h:form id="formMain">
-            <h1>Welcome to WMS page</h1>
+            <h1>Welcome to WMS!</h1>
             <p:menubar>
-                <p:menuitem value="WMS" url="wmsindex.xhtml" />
-                <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
-                <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
+                <p:menuitem value="HOME" url="wmsindex.xhtml"/>
+                
+                <p:submenu label="Warehouse" >
+                    <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
+                    <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
+                </p:submenu>
+                
             </p:menubar>
             <br/>
-
             <p:panel id="panel" header="Add New Product">
                 <p:ajaxStatus style="width:16px;height:16px;">
                     <f:facet name="start">
@@ -62,6 +65,7 @@
                                 <f:selectItem itemLabel="Hong Kong" itemValue="Hong Kong" />
                                 <f:selectItem itemLabel="China" itemValue="China" />
                                 <f:selectItem itemLabel="New Zealand" itemValue="New Zeland" />
+                                <f:selectItem itemLabel="Taiwan" itemValue="Taiwan" />
                             </h:selectOneMenu>
                             <p:message for="country" />
                             <h:outputText value="#{assetManagedBean.country}" />
