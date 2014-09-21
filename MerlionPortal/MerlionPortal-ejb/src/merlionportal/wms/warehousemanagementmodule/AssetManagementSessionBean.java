@@ -10,6 +10,7 @@ import entity.StorageType;
 import entity.Warehouse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -31,24 +32,38 @@ public class AssetManagementSessionBean {
     private ArrayList<StorageType> storageTypeList;
     private Company company;
 
-    public List<Warehouse> viewAllWarehouses(Integer companyId) {
-        Query query = em.createQuery("SELECT w FROM Warehouse w WHERE p=w.companyId = :inCompanyId");
-        query.setParameter("inCompanyId", companyId);
-        return query.getResultList();
+    public List<Warehouse> viewMyWarehouses(Integer companyId) {
+        List<Warehouse> allMyWarehouses = new ArrayList<>();
+        System.out.println("In viewMyWarehouses, Company ID ============================= : " + companyId);
+        Query query = em.createNamedQuery("Warehouse.findByCompanyId").setParameter("companyId", companyId);
+        for (Object o : query.getResultList()) {
+            warehouse = (Warehouse) o;
+            allMyWarehouses.add(warehouse);
+        }
+
+        return allMyWarehouses;
     }
 
+       public Boolean deleteWarehouse(Integer companyId, Integer warehouseId) {
+
+        Query query = em.createNamedQuery("Warehouse.findByCompanyId").setParameter("companyId", companyId);
+        List<Warehouse> allMyWarehouses = query.getResultList();
+
+        for (Warehouse w : allMyWarehouses) {
+            if (Objects.equals(w.getWarehouseId(), warehouseId)) {
+                em.remove(w);
+                em.flush();
+                return true;
+            }
+        }
+        return false;
+    }
+       
     public Integer addNewWarehouse(String warehouseName, String country, String city, String street,
             String description, Integer zipcode, Integer companyId) {
         System.out.println("[INSIDE EJB]================================Add New Warehouse");
 
         warehouse = new Warehouse();
-   
-        //Query query = em.createNamedQuery("Company.findByCompanyId");
-        // System.out.println("================================Sucessfully Found Company");
-        //query.setParameter("companyId", comId);
-        // Company company = (Company) query.getSingleResult()
-        // Company company = new Company(companyId);
-
 
         warehouse.setName(warehouseName);
         warehouse.setCountry(country);
@@ -67,15 +82,12 @@ public class AssetManagementSessionBean {
         System.out.println("==========Street========== :" + street);
         System.out.println("==========Description========== :" + description);
         System.out.println("==========Zip Code========== :" + zipcode);
-        //System.out.println("=============Company============ :" + company);
         System.out.println("=============Company ID============ :" + companyId);
 
         em.persist(warehouse);
         em.flush();
 
-        em.flush();
-
-        System.out.println("[EJB]================================Add New Warehouse");
+        System.out.println("[EJB]================================Successfully Added a New Warehouse");
 
         return warehouse.getWarehouseId();
     }
