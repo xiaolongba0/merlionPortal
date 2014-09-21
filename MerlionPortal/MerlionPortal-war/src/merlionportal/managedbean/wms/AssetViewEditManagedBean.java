@@ -35,13 +35,14 @@ public class AssetViewEditManagedBean {
 
     private List<Warehouse> warehouses;
     private Integer warehouseId;
-    private String name;
+    private String warehouseName;
     private final static String[] country;
     private String city;
     private String street;
     private String description;
     private Integer zipcode;
     private Integer companyId;
+    
     private Warehouse warehouse;
 
     private SystemUser loginedUser;
@@ -74,7 +75,9 @@ public class AssetViewEditManagedBean {
 
     public List<Warehouse> getWarehouses() {
         System.out.println("===============================[In Managed Bean - getWarehouses]");
-        warehouses = assetManagementSessionBean.viewMyWarehouses(companyId);
+        if (warehouses == null){
+           warehouses = assetManagementSessionBean.viewMyWarehouses(companyId); 
+        }       
 
         // for checking
         for (Object obj : warehouses) {
@@ -161,35 +164,39 @@ public class AssetViewEditManagedBean {
         this.warehouseId = warehouseId;
     }
 
-    public String getName() {
-        return name;
+    public String getWarehouseName() {
+        return warehouseName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
     }
+
+    public Warehouse getWarehouse() {
+        return warehouse;
+    }
+
+    public void setWarehouse(Warehouse warehouse) {
+        this.warehouse = warehouse;
+    }
+
+
     public void onRowEdit(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Warehouse Edited");
+        System.out.println("ON ROW EDIT ===============================");
         warehouse = new Warehouse();
         warehouse = (Warehouse) event.getObject();
-        System.err.println("warehouse.getName(): " + warehouse.getName());
-//        assetManagementSessionBean.editWarehouse(product.getProductName(), product.getDescription(), product.getCategory(), product.getProductType(), product.getCurrency(), product.getPrice(), companyId, product.getProductId());
+        // System.out.println("[Checking if input is correct] ====================== : " + warehouseName);
+        System.out.println("[AFTER EDIT] warehouse.getName(): " + warehouse.getName());
+        assetManagementSessionBean.editWarehouse(warehouse.getName(), warehouse.getCountry(), warehouse.getCity(),
+                warehouse.getStreet(), warehouse.getDescription(), warehouse.getZipcode(), warehouse.getCompanyId(), warehouse.getWarehouseId());
+        FacesMessage msg = new FacesMessage("Warehouse with Warehouse ID = " + warehouse.getWarehouseId() + " has sucessfully been edited");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void onRowCancel(RowEditEvent event) {
+        System.out.println("ON ROW CANCEL =============================");
         FacesMessage msg = new FacesMessage("Edit Cancelled");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public void onCellEdit(CellEditEvent event) {
-        Object oldValue = event.getOldValue();
-        Object newValue = event.getNewValue();
-
-        if (newValue != null && !newValue.equals(oldValue)) {
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-        }
-    }
-    
 }

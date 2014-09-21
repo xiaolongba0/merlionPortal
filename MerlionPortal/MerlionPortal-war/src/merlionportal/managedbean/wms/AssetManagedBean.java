@@ -40,7 +40,11 @@ public class AssetManagedBean {
     private Integer zipcode;
     private Integer companyId;
     private Warehouse warehouse;
-    
+
+    private Integer newStorageTypeId;
+    private String storageTypeName;
+    private String storagetDescription;
+
     private SystemUser loginedUser;
 
     /**
@@ -68,20 +72,40 @@ public class AssetManagedBean {
         }
 
     }
-    
-        public void createNewWarehouse(ActionEvent warehouse) {
+
+    public void createNewWarehouse(ActionEvent warehouse) {
 
         try {
             System.out.println("[INSIDE WAR FILE]===========================Create New Warehouse");
             newWarehouseId = assetManagementSessionBean.addNewWarehouse(warehouseName, country, city, street, description, zipcode, companyId);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Warehouse Added!", ""));
-
             System.out.println("[WAR FILE]===========================Create New Warehouse");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-        
+
+    public void createNewStorageType(ActionEvent warehouse) {
+
+        try {
+            System.out.println("[INSIDE WAR FILE]===========================Create New Storage Type");
+             newStorageTypeId = assetManagementSessionBean.addStorageType(storageTypeName, storagetDescription, companyId, warehouseId);
+             System.out.println("NEW STORAGE TYPE ID =================: " + newStorageTypeId);
+            if (newStorageTypeId == -1){
+                System.out.println("============== FAILED TO ADD STORAGE TYPE DUE TO WRONG WAREHOUSE ID ===============");
+                // Yet to edit function to print error message for user
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to Add Storage Type. Please check warehouseID! ", ""));
+            }
+            else{
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Storage Type Added!", ""));
+            }
+
+            System.out.println("[WAR FILE]===========================Create New Storage Type");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public void deleteWarehouse(Warehouse warehouse) {
         try {
             warehouseId = warehouse.getWarehouseId();
@@ -162,6 +186,46 @@ public class AssetManagedBean {
 
     public void setZipcode(Integer zipcode) {
         this.zipcode = zipcode;
+    }
+
+    public Integer getWarehouseId() {
+        return warehouseId;
+    }
+
+    public void setWarehouseId(Integer warehouseId) {
+        this.warehouseId = warehouseId;
+    }
+
+    public Warehouse getWarehouse() {
+        return warehouse;
+    }
+
+    public void setWarehouse(Warehouse warehouse) {
+        this.warehouse = warehouse;
+    }
+
+    public Integer getNewStorageTypeId() {
+        return newStorageTypeId;
+    }
+
+    public void setNewStorageTypeId(Integer newStorageTypeId) {
+        this.newStorageTypeId = newStorageTypeId;
+    }
+
+    public String getStorageTypeName() {
+        return storageTypeName;
+    }
+
+    public void setStorageTypeName(String storageTypeName) {
+        this.storageTypeName = storageTypeName;
+    }
+
+    public String getStoragetDescription() {
+        return storagetDescription;
+    }
+
+    public void setStoragetDescription(String storagetDescription) {
+        this.storagetDescription = storagetDescription;
     }
 
 }
