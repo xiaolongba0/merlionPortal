@@ -105,27 +105,34 @@ public class CreateUserManagerBean {
                 int i = Integer.parseInt((String) o);
                 roleListInt.add(i);
             }
-            int result = uamb.createSystemUser(operatorId, companyId, roleListInt, firstName, lastName, emailAddress, MD5Generator.hash(password), postalAddress,
-                    contactNumber, salution, credit);
-            if (result == -1) {
-                System.out.println("Access Denied");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Access Denied!", "You do not have sufficient right to perform this action!"));
-            } else if (result == 1) {
-                RequestContext requestContext = RequestContext.getCurrentInstance();
-                String sender = "merlionportal@nus.edu.sg";
-                String[] recipients = {emailAddress};
-                String subject = "System User Account";
+            //test if email alr exist in database
+            if (uamb.getUserByEmail(emailAddress) == null) {
+                int result = uamb.createSystemUser(operatorId, companyId, roleListInt, firstName, lastName, emailAddress, MD5Generator.hash(password), postalAddress,
+                        contactNumber, salution, credit);
+                if (result == -1) {
+                    System.out.println("Access Denied");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Access Denied!", "You do not have sufficient right to perform this action!"));
+                } else if (result == 1) {
+                    RequestContext requestContext = RequestContext.getCurrentInstance();
+                    String sender = "merlionportal@nus.edu.sg";
+                    String[] recipients = {emailAddress};
+                    String subject = "System User Account";
 
-                String content = "<h2>Hi user" +lastName+ " " + firstName + ",</h2><p>A new account has been created for you. <br/> Please kindly use your email " + emailAddress + " and the password below to login to your account.<br/><br/>"
-                        + "Password: <strong>" + password + "</strong><br/><br/>"
-                        + " Thank you. <br/><br/>Best Regards,<br/>Administrator, Merlion Portal";
-                if (Postman.sendMail(sender, recipients, subject, content)) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New System User Added!", "Email notification is sent to user."));
+                    String content = "<h2>Hi user" + lastName + " " + firstName + ",</h2><p>A new account has been created for you. <br/> Please kindly use your email " + emailAddress + " and the password below to login to your account.<br/><br/>"
+                            + "Password: <strong>" + password + "</strong><br/><br/>"
+                            + " Thank you. <br/><br/>Best Regards,<br/>Administrator, Merlion Portal";
+                    this.clearAllFields();
+                    if (Postman.sendMail(sender, recipients, subject, content)) {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New System User Added!", "Email notification is sent to user."));
+                    } else {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "New System User Added!", "Failed to send Email notification to user."));
+                    }
                 } else {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "New System User Added!", "Failed to send Email notification to user."));
+                    // direct to login page
                 }
             } else {
-                // direct to login page
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email Exist!", "This Email exist in database, please change another email"));
+
             }
 
         }
@@ -136,6 +143,18 @@ public class CreateUserManagerBean {
         if (selectCompanyId != null) {
             roles = gcrsb.getAllRolesInCompany(selectCompanyId);
         }
+    }
+
+    private void clearAllFields() {
+        selectedRoles = null;
+        firstName = null;
+        lastName = null;
+        emailAddress = null;
+        password = null;
+        postalAddress = null;
+        contactNumber = null;
+        salution = null;
+        credit = null;
     }
 
     public SystemUser getLoginedUser() {

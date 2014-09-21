@@ -41,25 +41,37 @@ public class ResetPasswordBean {
 
     public void requestPasswordChange() {
         RequestContext requestContext = RequestContext.getCurrentInstance();
+        System.out.println("==================1============");
+
         SystemUser user = uamsb.getUserByEmail(email);
         if (user != null) {
+            System.out.println("==============2================");
+
             Random random = new Random();
             String newPassword = MD5Generator.hash(Integer.toString(random.nextInt(5000) + 1000)).substring(0, 15);
+            System.out.println("===============3===============");
 
             if (user.getLocked()) {
                 requestContext.execute("fail('Your account is locked. Fail to update password')");
+                System.out.println("==============4================");
+
             } else {
                 //Set Password to user's password and save to database.
                 if (uamsb.updateUserPassword(user.getSystemUserId(), MD5Generator.hash(newPassword))) {
+                    System.out.println("============5==================");
+
                     //Send Email
                     String sender = "merlionportal@nus.edu.sg";
                     String[] recipients = {email};
                     String subject = "Password Reset";
+                    System.out.println("===============6===============");
 
                     String content = "<h2>Hi user,</h2><p>You have request a password reset for your account at " + email + ". Please kindly use your new password below to login to your account.<br/><br/>"
                             + "Password: <strong>" + newPassword + "</strong><br/><br/>"
                             + " Thank you. <br/><br/>Best Regards,<br/>Administrator, Merlion Portal";
                     if (Postman.sendMail(sender, recipients, subject, content)) {
+                        System.out.println("==============7================");
+
                         requestContext.execute("success()");
                     } else {
                         requestContext.execute("fail('Unknown Error')");
@@ -69,6 +81,7 @@ public class ResetPasswordBean {
                 }
             }
         } else {
+            System.out.println("================8==============");
             //Not user found
             requestContext.execute("fail('Email not found')");
         }

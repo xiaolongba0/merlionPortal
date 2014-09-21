@@ -9,13 +9,13 @@ import entity.Company;
 import entity.SystemUser;
 import entity.UserRole;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import util.accessRightControl.Right;
 
 /**
@@ -250,6 +250,23 @@ public class RoleManagementSessionBean {
         }
         System.out.println("Operator is null");
         return 0;
+    }
+
+    public boolean checkRoleNameExist(String name, Integer companyId) {
+        Query q = em.createNamedQuery("Company.findByCompanyId").setParameter("companyId", companyId);
+        if (!q.getResultList().isEmpty()) {
+            Company company = (Company) q.getSingleResult();
+            for (Object o : company.getUserRoleList()) {
+                UserRole role = (UserRole) o;
+                if (role.getRoleName().equals(name)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        System.out.println("company not exist");
+        return false;
+
     }
 
     private SystemUser getOperator(Integer operatorId) {

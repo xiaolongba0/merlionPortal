@@ -14,20 +14,20 @@
         <ui:define name="content">
             <c:set var="root" value="${request.contextPath}" />
             <script type="text/javascript" src="${root}/js/manageroles.js"></script>
-            <h:form>
+            <h:form id="form" >
                 <div class="container">
                     <h2>Create Role</h2>
                     <div class="row spacing">
                         <div class="col-md-5">
                             <div class="input-group">
                                 <div class="input-group-addon">Role Name * :</div>
-                                <h:inputText required="ture" requiredMessage="Role Name is required" value="#{createRole.roleName}" styleClass="form-control"  />
+                                <h:inputText id="roleName" value="#{createRole.roleName}" styleClass="form-control"  required="ture" requiredMessage="Role Name is required"/>
                             </div>
                         </div>
                         <div class="col-md-5">
                             <div class="input-group">
                                 <div class="input-group-addon">Description * :</div>
-                                <h:inputText  required="ture" requiredMessage="Description is required" value="#{createRole.roleDescription}" styleClass="form-control"/>
+                                <h:inputText id="roleDescription" value="#{createRole.roleDescription}" styleClass="form-control" required="ture" requiredMessage="Description is required"/>
                             </div>
                         </div>
                     </div>
@@ -180,15 +180,17 @@
                                 </div>
                             </div>
                         </c:if>
-                        <div class="row spacing">
-                            <div class="col-md-10">
-                                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                                <div class="pull-right">
-                                    <p:commandButton value="Create Role" id="ajax" icon="ui-icon-check" actionListener="#{createRole.createRole}" styleClass="btn btn-success" />
-                                </div>
+
+                    </h:panelGroup>
+                    <div class="row spacing">
+                        <div class="col-md-10">
+                           <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                            <div class="pull-right">
+                                <p:commandButton value="Create Role" id="ajax" icon="ui-icon-check" update="form" actionListener="#{createRole.createRole}" styleClass="btn btn-success" />
                             </div>
                         </div>
-                    </h:panelGroup>
+                    </div>
+
                     <!-- Hidden Attributes -->
                     <div class="hide">
                         <!-- Common Infrastructure -->

@@ -41,37 +41,47 @@ public class RegisterCompanyManagerBean {
     private String description;
     private Integer package1;
 
-   
-
-    
-
     public RegisterCompanyManagerBean() {
 
-        
     }
 
-    
     public void registerNewCompany(ActionEvent event) {
-
-        int result = uamb.registerNewCompany(companyName, companyAddress, contactNumber, contactPersonName, emailAddress, description, package1);
-        if (result > 0) {
-            RequestContext requestContext = RequestContext.getCurrentInstance();
+        if (uamb.getUserByEmail(emailAddress) == null) {
+            int result = uamb.registerNewCompany(companyName, companyAddress, contactNumber, contactPersonName, emailAddress, description, package1);
+            if (result > 0) {
+                RequestContext requestContext = RequestContext.getCurrentInstance();
                 String sender = "merlionportal@nus.edu.sg";
                 String[] recipients = {emailAddress};
                 String subject = "System User Account";
 
-                String content = "<h2>Hi " +contactPersonName+ " ,</h2><p>Thank you for registering with Merlion Portal.<br/>Our system administrator has received your registration. Please wait for us to contact you. <br/><br/>"
+                String content = "<h2>Hi " + contactPersonName + " ,</h2><p>Thank you for registering with Merlion Portal.<br/>Our system administrator has received your registration. Please wait for us to contact you. <br/><br/>"
                         + " Thank you. <br/><br/>Best Regards,<br/>Administrator, Merlion Portal";
+                this.clearAllFields();
                 if (Postman.sendMail(sender, recipients, subject, content)) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Company Registered!", "Please check our confirmation email sent to you and wait for our system administrator to contact you."));
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Company Registered!", "Please wait for our system administrator to contact you. "));
                 }
-         
+                
+
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email exist", "This is a registered Email, please use another email to register!"));
+
         }
     }
 
-  
+    private void clearAllFields() {
+
+        companyName = null;
+        companyAddress = null;
+        contactNumber = null;
+        contactPersonName = null;
+        emailAddress = null;
+        description = null;
+        package1 = null;
+    }
+
 //    <editor-fold defaultstate="collapsed" desc="getters and setters">
     public Integer getCompanyId() {
         return companyId;

@@ -137,17 +137,24 @@ public class UserRoleManagerBean implements Serializable {
         if (rmb.isSuperUser(operatorId)) {
             companyId = selectCompanyId;
         }
-        int result = rmb.createCompanyRole(operatorId, companyId, roleName, roleDescription, canGeneratePO, canGenerateSO, canGenerateQuotationAndProductContract, canGenerateSalesReport, canManageUser, canUseForecast, canManageProductAndComponent, canGenerateMRPList, canGenerateServicePO, canUpdateCustomerCredit, canGenerateServiceSO, canGenerateQuotationRequest, canManageServiceCatalog, canGenerateServiceQuotationAndContract, canManageKeyAccount, canManageTransportationAsset, canManageTransportationOrder, canManageLocation, canManageAssetType, canUseHRFunction, canManageWarehouse, canManageStockAuditProcess, canManageStockTransportOrder, canManageReceivingGoods, canManageOrderFulfillment, canManageBid, canManagePost);
-        if (result == 1) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Role Created!", "You can now assign users to this role"));
+        if (!rmb.checkRoleNameExist(roleName, companyId)) {
 
-        } else if (result == -1) {
+            int result = rmb.createCompanyRole(operatorId, companyId, roleName, roleDescription, canGeneratePO, canGenerateSO, canGenerateQuotationAndProductContract, canGenerateSalesReport, canManageUser, canUseForecast, canManageProductAndComponent, canGenerateMRPList, canGenerateServicePO, canUpdateCustomerCredit, canGenerateServiceSO, canGenerateQuotationRequest, canManageServiceCatalog, canGenerateServiceQuotationAndContract, canManageKeyAccount, canManageTransportationAsset, canManageTransportationOrder, canManageLocation, canManageAssetType, canUseHRFunction, canManageWarehouse, canManageStockAuditProcess, canManageStockTransportOrder, canManageReceivingGoods, canManageOrderFulfillment, canManageBid, canManagePost);
+            if (result == 1) {
+                this.clearAllFields();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Role Created!", "You can now assign users to this role"));
 
-            System.out.println("Access Denied");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Access Denied!", "You do not have sufficient right to perform this action!"));
+            } else if (result == -1) {
 
-        } else {
+                System.out.println("Access Denied");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Access Denied!", "You do not have sufficient right to perform this action!"));
+
+            } else {
 //      redirect to login page
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Role Name Exist", "Please change another role name"));
+
         }
 
     }
@@ -160,6 +167,38 @@ public class UserRoleManagerBean implements Serializable {
         }
         companyPackage = ccpsb.checkCompanyPackage(companyId);
 
+    }
+
+    private void clearAllFields() {
+        roleName = null;
+        roleDescription = null;
+        canGeneratePO = false;
+        canGenerateSO = false;
+        canGenerateQuotationAndProductContract = false;
+        canGenerateSalesReport = false;
+        canManageUser = false;
+        canUseForecast = false;
+        canManageProductAndComponent = false;
+        canGenerateMRPList = false;
+        canGenerateServicePO = false;
+        canUpdateCustomerCredit = false;
+        canGenerateServiceSO = false;
+        canGenerateQuotationRequest = false;
+        canManageServiceCatalog = false;
+        canGenerateServiceQuotationAndContract = false;
+        canManageKeyAccount = false;
+        canManageTransportationAsset = false;
+        canManageTransportationOrder = false;
+        canManageLocation = false;
+        canManageAssetType = false;
+        canUseHRFunction = false;
+        canManageWarehouse = false;
+        canManageStockAuditProcess = false;
+        canManageStockTransportOrder = false;
+        canManageReceivingGoods = false;
+        canManageOrderFulfillment = false;
+        canManageBid = false;
+        canManagePost = false;
     }
 
     //    <editor-fold defaultstate="collapsed" desc="getters and setters">
