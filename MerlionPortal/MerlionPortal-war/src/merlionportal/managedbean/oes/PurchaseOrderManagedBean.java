@@ -5,9 +5,8 @@
  */
 package merlionportal.managedbean.oes;
 
+import entity.ProductOrder;
 import entity.ProductOrderLineItem;
-import entity.Quotation;
-import entity.QuotationLineItem;
 import java.io.IOException;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -47,6 +46,7 @@ public class PurchaseOrderManagedBean {
     private String postalCode;
     private List<ProductOrderLineItem> itemList;
     private int qutatuonId;
+    private ProductOrder myPo;
 
     public PurchaseOrderManagedBean() {
     }
@@ -219,6 +219,23 @@ public class PurchaseOrderManagedBean {
 
     public void setQutatuonId(int qutatuonId) {
         this.qutatuonId = qutatuonId;
+    }
+
+    public void saveOrder() {
+        myPo = purchaseMB.createPO(shipto, companyId, userId, qutatuonId, contactPerson, contactNumber);
+        for (Object o : itemList) {
+            ProductOrderLineItem pLine = (ProductOrderLineItem) o;
+            purchaseMB.createProductList(pLine, myPo);
+        }
+        purchaseMB.saveOrder(myPo);
+    }
+
+    public void submitOrder() {
+        myPo = purchaseMB.createPO(shipto, companyId, userId, qutatuonId, contactPerson, contactNumber);
+        for (Object o : itemList) {
+            ProductOrderLineItem pLine = (ProductOrderLineItem) o;
+            purchaseMB.createProductList(pLine, myPo);
+        }
     }
 
 }
