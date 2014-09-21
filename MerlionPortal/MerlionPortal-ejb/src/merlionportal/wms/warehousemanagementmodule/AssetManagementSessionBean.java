@@ -6,6 +6,7 @@
 package merlionportal.wms.warehousemanagementmodule;
 
 import entity.Company;
+import entity.StorageBin;
 import entity.StorageType;
 import entity.Warehouse;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class AssetManagementSessionBean {
     private Warehouse warehouse;
     private Integer comId;
     private ArrayList<StorageType> storageTypeList;
+    private ArrayList<StorageBin> storageBinList;
     private Company company;
 
     public List<Warehouse> viewMyWarehouses(Integer companyId) {
@@ -44,7 +46,7 @@ public class AssetManagementSessionBean {
         return allMyWarehouses;
     }
 
-       public Boolean deleteWarehouse(Integer companyId, Integer warehouseId) {
+    public Boolean deleteWarehouse(Integer companyId, Integer warehouseId) {
 
         Query query = em.createNamedQuery("Warehouse.findByCompanyId").setParameter("companyId", companyId);
         List<Warehouse> allMyWarehouses = query.getResultList();
@@ -58,7 +60,7 @@ public class AssetManagementSessionBean {
         }
         return false;
     }
-       
+
     public Integer addNewWarehouse(String warehouseName, String country, String city, String street,
             String description, Integer zipcode, Integer companyId) {
         System.out.println("[INSIDE EJB]================================Add New Warehouse");
@@ -92,6 +94,77 @@ public class AssetManagementSessionBean {
         return warehouse.getWarehouseId();
     }
 
+    public Integer editWarehouse(String warehouseName, String country, String city, String street,
+            String description, Integer zipcode, Integer companyId, Integer warehouseId) {
+
+        System.out.println("[EJB]================================edit Warehouse");
+        Query query = em.createNamedQuery("Warehouse.findByCompanyId").setParameter("companyId", companyId);
+        List<Warehouse> allMyWarehouses = query.getResultList();
+
+        Warehouse warehse = new Warehouse();
+        for (Warehouse w : allMyWarehouses) {
+            if (Objects.equals(w.getWarehouseId(), warehouseId)) {
+                warehse = w;
+            }
+        }
+
+        warehse.setName(warehouseName);
+        warehse.setCountry(country);
+        warehse.setCity(city);
+        warehse.setStreet(street);
+        warehse.setDescription(description);
+        warehse.setZipcode(zipcode);
+
+        em.merge(warehse);
+        em.flush();
+
+        System.out.println("[EJB]================================Successfully EDITED Warehouse");
+        return warehse.getWarehouseId();
+
+    }
+
+    public Integer addStorageType(String storageTypeName, String storagetDescription,
+            Integer companyId, Integer warehouseId) {
+
+        System.out.println("[INSIDE EJB]================================Add Storage Type");
+        Query query = em.createNamedQuery("Warehouse.findByCompanyId").setParameter("companyId", companyId);
+
+        List<Warehouse> allMyWarehouses = query.getResultList();
+
+        Warehouse warehse = new Warehouse();
+        for (Warehouse w : allMyWarehouses) {
+            if (Objects.equals(w.getWarehouseId(), warehouseId)) {
+                warehse = w;
+            }
+        }
+        StorageType storageType = new StorageType();
+        storageType.setName(storageTypeName);
+        storageType.setDescription(storagetDescription);
+        storageType.setWarehousewarehouseId(warehse);
+
+        storageBinList = new ArrayList<StorageBin>();
+        storageType.setStorageBinList(storageBinList);
+
+        System.out.println("Warehouse : " + warehse);
+        System.out.println("Warehouse ID ============ : " + warehse.getWarehouseId());
+        System.out.println("Storage Type Name :" + storageTypeName);
+        System.out.println("Storage Description: " + storagetDescription);
+
+        ///check later 
+        if (warehse.getWarehouseId() == null) {
+            System.out.println("WAREHOUSE ID IS NULL");
+            return -1;
+        } else {
+            em.persist(storageType);
+            em.flush();
+
+            warehse.getStorageTypeList().add(storageType);
+            em.merge(warehse);
+            em.flush();
+            return storageType.getStorageTypeId();
+        }
+
+    }
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
 }
