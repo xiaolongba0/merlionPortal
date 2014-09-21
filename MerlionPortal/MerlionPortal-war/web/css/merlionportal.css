@@ -90,3 +90,34 @@ ul.rights-menu li{
     width:16px;
     height:auto;
 }
+
+/*.content-area{
+    padding-top: 45px;
+    padding-bottom: 45px;
+    padding-left: 100px;
+    padding-right: 100px;
+}*/
+
+//*************************************************//
+//footer
+* {
+    margin: 0;
+}
+html, body {
+    height: 100%;
+}
+.wrapper {
+    min-height: 652px;
+/*    height: auto !important;  IE6 support 
+    height: 100%;*/
+    margin: 0 auto -100px; /* the bottom margin is the negative value of the footer's height */
+}
+.footer{
+    background-color:rgba(20,0,0,0.2);
+    color:#ddd;
+    padding:25px;
+}
+.footer, .push {
+    height: 100px; /* .push must be the same height as .footer */
+}
+//************************************************//

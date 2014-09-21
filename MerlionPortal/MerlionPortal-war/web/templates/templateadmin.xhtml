@@ -8,19 +8,27 @@
         <ui:insert name="imports" >
             <ui:include src="/templates/snippets/imports.xhtml" />
         </ui:insert>
+        <!-- Specific Imports -->
+        <ui:insert name="more-imports" >
+        </ui:insert>
         <!-- Additional Header Information -->
         <ui:insert name="header" >
             <ui:include src="/templates/snippets/header.xhtml" />
         </ui:insert>
     </h:head>
     <h:body>
-        <!-- Navigation Bar -->
-        <ui:insert name="nav" >
-            <ui:include src="/templates/snippets/admin/navigation.xhtml" />
-        </ui:insert>
-        <!-- Content -->
-        <ui:insert name="content" >
-        </ui:insert>
+        <div class="wrapper">
+            <!-- Navigation Bar -->
+            <ui:insert name="nav" >
+                <ui:include src="/templates/snippets/admin/navigation.xhtml" />
+            </ui:insert>
+            <!-- Content -->
+            <div class="content-area">
+                <ui:insert name="content" >
+                </ui:insert>
+            </div>
+            <div class="push"></div>
+        </div>
         <!-- Footer -->
         <ui:insert name="footer" >
             <ui:include src="/templates/snippets/footer.xhtml" />
