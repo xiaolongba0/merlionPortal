@@ -23,7 +23,7 @@
                             <c:if test ="#{dashboardBean.canUseOES() || dashboardBean.loginedUser.userType == 'superuser'}">
                                 <c:set var="disableoes" value="false" />
                             </c:if>
-                            <p:commandLink action="/oes/oesindexpage.xhtml" disabled="${disableoes}" >
+                            <p:commandLink action="/oes/oesindexpage.xhtml?faces-redirect=true" disabled="${disableoes}" >
                                 <p:graphicImage value="../img/oestile.jpg"/>
                             </p:commandLink>
 
@@ -33,7 +33,7 @@
                             <c:if test ="#{dashboardBean.canUseMRP() || dashboardBean.loginedUser.userType == 'superuser'}">
                                 <c:set var="disablemrp" value="false" />
                             </c:if>
-                            <p:commandLink action="/mrp/mrp.xhtml" disabled="${disablemrp}" >
+                            <p:commandLink action="/mrp/mrp.xhtml?faces-redirect=true" disabled="${disablemrp}" >
                                 <p:graphicImage value="../img/mrptile.jpg"/>
                             </p:commandLink>   
 
@@ -43,7 +43,7 @@
                             <c:if test ="#{dashboardBean.canUseWMS() || dashboardBean.loginedUser.userType == 'superuser'}">
                                 <c:set var="disablewms" value="false" />
                             </c:if>
-                            <p:commandLink action="/wms/wmsindex.xhtml" disabled="${disablewms}" >
+                            <p:commandLink action="/wms/wmsindex.xhtml?faces-redirect=true" disabled="${disablewms}" >
                                 <p:graphicImage value="../img/wmstile.jpg"/>
                             </p:commandLink>
 
