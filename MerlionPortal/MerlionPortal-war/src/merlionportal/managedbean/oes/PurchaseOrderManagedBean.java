@@ -98,6 +98,8 @@ public class PurchaseOrderManagedBean {
     public void onRowEdit(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Price Edited", ((ProductOrderLineItem) event.getObject()).getQuantity().toString());
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        ProductOrderLineItem testout = (ProductOrderLineItem) event.getObject();
+        System.out.println("Set line item price" + testout.getQuantity());
     }
 
     public void onRowCancel(RowEditEvent event) {
@@ -105,6 +107,7 @@ public class PurchaseOrderManagedBean {
 //        quotationMB.setLineItemPrice(selectedRequest, myLine, null);
         FacesMessage msg = new FacesMessage("Price Cancelled");
         FacesContext.getCurrentInstance().addMessage(null, msg);
+
     }
 
     public boolean checkUserIsCustomer() {
@@ -231,6 +234,15 @@ public class PurchaseOrderManagedBean {
     }
 
     public void submitOrder() {
+        System.out.println("ship to address " + shipto);
+        System.out.println("customer id" + userId);
+        System.out.println("CompanyId" + companyId);
+        System.out.println("quotationId" + qutatuonId);
+        System.out.println(contactPerson + " " + contactNumber);
+        for (Object o : itemList) {
+            ProductOrderLineItem pLine = (ProductOrderLineItem) o;
+            System.out.println("lineItem Quantity " + pLine.getQuantity());
+        }
         myPo = purchaseMB.createPO(shipto, companyId, userId, qutatuonId, contactPerson, contactNumber);
         for (Object o : itemList) {
             ProductOrderLineItem pLine = (ProductOrderLineItem) o;
