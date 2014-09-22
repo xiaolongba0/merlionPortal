@@ -20,15 +20,16 @@
                 </p:submenu>
                 <p:submenu label="Storage Type" >
                     <p:menuitem value="Add Storage Type" url="addnewstoragetype.xhtml" />
+                    <p:menuitem value="View Storage Types" url="viewstoragetype.xhtml" />
                 </p:submenu>
             </p:menubar>
             <br/>
         </h:form>
         <h:form>
-            <p:dataTable id="warehouse" var="warehouse" sortMode="multiple" editable="true" value="#{assetViewEditManagedBean.warehouses}" 
+            <p:dataTable id="warehouse" var="warehouse" sortMode="multiple" editable="true" value="#{warehouseViewEditManagedBean.warehouses}" 
                          widgetVar="warehousesTable"
                          emptyMessage="No warehouse found"
-                         rowKey="#{warehouses.warehouseId}">
+                         rowKey="#{warehouse.warehouseId}">
 
                 <f:facet name="header">                    
                     <p:outputPanel>
@@ -37,13 +38,9 @@
                     </p:outputPanel>
                 </f:facet>
 
-                <p:ajax event="rowEdit" listener="#{assetViewEditManagedBean.onRowEdit}"/>
-                <p:ajax event="rowEditCancel" listener="#{assetViewEditManagedBean.onRowCancel}"/>
+                <p:ajax event="rowEdit" listener="#{warehouseViewEditManagedBean.onRowEdit}"/>
+                <p:ajax event="rowEditCancel" listener="#{warehouseViewEditManagedBean.onRowCancel}"/>
 
-                <p:column headerText = "Delete Warehouse">
-                    <p:commandButton action="#{assetManagedBean.deleteWarehouse(warehouse)}" value="Delete">
-                    </p:commandButton> 
-                </p:column>
                 <p:column filterBy="#{warehouse.warehouseId}" filterMatchMode="exact" headerText="Warehouse ID" >
                     <h:outputText value="#{warehouse.warehouseId}" />
                 </p:column>
@@ -88,6 +85,11 @@
                         <f:facet name="output"><h:outputText value="#{warehouse.description}" /></f:facet>
                         <f:facet name="input"><p:inputText value="#{warehouse.description}" style="width:100%" label="Description"/></f:facet>
                     </p:cellEditor>
+                </p:column>
+
+                <p:column headerText = "Delete Warehouse">
+                    <p:commandButton action="#{assetManagedBean.deleteWarehouse(warehouse)}" value="Delete">
+                    </p:commandButton> 
                 </p:column>
 
                 <p:column style="width:32px">

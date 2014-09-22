@@ -29,7 +29,7 @@
                 </p:submenu>
             </p:menubar>
             <br/>
-            <p:panel id="panel" header="Add Storage Type">
+            <p:panel id="panel" header=" View Storage Type for A Warehouse">
                 <p:ajaxStatus style="width:16px;height:16px;">
                     <f:facet name="start">
                         <h:graphicImage value="/img/load.gif" />
@@ -39,13 +39,12 @@
                     </f:facet>
                 </p:ajaxStatus>
                 <p:panelGrid>
-
-                    <p:row>
+                      <p:row>
                         <p:column>
                             <h:outputLabel for="warehouseId" style="font-weight: bold" value="Warehouse ID:   *" />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="warehouseId" requiredMessage="WarehouseID is required." id="warehouseId" value="#{assetManagedBean.warehouseId}">
+                            <p:inputText required="true" label="warehouseId" requiredMessage="WarehouseID is required." id="warehouseId" value="#{storageTypeViewEditManagedBean.warehouseId}">
                                 <f:validateLength minimum="1" maximum="19" />
                             </p:inputText>
                         </p:column>
@@ -53,39 +52,12 @@
                             <p:message for="warehouseId" />
                         </p:column>
                     </p:row>
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="storageTypeName" style="font-weight: bold" value="StorageTypeName* : " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="storageTypeName" requiredMessage="StorageType is required." id="storageTypeName" value="#{assetManagedBean.storageTypeName}">
-                                <f:validateLength minimum="1" maximum="25" />
-                            </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="storageTypeName" />
-                        </p:column>
-                    </p:row>  
-
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel for="description" style="font-weight: bold" value="Description:   *" />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="description" requiredMessage="Description is required." id="description" value="#{assetManagedBean.storagetDescription}">
-                                <f:validateLength minimum="1" maximum="100" />
-                            </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="description" />
-                        </p:column>
-                    </p:row>  
-
                 </p:panelGrid>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <p:commandButton id="btn" value="Create New Storage Type" update="panel" actionListener="#{assetManagedBean.createNewStorageType}" ajax="true" />
+<!--                Dunno how to do if the storage type is null don't forward to the next page!-->
+                <p:commandButton id="btn" value="View Storage Types" update="panel" action="viewstoragetypedisplay" ajax="true">                                 
+                </p:commandButton>   
             </p:panel>
-
         </h:form>
     </h:body>
 </html>                 
