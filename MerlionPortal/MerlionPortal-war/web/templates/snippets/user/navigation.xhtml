@@ -18,9 +18,9 @@
                         <div class="navbar-collapse collapse">
                             <ul class="nav navbar-nav">
                                 <li><a href="${root}/user/dashboard.xhtml">Dashboard</a></li>
-                                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Coming Soon<span class="caret"></span></a>
+                                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Logs<span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#">Coming Soon</a></li>
+                                        <li><a href="#">View Logs</a></li>
                                         <li><a href="#">Coming Soon</a></li>
                                     </ul>
                                 </li>
@@ -34,6 +34,7 @@
                             <h:form>
                                 <ul class="nav navbar-nav navbar-right">
                                     <li><h:commandLink ><i class="glyphicon glyphicon-envelope"></i></h:commandLink></li>
+                                    <li><h:commandLink>${dashboardBean.loginedUser.firstName}</h:commandLink></li>
                                     <li><h:commandLink actionListener="#{logoutManagerBean.logout}">Logout</h:commandLink></li>
                                 </ul>
                             </h:form>
