@@ -26,17 +26,17 @@ import javax.persistence.PersistenceContext;
 @Stateless
 @LocalBean
 public class PurchaseOrderManagerSessionBean {
-
+    
     @PersistenceContext
     private EntityManager em;
-
+    
     private ProductOrder po;
     private ProductOrderLineItem pLineItem;
     private Quotation quotation;
-
+    
     public PurchaseOrderManagerSessionBean() {
     }
-
+    
     public Quotation searchQuotation(int quotationId, int customerId) {
         quotation = em.find(Quotation.class, quotationId);
         int cId = quotation.getCustomerId();
@@ -45,9 +45,8 @@ public class PurchaseOrderManagerSessionBean {
         }
         return null;
     }
-
-    public ProductOrder createPO(String shipto,int companyId, int customerId, 
-            int quotationId, String cName, String cNumber) {
+    
+    public ProductOrder createPO(String shipto, int companyId, int customerId, int quotationId, String cName, String cNumber) {
         System.out.println("+++++++++++++++++++GeneratePO Start====================");
         po = new ProductOrder();
         Date date = new Date();
@@ -59,13 +58,17 @@ public class PurchaseOrderManagerSessionBean {
         po.setCompanyId(companyId);
         po.setQuotationId(quotationId);
         po.setCreatorId(customerId);
+        po.setContactPersonName(cName);
+        po.setContactPersonPhoneNumber(cNumber);
+        po.setBillTo("");
+        po.setPrice(0.0);
+        po.setSalesPersonId(0);
         em.persist(po);
         em.flush();
-        System.out.println("Finished generating PO  ********");
         return po;
-
+        
     }
-
+    
     public void createProductList(ProductOrderLineItem pLine, ProductOrder mypo) {
         pLine.setProductOrderproductPOId(mypo);
         em.persist(pLine);
@@ -73,41 +76,42 @@ public class PurchaseOrderManagerSessionBean {
         em.merge(mypo);
         em.flush();
     }
-
+    
     public void rejectLineItem(ProductOrderLineItem poLine, String reason) {
         poLine.setStatus(reason);
         poLine.setPrice(0.0);
         em.merge(poLine);
     }
-
+    
     public void rejectPo(ProductOrder mPo) {
         mPo.setStatus(2);
     }
-
+    
     public void generateSo(ProductOrder mpo) {
         mpo.setStatus(3);
     }
-
+    
     public Boolean creaditCheck(int customerId) {
         SystemUser myCustomer = em.find(SystemUser.class, customerId);
         String myCredit = myCustomer.getCredit();
-        if(myCredit.equalsIgnoreCase("fail")) {
+        if (myCredit.equalsIgnoreCase("fail")) {
             return false;
         }
         return true;
     }
     
-    public Boolean checkAvailavility(){
+    public Boolean checkAvailavility() {
         return true;
     }
-    public String checkTimeToFulfill(){
+    
+    public String checkTimeToFulfill() {
         return "Need 5 days";
     }
     
-    public List<String> getCustomerCompany(int userid){
-        SystemUser cus=em.find(SystemUser.class, userid);
-        Company com=cus.getCompanycompanyId();
-        List<String> result=new ArrayList();
+    public List<String> getCustomerCompany(int userid) {
+        SystemUser cus = em.find(SystemUser.class, userid);
+        Company com = cus.getCompanycompanyId();
+        List<String> result = new ArrayList();
         result.add(com.getName());
         result.add(com.getAddress());
         result.add(com.getContactPersonName());
@@ -115,25 +119,25 @@ public class PurchaseOrderManagerSessionBean {
         return result;
     }
     
-    public List<ProductOrderLineItem> copyFromQuotation(int quotationId){
+    public List<ProductOrderLineItem> copyFromQuotation(int quotationId) {
         List<ProductOrderLineItem> poList = new ArrayList();
-        quotation=em.find(Quotation.class,quotationId);
-        List<QuotationLineItem> qList=new ArrayList();
+        quotation = em.find(Quotation.class, quotationId);
+        List<QuotationLineItem> qList = new ArrayList();
         qList = quotation.getQuotationLineItemList();
-        for(Object o: qList){
+        for (Object o : qList) {
             ProductOrderLineItem poLineItem = new ProductOrderLineItem();
-            QuotationLineItem oLineItem=(QuotationLineItem)o;
+            QuotationLineItem oLineItem = (QuotationLineItem) o;
             poLineItem.setPrice(oLineItem.getLineItemPrice());
             poLineItem.setProductproductId(oLineItem.getProductproductId());
             poLineItem.setStatus("valid");
             poList.add(poLineItem);
         }
-            return poList;
-        }
+        return poList;
+    }
     
-    public void saveOrder(ProductOrder mypo){
+    public void saveOrder(ProductOrder mypo) {
         mypo.setStatus(4);
         em.merge(mypo);
     }
-
+    
 }
