@@ -6,75 +6,60 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:head>
-        <title>View BOM for a Product</title>
+        <title>View BOM</title>
         <style type="text/css">
             .gritter-notice-wrapper {
                 left:200px;
                 top: 50px;
             }
         </style>
+        <style>
+            h1   {color:#E9967A}
+        </style>
     </h:head>
     <h:body>
         <h:form id="formMain">
-            <h1>Welcome to MRP II page</h1>
-            <p:menubar>
+            <h1>Welcome to MRP II system</h1>
+            <p:megaMenu  style="margin-top:20px">
                 <p:menuitem value="MRP II" url="mrp.xhtml" />
-                <p:menuitem value="View All Products" url="viewallproducts.xhtml" />
-                <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
-                <p:menuitem value="Delete Product" url="deleteproduct.xhtml" />
-                <p:menuitem value="View A Product" url="viewaproduct.xhtml" />
-                <p:menuitem value="Edit A Product" url="editproduct.xhtml" />
-                <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
-                <p:menuitem value="View and Edit BOM" url="viewbom.xhtml" />
-            </p:menubar>
+                <p:submenu label="Product Management" >
+                    <p:column>
+                        <p:submenu label="Product Catalog Management">
+                            <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
+                            <p:menuitem value="View and Edit Products" url="viewallproducts.xhtml" />
+                            <p:menuitem value="Delete a Product" url="deleteproduct.xhtml" />
+                            <p:menuitem value="View A Product" url="viewaproduct.xhtml" />
+                        </p:submenu>
+                        <p:submenu label="BOM Management">
+                            <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
+                            <p:menuitem value="View and Edit BOM" url="viewbom.xhtml" />
+                        </p:submenu>
+                    </p:column>
+                </p:submenu>
+                <p:submenu label="Material Requirement Planning" >
+                    <p:column>
+                        <p:submenu label="Forecasting">
+                            <p:menuitem value="Forecasting" url="forecast.xhtml" />
+                        </p:submenu>
+                    </p:column>
+                </p:submenu>
+            </p:megaMenu>
             <br/>
-        </h:form>
 
-
-
-
-        <!-- add in product Id   -->
-        <h:form>
-            <p:panel>
-                <p:panelGrid>
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="productId" style="font-weight: bold" value="Product Id: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="Product Id" requiredMessage="Product Id is required." id="productId" value="#{productComponentViewEditManagedBean.productId}">
-                                <f:validateLength minimum="1" maximum="16" />
-                            </p:inputText>
-                        </p:column>
-
-
-                        <p:column>
-                            <p:message for="productId" />
-                        </p:column> 
-                    </p:row>
-
-                </p:panelGrid>
-
-                <!-- doesnt work, check later  -->
+            <p:panel header="Select a product for viewing BOM" style="margin-bottom:10px;">
+                <h:panelGrid columns="4" cellpadding="5">
+                    <p:outputLabel for="product" value="Please select a product for forecasting: " />
+                    <p:selectOneMenu required="true" id="product" value="#{productComponentViewEditManagedBean.productId}" styleClass="form-control">
+                        <f:selectItem itemLabel="Select a product" itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{ProductComponentViewEditManagedBean.products}"  var="product" itemLabel="#{product.productName}"  itemValue="#{product.productId}"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <p:separator/>
                 <p:commandButton value ="View BOM" actionListener="#{productComponentViewEditManagedBean.init}" ajax="true"/> 
-
             </p:panel>
-        </h:form>
 
 
-
-
-
-
-
-
-
-
-
-
-        <h:form id="form">
             <p:growl id="msgs" showDetail="true"/>   
-
             <p:dataTable id="components" var="component1" value="#{productComponentViewEditManagedBean.components}" editable="true" style="margin-bottom:20px">
 
 
@@ -91,17 +76,12 @@
                     <h:outputText value="#{component1.componentId}" />
                 </p:column>
 
-
-
                 <p:column headerText="Component Name">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{component1.componentName}" /></f:facet>
                         <f:facet name="input"><p:inputText value="#{component1.componentName}" style="width:100%" label="Component Name"/></f:facet>
                     </p:cellEditor>
                 </p:column>
-
-
-
 
                 <p:column headerText="Component Description">
                     <p:cellEditor>
@@ -142,12 +122,6 @@
                     </p:cellEditor>
                 </p:column>
 
-
-
-
-
-
-
                 <p:column headerText="Component Supplier Company ID">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{component1.supplierCompanyId}" /></f:facet>
@@ -172,8 +146,6 @@
                         <f:facet name="input"><p:inputText value="#{component1.supplierContactEmail}" style="width:100%" label="Supplier Contact Email"/></f:facet>
                     </p:cellEditor>
                 </p:column>
-
-
 
                 <p:column style="width:32px">
                     <p:rowEditor />

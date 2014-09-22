@@ -5,27 +5,44 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>View A Product</title>
+        <title>View a Product</title>
         <style type="text/css">
             .gritter-notice-wrapper {
                 left:200px;
                 top: 50px;
             }
         </style>
+        <style>
+            h1   {color:#E9967A}
+        </style>
     </h:head>
     <h:body>
         <h:form id="formMain">
-            <h1>Welcome to MRP II page</h1>
-            <p:menubar>
+            <h1>Welcome to MRP II system</h1>
+            <p:megaMenu  style="margin-top:20px">
                 <p:menuitem value="MRP II" url="mrp.xhtml" />
-                <p:menuitem value="View All Products" url="viewallproducts.xhtml" />
-                <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
-                <p:menuitem value="Delete Product" url="deleteproduct.xhtml" />
-                <p:menuitem value="View A Product" url="viewaproduct.xhtml" />
-                <p:menuitem value="Edit A Product" url="editproduct.xhtml" />
-                <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
-                <p:menuitem value="View and Edit BOM" url="viewbom.xhtml" />
-            </p:menubar>
+                <p:submenu label="Product Management" >
+                    <p:column>
+                        <p:submenu label="Product Catalog Management">
+                            <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
+                            <p:menuitem value="View and Edit Products" url="viewallproducts.xhtml" />
+                            <p:menuitem value="Delete a Product" url="deleteproduct.xhtml" />
+                            <p:menuitem value="View A Product" url="viewaproduct.xhtml" />
+                        </p:submenu>
+                        <p:submenu label="BOM Management">
+                            <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
+                            <p:menuitem value="View and Edit BOM" url="viewbom.xhtml" />
+                        </p:submenu>
+                    </p:column>
+                </p:submenu>
+                <p:submenu label="Material Requirement Planning" >
+                    <p:column>
+                        <p:submenu label="Forecasting">
+                            <p:menuitem value="Forecasting" url="forecast.xhtml" />
+                        </p:submenu>
+                    </p:column>
+                </p:submenu>
+            </p:megaMenu>
             <br/>
             <p:panel id="panel" header="View A Product">
                 <p:ajaxStatus style="width:16px;height:16px;">
