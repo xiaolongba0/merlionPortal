@@ -15,54 +15,53 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h2>Hi, #{dashboardBean.loginedUser.firstName}</h2>
-                            <c:if test ="#{dashboardBean.loginedUser.userType == 'superuser'}">
-                                <a href="${root}/admin/viewallsubscribers.xhtml" >
-                                    <img src="../img/viewsubstile.jpg" alt="..."/>
-                                </a>
-                            </c:if>
 
                             <c:if test ="#{dashboardBean.canUseOES() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                <a href="${root}/oes/oesindexpage.xhtml" >
-                                    <img src="../img/oestile.jpg" alt="..."/>
-                                </a>
+                                <c:set var="showoes" value="true" />
                             </c:if>
+
+                            <h:link outcome="${root}/oes/oesindexpage.xhtml" disabled="${showoes}">
+                                <img src="../img/oestile.jpg" alt="..."/>
+                            </h:link>
 
                             <c:if test ="#{dashboardBean.canUseWMS() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                <a href="${root}/wms/wmsindex.xhtml" >
-                                    <img src="../img/wmstile.jpg" alt="..."/>
-                                </a>                                
+                                <c:set var="showwms" value="true" />
                             </c:if>
+                            <h:link outcome="${root}/wms/wmsindex.xhtml" disabled="${showwms}" >
+                                <img src="../img/wmstile.jpg" alt="..."/>
+                            </h:link> 
+
 
                             <c:if test ="#{dashboardBean.canUseCRMS() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                <a href="#" >
-                                    <img src="../img/crmstile.jpg" alt="..."/>
-                                </a>                                                                                                
+                                <c:set var="showcrms" value="true" />
                             </c:if>
+                            <h:link outcome="#" disabled="${showcrms}"  >
+                                <img src="../img/crmstile.jpg" alt="..." />
+                            </h:link> 
 
                             <c:if test ="#{dashboardBean.canUseTMS() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                <a href="#" >
-                                    <img src="../img/tmstile.jpg" alt="..."/>
-                                </a>
+                                <c:set var="showtms" value="true" />
                             </c:if>
+                            <h:link outcome="#" disabled="${showtms}" >
+                                <img src="../img/tmstile.jpg" alt="..."/>
+                            </h:link> 
 
                             <c:if test ="#{dashboardBean.canUseMRP() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                <a href="${root}/mrp/mrp.xhtml" >
-                                    <img src="../img/mrptile.jpg" alt="..."/>
-                                </a>                                
+                                <c:set var="showmrp" value="true" />
                             </c:if>
+                            <h:link outcome="${root}/mrp/mrp.xhtml" disabled="${showmrp}">
+                                <img src="../img/mrptile.jpg" alt="..."/>
+                            </h:link>
 
                             <c:if test ="#{dashboardBean.canUseGRNS() || dashboardBean.loginedUser.userType == 'superuser'}">
-
-                                <a href="#" >
-                                    <img src="../img/grnstile.jpg" alt="..."/>
-                                </a>
+                                <c:set var="showgrns" value="true" />
                             </c:if>
+                            <h:link outcome="#" disabled="${showgrns}">
+                                <img src="../img/grnstile.jpg" alt="..."/>
+                            </h:link>
 
 
                         </div>
-                    </div>
-                    <div class="col-md-8">
-                        <h2>View My Logs</h2>
                     </div>
                 </div>
             </h:form>
