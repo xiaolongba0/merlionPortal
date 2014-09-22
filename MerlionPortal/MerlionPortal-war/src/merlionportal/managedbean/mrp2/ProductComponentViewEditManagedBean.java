@@ -41,8 +41,12 @@ public class ProductComponentViewEditManagedBean {
     private String supplierContactNumber;
     private String supplierContactEmail;
 
-    private Double productId = 2.0;
+    //private Double productId = 1.0;
     private final static String[] currencies;
+    
+    Integer productId = 1;
+    Product product;
+    List<Product> products;
 
     public ProductComponentViewEditManagedBean() {
     }
@@ -91,13 +95,19 @@ public class ProductComponentViewEditManagedBean {
         this.componentId = componentId;
     }
 
-    public Double getProductId() {
+    public Integer getProductId() {
         return productId;
     }
 
-    public void setProductId(Double productId) {
+    public void setProductId(Integer productId) {
         this.productId = productId;
     }
+
+    public List<Product> getProducts() {
+        products = productSessionBean.getMyProducts(companyId);
+        return products;
+    }
+
 
     public String getComponentName() {
         return componentName;

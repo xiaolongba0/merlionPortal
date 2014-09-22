@@ -41,7 +41,6 @@ public class ForecastManagedBean implements Serializable {
 
     public List<Product> getMyCompanyProducts() {
 //        companyId=(Integer)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
-
         return products;
     }
 
@@ -60,11 +59,11 @@ public class ForecastManagedBean implements Serializable {
     public String proceedViewResult() {
         return ("forecastResult");
     }
-    
+
     public String goBackForecastParameter() {
         return ("forecastgetperiodicity");
     }
-    
+
     public String proceedMPS() {
         return ("mps");
     }
