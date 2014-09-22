@@ -154,9 +154,10 @@
             </p:dataTable>
             <br></br>
             <br></br>
-            <p:commandButton value="Cancel" styleClass="btn btn-success" action="oesindexpage.xhtml" type="reset" />
-            <p:commandButton value="Save Order" styleClass="btn btn-warning" actionListener="#{purchaseOrderManagedBean.setShipto()}" ajax="true"></p:commandButton>
-            <p:commandButton value="Submit Order" styleClass="btn btn-success" actionListener="#{purchaseOrderManagedBean.setShipto()}"></p:commandButton>
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <p:commandButton value="Cancel"  action="oesindexpage.xhtml" />
+            <p:commandButton value="Save Order" actionListener="#{purchaseOrderManagedBean.saveOrder()}" ajax="true"></p:commandButton>
+            <p:commandButton value="Submit Order" actionListener="#{purchaseOrderManagedBean.submitOrder()}"></p:commandButton>
         </h:form>
         <br></br>
         <br></br>
