@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
     <ui:composition template="${root}/templates/templateuser.xhtml">
         <ui:param name="pageName" value="Dashboard" />
 
@@ -14,55 +15,72 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <h2>Hi, #{dashboardBean.loginedUser.firstName}</h2>
 
+
+
+                            <!--OES-->
+                            <c:set var="disableoes" value="true" />
                             <c:if test ="#{dashboardBean.canUseOES() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                <c:set var="showoes" value="true" />
+                                <c:set var="disableoes" value="false" />
                             </c:if>
-
-                            <h:link outcome="${root}/oes/oesindexpage.xhtml" disabled="${showoes}">
-                                <img src="../img/oestile.jpg" alt="..."/>
-                            </h:link>
-
-                            <c:if test ="#{dashboardBean.canUseWMS() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                <c:set var="showwms" value="true" />
-                            </c:if>
-                            <h:link outcome="${root}/wms/wmsindex.xhtml" disabled="${showwms}" >
-                                <img src="../img/wmstile.jpg" alt="..."/>
-                            </h:link> 
+                            <p:commandLink action="/oes/oesindexpage.xhtml" disabled="${disableoes}" >
+                                <p:graphicImage value="../img/oestile.jpg"/>
+                            </p:commandLink>
 
 
-                            <c:if test ="#{dashboardBean.canUseCRMS() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                <c:set var="showcrms" value="true" />
-                            </c:if>
-                            <h:link outcome="#" disabled="${showcrms}"  >
-                                <img src="../img/crmstile.jpg" alt="..." />
-                            </h:link> 
-
-                            <c:if test ="#{dashboardBean.canUseTMS() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                <c:set var="showtms" value="true" />
-                            </c:if>
-                            <h:link outcome="#" disabled="${showtms}" >
-                                <img src="../img/tmstile.jpg" alt="..."/>
-                            </h:link> 
-
+                            <!--MRP-->
+                            <c:set var="disablemrp" value="true" />
                             <c:if test ="#{dashboardBean.canUseMRP() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                <c:set var="showmrp" value="true" />
+                                <c:set var="disablemrp" value="false" />
                             </c:if>
-                            <h:link outcome="${root}/mrp/mrp.xhtml" disabled="${showmrp}">
-                                <img src="../img/mrptile.jpg" alt="..."/>
-                            </h:link>
+                            <p:commandLink action="/mrp/mrp.xhtml" disabled="${disablemrp}" >
+                                <p:graphicImage value="../img/mrptile.jpg"/>
+                            </p:commandLink>   
 
-                            <c:if test ="#{dashboardBean.canUseGRNS() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                <c:set var="showgrns" value="true" />
+
+                            <!--WMS-->
+                            <c:set var="disablewms" value="true" />
+                            <c:if test ="#{dashboardBean.canUseWMS() || dashboardBean.loginedUser.userType == 'superuser'}">
+                                <c:set var="disablewms" value="false" />
                             </c:if>
-                            <h:link outcome="#" disabled="${showgrns}">
-                                <img src="../img/grnstile.jpg" alt="..."/>
-                            </h:link>
+                            <p:commandLink action="/wms/wmsindex.xhtml" disabled="${disablewms}" >
+                                <p:graphicImage value="../img/wmstile.jpg"/>
+                            </p:commandLink>
+
+
+
+                            <!--CRMS-->
+                            <c:set var="disablecrms" value="true" />
+                            <c:if test ="#{dashboardBean.canUseCRMS() || dashboardBean.loginedUser.userType == 'superuser'}">
+                                <c:set var="disablecrms" value="false" />
+                            </c:if>
+                            <p:commandLink action="#" disabled="${disablecrms}" >
+                                <p:graphicImage value="../img/crmstile.jpg"/>
+                            </p:commandLink> 
+
+                            <!--TMS-->
+                            <c:set var="disabletms" value="true" />
+                            <c:if test ="#{dashboardBean.canUseTMS() || dashboardBean.loginedUser.userType == 'superuser'}">
+                                <c:set var="disabletms" value="false" />
+                            </c:if>
+                            <p:commandLink action="#" disabled="${disabletms}" >
+                                <p:graphicImage value="../img/tmstile.jpg"/>
+                            </p:commandLink> 
+
+
+                            <!--GRNS-->
+                            <c:set var="disablegrns" value="true" />
+                            <c:if test ="#{dashboardBean.canUseGRNS() || dashboardBean.loginedUser.userType == 'superuser'}">
+                                <c:set var="disablegrns" value="false" />
+                            </c:if>
+                            <p:commandLink action="#" disabled="${disablegrns}" >
+                                <p:graphicImage value="../img/grnstile.jpg"/>
+                            </p:commandLink>
 
 
                         </div>
                     </div>
+
                 </div>
             </h:form>
         </ui:define>
