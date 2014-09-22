@@ -4,13 +4,11 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">  
-
     <h:head>
-        <title>Forecasting</title>
+        <title>Facelet Title</title>
     </h:head>
     <h:body>
         <h:form>
-
             <h1>Welcome to MRP II page</h1>
             <p:menubar>
                 <p:menuitem value="MRP II" url="mrp.xhtml" />
@@ -21,20 +19,19 @@
                 <p:menuitem value="Edit A Product" url="editproduct.xhtml" />
                 <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
                 <p:menuitem value="Forecasting" url="forecast.xhtml" />
+
             </p:menubar>
+            <p:panel header="View Forecast Result" style="margin-bottom:10px;">
+              
+                <p:chart type="line" model="#{forecastShowHistoryManagedBean.forecastSales}" style="height:300px" />
+            </p:panel>
 
-            <p:panel header="Select a Product for Forecasting" style="margin-bottom:10px;">
-                <h:panelGrid columns="4" cellpadding="5">
-                    <p:outputLabel for="product" value="Please select a product for forecasting: " />
-                    <p:selectOneMenu required="true" id="product" value="#{forecastManagedBean.productId}" styleClass="form-control">
-                        <f:selectItem itemLabel="Select a product" itemValue="" noSelectionOption="true" />
-                        <f:selectItems value="#{forecastManagedBean.products}"  var="product" itemLabel="#{product.productName}"  itemValue="#{product.productId}"/>
-                    </p:selectOneMenu>
+            <p:panel header="Satisfied with the result?" style="margin-bottom:10px;"> 
+                <h:panelGrid columns="1" style="margin-bottom:10px" cellpadding="5">
+                   
+                    <p:commandButton value="Proceed"  action="#{forecastManagedBean.proceedMPS}" />
+                    <p:commandButton value="Go Back"  action="#{forecastManagedBean.goBackForecastParameter}" />
                 </h:panelGrid>
-
-                <p:separator/>
-
-                <p:commandButton value="View Purchasing History on a Monthly Basis"  action="#{forecastManagedBean.navigator}" />
             </p:panel>
         </h:form>
     </h:body>
