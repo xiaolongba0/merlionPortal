@@ -102,6 +102,8 @@ public class ViewUserManagerBean {
             result = uamb.deleteSystemUser(loginedUser.getSystemUserId(), selectedUser.getSystemUserId());
         }
         if (result == 1) {
+            companyUsers.remove(selectedUser);
+            selectedUser=null;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Deleted!", "This user is deleted."));
 
         } else if (result == -1) {

@@ -159,7 +159,7 @@ public class RoleManagementSessionBean {
             if (canRun) {
                 UserRole userRole = em.find(UserRole.class, roleId);
                 if (userRole != null) {
-                    if (userRole.getSystemUserList() != null) {
+                    if (!userRole.getSystemUserList().isEmpty()) {
                         System.out.println("There are users in this role");
                         return -2;
                     } else {

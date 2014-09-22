@@ -32,7 +32,7 @@
                         </c:if>
                         <p:contextMenu for="usersData">
                             <p:menuitem value="View detail" update="userDetail" icon="ui-icon-search" oncomplete="toggleModal();"/>
-                            <p:menuitem value="Delete user" update="usersData" icon="ui-icon-close" actionListener="#{viewUserManagerBean.deleteUser}"/>
+                            <p:menuitem value="Delete user" update="usersData" icon="ui-icon-close" oncomplete="deleteModal();"/>
                         </p:contextMenu>
 
                         <p:messages id="messages"  showDetail="true" autoUpdate="true" closable="true" />
@@ -181,6 +181,26 @@
 
                         </div>
                     </h:form>
+
+                    <h:form>
+                        <div id="deleteConfirm" class="modal fade">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3>Delete User</h3>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h4>Are you sure you want to delete this user?</h4>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <p:commandButton value="Yes" styleClass="btn btn-success" update=":form:usersData" actionListener="#{viewUserManagerBean.deleteUser}" pt:data-dismiss="modal"></p:commandButton>
+                                        <p:commandButton value="No" styleClass="btn btn-danger" pt:data-dismiss="modal"></p:commandButton>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </h:form>
                     <script type="text/javascript">
 
                         function toggleModal() {
@@ -191,6 +211,9 @@
                         }
                         function hideAddRoleList() {
                             $("#addRolePanel").hide();
+                        }
+                        function deleteModal() {
+                            $("#deleteConfirm").modal('show');
                         }
                     </script>
                     <script type="text/javascript">

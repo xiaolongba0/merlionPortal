@@ -14,12 +14,14 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.GetCompanyRoleSessionBean;
 import merlionportal.ci.administrationmodule.GetCompanySessionBean;
 import merlionportal.ci.administrationmodule.RoleManagementSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -90,14 +92,17 @@ public class ViewCompanyRolesManagerBean {
 
     }
 
-    public void deleteRole() {
+    public void deleteRole(ActionEvent event) {
+        System.out.println("==========here============");
         int result = 0;
         if (selectedRole != null) {
             result = rmsb.deleteCompanyRole(loginedUser.getSystemUserId(), selectedRole.getUserRoleId());
         }
         if (result == 1) {
+            roles.remove(selectedRole);
+            selectedRole=null;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Deleted!", "This Role is deleted."));
-
+            
         } else if (result == -2) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Unsuccessful!", "Cannot deleted this role as there are users assigned to this role."));
 
