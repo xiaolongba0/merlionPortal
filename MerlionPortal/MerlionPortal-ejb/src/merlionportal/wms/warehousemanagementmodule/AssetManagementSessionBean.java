@@ -29,37 +29,13 @@ public class AssetManagementSessionBean {
     @PersistenceContext
     EntityManager em;
     private Warehouse warehouse;
-    private Integer comId;
+    private Integer warehouseId;
+
     private ArrayList<StorageType> storageTypeList;
+    private StorageType storageType;
     private ArrayList<StorageBin> storageBinList;
-    private Company company;
 
-    public List<Warehouse> viewMyWarehouses(Integer companyId) {
-        List<Warehouse> allMyWarehouses = new ArrayList<>();
-        System.out.println("In viewMyWarehouses, Company ID ============================= : " + companyId);
-        Query query = em.createNamedQuery("Warehouse.findByCompanyId").setParameter("companyId", companyId);
-        for (Object o : query.getResultList()) {
-            warehouse = (Warehouse) o;
-            allMyWarehouses.add(warehouse);
-        }
-
-        return allMyWarehouses;
-    }
-
-    public Boolean deleteWarehouse(Integer companyId, Integer warehouseId) {
-
-        Query query = em.createNamedQuery("Warehouse.findByCompanyId").setParameter("companyId", companyId);
-        List<Warehouse> allMyWarehouses = query.getResultList();
-
-        for (Warehouse w : allMyWarehouses) {
-            if (Objects.equals(w.getWarehouseId(), warehouseId)) {
-                em.remove(w);
-                em.flush();
-                return true;
-            }
-        }
-        return false;
-    }
+    private StorageBin bin;
 
     public Integer addNewWarehouse(String warehouseName, String country, String city, String street,
             String description, Integer zipcode, Integer companyId) {
@@ -92,6 +68,33 @@ public class AssetManagementSessionBean {
         System.out.println("[EJB]================================Successfully Added a New Warehouse");
 
         return warehouse.getWarehouseId();
+    }
+
+    public List<Warehouse> viewMyWarehouses(Integer companyId) {
+        List<Warehouse> allMyWarehouses = new ArrayList<>();
+        System.out.println("In viewMyWarehouses, Company ID ============================= : " + companyId);
+        Query query = em.createNamedQuery("Warehouse.findByCompanyId").setParameter("companyId", companyId);
+
+        for (Object o : query.getResultList()) {
+            warehouse = (Warehouse) o;
+            allMyWarehouses.add(warehouse);
+        }
+        return allMyWarehouses;
+    }
+
+    public Boolean deleteWarehouse(Integer companyId, Integer warehouseId) {
+
+        Query query = em.createNamedQuery("Warehouse.findByCompanyId").setParameter("companyId", companyId);
+        List<Warehouse> allMyWarehouses = query.getResultList();
+
+        for (Warehouse w : allMyWarehouses) {
+            if (Objects.equals(w.getWarehouseId(), warehouseId)) {
+                em.remove(w);
+                em.flush();
+                return true;
+            }
+        }
+        return false;
     }
 
     public Integer editWarehouse(String warehouseName, String country, String city, String street,
@@ -165,6 +168,148 @@ public class AssetManagementSessionBean {
         }
 
     }
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+
+    public List<StorageType> viewStorageTypesForAWarehouse(Integer warehouseId) {
+
+        System.out.println("In viewMyStorageTypes, Warehouse ID ============================= : " + warehouseId);
+        Warehouse warehouseTemp = null;
+
+        if (warehouseId != null) {
+            warehouseTemp = em.find(Warehouse.class, warehouseId);
+            System.out.println("In viewMyStorageTypes, finding warehouse" + warehouseTemp);
+        }
+        return warehouseTemp.getStorageTypeList();
+
+    }
+
+    public Boolean deleteStorageType(Integer storageTypeId) {
+
+        StorageType storageType = new StorageType();
+        Query query = em.createNamedQuery("StorageType.findByStorageTypeId").setParameter("storageTypeId", storageTypeId);
+        storageType = (StorageType) query.getSingleResult();
+        System.out.println("DeleteStorageType ================= : " + storageType);
+        if (storageType == null) {
+            return false;
+        }
+
+        em.remove(storageType);
+        em.flush();
+        System.out.println("END OF DELETE STORAGE TYPE FUNCTION IN SESSION BEAN");
+        return true;
+    }
+
+    public Integer editStorageType(String storageTypeName, String description, Integer storageTypeId) {
+
+        System.out.println("[EJB]================================edit storage type");
+        StorageType storageType = new StorageType();
+        Query query = em.createNamedQuery("StorageType.findByStorageTypeId").setParameter("storageTypeId", storageTypeId);
+        storageType = (StorageType) query.getSingleResult();
+        System.out.println("EditStorageType ================= : " + storageType);
+
+        storageType.setName(storageTypeName);
+        storageType.setDescription(description);
+
+        em.merge(storageType);
+        em.flush();
+
+        System.out.println("[EJB]================================Successfully EDITED StorageType");
+        return storageType.getStorageTypeId();
+
+    }
+
+    //Edit in progress
+    public Integer addStorageBin(String binName, String description, Integer maxQuantity, Double maxWeight,
+            Integer storageTypeId) {
+
+        System.out.println("[INSIDE EJB]================================Add Storage Bin");
+        Query query = em.createNamedQuery("StorageType.findByStorageTypeId").setParameter("storageTypeId", storageTypeId);
+
+        List<StorageType> allMyStorageTypes = query.getResultList();
+
+        StorageType storaget = new StorageType();
+        for (StorageType s : allMyStorageTypes) {
+            if (Objects.equals(s.getStorageTypeId(), storageTypeId)) {
+                storaget = s;
+            }
+        }
+        StorageBin bin = new StorageBin();
+        bin.setBinName(binName);
+        //bin.setBinType(xxx);
+        bin.setDescription(description);
+        bin.setMaxQuantity(maxQuantity);
+        bin.setMaxWeight(maxWeight);
+        bin.setStorageTypestorageTypeId(storageType);
+
+        ///check later 
+        if (bin.getStorageBinId() == null) {
+            System.out.println("STORAGE BIN ID IS NULL");
+            return -1;
+        } else {
+            em.persist(bin);
+            em.flush();
+
+            storaget.getStorageBinList().add(bin);
+            em.merge(storaget);
+            em.flush();
+
+            return bin.getStorageBinId();
+        }
+
+    }
+
+    //Edit in progress
+    public List<StorageBin> viewStorageBinForType(Integer storageTypeId) {
+
+        System.out.println("In viewStorageBinForType, Warehouse ID ============================= : " + storageTypeId);
+        StorageType typeTemp = null;
+
+        if (storageTypeId != null) {
+            typeTemp = em.find(StorageType.class, storageTypeId);
+            System.out.println("In viewMyStorageTypes, finding warehouse" + typeTemp);
+        }
+        return typeTemp.getStorageBinList();
+
+    }
+
+    // Edit in progress
+    public Boolean deleteStorageBin (Integer storageBinId) {
+
+        StorageBin bin = new StorageBin();
+        Query query = em.createNamedQuery("StorageBin.findByStorageBinId").setParameter("storageBinId", storageBinId);
+        bin = (StorageBin) query.getSingleResult();
+        System.out.println("DeleteStorageBin ================= : " + bin);
+        if (bin == null) {
+            return false;
+        }
+
+        em.remove(bin);
+        em.flush();
+        
+        System.out.println("END OF DELETE STORAGE BIN FUNCTION IN SESSION BEAN");
+        return true;
+    }
+    
+    //Edit in progress
+      public Integer editStorageBin (String binName, String description, Integer maxQuantity, Double maxWeight,
+            Integer storageBinId) {
+
+        System.out.println("[EJB]================================edit storage bin");
+        StorageBin bin = new StorageBin();
+        Query query = em.createNamedQuery("StorageBin.findByStorageBinId").setParameter("storageBinId", storageBinId);
+        bin = (StorageBin) query.getSingleResult();
+        System.out.println("EditStorageBin ============= : " + bin);
+
+        bin.setBinName(binName);
+        // bin.setBinType(xxx);
+        bin.setDescription(description);
+        bin.setMaxQuantity(maxQuantity);
+        bin.setMaxWeight(maxWeight);
+
+        em.merge(bin);
+        em.flush();
+
+        System.out.println("[EJB]================================Successfully EDITED StorageBin");
+        return bin.getStorageBinId();
+
+    }
 }
