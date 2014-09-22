@@ -5,13 +5,17 @@
  */
 package merlionportal.managedbean.wms;
 
+import entity.StorageType;
 import entity.SystemUser;
 import entity.Warehouse;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -24,9 +28,9 @@ import org.primefaces.event.RowEditEvent;
  *
  * @author YunWei
  */
-@Named(value = "assetViewEditManagedBean")
+@Named(value = "warehouseViewEditManagedBean")
 @ViewScoped
-public class AssetViewEditManagedBean {
+public class WarehouseViewEditManagedBean {
 
     @EJB
     private AssetManagementSessionBean assetManagementSessionBean;
@@ -34,16 +38,18 @@ public class AssetViewEditManagedBean {
     private UserAccountManagementSessionBean uamb;
 
     private List<Warehouse> warehouses;
+
     private Integer warehouseId;
     private String warehouseName;
-    private final static String[] country;
+    private String country;
     private String city;
     private String street;
     private String description;
     private Integer zipcode;
     private Integer companyId;
-    
+
     private Warehouse warehouse;
+    private Integer storageTypeId;
 
     private SystemUser loginedUser;
 
@@ -70,15 +76,14 @@ public class AssetViewEditManagedBean {
     /**
      * Creates a new instance of AssetViewEditManagedBean
      */
-    public AssetViewEditManagedBean() {
+    public WarehouseViewEditManagedBean() {
     }
 
     public List<Warehouse> getWarehouses() {
         System.out.println("===============================[In Managed Bean - getWarehouses]");
-        if (warehouses == null){
-           warehouses = assetManagementSessionBean.viewMyWarehouses(companyId); 
-        }       
-
+        if (warehouses == null) {
+            warehouses = assetManagementSessionBean.viewMyWarehouses(companyId);
+        }
         // for checking
         for (Object obj : warehouses) {
             System.out.println(obj);
@@ -86,22 +91,12 @@ public class AssetViewEditManagedBean {
         return warehouses;
     }
 
-    static {
-        country = new String[10];
-        country[0] = "Spain";
-        country[1] = "Japan";
-        country[2] = "USA";
-        country[3] = "Australia";
-        country[4] = "France";
-        country[5] = "Singapore";
-        country[6] = "Hong Kong";
-        country[7] = "China";
-        country[8] = "New Zeland";
-        country[9] = "Taiwan";
+    public Integer getStorageTypeId() {
+        return storageTypeId;
     }
 
-    public String[] getCountry() {
-        return country;
+    public void setStorageTypeId(Integer storageTypeId) {
+        this.storageTypeId = storageTypeId;
     }
 
     public void setWarehouses(List<Warehouse> warehouses) {
@@ -180,6 +175,13 @@ public class AssetViewEditManagedBean {
         this.warehouse = warehouse;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
     public void onRowEdit(RowEditEvent event) {
         System.out.println("ON ROW EDIT ===============================");

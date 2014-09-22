@@ -7,6 +7,8 @@ package merlionportal.managedbean.wms;
 
 import entity.SystemUser;
 import entity.Warehouse;
+import entity.StorageType;
+
 import java.io.IOException;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -32,6 +34,8 @@ public class AssetManagedBean {
     private UserAccountManagementSessionBean uamb;
     private Integer newWarehouseId;
     private Integer warehouseId;
+    private Integer storageTypeId;
+    
     private String warehouseName;
     private String country;
     private String city;
@@ -55,6 +59,7 @@ public class AssetManagedBean {
 
     @PostConstruct
     public void init() {
+
         boolean redirect = true;
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
             loginedUser = uamb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
@@ -78,6 +83,7 @@ public class AssetManagedBean {
         try {
             System.out.println("[INSIDE WAR FILE]===========================Create New Warehouse");
             newWarehouseId = assetManagementSessionBean.addNewWarehouse(warehouseName, country, city, street, description, zipcode, companyId);
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Warehouse Added!", ""));
             System.out.println("[WAR FILE]===========================Create New Warehouse");
         } catch (Exception ex) {
@@ -89,14 +95,14 @@ public class AssetManagedBean {
 
         try {
             System.out.println("[INSIDE WAR FILE]===========================Create New Storage Type");
-             newStorageTypeId = assetManagementSessionBean.addStorageType(storageTypeName, storagetDescription, companyId, warehouseId);
-             System.out.println("NEW STORAGE TYPE ID =================: " + newStorageTypeId);
-            if (newStorageTypeId == -1){
+            System.out.println("STORAGE TYPE NAMEEEEEEE ; " + storageTypeName);
+            newStorageTypeId = assetManagementSessionBean.addStorageType(storageTypeName, storagetDescription, companyId, warehouseId);
+            System.out.println("NEW STORAGE TYPE ID =================: " + newStorageTypeId);
+            if (newStorageTypeId == -1) {
                 System.out.println("============== FAILED TO ADD STORAGE TYPE DUE TO WRONG WAREHOUSE ID ===============");
-                // Yet to edit function to print error message for user
+
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to Add Storage Type. Please check warehouseID! ", ""));
-            }
-            else{
+            } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Storage Type Added!", ""));
             }
 
@@ -111,6 +117,17 @@ public class AssetManagedBean {
             warehouseId = warehouse.getWarehouseId();
             System.out.println("[In WAR FILE - Delete Warehouse Function] Warehouse ID========== :" + warehouseId);
             assetManagementSessionBean.deleteWarehouse(companyId, warehouseId);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void deleteStorageType(StorageType storageType) {
+        try {
+            System.out.println("[In WAR FILE - Delete StorageType Function]" + storageType);
+            storageTypeId = storageType.getStorageTypeId();
+            System.out.println("[In WAR FILE - Delete StorageType Function] storageType ID========== :" + storageTypeId);
+            assetManagementSessionBean.deleteStorageType(storageTypeId);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
