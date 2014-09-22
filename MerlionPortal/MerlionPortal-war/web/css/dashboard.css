@@ -1,0 +1,11 @@
+.dashboard-box{
+    margin:5px;
+    display:inline-block;
+}
+.dashboard-content{
+    text-align: center;
+    margin:50px 0px 80px 0px;
+}
+.dashboard-content:hover{
+    background:#cecece;
+}

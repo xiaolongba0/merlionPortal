@@ -7,71 +7,64 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="${root}/templates/templateadmin.xhtml">
         <ui:param name="pageName" value="Dashboard" />
+        <!-- imports -->
+        <ui:define name="more-imports">
+            <ui:insert>
+                <link rel="stylesheet" href="${request.contextPath}/css/dashboard.css" type="text/css" />
+            </ui:insert>
+        </ui:define>
 
         <!-- Override Content -->
         <ui:define name="content">
             <c:set var="root" value="${request.contextPath}" />
-            <h:form>
-                <div class="container">
-
+                <div class="dashboard-content">
                     <div class="row">
-                        <div class="col-md-12">
-                            <h2>Hi, #{dashboardBean.loginedUser.firstName}</h2>
-                            <c:if test ="#{dashboardBean.loginedUser.userType == 'superuser'}">
-                                <a href="${root}/admin/viewallsubscribers.xhtml" >
-                                    <img src="../img/viewsubstile.jpg" alt="..."/>
-                                </a>
-                            </c:if>
-
+                        <div class="dashboard-box">
                             <c:if test ="#{dashboardBean.canUseOES() || dashboardBean.loginedUser.userType == 'superuser'}">
                                 <a href="${root}/oes/oesindexpage.xhtml" >
                                     <img src="../img/oestile.jpg" alt="..."/>
                                 </a>
                             </c:if>
-
+                        </div>
+                        <div class="dashboard-box">
                             <c:if test ="#{dashboardBean.canUseWMS() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                <a href="${root}/wms/wmsindex.xhtml" >
+                                <a href="${root}/wms/wmsindex.xhtml">
                                     <img src="../img/wmstile.jpg" alt="..."/>
                                 </a>                                
                             </c:if>
-
+                        </div>
+                        <div class="dashboard-box">
                             <c:if test ="#{dashboardBean.canUseCRMS() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                <a href="#" >
+                                <a href="#">
                                     <img src="../img/crmstile.jpg" alt="..."/>
                                 </a>                                                                                                
                             </c:if>
-
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="dashboard-box">
                             <c:if test ="#{dashboardBean.canUseTMS() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                <a href="#" >
+                                <a href="#">
                                     <img src="../img/tmstile.jpg" alt="..."/>
                                 </a>
                             </c:if>
-
+                        </div>
+                        <div class="dashboard-box">
                             <c:if test ="#{dashboardBean.canUseMRP() || dashboardBean.loginedUser.userType == 'superuser'}">
-                                <a href="${root}/mrp/mrp.xhtml" >
+                                <a href="${root}/mrp/mrp.xhtml">
                                     <img src="../img/mrptile.jpg" alt="..."/>
                                 </a>                                
                             </c:if>
-
+                        </div>
+                        <div class="dashboard-box">
                             <c:if test ="#{dashboardBean.canUseGRNS() || dashboardBean.loginedUser.userType == 'superuser'}">
-
-                                <a href="#" >
+                                <a href="#">
                                     <img src="../img/grnstile.jpg" alt="..."/>
                                 </a>
                             </c:if>
-
-
                         </div>
-
-                    </div>
-                    <div class="col-md-8">
-                        <c:if test="#{dashboardBean.loginedUser.userType eq 'superuser'}">
-                            <h2>View Logs</h2>
-                        </c:if>
-                       
                     </div>
                 </div>
-            </h:form>
         </ui:define>
 
     </ui:composition>
