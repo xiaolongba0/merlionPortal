@@ -5,23 +5,18 @@
  */
 package merlionportal.managedbean.wms;
 
-import entity.StorageType;
 import entity.SystemUser;
 import entity.Warehouse;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
-import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
 /**
