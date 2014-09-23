@@ -18,6 +18,7 @@ import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -26,17 +27,16 @@ import javax.persistence.PersistenceContext;
 @Stateless
 @LocalBean
 public class PurchaseOrderManagerSessionBean {
-    
+
     @PersistenceContext
     private EntityManager em;
-    
-    private ProductOrder po;
+
     private ProductOrderLineItem pLineItem;
     private Quotation quotation;
-    
+
     public PurchaseOrderManagerSessionBean() {
     }
-    
+
     public Quotation searchQuotation(int quotationId, int customerId) {
         quotation = em.find(Quotation.class, quotationId);
         int cId = quotation.getCustomerId();
@@ -45,10 +45,10 @@ public class PurchaseOrderManagerSessionBean {
         }
         return null;
     }
-    
+
     public ProductOrder createPO(String shipto, int companyId, int customerId, int quotationId, String cName, String cNumber) {
         System.out.println("+++++++++++++++++++GeneratePO Start====================");
-        po = new ProductOrder();
+        ProductOrder po = new ProductOrder();
         Date date = new Date();
         po.setCreatedDate(date);
         List<ProductOrderLineItem> itemLiest = new ArrayList();
@@ -64,11 +64,12 @@ public class PurchaseOrderManagerSessionBean {
         po.setPrice(0.0);
         po.setSalesPersonId(0);
         em.persist(po);
+        System.out.println("+++++++++++++++++++GeneratePO Start=====3333===============");
         em.flush();
         return po;
-        
+
     }
-    
+
     public void createProductList(ProductOrderLineItem pLine, ProductOrder mypo) {
         pLine.setProductOrderproductPOId(mypo);
         em.persist(pLine);
@@ -76,21 +77,21 @@ public class PurchaseOrderManagerSessionBean {
         em.merge(mypo);
         em.flush();
     }
-    
+
     public void rejectLineItem(ProductOrderLineItem poLine, String reason) {
         poLine.setStatus(reason);
         poLine.setPrice(0.0);
         em.merge(poLine);
     }
-    
+
     public void rejectPo(ProductOrder mPo) {
         mPo.setStatus(2);
     }
-    
+
     public void generateSo(ProductOrder mpo) {
         mpo.setStatus(3);
     }
-    
+
     public Boolean creaditCheck(int customerId) {
         SystemUser myCustomer = em.find(SystemUser.class, customerId);
         String myCredit = myCustomer.getCredit();
@@ -99,15 +100,15 @@ public class PurchaseOrderManagerSessionBean {
         }
         return true;
     }
-    
+
     public Boolean checkAvailavility() {
         return true;
     }
-    
+
     public String checkTimeToFulfill() {
         return "Need 5 days";
     }
-    
+
     public List<String> getCustomerCompany(int userid) {
         SystemUser cus = em.find(SystemUser.class, userid);
         Company com = cus.getCompanycompanyId();
@@ -118,7 +119,7 @@ public class PurchaseOrderManagerSessionBean {
         result.add(com.getContactNumber());
         return result;
     }
-    
+
     public List<ProductOrderLineItem> copyFromQuotation(int quotationId) {
         List<ProductOrderLineItem> poList = new ArrayList();
         quotation = em.find(Quotation.class, quotationId);
@@ -134,10 +135,33 @@ public class PurchaseOrderManagerSessionBean {
         }
         return poList;
     }
-    
+
     public void saveOrder(ProductOrder mypo) {
         mypo.setStatus(4);
         em.merge(mypo);
     }
-    
+
+    public List<ProductOrder> viewAllProductOrder(int status, int companyId) {
+        List<ProductOrder> resultList = new ArrayList();
+        Query q = em.createQuery("SELECT q FROM ProductOrder q WHERE q.companyId = :companyId AND q.status = :mystatus").setParameter("companyId", companyId);
+        q.setParameter("mystatus", status);
+        for (Object o : q.getResultList()) {
+            ProductOrder pro = (ProductOrder) o;
+            resultList.add(pro);
+        }
+        return resultList;
+    }
+
+    public List<ProductOrder> viewAllProductOrder(int status, int companyId, int customerId) {
+        List<ProductOrder> resultList = new ArrayList();
+        Query q = em.createQuery("SELECT q FROM ProductOrder q WHERE q.companyId = :companyId AND q.status = :mystatus AND q.creatorId = :clientId").setParameter("companyId", companyId);
+        q.setParameter("mystatus", status);
+        q.setParameter("clientId", customerId);
+        for (Object o : q.getResultList()) {
+            ProductOrder pro = (ProductOrder) o;
+            resultList.add(pro);
+        }
+        return resultList;
+    }
+
 }
