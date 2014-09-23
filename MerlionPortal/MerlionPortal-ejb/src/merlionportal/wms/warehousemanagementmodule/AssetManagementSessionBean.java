@@ -82,18 +82,18 @@ public class AssetManagementSessionBean {
         return allMyWarehouses;
     }
 
-    public Boolean deleteWarehouse(Integer companyId, Integer warehouseId) {
+    public Boolean deleteWarehouse(Integer warehouseId) {
 
-        Query query = em.createNamedQuery("Warehouse.findByCompanyId").setParameter("companyId", companyId);
-        List<Warehouse> allMyWarehouses = query.getResultList();
+        Query query = em.createNamedQuery("Warehouse.findByWarehouseId").setParameter("warehouseId", warehouseId);
+        Warehouse warehouse = (Warehouse) query.getSingleResult();
 
-        for (Warehouse w : allMyWarehouses) {
-            if (Objects.equals(w.getWarehouseId(), warehouseId)) {
-                em.remove(w);
-                em.flush();
-                return true;
-            }
+        if (warehouse != null) {
+            em.remove(warehouse);
+            em.flush();
+            return true;
+
         }
+        System.out.println("warehouse is null");
         return false;
     }
 
@@ -191,7 +191,9 @@ public class AssetManagementSessionBean {
         if (storageType == null) {
             return false;
         }
-
+        Warehouse warehouse = storageType.getWarehousewarehouseId();
+        warehouse.getStorageTypeList().remove(storageType);
+        em.merge(warehouse);
         em.remove(storageType);
         em.flush();
         System.out.println("END OF DELETE STORAGE TYPE FUNCTION IN SESSION BEAN");
@@ -272,7 +274,7 @@ public class AssetManagementSessionBean {
     }
 
     // Edit in progress
-    public Boolean deleteStorageBin (Integer storageBinId) {
+    public Boolean deleteStorageBin(Integer storageBinId) {
 
         StorageBin bin = new StorageBin();
         Query query = em.createNamedQuery("StorageBin.findByStorageBinId").setParameter("storageBinId", storageBinId);
@@ -284,13 +286,13 @@ public class AssetManagementSessionBean {
 
         em.remove(bin);
         em.flush();
-        
+
         System.out.println("END OF DELETE STORAGE BIN FUNCTION IN SESSION BEAN");
         return true;
     }
-    
+
     //Edit in progress
-      public Integer editStorageBin (String binName, String description, Integer maxQuantity, Double maxWeight,
+    public Integer editStorageBin(String binName, String description, Integer maxQuantity, Double maxWeight,
             Integer storageBinId) {
 
         System.out.println("[EJB]================================edit storage bin");

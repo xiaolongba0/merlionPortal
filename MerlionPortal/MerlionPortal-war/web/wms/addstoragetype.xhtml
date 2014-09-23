@@ -28,7 +28,7 @@
                     <p:menuitem value="View Storage Types" url="viewstoragetype.xhtml" />
                 </p:submenu>
             </p:menubar>
-     
+
             <br/>
             <p:panel id="panel" header="Add Storage Type">
                 <p:ajaxStatus style="width:16px;height:16px;">
@@ -43,48 +43,40 @@
 
                     <p:row>
                         <p:column>
-                            <h:outputLabel for="warehouseId" style="font-weight: bold" value="Warehouse ID:   *" />
+                            <p:outputLabel for="warehouse" value="Warehouse Name: " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="warehouseId" requiredMessage="WarehouseID is required." id="warehouseId" value="#{assetManagedBean.warehouseId}">
-                                <f:validateLength minimum="1" maximum="19" />
-                            </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="warehouseId" />
+                            <p:selectOneMenu id="warehouse" value="#{createStorageTypeManagerBean.warehouseId}"  style="width:210px" required="true" requiredMessage="Please select a company">
+                                <f:selectItem itemLabel="Select Warehouse" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{createStorageTypeManagerBean.warehouses}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId}   Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"/>
+                            </p:selectOneMenu>
                         </p:column>
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="storageTypeName" style="font-weight: bold" value="StorageType Name :  * " />
+                            <p:outputLabel for="storageTypeName" style="font-weight: bold" value="StorageType Name : " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="storageTypeName" requiredMessage="StorageType is required." id="storageTypeName" value="#{assetManagedBean.storageTypeName}">
+                            <p:inputText required="true" label="storageTypeName" requiredMessage="StorageType is required." id="storageTypeName" value="#{createStorageTypeManagerBean.storageTypeName}">
                                 <f:validateLength minimum="1" maximum="25" />
                             </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="storageTypeName" />
                         </p:column>
                     </p:row>  
 
                     <p:row>
                         <p:column>
-                            <h:outputLabel for="description" style="font-weight: bold" value="Description:   *" />
+                            <h:outputLabel for="description" style="font-weight: bold" value="Description: *" />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="description" requiredMessage="Description is required." id="description" value="#{assetManagedBean.storagetDescription}">
+                            <p:inputText required="true" label="description" requiredMessage="Description is required." id="description" value="#{createStorageTypeManagerBean.storagetDescription}">
                                 <f:validateLength minimum="1" maximum="100" />
                             </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="description" />
                         </p:column>
                     </p:row>  
 
                 </p:panelGrid>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <p:commandButton id="btn" value="Create New Storage Type" update="panel" actionListener="#{assetManagedBean.createNewStorageType}" ajax="true" />
+                <p:commandButton id="btn" value="Create New Storage Type" update="panel" actionListener="#{createStorageTypeManagerBean.createNewStorageType}" ajax="true" />
             </p:panel>
 
         </h:form>

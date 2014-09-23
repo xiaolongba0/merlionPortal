@@ -85,6 +85,19 @@ public class WarehouseViewEditManagedBean {
         }
         return warehouses;
     }
+    
+    
+    public void deleteWarehouse(Warehouse warehouse) {
+        try {
+            warehouseId = warehouse.getWarehouseId();
+            System.out.println("[In WAR FILE - Delete Warehouse Function] Warehouse ID========== :" + warehouseId);
+            assetManagementSessionBean.deleteWarehouse(warehouseId);
+            warehouses.remove(warehouse);
+            
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
     public Integer getStorageTypeId() {
         return storageTypeId;

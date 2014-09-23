@@ -39,24 +39,67 @@
                     </f:facet>
                 </p:ajaxStatus>
                 <p:panelGrid>
-                      <p:row>
+                    <p:row>
                         <p:column>
-                            <h:outputLabel for="warehouseId" style="font-weight: bold" value="Warehouse ID:   *" />
+                            <p:outputLabel for="warehouse" value="Warehouse Name: " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="warehouseId" requiredMessage="WarehouseID is required." id="warehouseId" value="#{storageTypeViewEditManagedBean.warehouseId}">
-                                <f:validateLength minimum="1" maximum="19" />
-                            </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="warehouseId" />
+                            <p:selectOneMenu id="warehouse" value="#{storageTypeViewEditManagedBean.warehouseId}"  style="width:300px" required="true" requiredMessage="Please select a company">
+                                <p:ajax listener="#{storageTypeViewEditManagedBean.onWarehouseChange}" update="storagetypeData" />
+                                <f:selectItem itemLabel="Select Warehouse" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{createStorageTypeManagerBean.warehouses}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId} Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"/>
+                            </p:selectOneMenu>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
+
+                <p:dataTable id="storagetypeData" var="storagetype" sortMode="multiple" editable="true" value="#{storageTypeViewEditManagedBean.storagetypes}" 
+                             widgetVar="storageTypesTable"
+                             emptyMessage="No Storage Type found"
+                             rowKey="#{storagetype.storageTypeId}">
+
+                    <f:facet name="header">                    
+                        <p:outputPanel>
+                            <h:outputText value="Search Storage Type fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('storageTypesTable').filter()" />
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:ajax event="rowEdit" listener="#{storageTypeViewEditManagedBean.onRowEdit}"/>
+                    <p:ajax event="rowEditCancel" listener="#{storageTypeViewEditManagedBean.onRowCancel}"/>                
+
+                    <p:column headerText="Warehouse Id" >
+                        <h:outputText value="#{storagetype.warehousewarehouseId.warehouseId}" />
+                    </p:column>
+
+                    <p:column filterBy="#{storagetype.storageTypeId}" filterMatchMode="exact" headerText="Storage Type ID" >
+                        <h:outputText value="#{storagetype.storageTypeId}" />
+                    </p:column>
+
+                    <p:column  filterBy="#{storagetype.name}" filterMatchMode="contains" headerText="Storage Type">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{storagetype.name}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{storagetype.name}" style="width:100%" label="Storage Type"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>                
+                    <p:column  headerText="Description">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{storagetype.description}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{storagetype.description}" style="width:100%" label="Description"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText = "Delete Storage Type">
+                        <p:commandButton action="#{storageTypeViewEditManagedBean.deleteStorageType(storagetype)}" update="storagetypeData" value="Delete">
+                        </p:commandButton> 
+                    </p:column>
+
+                    <p:column style="width:32px">
+                        <p:rowEditor />
+                    </p:column>
+
+                </p:dataTable>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-<!--                Dunno how to do if the storage type is null don't forward to the next page!-->
-                <p:commandButton id="btn" value="View Storage Types" update="panel" action="viewstoragetypedisplay" ajax="true">                                 
-                </p:commandButton>   
             </p:panel>
         </h:form>
     </h:body>

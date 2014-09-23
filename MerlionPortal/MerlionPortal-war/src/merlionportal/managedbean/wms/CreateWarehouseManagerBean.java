@@ -7,7 +7,6 @@ package merlionportal.managedbean.wms;
 
 import entity.SystemUser;
 import entity.Warehouse;
-import entity.StorageType;
 
 import java.io.IOException;
 import javax.annotation.PostConstruct;
@@ -26,7 +25,7 @@ import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
  */
 @Named(value = "assetManagedBean")
 @RequestScoped
-public class AssetManagedBean {
+public class CreateWarehouseManagerBean {
 
     @EJB
     private AssetManagementSessionBean assetManagementSessionBean;
@@ -34,7 +33,6 @@ public class AssetManagedBean {
     private UserAccountManagementSessionBean uamb;
     private Integer newWarehouseId;
     private Integer warehouseId;
-    private Integer storageTypeId;
     
     private String warehouseName;
     private String country;
@@ -45,16 +43,14 @@ public class AssetManagedBean {
     private Integer companyId;
     private Warehouse warehouse;
 
-    private Integer newStorageTypeId;
-    private String storageTypeName;
-    private String storagetDescription;
+    
 
     private SystemUser loginedUser;
 
     /**
      * Creates a new instance of AssestManagedBean
      */
-    public AssetManagedBean() {
+    public CreateWarehouseManagerBean() {
     }
 
     @PostConstruct
@@ -86,48 +82,6 @@ public class AssetManagedBean {
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Warehouse Added!", ""));
             System.out.println("[WAR FILE]===========================Create New Warehouse");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public void createNewStorageType(ActionEvent warehouse) {
-
-        try {
-            System.out.println("[INSIDE WAR FILE]===========================Create New Storage Type");
-            System.out.println("STORAGE TYPE NAMEEEEEEE ; " + storageTypeName);
-            newStorageTypeId = assetManagementSessionBean.addStorageType(storageTypeName, storagetDescription, companyId, warehouseId);
-            System.out.println("NEW STORAGE TYPE ID =================: " + newStorageTypeId);
-            if (newStorageTypeId == -1) {
-                System.out.println("============== FAILED TO ADD STORAGE TYPE DUE TO WRONG WAREHOUSE ID ===============");
-
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to Add Storage Type. Please check warehouseID! ", ""));
-            } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Storage Type Added!", ""));
-            }
-
-            System.out.println("[WAR FILE]===========================Create New Storage Type");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public void deleteWarehouse(Warehouse warehouse) {
-        try {
-            warehouseId = warehouse.getWarehouseId();
-            System.out.println("[In WAR FILE - Delete Warehouse Function] Warehouse ID========== :" + warehouseId);
-            assetManagementSessionBean.deleteWarehouse(companyId, warehouseId);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public void deleteStorageType(StorageType storageType) {
-        try {
-            System.out.println("[In WAR FILE - Delete StorageType Function]" + storageType);
-            storageTypeId = storageType.getStorageTypeId();
-            System.out.println("[In WAR FILE - Delete StorageType Function] storageType ID========== :" + storageTypeId);
-            assetManagementSessionBean.deleteStorageType(storageTypeId);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -219,30 +173,6 @@ public class AssetManagedBean {
 
     public void setWarehouse(Warehouse warehouse) {
         this.warehouse = warehouse;
-    }
-
-    public Integer getNewStorageTypeId() {
-        return newStorageTypeId;
-    }
-
-    public void setNewStorageTypeId(Integer newStorageTypeId) {
-        this.newStorageTypeId = newStorageTypeId;
-    }
-
-    public String getStorageTypeName() {
-        return storageTypeName;
-    }
-
-    public void setStorageTypeName(String storageTypeName) {
-        this.storageTypeName = storageTypeName;
-    }
-
-    public String getStoragetDescription() {
-        return storagetDescription;
-    }
-
-    public void setStoragetDescription(String storagetDescription) {
-        this.storagetDescription = storagetDescription;
     }
 
 }
