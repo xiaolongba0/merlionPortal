@@ -28,6 +28,7 @@
                     <p:menuitem value="View Storage Types" url="viewstoragetype.xhtml" />
                 </p:submenu>
             </p:menubar>
+     
             <br/>
             <p:panel id="panel" header="Add Storage Type">
                 <p:ajaxStatus style="width:16px;height:16px;">
@@ -55,7 +56,7 @@
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="storageTypeName" style="font-weight: bold" value="StorageTypeName* : " />
+                            <p:outputLabel for="storageTypeName" style="font-weight: bold" value="StorageType Name :  * " />
                         </p:column>
                         <p:column>
                             <p:inputText required="true" label="storageTypeName" requiredMessage="StorageType is required." id="storageTypeName" value="#{assetManagedBean.storageTypeName}">
