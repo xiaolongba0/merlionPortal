@@ -220,47 +220,36 @@ public class AssetManagementSessionBean {
     }
 
     //Edit in progress
-    public Integer addStorageBin(String binName, String description, Integer maxQuantity, Double maxWeight,
+    public boolean addStorageBin(String binName, String binType, String description, Integer maxQuantity, Double maxWeight,
             Integer storageTypeId) {
 
         System.out.println("[INSIDE EJB]================================Add Storage Bin");
         Query query = em.createNamedQuery("StorageType.findByStorageTypeId").setParameter("storageTypeId", storageTypeId);
 
-        List<StorageType> allMyStorageTypes = query.getResultList();
+        StorageType storageType = (StorageType) query.getSingleResult();
+        if (storageType != null) {
+            StorageBin bin = new StorageBin();
+            bin.setBinName(binName);
+            bin.setBinType(binType);
+            bin.setDescription(description);
+            bin.setMaxQuantity(maxQuantity);
+            bin.setMaxWeight(maxWeight);
+            bin.setStorageTypestorageTypeId(storageType);
+            storageType.getStorageBinList().add(bin);
 
-        StorageType storaget = new StorageType();
-        for (StorageType s : allMyStorageTypes) {
-            if (Objects.equals(s.getStorageTypeId(), storageTypeId)) {
-                storaget = s;
-            }
-        }
-        StorageBin bin = new StorageBin();
-        bin.setBinName(binName);
-        //bin.setBinType(xxx);
-        bin.setDescription(description);
-        bin.setMaxQuantity(maxQuantity);
-        bin.setMaxWeight(maxWeight);
-        bin.setStorageTypestorageTypeId(storageType);
-
-        ///check later 
-        if (bin.getStorageBinId() == null) {
-            System.out.println("STORAGE BIN ID IS NULL");
-            return -1;
-        } else {
+            em.merge(storageType);
             em.persist(bin);
             em.flush();
 
-            storaget.getStorageBinList().add(bin);
-            em.merge(storaget);
-            em.flush();
-
-            return bin.getStorageBinId();
+            return true;
+        } else {
+            return false;
         }
 
     }
 
-    //Edit in progress
-    public List<StorageBin> viewStorageBinForType(Integer storageTypeId) {
+//Edit in progress
+    public List<StorageBin> viewStorageBinForStorageType(Integer storageTypeId) {
 
         System.out.println("In viewStorageBinForType, Warehouse ID ============================= : " + storageTypeId);
         StorageType typeTemp = null;
@@ -276,14 +265,15 @@ public class AssetManagementSessionBean {
     // Edit in progress
     public Boolean deleteStorageBin(Integer storageBinId) {
 
-        StorageBin bin = new StorageBin();
         Query query = em.createNamedQuery("StorageBin.findByStorageBinId").setParameter("storageBinId", storageBinId);
-        bin = (StorageBin) query.getSingleResult();
+        StorageBin bin = (StorageBin) query.getSingleResult();
         System.out.println("DeleteStorageBin ================= : " + bin);
         if (bin == null) {
             return false;
         }
-
+        StorageType storageType = bin.getStorageTypestorageTypeId();
+        storageType.getStorageBinList().remove(bin);
+        em.merge(storageType);
         em.remove(bin);
         em.flush();
 
