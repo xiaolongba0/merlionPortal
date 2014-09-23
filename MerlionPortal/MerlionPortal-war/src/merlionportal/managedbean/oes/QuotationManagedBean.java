@@ -111,9 +111,11 @@ public class QuotationManagedBean implements Serializable {
         if (selectedRequest == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please select one request ."));
             return "viewallrequests.xhtml";
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "View", "Action Accepted"));
         }
+        System.out.println("this line will executed");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "View", "Action Accepted"));
+                System.out.println("this line  executed  finished");
+
         return "generatequotation.xhtml";
 
     }
@@ -136,6 +138,7 @@ public class QuotationManagedBean implements Serializable {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Quotation generated."));
             quotationMB.generateQuotation(selectedRequest, inputText);
+            System.out.println("Quotation Generated");
             inputText = null;
         }
 
@@ -157,10 +160,6 @@ public class QuotationManagedBean implements Serializable {
         quotationMB.setLineItemPrice(selectedRequest, myLine, null);
         FacesMessage msg = new FacesMessage("Price Cancelled");
         FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-
-    public void setLineItemPrice(double qPrive) {
-
     }
 
     public void setAllQuotation(List<Quotation> allQuotation) {
@@ -313,4 +312,9 @@ public class QuotationManagedBean implements Serializable {
         selectedQuotation = null;
         return "displayallquotations.xhtml";
     }
+
+    public String goBackToAll() {
+        return "viewallrequests.xhtml";
+    }
+
 }

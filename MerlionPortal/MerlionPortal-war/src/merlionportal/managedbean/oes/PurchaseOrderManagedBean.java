@@ -14,6 +14,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.inject.Named;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
 import merlionportal.oes.quotationmanagementmodule.CheckCustomerRoleSessionBean;
@@ -226,6 +227,7 @@ public class PurchaseOrderManagedBean {
 
     public void saveOrder() {
         myPo = purchaseMB.createPO(shipto, companyId, userId, qutatuonId, contactPerson, contactNumber);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Saved", "Order has been saved"));
         for (Object o : itemList) {
             ProductOrderLineItem pLine = (ProductOrderLineItem) o;
             purchaseMB.createProductList(pLine, myPo);
@@ -233,21 +235,17 @@ public class PurchaseOrderManagedBean {
         purchaseMB.saveOrder(myPo);
     }
 
-    public void submitOrder() {
-        System.out.println("ship to address " + shipto);
-        System.out.println("customer id" + userId);
-        System.out.println("CompanyId" + companyId);
-        System.out.println("quotationId" + qutatuonId);
-        System.out.println(contactPerson + " " + contactNumber);
-        for (Object o : itemList) {
-            ProductOrderLineItem pLine = (ProductOrderLineItem) o;
-            System.out.println("lineItem Quantity " + pLine.getQuantity());
-        }
-        myPo = purchaseMB.createPO(shipto, companyId, userId, qutatuonId, contactPerson, contactNumber);
-        for (Object o : itemList) {
-            ProductOrderLineItem pLine = (ProductOrderLineItem) o;
-            purchaseMB.createProductList(pLine, myPo);
+    public void submitOrder(ActionEvent event) {
+
+        if (shipto == null || itemList.isEmpty() || itemList == null || contactPerson == null || contactNumber == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please make sure all compulsory filds are filled"));
+
+        } else {
+            myPo = purchaseMB.createPO(shipto, companyId, userId, qutatuonId, contactPerson, contactNumber);
+            for (Object o : itemList) {
+                ProductOrderLineItem pLine = (ProductOrderLineItem) o;
+                purchaseMB.createProductList(pLine, myPo);
+            }
         }
     }
-
 }
