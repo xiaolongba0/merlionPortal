@@ -18,7 +18,7 @@
         </style>
     </h:head>
     <h:body>
-        <h:form id="formMain">
+        <h:form id="form">
             <h1>Welcome to MRP II system</h1>
             <p:megaMenu  style="margin-top:20px">
                 <p:menuitem value="MRP II" url="mrp.xhtml" />
@@ -46,19 +46,6 @@
             </p:megaMenu>
             <br/>
 
-            <p:panel header="Select a product for viewing BOM" style="margin-bottom:10px;">
-                <h:panelGrid columns="4" cellpadding="5">
-                    <p:outputLabel for="product" value="Please select a product for forecasting: " />
-                    <p:selectOneMenu required="true" id="product" value="#{productComponentViewEditManagedBean.productId}" styleClass="form-control">
-                        <p:ajax listener="#{productComponentViewEditManagedBean.onProductChange}" update="components" />
-                        <f:selectItem itemLabel="Select a product" itemValue="" noSelectionOption="true" />
-                        <f:selectItems value="#{productComponentViewEditManagedBean.products}"  var="product" itemLabel="#{product.productName}"  itemValue="#{product.productId}"/>
-                    </p:selectOneMenu>
-                </h:panelGrid>
-                <p:separator/>
-            </p:panel>
-
-
 
             <p:growl id="msgs" showDetail="true"/>   
             <p:dataTable id="components" var="component1" value="#{productComponentViewEditManagedBean.components}" editable="true" style="margin-bottom:20px">
@@ -69,8 +56,8 @@
                 </f:facet>
                 <!--note: havent handle supplier info for viewing and editing -->
 
-                <p:ajax event="rowEdit" listener="#{productComponentViewEditManagedBean.onRowEdit}" update=":formMain:msgs" />
-                <p:ajax event="rowEditCancel" listener="#{productComponentViewEditManagedBean.onRowCancel}" update=":formMain:msgs" />
+                <p:ajax event="rowEdit" listener="#{productComponentViewEditManagedBean.onRowEdit}" update=":form:msgs" />
+                <p:ajax event="rowEditCancel" listener="#{productComponentViewEditManagedBean.onRowCancel}" update=":form:msgs" />
 
 
                 <p:column headerText="Component ID">
@@ -154,9 +141,6 @@
 
             </p:dataTable>
 
-
         </h:form>
     </h:body>
 </html>
-
-

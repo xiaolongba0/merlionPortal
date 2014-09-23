@@ -19,7 +19,7 @@
     </h:head>
     <h:body>
         <h:form id="formMain">
- <h1>Welcome to MRP II system</h1>
+            <h1>Welcome to MRP II system</h1>
             <p:megaMenu  style="margin-top:20px">
                 <p:menuitem value="MRP II" url="mrp.xhtml" />
                 <p:submenu label="Product Management" >
@@ -79,41 +79,41 @@
                         <f:facet name="input"><p:inputText value="#{product.description}" style="width:100%" label="Product Description"/></f:facet>
                     </p:cellEditor>
                 </p:column>
-                
-                      <p:column headerText="Product Category">
-           <p:cellEditor>
-               <f:facet name="output"><h:outputText value="#{product.category}" /></f:facet>
-               <f:facet name="input">
-                   <h:selectOneMenu value="#{product.category}" style="width:100%">
-                       <f:selectItems value="#{productViewEditManagedBean.categories}" var="category" itemLabel="#{category}" itemValue="#{category}" />
-                   </h:selectOneMenu>
-               </f:facet>
-           </p:cellEditor>
-       </p:column> 
-                
+
+                <p:column headerText="Product Category">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{product.category}" /></f:facet>
+                        <f:facet name="input">
+                            <h:selectOneMenu value="#{product.category}" style="width:100%">
+                                <f:selectItems value="#{productViewEditManagedBean.categories}" var="category" itemLabel="#{category}" itemValue="#{category}" />
+                            </h:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column> 
+
                 <p:column headerText="Product Type">
-           <p:cellEditor>
-               <f:facet name="output"><h:outputText value="#{product.productType}" /></f:facet>
-               <f:facet name="input">
-                   <h:selectOneMenu value="#{product.productType}" style="width:100%">
-                       <f:selectItems value="#{productViewEditManagedBean.productTypes}" var="productType" itemLabel="#{productType}" itemValue="#{productType}" />
-                   </h:selectOneMenu>
-               </f:facet>
-           </p:cellEditor>
-       </p:column>
-                
-                
-                               <p:column headerText="Product Currency">
-           <p:cellEditor>
-               <f:facet name="output"><h:outputText value="#{product.currency}" /></f:facet>
-               <f:facet name="input">
-                   <h:selectOneMenu value="#{product.currency}" style="width:100%">
-                       <f:selectItems value="#{productViewEditManagedBean.currencies}" var="currency" itemLabel="#{currency}" itemValue="#{currency}" />
-                   </h:selectOneMenu>
-               </f:facet>
-           </p:cellEditor>
-       </p:column> 
-                
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{product.productType}" /></f:facet>
+                        <f:facet name="input">
+                            <h:selectOneMenu value="#{product.productType}" style="width:100%">
+                                <f:selectItems value="#{productViewEditManagedBean.productTypes}" var="productType" itemLabel="#{productType}" itemValue="#{productType}" />
+                            </h:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+
+                <p:column headerText="Product Currency">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{product.currency}" /></f:facet>
+                        <f:facet name="input">
+                            <h:selectOneMenu value="#{product.currency}" style="width:100%">
+                                <f:selectItems value="#{productViewEditManagedBean.currencies}" var="currency" itemLabel="#{currency}" itemValue="#{currency}" />
+                            </h:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column> 
+
 
                 <p:column headerText="Product Price">
                     <p:cellEditor>
