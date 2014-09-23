@@ -19,7 +19,8 @@
                 </p:submenu>
                 <p:submenu label="ORDERS" >
                     <p:menuitem value="Create Order" url="pogeneration.xhtml" />
-                    <p:menuitem value="Retrieve Saved Order" url="displayallproducts.xhtml" />
+                    <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
+                    <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" />
                 </p:submenu>
                 <p:submenu label="REPORTS" >
                 </p:submenu>
@@ -85,9 +86,9 @@
 
             <br></br>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-            <p:commandButton action="viewallrequest.xhtml" value="Go Back">
+            <p:commandButton action="viewallrequests.xhtml" value="Go Back">
             </p:commandButton>   
-            <p:commandButton actionListener="#{quotationManagedBean.generateQuotation}" value="Submit Quotation">
+            <p:commandButton actionListener="#{quotationManagedBean.generateQuotation}"  value="Submit Quotation">
             </p:commandButton>        
         </h:form>
     </h:body>

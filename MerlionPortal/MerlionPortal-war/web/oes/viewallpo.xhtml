@@ -2,14 +2,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>All Pending Requests</title>
+        <title>View all Purchase Order</title>
     </h:head>
     <h:body>
-        <h1>All Pending Requests </h1>
+        <h1>Saved Order </h1>
         <h:form id="formMain">  
             <p:growl id="messages"/>        
             <p:menubar>
@@ -30,36 +28,28 @@
             <br/>
         </h:form>
         <h:form>  
-            <p:dataTable id="allRequest" var="newRequest" value="#{quotationManagedBean.allQuotation}" selectionMode="single" selection="#{quotationManagedBean.selectedRequest}" rowKey="#{newRequest.quotationId}">
+            <p:dataTable id="allSaved" var="productOrder" value="#{retrieveSavedOrder.productOrderList}" selectionMode="single" selection="#{retrieveSavedOrder.selectedOrder}" rowKey="#{productOrder.productPOId}">
                 <p:column  
-                    filterBy="#{newRequest.quotationId}" 
-                    filterMatchMode="exact" headerText="Quotation Id" >
-                    <h:outputText value="#{newRequest.quotationId}" />
+                    filterBy="#{productOrder.productPOId}" 
+                    filterMatchMode="exact" headerText="Saved Id" >
+                    <h:outputText value="#{productOrder.productPOId}" />
                 </p:column>
                 <p:column  
-                    filterBy="#{newRequest.customerId}" 
-                    filterMatchMode="exact" headerText="Customer" >
-                    <h:outputText value="#{newRequest.customerId}" />
+                    filterBy="#{productOrder.creatorId}" 
+                    filterMatchMode="exact" headerText="Creator" >
+                    <h:outputText value="#{productOrder.creatorId}" />
                 </p:column>
                 <p:column headerText="Create Date">
-                    <h:outputText value="#{newRequest.createDate}" />
+                    <h:outputText value="#{productOrder.createdDate}" />
                 </p:column>
             </p:dataTable>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 
             <br></br>
-            <p:commandButton action="#{quotationManagedBean.showRequest()}" value="View Request">
-                <f:param name="pageId" value="1" />
-            </p:commandButton>        
-            
-            <c:if test="#{not quotationManagedBean.checkUserIsCustomer()}">
-                <br></br>
-                <p:commandButton action="#{quotationManagedBean.editQuotation()}" value="Generate Quotation">
-                </p:commandButton>       
-            </c:if>
+            <br></br>
+            <p:commandButton action="#{retrieveSavedOrder.createSo()}" value=" Generat Sales Order">
+            </p:commandButton>       
         </h:form>
-
-
     </h:body>
 </html>
 

@@ -3,20 +3,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Generate PO</title>
-        <c:set var="root" value="${request.contextPath}" />
-        <link rel="stylesheet" href="${root}/css/bootstrap.min.css" type="text/css" />
-        <script src="${root}/js/jquery-1.11.1.min.js" type="text/javascript"></script>
-        <script src="${root}/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="${root}/js/notify.min.js" type="text/javascript"></script>
-
+        <title>Edit Order</title>
     </h:head>
     <h:body>
-
+        <h1>Saved Order </h1>
         <h:form id="formMain">  
             <p:growl id="messages"/>        
             <p:menubar>
@@ -39,26 +31,20 @@
         <h:form>
             <p:fieldset legend="Comany Information" style="margin-bottom:20px">
                 <h:panelGrid columns="2" cellpadding="5">
-                    <h4>   Company Name: </h4><h:outputText value="#{purchaseOrderManagedBean.customerInfor.get(0)}"/>
-                    <h4>        Address: </h4><h:outputText value="#{purchaseOrderManagedBean.customerInfor.get(1)}"/>
-                    <h4> Contact Person: </h4><h:outputText value="#{purchaseOrderManagedBean.customerInfor.get(2)}"/>
-                    <h4> Contact Number: </h4><h:outputText value="#{purchaseOrderManagedBean.customerInfor.get(3)}"/>
+                    <h4>   Company Name: </h4><h:outputText value="#{editSavedOrder.customerInfor.get(0)}"/>
+                    <h4>        Address: </h4><h:outputText value="#{editSavedOrder.customerInfor.get(1)}"/>
+                    <h4> Contact Person: </h4><h:outputText value="#{editSavedOrder.customerInfor.get(2)}"/>
+                    <h4> Contact Number: </h4><h:outputText value="#{editSavedOrder.customerInfor.get(3)}"/>
                 </h:panelGrid>
             </p:fieldset>
             <p:fieldset legend="Ship To " style="margin-bottom:20px">
                 <h:panelGrid id="detail" columns="2" cellpadding="5">
-                    <p>Contact Person: </p><h:outputText value="#{purchaseOrderManagedBean.contactPerson}"/>
-                    <p>Phone Number: </p><h:outputText value="#{purchaseOrderManagedBean.contactNumber}"/>
-                    <p>Address Line 1: </p><h:outputText value="#{purchaseOrderManagedBean.address1}"/>
-                    <p>Address Line 2: </p><h:outputText value="#{purchaseOrderManagedBean.address2}"/>
-                    <p>Address Line 3: </p><h:outputText value="#{purchaseOrderManagedBean.address3}"/>
-                    <p>City: </p><h:outputText value="#{purchaseOrderManagedBean.city}"/>
-                    <p>Country: </p><h:outputText value="#{purchaseOrderManagedBean.country}"/>
-                    <p>Postal Code </p><h:outputText value="#{purchaseOrderManagedBean.postalCode}"/>
+                    <p>Contact Person: </p><h:outputText value="#{editSavedOrder.contactPerson}"/>
+                    <p>Phone Number: </p><h:outputText value="#{editSavedOrder.contactNumber}"/>
+                    <p>Address : </p><h:outputText value="#{editSavedOrder.shipto}"/>
                 </h:panelGrid>
             </p:fieldset>
             <p:commandButton styleClass="btn btn-default" value="Add/Edit" ajax="true" onclick="toggleModal();"></p:commandButton>
-
 
             <div id="shiptoModal" class="modal fade">
                 <div class="modal-dialog">
@@ -70,34 +56,34 @@
                         <div id="body" class="modal-body">
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:outputLabel for="contact" value="Contact Person: " />
-                                <p:inputText id="contact" value="#{purchaseOrderManagedBean.contactPerson}" required="true"/>
+                                <p:inputText id="contact" value="#{editSavedOrder.contactPerson}" required="true"/>
 
                                 <p:outputLabel for="cNumber" value="Phone Number: " />
-                                <p:inputText id="cNumber" value="#{purchaseOrderManagedBean.contactNumber}" required="true" />
+                                <p:inputText id="cNumber" value="#{editSavedOrder.contactNumber}" required="true" />
 
                                 <p:outputLabel for="line1" value="Address Line 1: " />
-                                <p:inputText id="line1" value="#{purchaseOrderManagedBean.address1}" required="true"/>
+                                <p:inputText id="line1" value="#{editSavedOrder.address1}" required="true"/>
 
                                 <p:outputLabel for="line2" value="Address Line 2: " />
-                                <p:inputText id="line2" value="#{purchaseOrderManagedBean.address2}" required="true"/>
+                                <p:inputText id="line2" value="#{editSavedOrder.address2}" required="true"/>
 
                                 <p:outputLabel for="line3" value="Address Line 3: " />
-                                <p:inputText id="line3" value="#{purchaseOrderManagedBean.address3}" />
+                                <p:inputText id="line3" value="#{editSavedOrder.address3}" />
 
                                 <p:outputLabel for="city"  value="City: " />
-                                <p:inputText id="city" value="#{purchaseOrderManagedBean.city}" required="true"/>
+                                <p:inputText id="city" value="#{editSavedOrder.city}" required="true"/>
 
                                 <p:outputLabel for="country"  value="Country: " />
-                                <p:inputText id="country" value="#{purchaseOrderManagedBean.country}" required="true"/>
+                                <p:inputText id="country" value="#{editSavedOrder.country}" required="true"/>
 
                                 <p:outputLabel for="postal"  value="Postal Code " />
-                                <p:inputText id="postal" value="#{purchaseOrderManagedBean.postalCode}" required="true"/>
+                                <p:inputText id="postal" value="#{editSavedOrder.postalCode}" required="true"/>
                             </h:panelGrid>
                         </div>
                         <div class="modal-footer">
                             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                             <p:commandButton value="Reset" styleClass="btn btn-success" type="reset" />
-                            <p:commandButton value="Submit" styleClass="btn btn-success" actionListener="#{purchaseOrderManagedBean.setShipto()}" pt:data-dismiss="modal" update="detail" ajax="true"></p:commandButton>
+                            <p:commandButton value="Submit" styleClass="btn btn-success" actionListener="#{editSavedOrder.setMyShipto()}" pt:data-dismiss="modal" update="detail" ajax="true"></p:commandButton>
                             <p:commandButton value="Close" styleClass="btn btn-warning" pt:data-dismiss="modal"></p:commandButton>
                         </div>
                     </div>
@@ -113,14 +99,14 @@
         <h:form>
             <br></br>
             <p:outputLabel for="quotation"  value="Quotation Number: " />
-            <p:inputText id="quotation" value="#{purchaseOrderManagedBean.qutatuonId}" required="true" label="Quotation Number"></p:inputText>
-            <p:commandButton value="Search" actionListener="#{purchaseOrderManagedBean.searchForQuotation()}" update="productsTalbe" ajax="true"></p:commandButton>
+            <p:inputText id="quotation" value="#{editSavedOrder.qutatuonId}" required="true" label="Quotation Number"></p:inputText>
+            <p:commandButton value="Search" actionListener="#{editSavedOrder.searchForQuotation()}" update="productsTalbe" ajax="true"></p:commandButton>
             <br></br>
             <br></br>
-            <p:dataTable id="productsTalbe" var="lineItem" value="#{purchaseOrderManagedBean.itemList}" editable="true">
+            <p:dataTable id="productsTalbe" var="lineItem" value="#{editSavedOrder.itemList}" editable="true">
                 <p:growl id="msgs" showDetail="true"/>
-                <p:ajax event="rowEdit" listener="#{purchaseOrderManagedBean.onRowEdit}" update="quantityColumn" />
-                <p:ajax event="rowEditCancel" listener="#{purchaseOrderManagedBean.onRowCancel}" update="quantityColumn" />
+                <p:ajax event="rowEdit" listener="#{editSavedOrder.onRowEdit}" update="quantityColumn" />
+                <p:ajax event="rowEditCancel" listener="#{editSavedOrder.onRowCancel}" update="quantityColumn" />
 
                 <f:facet name="header">
                     Product information
@@ -142,11 +128,11 @@
                 <p:column id="quantityColumn" headerText="Quantity">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{lineItem.quantity}" /></f:facet>
-                        <f:facet name="input"><p:inputText id="modelInput" value="#{lineItem.quantity}" style="width:96%"/></f:facet>
+                        <f:facet name="input"><p:inputText id="modelInput" value="#{lineItem.quantity}" style="width:96%" /></f:facet>
                     </p:cellEditor>
                 </p:column>
-                <p:column headerText="Price">
-                    <h:outputText value="#{lineItem.price}" />
+                <p:column id="lineTotal" headerText="Total Price">
+                    <h:outputText value="#{editSavedOrder.setLineTotal(lineItem.quantity, lineItem.price)}" />
                 </p:column>
 
                 <p:column style="width:32px">
@@ -156,13 +142,12 @@
             <br></br>
             <br></br>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-            <p:commandButton value="Cancel"  action="oesindexpage.xhtml" />
-            <p:commandButton value="Save Order" actionListener="#{purchaseOrderManagedBean.saveOrder()}" ajax="true"></p:commandButton>
+            <p:commandButton value="Cancel"  action="retrievesavedorder.xhtml" />
             <p:commandButton value="Submit Order" actionListener="#{purchaseOrderManagedBean.submitOrder}"></p:commandButton>
         </h:form>
         <br></br>
         <br></br>
-        <br></br>
+        <br></br>$
         <br></br>
 
     </h:body>

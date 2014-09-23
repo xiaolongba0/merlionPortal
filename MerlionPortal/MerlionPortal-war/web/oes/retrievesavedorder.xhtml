@@ -6,10 +6,10 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
-        <title>All Pending Requests</title>
+        <title>Saved Order</title>
     </h:head>
     <h:body>
-        <h1>All Pending Requests </h1>
+        <h1>Saved Order </h1>
         <h:form id="formMain">  
             <p:growl id="messages"/>        
             <p:menubar>
@@ -30,36 +30,28 @@
             <br/>
         </h:form>
         <h:form>  
-            <p:dataTable id="allRequest" var="newRequest" value="#{quotationManagedBean.allQuotation}" selectionMode="single" selection="#{quotationManagedBean.selectedRequest}" rowKey="#{newRequest.quotationId}">
+            <p:dataTable id="allSaved" var="savedOrder" value="#{retrieveSavedOrder.savedOrderList}" selectionMode="single" selection="#{retrieveSavedOrder.selectedOrder}" rowKey="#{savedOrder.productPOId}">
                 <p:column  
-                    filterBy="#{newRequest.quotationId}" 
-                    filterMatchMode="exact" headerText="Quotation Id" >
-                    <h:outputText value="#{newRequest.quotationId}" />
+                    filterBy="#{savedOrder.productPOId}" 
+                    filterMatchMode="exact" headerText="Saved Id" >
+                    <h:outputText value="#{savedOrder.productPOId}" />
                 </p:column>
                 <p:column  
-                    filterBy="#{newRequest.customerId}" 
-                    filterMatchMode="exact" headerText="Customer" >
-                    <h:outputText value="#{newRequest.customerId}" />
+                    filterBy="#{savedOrder.creatorId}" 
+                    filterMatchMode="exact" headerText="Creator" >
+                    <h:outputText value="#{savedOrder.creatorId}" />
                 </p:column>
                 <p:column headerText="Create Date">
-                    <h:outputText value="#{newRequest.createDate}" />
+                    <h:outputText value="#{savedOrder.createdDate}" />
                 </p:column>
             </p:dataTable>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 
             <br></br>
-            <p:commandButton action="#{quotationManagedBean.showRequest()}" value="View Request">
-                <f:param name="pageId" value="1" />
-            </p:commandButton>        
-            
-            <c:if test="#{not quotationManagedBean.checkUserIsCustomer()}">
-                <br></br>
-                <p:commandButton action="#{quotationManagedBean.editQuotation()}" value="Generate Quotation">
-                </p:commandButton>       
-            </c:if>
+            <br></br>
+            <p:commandButton action="#{retrieveSavedOrder.editOrder()}" value="Continue Generating Purchase Order">
+            </p:commandButton>       
         </h:form>
-
-
     </h:body>
 </html>
 
