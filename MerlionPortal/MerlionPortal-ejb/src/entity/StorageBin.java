@@ -49,8 +49,9 @@ public class StorageBin implements Serializable {
     @Size(max = 45)
     @Column(name = "binName")
     private String binName;
+    @Size(max = 45)
     @Column(name = "binType")
-    private Integer binType;
+    private String binType;
     @Column(name = "maxQuantity")
     private Integer maxQuantity;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -91,11 +92,11 @@ public class StorageBin implements Serializable {
         this.binName = binName;
     }
 
-    public Integer getBinType() {
+    public String getBinType() {
         return binType;
     }
 
-    public void setBinType(Integer binType) {
+    public void setBinType(String binType) {
         this.binType = binType;
     }
 
