@@ -5,46 +5,17 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+      xmlns:p="http://primefaces.org/ui">
 
-    <c:set var="root" value="${request.contextPath}" />
     <ui:composition template="${root}/templates/templateadmin.xhtml">
         <ui:param name="pageName" value="Create User" />
         <!-- Override Content -->
         <ui:define name="content">
-            <h2>Create New User</h2>
-            <form role="form">
-  <div class="form-group">
-    <label for="exampleInputEmail1">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-  </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-  </div>
-  <div class="form-group">
-    <label for="exampleInputFile">File input</label>
-    <input type="file" id="exampleInputFile">
-    <p class="help-block">Example block-level help text here.</p>
-  </div>
-  <div class="checkbox">
-    <label>
-      <input type="checkbox"> Check me out
-    </label>
-  </div>
-  <button type="submit" class="btn btn-default">Submit</button>
-</form>
-            <p:panel id="createuser" style="margin-bottom:10px;" >
-                <p:ajaxStatus style="width:16px;height:16px;">
-                    <f:facet name="start">
-                        <h:graphicImage value="/img/load.gif" />
-                    </f:facet>
-                    <f:facet name="complete">
-                        <h:outputText value="" />
-                    </f:facet>
-                </p:ajaxStatus>
-                <c:if test ="#{createUserManagerBean.loginedUser.userType == 'superuser'}">
+            <h:form>
+                <div class="container" >
+
+                    <h2>Create New User</h2>
+
                     <p:panel id="createuser" header="Create User" style="margin-bottom:10px;" >
                         <p:ajaxStatus style="width:16px;height:16px;">
                             <f:facet name="start">
@@ -54,15 +25,9 @@
                                 <h:outputText value="" />
                             </f:facet>
                         </p:ajaxStatus>
-
-
-                        <div class="col-md-2">
-                            <img id="loadingImg" src="img/load.gif" class="loader hide" />
-                        </div>
-
-
                         <c:if test ="#{createUserManagerBean.loginedUser.userType == 'superuser'}">
-                            <h:panelGrid columns="4" cellpadding="6">
+
+                            <h:panelGrid columns="1" cellpadding="5">
                                 <p:outputLabel for="company" value="Company:  " />
                                 <h:selectOneMenu required="true" requiredMessage="Please select the company" id="company" value="#{createUserManagerBean.selectCompanyId}" styleClass="form-control">
                                     <p:ajax listener="#{createUserManagerBean.onCompanyChange}" update="roles" />
@@ -70,66 +35,55 @@
                                     <f:selectItems value="#{createUserManagerBean.companys}" var="company" itemLabel="#{company.name}"  itemValue="#{company.companyId}"/>
                                 </h:selectOneMenu>
 
-                    <p:outputLabel style="font-weight: bold" value="Last Name * : "/>
-                    <h:inputText required="true" requiredMessage="Last Name is required" value="#{createUserManagerBean.lastName}" styleClass="form-control" />
-
-                    <p:outputLabel style="font-weight: bold" value="Email Address * : "/>
-                    <h:inputText required="true" requiredMessage="Email Address is required" value="#{createUserManagerBean.emailAddress}" styleClass="form-control" />
-
                             </h:panelGrid>
-                            <p:separator />
-
                         </c:if>
-                        <h:panelGrid  columns="4" cellpadding="6">
-
+                        <br/>
+                        <h:panelGrid columns="4" cellpadding="5">
                             <p:outputLabel style="font-weight: bold"  value="Salutation * : "/>
-                            <h:selectOneMenu required="true" requiredMessage="Please select salutation" value="#{createUserManagerBean.salution}" styleClass="form-control">
-                                <f:selectItem itemLabel="Select" itemValue="" />
-                                <f:selectItem itemLabel="Mr." itemValue="Mr." />
-                                <f:selectItem itemLabel="Mrs." itemValue="Mrs." />
-                                <f:selectItem itemLabel="Miss" itemValue="Miss" />
-                                <f:selectItem itemLabel="Dr." itemValue="Dr." />
-                                <f:selectItem itemLabel="Ms." itemValue="Ms." />
+                            <h:inputText required="true" requiredMessage="Salutation is required" value="#{createUserManagerBean.salution}" styleClass="form-control" />
+
+                            <p:outputLabel style="font-weight: bold" value="First Name * : "/>
+                            <h:inputText required="true" requiredMessage="First Name is required" value="#{createUserManagerBean.firstName}" styleClass="form-control" />
+
+                            <p:outputLabel style="font-weight: bold" value="Last Name * : "/>
+                            <h:inputText required="true" requiredMessage="Last Name is required" value="#{createUserManagerBean.lastName}" styleClass="form-control" />
+
+                            <p:outputLabel style="font-weight: bold" value="Email Address * : "/>
+                            <h:inputText required="true" requiredMessage="Email Address is required" value="#{createUserManagerBean.emailAddress}" styleClass="form-control" />
+
+                            <p:outputLabel style="font-weight: bold" value="Password * : "/>
+                            <h:inputText required="true" requiredMessage="Password is required" value="#{createUserManagerBean.password}" styleClass="form-control" />
+
+                            <p:outputLabel style="font-weight: bold" value="Postal Address * : "/>
+                            <h:inputText required="true" requiredMessage="Postal Address is required" value="#{createUserManagerBean.postalAddress}" styleClass="form-control" />
+
+                            <p:outputLabel style="font-weight: bold" value="Contact Number * : "/>
+                            <h:inputText required="true" requiredMessage="Contact Number is required" value="#{createUserManagerBean.contactNumber}" styleClass="form-control" />
+
+
+                            <p:outputLabel value="Credit * :" style="font-weight: bold"/>
+                            <h:selectOneMenu required="true" requiredMessage="Please select credit" id="credit" value="#{createUserManagerBean.credit}" styleClass="form-control">
+                                <f:selectItem itemLabel="Not Applicable" itemValue="Not Applicable" />
+                                <f:selectItem itemLabel="Pass" itemValue="Pass" />
+                                <f:selectItem itemLabel="Fail" itemValue="Fail" />
                             </h:selectOneMenu>
 
-                    <p:outputLabel style="font-weight: bold" value="Postal Address * : "/>
-                    <h:inputText required="true" requiredMessage="Postal Address is required" value="#{createUserManagerBean.postalAddress}" styleClass="form-control" />
 
-                    <p:outputLabel style="font-weight: bold" value="Contact Number * : "/>
-                    <h:inputText required="true" requiredMessage="Contact Number is required" value="#{createUserManagerBean.contactNumber}" styleClass="form-control" />
-
-
-                    <p:outputLabel value="Credit * :" style="font-weight: bold"/>
-                    <h:selectOneMenu required="true" requiredMessage="Please select credit" id="credit" value="#{createUserManagerBean.credit}" styleClass="form-control">
-                        <f:selectItem itemLabel="Not Applicable" itemValue="Not Applicable" />
-                        <f:selectItem itemLabel="Pass" itemValue="Pass" />
-                        <f:selectItem itemLabel="Fail" itemValue="Fail" />
-                    </h:selectOneMenu>
-
-
+                            <p:outputLabel value="Select Roles * :" style="font-weight: bold" />
+                            <p:selectCheckboxMenu id="roles" value="#{createUserManagerBean.selectedRoles}" label="Roles"
+                                                  filter="true" filterMatchMode="startsWith" panelStyle="width:300px" styleClass="form-control" required="true" requiredMessage="Please select role">
+                                <f:selectItems value="#{createUserManagerBean.roles}" var="role" itemLabel="#{role.roleName}" itemValue="#{role.userRoleId}"/>
+                            </p:selectCheckboxMenu>
+                        </h:panelGrid>
+                        <div class="col-md-2">
+                            <img id="loadingImg" src="img/load.gif" class="loader hide" />
+                        </div>
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                        <p:commandButton id="ajax" actionListener="#{createUserManagerBean.createSystemUser}" value="Create User" update="createuser" styleClass="btn btn-success" icon="ui-icon-check"/>
+                    </p:panel>
                 </div>
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <p:commandButton id="ajax" actionListener="#{createUserManagerBean.createSystemUser}" value="Create User" update="createuser" styleClass="btn btn-success" icon="ui-icon-check"/>
-            </p:panel>
-            <script type="text/javascript">
-                PrimeFaces.validator['custom.emailValidator'] = {
-                    pattern: /\S+@\S+/,
-                    validate: function(element, value) {
-                        //use element.data() to access validation metadata, in this case there is none.
-                        if (!this.pattern.test(value)) {
-                            throw {
-                                summary: 'Validation Error',
-                                detail: value + ' is not a valid email.'
-                            }
-                        }
-                    }
-                };
-            </script>
+            </h:form>
 
         </ui:define>
     </ui:composition>
 </html>
-                            <p:outputLabel style="font-weight: bold" value="Email Address * : "/>
-                            <h:inputText required="true" requiredMessage="Email Address is required" value="#{createUserManagerBean.emailAddress}" styleClass="form-control" >
-                                <f:validator validatorId="custom.emailValidator" />
-                            </h:inputText>
