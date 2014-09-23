@@ -2,14 +2,19 @@ package merlionportal.managedbean.mrp2;
 
 import entity.Component;
 import entity.Product;
-import javax.faces.view.ViewScoped;
-
+import entity.SystemUser;
+import java.io.IOException;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.mrp.forecastingmodule.ForecastSessionBean;
 import merlionportal.mrp.productcatalogmodule.ProductSessionBean;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
@@ -18,18 +23,23 @@ import org.primefaces.event.RowEditEvent;
  *
  * @author yao
  */
+//@ViewScoped
+//@ManagedBean(name = "productComponentViewEditManagedBean")
+
+@Named(value = "productComponentViewEditManagedBean")
 @ViewScoped
-@ManagedBean(name = "productComponentViewEditManagedBean")
 public class ProductComponentViewEditManagedBean {
 
     @EJB
     private ProductSessionBean productSessionBean;
-    private Integer companyId = 12345;
+    @EJB
+    UserAccountManagementSessionBean uamb;
+    @EJB
+    ForecastSessionBean forecastSessionBean;
 
     private List<Component> components;
-    private Component component1;
     private Double componentId;
-
+    private Integer companyId;
     private String componentName;
     private String description;
     private Integer quantity;
@@ -43,18 +53,36 @@ public class ProductComponentViewEditManagedBean {
 
     //private Double productId = 1.0;
     private final static String[] currencies;
-    
-    Integer productId = 1;
+
+    Integer productId;
     Product product;
     List<Product> products;
+
+    private SystemUser loginedUser;
 
     public ProductComponentViewEditManagedBean() {
     }
 
     @PostConstruct
     public void init() {
-        int pdtTempId = productId.intValue();
-        components = productSessionBean.getComponentsForAProduct(companyId, pdtTempId);
+        boolean redirect = true;
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
+            loginedUser = uamb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
+            companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
+            if (loginedUser != null) {
+                redirect = false;
+            }
+        }
+        if (redirect) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        products = productSessionBean.getMyProducts(companyId);
+
     }
 
     static {
@@ -103,11 +131,10 @@ public class ProductComponentViewEditManagedBean {
         this.productId = productId;
     }
 
+    /////change later
     public List<Product> getProducts() {
-        products = productSessionBean.getMyProducts(companyId);
         return products;
     }
-
 
     public String getComponentName() {
         return componentName;
@@ -159,7 +186,7 @@ public class ProductComponentViewEditManagedBean {
         this.leadTime = leadTimeTemp;
     }
 
- public int getSupplierCompanyId() {
+    public int getSupplierCompanyId() {
         return supplierCompanyId;
     }
 
@@ -191,10 +218,6 @@ public class ProductComponentViewEditManagedBean {
         this.supplierContactNumber = supplierContactNumber;
     }
 
-
-    
-    
-    
     public List<Component> getComponents() {
         return components;
     }
@@ -203,9 +226,11 @@ public class ProductComponentViewEditManagedBean {
         FacesMessage msg = new FacesMessage("Component Edited");
         Component component = new Component();
         component = (Component) event.getObject();
-        //  System.err.println("product.getProductName(): " + product.getProductName());
-        int pdtTempId = productId.intValue();
-        productSessionBean.editComponent(component.getComponentName(), component.getDescription(), component.getCost(), component.getCurrency(), component.getQuantity(), component.getLeadTime(), component.getSupplierCompanyId() , component.getSupplierContactPerson(), component.getSupplierContactNumber(), component.getSupplierContactEmail(), companyId, pdtTempId, component.getComponentId());
+        System.out.println("!!!!!!!!!!!!!!!!!!!!1");
+        System.out.println("!!!!!!!!!!!!!!!!!!!!1");
+        System.out.println("!!!!!!!!!!!!!!!!!!!!1");
+        System.err.println("product.getProductName(): " + component.getComponentName());
+        productSessionBean.editComponent(component.getComponentName(), component.getDescription(), component.getCost(), component.getCurrency(), component.getQuantity(), component.getLeadTime(), component.getSupplierCompanyId(), component.getSupplierContactPerson(), component.getSupplierContactNumber(), component.getSupplierContactEmail(), companyId, productId, component.getComponentId());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
@@ -222,6 +247,14 @@ public class ProductComponentViewEditManagedBean {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
+    }
+
+    public void onProductChange() {
+        if (productId != null) {
+            components = productSessionBean.getComponentsForAProduct(companyId, productId);
+
+        }
+
     }
 
 }

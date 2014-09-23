@@ -6,6 +6,8 @@
 package merlionportal.managedbean.mrp2;
 
 import entity.Product;
+import entity.SystemUser;
+import java.io.IOException;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -13,6 +15,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.mrp.productcatalogmodule.ProductSessionBean;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
@@ -30,7 +33,9 @@ public class ProductViewEditManagedBean {
      */
     @EJB
     private ProductSessionBean productSessionBean;
-    private Integer companyId = 12345;
+    @EJB
+    UserAccountManagementSessionBean uamb;
+    private Integer companyId;
 
     private List<Product> products;
 
@@ -45,12 +50,31 @@ public class ProductViewEditManagedBean {
     private final static String[] productTypes;
     private final static String[] currencies;
     private final static String[] categories;
+    
+    private SystemUser loginedUser;
 
     public ProductViewEditManagedBean() {
     }
 
     @PostConstruct
     public void init() {
+        
+         boolean redirect = true;
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
+            loginedUser = uamb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
+            companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
+            if (loginedUser != null) {
+                redirect = false;
+            }
+        }
+        if (redirect) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        
         products = productSessionBean.getMyProducts(companyId);
     }
 
@@ -171,9 +195,7 @@ public class ProductViewEditManagedBean {
     }
 
     public List<Product> getMyCompanyProducts() {
-//        companyId=(Integer)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
-
-        return products;
+         return products;
     }
 
     public void onRowEdit(RowEditEvent event) {

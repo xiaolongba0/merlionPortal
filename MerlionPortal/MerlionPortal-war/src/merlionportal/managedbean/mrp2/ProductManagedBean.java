@@ -6,14 +6,18 @@
 package merlionportal.managedbean.mrp2;
 
 import entity.Product;
+import entity.SystemUser;
+import java.io.IOException;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import merlionportal.mrp.productcatalogmodule.ProductSessionBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
@@ -23,13 +27,17 @@ public class ProductManagedBean {
 
     @EJB
     private ProductSessionBean productSessionBean;
+    
+    @EJB
+    UserAccountManagementSessionBean uamb;
+    
     private String productName;
     private String description;
     private String category;
     private String productType;
     private String currency;
     private Double price;
-    private Integer companyId = 12345;
+    private Integer companyId;
 
     private Double productId;
     private Product productTemp;
@@ -53,6 +61,28 @@ public class ProductManagedBean {
     private Integer newProductId;
     private Integer newComponentId;
  //   private Integer newComponentId;
+     private SystemUser loginedUser;
+     
+     
+     @PostConstruct
+    public void init() {
+        boolean redirect = true;
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
+            loginedUser = uamb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
+            companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
+            if (loginedUser != null) {
+                redirect = false;
+            }
+        }
+        if (redirect) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+}
+    
 
     //private String types = "Manufacturing" + "Non-manufacturing";
     public ProductManagedBean() {
@@ -197,16 +227,10 @@ public class ProductManagedBean {
 
     public void saveNewComponent(ActionEvent component) {
 
-        //  Integer venueId = Integer.valueOf(venue);
-        //  Integer systemUserId = Integer.valueOf(systemUser);
         try {
-            //companyId =(Integer)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
             int pdtTempId = productId.intValue();
             newComponentId = productSessionBean.addNewComponent(componentName, componentDescription, componentQuantity, componentCurrency, componentCost, componentLeadTime, supplierCompanyId, supplierContactPerson, supplierContactNumber, supplierContactEmail, companyId, pdtTempId);
             statusMessage = "New Component Saved Successfully";
-            //   } catch (VenueConflictException vex) {
-            //      statusMessage = "Venue Conflict Exception";
-            //       newProductId = -1L;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -242,8 +266,6 @@ public class ProductManagedBean {
     }
 
     public List<Product> getMyCompanyProducts() {
-//        companyId=(Integer)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
-
         products = productSessionBean.getMyProducts(companyId);
         return products;
     }
@@ -259,17 +281,9 @@ public class ProductManagedBean {
     }
 
     public void saveNewProduct(ActionEvent product) {
-
-        //  Integer venueId = Integer.valueOf(venue);
-        //  Integer systemUserId = Integer.valueOf(systemUser);
         try {
-            //companyId =(Integer)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
             newProductId = productSessionBean.addNewProduct(productName, description, category, productType, currency, price, companyId);
             statusMessage = "New Product Saved Successfully";
-
-            //   } catch (VenueConflictException vex) {
-            //      statusMessage = "Venue Conflict Exception";
-            //       newProductId = -1L;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -302,8 +316,9 @@ public class ProductManagedBean {
      productTemp = productSessionBean.getAProduct(companyId, pdtID);
      return productTemp;
      } */
+    
+    //change later
     public void viewAProduct() {
-//        companyId=(Integer)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
         try {
             int pdtID = productId.intValue();
             productTemp = productSessionBean.getAProduct(companyId, pdtID);

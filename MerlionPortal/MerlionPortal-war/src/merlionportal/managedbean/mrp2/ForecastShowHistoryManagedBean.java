@@ -5,11 +5,17 @@
  */
 package merlionportal.managedbean.mrp2;
 
+import entity.SystemUser;
+import java.io.IOException;
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Vector;
+import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
+import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.DateAxis;
@@ -17,7 +23,13 @@ import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 
 @ManagedBean
+@RequestScoped
 public class ForecastShowHistoryManagedBean implements Serializable {
+
+    @EJB
+    UserAccountManagementSessionBean uamb;
+
+    Integer companyId;
 
     private LineChartModel purchaseHistory;
     List<String> yearMonth;
@@ -39,20 +51,40 @@ public class ForecastShowHistoryManagedBean implements Serializable {
     int expectedGrowth;
     int periodicity;
 
+    private SystemUser loginedUser;
+
     //variables for forecasting
     int size = 0;
 
     @PostConstruct
     public void init() {
+
+        boolean redirect = true;
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
+            loginedUser = uamb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
+            companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
+            if (loginedUser != null) {
+                redirect = false;
+            }
+        }
+        if (redirect) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
         createPurchaseHistoryModels();
-        computeForecastResult();
+           computeForecastResult();
+        
+
     }
 
     public LineChartModel getPurchaseHistory() {
         return purchaseHistory;
     }
-    
-     public LineChartModel getForecastSales() {
+
+    public LineChartModel getForecastSales() {
         return forecastSales;
     }
 
@@ -147,6 +179,11 @@ public class ForecastShowHistoryManagedBean implements Serializable {
     public void computeForecastResult() {
         //produce a list of date correspond to sales
         //size need to be retreved/computed later
+        System.out.println("!!!!!!!!!!!!!!!!!!!");
+        System.out.println("!!!!!!!!!!!!!!!!!!!");
+        System.out.println("!!!!!!!!!!!!!!!!!!!");
+        System.out.println("!!!!!!!!!!!!!!!!!!!periodicity" + periodicity);
+
         size = 24;
         monthlyDate = new Vector<String>();
         monthlyDate.add("2012-08-01");
@@ -463,5 +500,11 @@ public class ForecastShowHistoryManagedBean implements Serializable {
     public void setExpectedGrowth(int expectedGrowth) {
         this.expectedGrowth = expectedGrowth;
     }
+
+ /*   public String onParameterChange() {
+      
+         computeForecastResult();
+         return "forecastResult?faces-redirect=true";
+    }   */
 
 }
