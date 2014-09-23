@@ -46,7 +46,7 @@ public class StorageTypeViewEditManagedBean {
      */
     public StorageTypeViewEditManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
 
@@ -85,7 +85,6 @@ public class StorageTypeViewEditManagedBean {
         return null;
     }
 
-    
     public void onRowEdit(RowEditEvent event) {
         System.out.println("ON ROW EDIT ===============================");
         storagetype = new StorageType();
@@ -109,11 +108,13 @@ public class StorageTypeViewEditManagedBean {
             System.out.println("[In WAR FILE - Delete StorageType Function] storageType ID========== :" + storageType.getStorageTypeId());
             assetManagementSessionBean.deleteStorageType(storageType.getStorageTypeId());
             storagetypes.remove(storageType);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Storage Type is deleted"));
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    
+
     public List<Warehouse> getWarehouses() {
         return warehouses;
     }
@@ -161,7 +162,5 @@ public class StorageTypeViewEditManagedBean {
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
     }
-
-    
 
 }

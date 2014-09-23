@@ -282,26 +282,26 @@ public class AssetManagementSessionBean {
     }
 
     //Edit in progress
-    public Integer editStorageBin(String binName, String description, Integer maxQuantity, Double maxWeight,
-            Integer storageBinId) {
+    public boolean editStorageBin(String binName, String description, String type, Integer maxQuantity, Double maxWeight, Integer storageBinId) {
 
-        System.out.println("[EJB]================================edit storage bin");
         StorageBin bin = new StorageBin();
         Query query = em.createNamedQuery("StorageBin.findByStorageBinId").setParameter("storageBinId", storageBinId);
         bin = (StorageBin) query.getSingleResult();
-        System.out.println("EditStorageBin ============= : " + bin);
+        if (bin != null) {
+            bin.setBinName(binName);
+            bin.setBinType(type);
+            bin.setDescription(description);
+            bin.setMaxQuantity(maxQuantity);
+            bin.setMaxWeight(maxWeight);
 
-        bin.setBinName(binName);
-        // bin.setBinType(xxx);
-        bin.setDescription(description);
-        bin.setMaxQuantity(maxQuantity);
-        bin.setMaxWeight(maxWeight);
+            em.merge(bin);
+            em.flush();
 
-        em.merge(bin);
-        em.flush();
-
-        System.out.println("[EJB]================================Successfully EDITED StorageBin");
-        return bin.getStorageBinId();
+            return true;
+        }
+        else{
+            return false;
+        }
 
     }
 }

@@ -48,7 +48,7 @@
                             <p:outputLabel for="warehouse" value="Warehouse Name: " />
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="warehouse" value="#{storageTypeViewEditManagedBean.warehouseId}"  style="width:300px" required="true" requiredMessage="Please select a company">
+                            <p:selectOneMenu id="warehouse" value="#{storageTypeViewEditManagedBean.warehouseId}"  style="width:300px" required="true" requiredMessage="Please select a warehouse">
                                 <p:ajax listener="#{storageTypeViewEditManagedBean.onWarehouseChange}" update="storagetypeData" />
                                 <f:selectItem itemLabel="Select Warehouse" itemValue="" noSelectionOption="true" />
                                 <f:selectItems value="#{createStorageTypeManagerBean.warehouses}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId} Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"/>
