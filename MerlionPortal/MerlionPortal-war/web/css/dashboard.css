@@ -6,6 +6,13 @@
     text-align: center;
     margin:50px 0px 80px 0px;
 }
-.dashboard-content:hover{
+/*.dashboard-box:hover{
     background:#cecece;
+}*/
+
+.highlight {
+    -webkit-box-shadow: 0 0 5px #444;
+    -moz-box-shadow: 0 0 5px #444;
+    box-shadow: 0 0 5px #444;
+    cursor:pointer;
 }
