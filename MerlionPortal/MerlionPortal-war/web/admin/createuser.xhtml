@@ -40,7 +40,14 @@
                         <br/>
                         <h:panelGrid columns="4" cellpadding="5">
                             <p:outputLabel style="font-weight: bold"  value="Salutation * : "/>
-                            <h:inputText required="true" requiredMessage="Salutation is required" value="#{createUserManagerBean.salution}" styleClass="form-control" />
+                            <h:selectOneMenu required="true" requiredMessage="Please select salutation" id="salutation" value="#{createUserManagerBean.salution}" styleClass="form-control">
+                                <f:selectItem itemLabel="Select Salutation" itemValue="" noSelectionOption="true" />
+                                <f:selectItem itemLabel="Mr."  itemValue="Mr."/>
+                                <f:selectItem itemLabel="Mrs."  itemValue="Mrs."/>
+                                <f:selectItem itemLabel="Ms."  itemValue="Ms."/>
+                                <f:selectItem itemLabel="Miss"  itemValue="Miss"/>
+                                <f:selectItem itemLabel="Dr."  itemValue="Dr."/>
+                            </h:selectOneMenu>
 
                             <p:outputLabel style="font-weight: bold" value="First Name * : "/>
                             <h:inputText required="true" requiredMessage="First Name is required" value="#{createUserManagerBean.firstName}" styleClass="form-control" />
