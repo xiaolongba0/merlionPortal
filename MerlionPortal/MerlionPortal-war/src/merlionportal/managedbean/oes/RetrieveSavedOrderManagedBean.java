@@ -16,6 +16,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import merlionportal.ci.administrationmodule.SystemAccessRightSessionBean;
 import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
 
 /**
@@ -34,6 +35,11 @@ public class RetrieveSavedOrderManagedBean {
     private List<ProductOrder> savedOrderList;
     private ProductOrder selectedOrder;
     private List<ProductOrder> productOrderList;
+    
+
+   
+    @EJB
+    private SystemAccessRightSessionBean systemAccessRightSB;
 
     public RetrieveSavedOrderManagedBean() {
     }
@@ -60,13 +66,22 @@ public class RetrieveSavedOrderManagedBean {
     }
 
     public List<ProductOrder> getSavedOrderList() {
-        savedOrderList=purchaseOrderMB.viewAllProductOrder(4, companyId, userId);
+        savedOrderList = purchaseOrderMB.viewAllProductOrder(4, companyId, userId);
         return savedOrderList;
     }
 
     public List<ProductOrder> getProductOrderList() {
-       productOrderList = purchaseOrderMB.viewAllProductOrder(1, companyId, userId);
+        if (systemAccessRightSB.checkOESCustomer(userId)) {
+            productOrderList = purchaseOrderMB.viewAllProductOrder(1, companyId, userId);
+        } else {
+            productOrderList = purchaseOrderMB.viewAllProductOrder(1, companyId);
+
+        }
         return productOrderList;
+    }
+
+    public boolean checkOESSales(){
+        return systemAccessRightSB.checkOESSales(userId);
     }
 
     public void setSavedOrderList(List<ProductOrder> savedOrderList) {

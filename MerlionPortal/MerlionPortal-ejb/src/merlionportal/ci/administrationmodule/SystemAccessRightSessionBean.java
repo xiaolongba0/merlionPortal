@@ -3,60 +3,39 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package merlionportal.utility;
+package merlionportal.ci.administrationmodule;
 
 import entity.SystemUser;
-import java.io.IOException;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
-import merlionportal.ci.administrationmodule.CheckAccessRightBean;
-import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import javax.ejb.Stateless;
+import javax.ejb.LocalBean;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import util.accessRightControl.Right;
 
 /**
  *
  * @author manliqi
  */
-@Named(value = "checkRightManagerBean")
-@RequestScoped
-public class CheckRightManagerBean {
-
-    private SystemUser loginedUser;
+@Stateless
+@LocalBean
+public class SystemAccessRightSessionBean {
 
     @EJB
     UserAccountManagementSessionBean uamb;
     @EJB
     CheckAccessRightBean carb;
+    @PersistenceContext
+    EntityManager em;
 
-    /**
-     * Creates a new instance of CheckRightManagerBean
-     */
-    public CheckRightManagerBean() {
-    }
+    // Add business logic below. (Right-click in editor and choose
+    // "Insert Code > Add Business Method")
+    
+    
+//    OES
+    public boolean canUseOES(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
 
-    @PostConstruct
-    public void init() {
-        boolean redirect = true;
-        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
-            loginedUser = uamb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
-            if (loginedUser != null) {
-                redirect = false;
-            }
-        }
-        if (redirect) {
-            try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath());
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-
-    }
-
-    public boolean canUseOES() {
         if (loginedUser != null) {
             if (carb.userHasRight(loginedUser, Right.canGeneratePO) || carb.userHasRight(loginedUser, Right.canGenerateSO)
                     || carb.userHasRight(loginedUser, Right.canGenerateQuotationAndProductContract) || carb.userHasRight(loginedUser, Right.canGenerateSalesReport)) {
@@ -66,7 +45,36 @@ public class CheckRightManagerBean {
         return false;
     }
 
-    public boolean canUseMRP() {
+    public boolean checkOESCustomer(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canGeneratePO)) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    public boolean checkOESSales(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canGenerateSO)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    
+    
+    
+//    MRP
+    public boolean canUseMRP(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
         if (loginedUser != null) {
             if (carb.userHasRight(loginedUser, Right.canUseForecast) || carb.userHasRight(loginedUser, Right.canManageProductAndComponent)
                     || carb.userHasRight(loginedUser, Right.canGenerateMRPList)) {
@@ -76,7 +84,10 @@ public class CheckRightManagerBean {
         return false;
     }
 
-    public boolean canUseCRMS() {
+//    CRMS
+    public boolean canUseCRMS(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
         if (loginedUser != null) {
             if (carb.userHasRight(loginedUser, Right.canGenerateServicePO) || carb.userHasRight(loginedUser, Right.canUpdateCustomerCredit)
                     || carb.userHasRight(loginedUser, Right.canGenerateServiceSO) || carb.userHasRight(loginedUser, Right.canGenerateQuotationRequest)
@@ -88,8 +99,10 @@ public class CheckRightManagerBean {
         return false;
 
     }
+//  WMS
+    public boolean canUseWMS(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
 
-    public boolean canUseWMS() {
         if (loginedUser != null) {
             if (carb.userHasRight(loginedUser, Right.canManageWarehouse) || carb.userHasRight(loginedUser, Right.canManageStockAuditProcess)
                     || carb.userHasRight(loginedUser, Right.canManageStockTransportOrder) || carb.userHasRight(loginedUser, Right.canManageReceivingGoods)
@@ -99,8 +112,10 @@ public class CheckRightManagerBean {
         }
         return false;
     }
+//TMS
+    public boolean canUseTMS(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
 
-    public boolean canUseTMS() {
         if (loginedUser != null) {
             if (carb.userHasRight(loginedUser, Right.canManageTransportationAsset) || carb.userHasRight(loginedUser, Right.canManageTransportationOrder)
                     || carb.userHasRight(loginedUser, Right.canManageLocation) || carb.userHasRight(loginedUser, Right.canManageAssetType)
@@ -111,8 +126,9 @@ public class CheckRightManagerBean {
         return false;
 
     }
-
-    public boolean canUseGRNS() {
+//GRNS
+    public boolean canUseGRNS(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
         if (loginedUser != null) {
             if (carb.userHasRight(loginedUser, Right.canManageBid) || carb.userHasRight(loginedUser, Right.canManagePost)) {
                 return true;
@@ -121,12 +137,8 @@ public class CheckRightManagerBean {
         return false;
     }
 
-    public SystemUser getLoginedUser() {
-        return loginedUser;
-    }
+    private SystemUser getUser(Integer userId) {
+        return em.find(SystemUser.class, userId);
 
-    public void setLoginedUser(SystemUser loginedUser) {
-        this.loginedUser = loginedUser;
     }
-
 }
