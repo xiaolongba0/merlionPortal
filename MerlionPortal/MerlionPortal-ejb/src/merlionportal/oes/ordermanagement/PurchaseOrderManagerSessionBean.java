@@ -46,7 +46,7 @@ public class PurchaseOrderManagerSessionBean {
         return null;
     }
 
-    public ProductOrder createPO(String shipto, int companyId, int customerId, int quotationId, String cName, String cNumber) {
+    public Integer createPO(String shipto, int companyId, int customerId, int quotationId, String cName, String cNumber) {
         System.out.println("+++++++++++++++++++GeneratePO Start====================");
         ProductOrder po = new ProductOrder();
         Date date = new Date();
@@ -66,7 +66,7 @@ public class PurchaseOrderManagerSessionBean {
         em.persist(po);
         System.out.println("+++++++++++++++++++GeneratePO Start=====3333===============");
         em.flush();
-        return po;
+        return po.getProductPOId();
 
     }
 
@@ -162,6 +162,13 @@ public class PurchaseOrderManagerSessionBean {
             resultList.add(pro);
         }
         return resultList;
+    }
+    
+    public ProductOrder retrieveProductOrder(Integer poId){
+        ProductOrder po = new ProductOrder();
+        po=em.find(ProductOrder.class, poId);
+        
+        return po;
     }
 
 }

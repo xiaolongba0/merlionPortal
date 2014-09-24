@@ -89,7 +89,7 @@ public class QuotationManagedBean implements Serializable {
     }
 
     public List<Quotation> getAllQuotation() {
-        if (userId == 1) {
+        if (!ccrsb.checkUserIsCustomer(userId)) {
             allQuotation = quotationMB.viewAllRequestForQuotation(companyId);
         } else {
             allQuotation = quotationMB.viewAllRequestForQuotation(companyId, userId);
@@ -210,7 +210,7 @@ public class QuotationManagedBean implements Serializable {
     }
 
     public List<Quotation> getAllProcceQuotation() {
-        if (userId == 1) {
+        if (!ccrsb.checkUserIsCustomer(userId)) {
             allProcceQuotation = quotationMB.viewAllProQuotation(companyId);
         } else {
             allProcceQuotation = quotationMB.viewAllProQuotation(companyId, userId);
@@ -287,7 +287,7 @@ public class QuotationManagedBean implements Serializable {
     }
 
     public Boolean checkAcceptable() {
-        return userId == 1 && selectedQuotation.getStatus() == 2;
+        return selectedQuotation.getStatus() == 2;
     }
 
     public void acceptQuotation() {

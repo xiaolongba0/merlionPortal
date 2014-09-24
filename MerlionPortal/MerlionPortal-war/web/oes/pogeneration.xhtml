@@ -18,7 +18,6 @@
     <h:body>
 
         <h:form id="formMain">  
-            <p:growl id="messages"/>        
             <p:menubar>
                 <p:menuitem value="HOME" url="oesindexpage.xhtml"/>
                 <p:menuitem value="PRODUCTS" url="displayallproducts.xhtml" />
@@ -95,7 +94,7 @@
                             </h:panelGrid>
                         </div>
                         <div class="modal-footer">
-                            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                            <p:messages id="modalMessages" showDetail="true" autoUpdate="true" closable="true" />
                             <p:commandButton value="Reset" styleClass="btn btn-success" type="reset" />
                             <p:commandButton value="Submit" styleClass="btn btn-success" actionListener="#{purchaseOrderManagedBean.setShipto()}" pt:data-dismiss="modal" update="detail" ajax="true"></p:commandButton>
                             <p:commandButton value="Close" styleClass="btn btn-warning" pt:data-dismiss="modal"></p:commandButton>
@@ -103,15 +102,7 @@
                     </div>
                 </div>
             </div>
-            <br></br>
-        </h:form>
-        <script type="text/javascript">
-            function toggleModal() {
-                $("#shiptoModal").modal('show');
-            }
-        </script>
-        <h:form>
-            <br></br>
+
             <p:outputLabel for="quotation"  value="Quotation Number: " />
             <p:inputText id="quotation" value="#{purchaseOrderManagedBean.qutatuonId}" required="true" label="Quotation Number"></p:inputText>
             <p:commandButton value="Search" actionListener="#{purchaseOrderManagedBean.searchForQuotation()}" update="productsTalbe" ajax="true"></p:commandButton>
@@ -158,13 +149,17 @@
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
             <p:commandButton value="Cancel"  action="oesindexpage.xhtml" />
             <p:commandButton value="Save Order" actionListener="#{purchaseOrderManagedBean.saveOrder()}" ajax="true"></p:commandButton>
-            <p:commandButton value="Submit Order" actionListener="#{purchaseOrderManagedBean.submitOrder}"></p:commandButton>
+            <p:commandButton value="Submit Order" actionListener="#{purchaseOrderManagedBean.submitOrder}" ajax="true"></p:commandButton>
         </h:form>
         <br></br>
         <br></br>
         <br></br>
         <br></br>
-
+        <script type="text/javascript">
+            function toggleModal() {
+                $("#shiptoModal").modal('show');
+            }
+        </script>
     </h:body>
 </html>
 
