@@ -254,7 +254,7 @@ public class ForecastShowHistoryManagedBean implements Serializable {
         if (periodicity % 2 == 0) {
             // periodicity is even
             //periodicity should be a input from user. For now, hard code first.
-            
+
             int start1 = periodicity / 2 + 1;
             int end1 = size - periodicity / 2;
 
@@ -295,7 +295,6 @@ public class ForecastShowHistoryManagedBean implements Serializable {
             for (int i = 0; i <= size; i++) {
                 tValue.add(i);
             }
-
 
             //Linear regression to compute m (slope) and b (tangent)
             Double Xsum = 0.0;
@@ -353,13 +352,11 @@ public class ForecastShowHistoryManagedBean implements Serializable {
             for (int i = 1; i <= periodicity; i++) {
                 for (int j = i; j <= size; j = j + (periodicity)) {
                     seasonalFactorTemp = seasonalFactorTemp + seasonalFactor.get(j);
-                     count++;
+                    count++;
                 }
 
                 finalSeasonalFactor.add(seasonalFactorTemp / count);
-                System.out.println("!!!!!!!!!!!!!!!!!!!!!");
-                 System.out.println(count);
-                
+
                 seasonalFactorTemp = 0;
                 count = 0;
             }
@@ -372,6 +369,15 @@ public class ForecastShowHistoryManagedBean implements Serializable {
                 forecastR.add((int) Math.round((m * i + b) * (finalSeasonalFactor.get(j))));
                 j++;
             }
+
+            // get a max number for graph y-axis
+            int max = 0;
+            for (int i = 1; i <= periodicity; i++) {
+                if (forecastR.get(i) > max) {
+                    max = forecastR.get(i);
+                }
+            }
+            max = max + 2000;
 
             monthlyDateR = new Vector<String>();
             monthlyDateR.add("0");
@@ -387,6 +393,18 @@ public class ForecastShowHistoryManagedBean implements Serializable {
             monthlyDateR.add("2015-06-01");
             monthlyDateR.add("2015-07-01");
             monthlyDateR.add("2015-08-01");
+            monthlyDateR.add("2015-09-01");
+            monthlyDateR.add("2015-10-01");
+            monthlyDateR.add("2015-11-01");
+            monthlyDateR.add("2015-12-01");
+            monthlyDateR.add("2016-01-01");
+            monthlyDateR.add("2016-02-01");
+            monthlyDateR.add("2016-03-01");
+            monthlyDateR.add("2016-04-01");
+            monthlyDateR.add("2016-05-01");
+            monthlyDateR.add("2016-06-01");
+            monthlyDateR.add("2016-07-01");
+            monthlyDateR.add("2016-08-01");
 
             forecastSales = new LineChartModel();
             LineChartSeries series1 = new LineChartSeries();
@@ -405,12 +423,12 @@ public class ForecastShowHistoryManagedBean implements Serializable {
             Axis yAxis = forecastSales.getAxis(AxisType.Y);
             yAxis.setLabel("Sales Volume (in pieces)");
             yAxis.setMin(0);
-            yAxis.setMax(30000);
+            yAxis.setMax(35000);
 
             DateAxis axis = new DateAxis("Dates");
             forecastSales.getAxes().put(AxisType.X, axis);
             axis.setMin("2014-05-01");
-            axis.setMax("2015-10-01");
+            axis.setMax("2016-01-01");
             axis.setTickFormat("%b, %y");
 
         } else {
@@ -433,7 +451,7 @@ public class ForecastShowHistoryManagedBean implements Serializable {
                     value1 = value1 + salesdataT.get(j);
                 }
 
-                deseasonizedD.add(value1/periodicity);
+                deseasonizedD.add(value1 / periodicity);
                 value1 = 0;
             }
 
@@ -441,7 +459,7 @@ public class ForecastShowHistoryManagedBean implements Serializable {
             for (int i = size - (periodicity - 1) / 2 + 1; i <= size; i++) {
                 deseasonizedD.add(0.0);
             }
-            
+
             //Create a reference list. eg 1, 2, 3....
             tValue = new Vector();
             for (int i = 0; i <= size; i++) {
@@ -480,7 +498,6 @@ public class ForecastShowHistoryManagedBean implements Serializable {
 
             m = (Double) ((N * XYsum) - (Xsum * Ysum)) / ((N * XXsum) - (Xsum * Xsum));
             b = (Double) ((XXsum * Ysum) - (Xsum * XYsum)) / ((N * XXsum) - (Xsum * Xsum));
-            
 
             //Compute predicted deseasonalized demand
             predictedDeseasonalizedD = new Vector();
@@ -489,7 +506,7 @@ public class ForecastShowHistoryManagedBean implements Serializable {
             for (int i = 1; i <= size; i++) {
                 predictedDeseasonalizedD.add(m * i + b);
             }
-  
+
             //Compute seasonal factors
             seasonalFactor = new Vector();
             seasonalFactor.add(0.0);
@@ -521,6 +538,14 @@ public class ForecastShowHistoryManagedBean implements Serializable {
                 j++;
             }
 
+            int max = 0;
+            for (int i = 1; i <= periodicity; i++) {
+                if (forecastR.get(i) > max) {
+                    max = forecastR.get(i);
+                }
+            }
+            max = max + 2000;
+
             monthlyDateR = new Vector<String>();
             monthlyDateR.add("0");
             monthlyDateR.add("2014-09-01");
@@ -535,6 +560,18 @@ public class ForecastShowHistoryManagedBean implements Serializable {
             monthlyDateR.add("2015-06-01");
             monthlyDateR.add("2015-07-01");
             monthlyDateR.add("2015-08-01");
+            monthlyDateR.add("2015-09-01");
+            monthlyDateR.add("2015-10-01");
+            monthlyDateR.add("2015-11-01");
+            monthlyDateR.add("2015-12-01");
+            monthlyDateR.add("2016-01-01");
+            monthlyDateR.add("2016-02-01");
+            monthlyDateR.add("2016-03-01");
+            monthlyDateR.add("2016-04-01");
+            monthlyDateR.add("2016-05-01");
+            monthlyDateR.add("2016-06-01");
+            monthlyDateR.add("2016-07-01");
+            monthlyDateR.add("2016-08-01");
 
             forecastSales = new LineChartModel();
             LineChartSeries series1 = new LineChartSeries();
