@@ -37,7 +37,10 @@ public class ForecastShowHistoryManagedBean implements Serializable {
     Vector<String> monthlyDate;
     Vector<Integer> salesdata;
 
-    Vector<Integer> deseasonizedD;
+    Vector<String> monthlyDateT;
+    Vector<Integer> salesdataT;
+
+    Vector<Double> deseasonizedD;
     Vector<Integer> deseasonizedDC;
     Vector<Integer> tValue;
     Vector<Double> predictedDeseasonalizedD;
@@ -75,8 +78,7 @@ public class ForecastShowHistoryManagedBean implements Serializable {
             }
         }
         createPurchaseHistoryModels();
-           computeForecastResult();
-        
+        computeForecastResult();
 
     }
 
@@ -179,10 +181,6 @@ public class ForecastShowHistoryManagedBean implements Serializable {
     public void computeForecastResult() {
         //produce a list of date correspond to sales
         //size need to be retreved/computed later
-        System.out.println("!!!!!!!!!!!!!!!!!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!periodicity" + periodicity);
 
         size = 24;
         monthlyDate = new Vector<String>();
@@ -237,251 +235,333 @@ public class ForecastShowHistoryManagedBean implements Serializable {
         salesdata.add(22000);
         salesdata.add(9000);
 
-//Deseasonalize the demand (demand that would have been observed in the absence of seasonal fluctuations)
-        deseasonizedD = new Vector();
-        if (size % 2 == 0) {
-            //size is even
-            //start from month 7, put previous 6 month value as zero
-            periodicity = 12;
-            int start1 = periodicity / 2;
-            int end1 = size - periodicity / 2 - 1;
+        //transform index (put index 0 = 0, populate the rest starting from index 1; Purpose: easier for computing)
+        monthlyDateT = new Vector();
+        monthlyDateT.add("0");
+        for (int i = 0; i < size; i++) {
+            monthlyDateT.add(monthlyDate.get(i));
+        }
 
+        salesdataT = new Vector();
+        salesdataT.add(0);
+        for (int i = 0; i < size; i++) {
+            salesdataT.add(salesdata.get(i));
+        }
+
+        //Compute Deseasonalized Demand
+        deseasonizedD = new Vector();
+        periodicity = 12;
+        if (periodicity % 2 == 0) {
+            // periodicity is even
+            //periodicity should be a input from user. For now, hard code first.
+            
+            int start1 = periodicity / 2 + 1;
+            int end1 = size - periodicity / 2;
+
+            //Filled previous Vector with zero before start1
             for (int i = 0; i < start1; i++) {
-                deseasonizedD.add(0);
+                deseasonizedD.add(0.0);
             }
 
             int v1 = 0;
             int v2 = 0;
             int v3 = 0;
-            int value1 = 0;
-            int value2 = 0;
+            double value1 = 0.0;
+            double value2 = 0.0;
 
             for (int i = start1; i <= end1; i++) {
                 v1 = i - periodicity / 2;
                 v2 = periodicity / 2 + i;
                 v3 = v1 + 1;
 
-                for (int j = v3; j < (v3 + (periodicity - 1)); j++) {
-                    value1 = value1 + salesdata.get(j);
+                for (int j = v3; j <= (i - 1 + (periodicity / 2)); j++) {
+                    value1 = value1 + salesdataT.get(j);
                 }
 
-                value2 = (salesdata.get(v1) + salesdata.get(v2) + 2 * value1) / (2 * periodicity);
+                value2 = (salesdataT.get(v1) + salesdataT.get(v2) + 2 * value1) / (2 * periodicity);
                 deseasonizedD.add(value2);
 
                 value1 = 0;
                 value2 = 0;
             }
-            for (int i = 0; i < start1; i++) {
-                deseasonizedD.add(0);
+
+            //Filled previous Vector with zero after end1
+            for (int i = (size - periodicity / 2 + 1); i <= size; i++) {
+                deseasonizedD.add(0.0);
             }
+
+            //Create a reference list. eg 1, 2, 3....
+            tValue = new Vector();
+            for (int i = 0; i <= size; i++) {
+                tValue.add(i);
+            }
+
+
+            //Linear regression to compute m (slope) and b (tangent)
+            Double Xsum = 0.0;
+            Double Ysum = 0.0;
+            Double XYsum = 0.0;
+            Double XXsum = 0.0;
+            Double YYsum = 0.0;
+            int N = size - periodicity;
+            double m = 0;
+            double b = 0;
+
+            for (int i = start1; i <= end1; i++) {
+                Xsum = Xsum + tValue.get(i);
+            }
+
+            for (int i = start1; i <= end1; i++) {
+                Ysum = Ysum + deseasonizedD.get(i);
+            }
+
+            for (int i = start1; i <= end1; i++) {
+                XYsum = XYsum + (deseasonizedD.get(i)) * (tValue.get(i));
+            }
+
+            for (int i = start1; i <= end1; i++) {
+                XXsum = XXsum + (tValue.get(i)) * (tValue.get(i));
+            }
+
+            for (int i = start1; i <= end1; i++) {
+                YYsum = YYsum + (deseasonizedD.get(i)) * (deseasonizedD.get(i));
+            }
+
+            m = (Double) ((N * XYsum) - (Xsum * Ysum)) / ((N * XXsum) - (Xsum * Xsum));
+            b = (Double) ((XXsum * Ysum) - (Xsum * XYsum)) / ((N * XXsum) - (Xsum * Xsum));
+
+            //Compute predicted deseasonalized demand
+            predictedDeseasonalizedD = new Vector();
+            predictedDeseasonalizedD.add(0.0);
+
+            for (int i = 1; i <= size; i++) {
+                predictedDeseasonalizedD.add(m * i + b);
+            }
+
+            //Compute seasonal factors
+            seasonalFactor = new Vector();
+            seasonalFactor.add(0.0);
+            for (int i = 1; i <= size; i++) {
+                seasonalFactor.add(salesdataT.get(i) / predictedDeseasonalizedD.get(i));
+            }
+
+            //Averaging the seasonal factor
+            finalSeasonalFactor = new Vector();
+            finalSeasonalFactor.add(0.0);
+            double seasonalFactorTemp = 0.0;
+            int count = 0;
+            for (int i = 1; i <= periodicity; i++) {
+                for (int j = i; j <= size; j = j + (periodicity)) {
+                    seasonalFactorTemp = seasonalFactorTemp + seasonalFactor.get(j);
+                     count++;
+                }
+
+                finalSeasonalFactor.add(seasonalFactorTemp / count);
+                System.out.println("!!!!!!!!!!!!!!!!!!!!!");
+                 System.out.println(count);
+                
+                seasonalFactorTemp = 0;
+                count = 0;
+            }
+
+            //Compute the final forecast result.
+            forecastR = new Vector();
+            forecastR.add(0);
+            int j = 1;
+            for (int i = (size + 1); i <= size + periodicity; i++) {
+                forecastR.add((int) Math.round((m * i + b) * (finalSeasonalFactor.get(j))));
+                j++;
+            }
+
+            monthlyDateR = new Vector<String>();
+            monthlyDateR.add("0");
+            monthlyDateR.add("2014-09-01");
+            monthlyDateR.add("2014-10-01");
+            monthlyDateR.add("2014-11-01");
+            monthlyDateR.add("2014-12-01");
+            monthlyDateR.add("2015-01-01");
+            monthlyDateR.add("2015-02-01");
+            monthlyDateR.add("2015-03-01");
+            monthlyDateR.add("2015-04-01");
+            monthlyDateR.add("2015-05-01");
+            monthlyDateR.add("2015-06-01");
+            monthlyDateR.add("2015-07-01");
+            monthlyDateR.add("2015-08-01");
+
+            forecastSales = new LineChartModel();
+            LineChartSeries series1 = new LineChartSeries();
+            series1.setLabel("Sales Figure");
+
+            for (int i = 1; i <= periodicity; i++) {
+                series1.set(monthlyDateR.get(i), forecastR.get(i));
+            }
+
+            forecastSales.addSeries(series1);
+
+            forecastSales.setTitle("Predicted Sales on a Monthly Basis");
+            forecastSales.setZoom(true);
+            forecastSales.setAnimate(true);
+            forecastSales.setLegendPosition("se");
+            Axis yAxis = forecastSales.getAxis(AxisType.Y);
+            yAxis.setLabel("Sales Volume (in pieces)");
+            yAxis.setMin(0);
+            yAxis.setMax(30000);
+
+            DateAxis axis = new DateAxis("Dates");
+            forecastSales.getAxes().put(AxisType.X, axis);
+            axis.setMin("2014-05-01");
+            axis.setMax("2015-10-01");
+            axis.setTickFormat("%b, %y");
+
         } else {
-            //size is odd
-        }
 
-        //transform index 0 to 1
-        deseasonizedDC = new Vector();
-        deseasonizedDC.add(0);
-        for (int i = 0; i < size; i++) {
+            // periodicity is odd
+            //periodicity should be a input from user. For now, hard code first.
+            int start1 = (periodicity - 1) / 2 + 1;
+            int end1 = size - (periodicity - 1) / 2;
 
-            deseasonizedDC.add(deseasonizedD.get(i));
-        }
-
-        tValue = new Vector();
-        for (int i = 0; i <= size; i++) {
-            tValue.add(i);
-        }
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + deseasonizedDC.get(0));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + tValue.get(0));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + deseasonizedDC.get(5));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + tValue.get(5));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + deseasonizedDC.get(6));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + tValue.get(6));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + deseasonizedDC.get(7));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + tValue.get(7));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + deseasonizedDC.get(18));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + tValue.get(18));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + deseasonizedDC.get(19));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + tValue.get(19));
-
-//do linear regression and compute T and b. good!        from t=7 to t=18
-        Double Xsum = 0.0;
-        Double Ysum = 0.0;
-        Double XYsum = 0.0;
-        Double XXsum = 0.0;
-        Double YYsum = 0.0;
-        int N = size - periodicity;
-        double m = 0;
-        double b = 0;
-
-        for (int i = (periodicity / 2 + 1); i <= (size - (periodicity / 2)); i++) {
-            Xsum = Xsum + tValue.get(i);
-        }
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + Xsum);
-
-        for (int i = (periodicity / 2 + 1); i <= (size - (periodicity / 2)); i++) {
-            Ysum = Ysum + deseasonizedDC.get(i);
-        }
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + Ysum);
-
-        for (int i = (periodicity / 2 + 1); i <= (size - (periodicity / 2)); i++) {
-            XYsum = XYsum + (deseasonizedDC.get(i)) * (tValue.get(i));
-        }
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + XYsum);
-
-        for (int i = (periodicity / 2 + 1); i <= (size - (periodicity / 2)); i++) {
-            XXsum = XXsum + (tValue.get(i)) * (tValue.get(i));
-        }
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + XXsum);
-
-        for (int i = (periodicity / 2 + 1); i <= (size - (periodicity / 2)); i++) {
-            YYsum = YYsum + (deseasonizedDC.get(i)) * (deseasonizedDC.get(i));
-        }
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + YYsum);
-
-        m = (Double) ((N * XYsum) - (Xsum * Ysum)) / ((N * XXsum) - (Xsum * Xsum));
-
-        b = deseasonizedDC.get(periodicity / 2 + 1) - tValue.get(periodicity / 2 + 1) * m;
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + m);
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + b);
-
-        //predicted deseasonalized demand
-        predictedDeseasonalizedD = new Vector();
-        predictedDeseasonalizedD.add(0.0);
-
-        for (int i = 1; i <= size; i++) {
-
-            predictedDeseasonalizedD.add(m * i + b);
-        }
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + predictedDeseasonalizedD.get(0));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + predictedDeseasonalizedD.get(1));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + predictedDeseasonalizedD.get(5));
-
-        //compute seasonal factors
-        seasonalFactor = new Vector();
-        seasonalFactor.add(0.0);
-        for (int i = 1; i <= size; i++) {
-
-            seasonalFactor.add(salesdata.get(i - 1) / predictedDeseasonalizedD.get(i));
-        }
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + seasonalFactor.get(0));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + seasonalFactor.get(1));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + seasonalFactor.get(2));
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + seasonalFactor.get(3));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + seasonalFactor.get(4));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + seasonalFactor.get(5));
-
-        finalSeasonalFactor = new Vector();
-        finalSeasonalFactor.add(0.0);
-        double seasonalFactorTemp = 0.0;
-        for (int i = 1; i <= periodicity; i++) {
-
-            for (int j = i; j <= size; j = j + (periodicity)) {
-
-                seasonalFactorTemp = seasonalFactorTemp + seasonalFactor.get(j);
-
+            //Filled previous Vector with zero before start1
+            for (int i = 0; i < start1; i++) {
+                deseasonizedD.add(0.0);
             }
 
-            finalSeasonalFactor.add(seasonalFactorTemp / (size / periodicity));
-            seasonalFactorTemp = 0;
+            double value1 = 0.0;
+
+            for (int i = start1; i <= end1; i++) {
+
+                for (int j = (i - (periodicity - 1) / 2); j <= (i + (periodicity - 1) / 2); j++) {
+                    value1 = value1 + salesdataT.get(j);
+                }
+
+                deseasonizedD.add(value1/periodicity);
+                value1 = 0;
+            }
+
+            //Filled previous Vector with zero after end1
+            for (int i = size - (periodicity - 1) / 2 + 1; i <= size; i++) {
+                deseasonizedD.add(0.0);
+            }
+            
+            //Create a reference list. eg 1, 2, 3....
+            tValue = new Vector();
+            for (int i = 0; i <= size; i++) {
+                tValue.add(i);
+            }
+
+//Linear regression to get m (gradient) and b (tangent)
+            Double Xsum = 0.0;
+            Double Ysum = 0.0;
+            Double XYsum = 0.0;
+            Double XXsum = 0.0;
+            Double YYsum = 0.0;
+            int N = size - periodicity + 1;
+            double m = 0;
+            double b = 0;
+
+            for (int i = start1; i <= end1; i++) {
+                Xsum = Xsum + tValue.get(i);
+            }
+
+            for (int i = start1; i <= end1; i++) {
+                Ysum = Ysum + deseasonizedD.get(i);
+            }
+
+            for (int i = start1; i <= end1; i++) {
+                XYsum = XYsum + (deseasonizedD.get(i)) * (tValue.get(i));
+            }
+
+            for (int i = start1; i <= end1; i++) {
+                XXsum = XXsum + (tValue.get(i)) * (tValue.get(i));
+            }
+
+            for (int i = start1; i <= end1; i++) {
+                YYsum = YYsum + (deseasonizedD.get(i)) * (deseasonizedD.get(i));
+            }
+
+            m = (Double) ((N * XYsum) - (Xsum * Ysum)) / ((N * XXsum) - (Xsum * Xsum));
+            b = (Double) ((XXsum * Ysum) - (Xsum * XYsum)) / ((N * XXsum) - (Xsum * Xsum));
+            
+
+            //Compute predicted deseasonalized demand
+            predictedDeseasonalizedD = new Vector();
+            predictedDeseasonalizedD.add(0.0);
+
+            for (int i = 1; i <= size; i++) {
+                predictedDeseasonalizedD.add(m * i + b);
+            }
+  
+            //Compute seasonal factors
+            seasonalFactor = new Vector();
+            seasonalFactor.add(0.0);
+            for (int i = 1; i <= size; i++) {
+                seasonalFactor.add(salesdataT.get(i) / predictedDeseasonalizedD.get(i));
+            }
+
+            //Averaging seasonal factor
+            finalSeasonalFactor = new Vector();
+            finalSeasonalFactor.add(0.0);
+            double seasonalFactorTemp = 0.0;
+            int count = 0;
+            for (int i = 1; i <= periodicity; i++) {
+                for (int j = i; j <= size; j = j + (periodicity)) {
+                    seasonalFactorTemp = seasonalFactorTemp + seasonalFactor.get(j);
+                    count++;
+                }
+                finalSeasonalFactor.add(seasonalFactorTemp / count);
+                seasonalFactorTemp = 0;
+                count = 0;
+            }
+
+            //Compute the final forecast result.
+            forecastR = new Vector();
+            forecastR.add(0);
+            int j = 1;
+            for (int i = (size + 1); i <= size + periodicity; i++) {
+                forecastR.add((int) Math.round((m * i + b) * (finalSeasonalFactor.get(j))));
+                j++;
+            }
+
+            monthlyDateR = new Vector<String>();
+            monthlyDateR.add("0");
+            monthlyDateR.add("2014-09-01");
+            monthlyDateR.add("2014-10-01");
+            monthlyDateR.add("2014-11-01");
+            monthlyDateR.add("2014-12-01");
+            monthlyDateR.add("2015-01-01");
+            monthlyDateR.add("2015-02-01");
+            monthlyDateR.add("2015-03-01");
+            monthlyDateR.add("2015-04-01");
+            monthlyDateR.add("2015-05-01");
+            monthlyDateR.add("2015-06-01");
+            monthlyDateR.add("2015-07-01");
+            monthlyDateR.add("2015-08-01");
+
+            forecastSales = new LineChartModel();
+            LineChartSeries series1 = new LineChartSeries();
+            series1.setLabel("Sales Figure");
+
+            for (int i = 1; i <= periodicity; i++) {
+                series1.set(monthlyDateR.get(i), forecastR.get(i));
+            }
+
+            forecastSales.addSeries(series1);
+
+            forecastSales.setTitle("Predicted Sales on a Monthly Basis");
+            forecastSales.setZoom(true);
+            forecastSales.setAnimate(true);
+            forecastSales.setLegendPosition("se");
+            Axis yAxis = forecastSales.getAxis(AxisType.Y);
+            yAxis.setLabel("Sales Volume (in pieces)");
+            yAxis.setMin(0);
+            yAxis.setMax(30000);
+
+            DateAxis axis = new DateAxis("Dates");
+            forecastSales.getAxes().put(AxisType.X, axis);
+            axis.setMin("2014-05-01");
+            axis.setMax("2015-10-01");
+            axis.setTickFormat("%b, %y");
+
         }
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!SeasonalFactorAveraged!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + finalSeasonalFactor.get(0));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + finalSeasonalFactor.get(1));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + finalSeasonalFactor.get(12));
-
-        forecastR = new Vector();
-        forecastR.add(0);
-        int j = 1;
-        for (int i = (size + 1); i <= size + periodicity; i++) {
-            forecastR.add((int) Math.round((m * i + b) * (finalSeasonalFactor.get(j))));
-            j++;
-        }
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!1!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!predicted!!!");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + forecastR.get(0));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + forecastR.get(1));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + forecastR.get(2));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + forecastR.get(3));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + forecastR.get(4));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + forecastR.get(5));
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!" + forecastR.get(12));
-
-        monthlyDateR = new Vector<String>();
-        monthlyDateR.add("2014-09-01");
-        monthlyDateR.add("2014-10-01");
-        monthlyDateR.add("2014-11-01");
-        monthlyDateR.add("2014-12-01");
-        monthlyDateR.add("2015-01-01");
-        monthlyDateR.add("2015-02-01");
-        monthlyDateR.add("2015-03-01");
-        monthlyDateR.add("2015-04-01");
-        monthlyDateR.add("2015-05-01");
-        monthlyDateR.add("2015-06-01");
-        monthlyDateR.add("2015-07-01");
-        monthlyDateR.add("2015-08-01");
-
-        forecastSales = new LineChartModel();
-        LineChartSeries series1 = new LineChartSeries();
-        series1.setLabel("Sales Figure");
-
-        for (int i = 0; i < periodicity; i++) {
-            series1.set(monthlyDateR.get(i), forecastR.get(i + 1));
-        }
-
-        forecastSales.addSeries(series1);
-
-        forecastSales.setTitle("Predicted Sales on a Monthly Basis");
-        forecastSales.setZoom(true);
-        forecastSales.setAnimate(true);
-        forecastSales.setLegendPosition("se");
-        Axis yAxis = forecastSales.getAxis(AxisType.Y);
-        yAxis.setMin(0);
-        yAxis.setMax(30000);
-
-        DateAxis axis = new DateAxis("Dates");
-        forecastSales.getAxes().put(AxisType.X, axis);
-        axis.setMin("2014-05-01");
-        axis.setMax("2015-10-01");
-        axis.setTickFormat("%b, %y");
 
     }
 
@@ -501,10 +581,9 @@ public class ForecastShowHistoryManagedBean implements Serializable {
         this.expectedGrowth = expectedGrowth;
     }
 
- /*   public String onParameterChange() {
+    /*   public String onParameterChange() {
       
-         computeForecastResult();
-         return "forecastResult?faces-redirect=true";
-    }   */
-
+     computeForecastResult();
+     return "forecastResult?faces-redirect=true";
+     }   */
 }
