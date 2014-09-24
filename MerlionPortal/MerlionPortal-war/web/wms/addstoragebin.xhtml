@@ -62,7 +62,7 @@
                         </p:column>
                         <p:column>
                             <p:selectOneMenu id="storageType" value="#{createStorageBinManagerBean.storageTypeId}"  style="width:210px" required="true" requiredMessage="Please select a company">
-                                <f:selectItem itemLabel="Select Warehouse" itemValue="" noSelectionOption="true" />
+                                <f:selectItem itemLabel="Select Storage Bin" itemValue="" noSelectionOption="true" />
                                 <f:selectItems value="#{createStorageBinManagerBean.storageTypes}" var="storageType" itemLabel="ID:#{storageType.storageTypeId}   Name:#{storageType.name}"  itemValue="#{storageType.storageTypeId}"/>
                             </p:selectOneMenu>
                         </p:column>
@@ -72,7 +72,7 @@
                             <p:outputLabel for="storageBinName" style="font-weight: bold" value="Storage Bin Name :   " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="storageBinName" requiredMessage="StorageBin Name is required." id="storageBinName" value="#{createStorageBinManagerBean.storageBinName}">
+                            <p:inputText required="true" label="storageBinName" requiredMessage="Storage Bin Name is required." id="storageBinName" value="#{createStorageBinManagerBean.storageBinName}">
                                 <f:validateLength minimum="1" maximum="25" />
                             </p:inputText>
                         </p:column>
@@ -103,16 +103,15 @@
                             <h:outputLabel for="maxQuantity" style="font-weight: bold" value="Maximum Quantity:   *" />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="zipcode" requiredMessage="Maximum Quantity is required." id="maxQuantity" value="#{createStorageBinManagerBean.maxQuantity}">
+                            <p:inputText required="true" label="maxQuantity" requiredMessage="Maximum Quantity is required." id="maxQuantity" value="#{createStorageBinManagerBean.maxQuantity}">
                                 <f:validateLength minimum="1" maximum="19" />
                             </p:inputText>
                         </p:column>
-
                     </p:row>
 
                     <p:row>
                         <p:column>
-                            <h:outputLabel for="maxWeight" style="font-weight: bold" value="Maximum Weight:   *" />
+                            <h:outputLabel for="maxWeight" style="font-weight: bold" value="Maximum Weight (in KG) :   *" />
                         </p:column>
                         <p:column>
                             <p:inputText required="true" label="maxWeight" requiredMessage="Maximum Weight is required." id="maxWeight" value="#{createStorageBinManagerBean.maxWeight}">
@@ -121,9 +120,6 @@
                         </p:column>
 
                     </p:row>
-
-
-
                 </p:panelGrid>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 <p:commandButton id="btn" value="Create New Storage Bin" update="panel" actionListener="#{createStorageBinManagerBean.createStorageBin}" ajax="true" />

@@ -95,7 +95,12 @@
 
                     <p:column headerText = "Delete Storage Type">
                         <p:commandButton action="#{storageTypeViewEditManagedBean.deleteStorageType(storagetype)}" update="storagetypeData" value="Delete">
+                            <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this storage bin?" icon="ui-icon-alert" />
                         </p:commandButton> 
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
                     </p:column>
 
                     <p:column style="width:32px">

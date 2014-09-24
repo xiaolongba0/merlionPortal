@@ -42,8 +42,8 @@
                     </p:outputPanel>
                 </f:facet>
 
-                <p:ajax event="rowEdit" listener="#{warehouseViewEditManagedBean.onRowEdit}"/>
-                <p:ajax event="rowEditCancel" listener="#{warehouseViewEditManagedBean.onRowCancel}"/>
+                <p:ajax event="rowEdit" listener="#{warehouseViewEditManagedBean.onRowEdit}" update=":formMain:msgs"/>
+                <p:ajax event="rowEditCancel" listener="#{warehouseViewEditManagedBean.onRowCancel}" update=":formMain:msgs"/>
 
                 <p:column filterBy="#{warehouse.warehouseId}" filterMatchMode="exact" headerText="Warehouse ID" >
                     <h:outputText value="#{warehouse.warehouseId}" />
@@ -60,6 +60,11 @@
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{warehouse.country}" /></f:facet>
                         <f:facet name="input"><p:inputText value="#{warehouse.country}" style="width:100%" label="Country"/></f:facet>
+<!--                        <f:facet name="input">
+                            <h:selectOneMenu value="#{warehouse.country}" style="width:100%">
+                                <f:selectItems value="#{warehouseViewEditManagedBean.countryList}" var="man" itemLabel="Country" itemValue="#{warehouse.country}" />
+                            </h:selectOneMenu>
+                        </f:facet>-->
                     </p:cellEditor>
                 </p:column>
 
@@ -93,7 +98,12 @@
 
                 <p:column headerText = "Delete Warehouse">
                     <p:commandButton action="#{warehouseViewEditManagedBean.deleteWarehouse(warehouse)}" update="warehouse" value="Delete">
+                        <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this warehouse?" icon="ui-icon-alert" />
                     </p:commandButton> 
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
                 </p:column>
 
                 <p:column style="width:32px">

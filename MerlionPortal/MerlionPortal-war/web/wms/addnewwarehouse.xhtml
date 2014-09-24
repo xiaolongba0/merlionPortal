@@ -48,37 +48,35 @@
                             <p:outputLabel for="warehouseName" style="font-weight: bold" value="Warehouse Name: " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="Warehouse Name" requiredMessage="Warehouse Name is required." id="warehouseName" value="#{assetManagedBean.warehouseName}">
-                                <f:validateLength minimum="4" maximum="16" />
+                            <p:inputText required="true" label="Warehouse Name" requiredMessage="Warehouse Name is required." id="warehouseName" value="#{cwmb.warehouseName}">
+                                <f:validateLength minimum="4" maximum="40" />
                             </p:inputText>
-                        </p:column>
-                        
+                        </p:column>                       
                     </p:row>
                     <p:row>
                         <p:column>
                             <h:outputLabel for="country" style="font-weight: bold" value="Country:   *" />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="country" requiredMessage="Country is required." id="country" value="#{assetManagedBean.country}">
+                            <p:inputText required="true" label="country" requiredMessage="Country is required." id="country" value="#{cwmb.country}">
                                 <f:validateLength minimum="1" maximum="19" />
                             </p:inputText>
-                            </p:column>
-                            <!--
-                            <h:selectOneMenu id="country" value="#{assetManagedBean.country}" required="true" label="country">
-                                <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />
-                                <f:selectItem itemLabel="Spain" itemValue="Spain" />
-                                <f:selectItem itemLabel="Japan" itemValue="Japan" />
-                                <f:selectItem itemLabel="USA" itemValue="USA" />
-                                <f:selectItem itemLabel="Australia" itemValue="Australia" />
-                                <f:selectItem itemLabel="France" itemValue="France" />
-                                <f:selectItem itemLabel="Singapore" itemValue="Singapore" />
-                                <f:selectItem itemLabel="Hong Kong" itemValue="Hong Kong" />
-                                <f:selectItem itemLabel="China" itemValue="China" />
-                                <f:selectItem itemLabel="New Zealand" itemValue="New Zeland" />
-                                <f:selectItem itemLabel="Taiwan" itemValue="Taiwan" />
-                            </h:selectOneMenu>
-                            -->
-                             
+                        </p:column>
+                        <!--
+                        <h:selectOneMenu id="country" value="#{cwmb.country}" required="true" label="country">
+                            <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />
+                            <f:selectItem itemLabel="Spain" itemValue="Spain" />
+                            <f:selectItem itemLabel="Japan" itemValue="Japan" />
+                            <f:selectItem itemLabel="USA" itemValue="USA" />
+                            <f:selectItem itemLabel="Australia" itemValue="Australia" />
+                            <f:selectItem itemLabel="France" itemValue="France" />
+                            <f:selectItem itemLabel="Singapore" itemValue="Singapore" />
+                            <f:selectItem itemLabel="Hong Kong" itemValue="Hong Kong" />
+                            <f:selectItem itemLabel="China" itemValue="China" />
+                            <f:selectItem itemLabel="New Zealand" itemValue="New Zeland" />
+                            <f:selectItem itemLabel="Taiwan" itemValue="Taiwan" />
+                        </h:selectOneMenu>
+                        -->                             
                     </p:row>  
 
                     <p:row>
@@ -86,11 +84,11 @@
                             <h:outputLabel for="city" style="font-weight: bold" value="City:   *" />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="City" requiredMessage="City is required." id="city" value="#{assetManagedBean.city}">
+                            <p:inputText required="true" label="city" requiredMessage="City is required." id="city" value="#{cwmb.city}">
                                 <f:validateLength minimum="1" maximum="19" />
                             </p:inputText>
                         </p:column>
-                        
+
                     </p:row>  
 
                     <p:row>
@@ -98,38 +96,39 @@
                             <h:outputLabel for="street" style="font-weight: bold" value="Street:   *" />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="street" requiredMessage="Street is required." id="street" value="#{assetManagedBean.street}">
+                            <p:inputText required="true" label="street" requiredMessage="Street is required." id="street" value="#{cwmb.street}">
                                 <f:validateLength minimum="1" maximum="19" />
                             </p:inputText>
                         </p:column>
-                        
+
                     </p:row>
                     <p:row>
                         <p:column>
                             <h:outputLabel for="zipcode" style="font-weight: bold" value="Zipcode:   *" />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="zipcode" requiredMessage="Zipcode is required." id="zipcode" value="#{assetManagedBean.zipcode}">
-                                <f:validateLength minimum="1" maximum="19" />
+                            <p:inputText required="true" label="zipcode" requiredMessage="Zipcode is required." id="zipcode" value="#{cwmb.zipcode}">
+                                <f:validateLength minimum="1" maximum="10" />
                             </p:inputText>
                         </p:column>
-                        
+
                     </p:row>
                     <p:row>
                         <p:column>
                             <h:outputLabel for="description" style="font-weight: bold" value="Description:   *" />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="description" requiredMessage="Description is required." id="description" value="#{assetManagedBean.description}">
+                            <p:inputText required="true" label="description" requiredMessage="Description is required." id="description" value="#{cwmb.description}">
                                 <f:validateLength minimum="1" maximum="100" />
                             </p:inputText>
                         </p:column>
-                        
+
                     </p:row>
 
                 </p:panelGrid>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <p:commandButton id="btn" value="Create New Warehouse" update="panel" actionListener="#{assetManagedBean.createNewWarehouse}" ajax="true" />
+                <p:commandButton id="btn" value="Create New Warehouse" update="panel" actionListener="#{cwmb.createNewWarehouse}" ajax="true" >
+                </p:commandButton>
 
             </p:panel>
 

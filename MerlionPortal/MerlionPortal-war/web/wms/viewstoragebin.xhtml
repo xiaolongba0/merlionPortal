@@ -84,13 +84,6 @@
                     <p:ajax event="rowEdit" listener="#{storageBinViewEditManagedBean.onRowEdit}"/>
                     <p:ajax event="rowEditCancel" listener="#{storageBinViewEditManagedBean.onRowCancel}"/>                
 
-                    <p:column headerText="Warehouse ID" >
-                        <h:outputText value="#{storagebin.storageTypestorageTypeId.warehousewarehouseId.warehouseId}" />
-                    </p:column>
-                    <p:column headerText="Storage Type ID" >
-                        <h:outputText value="#{storagebin.storageTypestorageTypeId.storageTypeId}" />
-                    </p:column>
-
                     <p:column filterBy="#{storagebin.storageBinId}" filterMatchMode="exact" headerText="Storage Bin ID" >
                         <h:outputText value="#{storagebin.storageBinId}" />
                     </p:column>
@@ -101,28 +94,28 @@
                             <f:facet name="input"><p:inputText value="#{storagebin.binName}" style="width:100%" label="Bin Name"/></f:facet>
                         </p:cellEditor>
                     </p:column>  
-                    
+
                     <p:column  headerText="Description" filterBy="#{storagebin.description}" filterMatchMode="contains">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{storagebin.description}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{storagebin.description}" style="width:100%" label="Description"/></f:facet>
                         </p:cellEditor>
                     </p:column>
-                    
+
                     <p:column  headerText="Bin Type" filterBy="#{storagebin.binType}" filterMatchMode="contains">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{storagebin.binType}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{storagebin.binType}" style="width:100%" label="Bin Type"/></f:facet>
                         </p:cellEditor>
                     </p:column>
-                    
+
                     <p:column  headerText="Max Quantity" filterBy="#{storagebin.maxQuantity}" filterMatchMode="contains">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{storagebin.maxQuantity}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{storagebin.maxQuantity}" style="width:100%" label="Max Quantity"/></f:facet>
                         </p:cellEditor>
                     </p:column>
-                    
+
                     <p:column  headerText="Max Weight" filterBy="#{storagebin.maxWeight}" filterMatchMode="contains">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{storagebin.maxWeight}" /></f:facet>
@@ -132,7 +125,12 @@
 
                     <p:column headerText = "Delete Storage Bin">
                         <p:commandButton action="#{storageBinViewEditManagedBean.deleteStorageBin(storagebin)}" update="storagebinData" value="Delete"  >
+                            <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this storage type?" icon="ui-icon-alert" />
                         </p:commandButton> 
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
                     </p:column>
 
                     <p:column style="width:32px">
