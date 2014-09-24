@@ -6,6 +6,21 @@
 .pointer{
     cursor:pointer;
 }
+.header-push-bottom{
+    margin-top:15px;
+}
+
+a.black-link:link{
+    color:#777;
+}
+
+a.black-link:hover{
+    color:#000;
+}
+
+a.black-link:visited{
+    color:#777;
+}
 
 .input-addon-fixedwidth{
     width:120px;
