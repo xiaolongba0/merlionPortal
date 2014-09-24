@@ -52,7 +52,7 @@
                 <f:param name="pageId" value="1" />
             </p:commandButton>        
             
-            <c:if test="#{not quotationManagedBean.checkUserIsCustomer()}">
+            <c:if test="#{quotationManagedBean.checkUserIsOrderProccessing()}">
                 <br></br>
                 <p:commandButton action="#{quotationManagedBean.editQuotation()}" value="Generate Quotation">
                 </p:commandButton>       

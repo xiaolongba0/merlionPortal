@@ -16,8 +16,8 @@ import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.administrationmodule.SystemAccessRightSessionBean;
 import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
-import merlionportal.oes.quotationmanagementmodule.CheckCustomerRoleSessionBean;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -31,7 +31,7 @@ public class PurchaseOrderManagedBean {
     @EJB
     private PurchaseOrderManagerSessionBean purchaseMB;
     @EJB
-    private CheckCustomerRoleSessionBean ccrsb;
+    private SystemAccessRightSessionBean systemAccessRightSB;
 
     private Integer companyId;
     private Integer userId;
@@ -111,7 +111,7 @@ public class PurchaseOrderManagedBean {
     }
 
     public boolean checkUserIsCustomer() {
-        return ccrsb.checkUserIsCustomer(userId);
+        return systemAccessRightSB.checkOESCustomer(userId);
     }
 
     public void searchForQuotation() {

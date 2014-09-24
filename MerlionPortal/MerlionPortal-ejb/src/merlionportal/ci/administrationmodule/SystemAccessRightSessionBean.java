@@ -56,6 +56,16 @@ public class SystemAccessRightSessionBean {
         return false;
 
     }
+    public boolean checkOESOrderProcessing(Integer userId){
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canGenerateQuotationAndProductContract)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public boolean checkOESSales(Integer userId) {
         SystemUser loginedUser = getUser(userId);

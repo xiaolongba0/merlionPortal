@@ -18,7 +18,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import merlionportal.oes.quotationmanagementmodule.CheckCustomerRoleSessionBean;
+import merlionportal.ci.administrationmodule.SystemAccessRightSessionBean;
 import merlionportal.oes.quotationmanagementmodule.QuotationManagerSessionBean;
 import org.primefaces.event.RowEditEvent;
 
@@ -33,7 +33,7 @@ public class QuotationManagedBean implements Serializable {
     @EJB
     private QuotationManagerSessionBean quotationMB;
     @EJB
-    private CheckCustomerRoleSessionBean ccrsb;
+    private SystemAccessRightSessionBean systemAccessRightSB;
 
     private Quotation selectedRequest;
     private List<Quotation> allQuotation;
@@ -76,8 +76,8 @@ public class QuotationManagedBean implements Serializable {
 
     }
 
-    public boolean checkUserIsCustomer() {
-        return ccrsb.checkUserIsCustomer(userId);
+    public boolean checkUserIsOrderProccessing() {
+        return systemAccessRightSB.checkOESOrderProcessing(userId);
     }
 
     public Quotation getSelectedRequest() {
@@ -89,7 +89,7 @@ public class QuotationManagedBean implements Serializable {
     }
 
     public List<Quotation> getAllQuotation() {
-        if (!ccrsb.checkUserIsCustomer(userId)) {
+        if (!systemAccessRightSB.checkOESCustomer(userId)) {
             allQuotation = quotationMB.viewAllRequestForQuotation(companyId);
         } else {
             allQuotation = quotationMB.viewAllRequestForQuotation(companyId, userId);
@@ -210,7 +210,7 @@ public class QuotationManagedBean implements Serializable {
     }
 
     public List<Quotation> getAllProcceQuotation() {
-        if (!ccrsb.checkUserIsCustomer(userId)) {
+        if (!systemAccessRightSB.checkOESCustomer(userId)) {
             allProcceQuotation = quotationMB.viewAllProQuotation(companyId);
         } else {
             allProcceQuotation = quotationMB.viewAllProQuotation(companyId, userId);
