@@ -77,6 +77,7 @@ public class CreateStorageBinManagerBean {
     public void createStorageBin() {
         boolean result = amsb.addStorageBin(storageBinName, storageBinType, storagebinDescription, maxQuantity, maxWeight, storageTypeId);
         if (result) {
+            clearAllFields();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "New Storage Bin created!"));
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
@@ -87,6 +88,17 @@ public class CreateStorageBinManagerBean {
         if (warehouseId != null) {
             storageTypes = amsb.viewStorageTypesForAWarehouse(warehouseId);
         }
+    }
+
+    private void clearAllFields() {
+        warehouseId = null;
+        storageTypeId = null;
+        storageBinName = null;
+        storagebinDescription = null;
+        storageBinType = null;
+        maxQuantity = null;
+        maxWeight = null;
+
     }
 
     public Integer getWarehouseId() {

@@ -47,7 +47,6 @@ public class CreateStorageTypeManagerBean {
     private Integer warehouseId;
     private List<Warehouse> warehouses;
 
-    
     public CreateStorageTypeManagerBean() {
     }
 
@@ -71,8 +70,6 @@ public class CreateStorageTypeManagerBean {
         }
         warehouses = assetManagementSessionBean.viewMyWarehouses(companyId);
     }
-    
-    
 
     public void createNewStorageType(ActionEvent warehouse) {
 
@@ -81,11 +78,14 @@ public class CreateStorageTypeManagerBean {
             System.out.println("STORAGE TYPE NAMEEEEEEE ; " + storageTypeName);
             newStorageTypeId = assetManagementSessionBean.addStorageType(storageTypeName, storagetDescription, companyId, warehouseId);
             System.out.println("NEW STORAGE TYPE ID =================: " + newStorageTypeId);
-            if (newStorageTypeId == -1) {
+            if (newStorageTypeId > -1) {
+                clearAllFields();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Storage Type Added!", ""));
+
+            } else {
                 System.out.println("============== FAILED TO ADD STORAGE TYPE DUE TO WRONG WAREHOUSE ID ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed to Add Storage Type. Please check warehouseID! ", ""));
-            } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Storage Type Added!", ""));
+
             }
 
             System.out.println("[WAR FILE]===========================Create New Storage Type");
@@ -94,7 +94,11 @@ public class CreateStorageTypeManagerBean {
         }
     }
 
-    
+    private void clearAllFields() {
+        storageTypeName = null;
+        storagetDescription = null;
+        warehouseId = null;
+    }
 
     public SystemUser getLoginedUser() {
         return loginedUser;
@@ -160,4 +164,3 @@ public class CreateStorageTypeManagerBean {
         this.warehouses = warehouses;
     }
 }
-

@@ -23,7 +23,7 @@ import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
  *
  * @author YunWei
  */
-@Named(value = "assetManagedBean")
+@Named(value = "cwmb")
 @RequestScoped
 public class CreateWarehouseManagerBean {
 
@@ -32,8 +32,7 @@ public class CreateWarehouseManagerBean {
     @EJB
     private UserAccountManagementSessionBean uamb;
     private Integer newWarehouseId;
-    private Integer warehouseId;
-    
+
     private String warehouseName;
     private String country;
     private String city;
@@ -42,8 +41,6 @@ public class CreateWarehouseManagerBean {
     private Integer zipcode;
     private Integer companyId;
     private Warehouse warehouse;
-
-    
 
     private SystemUser loginedUser;
 
@@ -79,12 +76,27 @@ public class CreateWarehouseManagerBean {
         try {
             System.out.println("[INSIDE WAR FILE]===========================Create New Warehouse");
             newWarehouseId = assetManagementSessionBean.addNewWarehouse(warehouseName, country, city, street, description, zipcode, companyId);
+            if (newWarehouseId > -1) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Warehouse Added!", ""));
+                clearAllFields();
+                System.out.println("[WAR FILE]===========================Create New Warehouse");
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Something went wrong!", ""));
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Warehouse Added!", ""));
-            System.out.println("[WAR FILE]===========================Create New Warehouse");
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    private void clearAllFields() {
+        warehouseName = null;
+        country = null;
+        city = null;
+        street = null;
+        description = null;
+        zipcode = null;
+        warehouse = null;
     }
 
     public SystemUser getLoginedUser() {
@@ -157,14 +169,6 @@ public class CreateWarehouseManagerBean {
 
     public void setZipcode(Integer zipcode) {
         this.zipcode = zipcode;
-    }
-
-    public Integer getWarehouseId() {
-        return warehouseId;
-    }
-
-    public void setWarehouseId(Integer warehouseId) {
-        this.warehouseId = warehouseId;
     }
 
     public Warehouse getWarehouse() {

@@ -62,21 +62,7 @@
                                 <f:validateLength minimum="1" maximum="19" />
                             </p:inputText>
                         </p:column>
-                        <!--
-                        <h:selectOneMenu id="country" value="#{cwmb.country}" required="true" label="country">
-                            <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />
-                            <f:selectItem itemLabel="Spain" itemValue="Spain" />
-                            <f:selectItem itemLabel="Japan" itemValue="Japan" />
-                            <f:selectItem itemLabel="USA" itemValue="USA" />
-                            <f:selectItem itemLabel="Australia" itemValue="Australia" />
-                            <f:selectItem itemLabel="France" itemValue="France" />
-                            <f:selectItem itemLabel="Singapore" itemValue="Singapore" />
-                            <f:selectItem itemLabel="Hong Kong" itemValue="Hong Kong" />
-                            <f:selectItem itemLabel="China" itemValue="China" />
-                            <f:selectItem itemLabel="New Zealand" itemValue="New Zeland" />
-                            <f:selectItem itemLabel="Taiwan" itemValue="Taiwan" />
-                        </h:selectOneMenu>
-                        -->                             
+                                                   
                     </p:row>  
 
                     <p:row>
@@ -127,7 +113,7 @@
 
                 </p:panelGrid>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <p:commandButton id="btn" value="Create New Warehouse" update="panel" actionListener="#{cwmb.createNewWarehouse}" ajax="true" >
+                <p:commandButton id="btn" value="Create New Warehouse" update="formMain" actionListener="#{cwmb.createNewWarehouse}" ajax="true" >
                 </p:commandButton>
 
             </p:panel>
