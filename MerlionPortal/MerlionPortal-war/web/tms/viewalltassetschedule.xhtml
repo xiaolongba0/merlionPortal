@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>View All Schedule</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form id="formMain">
+           <h1> View My Warehouses</h1>
+            <h:form id="formMain">
+            <h1>Welcome to Transportation Management System</h1>
+              <p:menubar>
+                <p:menuitem value="TMS Home" url="tmsindex.xhtml"/>
+
+                <p:submenu label="Location" >
+                    <p:menuitem value="Add New Location" url="addnewlocation.xhtml" />
+                    <p:menuitem value="View All locations" url="viewalllocation.xhtml" />
+                </p:submenu>
+                <p:submenu label="Transportation Asset" >
+                    <p:menuitem value="Add Transportation Asset" url="addnewtasset.xhtml" />
+                    <p:menuitem value="View Transportation Assets" url="viewalltasset.xhtml" />
+                </p:submenu>
+                <p:submenu label="TAsset Schedule" >
+                    <p:menuitem value="Add TAsset Schedule" url="addnewtassetschedule.xhtml" />
+                    <p:menuitem value="View TAsset Schedule" url="viewalltassetschedule.xhtml" />
+                </p:submenu>
+            </p:menubar>
+                   </h:form> 
+            <br/>
+            <p:panel id="panel" header=" View Storage Type for A Warehouse">
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start">
+                        <h:graphicImage value="/img/load.gif" />
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="warehouse" value="Warehouse Name: " />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="warehouse" value="#{storageBinViewEditManagedBean.warehouseId}"  style="width:300px" required="true" requiredMessage="Please select a warehouse">
+                                <p:ajax listener="#{storageBinViewEditManagedBean.onWarehouseChange}" update="storageType" />
+                                <f:selectItem itemLabel="Select Warehouse" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{storageBinViewEditManagedBean.warehouses}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId} Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="storageType" value="Storage Type Name: " />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="storageType" value="#{storageBinViewEditManagedBean.storageTypeId}"  style="width:300px" required="true" requiredMessage="Please select a storage type">
+                                <p:ajax listener="#{storageBinViewEditManagedBean.onStorageTypeChange}" update="storagebinData" />
+                                <f:selectItem itemLabel="Select Storage Type" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{storageBinViewEditManagedBean.storagetypes}" var="storageType" itemLabel="ID:#{storageType.storageTypeId} Name:#{storageType.name}"  itemValue="#{storageType.storageTypeId}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+
+                <p:dataTable id="storagebinData" var="storagebin" sortMode="multiple" editable="true" value="#{storageBinViewEditManagedBean.bins}" 
+                             widgetVar="storageBinTable"
+                             emptyMessage="No Storage Bin found"
+                             rowKey="#{storagebin.storageBinId}">
+
+                    <f:facet name="header">                    
+                        <p:outputPanel>
+                            <h:outputText value="Search Storage Bin fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('storageBinTable').filter()" />
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:ajax event="rowEdit" listener="#{storageBinViewEditManagedBean.onRowEdit}"/>
+                    <p:ajax event="rowEditCancel" listener="#{storageBinViewEditManagedBean.onRowCancel}"/>                
+
+                    <p:column filterBy="#{storagebin.storageBinId}" filterMatchMode="exact" headerText="Storage Bin ID" >
+                        <h:outputText value="#{storagebin.storageBinId}" />
+                    </p:column>
+
+                    <p:column  filterBy="#{storagebin.binName}" filterMatchMode="contains" headerText="Bin Name">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{storagebin.binName}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{storagebin.binName}" style="width:100%" label="Bin Name"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>  
+
+                    <p:column  headerText="Description" filterBy="#{storagebin.description}" filterMatchMode="contains">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{storagebin.description}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{storagebin.description}" style="width:100%" label="Description"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column  headerText="Bin Type" filterBy="#{storagebin.binType}" filterMatchMode="contains">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{storagebin.binType}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{storagebin.binType}" style="width:100%" label="Bin Type"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column  headerText="Max Quantity" filterBy="#{storagebin.maxQuantity}" filterMatchMode="contains">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{storagebin.maxQuantity}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{storagebin.maxQuantity}" style="width:100%" label="Max Quantity"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column  headerText="Max Weight" filterBy="#{storagebin.maxWeight}" filterMatchMode="contains">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{storagebin.maxWeight}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{storagebin.maxWeight}" style="width:100%" label="Max Weight"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText = "Delete Storage Bin">
+                        <p:commandButton action="#{storageBinViewEditManagedBean.deleteStorageBin(storagebin)}" update="storagebinData" value="Delete"  >
+                            <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this storage type?" icon="ui-icon-alert" />
+                        </p:commandButton> 
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </p:column>
+
+                    <p:column style="width:32px">
+                        <p:rowEditor />
+                    </p:column>
+
+                </p:dataTable>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>                 
+
