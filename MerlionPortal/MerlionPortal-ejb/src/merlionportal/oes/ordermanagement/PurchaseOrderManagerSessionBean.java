@@ -84,12 +84,16 @@ public class PurchaseOrderManagerSessionBean {
         em.merge(poLine);
     }
 
-    public void rejectPo(ProductOrder mPo) {
-        mPo.setStatus(2);
+    public void rejectPo(int operator, ProductOrder mPo, int reason) {
+        mPo.setStatus(reason);
+        mPo.setSalesPersonId(operator);
+        em.merge(mPo);
     }
 
-    public void generateSo(ProductOrder mpo) {
+    public void generateSo(int operator, ProductOrder mpo) {
         mpo.setStatus(3);
+        mpo.setSalesPersonId(operator);
+        em.merge(mpo);
     }
 
     public Boolean creaditCheck(int customerId) {
@@ -163,12 +167,90 @@ public class PurchaseOrderManagerSessionBean {
         }
         return resultList;
     }
-    
-    public ProductOrder retrieveProductOrder(Integer poId){
+
+    public List<ProductOrder> viewAllOrder(int companyId, int customerId) {
+        List<ProductOrder> resultList = new ArrayList();
+        Query q = em.createQuery("SELECT q FROM ProductOrder q WHERE q.companyId = :companyId AND q.creatorId = :clientId").setParameter("companyId", companyId);
+        q.setParameter("clientId", customerId);
+        for (Object o : q.getResultList()) {
+            ProductOrder pro = (ProductOrder) o;
+            resultList.add(pro);
+        }
+        return resultList;
+    }
+
+    public List<ProductOrder> viewAllOrder(int companyId) {
+        List<ProductOrder> resultList = new ArrayList();
+        Query q = em.createQuery("SELECT q FROM ProductOrder q WHERE q.companyId = :companyId").setParameter("companyId", companyId);
+
+        for (Object o : q.getResultList()) {
+            ProductOrder pro = (ProductOrder) o;
+            resultList.add(pro);
+        }
+        return resultList;
+    }
+
+    public ProductOrder retrieveProductOrder(Integer poId) {
         ProductOrder po = new ProductOrder();
-        po=em.find(ProductOrder.class, poId);
-        
+        po = em.find(ProductOrder.class, poId);
+
         return po;
+    }
+
+    public Boolean checkCredit(int cutomerId) {
+        SystemUser customer = em.find(SystemUser.class, cutomerId);
+        String credit = customer.getCredit();
+        if (credit.equals("pass")) {
+            return true;
+        }
+        return false;
+    }
+
+    public List<String> getAllOrderStatus() {
+        List<String> result = new ArrayList();
+        result.add("PO, Waiting for process");
+        result.add("SO, Waiting for fulfillment");
+        result.add("Product Shipped");
+        result.add("Order invoiced");
+        result.add("Order closed");
+        result.add("Request for return, waiting for approval");
+        result.add("Rejected");
+//        result.add("Rejected, Wrong product");
+//        result.add("Rejected, Wrong product quantity");
+//        result.add("Rejected, Wrong price ");
+//        result.add("Rejected, Wrong ship to address");
+//        result.add("Rejected, Wrong contact person");
+//        result.add("Rejected, Credit check fail");
+//        result.add("Rejected, Others please contact sales for more information");
+//        result.add("Rejected, Customer request for cancelation");
+//        result.add("Rejected, Unable to fulfill this order");
+        return result;
+    }
+
+    public String getOrderStatus(ProductOrder myOrder) {
+        String result;
+        int status = myOrder.getStatus();
+        if (status == 1) {
+            result = "PO, Waiting for process";
+        }
+        else if (status == 2) {
+            result = "SO, Waiting for fulfillment";
+        }
+        else if (status == 3) {
+            result = "Product Shipped";
+        }
+        else if (status == 4) {
+            result = "Order closed";
+        }
+        else if (status == 5) {
+            result = "Order invoiced";
+        }
+        else if (status == 6) {
+            result = "Request for return, waiting for approval";
+        } else {
+            result = "Rejected";
+        }
+        return result;
     }
 
 }
