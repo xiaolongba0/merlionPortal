@@ -48,7 +48,7 @@
 
             <p:panel header="Select a product for viewing BOM" style="margin-bottom:10px;">
                 <h:panelGrid columns="4" cellpadding="5">
-                    <p:outputLabel for="product" value="Please select a product for forecasting: " />
+                    <p:outputLabel for="product" value="Please select a product: " />
                     <p:selectOneMenu required="true" id="product" value="#{productComponentViewEditManagedBean.productId}" styleClass="form-control">
                         <p:ajax listener="#{productComponentViewEditManagedBean.onProductChange}" update="components" />
                         <f:selectItem itemLabel="Select a product" itemValue="" noSelectionOption="true" />
@@ -91,7 +91,7 @@
                     </p:cellEditor>
                 </p:column>
 
-                <p:column headerText="Component Quantity">
+                <p:column headerText="Required Quantity">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{component1.quantity}" /></f:facet>
                         <f:facet name="input"><p:inputText value="#{component1.quantity}" style="width:100%" label="Component Quantity"/></f:facet>
@@ -116,7 +116,7 @@
                     </p:cellEditor>
                 </p:column>
 
-                <p:column headerText="Component leadTime">
+                <p:column headerText="Component Lead Time (in weeks)">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{component1.leadTime}" /></f:facet>
                         <f:facet name="input"><p:inputText value="#{component1.leadTime}" style="width:100%" label="Component leadTime"/></f:facet>

@@ -57,15 +57,13 @@
                 <p:panelGrid>
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="productId" style="font-weight: bold" value="Product Id: " />
+                            <p:outputLabel for="product" style="font-weight: bold" value="Select a product for adding BOM: " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="Product Id" requiredMessage="Product Id is required." id="productId" value="#{productManagedBean.productId}">
-                                <f:validateLength minimum="1" maximum="16" />
-                            </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="productId" />
+                            <p:selectOneMenu required="true" id="product" value="#{productManagedBean.productId}" styleClass="form-control">
+                                <f:selectItem itemLabel="Select a product" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{productManagedBean.products}"  var="product" itemLabel="#{product.productName}"  itemValue="#{product.productId}"/>
+                            </p:selectOneMenu>
                         </p:column>
                     </p:row>
 
@@ -98,7 +96,7 @@
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="componentQuantity" style="font-weight: bold" value="Component Quantity: " />
+                            <p:outputLabel for="componentQuantity" style="font-weight: bold" value="Required Quantity: " />
                         </p:column>
                         <p:column>
                             <p:inputText required="true" label="Component Quantity" requiredMessage="Component Quantity is required." id="componentQuantity" value="#{productManagedBean.componentQuantity}">
@@ -141,7 +139,6 @@
                                 <f:selectItem itemLabel="Mexican Peso (MXN)" itemValue="MXN" />
                             </h:selectOneMenu>
                             <p:message for="componentCurrency" />
-                            <h:outputText value="#{productManagedBean.componentCurrency}" />
                         </p:column>
                     </p:row>  
 
@@ -161,7 +158,7 @@
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="componentLeadTime" style="font-weight: bold" value="Component LeadTime: " />
+                            <p:outputLabel for="componentLeadTime" style="font-weight: bold" value="Component Lead Time (in weeks): " />
                         </p:column>
                         <p:column>
                             <p:inputText required="true" label="Component LeadTime" requiredMessage="Component LeadTime is required." id="componentLeadTime" value="#{productManagedBean.componentLeadTime}">
