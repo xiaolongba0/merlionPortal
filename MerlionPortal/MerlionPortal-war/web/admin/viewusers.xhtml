@@ -25,23 +25,17 @@
                                 <p:outputLabel for="company" value="Company:" />
                                 <h:selectOneMenu id="company" value="#{viewUserManagerBean.selectCompanyId}"  style="width:250px" styleClass="form-control">
                                     <p:ajax listener="#{viewUserManagerBean.onCompanyChange}" update="usersData" />
-                                    <f:selectItem itemLabel="Select Company . . ." itemValue="" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="Select Company To View Users" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{viewUserManagerBean.companys}" var="company" itemLabel="#{company.name}"  itemValue="#{company.companyId}"/>
                                 </h:selectOneMenu>
                             </h:panelGrid>
                         </c:if>
-                        <p:contextMenu for="usersData">
-                            <p:menuitem value="View detail" update="userDetail" icon="ui-icon-search" oncomplete="toggleModal();"/>
-                            <p:menuitem value="Delete user" update="usersData" icon="ui-icon-close" oncomplete="deleteModal();"/>
-                        </p:contextMenu>
-
+ 
                         <p:messages id="messages"  showDetail="true" autoUpdate="true" closable="true" />
                         <p:dataTable id="usersData" var="user" rowKey="#{user.systemUserId}" value="#{viewUserManagerBean.companyUsers}" widgetVar="usersTable"
                                      emptyMessage="No users found with given criteria" filteredValue="#{viewUserManagerBean.filteredUsers}"
                                      paginator="true"
-                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     rowsPerPageTemplate="20,50,100"
-                                     selection="#{viewUserManagerBean.selectedUser}" selectionMode="single">
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
                             <f:facet name="header">
                                 <p:outputPanel>
@@ -64,14 +58,21 @@
                             <p:column filterBy="#{user.emailAddress}" headerText="Email Address"  filterMatchMode="contains">
                                 <h:outputText value="#{user.emailAddress}"/>
                             </p:column>
-                            <p:column filterBy="#{user.postalAddress}" headerText="Postal Address"  filterMatchMode="contains">
-                                <h:outputText value="#{user.postalAddress}" />
-                            </p:column>
-                            <p:column filterBy="#{user.contactNumber}" headerText="Contact Number"  filterMatchMode="contains">
-                                <h:outputText value="#{user.contactNumber}" />
-                            </p:column>
+
+
                             <p:column filterBy="#{user.credit}" headerText="Credit"  filterMatchMode="contains">
                                 <h:outputText value="#{user.credit}" />
+                            </p:column>
+
+                            <p:column headerText="Update" >
+                                <p:commandButton action="#{viewUserManagerBean.selectUser(user)}" oncomplete="toggleModal();" update=":form:userDetail" value="Update">
+                                </p:commandButton> 
+                            </p:column>
+
+                            <p:column  headerText="Delete" >
+                                <p:commandButton action="#{viewUserManagerBean.selectUser(user)}" oncomplete="deleteModal();" value="Delete">
+                                </p:commandButton> 
+                                
                             </p:column>
 
                         </p:dataTable>
@@ -86,7 +87,6 @@
                                     <div class="modal-body">
 
                                         <p:outputPanel id="userDetail" style="text-align:left;">
-
 
                                             <p:panelGrid  columns="2" rendered="#{not empty viewUserManagerBean.selectedUser}">
                                                 <h:outputText value="User ID:" />
@@ -106,7 +106,6 @@
                                                 <h:outputText value="Email Address" />
                                                 <p:inplace  editor="true">
                                                     <p:inputText value="#{viewUserManagerBean.selectedUser.emailAddress}" required="true" label="text">
-                                                        <f:validator validatorId="custom.emailValidator" />
                                                     </p:inputText>
                                                 </p:inplace> 
                                                 <h:outputText value="Password" />
@@ -131,15 +130,15 @@
                                                 </p:inplace> 
                                                 <h:outputText value="Locked" />
                                                 <p:inplace  editor="true">
-                                                    <p:selectBooleanButton  value="#{viewUserManagerBean.selectedUser.locked}" onLabel="Locked" offLabel="Unlocked" style="width:80px"/>
+                                                    <p:selectBooleanButton  value="#{viewUserManagerBean.selectedUser.locked}" onLabel="true" offLabel="false" style="width:80px"/>
                                                 </p:inplace> 
                                                 <h:outputText value="Activated" />
                                                 <p:inplace  editor="true">
-                                                    <p:selectBooleanButton  value="#{viewUserManagerBean.selectedUser.activated}" onLabel="Activated" offLabel="Deactivated" style="width:80px"/>
+                                                    <p:selectBooleanButton  value="#{viewUserManagerBean.selectedUser.activated}" onLabel="true" offLabel="false" style="width:80px"/>
                                                 </p:inplace> 
                                                 <h:outputText value="Reset Password Upon Login" />
                                                 <p:inplace  editor="true">
-                                                    <p:selectBooleanButton  value="#{viewUserManagerBean.selectedUser.resetPasswordUponLogin}" onLabel="Reset" offLabel="Don't Reset" style="width:80px"/>
+                                                    <p:selectBooleanButton  value="#{viewUserManagerBean.selectedUser.resetPasswordUponLogin}" onLabel="true" offLabel="false" style="width:80px"/>
                                                 </p:inplace> 
                                                 <h:outputText value="Created Date" />
                                                 <p:outputLabel value="#{viewUserManagerBean.selectedUser.createdDate}"  />
@@ -153,19 +152,19 @@
                                                     <p:outputLabel value="#{role.roleName}" />
                                                 </p:column>
                                                 <p:column>
-                                                    <p:commandButton value="Detach" update="roleData" action="#{viewUserManagerBean.detachRole(role)}" styleClass="btn btn-danger" ajax="true" />
+                                                    <p:commandButton value="Detach" update="roleData" action="#{viewUserManagerBean.detachRole(role)}" ajax="true" />
                                                 </p:column>
 
                                             </p:dataTable>
 
-                                            <p:commandButton value="Assign new role" action="#{viewUserManagerBean.refreshDisplayedRoles}" styleClass="btn btn-success" update="newRole" onclick="showAddRoleList();" />
+                                            <p:commandButton value="Assign new role" action="#{viewUserManagerBean.refreshDisplayedRoles}" update="newRole" onclick="showAddRoleList();" />
 
                                             <div id="addRolePanel" style="display:none">
                                                 <p:panelGrid columns="2" >
                                                     <h:selectOneMenu id="newRole" value="#{viewUserManagerBean.roleToAdd}" styleClass="form-control" >
                                                         <f:selectItems value="#{viewUserManagerBean.rolesToDisplay}" var="role" itemLabel="#{role.roleName}" itemValue="#{role.userRoleId}"/>
                                                     </h:selectOneMenu>
-                                                    <p:commandButton value="+" update="roleData" action="#{viewUserManagerBean.addRole}" styleClass="btn btn-success" ajax="true" onclick="hideAddRoleList();"/>
+                                                    <p:commandButton value="+" update="roleData" action="#{viewUserManagerBean.addRole}"  ajax="true" onclick="hideAddRoleList();"/>
                                                 </p:panelGrid>
                                             </div>
 
@@ -173,8 +172,8 @@
                                         </p:outputPanel>
                                     </div>
                                     <div class="modal-footer">
-                                        <p:commandButton value="Update" styleClass="btn btn-success" update="usersData" actionListener="#{viewUserManagerBean.updateUser}"></p:commandButton>
-                                        <p:commandButton value="Close" styleClass="btn btn-warning" pt:data-dismiss="modal"></p:commandButton>
+                                        <p:commandButton value="Update"  update="usersData" actionListener="#{viewUserManagerBean.updateUser}"></p:commandButton>
+                                        <p:commandButton value="Close"  pt:data-dismiss="modal"></p:commandButton>
                                     </div>
                                 </div>
                             </div>

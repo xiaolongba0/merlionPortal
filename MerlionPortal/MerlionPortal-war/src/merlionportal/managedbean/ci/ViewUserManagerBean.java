@@ -103,7 +103,7 @@ public class ViewUserManagerBean {
         }
         if (result == 1) {
             companyUsers.remove(selectedUser);
-            selectedUser=null;
+            selectedUser = null;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Deleted!", "This user is deleted."));
 
         } else if (result == -1) {
@@ -157,7 +157,7 @@ public class ViewUserManagerBean {
             result = uamb.addRoleToUser(loginedUser.getSystemUserId(), selectedUser.getSystemUserId(), roleToAdd);
         }
         if (result == 1) {
-            
+
             selectedUser.getUserRoleList().add(gcrsb.getOneRole(roleToAdd));
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Role Added!", "This role is added to this user."));
 
@@ -172,7 +172,7 @@ public class ViewUserManagerBean {
     public void refreshDisplayedRoles() {
         System.err.println("here");
         if (selectCompanyId != null) {
-            rolesToDisplay = (List<UserRole>)gcrsb.getAllRolesInCompany(selectCompanyId);
+            rolesToDisplay = (List<UserRole>) gcrsb.getAllRolesInCompany(selectCompanyId);
             System.out.println("rolesToDisplay" + rolesToDisplay.get(0).toString());
             for (Object o : selectedUser.getUserRoleList()) {
                 UserRole hasRole = (UserRole) o;
@@ -193,6 +193,14 @@ public class ViewUserManagerBean {
                 }
             }
         }
+    }
+
+    public void selectUser(SystemUser user) {
+        System.out.println("Hsjdhfkajsdhfklashdfkjas");
+        selectedUser = user;
+        System.out.println("User" +user.getLastName());
+        System.out.println("Selected User" + selectedUser.getLastName());
+
     }
 
     public SystemUser getLoginedUser() {
@@ -266,8 +274,5 @@ public class ViewUserManagerBean {
     public void setRoleToAdd(Integer roleToAdd) {
         this.roleToAdd = roleToAdd;
     }
-
-    
-
 
 }
