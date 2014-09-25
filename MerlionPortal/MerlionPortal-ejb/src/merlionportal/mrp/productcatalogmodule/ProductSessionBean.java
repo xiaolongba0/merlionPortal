@@ -38,10 +38,9 @@ public class ProductSessionBean {
     // Notes: take in companyId automatically after Login, later change to getMyProducts(Integer companyId)
     public List<Product> getMyProducts(Integer companyId) {
         Query query = entityManager.createQuery("SELECT p FROM Product p WHERE p.companyId = :inCompanyId");
-        query.setParameter("inCompanyId", companyId);      
+        query.setParameter("inCompanyId", companyId);
         return query.getResultList();
-    }    
-    
+    }
 
     // Notes: take in companyId automatically after Login, later change to getMyProducts(Integer companyId)
     public List<Component> getComponentsForAProduct(Integer companyId, Integer productId) {
@@ -69,15 +68,34 @@ public class ProductSessionBean {
         Query query = entityManager.createQuery("SELECT p FROM Product p WHERE p.companyId = :inCompanyId");
         query.setParameter("inCompanyId", companyID);
         List<Product> allmyproducts = query.getResultList();
-
+        List<Component> componentss;
         for (Product p : allmyproducts) {
             if (Objects.equals(p.getProductId(), productID)) {
+                componentss = p.getComponentList();
                 entityManager.remove(p);
                 entityManager.flush();
+                for (Component c : componentss) {
+                    entityManager.remove(c);
+                    entityManager.flush();
+                }
                 return true;
             }
         }
         return false;
+    }
+
+    //////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////
+    public Boolean deleteComponents(Integer componentID) {
+
+        Component componentt = entityManager.find(Component.class, componentID);
+        Product productt = componentt.getProductproductId();
+        productt.getComponentList().remove(componentt);
+        entityManager.merge(productt);
+        entityManager.flush();
+
+        return true;
     }
 
     public Integer addNewProduct(String productName, String description, String category, String productType, String currency, Double price, Integer companyId) {
