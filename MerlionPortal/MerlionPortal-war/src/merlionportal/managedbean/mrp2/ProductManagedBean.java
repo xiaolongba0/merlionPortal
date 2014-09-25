@@ -8,21 +8,22 @@ package merlionportal.managedbean.mrp2;
 import entity.Product;
 import entity.SystemUser;
 import java.io.IOException;
-import javax.ejb.EJB;
-import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
-import merlionportal.mrp.productcatalogmodule.ProductSessionBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.mrp.productcatalogmodule.ProductSessionBean;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
 @Named(value = "productManagedBean")
-@RequestScoped
+@ViewScoped
 public class ProductManagedBean {
 
     @EJB
@@ -39,9 +40,9 @@ public class ProductManagedBean {
     private Double price;
     private Integer companyId;
 
-    private Double productId;
+    private Integer productId;
     private Product productTemp;
-
+private Product product;
     private List<Product> products;
 
     private String componentName;
@@ -51,7 +52,7 @@ public class ProductManagedBean {
     private Double componentCost;
     private Integer componentLeadTime;
 
-    private int supplierCompanyId;
+    private Integer supplierCompanyId;
     private String supplierContactPerson;
     private String supplierContactNumber;
     private String supplierContactEmail;
@@ -81,6 +82,8 @@ public class ProductManagedBean {
                 ex.printStackTrace();
             }
         }
+        
+        products = productSessionBean.getMyProducts(companyId);
 }
     
 
@@ -89,11 +92,11 @@ public class ProductManagedBean {
         productNameLength = "Current product name length is less than 4.";
     }
 
-    public Double getProductId() {
+    public Integer getProductId() {
         return productId;
     }
 
-    public void setProductId(Double productId) {
+    public void setProductId(Integer productId) {
         this.productId = productId;
     }
 
@@ -193,11 +196,11 @@ public class ProductManagedBean {
         this.componentLeadTime = componentLeadTime;
     }
 
-    public int getSupplierCompanyId() {
+    public Integer getSupplierCompanyId() {
         return supplierCompanyId;
     }
 
-    public void setSupplierCompanyId(int supplierCompanyId) {
+    public void setSupplierCompanyId(Integer supplierCompanyId) {
         this.supplierCompanyId = supplierCompanyId;
     }
 
@@ -225,16 +228,7 @@ public class ProductManagedBean {
         this.supplierContactNumber = supplierContactNumber;
     }
 
-    public void saveNewComponent(ActionEvent component) {
-
-        try {
-            int pdtTempId = productId.intValue();
-            newComponentId = productSessionBean.addNewComponent(componentName, componentDescription, componentQuantity, componentCurrency, componentCost, componentLeadTime, supplierCompanyId, supplierContactPerson, supplierContactNumber, supplierContactEmail, companyId, pdtTempId);
-            statusMessage = "New Component Saved Successfully";
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+   
 
     public void setProductNameLength(String productNameLength) {
         this.productNameLength = productNameLength;
@@ -261,18 +255,25 @@ public class ProductManagedBean {
     }
 
     public List<Product> getProducts() {
-        products = productSessionBean.getAllProducts();
         return products;
     }
-
-    public List<Product> getMyCompanyProducts() {
-        products = productSessionBean.getMyProducts(companyId);
-        return products;
+    
+     public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+     
+         public Product getProduct() {
+        return product;
+    }
+    
+     public void setProduct(Product product) {
+        this.product = product;
     }
 
     //ok. But see if user input (in xhtml) can be in Integer type directly.
     public void deleteProduct(ActionEvent product) {
         try {
+            
             int pdtID = productId.intValue();
             productSessionBean.deleteProducts(companyId, pdtID);
         } catch (Exception ex) {
@@ -284,10 +285,47 @@ public class ProductManagedBean {
         try {
             newProductId = productSessionBean.addNewProduct(productName, description, category, productType, currency, price, companyId);
             statusMessage = "New Product Saved Successfully";
+            this.clearAllProductFields();
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
+    
+     public void saveNewComponent(ActionEvent component) {
+
+        try {
+            int pdtTempId = productId.intValue();
+            newComponentId = productSessionBean.addNewComponent(componentName, componentDescription, componentQuantity, componentCurrency, componentCost, componentLeadTime, supplierCompanyId, supplierContactPerson, supplierContactNumber, supplierContactEmail, companyId, pdtTempId);
+            statusMessage = "New Component Saved Successfully";
+            this.clearAllComponentFields();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void clearAllProductFields() {
+        productName = null;
+        description = null;
+        category = null;
+        productType = null;
+        currency = null;
+        price = null;
+    }
+    
+    private void clearAllComponentFields() {
+        productId = null;
+        componentName = null;
+        componentDescription = null;
+        componentQuantity = null;
+        componentCurrency = null;
+        componentCost = null;
+        componentLeadTime = null;
+        supplierCompanyId = null;
+        supplierContactPerson = null;
+        supplierContactNumber = null;
+        supplierContactEmail = null;
+ }
 
     /* do it later
      public void saveNewComponent(ActionEvent product) {
@@ -322,7 +360,7 @@ public class ProductManagedBean {
         try {
             int pdtID = productId.intValue();
             productTemp = productSessionBean.getAProduct(companyId, pdtID);
-            productId = productTemp.getProductId().doubleValue();
+            productId = productTemp.getProductId();
             productName = productTemp.getProductName();
             description = productTemp.getDescription();
             category = productTemp.getCategory();

@@ -135,6 +135,10 @@ public class ProductComponentViewEditManagedBean {
     public List<Product> getProducts() {
         return products;
     }
+    
+     public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 
     public String getComponentName() {
         return componentName;
