@@ -135,7 +135,7 @@ html, body {
     margin: 0 auto -100px; /* the bottom margin is the negative value of the footer's height */
 }
 .footer{
-    background-color:rgba(20,0,0,0.2);
+    background-color:rgba(20,0,0,0.4);
     color:#fff;
     padding:25px;
 }
