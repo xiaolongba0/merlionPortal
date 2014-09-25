@@ -95,6 +95,11 @@ public class PurchaseOrderManagedBean {
         System.out.println("Shipto Adress is not null" + shipto);
     }
 
+    public String checkAvailability(ProductOrderLineItem line) {
+        return "Available";
+
+    }
+
     public void onRowEdit(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Quantity Edited", ((ProductOrderLineItem) event.getObject()).getQuantity().toString());
         FacesContext.getCurrentInstance().addMessage(null, msg);
