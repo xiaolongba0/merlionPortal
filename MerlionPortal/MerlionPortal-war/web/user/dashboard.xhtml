@@ -75,7 +75,7 @@
                         <c:if test ="#{dashboardBean.canUseTMS() || dashboardBean.loginedUser.userType == 'superuser'}">
                             <c:set var="disabletms" value="false" />
                         </c:if>
-                        <p:commandLink action="#" disabled="${disabletms}" >
+                        <p:commandLink action="/tms/tmsindex.xthml?faces-redirect=true" disabled="${disabletms}" >
                             <p:graphicImage value="../img/tmstile.jpg"/>
                         </p:commandLink> 
                     </div>
