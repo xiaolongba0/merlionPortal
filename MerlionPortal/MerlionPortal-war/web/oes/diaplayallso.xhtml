@@ -5,7 +5,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>All Quotation</title>
+        <title>Facelet Title</title>
     </h:head>
     <h:body>
         <h1>All Quotation </h1>
@@ -30,38 +30,38 @@
             <br/>
         </h:form>
         <h:form>  
-            <p:dataTable id="allQuotation" var="quotation" value="#{quotationManagedBean.allProcceQuotation}" 
-                         filteredValue="#{displayProductManagedBean.filteredProducts}"
-                         selectionMode="single" selection="#{quotationManagedBean.selectedQuotation}" 
-                         rowKey="#{quotation.quotationId}"
-                         widgetVar="quotationTable"
-                         emptyMessage="No quotation found with given criteria">
+            <p:dataTable id="allso" var="salesorder" value="#{viewSalesOrderManagedBean.salesOrderList}" 
+                         filteredValue="#{viewSalesOrderManagedBean.filteredOrder}"
+                         selectionMode="single" selection="#{viewSalesOrderManagedBean.selectedOrder}" 
+                         rowKey="#{salesorder.productPOId}"
+                         widgetVar="salesOrderTalbe"
+                         emptyMessage="No Order found with given criteria">
                 <p:column  
-                    filterBy="#{quotation.quotationId}" 
-                    filterMatchMode="exact" headerText="Quotation Id" >
-                    <h:outputText value="#{quotation.quotationId}" />
+                    filterBy="#{salesorder.productPOId}" 
+                    filterMatchMode="exact" headerText="SO Number" >
+                    <h:outputText value="#{salesorder.productPOId}" />
                 </p:column>
                 <p:column  
-                    filterBy="#{quotation.customerId}" 
+                    filterBy="#{salesorder.creatorId}" 
                     filterMatchMode="exact" headerText="Customer" >
-                    <h:outputText value="#{quotation.customerId}" />
+                    <h:outputText value="#{salesorder.creatorId}" />
                 </p:column>
-                <p:column filterBy="#{quotationManagedBean.getqStatus(quotation.status)}" filterMatchMode="in" headerText="Status">
+                <p:column filterBy="#{viewSalesOrderManagedBean.myOrderStatus(salesorder)}" filterMatchMode="in" headerText="Status">
                     <f:facet name="filter">
                         <p:selectCheckboxMenu label="Select" 
-                                              onchange="PF('quotationTable').filter()" 
+                                              onchange="PF('salesOrderTalbe').filter()" 
                                               panelStyle="width:150px" scrollHeight="150">
-                            <f:selectItems value="#{quotationManagedBean.allStatus}" />
+                            <f:selectItems value="#{viewSalesOrderManagedBean.statusList}" />
                         </p:selectCheckboxMenu>
                     </f:facet>
-                    <h:outputText value="#{quotationManagedBean.getqStatus(quotation.status)}" />
+                    <h:outputText value="#{viewSalesOrderManagedBean.myOrderStatus(salesorder)}" />
                 </p:column>
                 <p:column headerText="Create Date">
                     <h:outputText value="#{quotation.createDate}" />
                 </p:column>
             </p:dataTable> 
             <br></br>
-            <p:commandButton action="#{quotationManagedBean.viewQuotation()}" value="View Quotation">
+            <p:commandButton action="#{viewSalesOrderManagedBean.viewOrderDetail()}" value="View Order">
             </p:commandButton>  
         </h:form>
     </h:body>

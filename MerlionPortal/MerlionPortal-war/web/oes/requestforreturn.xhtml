@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+          <h:form id="formMain">  
+            <p:menubar>
+                <p:menuitem value="HOME" url="oesindexpage.xhtml"/>
+                <p:menuitem value="PRODUCTS" url="displayallproducts.xhtml" />
+                <p:submenu label="QUOTATION" >
+                    <p:menuitem value="View All Request" url="viewallrequests.xhtml" />
+                    <p:menuitem value="View Quotation" url="displayallquotations.xhtml" />
+                </p:submenu>
+                <p:submenu label="ORDERS" >
+                    <p:menuitem value="Create Order" url="pogeneration.xhtml" />
+                    <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
+                    <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" />
+                    <p:menuitem value="Order Status" url="displayallso.xhtml" />
+                </p:submenu>
+                <p:submenu label="REPORTS" >
+                </p:submenu>
+            </p:menubar>
+            <br/>
+        </h:form>
+        
+    </h:body>
+</html>
+
