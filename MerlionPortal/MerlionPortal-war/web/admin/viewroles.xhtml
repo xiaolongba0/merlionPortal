@@ -24,7 +24,7 @@
                                 <p:outputLabel for="company" value="Company:" />
                                 <h:selectOneMenu id="company" value="#{viewCompanyRoles.selectCompanyId}"  style="width:250px" styleClass="form-control">
                                     <p:ajax listener="#{viewCompanyRoles.onCompanyChange}" update="rolesData" />
-                                    <f:selectItem itemLabel="Select Company . . ." itemValue="" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="Select Company To View Role" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{viewCompanyRoles.companys}" var="company" itemLabel="#{company.name}"  itemValue="#{company.companyId}"/>
                                 </h:selectOneMenu>
                             </h:panelGrid>
