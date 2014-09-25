@@ -8,13 +8,12 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
-    <c:set var="root" value="${request.contextPath}" />
     <ui:composition template="${root}/templates/templateadmin.xhtml">
         <ui:param name="pageName" value="View User" />
 
         <ui:define name="more-imports">
             <ui:insert>
-                <link rel="stylesheet" href="${root}/css/viewusers.css" type="text/css" />
+                <link rel="stylesheet" href="${request.contextPath}/css/viewusers.css" type="text/css" />
             </ui:insert>
         </ui:define>
 
