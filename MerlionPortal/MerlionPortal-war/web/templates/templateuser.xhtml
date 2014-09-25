@@ -17,19 +17,22 @@
         </ui:insert>
     </h:head>
     <h:body>
-        <!-- Navigation Bar -->
-        <ui:insert name="nav" >
-            <ui:include src="/templates/snippets/user/navigation.xhtml" />
-        </ui:insert>
-        <!-- Content -->
-        <ui:insert name="content" >
-            <div class="container left-container">
-                <ui:insert name="left"></ui:insert>
-            </div>
-            <div class="containner right-container">
-                <ui:insert name="right"></ui:insert>
-            </div>
-        </ui:insert>
+        <div class="wrapper">
+            <!-- Navigation Bar -->
+            <ui:insert name="nav" >
+                <ui:include src="/templates/snippets/user/navigation.xhtml" />
+            </ui:insert>
+            <!-- Content -->
+            <ui:insert name="content" >
+                <div class="containner right-container">
+                    <ui:insert name="right"></ui:insert>
+                </div>
+                <div class="container left-container">
+                    <ui:insert name="left"></ui:insert>
+                </div>            
+            </ui:insert>
+            <div class="push"></div>
+        </div>
         <!-- Footer -->
         <ui:insert name="footer" >
             <ui:include src="/templates/snippets/footer.xhtml" />
