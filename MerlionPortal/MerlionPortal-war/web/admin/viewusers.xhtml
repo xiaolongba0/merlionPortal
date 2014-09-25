@@ -12,6 +12,12 @@
     <ui:composition template="${root}/templates/templateadmin.xhtml">
         <ui:param name="pageName" value="View User" />
 
+        <ui:define name="more-imports">
+            <ui:insert>
+                <link rel="stylesheet" href="${root}/css/viewusers.css" type="text/css" />
+            </ui:insert>
+        </ui:define>
+
         <!-- Override Content -->
         <ui:define name="content">
             <div class="container" >
@@ -42,6 +48,7 @@
                                 <p:inputText id="globalFilter" onkeyup="PF('usersTable').filter()" style="width:150px" placeholder="Enter keyword"/>
                             </p:outputPanel>
                         </f:facet>
+
                         <p:column filterBy="#{user.systemUserId}" headerText="User Id"  width="10px" filterMatchMode="contains">
                             <h:outputText value="#{user.systemUserId}" />
                         </p:column>

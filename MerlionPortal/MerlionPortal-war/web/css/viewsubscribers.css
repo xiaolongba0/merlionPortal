@@ -1,0 +1,6 @@
+.ui-widget-header:nth-child(1){
+    background:white;
+    border:none;
+    text-align: right;
+    margin-bottom:10px;
+}

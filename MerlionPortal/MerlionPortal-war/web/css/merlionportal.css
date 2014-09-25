@@ -108,10 +108,12 @@ ul.rights-menu li{
 
 .left-container{
     width: 30%;
+    float:left;
 }
 
 .right-container{
     width:70%;
+    float:right;
 }
 //*************************************************//
 //footer
@@ -136,3 +138,8 @@ html, body {
     height: 100px; /* .push must be the same height as .footer */
 }
 //************************************************//
+// Sub-system layouts
+
+.no-border{
+    border:none;
+}
