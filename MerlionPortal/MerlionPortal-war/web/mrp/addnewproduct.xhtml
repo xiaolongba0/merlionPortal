@@ -17,6 +17,7 @@
         </style>
     </h:head>
     <h:body>
+
         <h:form id="formMain">
             <h1>Welcome to MRP II system</h1>
             <p:megaMenu  style="margin-top:20px">
@@ -43,6 +44,7 @@
             </p:megaMenu>
             <br/>
 
+            <p:growl id="growl" showDetail="true" sticky="true" /> 
             <p:panel id="panel" header="Add New Product">
                 <p:ajaxStatus style="width:16px;height:16px;">
                     <f:facet name="start">
@@ -60,11 +62,8 @@
                         </p:column>
                         <p:column>
                             <p:inputText required="true" label="Product Name" requiredMessage="Product Name is required." id="productName" value="#{productManagedBean.productName}">
-                                <f:validateLength minimum="4" maximum="16" />
+                                <f:validateLength minimum="1" maximum="16" />
                             </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="productName" />
                         </p:column>
                     </p:row>
                     <p:row>
@@ -75,9 +74,6 @@
                             <p:inputText required="true" label="Description" requiredMessage="Description is required." id="description" value="#{productManagedBean.description}">
                                 <f:validateLength minimum="1" maximum="19" />
                             </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="description" />
                         </p:column>
                     </p:row>
                     <p:row>
@@ -100,8 +96,7 @@
                                 <f:selectItem itemLabel="Semi-Finished Products" itemValue="Semi-Finished Products" />  
                                 <f:selectItem itemLabel="Raw Materials" itemValue="Raw Materials" />  
                                 <f:selectItem itemLabel="Others" itemValue="Others" />  
-                            </h:selectOneMenu>
-                            <p:message for="category" />
+                            </h:selectOneMenu> 
                         </p:column>
                     </p:row> 
                     <p:row>
@@ -114,7 +109,6 @@
                                 <f:selectItem itemLabel="Manufacturing" itemValue="Manufacturing" />
                                 <f:selectItem itemLabel="Non-Manufacturing" itemValue="Non-Manufacturing" />
                             </h:selectOneMenu>
-                            <p:message for="productType" />
                         </p:column>
                     </p:row>  
 
@@ -148,7 +142,6 @@
                                 <f:selectItem itemLabel="Norwegian Krone (NOK)" itemValue="NOK" />
                                 <f:selectItem itemLabel="Mexican Peso (MXN)" itemValue="MXN" />
                             </h:selectOneMenu>
-                            <p:message for="currency" />
                         </p:column>
                     </p:row>  
 
@@ -161,12 +154,8 @@
                                 <f:validateLength minimum="1" maximum="19"/>
                             </p:inputText>
                         </p:column>
-                        <p:column>
-                            <p:message for="price" />
-                        </p:column>
                     </p:row>
-
-                </p:panelGrid>
+                   </p:panelGrid>
                 <p:commandButton id="btn" value="Save New Product" update="panel" actionListener="#{productManagedBean.saveNewProduct}" ajax="true" />
 
             </p:panel>

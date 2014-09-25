@@ -18,9 +18,9 @@
         </style>
     </h:head>
     <h:body>
-        <h:form id="formMain">
+        <h:form id="form">
             <h1>Welcome to MRP II system</h1>
-            <p:growl id="msgs" showDetail="true"/>   
+            
             <p:megaMenu  style="margin-top:20px">
                 <p:menuitem value="MRP II" url="mrp.xhtml" />
                 <p:submenu label="Product Management" >
@@ -44,9 +44,8 @@
                 </p:submenu>
             </p:megaMenu>
             <br/>
-        </h:form>
-        <h:form id="form">
-
+      
+             <p:growl id="msgs" showDetail="true"/>   
             <p:dataTable id="products" var="product" sortMode="multiple" value="#{productViewEditManagedBean.myCompanyProducts}" editable="true" style="margin-bottom:20px"
                          widgetVar="productsTable"
                          emptyMessage="No product found"
@@ -126,8 +125,8 @@
                 </p:column>
 
 
-                <p:column headerText = "Delete Product">
-                    <p:commandButton action="#{productViewEditManagedBean.deleteProduct(product)}" update="products" value="Delete">
+                <p:column style="width:42px">
+                    <p:commandButton action="#{productViewEditManagedBean.deleteProduct(product)}" update="products" icon="ui-icon-trash">
                         <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this product?" icon="ui-icon-alert" />
                     </p:commandButton> 
                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -143,7 +142,7 @@
                 </p:column>
 
             </p:dataTable>
-            <p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+    
         </h:form>
     </h:body>
 </html>

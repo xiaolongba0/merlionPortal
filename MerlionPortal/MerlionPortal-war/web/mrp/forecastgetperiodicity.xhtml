@@ -70,9 +70,9 @@
                         </p:column>
                     </p:row>
                 </p:panelGrid>
-                <p:commandButton value="Proceed to view result"  action="#{forecastManagedBean.proceedViewResult}" />
-            </p:panel>
 
+                <p:commandButton value="Proceed with forecasting" action="#{forecastShowHistoryManagedBean.onParameterChange}" ajax="true"/>
+            </p:panel>
         </h:form>
     </h:body>
 </html>

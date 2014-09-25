@@ -42,6 +42,7 @@
                 </p:submenu>
             </p:megaMenu>
             <br/>
+             <p:growl id="growl" showDetail="true" sticky="true" /> 
             <p:panel id="panel" header="Add Component">
                 <p:ajaxStatus style="width:16px;height:16px;">
                     <f:facet name="start">
@@ -71,11 +72,8 @@
                         </p:column>
                         <p:column>
                             <p:inputText required="true" label="Component Name" requiredMessage="Component Name is required." id="componentName" value="#{productManagedBean.componentName}">
-                                <f:validateLength minimum="4" maximum="16" />
+                                <f:validateLength minimum="1" maximum="16" />
                             </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="componentName" />
                         </p:column>
                     </p:row>
                     <p:row>
@@ -87,9 +85,6 @@
                                 <f:validateLength minimum="1" maximum="19" />
                             </p:inputText>
                         </p:column>
-                        <p:column>
-                            <p:message for="componentDescription" />
-                        </p:column>
                     </p:row>
 
                     <p:row>
@@ -100,9 +95,6 @@
                             <p:inputText required="true" label="Component Quantity" requiredMessage="Component Quantity is required." id="componentQuantity" value="#{productManagedBean.componentQuantity}">
                                 <f:validateLength minimum="1" maximum="19"/>
                             </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="componentQuantity" />
                         </p:column>
                     </p:row>
 
@@ -136,7 +128,6 @@
                                 <f:selectItem itemLabel="Norwegian Krone (NOK)" itemValue="NOK" />
                                 <f:selectItem itemLabel="Mexican Peso (MXN)" itemValue="MXN" />
                             </h:selectOneMenu>
-                            <p:message for="componentCurrency" />
                         </p:column>
                     </p:row>  
 
@@ -149,9 +140,6 @@
                                 <f:validateLength minimum="1" maximum="19"/>
                             </p:inputText>
                         </p:column>
-                        <p:column>
-                            <p:message for="componentCost" />
-                        </p:column>
                     </p:row>
 
                     <p:row>
@@ -163,9 +151,6 @@
                                 <f:validateLength minimum="1" maximum="19"/>
                             </p:inputText>
                         </p:column>
-                        <p:column>
-                            <p:message for="componentLeadTime" />
-                        </p:column>
                     </p:row>
                     <p:row>
                         <p:column>
@@ -176,9 +161,6 @@
                                 <f:validateLength minimum="1" maximum="19"/>
                             </p:inputText>
                         </p:column>
-                        <p:column>
-                            <p:message for="supplierCompanyId" />
-                        </p:column>
                     </p:row>
                     <p:row>
                         <p:column>
@@ -188,9 +170,6 @@
                             <p:inputText required="true" label="Supplier Contact Person" requiredMessage="Supplier Contact Person is required." id="supplierContactPerson" value="#{productManagedBean.supplierContactPerson}">
                                 <f:validateLength minimum="1" maximum="19"/>
                             </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="supplierContactPerson" />
                         </p:column>
                     </p:row>
 
@@ -203,9 +182,6 @@
                                 <f:validateLength minimum="1" maximum="19"/>
                             </p:inputText>
                         </p:column>
-                        <p:column>
-                            <p:message for="supplierContactNumber" />
-                        </p:column>
                     </p:row>
 
                     <p:row>
@@ -216,9 +192,6 @@
                             <p:inputText required="true" label="Supplier Contact Email" requiredMessage="Supplier Contact Email is required." id="supplierContactEmail" value="#{productManagedBean.supplierContactEmail}">
                                 <f:validateLength minimum="1" maximum="19"/>
                             </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="supplierContactEmail" />
                         </p:column>
                     </p:row>
 
