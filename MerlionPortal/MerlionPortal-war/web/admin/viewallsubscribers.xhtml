@@ -44,16 +44,19 @@
                         <p:column filterBy="#{company.contactNumber}" headerText="Contact Number" filterMatchMode="contains">
                             <h:outputText value="#{company.contactNumber}" />
                         </p:column>
-                        
-                        <p:column filterBy="#{company.package1}" headerText="Package Choice" filterMatchMode="contains">
+
+                        <p:column filterBy="#{company.package1}" headerText="Package Choice" filterMatchMode="in">
                             <f:facet name="filter">
-                                <p:selectOneButton onchange="PF('companyTable').filter()">
+                                <p:selectCheckboxMenu label="Package" onchange="PF('companyTable').filter()" panelStyle="width:125px" scrollHeight="150">
+                                    <f:selectItems value="#{getAllSubscribersInfo.packages}" />
+                                </p:selectCheckboxMenu>
+<!--                                <p:selectOneButton onchange="PF('companyTable').filter()">
                                     <f:selectItem itemLabel="All" itemValue="" />
                                     <f:selectItem itemLabel="Manu 1PL" itemValue="1" />
                                     <f:selectItem itemLabel="Non-Manu 1PL" itemValue="2" />
                                     <f:selectItem itemLabel="2PL" itemValue="3" />
                                     <f:selectItem itemLabel="3/4/5PL" itemValue="4" />
-                                </p:selectOneButton>
+                                </p:selectOneButton>-->
                             </f:facet>
                             <h:outputText value="#{company.package1}" />
                         </p:column>

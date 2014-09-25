@@ -42,7 +42,7 @@
                                 <p:inputText id="globalFilter" onkeyup="PF('usersTable').filter()" style="width:150px" placeholder="Enter keyword"/>
                             </p:outputPanel>
                         </f:facet>
-                        <p:column filterBy="#{user.systemUserId}" headerText="User Id"  filterMatchMode="contains">
+                        <p:column filterBy="#{user.systemUserId}" headerText="User Id"  width="10px" filterMatchMode="contains">
                             <h:outputText value="#{user.systemUserId}" />
                         </p:column>
                         <p:column filterBy="#{user.salution}" headerText="Salutation"  filterMatchMode="contains">
@@ -54,11 +54,9 @@
                         <p:column filterBy="#{user.lastName}" headerText="Last Name"  filterMatchMode="contains">
                             <h:outputText value="#{user.lastName}" />
                         </p:column>
-                        <p:column filterBy="#{user.emailAddress}" headerText="Email Address"  filterMatchMode="contains">
+                        <p:column filterBy="#{user.emailAddress}" headerText="Email Address" width="200px" filterMatchMode="contains">
                             <h:outputText value="#{user.emailAddress}"/>
                         </p:column>
-
-
                         <p:column filterBy="#{user.credit}" headerText="Credit"  filterMatchMode="contains">
                             <h:outputText value="#{user.credit}" />
                         </p:column>
@@ -143,8 +141,6 @@
                                             <p:outputLabel value="#{viewUserManagerBean.selectedUser.createdDate}"  />
 
                                         </p:panelGrid>
-
-                                        <p:messages id="msg"  showDetail="true" autoUpdate="true" closable="true" />
                                         <p:dataTable id="roleData" var="role" value="#{viewUserManagerBean.selectedUser.userRoleList}" >
 
                                             <p:column headerText="Role Name">
@@ -167,6 +163,7 @@
                                             </p:panelGrid>
                                         </div>
 
+                                        <p:messages id="msg"  showDetail="true" autoUpdate="true" closable="true" />
 
                                     </p:outputPanel>
                                 </div>

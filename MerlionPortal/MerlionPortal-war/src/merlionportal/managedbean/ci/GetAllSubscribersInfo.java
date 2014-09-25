@@ -9,6 +9,7 @@ package merlionportal.managedbean.ci;
 import entity.Company;
 import entity.SystemUser;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -32,6 +33,7 @@ public class GetAllSubscribersInfo {
     private SystemUser loginedUser;
     private List<Company> companys;
     private List<Company> filteredCompanys;
+    private List<String> packages;
     @EJB 
     UserAccountManagementSessionBean uamb;
     @EJB
@@ -56,6 +58,11 @@ public class GetAllSubscribersInfo {
             }
         }
         companys = (List<Company>) gcsb.getCompanies();
+        packages = new ArrayList<>();
+        packages.add("1");
+        packages.add("2");
+        packages.add("3");
+        packages.add("4");
 
     }
 
@@ -81,6 +88,14 @@ public class GetAllSubscribersInfo {
 
     public void setFilteredCompanys(List<Company> filteredCompanys) {
         this.filteredCompanys = filteredCompanys;
+    }
+
+    public List<String> getPackages() {
+        return packages;
+    }
+
+    public void setPackages(List<String> packages) {
+        this.packages = packages;
     }
     
     

@@ -14,14 +14,12 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.GetCompanyRoleSessionBean;
 import merlionportal.ci.administrationmodule.GetCompanySessionBean;
 import merlionportal.ci.administrationmodule.RoleManagementSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
-import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -92,7 +90,7 @@ public class ViewCompanyRolesManagerBean {
 
     }
 
-    public void deleteRole(ActionEvent event) {
+    public void deleteRole() {
         System.out.println("==========here============");
         int result = 0;
         if (selectedRole != null) {
@@ -115,8 +113,10 @@ public class ViewCompanyRolesManagerBean {
     }
 
     public void updateRole() {
+        System.out.println("++++++++++++++++++++++++++");
         int result = 0;
         if (selectedRole != null) {
+            System.out.println("++++++++++++444++++++++++++++");
             result = rmsb.updateRole(loginedUser.getSystemUserId(), selectedRole);
         }
         if (result == 1) {
@@ -127,7 +127,15 @@ public class ViewCompanyRolesManagerBean {
 
         } else {
 //            redirect to login page
+            System.out.println("++++++++++++++null++++++++++++");
         }
+    }
+    
+    public void selectRole(UserRole role){
+        System.out.println("here!");
+        selectedRole = role;
+        System.out.println("ROLE " + role.getRoleName());
+        System.out.println("Selected ROLE " + selectedRole.getRoleName());
     }
 
     public int getCompanyId() {
