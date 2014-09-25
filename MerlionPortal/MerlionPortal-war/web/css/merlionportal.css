@@ -99,6 +99,10 @@ ul.rights-menu li{
     height:auto;
 }
 
+.ui-state-default{
+    border-radius: 0px;
+    -webkit-border-radius: 0px;
+}
 /*.content-area{
     padding-top: 45px;
     padding-bottom: 45px;

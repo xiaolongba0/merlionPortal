@@ -11,6 +11,13 @@
     <c:set var="root" value="${request.contextPath}" />
     <ui:composition template="${root}/templates/templateadmin.xhtml">
         <ui:param name="pageName" value="View Roles" />
+        
+        <ui:define name="more-imports">
+            <ui:insert>
+                <link rel="stylesheet" href="${request.contextPath}/css/viewroles.css" type="text/css" />
+            </ui:insert>
+        </ui:define>
+        
         <!-- Override Content -->
         <ui:define name="content">
             <c:set var="root" value="${request.contextPath}" />

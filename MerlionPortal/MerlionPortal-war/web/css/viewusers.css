@@ -4,3 +4,13 @@
     text-align: right;
     margin-bottom:10px;
 }
+
+.ui-datatable{
+    margin-top:10px;
+}
+
+//shift to merlionportal.css
+/*.ui-state-default{
+    border-radius: 0px;
+    -webkit-border-radius: 0px;
+}*/

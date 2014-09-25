@@ -22,18 +22,7 @@
             <div class="container" >
                 <h2>View Users</h2>
                 <h:form id="form">
-                    <!--Only should company selection if it is super user-->
-
-                    <c:if test ="#{viewUserManagerBean.loginedUser.userType == 'superuser'}">
-                        <h:panelGrid columns="2" cellpadding="5">
-                            <p:outputLabel for="company" value="Company:" />
-                            <h:selectOneMenu id="company" value="#{viewUserManagerBean.selectCompanyId}"  style="width:250px" styleClass="form-control">
-                                <p:ajax listener="#{viewUserManagerBean.onCompanyChange}" update="usersData" />
-                                <f:selectItem itemLabel="Select Company To View Users" itemValue="" noSelectionOption="true" />
-                                <f:selectItems value="#{viewUserManagerBean.companys}" var="company" itemLabel="#{company.name}"  itemValue="#{company.companyId}"/>
-                            </h:selectOneMenu>
-                        </h:panelGrid>
-                    </c:if>
+                    
 
                     <p:messages id="messages"  showDetail="true" autoUpdate="true" closable="true" />
                     <p:dataTable id="usersData" var="user" rowKey="#{user.systemUserId}" value="#{viewUserManagerBean.companyUsers}" widgetVar="usersTable"
