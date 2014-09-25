@@ -273,8 +273,10 @@ private Product product;
     public void saveNewProduct(ActionEvent product) {
         try {
             newProductId = productSessionBean.addNewProduct(productName, description, category, productType, currency, price, companyId);
-            statusMessage = "New Product Saved Successfully";
+             FacesMessage msg = new FacesMessage("Product added successfully");
+             FacesContext.getCurrentInstance().addMessage(null, msg);
             this.clearAllProductFields();
+           
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -286,7 +288,8 @@ private Product product;
         try {
             int pdtTempId = productId.intValue();
             newComponentId = productSessionBean.addNewComponent(componentName, componentDescription, componentQuantity, componentCurrency, componentCost, componentLeadTime, supplierCompanyId, supplierContactPerson, supplierContactNumber, supplierContactEmail, companyId, pdtTempId);
-            statusMessage = "New Component Saved Successfully";
+             FacesMessage msg = new FacesMessage("Component added successfully");
+             FacesContext.getCurrentInstance().addMessage(null, msg);
             this.clearAllComponentFields();
         } catch (Exception ex) {
             ex.printStackTrace();

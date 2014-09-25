@@ -7,14 +7,15 @@ package merlionportal.managedbean.mrp2;
 
 import entity.SystemUser;
 import java.io.IOException;
-import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Vector;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
@@ -22,8 +23,8 @@ import org.primefaces.model.chart.DateAxis;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 
-@ManagedBean
-@RequestScoped
+@Named(value = "forecastShowHistoryManagedBean")
+@ViewScoped
 public class ForecastShowHistoryManagedBean implements Serializable {
 
     @EJB
@@ -78,7 +79,11 @@ public class ForecastShowHistoryManagedBean implements Serializable {
             }
         }
         createPurchaseHistoryModels();
+        createResultModel();
+       
+        periodicity = 12;
         computeForecastResult();
+      
 
     }
 
@@ -87,7 +92,9 @@ public class ForecastShowHistoryManagedBean implements Serializable {
     }
 
     public LineChartModel getForecastSales() {
+        System.out.println("Get to this stage!!!!!!!!!!");
         return forecastSales;
+
     }
 
 //1. based on today, count no of months of history
@@ -179,9 +186,11 @@ public class ForecastShowHistoryManagedBean implements Serializable {
     }
 
     public void computeForecastResult() {
-        //produce a list of date correspond to sales
-        //size need to be retreved/computed later
 
+//produce a list of date correspond to sales
+        //size need to be retreved/computed later
+        System.out.println("Periodicity BEFORE  " + periodicity);
+        System.out.println("growth  BEFORE " + expectedGrowth);
         size = 24;
         monthlyDate = new Vector<String>();
         monthlyDate.add("2012-08-01");
@@ -250,7 +259,7 @@ public class ForecastShowHistoryManagedBean implements Serializable {
 
         //Compute Deseasonalized Demand
         deseasonizedD = new Vector();
-        periodicity = 12;
+        //periodicity = 12;
         if (periodicity % 2 == 0) {
             // periodicity is even
             //periodicity should be a input from user. For now, hard code first.
@@ -406,7 +415,7 @@ public class ForecastShowHistoryManagedBean implements Serializable {
             monthlyDateR.add("2016-07-01");
             monthlyDateR.add("2016-08-01");
 
-            forecastSales = new LineChartModel();
+            LineChartModel forecastSales1 = new LineChartModel();
             LineChartSeries series1 = new LineChartSeries();
             series1.setLabel("Sales Figure");
 
@@ -414,22 +423,27 @@ public class ForecastShowHistoryManagedBean implements Serializable {
                 series1.set(monthlyDateR.get(i), forecastR.get(i));
             }
 
-            forecastSales.addSeries(series1);
+            forecastSales1.addSeries(series1);
 
-            forecastSales.setTitle("Predicted Sales on a Monthly Basis");
-            forecastSales.setZoom(true);
-            forecastSales.setAnimate(true);
-            forecastSales.setLegendPosition("se");
-            Axis yAxis = forecastSales.getAxis(AxisType.Y);
+            forecastSales1.setTitle("Predicted Sales on a Monthly Basis");
+            forecastSales1.setZoom(true);
+            forecastSales1.setAnimate(true);
+            forecastSales1.setLegendPosition("se");
+            Axis yAxis = forecastSales1.getAxis(AxisType.Y);
             yAxis.setLabel("Sales Volume (in pieces)");
             yAxis.setMin(0);
             yAxis.setMax(35000);
 
             DateAxis axis = new DateAxis("Dates");
-            forecastSales.getAxes().put(AxisType.X, axis);
+            forecastSales1.getAxes().put(AxisType.X, axis);
             axis.setMin("2014-05-01");
             axis.setMax("2016-01-01");
             axis.setTickFormat("%b, %y");
+
+            System.out.println("XXXXXXXXXLATER periodicity" + periodicity);
+            System.out.println("XXXXXXXXXLATER growth" + expectedGrowth);
+
+            forecastSales = forecastSales1;
 
         } else {
 
@@ -602,6 +616,26 @@ public class ForecastShowHistoryManagedBean implements Serializable {
 
     }
 
+    public void createResultModel() {
+        forecastSales = new LineChartModel();
+
+        forecastSales.setTitle("Predicted Sales on a Monthly Basis");
+        forecastSales.setZoom(true);
+        forecastSales.setAnimate(true);
+        forecastSales.setLegendPosition("se");
+        Axis yAxis = forecastSales.getAxis(AxisType.Y);
+        yAxis.setLabel("Sales Volume (in pieces)");
+        yAxis.setMin(0);
+        yAxis.setMax(35000);
+
+        DateAxis axis = new DateAxis("Dates");
+        forecastSales.getAxes().put(AxisType.X, axis);
+        axis.setMin("2014-05-01");
+        axis.setMax("2016-01-01");
+        axis.setTickFormat("%b, %y");
+
+    }
+
     public int getPeriodicity() {
         return periodicity;
     }
@@ -618,9 +652,17 @@ public class ForecastShowHistoryManagedBean implements Serializable {
         this.expectedGrowth = expectedGrowth;
     }
 
-    /*   public String onParameterChange() {
-      
-     computeForecastResult();
-     return "forecastResult?faces-redirect=true";
-     }   */
+    public String onParameterChange() {
+
+        computeForecastResult();
+        System.out.println("yesOOOOOOOOOOOOOOOOOOOOOOOOO");
+        System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOO");
+        System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOO");
+        System.out.println("periodicity   " + periodicity);
+        System.out.println("yesOOOOOOOOOOOOOOOOOOOOOOOOO");
+        System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOO");
+        System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOO");
+        System.out.println("expected growth   " + expectedGrowth);
+        return "forecastResult";
+    }
 }
