@@ -20,19 +20,18 @@
     <h:body>
         <h:form id="formMain">
             <h1>Welcome to MRP II system</h1>
+            <p:growl id="msgs" showDetail="true"/>   
             <p:megaMenu  style="margin-top:20px">
                 <p:menuitem value="MRP II" url="mrp.xhtml" />
                 <p:submenu label="Product Management" >
                     <p:column>
                         <p:submenu label="Product Catalog Management">
                             <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
-                            <p:menuitem value="View and Edit Products" url="viewallproducts.xhtml" />
-                            <p:menuitem value="Delete a Product" url="deleteproduct.xhtml" />
-                            <p:menuitem value="View A Product" url="viewaproduct.xhtml" />
+                            <p:menuitem value="View, Edit and Delete" url="viewallproducts.xhtml" />
                         </p:submenu>
                         <p:submenu label="BOM Management">
                             <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
-                            <p:menuitem value="View and Edit BOM" url="viewbom.xhtml" />
+                            <p:menuitem value="View, Edit and Delete BOM" url="viewbom.xhtml" />
                         </p:submenu>
                     </p:column>
                 </p:submenu>
@@ -47,40 +46,44 @@
             <br/>
         </h:form>
         <h:form id="form">
-            <p:growl id="msgs" showDetail="true"/>   
 
-            <p:dataTable id="products" var="product" value="#{productViewEditManagedBean.myCompanyProducts}" editable="true" style="margin-bottom:20px">
-
+            <p:dataTable id="products" var="product" sortMode="multiple" value="#{productViewEditManagedBean.myCompanyProducts}" editable="true" style="margin-bottom:20px"
+                         widgetVar="productsTable"
+                         emptyMessage="No product found"
+                         rowKey="#{product.productId}">
 
                 <f:facet name="header">
-                    View and Edit Products
+                    <p:outputPanel>
+                        <h:outputText value="Search all fields:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('productsTable').filter()" />
+                    </p:outputPanel>
                 </f:facet>
 
                 <p:ajax event="rowEdit" listener="#{productViewEditManagedBean.onRowEdit}" update=":form:msgs" />
                 <p:ajax event="rowEditCancel" listener="#{productViewEditManagedBean.onRowCancel}" update=":form:msgs" />
 
 
-                <p:column headerText="Product ID">
+                <p:column filterBy="#{product.productId}" filterMatchMode="exact" headerText="Product ID">
                     <h:outputText value="#{product.productId}" />
                 </p:column>
 
 
 
-                <p:column headerText="Product Name">
+                <p:column filterBy="#{product.productName}" filterMatchMode="contains" headerText="Product Name">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{product.productName}" /></f:facet>
                         <f:facet name="input"><p:inputText value="#{product.productName}" style="width:100%" label="Product Name"/></f:facet>
                     </p:cellEditor>
                 </p:column>
 
-                <p:column headerText="Product Description">
+                <p:column filterBy="#{product.description}" filterMatchMode="contains" headerText="Product Description">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{product.description}" /></f:facet>
                         <f:facet name="input"><p:inputText value="#{product.description}" style="width:100%" label="Product Description"/></f:facet>
                     </p:cellEditor>
                 </p:column>
 
-                <p:column headerText="Product Category">
+                <p:column filterBy="#{product.category}" filterMatchMode="contains" headerText="Product Category">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{product.category}" /></f:facet>
                         <f:facet name="input">
@@ -91,7 +94,7 @@
                     </p:cellEditor>
                 </p:column> 
 
-                <p:column headerText="Product Type">
+                <p:column filterBy="#{product.productType}" filterMatchMode="contains" headerText="Product Type">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{product.productType}" /></f:facet>
                         <f:facet name="input">
@@ -103,7 +106,7 @@
                 </p:column>
 
 
-                <p:column headerText="Product Currency">
+                <p:column filterBy="#{product.currency}" filterMatchMode="contains" headerText="Product Currency">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{product.currency}" /></f:facet>
                         <f:facet name="input">
@@ -115,19 +118,32 @@
                 </p:column> 
 
 
-                <p:column headerText="Product Price">
+                <p:column filterBy="#{product.price}" filterMatchMode="contains" headerText="Product Price">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{product.price}" /></f:facet>
                         <f:facet name="input"><p:inputText value="#{product.price}" style="width:100%" label="Product Price"/></f:facet>
                     </p:cellEditor>
                 </p:column>
 
+
+                <p:column headerText = "Delete Product">
+                    <p:commandButton action="#{productViewEditManagedBean.deleteProduct(product)}" update="products" value="Delete">
+                        <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this product?" icon="ui-icon-alert" />
+                    </p:commandButton> 
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                </p:column>
+
+
+
                 <p:column style="width:32px">
                     <p:rowEditor />
                 </p:column>
 
             </p:dataTable>
-
+            <p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
         </h:form>
     </h:body>
 </html>

@@ -4,8 +4,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"> 
-    
-       <h:head>
+
+    <h:head>
         <title>MPS</title>
         <style type="text/css">
             .gritter-notice-wrapper {
@@ -17,7 +17,7 @@
             h1   {color:#E9967A}
         </style>
     </h:head>
-     <h:body>
+    <h:body>
         <h:form>
             <h1>Welcome to MRP II system</h1>
             <p:megaMenu  style="margin-top:20px">
@@ -26,13 +26,11 @@
                     <p:column>
                         <p:submenu label="Product Catalog Management">
                             <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
-                            <p:menuitem value="View and Edit Products" url="viewallproducts.xhtml" />
-                            <p:menuitem value="Delete a Product" url="deleteproduct.xhtml" />
-                            <p:menuitem value="View A Product" url="viewaproduct.xhtml" />
+                            <p:menuitem value="View, Edit and Delete" url="viewallproducts.xhtml" />
                         </p:submenu>
                         <p:submenu label="BOM Management">
                             <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
-                            <p:menuitem value="View and Edit BOM" url="viewbom.xhtml" />
+                            <p:menuitem value="View, Edit and Delete BOM" url="viewbom.xhtml" />
                         </p:submenu>
                     </p:column>
                 </p:submenu>
@@ -46,7 +44,7 @@
             </p:megaMenu>
 
             <h2>MPS is not included in the first System Release</h2>
-            
+
         </h:form>
     </h:body>
 </html>
