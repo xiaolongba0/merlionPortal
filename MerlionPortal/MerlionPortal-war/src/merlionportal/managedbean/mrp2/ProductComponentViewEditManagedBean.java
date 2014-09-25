@@ -226,16 +226,29 @@ public class ProductComponentViewEditManagedBean {
         return components;
     }
 
+      public void deleteComponent(Component component1) {
+        try {
+            boolean result = productSessionBean.deleteComponents(component1.getComponentId());
+            if (result) {
+                components.remove(component1);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Component is deleted"));
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong"));
+
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    
     public void onRowEdit(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Component Edited");
+        
         Component component = new Component();
         component = (Component) event.getObject();
-        System.out.println("!!!!!!!!!!!!!!!!!!!!1");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!1");
-        System.out.println("!!!!!!!!!!!!!!!!!!!!1");
-        System.err.println("product.getProductName(): " + component.getComponentName());
         productSessionBean.editComponent(component.getComponentName(), component.getDescription(), component.getCost(), component.getCurrency(), component.getQuantity(), component.getLeadTime(), component.getSupplierCompanyId(), component.getSupplierContactPerson(), component.getSupplierContactNumber(), component.getSupplierContactEmail(), companyId, productId, component.getComponentId());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+       FacesMessage msg = new FacesMessage("Component Edited", String.valueOf(component.getComponentId()));
+       FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void onRowCancel(RowEditEvent event) {

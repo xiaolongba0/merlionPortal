@@ -15,6 +15,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.mrp.productcatalogmodule.ProductSessionBean;
 import org.primefaces.event.CellEditEvent;
@@ -45,7 +46,7 @@ public class ProductViewEditManagedBean {
     private String productType;
     private String currency;
     private Double price;
-    private Double productId;
+    private Integer productId;
     private Product product;
     private final static String[] productTypes;
     private final static String[] currencies;
@@ -105,7 +106,7 @@ public class ProductViewEditManagedBean {
         currencies[18] = "Norwegian Krone (NOK)";
         currencies[19] = "Mexican Peso (MXN)";
 
-        categories = new String[12];
+        categories = new String[13];
         categories[0] = "Food - Fresh Products";
         categories[1] = "Food - Frozen Products";
         categories[2] = "Food - Normal Products";
@@ -118,6 +119,7 @@ public class ProductViewEditManagedBean {
         categories[9] = "Electronics";
         categories[10] = "Semi-Finished Products";
         categories[11] = "Raw Materials";
+        categories[12] = "Others";
 
     }
 
@@ -133,11 +135,11 @@ public class ProductViewEditManagedBean {
         return categories;
     }
 
-    public Double getProductId() {
+    public Integer getProductId() {
         return productId;
     }
 
-    public void setProductId(Double productId) {
+    public void setProductId(Integer productId) {
         this.productId = productId;
     }
 
@@ -197,13 +199,26 @@ public class ProductViewEditManagedBean {
     public List<Product> getMyCompanyProducts() {
          return products;
     }
+    
+    
+    //ok. But see if user input (in xhtml) can be in Integer type directly.
+    public void deleteProduct(Product product) {
+        try {
+            productId = product.getProductId();      
+            productSessionBean.deleteProducts(companyId, productId);
+            products.remove(product);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
     public void onRowEdit(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Product Edited");
+        
         product = new Product();
         product = (Product) event.getObject();
         System.err.println("product.getProductName(): " + product.getProductName());
         productSessionBean.editProduct(product.getProductName(), product.getDescription(), product.getCategory(), product.getProductType(), product.getCurrency(), product.getPrice(), companyId, product.getProductId());
+        FacesMessage msg = new FacesMessage("Product Edited", String.valueOf(product.getProductId()));
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 

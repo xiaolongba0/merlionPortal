@@ -270,17 +270,6 @@ private Product product;
         this.product = product;
     }
 
-    //ok. But see if user input (in xhtml) can be in Integer type directly.
-    public void deleteProduct(ActionEvent product) {
-        try {
-            
-            int pdtID = productId.intValue();
-            productSessionBean.deleteProducts(companyId, pdtID);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
     public void saveNewProduct(ActionEvent product) {
         try {
             newProductId = productSessionBean.addNewProduct(productName, description, category, productType, currency, price, companyId);
@@ -327,35 +316,7 @@ private Product product;
         supplierContactEmail = null;
  }
 
-    /* do it later
-     public void saveNewComponent(ActionEvent product) {
-
-     //  Integer venueId = Integer.valueOf(venue);
-     //  Integer systemUserId = Integer.valueOf(systemUser);
-     try {
-     //companyId =(Integer)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
-        
-       
-     newComponentId = productSessionBean.addNewComponent(componentName, componentDescription, componentQuantity, componentCurrency, componentCost, componentLeadTime, companyId, newProductId);
-     statusMessage = "New Component Saved Successfully";
-     //   } catch (VenueConflictException vex) {
-     //      statusMessage = "Venue Conflict Exception";
-     //       newProductId = -1L;
-     } catch (Exception ex) {
-     ex.printStackTrace();
-     }
-     }
-     */
-
-    /*  ////////////////////////////////////////////////////////////////
-     public Product getAProduct() {
-     //        companyId=(Integer)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
-     int pdtID = productId.intValue();
-     productTemp = productSessionBean.getAProduct(companyId, pdtID);
-     return productTemp;
-     } */
-    
-    //change later
+//Delete later
     public void viewAProduct() {
         try {
             int pdtID = productId.intValue();
