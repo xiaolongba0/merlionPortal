@@ -66,12 +66,12 @@
                             <h:outputText value="#{user.credit}" />
                         </p:column>
 
-                        <p:column headerText="Update" >
+                        <p:column width="50" >
                             <p:commandButton action="#{viewUserManagerBean.selectUser(user)}" oncomplete="toggleModal();" update=":form:userDetail" icon="ui-icon-pencil">
                             </p:commandButton> 
                         </p:column>
 
-                        <p:column  headerText="Delete" >
+                        <p:column  width="50" >
                             <p:commandButton action="#{viewUserManagerBean.selectUser(user)}" oncomplete="deleteModal();" icon="ui-icon-trash">
                             </p:commandButton> 
 
