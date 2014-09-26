@@ -147,8 +147,24 @@ html, body {
     height: 100px; /* .push must be the same height as .footer */
 }
 //************************************************//
-// Sub-system layouts
 
+// Sub-system layouts
 .no-border{
     border:none;
+}
+
+h2.system-welcome{  
+}
+.system-breadcrumb{
+    padding:5px;
+}
+.system-description{
+    padding-top:30px;
+}
+.system-banner{
+    height:200px;
+    width:100%;
+}
+.wms-system-banner{
+    background: url("http://parkplacerecycling.com/wp-content/uploads/2013/09/warehousing.jpg") -550px -350px no-repeat;
 }
