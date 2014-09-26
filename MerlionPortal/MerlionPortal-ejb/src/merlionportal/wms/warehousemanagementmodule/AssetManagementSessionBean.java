@@ -37,6 +37,19 @@ public class AssetManagementSessionBean {
 
     private StorageBin bin;
 
+    public List<String> listStorageBinTypes () {
+        List<String> allStorageBinTypes = new ArrayList<>();
+        System.out.println("In ASSET MANAGEMENT SESSION BEAN ================ LIST STORAGE BIN TYPES" );
+        
+        allStorageBinTypes.add("Stacking Bins");
+        allStorageBinTypes.add("Shelf Bins");
+        allStorageBinTypes.add("Containers");
+        allStorageBinTypes.add("Styrofoam Containers");
+        allStorageBinTypes.add("Others");
+        
+        return allStorageBinTypes;
+    }
+
     public Integer addNewWarehouse(String warehouseName, String country, String city, String street,
             String description, Integer zipcode, Integer companyId) {
         System.out.println("[INSIDE EJB]================================Add New Warehouse");
@@ -219,7 +232,6 @@ public class AssetManagementSessionBean {
 
     }
 
-    //Edit in progress
     public boolean addStorageBin(String binName, String binType, String description, Integer maxQuantity, Double maxWeight,
             Integer storageTypeId) {
 
@@ -248,7 +260,6 @@ public class AssetManagementSessionBean {
 
     }
 
-//Edit in progress
     public List<StorageBin> viewStorageBinForStorageType(Integer storageTypeId) {
 
         System.out.println("In viewStorageBinForType, Warehouse ID ============================= : " + storageTypeId);
@@ -262,7 +273,6 @@ public class AssetManagementSessionBean {
 
     }
 
-    // Edit in progress
     public Boolean deleteStorageBin(Integer storageBinId) {
 
         Query query = em.createNamedQuery("StorageBin.findByStorageBinId").setParameter("storageBinId", storageBinId);
@@ -281,7 +291,6 @@ public class AssetManagementSessionBean {
         return true;
     }
 
-    //Edit in progress
     public boolean editStorageBin(String binName, String description, String type, Integer maxQuantity, Double maxWeight, Integer storageBinId) {
 
         StorageBin bin = new StorageBin();
@@ -298,8 +307,7 @@ public class AssetManagementSessionBean {
             em.flush();
 
             return true;
-        }
-        else{
+        } else {
             return false;
         }
 
