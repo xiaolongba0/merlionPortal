@@ -6,17 +6,11 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>View My Locations</title>
-            <style type="text/css">
-            .gritter-notice-wrapper {
-                left:200px;
-                top: 50px;
-            }
-        </style>
     </h:head>
     <h:body>
         <h1> View My Warehouses</h1>
             <h:form id="formMain">
-            <h1>Welcome to Transportation Management System</h1>
+            <p:growl id="msgs" showDetail="true"/>  
               <p:menubar>
                 <p:menuitem value="TMS Home" url="tmsindex.xhtml"/>
 
@@ -33,9 +27,10 @@
                     <p:menuitem value="View TAsset Schedule" url="viewalltassetschedule.xhtml" />
                 </p:submenu>
             </p:menubar>
+            <br/>
         </h:form>
         <h:form>
-            <p:dataTable id="location" var="location" sortMode="multiple" editable="true" value="#{tAssetViewEditManagedBean.locations}" 
+            <p:dataTable id="location" var="location" sortMode="multiple" editable="true" value="#{tLocationViewEditManagedBean.locations}" 
                          widgetVar="locationsTable"
                          emptyMessage="No location found"
                          rowKey="#{location.locationId}">
@@ -47,8 +42,8 @@
                     </p:outputPanel>
                 </f:facet>
 
-                <p:ajax event="rowEdit" listener="#{tAssetViewEditManagedBean.onRowEdit}" update=":formMain:msgs"/>
-                <p:ajax event="rowEditCancel" listener="#{tAssetViewEditManagedBean.onRowCancel}" update=":formMain:msgs"/>
+                <p:ajax event="rowEdit" listener="#{tLocationViewEditManagedBean.onRowEdit}" update=":formMain:msgs"/>
+                <p:ajax event="rowEditCancel" listener="#{tLocationViewEditManagedBean.onRowCancel}" update=":formMain:msgs"/>
 
                 <p:column filterBy="#{location.locationId}" filterMatchMode="exact" headerText="Location ID" >
                     <h:outputText value="#{location.locationId}" />
@@ -64,8 +59,7 @@
                 <p:column  filterBy="#{location.locationType}" filterMatchMode="contains" headerText="Location Type">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{location.locationType}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{location.locationType}" style="width:100%" label="Country"/></f:facet>
-
+                        <f:facet name="input"><p:inputText value="#{location.locationType}" style="width:100%" label="Location Type"/></f:facet>
                     </p:cellEditor>
                 </p:column>
 
