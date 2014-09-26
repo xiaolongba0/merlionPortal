@@ -89,152 +89,71 @@ public class TAssetScheduleManagerBean {
     private void clearAllFields() {
         startDate = null;
         endDate = null;
-        
-
-    }
-    /**
-     * @return the tamsb
-     */
-    public TAssetmanagementSessionBean getTamsb() {
-        return tamsb;
     }
 
-    /**
-     * @param tamsb the tamsb to set
-     */
-    public void setTamsb(TAssetmanagementSessionBean tamsb) {
-        this.tamsb = tamsb;
-    }
-
-    /**
-     * @return the uamb
-     */
-    public UserAccountManagementSessionBean getUamb() {
-        return uamb;
-    }
-
-    /**
-     * @param uamb the uamb to set
-     */
-    public void setUamb(UserAccountManagementSessionBean uamb) {
-        this.uamb = uamb;
-    }
-
-    /**
-     * @return the locationId
-     */
     public Integer getLocationId() {
         return locationId;
     }
 
-    /**
-     * @param locationId the locationId to set
-     */
     public void setLocationId(Integer locationId) {
         this.locationId = locationId;
     }
 
-    /**
-     * @return the locations
-     */
     public List<Location> getLocations() {
         return locations;
     }
 
-    /**
-     * @param locations the locations to set
-     */
     public void setLocations(List<Location> locations) {
         this.locations = locations;
     }
 
-    /**
-     * @return the tAssetId
-     */
     public Integer gettAssetId() {
         return tAssetId;
     }
 
-    /**
-     * @param tAssetId the tAssetId to set
-     */
     public void settAssetId(Integer tAssetId) {
         this.tAssetId = tAssetId;
     }
 
-    /**
-     * @return the tAssets
-     */
     public List<TransportationAsset> gettAssets() {
         return tAssets;
     }
 
-    /**
-     * @param tAssets the tAssets to set
-     */
     public void settAssets(List<TransportationAsset> tAssets) {
         this.tAssets = tAssets;
     }
 
-    /**
-     * @return the startDate
-     */
     public Date getStartDate() {
         return startDate;
     }
 
-    /**
-     * @param startDate the startDate to set
-     */
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    /**
-     * @return the endDate
-     */
     public Date getEndDate() {
         return endDate;
     }
 
-    /**
-     * @param endDate the endDate to set
-     */
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
-    /**
-     * @return the loginedUser
-     */
     public SystemUser getLoginedUser() {
         return loginedUser;
     }
 
-    /**
-     * @param loginedUser the loginedUser to set
-     */
     public void setLoginedUser(SystemUser loginedUser) {
         this.loginedUser = loginedUser;
     }
 
-    /**
-     * @return the companyId
-     */
     public Integer getCompanyId() {
         return companyId;
     }
 
-    /**
-     * @param companyId the companyId to set
-     */
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
     }
-
-    /**
-     * Creates a new instance of TAssetScheduleManagerBean
-     */
 
     
 }
