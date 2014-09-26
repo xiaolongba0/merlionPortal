@@ -653,6 +653,7 @@ public class ForecastShowHistoryManagedBean implements Serializable {
     }
 
     public String onParameterChange() {
+        createResultModel();
 
         computeForecastResult();
         System.out.println("yesOOOOOOOOOOOOOOOOOOOOOOOOO");
