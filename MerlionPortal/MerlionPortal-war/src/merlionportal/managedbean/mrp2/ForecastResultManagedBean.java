@@ -23,9 +23,9 @@ import org.primefaces.model.chart.DateAxis;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 
-@Named(value = "forecastShowHistoryManagedBean")
+@Named(value = "forecastResultManagedBean")
 @ViewScoped
-public class ForecastShowHistoryManagedBean implements Serializable {
+public class ForecastResultManagedBean implements Serializable {
 
     @EJB
     UserAccountManagementSessionBean uamb;
@@ -34,7 +34,6 @@ public class ForecastShowHistoryManagedBean implements Serializable {
 
     Integer companyId;
 
-    private LineChartModel purchaseHistory;
     List<String> yearMonth;
     List purchasingNum;
     Vector<String> monthlyDate;
@@ -80,19 +79,13 @@ public class ForecastShowHistoryManagedBean implements Serializable {
                 ex.printStackTrace();
             }
         }
-        createPurchaseHistoryModels();
-       
-        
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("expectedGrowth", expectedGrowth);
-
-        createResultModel();
+        expectedGrowth = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("expectedGrowth");
+        System.out.println("=========================expected growth===================" + expectedGrowth);
+        periodicity = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodicity");
+        System.out.println("=========================period==================" + periodicity);
 
         computeForecastResult();
 
-    }
-
-    public LineChartModel getPurchaseHistory() {
-        return purchaseHistory;
     }
 
     public LineChartModel getForecastSales() {
@@ -101,44 +94,8 @@ public class ForecastShowHistoryManagedBean implements Serializable {
 
     }
 
-//1. based on today, count no of months of history
-    //take last 24 months history
-    //store in graph
-    //prompt user if want to continue?
-    //get a list of year mon + no.
-    //assume we already have it
-    public void createPurchaseHistoryModels() {
-        //produce a list of date correspond to sales
-        //size need to be retreved/computed later
-        size = fsb.createPurchaseDate().size();
-        System.out.println("array size!!!!!!!!!!" + size);
-        this.monthlyDate = fsb.createPurchaseDate();
-        this.salesdata = fsb.createPurchaseData();
-
-        purchaseHistory = new LineChartModel();
-        LineChartSeries series1 = new LineChartSeries();
-        series1.setLabel("Sales Figure");
-
-        for (int i = 0; i < 24; i++) {
-            series1.set(monthlyDate.get(i), salesdata.get(i));
-        }
-
-        purchaseHistory.addSeries(series1);
-
-        purchaseHistory.setTitle("Sales History on a Monthly Basis");
-        purchaseHistory.setZoom(true);
-        purchaseHistory.setAnimate(true);
-        purchaseHistory.setLegendPosition("se");
-        Axis yAxis = purchaseHistory.getAxis(AxisType.Y);
-        yAxis.setMin(0);
-        yAxis.setMax(30000);
-
-        DateAxis axis = new DateAxis("Dates");
-        purchaseHistory.getAxes().put(AxisType.X, axis);
-        axis.setMin("2012-05-01");
-        axis.setMax("2014-10-01");
-        axis.setTickFormat("%b, %y");
-
+    public void setForecastSales(LineChartModel forecastSales) {
+        this.forecastSales = forecastSales;
     }
 
     public void computeForecastResult() {
@@ -150,7 +107,7 @@ public class ForecastShowHistoryManagedBean implements Serializable {
         forecastR = fsb.computeResult(periodicity, expectedGrowth);
         monthlyDateR = fsb.yaxisDate();
 
-        LineChartModel forecastSales1 = new LineChartModel();
+        forecastSales = new LineChartModel();
         LineChartSeries series1 = new LineChartSeries();
         series1.setLabel("Sales Figure");
 
@@ -158,31 +115,7 @@ public class ForecastShowHistoryManagedBean implements Serializable {
             series1.set(monthlyDateR.get(i), forecastR.get(i));
         }
 
-        forecastSales1.addSeries(series1);
-
-        forecastSales1.setTitle("Predicted Sales on a Monthly Basis");
-        forecastSales1.setZoom(true);
-        forecastSales1.setAnimate(true);
-        forecastSales1.setLegendPosition("se");
-        Axis yAxis = forecastSales1.getAxis(AxisType.Y);
-        yAxis.setLabel("Sales Volume (in pieces)");
-        yAxis.setMin(0);
-        yAxis.setMax(35000);
-
-        DateAxis axis = new DateAxis("Dates");
-        forecastSales1.getAxes().put(AxisType.X, axis);
-        axis.setMin("2014-05-01");
-        axis.setMax("2016-01-01");
-        axis.setTickFormat("%b, %y");
-
-        System.out.println("XXXXXXXXXLATER periodicity" + periodicity);
-        System.out.println("XXXXXXXXXLATER growth" + expectedGrowth);
-
-        forecastSales = forecastSales1;
-    }
-
-    public void createResultModel() {
-        forecastSales = new LineChartModel();
+        forecastSales.addSeries(series1);
 
         forecastSales.setTitle("Predicted Sales on a Monthly Basis");
         forecastSales.setZoom(true);
@@ -199,22 +132,9 @@ public class ForecastShowHistoryManagedBean implements Serializable {
         axis.setMax("2016-01-01");
         axis.setTickFormat("%b, %y");
 
-    }
+        System.out.println("XXXXXXXXXLATER periodicity" + periodicity);
+        System.out.println("XXXXXXXXXLATER growth" + expectedGrowth);
 
-    public int getPeriodicity() {
-        return periodicity;
-    }
-
-    public void setPeriodicity(int periodicity) {
-        this.periodicity = periodicity;
-    }
-
-    public int getExpectedGrowth() {
-        return expectedGrowth;
-    }
-
-    public void setExpectedGrowth(int expectedGrowth) {
-        this.expectedGrowth = expectedGrowth;
     }
 
 }
