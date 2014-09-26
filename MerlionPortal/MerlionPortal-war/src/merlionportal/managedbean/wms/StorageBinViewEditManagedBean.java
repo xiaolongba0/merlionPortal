@@ -44,6 +44,8 @@ public class StorageBinViewEditManagedBean {
     private SystemUser loginedUser;
     private Integer companyId;
 
+    private List<String> storageBinType;
+
     /**
      * Creates a new instance of StorageBinViewEditManagedBean
      */
@@ -71,7 +73,7 @@ public class StorageBinViewEditManagedBean {
         warehouses = assetManagementSessionBean.viewMyWarehouses(companyId);
 
     }
-    
+
     public void onWarehouseChange() {
         if (warehouseId != null) {
             storagetypes = assetManagementSessionBean.viewStorageTypesForAWarehouse(warehouseId);
@@ -113,6 +115,12 @@ public class StorageBinViewEditManagedBean {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public List<String> getStorageBinType() {
+        storageBinType = assetManagementSessionBean.listStorageBinTypes();
+        System.out.println("[In WAR FILE - get storage bin type]" + storageBinType);
+        return storageBinType;
     }
 
     public List<Warehouse> getWarehouses() {
@@ -178,7 +186,5 @@ public class StorageBinViewEditManagedBean {
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
     }
-    
-    
 
 }

@@ -71,8 +71,6 @@ public class StorageTypeViewEditManagedBean {
 
     public List<StorageType> onWarehouseChange() {
         System.out.println("===============================[In Managed Bean - getStorageTypes]");
-        // Dunno how to take in warehouse ID as input for delete function, and dunno why delete function don't update the
-        // output shown on webpage after it was deleted
         System.out.println("[In Managed Bean - getStorageTypes] warehouse ID : " + warehouseId);
         if (warehouseId != null) {
             storagetypes = assetManagementSessionBean.viewStorageTypesForAWarehouse(warehouseId);
@@ -114,6 +112,7 @@ public class StorageTypeViewEditManagedBean {
             ex.printStackTrace();
         }
     }
+
 
     public List<Warehouse> getWarehouses() {
         return warehouses;

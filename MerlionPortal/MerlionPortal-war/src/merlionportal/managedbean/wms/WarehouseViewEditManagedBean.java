@@ -41,11 +41,11 @@ public class WarehouseViewEditManagedBean {
     private String street;
     private String description;
     private Integer zipcode;
-    private Integer companyId;
 
     private Warehouse warehouse;
     private Integer storageTypeId;
 
+    private Integer companyId;
     private SystemUser loginedUser;
 
     @PostConstruct
@@ -85,15 +85,14 @@ public class WarehouseViewEditManagedBean {
         }
         return warehouses;
     }
-    
-    
+
     public void deleteWarehouse(Warehouse warehouse) {
         try {
             warehouseId = warehouse.getWarehouseId();
             System.out.println("[In WAR FILE - Delete Warehouse Function] Warehouse ID========== :" + warehouseId);
             assetManagementSessionBean.deleteWarehouse(warehouseId);
             warehouses.remove(warehouse);
-            
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -190,6 +189,7 @@ public class WarehouseViewEditManagedBean {
     public void setCountry(String country) {
         this.country = country;
     }
+
 
     public void onRowEdit(RowEditEvent event) {
         System.out.println("ON ROW EDIT ===============================");
