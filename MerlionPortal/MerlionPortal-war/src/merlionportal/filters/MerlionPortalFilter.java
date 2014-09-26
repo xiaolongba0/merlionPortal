@@ -59,31 +59,38 @@ public class MerlionPortalFilter implements Filter {
                 if (requestURI.contains("/oes/")) {
                     //check if session is valid
                     if (userId != null) {
-                        //Check company package                        
-                        //1PL has access
-                        if (filterbean.retrieveCompanyPac(companyId) == 1 || filterbean.retrieveCompanyPac(companyId) == 2) {
-//                            check user access right
-                            if (systemAccessRightsb.canUseOES(userId)) {
-                                if(requestURI.contains("/oes/@@@@")){
-                                    if (systemAccessRightsb.checkOESCustomer(userId)) {
-                                    } else {
-                                        //User cannot access this page
-                                        redirect = true;
-                                        newPage = ctxtPath + "/mrp/mrp.xhtml";
+                        //Check company package 
+                        if (filterbean.retrieveSystemUser(userId).getUserType() != null) {
+                            if (filterbean.retrieveSystemUser(userId).getUserType().equals("superuser")) {
+                                //is super user can proceed
+                            }
+                        } else {
+                            //1PL has access
+                            if (filterbean.retrieveCompanyPac(companyId) == 1 || filterbean.retrieveCompanyPac(companyId) == 2) {
+                                //check user access right
+                                if (systemAccessRightsb.canUseOES(userId)) {
+                                    if (requestURI.contains("/oes/@@@@")) {
+                                        if (systemAccessRightsb.checkOESCustomer(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/mrp/mrp.xhtml";
+                                        }
                                     }
+
+                                } else {
+                                    //User cannot access OES
+                                    redirect = true;
+                                    newPage = ctxtPath + "/user/dashboard";
                                 }
 
                             } else {
-                                //User cannot access OES
+                                //User cannot access OES as not included in company package
                                 redirect = true;
                                 newPage = ctxtPath + "/user/dashboard";
                             }
-
-                        } else {
-                            //User cannot access OES as not included in company package
-                            redirect = true;
-                            newPage = ctxtPath + "/user/dashboard";
                         }
+
                     } else {
                         //session is not valid
                         //direct to login page
@@ -101,7 +108,13 @@ public class MerlionPortalFilter implements Filter {
                 if (requestURI.contains("/crms/")) {
                     //check if session is valid
                     if (userId != null) {
-                        //All company has access
+                        if (filterbean.retrieveSystemUser(userId).getUserType() != null) {
+                            if (filterbean.retrieveSystemUser(userId).getUserType().equals("superuser")) {
+                                //is super user can proceed
+                            }
+                        } else {
+                            //All company has access
+                        }
 
                     } else {
                         //session is not valid
@@ -121,84 +134,90 @@ public class MerlionPortalFilter implements Filter {
                     //check if session is valid
                     if (userId != null) {
                         //1PL has access
-                        if (filterbean.retrieveCompanyPac(companyId) == 1 || filterbean.retrieveCompanyPac(companyId) == 2) {
-                            //check if user can user mrp
-                            if (systemAccessRightsb.canUseMRP(userId)) {
-                                //Check user right for diff pages
-                                if (requestURI.contains("/mrp/addnewcomponent.xhtml")) {
-                                    if (systemAccessRightsb.checkMRPManageProduct(userId)) {
-                                    } else {
-                                        //User cannot access this page
-                                        redirect = true;
-                                        newPage = ctxtPath + "/mrp/mrp.xhtml";
+                        if (filterbean.retrieveSystemUser(userId).getUserType() != null) {
+                            if (filterbean.retrieveSystemUser(userId).getUserType().equals("superuser")) {
+                                //is super user can proceed
+                            }
+                        } else {
+                            if (filterbean.retrieveCompanyPac(companyId) == 1 || filterbean.retrieveCompanyPac(companyId) == 2) {
+                                //check if user can user mrp
+                                if (systemAccessRightsb.canUseMRP(userId)) {
+                                    //Check user right for diff pages
+                                    if (requestURI.contains("/mrp/addnewcomponent.xhtml")) {
+                                        if (systemAccessRightsb.checkMRPManageProduct(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/mrp/mrp.xhtml";
+                                        }
                                     }
-                                }
-                                if (requestURI.contains("/mrp/addnewproduct.xhtml")) {
-                                    if (systemAccessRightsb.checkMRPManageProduct(userId)) {
-                                    } else {
-                                        //User cannot access this page
-                                        redirect = true;
-                                        newPage = ctxtPath + "/mrp/mrp.xhtml";
+                                    if (requestURI.contains("/mrp/addnewproduct.xhtml")) {
+                                        if (systemAccessRightsb.checkMRPManageProduct(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/mrp/mrp.xhtml";
+                                        }
                                     }
-                                }
-                                if (requestURI.contains("/mrp/viewallproducts.xhtml")) {
-                                    if (systemAccessRightsb.checkMRPManageProduct(userId)) {
-                                    } else {
-                                        //User cannot access this page
-                                        redirect = true;
-                                        newPage = ctxtPath + "/mrp/mrp.xhtml";
+                                    if (requestURI.contains("/mrp/viewallproducts.xhtml")) {
+                                        if (systemAccessRightsb.checkMRPManageProduct(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/mrp/mrp.xhtml";
+                                        }
                                     }
-                                }
-                                if (requestURI.contains("/mrp/viewbom.xhtml")) {
-                                    if (systemAccessRightsb.checkMRPManageProduct(userId)) {
-                                    } else {
-                                        //User cannot access this page
-                                        redirect = true;
-                                        newPage = ctxtPath + "/mrp/mrp.xhtml";
+                                    if (requestURI.contains("/mrp/viewbom.xhtml")) {
+                                        if (systemAccessRightsb.checkMRPManageProduct(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/mrp/mrp.xhtml";
+                                        }
                                     }
-                                }
-                                if (requestURI.contains("/mrp/forecast.xhtml")) {
-                                    if (systemAccessRightsb.checkMRPUseForecast(userId)) {
-                                    } else {
-                                        //User cannot access this page
-                                        redirect = true;
-                                        newPage = ctxtPath + "/mrp/mrp.xhtml";
+                                    if (requestURI.contains("/mrp/forecast.xhtml")) {
+                                        if (systemAccessRightsb.checkMRPUseForecast(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/mrp/mrp.xhtml";
+                                        }
                                     }
-                                }
-                                if (requestURI.contains("/mrp/forecastgetperiodicity.xhtml")) {
-                                    if (systemAccessRightsb.checkMRPUseForecast(userId)) {
-                                    } else {
-                                        //User cannot access this page
-                                        redirect = true;
-                                        newPage = ctxtPath + "/mrp/mrp.xhtml";
+                                    if (requestURI.contains("/mrp/forecastgetperiodicity.xhtml")) {
+                                        if (systemAccessRightsb.checkMRPUseForecast(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/mrp/mrp.xhtml";
+                                        }
                                     }
-                                }
-                                if (requestURI.contains("/mrp/forecastviewhistory.xhtml")) {
-                                    if (systemAccessRightsb.checkMRPUseForecast(userId)) {
-                                    } else {
-                                        //User cannot access this page
-                                        redirect = true;
-                                        newPage = ctxtPath + "/mrp/mrp.xhtml";
+                                    if (requestURI.contains("/mrp/forecastviewhistory.xhtml")) {
+                                        if (systemAccessRightsb.checkMRPUseForecast(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/mrp/mrp.xhtml";
+                                        }
                                     }
-                                }
-                                if (requestURI.contains("/mrp/forecastresult.xhtml")) {
-                                    if (systemAccessRightsb.checkMRPUseForecast(userId)) {
-                                    } else {
-                                        //User cannot access this page
-                                        redirect = true;
-                                        newPage = ctxtPath + "/mrp/mrp.xhtml";
+                                    if (requestURI.contains("/mrp/forecastresult.xhtml")) {
+                                        if (systemAccessRightsb.checkMRPUseForecast(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/mrp/mrp.xhtml";
+                                        }
                                     }
-                                }
 
+                                } else {
+                                    //User Cannot access MRP System
+                                    redirect = true;
+                                    newPage = ctxtPath + "/user/dashboard.xhtml";
+                                }
                             } else {
-                                //User Cannot access MRP System
+                                //User Cannot access MRP System as not included in package
                                 redirect = true;
                                 newPage = ctxtPath + "/user/dashboard.xhtml";
                             }
-                        } else {
-                            //User Cannot access MRP System as not included in package
-                            redirect = true;
-                            newPage = ctxtPath + "/user/dashboard.xhtml";
                         }
                     } else {
                         //session is not valid
@@ -218,68 +237,74 @@ public class MerlionPortalFilter implements Filter {
                     //check if session is valid
                     if (userId != null) {
                         //Session is valid
-                        //Check company package
-                        //IPL and 3/4/5PL has access
-                        if (filterbean.retrieveCompanyPac(companyId) == 1 || filterbean.retrieveCompanyPac(companyId) == 2 || filterbean.retrieveCompanyPac(companyId) == 4) {
-                            //check if user can user mrp
-                            if (systemAccessRightsb.canUseWMS(userId)) {
-                                if (requestURI.contains("/wms/addnewwarehouse.xhtml")) {
-                                    if (systemAccessRightsb.checkWMSManageWarehouse(userId)) {
-                                    } else {
-                                        //User cannot access this page
-                                        redirect = true;
-                                        newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                        if (filterbean.retrieveSystemUser(userId).getUserType() != null) {
+                            if (filterbean.retrieveSystemUser(userId).getUserType().equals("superuser")) {
+                                //is super user can proceed
+                            }
+                        } else {
+                            //Check company package
+                            //IPL and 3/4/5PL has access
+                            if (filterbean.retrieveCompanyPac(companyId) == 1 || filterbean.retrieveCompanyPac(companyId) == 2 || filterbean.retrieveCompanyPac(companyId) == 4) {
+                                //check if user can user mrp
+                                if (systemAccessRightsb.canUseWMS(userId)) {
+                                    if (requestURI.contains("/wms/addnewwarehouse.xhtml")) {
+                                        if (systemAccessRightsb.checkWMSManageWarehouse(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                        }
                                     }
-                                }
-                                if (requestURI.contains("/wms/addstoragetype.xhtml")) {
-                                    if (systemAccessRightsb.checkWMSManageWarehouse(userId)) {
-                                    } else {
-                                        //User cannot access this page
-                                        redirect = true;
-                                        newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                    if (requestURI.contains("/wms/addstoragetype.xhtml")) {
+                                        if (systemAccessRightsb.checkWMSManageWarehouse(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                        }
                                     }
-                                }
-                                if (requestURI.contains("/wms/addstoragebin.xhtml")) {
-                                    if (systemAccessRightsb.checkWMSManageWarehouse(userId)) {
-                                    } else {
-                                        //User cannot access this page
-                                        redirect = true;
-                                        newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                    if (requestURI.contains("/wms/addstoragebin.xhtml")) {
+                                        if (systemAccessRightsb.checkWMSManageWarehouse(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                        }
                                     }
-                                }
-                                if (requestURI.contains("/wms/viewallwarehouse.xhtml")) {
-                                    if (systemAccessRightsb.checkWMSManageWarehouse(userId)) {
-                                    } else {
-                                        //User cannot access this page
-                                        redirect = true;
-                                        newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                    if (requestURI.contains("/wms/viewallwarehouse.xhtml")) {
+                                        if (systemAccessRightsb.checkWMSManageWarehouse(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                        }
                                     }
-                                }
-                                if (requestURI.contains("/wms/viewstoragebin.xhtml")) {
-                                    if (systemAccessRightsb.checkWMSManageWarehouse(userId)) {
-                                    } else {
-                                        //User cannot access this page
-                                        redirect = true;
-                                        newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                    if (requestURI.contains("/wms/viewstoragebin.xhtml")) {
+                                        if (systemAccessRightsb.checkWMSManageWarehouse(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                        }
                                     }
-                                }
-                                if (requestURI.contains("/wms/viewstoragetype.xhtml")) {
-                                    if (systemAccessRightsb.checkWMSManageWarehouse(userId)) {
-                                    } else {
-                                        //User cannot access this page
-                                        redirect = true;
-                                        newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                    if (requestURI.contains("/wms/viewstoragetype.xhtml")) {
+                                        if (systemAccessRightsb.checkWMSManageWarehouse(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                        }
                                     }
+                                } else {
+                                    //User Cannot use WMS
+                                    redirect = true;
+                                    newPage = ctxtPath + "/user/dashboard.xhtml";
                                 }
                             } else {
-                                //User Cannot use WMS
+                                //User Cannot use WMS as not included in company package
                                 redirect = true;
                                 newPage = ctxtPath + "/user/dashboard.xhtml";
                             }
-                        } else {
-                            //User Cannot use WMS as not included in company package
-                            redirect = true;
-                            newPage = ctxtPath + "/user/dashboard.xhtml";
                         }
 
                     } else {
@@ -300,7 +325,13 @@ public class MerlionPortalFilter implements Filter {
                     //check if session is valid
                     if (userId != null) {
                         //Session is valid
-                        //All company has access
+                        if (filterbean.retrieveSystemUser(userId).getUserType() != null) {
+                            if (filterbean.retrieveSystemUser(userId).getUserType().equals("superuser")) {
+                                //is super user can proceed
+                            }
+                        } else {
+                            //All company has access
+                        }
 
                     } else {
                         //session is not valid
@@ -321,10 +352,16 @@ public class MerlionPortalFilter implements Filter {
                     //check if session is valid
                     if (userId != null) {
                         //Session is valid
+                        if (filterbean.retrieveSystemUser(userId).getUserType() != null) {
+                            if (filterbean.retrieveSystemUser(userId).getUserType().equals("superuser")) {
+                                //is super user can proceed
+                            }
+                        } else {
                         //Check company package
-                        //2PL and 3/4/5PL has access
-                        if (filterbean.retrieveCompanyPac(companyId) == 3 || filterbean.retrieveCompanyPac(companyId) == 4) {
+                            //2PL and 3/4/5PL has access
+                            if (filterbean.retrieveCompanyPac(companyId) == 3 || filterbean.retrieveCompanyPac(companyId) == 4) {
 
+                            }
                         }
                     } else {
                         //session is not valid
