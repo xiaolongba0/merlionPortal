@@ -82,8 +82,16 @@ h2.roleTitle{
     margin-bottom:5px;
 }
 .rights-btn{
-    min-width:400px;
+    min-width:450px;
 }
+
+.ui-messages-error-icon{
+    display:none;
+}
+.ui-messages-error-summary{
+    margin-left:0px;
+}
+
 .rights-item{
     font-family: Arial;
     font-weight:400;

@@ -18,3 +18,14 @@
 .login-box > h2{
     color:#ffffee;
 }
+
+.some-quote-box{
+    position:absolute;
+    bottom:100px;
+    left:10%;
+}
+.some-quote-box h2{
+    font-family:Century Gothic;
+    font-size:15pt;
+    color:#fff;
+}
