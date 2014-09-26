@@ -31,8 +31,12 @@ public class SystemAccessRightSessionBean {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     
-    
-//    OES
+//***********************************
+//***             OES             ***
+//***                             ***
+//***********************************
+
+//    OES System
     public boolean canUseOES(Integer userId) {
         SystemUser loginedUser = getUser(userId);
 
@@ -44,7 +48,7 @@ public class SystemAccessRightSessionBean {
         }
         return false;
     }
-
+// OES Rights
     public boolean checkOESCustomer(Integer userId) {
         SystemUser loginedUser = getUser(userId);
 
@@ -78,10 +82,23 @@ public class SystemAccessRightSessionBean {
         return false;
     }
 
+    public boolean checkOESReport(Integer userId){
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canGenerateSalesReport)) {
+                return true;
+            }
+        }
+        return false;
+    }
     
     
-    
-//    MRP
+//***********************************
+//***             MRP             ***
+//***                             ***
+//***********************************    
+//    MRP System
     public boolean canUseMRP(Integer userId) {
         SystemUser loginedUser = getUser(userId);
 
@@ -93,8 +110,46 @@ public class SystemAccessRightSessionBean {
         }
         return false;
     }
+    
+//    MRP Rights check
+    public boolean checkMRPUseForecast(Integer userId){
+        SystemUser loginedUser = getUser(userId);
 
-//    CRMS
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canUseForecast)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean checkMRPManageProduct(Integer userId){
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canManageProductAndComponent)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean checkMRPGenerateMRPList(Integer userId){
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canGenerateMRPList)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    
+    
+//***********************************
+//***            CRMS             ***
+//***                             ***
+//***********************************
+//    CRMS System
     public boolean canUseCRMS(Integer userId) {
         SystemUser loginedUser = getUser(userId);
 
@@ -109,7 +164,14 @@ public class SystemAccessRightSessionBean {
         return false;
 
     }
-//  WMS
+    
+    
+    
+//***********************************
+//***             WMS             ***
+//***                             ***
+//***********************************
+//  WMS System
     public boolean canUseWMS(Integer userId) {
         SystemUser loginedUser = getUser(userId);
 
@@ -122,7 +184,23 @@ public class SystemAccessRightSessionBean {
         }
         return false;
     }
-//TMS
+    
+    public boolean checkWMSManageWarehouse(Integer userId){
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canManageWarehouse)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+//***********************************
+//***             TMS             ***
+//***                             ***
+//***********************************
+//TMS System
     public boolean canUseTMS(Integer userId) {
         SystemUser loginedUser = getUser(userId);
 
@@ -136,7 +214,14 @@ public class SystemAccessRightSessionBean {
         return false;
 
     }
-//GRNS
+    
+    
+    
+//***********************************
+//***             GRNS            ***
+//***                             ***
+//***********************************
+//GRNS System
     public boolean canUseGRNS(Integer userId) {
         SystemUser loginedUser = getUser(userId);
         if (loginedUser != null) {
