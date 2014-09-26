@@ -106,6 +106,15 @@ public class AdminDashboardBean implements Serializable {
         return false;
     }
     
+    public boolean canUseCI(){
+        if(loginedUser!=null){
+            if(carb.userHasRight(loginedUser, Right.canManageUser) ){
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public SystemUser getLoginedUser() {
         return loginedUser;
     }
