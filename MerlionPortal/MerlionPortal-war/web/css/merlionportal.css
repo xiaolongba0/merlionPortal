@@ -178,3 +178,7 @@ h2.system-welcome{
 .wms-system-banner{
     background: url("http://parkplacerecycling.com/wp-content/uploads/2013/09/warehousing.jpg") -550px -350px no-repeat;
 }
+
+.pad-it{
+    padding-left: 10px;
+}

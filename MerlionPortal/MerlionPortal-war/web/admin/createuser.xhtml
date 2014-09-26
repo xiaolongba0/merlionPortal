@@ -49,25 +49,25 @@
                                 <f:selectItem itemLabel="Dr."  itemValue="Dr."/>
                             </h:selectOneMenu>
 
-                            <p:outputLabel style="font-weight: bold" value="First Name * : "/>
+                            <p:outputLabel style="font-weight: bold" value="First Name * : " styleClass="pad-it"/>
                             <h:inputText required="true" requiredMessage="First Name is required" value="#{createUserManagerBean.firstName}" styleClass="form-control" />
 
                             <p:outputLabel style="font-weight: bold" value="Last Name * : "/>
                             <h:inputText required="true" requiredMessage="Last Name is required" value="#{createUserManagerBean.lastName}" styleClass="form-control" />
 
-                            <p:outputLabel style="font-weight: bold" value="Email Address * : "/>
+                            <p:outputLabel style="font-weight: bold" value="Email Address * : " styleClass="pad-it"/>
                             <h:inputText required="true" requiredMessage="Email Address is required" value="#{createUserManagerBean.emailAddress}" styleClass="form-control" />
 
                             <p:outputLabel style="font-weight: bold" value="Password * : "/>
                             <h:inputText required="true" requiredMessage="Password is required" value="#{createUserManagerBean.password}" styleClass="form-control" />
 
-                            <p:outputLabel style="font-weight: bold" value="Postal Address * : "/>
+                            <p:outputLabel style="font-weight: bold" value="Postal Address * : " styleClass="pad-it"/>
                             <h:inputText required="true" requiredMessage="Postal Address is required" value="#{createUserManagerBean.postalAddress}" styleClass="form-control" />
 
                             <p:outputLabel style="font-weight: bold" value="Contact Number * : "/>
                             <h:inputText required="true" requiredMessage="Contact Number is required" value="#{createUserManagerBean.contactNumber}" styleClass="form-control" />
 
-                            <p:outputLabel value="Credit * :" style="font-weight: bold"/>
+                            <p:outputLabel value="Credit * :" style="font-weight: bold" styleClass="pad-it"/>
                             <h:selectOneMenu required="true" requiredMessage="Please select credit" id="credit" value="#{createUserManagerBean.credit}" styleClass="form-control">
                                 <f:selectItem itemLabel="Not Applicable" itemValue="Not Applicable" />
                                 <f:selectItem itemLabel="Pass" itemValue="Pass" />
