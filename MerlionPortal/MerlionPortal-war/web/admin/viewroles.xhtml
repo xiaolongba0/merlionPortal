@@ -52,10 +52,10 @@
                                 <h:outputText value="#{role.description}" />
                             </p:column>
                             <p:column headerText="Update">
-                            <p:commandButton action="#{viewCompanyRoles.selectRole(role)}" oncomplete="toggleModal();" update=":roleform:roleDetail" value="Update"/>
+                            <p:commandButton action="#{viewCompanyRoles.selectRole(role)}" oncomplete="toggleModal();" update=":roleform:roleDetail" icon="ui-icon-pencil"/>
                             </p:column>
                             <p:column headerText="Delete">
-                            <p:commandButton action="#{viewCompanyRoles.selectRole(role)}" oncomplete="deleteModal();" value="Delete"/>
+                            <p:commandButton action="#{viewCompanyRoles.selectRole(role)}" oncomplete="deleteModal();" icon="ui-icon-trash"/>
                             </p:column>
 
                         </p:dataTable>
