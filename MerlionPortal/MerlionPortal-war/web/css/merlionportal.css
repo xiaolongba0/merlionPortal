@@ -103,6 +103,11 @@ ul.rights-menu li{
     border-radius: 0px;
     -webkit-border-radius: 0px;
 }
+
+.left-container > ui-menu{
+    width:100%;
+}
+
 /*.content-area{
     padding-top: 45px;
     padding-bottom: 45px;
@@ -111,12 +116,12 @@ ul.rights-menu li{
 }*/
 
 .left-container{
-    width: 25%;
+    width: 23%;
     float:left;
 }
 
 .right-container{
-    width:75%;
+    width:77%;
     float:right;
 }
 //*************************************************//

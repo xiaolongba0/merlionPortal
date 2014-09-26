@@ -5,63 +5,50 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
-    <ui:composition template="${root}/templates/templateuser.xhtml">
+    <ui:composition template="${root}/templates/templateadmin.xhtml">
         <ui:param name="pageName" value="WMS home" />
 
         <ui:define name="more-imports">
             <ui:insert>
-               
+                <!--                import CSS style or Javascript here, if any-->
             </ui:insert>
         </ui:define>
 
         <ui:define name="left">
             <h:form id="formMain">
-<!--                <p:layout style="min-width:400px;min-height:1000px; borderless">      -->
-                    <p:layoutUnit position="west" resizable="true" size="240" minSize="40" maxSize="1000">
-                        <p:menu>
-                            <p:submenu label =" Manage Your Warehouse">
-                                <p:menuitem value="WMS" url="wmsindex.xhtml" />
-                                <p:submenu label="Warehouse" >
-                                    <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
-                                    <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
-                                </p:submenu>
-                                <p:submenu label="Storage Type" >
-                                    <p:menuitem value="Add Storage Type" url="addstoragetype.xhtml" />
-                                    <p:menuitem value="View Storage Types" url="viewstoragetype.xhtml" />
-                                </p:submenu>
-                                <p:submenu label="Storage Bin" >
-                                    <p:menuitem value="Add Storage Bin" url="addstoragebin.xhtml" />
-                                    <p:menuitem value="View Storage Bin" url="viewstoragebin.xhtml" />
-                                </p:submenu>
-                            </p:submenu>
-                        </p:menu>
-                    </p:layoutUnit>
-<!--                </p:layout>-->
+                <p:menu>
+                    <p:submenu label =" Manage Your Warehouse">
+                        <p:menuitem value="WMS" url="wmsindex.xhtml" />
+                        <p:submenu label="Warehouse" >
+                            <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
+                            <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
+                        </p:submenu>
+                        <p:submenu label="Storage Type" >
+                            <p:menuitem value="Add Storage Type" url="addstoragetype.xhtml" />
+                            <p:menuitem value="View Storage Types" url="viewstoragetype.xhtml" />
+                        </p:submenu>
+                        <p:submenu label="Storage Bin" >
+                            <p:menuitem value="Add Storage Bin" url="addstoragebin.xhtml" />
+                            <p:menuitem value="View Storage Bin" url="viewstoragebin.xhtml" />
+                        </p:submenu>
+                    </p:submenu>
+                </p:menu>
             </h:form>
         </ui:define>
 
         <ui:define name="right">
-<!--            <p:layout>-->
-                <p:layoutUnit position="center">   
-                    <p:panel header="Welcome">
+            <h2> Welcome to WMS System! </h2>
 
-                        Welcome to WMS System!
-                        <Br/><Br/>
-                        With WMS, you can manage your organization’s warehousing processes with ease.
-                        <Br/><Br/><Br/>
-                        WMS System empowers your organization to:
-                        <Br/><Br/>
-                        1. Manage your warehouse
-                        <Br/><Br/>
-                        2. Perform receiving and putaway
-                        <Br/><Br/>
-                        3. Perform fulfillment of orders
-                        <Br/><Br/>
-                        4. Manage goods flow within your warehouse and between your warehouses 
+            <p>With WMS, you can manage your organization’s warehousing processes with ease.</p>
 
-                    </p:panel>
-                </p:layoutUnit>
-<!--            </p:layout>-->
+            <p>WMS System empowers your organization to:</p>
+ 
+            <ol>
+                <li>Manage your warehouse</li>
+                <li>Perform receiving and putaway</li>
+                <li>Perform fulfillment of orders</li>
+                <li>Manage goods flow within your warehouse and between your warehouses</li> 
+            </ol>
         </ui:define>
 
     </ui:composition>
