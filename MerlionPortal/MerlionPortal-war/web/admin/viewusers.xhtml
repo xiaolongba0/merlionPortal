@@ -37,11 +37,11 @@
                             </p:outputPanel>
                         </f:facet>
 
-                        <p:column filterBy="#{user.systemUserId}" headerText="User Id" filterStyle="width: 50px;" width="80" filterMatchMode="contains">                         
+                        <p:column filterBy="#{user.systemUserId}" headerText="User ID" filterStyle="width: 50px;" width="80" filterMatchMode="contains">                         
                             <h:outputText value="#{user.systemUserId}"/>
                         </p:column>
                         <p:column filterBy="#{user.salution}" headerText="Salutation" filterStyle="width: 80px;" width="100" filterMatchMode="contains">
-                            <h:outputText value="#{user.salution}" style="width:60px"/>
+                            <h:outputText value="#{user.salution}" />
                         </p:column>
                         <p:column filterBy="#{user.firstName}" headerText="First Name"  filterMatchMode="contains">
                             <h:outputText value="#{user.firstName}" />
@@ -50,7 +50,7 @@
                             <h:outputText value="#{user.lastName}" />
                         </p:column>
                         <p:column filterBy="#{user.emailAddress}" headerText="Email Address" width="300" filterStyle="width: 280px;" filterMatchMode="contains">
-                            <h:outputText value="#{user.emailAddress}" style="width:280px;"> </h:outputText>
+                            <h:outputText value="#{user.emailAddress}" > </h:outputText>
                         </p:column>
                         <p:column filterBy="#{user.credit}" headerText="Credit"  filterMatchMode="contains">
                             <h:outputText value="#{user.credit}" />
