@@ -43,7 +43,7 @@
 
                         <p:dataTable id="rolesData" var="role" rowKey="#{role.userRoleId}" value="#{viewCompanyRoles.roles}" 
                                      paginator="true"
-                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="20,50">
                             <p:column headerText="Role Name" filterBy="#{role.roleName}" width="200" filterStyle="width: 180px" filterMatchMode="contains">
                                 <h:outputText value="#{role.roleName}" />
                             </p:column>
