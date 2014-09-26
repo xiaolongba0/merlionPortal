@@ -92,9 +92,10 @@
                             <h:outputLabel for="storageBinType" style="font-weight: bold" value="Storage Bin Type:   *" />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="storageBinType" requiredMessage="Storage Bin Type is required." id="storageBinType" value="#{createStorageBinManagerBean.storageBinType}">
-                                <f:validateLength minimum="1" maximum="100" />
-                            </p:inputText>
+                            <p:selectOneMenu id="storageBinType" value="#{createStorageBinManagerBean.storageBinType}"  style="width:210px" required="true" requiredMessage="Please select a storage bin type">
+                                <f:selectItem itemLabel="Select Storage Bin Type" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{createStorageBinManagerBean.listStorageBinType}" var="storageType" itemLabel="#{listStorageBinType}" />
+                            </p:selectOneMenu>
                         </p:column>
 
                     </p:row>

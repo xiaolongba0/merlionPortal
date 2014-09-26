@@ -105,7 +105,13 @@
                     <p:column  headerText="Bin Type" filterBy="#{storagebin.binType}" filterMatchMode="contains">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{storagebin.binType}" /></f:facet>
-                            <f:facet name="input"><p:inputText value="#{storagebin.binType}" style="width:100%" label="Bin Type"/></f:facet>
+                            <f:facet name="input">                            
+                                <p:selectOneMenu id="storageBinType" value="#{storagebin.binType}"  style="width:210px">
+                                    <f:selectItem itemLabel="Select Storage Bin Type" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{createStorageBinManagerBean.listStorageBinType}" var="storageType" itemLabel="#{listStorageBinType}" />
+                                </p:selectOneMenu>
+                            </f:facet>
+    <!--                            <p:inputText value="#{storagebin.binType}" style="width:100%" label="Bin Type"/>-->
                         </p:cellEditor>
                     </p:column>
 
@@ -123,8 +129,8 @@
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column headerText = "Delete Storage Bin">
-                        <p:commandButton action="#{storageBinViewEditManagedBean.deleteStorageBin(storagebin)}" update="storagebinData" value="Delete"  >
+                    <p:column style="width:42px">
+                        <p:commandButton action="#{storageBinViewEditManagedBean.deleteStorageBin(storagebin)}" update="storagebinData" icon = "ui-icon-trash"  >
                             <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this storage type?" icon="ui-icon-alert" />
                         </p:commandButton> 
                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -133,7 +139,7 @@
                         </p:confirmDialog>
                     </p:column>
 
-                    <p:column style="width:32px">
+                    <p:column style="width:42px">
                         <p:rowEditor />
                     </p:column>
 

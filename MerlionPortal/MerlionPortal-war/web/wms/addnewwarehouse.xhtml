@@ -16,108 +16,112 @@
     <h:body>
         <h:form id="formMain">
             <h1>Welcome to WMS!</h1>
-            <p:menubar>
-                <p:menuitem value="HOME" url="wmsindex.xhtml"/>
-
-                <p:submenu label="Warehouse" >
-                    <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
-                    <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
-                </p:submenu>
-                <p:submenu label="Storage Type" >
-                    <p:menuitem value="Add Storage Type" url="addstoragetype.xhtml" />
-                    <p:menuitem value="View Storage Types" url="viewstoragetype.xhtml" />
-                </p:submenu>
-                <p:submenu label="Storage Bin" >
-                    <p:menuitem value="Add Storage Bin" url="addstoragebin.xhtml" />
-                    <p:menuitem value="View Storage Bin" url="viewstoragebin.xhtml" />
-                </p:submenu>
-            </p:menubar>
+            <p:layoutUnit position="west" resizable="true" size="240" minSize="40" maxSize="1000">
+                <p:menu>
+                    <p:submenu label =" Manage Your Warehouse">
+                        <p:menuitem value="HOME" url="wmsindex.xhtml" />
+                        <p:submenu label="Warehouse" >
+                            <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
+                            <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
+                        </p:submenu>
+                        <p:submenu label="Storage Type" >
+                            <p:menuitem value="Add Storage Type" url="addstoragetype.xhtml" />
+                            <p:menuitem value="View Storage Types" url="viewstoragetype.xhtml" />
+                        </p:submenu>
+                        <p:submenu label="Storage Bin" >
+                            <p:menuitem value="Add Storage Bin" url="addstoragebin.xhtml" />
+                            <p:menuitem value="View Storage Bin" url="viewstoragebin.xhtml" />
+                        </p:submenu>
+                    </p:submenu>
+                </p:menu>
+            </p:layoutUnit>
             <br/>
-            <p:panel id="panel" header="Add New Warehouse">
-                <p:ajaxStatus style="width:16px;height:16px;">
-                    <f:facet name="start">
-                        <h:graphicImage value="/img/load.gif" />
-                    </f:facet>
-                    <f:facet name="complete">
-                        <h:outputText value="" />
-                    </f:facet>
-                </p:ajaxStatus>
-                <p:panelGrid>
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="warehouseName" style="font-weight: bold" value="Warehouse Name: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="Warehouse Name" requiredMessage="Warehouse Name is required." id="warehouseName" value="#{cwmb.warehouseName}">
-                                <f:validateLength minimum="4" maximum="40" />
-                            </p:inputText>
-                        </p:column>                       
-                    </p:row>
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel for="country" style="font-weight: bold" value="Country:   *" />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="country" requiredMessage="Country is required." id="country" value="#{cwmb.country}">
-                                <f:validateLength minimum="1" maximum="19" />
-                            </p:inputText>
-                        </p:column>
-                                                   
-                    </p:row>  
+            <p:layoutUnit position="center">  
+                <p:panel id="panel" header="Add New Warehouse">
+                    <p:ajaxStatus style="width:16px;height:16px;">
+                        <f:facet name="start">
+                            <h:graphicImage value="/img/load.gif" />
+                        </f:facet>
+                        <f:facet name="complete">
+                            <h:outputText value="" />
+                        </f:facet>
+                    </p:ajaxStatus>
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="warehouseName" style="font-weight: bold" value="Warehouse Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="Warehouse Name" requiredMessage="Warehouse Name is required." id="warehouseName" value="#{cwmb.warehouseName}">
+                                    <f:validateLength minimum="4" maximum="40" />
+                                </p:inputText>
+                            </p:column>                       
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="country" style="font-weight: bold" value="Country:   *" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="country" requiredMessage="Country is required." id="country" value="#{cwmb.country}">
+                                    <f:validateLength minimum="1" maximum="19" />
+                                </p:inputText>
+                            </p:column>
 
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel for="city" style="font-weight: bold" value="City:   *" />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="city" requiredMessage="City is required." id="city" value="#{cwmb.city}">
-                                <f:validateLength minimum="1" maximum="19" />
-                            </p:inputText>
-                        </p:column>
+                        </p:row>  
 
-                    </p:row>  
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="city" style="font-weight: bold" value="City:   *" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="city" requiredMessage="City is required." id="city" value="#{cwmb.city}">
+                                    <f:validateLength minimum="1" maximum="19" />
+                                </p:inputText>
+                            </p:column>
 
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel for="street" style="font-weight: bold" value="Street:   *" />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="street" requiredMessage="Street is required." id="street" value="#{cwmb.street}">
-                                <f:validateLength minimum="1" maximum="19" />
-                            </p:inputText>
-                        </p:column>
+                        </p:row>  
 
-                    </p:row>
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel for="zipcode" style="font-weight: bold" value="Zipcode:   *" />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="zipcode" requiredMessage="Zipcode is required." id="zipcode" value="#{cwmb.zipcode}">
-                                <f:validateLength minimum="1" maximum="10" />
-                            </p:inputText>
-                        </p:column>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="street" style="font-weight: bold" value="Street:   *" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="street" requiredMessage="Street is required." id="street" value="#{cwmb.street}">
+                                    <f:validateLength minimum="1" maximum="19" />
+                                </p:inputText>
+                            </p:column>
 
-                    </p:row>
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel for="description" style="font-weight: bold" value="Description:   *" />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="description" requiredMessage="Description is required." id="description" value="#{cwmb.description}">
-                                <f:validateLength minimum="1" maximum="100" />
-                            </p:inputText>
-                        </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="zipcode" style="font-weight: bold" value="Zipcode:   *" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="zipcode" requiredMessage="Zipcode is required." id="zipcode" value="#{cwmb.zipcode}">
+                                    <f:validateLength minimum="1" maximum="10" />
+                                </p:inputText>
+                            </p:column>
 
-                    </p:row>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="description" style="font-weight: bold" value="Description:   *" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="description" requiredMessage="Description is required." id="description" value="#{cwmb.description}">
+                                    <f:validateLength minimum="1" maximum="100" />
+                                </p:inputText>
+                            </p:column>
 
-                </p:panelGrid>
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <p:commandButton id="btn" value="Create New Warehouse" update="formMain" actionListener="#{cwmb.createNewWarehouse}" ajax="true" >
-                </p:commandButton>
+                        </p:row>
 
-            </p:panel>
+                    </p:panelGrid>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:commandButton id="btn" value="Create New Warehouse" update="formMain" actionListener="#{cwmb.createNewWarehouse}" ajax="true" >
+                    </p:commandButton>
 
+                </p:panel>
+            </p:layoutUnit>
         </h:form>
     </h:body>
 </html>                 

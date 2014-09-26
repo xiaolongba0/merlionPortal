@@ -10,10 +10,9 @@
     <h:body>
         <h1> View My Warehouses</h1>
         <h:form id="formMain">  
-            <p:growl id="msgs" showDetail="true"/>       
+<!--            <p:growl id="msgs" showDetail="true"/>       -->
             <p:menubar>
                 <p:menuitem value="HOME" url="wmsindex.xhtml"/>
-
                 <p:submenu label="Warehouse" >
                     <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
                     <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
@@ -42,8 +41,8 @@
                     </p:outputPanel>
                 </f:facet>
 
-                <p:ajax event="rowEdit" listener="#{warehouseViewEditManagedBean.onRowEdit}" update=":formMain:msgs"/>
-                <p:ajax event="rowEditCancel" listener="#{warehouseViewEditManagedBean.onRowCancel}" update=":formMain:msgs"/>
+                <p:ajax event="rowEdit" listener="#{warehouseViewEditManagedBean.onRowEdit}" />
+                <p:ajax event="rowEditCancel" listener="#{warehouseViewEditManagedBean.onRowCancel}" />
 
                 <p:column filterBy="#{warehouse.warehouseId}" filterMatchMode="exact" headerText="Warehouse ID" >
                     <h:outputText value="#{warehouse.warehouseId}" />
@@ -92,8 +91,8 @@
                     </p:cellEditor>
                 </p:column>
 
-                <p:column headerText = "Delete Warehouse">
-                    <p:commandButton action="#{warehouseViewEditManagedBean.deleteWarehouse(warehouse)}" update="warehouse" value="Delete">
+                <p:column style="width:42px">
+                    <p:commandButton action="#{warehouseViewEditManagedBean.deleteWarehouse(warehouse)}" update="warehouse" icon = "ui-icon-trash">
                         <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this warehouse?" icon="ui-icon-alert" />
                     </p:commandButton> 
                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -102,7 +101,7 @@
                     </p:confirmDialog>
                 </p:column>
 
-                <p:column style="width:32px">
+                <p:column style="width:42px">
                     <p:rowEditor />
                 </p:column>
 
