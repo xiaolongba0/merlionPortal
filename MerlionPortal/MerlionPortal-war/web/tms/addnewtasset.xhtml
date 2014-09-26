@@ -16,7 +16,7 @@
     <h:body>
         <h:form id="formMain">
             <h1>Welcome to Transportation Management System</h1>
-             <p:menubar>
+            <p:menubar>
                 <p:menuitem value="TMS Home" url="tmsindex.xhtml"/>
 
                 <p:submenu label="Location" >
@@ -34,7 +34,7 @@
             </p:menubar>
 
             <br/>
-            <p:panel id="panel" header="Transportation Asset">
+            <p:panel id="panel" header="Add Transportation Asset">
                 <p:ajaxStatus style="width:16px;height:16px;">
                     <f:facet name="start">
                         <h:graphicImage value="/img/load.gif" />
@@ -43,9 +43,8 @@
                         <h:outputText value="" />
                     </f:facet>
                 </p:ajaxStatus>
-                
-                <p:panelGrid>
 
+                <p:panelGrid>
                     <p:row>
                         <p:column>
                             <p:outputLabel for="location" value="Location Name: " />
@@ -57,7 +56,7 @@
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
-                    
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="assetType" style="font-weight: bold" value="Asset Type : " />
@@ -71,51 +70,62 @@
 
                     <p:row>
                         <p:column>
-                            <h:outputLabel for="capacity" style="font-weight: bold" value="Capacity(t) : " />
+                            <h:outputLabel for="capacity" style="font-weight: bold" value="Capacity(t) : *" />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="capacity" requiredMessage="capacity is required." id="description" value="#{tAssetManagedBean.capacity}">
+                            <p:inputText required="true" label="capacity" requiredMessage="capacity is required." id="capacity" value="#{tAssetManagedBean.capacity}">
                                 <f:validateLength minimum="1" maximum="25" />
                             </p:inputText>
                         </p:column>
                     </p:row>  
-                    
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="price" style="font-weight: bold" value="Price : " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="price" requiredMessage="priceis required." id="storageTypeName" value="#{tAssetManagedBean.price}">
+                            <p:inputText required="true" label="price" requiredMessage="priceis required." id="price" value="#{tAssetManagedBean.price}">
                                 <f:validateLength minimum="1" maximum="25" />
                             </p:inputText>
                         </p:column>
                     </p:row>  
-                    
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="speed" style="font-weight: bold" value="Speed(Km/h) : " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="speed" requiredMessage="speed is required." id="storageTypeName" value="#{tAssetManagedBean.speed}">
+                            <p:inputText required="true" label="speed" requiredMessage="speed is required." id="speed" value="#{tAssetManagedBean.speed}">
                                 <f:validateLength minimum="1" maximum="25" />
                             </p:inputText>
                         </p:column>
                     </p:row>  
-                    
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="status" style="font-weight: bold" value="Status(description) : " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="status" requiredMessage="statusis required." id="storageTypeName" value="#{tAssetManagedBean.status}">
+                            <p:inputText required="true" label="status" requiredMessage="statusis required." id="status" value="#{tAssetManagedBean.status}">
                                 <f:validateLength minimum="1" maximum="100" />
                             </p:inputText>
                         </p:column>
                     </p:row>  
-                    
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="quantity" style="font-weight: bold" value="Quantity : " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="status" requiredMessage="statusis required." id="quantity" value="#{tAssetManagedBean.quantity}">
+                                <f:validateLength minimum="1" maximum="100" />
+                            </p:inputText>
+                        </p:column>
+                    </p:row>  
 
                 </p:panelGrid>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
                 <p:commandButton id="btn" value="Create New Transportation Asset" update="panel" actionListener="#{tAssetManagedBean.createNewTAsset}" ajax="true" />
             </p:panel>
 
