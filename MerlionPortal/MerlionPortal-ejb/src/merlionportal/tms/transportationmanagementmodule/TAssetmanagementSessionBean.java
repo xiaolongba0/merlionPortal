@@ -71,7 +71,7 @@ public class TAssetmanagementSessionBean{
     }
        
     public Integer addNewLocation(String locationName, String locationType, Integer companyId) {
-        System.out.println("[INSIDE EJB]================================Add New Warehouse");
+        System.out.println("[INSIDE EJB]================================Add New Location");
 
         location = new Location();
 
@@ -121,7 +121,7 @@ public class TAssetmanagementSessionBean{
     public Integer addTAsset(String assetType, Integer capacity, Integer locationlocationId, Integer price, Integer speed, Integer companyId, String status) {
 
         System.out.println("[INSIDE EJB]================================Add Storage Type");
-        Query query = em.createNamedQuery("Warehouse.findByCompanyId").setParameter("companyId", companyId);
+        Query query = em.createNamedQuery("Location.findByCompanyId").setParameter("companyId", companyId);
 
         List<Location> allMyLocations = query.getResultList();
         Integer i ;
@@ -157,7 +157,7 @@ public class TAssetmanagementSessionBean{
             
         ///check later 
         if (locationn.getLocationId() == null) {
-            System.out.println("WAREHOUSE ID IS NULL");
+            System.out.println("Location ID IS NULL");
             return -1;
         } else {
             em.persist(tAsset);
