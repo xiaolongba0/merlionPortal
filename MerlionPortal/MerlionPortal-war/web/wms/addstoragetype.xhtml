@@ -3,37 +3,39 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>Add New Storage Type</title>
-        <style type="text/css">
-            .gritter-notice-wrapper {
-                left:200px;
-                top: 50px;
-            }
-        </style>
-    </h:head>
-    <h:body>
-        <h:form id="formMain">
-            <h1>Welcome to WMS!</h1>
-            <p:menubar>
-                <p:menuitem value="HOME" url="wmsindex.xhtml"/>
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="${root}/templates/templateadmin.xhtml">
+        <ui:param name="pageName" value="WMS home" />
 
-                <p:submenu label="Warehouse" >
-                    <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
-                    <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
-                </p:submenu>
-                <p:submenu label="Storage Type" >
-                    <p:menuitem value="Add Storage Type" url="addstoragetype.xhtml" />
-                    <p:menuitem value="View Storage Types" url="viewstoragetype.xhtml" />
-                </p:submenu>
-                <p:submenu label="Storage Bin" >
-                    <p:menuitem value="Add Storage Bin" url="addstoragebin.xhtml" />
-                    <p:menuitem value="View Storage Bin" url="viewstoragebin.xhtml" />
-                </p:submenu>
-            </p:menubar>
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+        <ui:define name="left">
+            <h:form id="formMain">
+                <h1>Welcome to WMS!</h1>
+                <p:menubar>
+                    <p:menuitem value="HOME" url="wmsindex.xhtml"/>
 
-            <br/>
+                    <p:submenu label="Warehouse" >
+                        <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
+                        <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Storage Type" >
+                        <p:menuitem value="Add Storage Type" url="addstoragetype.xhtml" />
+                        <p:menuitem value="View Storage Types" url="viewstoragetype.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Storage Bin" >
+                        <p:menuitem value="Add Storage Bin" url="addstoragebin.xhtml" />
+                        <p:menuitem value="View Storage Bin" url="viewstoragebin.xhtml" />
+                    </p:submenu>
+                </p:menubar>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">
             <p:panel id="panel" header="Add Storage Type">
                 <p:ajaxStatus style="width:16px;height:16px;">
                     <f:facet name="start">
@@ -81,8 +83,8 @@
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 <p:commandButton id="btn" value="Create New Storage Type" update="panel" actionListener="#{createStorageTypeManagerBean.createNewStorageType}" ajax="true" />
             </p:panel>
+        </ui:define>
+    </ui:composition>
 
-        </h:form>
-    </h:body>
 </html>                 
 
