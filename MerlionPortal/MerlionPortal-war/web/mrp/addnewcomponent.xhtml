@@ -61,7 +61,7 @@
                         <p:column>
                             <p:selectOneMenu required="true" id="product" value="#{productManagedBean.productId}" styleClass="form-control">
                                 <f:selectItem itemLabel="Select a product" itemValue="" noSelectionOption="true" />
-                                <f:selectItems value="#{productManagedBean.products}"  var="product" itemLabel="#{product.productName}"  itemValue="#{product.productId}"/>
+                                <f:selectItems value="#{productManagedBean.products}"  var="product" itemLabel="ID:#{product.productId} Name:#{product.productName}"  itemValue="#{product.productId}"/>
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
