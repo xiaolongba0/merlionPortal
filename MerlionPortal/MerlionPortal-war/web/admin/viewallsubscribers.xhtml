@@ -30,7 +30,7 @@
                             </p:outputPanel>
                         </f:facet>
 
-                        <p:column filterBy="#{company.companyId}" headerText="ID" filterMatchMode="contains">
+                        <p:column filterBy="#{company.companyId}" headerText="ID" width="80" filterStyle="width:50px" filterMatchMode="contains">
                             <h:outputText value="#{company.companyId}" />
                         </p:column>
 
@@ -42,7 +42,7 @@
                             <h:outputText value="#{company.contactPersonName}" />
                         </p:column>
 
-                        <p:column filterBy="#{company.emailAddress}" headerText="Email Address" filterMatchMode="contains">
+                        <p:column filterBy="#{company.emailAddress}" headerText="Email Address" width="300" filterStyle="width:280px" filterMatchMode="contains">
                             <h:outputText value="#{company.emailAddress}" />
                         </p:column>
 
