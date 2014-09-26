@@ -104,7 +104,7 @@ public class TAssetManagerBean {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New TransportationAsset Added!", ""));
             }
             }
-            System.out.println("[WAR FILE]===========================Create New Storage Type");
+            System.out.println("[WAR FILE]===========================Create New Transportation Asset");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -116,7 +116,6 @@ public class TAssetManagerBean {
         capacity = null;
         price = null;
         speed = null;
-        locationlocationId = null;
         status = null;
     }
     /**
