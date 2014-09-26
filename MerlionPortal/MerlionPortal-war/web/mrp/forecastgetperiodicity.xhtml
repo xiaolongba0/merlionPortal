@@ -49,7 +49,7 @@
                             <p:outputLabel for="periodicity" style="font-weight: bold" value="Periodicity: " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="Periodicity" requiredMessage="Periodicity is required." id="periodicity" value="#{forecastShowHistoryManagedBean.periodicity}">
+                            <p:inputText required="true" label="Periodicity" requiredMessage="Periodicity is required." id="periodicity" value="#{forecastGetParameterManagedBean.periodicity}">
                             </p:inputText>
                         </p:column>
                         <p:column>
@@ -61,7 +61,7 @@
                             <p:outputLabel for="expectedGrowth" style="font-weight: bold" value="Expected Growth due to external environment(unusual fluctuation): " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="ExpectedGrowth" requiredMessage="ExpectedGrowth is required." id="expectedGrowth" value="#{forecastShowHistoryManagedBean.expectedGrowth}">
+                            <p:inputText required="true" label="ExpectedGrowth" requiredMessage="ExpectedGrowth is required." id="expectedGrowth" value="#{forecastGetParameterManagedBean.expectedGrowth}">
 
                             </p:inputText>
                         </p:column>
@@ -71,7 +71,7 @@
                     </p:row>
                 </p:panelGrid>
 
-                <p:commandButton value="Proceed with forecasting" action="#{forecastShowHistoryManagedBean.onParameterChange}" ajax="true"/>
+                <p:commandButton value="Proceed with forecasting" action="#{forecastGetParameterManagedBean.onParameterChange}" ajax="true"/>
             </p:panel>
         </h:form>
     </h:body>
