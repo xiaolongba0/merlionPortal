@@ -79,11 +79,11 @@ public class ForecastShowHistoryManagedBean implements Serializable {
             }
         }
         createPurchaseHistoryModels();
+
         createResultModel();
-       
+
         periodicity = 12;
         computeForecastResult();
-      
 
     }
 
@@ -663,6 +663,6 @@ public class ForecastShowHistoryManagedBean implements Serializable {
         System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOO");
         System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOO");
         System.out.println("expected growth   " + expectedGrowth);
-        return "forecastResult";
+        return "forecastResult?faces-redirect=true";
     }
 }
