@@ -5,7 +5,6 @@
  */
 package merlionportal.managedbean.wms;
 
-import entity.StorageType;
 import entity.SystemUser;
 import entity.Warehouse;
 import java.io.IOException;
@@ -24,7 +23,7 @@ import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
  *
  * @author manliqi
  */
-@Named(value = "createStorageTypeManagerBean")
+@Named(value = "createStorageTypeMB")
 @ViewScoped
 public class CreateStorageTypeManagerBean {
 
@@ -44,7 +43,7 @@ public class CreateStorageTypeManagerBean {
     private String storagetDescription;
 
     private Integer storageTypeId;
-    private Integer warehouseId;
+    private Integer selectedWarehouseId;
     private List<Warehouse> warehouses;
 
     public CreateStorageTypeManagerBean() {
@@ -76,7 +75,7 @@ public class CreateStorageTypeManagerBean {
         try {
             System.out.println("[INSIDE WAR FILE]===========================Create New Storage Type");
             System.out.println("STORAGE TYPE NAMEEEEEEE ; " + storageTypeName);
-            newStorageTypeId = assetManagementSessionBean.addStorageType(storageTypeName, storagetDescription, companyId, warehouseId);
+            newStorageTypeId = assetManagementSessionBean.addStorageType(storageTypeName, storagetDescription, companyId, selectedWarehouseId);
             System.out.println("NEW STORAGE TYPE ID =================: " + newStorageTypeId);
             if (newStorageTypeId > -1) {
                 clearAllFields();
@@ -97,7 +96,7 @@ public class CreateStorageTypeManagerBean {
     private void clearAllFields() {
         storageTypeName = null;
         storagetDescription = null;
-        warehouseId = null;
+        selectedWarehouseId = null;
     }
 
     public SystemUser getLoginedUser() {
@@ -148,13 +147,15 @@ public class CreateStorageTypeManagerBean {
         this.storageTypeId = storageTypeId;
     }
 
-    public Integer getWarehouseId() {
-        return warehouseId;
+    public Integer getSelectedWarehouseId() {
+        return selectedWarehouseId;
     }
 
-    public void setWarehouseId(Integer warehouseId) {
-        this.warehouseId = warehouseId;
+    public void setSelectedWarehouseId(Integer selectedWarehouseId) {
+        this.selectedWarehouseId = selectedWarehouseId;
     }
+
+   
 
     public List<Warehouse> getWarehouses() {
         return warehouses;
