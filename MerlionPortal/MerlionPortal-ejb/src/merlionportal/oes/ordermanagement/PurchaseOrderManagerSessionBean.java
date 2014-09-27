@@ -91,7 +91,7 @@ public class PurchaseOrderManagerSessionBean {
     }
 
     public void generateSo(int operator, ProductOrder mpo) {
-        mpo.setStatus(3);
+        mpo.setStatus(2);
         mpo.setSalesPersonId(operator);
         em.merge(mpo);
     }
@@ -141,7 +141,7 @@ public class PurchaseOrderManagerSessionBean {
     }
 
     public void saveOrder(ProductOrder mypo) {
-        mypo.setStatus(4);
+        mypo.setStatus(14);
         em.merge(mypo);
     }
 
@@ -201,6 +201,19 @@ public class PurchaseOrderManagerSessionBean {
         SystemUser customer = em.find(SystemUser.class, cutomerId);
         String credit = customer.getCredit();
         if (credit.equals("pass")) {
+            return true;
+        }
+        return false;
+    }
+    
+    public Boolean checkQuotationValidity(int quoationId){
+        Boolean result;
+        Quotation myQuotation = em.find(Quotation.class,quoationId); 
+        if(myQuotation==null){
+            System.out.println("myQuotation is null");
+            return false;
+        }
+        else if(myQuotation.getStatus()==3){
             return true;
         }
         return false;

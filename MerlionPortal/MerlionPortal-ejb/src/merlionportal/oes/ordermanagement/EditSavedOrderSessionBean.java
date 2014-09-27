@@ -7,6 +7,7 @@ package merlionportal.oes.ordermanagement;
 
 import entity.ProductOrder;
 import entity.ProductOrderLineItem;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
@@ -35,9 +36,20 @@ public class EditSavedOrderSessionBean {
         em.flush();
 
     }
-    public void updateProductOrder(ProductOrder po){
+
+    public void updateProductOrder(ProductOrder po) {
         em.merge(po);
         em.flush();
     }
 
+    public void clearList(ProductOrder myOrder) {
+        List<ProductOrderLineItem> list = myOrder.getProductOrderLineItemList();
+        myOrder.getProductOrderLineItemList().clear();
+        em.merge(myOrder);
+        for (Object o : list) {
+            ProductOrderLineItem pLine = (ProductOrderLineItem) o;
+            em.remove(pLine);
+        }
+
+    }
 }
