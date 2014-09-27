@@ -33,13 +33,12 @@ public class TAssetViewEditManagedBean {
    @EJB
    private UserAccountManagementSessionBean uamb;
 
-    private List<TransportationAsset> tAssets;
+    private List<TransportationAsset> tassets;
     private List<Location> locations;
     private TransportationAsset tAsset;
     private String description;
 
     private Integer locationId;
-    private Location location;
     private String assetType; 
     private Integer capacity;
     private Integer speed;
@@ -78,17 +77,15 @@ public class TAssetViewEditManagedBean {
 
     public List<TransportationAsset> onLocationChange() {
         System.out.println("===============================[In Managed Bean - get Locations]");
-        // Dunno how to take in warehouse ID as input for delete function, and dunno why delete function don't update the
-        // output shown on webpage after it was deleted
         System.out.println("[In Managed Bean - getLocation] location ID : " + locationId);
         if (locationId != null) {
-            tAssets = tassetManagementSessionBean.viewtAssetForALocation(locationId);
-            if (tAssets == null) {
+            tassets = tassetManagementSessionBean.viewtAssetForALocation(locationId);
+            if (tassets == null) {
                 System.out.println("============== FAILED TO VIEW STORAGE TYPE ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Storage Type. Please check if warehouse ID exists! ", ""));
             }
-            return tAssets;
-        }
+            return tassets;
+        } 
         return null;
     }
     
@@ -124,216 +121,133 @@ public class TAssetViewEditManagedBean {
             System.out.println("[In WAR FILE - Delete TransportationAsset Function]" + tAsset);
             System.out.println("[In WAR FILE - Delete TransportationAsset Function] TransportationAsset Id===========:" + tAsset.getAssetId());
             tassetManagementSessionBean.deletetAsset(tAsset.getAssetId());
-            tAssets.remove(tAsset);
+            tassets.remove(tAsset);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Transportation Asset is deleted"));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    /**
-     * Creates a new instance of TAssetViewEditManagedBean
-     */
-
-    /**
-     * @return the tassetManagementSessionBean
-     */
-    public TAssetmanagementSessionBean getTassetManagementSessionBean() {
-        return tassetManagementSessionBean;
+    public List<TransportationAsset> getTassets() {
+        return tassets;
     }
 
-    /**
-     * @param tassetManagementSessionBean the tassetManagementSessionBean to set
-     */
-    public void setTassetManagementSessionBean(TAssetmanagementSessionBean tassetManagementSessionBean) {
-        this.tassetManagementSessionBean = tassetManagementSessionBean;
+    public void setTassets(List<TransportationAsset> tassets) {
+        this.tassets = tassets;
     }
 
-    /**
-     * @return the tAssets
-     */
-    public List<TransportationAsset> gettAssets() {
-        return tAssets;
+    public List<Location> getLocations() {
+        return locations;
     }
 
-    /**
-     * @param tAssets the tAssets to set
-     */
-    public void settAssets(List<TransportationAsset> tAssets) {
-        this.tAssets = tAssets;
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
     }
 
-    /**
-     * @return the tAsset
-     */
     public TransportationAsset gettAsset() {
         return tAsset;
     }
 
-    /**
-     * @param tAsset the tAsset to set
-     */
     public void settAsset(TransportationAsset tAsset) {
         this.tAsset = tAsset;
     }
 
-    /**
-     * @return the tAssetid
-     */
-
-
-    /**
-     * @return the description
-     */
     public String getDescription() {
         return description;
     }
 
-    /**
-     * @param description the description to set
-     */
     public void setDescription(String description) {
         this.description = description;
     }
 
-    /**
-     * @return the locationId
-     */
     public Integer getLocationId() {
         return locationId;
     }
 
-    /**
-     * @param locationId the locationId to set
-     */
     public void setLocationId(Integer locationId) {
         this.locationId = locationId;
     }
 
-    /**
-     * @return the assetType
-     */
     public String getAssetType() {
         return assetType;
     }
 
-    /**
-     * @param assetType the assetType to set
-     */
     public void setAssetType(String assetType) {
         this.assetType = assetType;
     }
 
-    /**
-     * @return the capacity
-     */
     public Integer getCapacity() {
         return capacity;
     }
 
-    /**
-     * @param capacity the capacity to set
-     */
     public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
 
-    /**
-     * @return the speed
-     */
     public Integer getSpeed() {
         return speed;
     }
 
-    /**
-     * @param speed the speed to set
-     */
     public void setSpeed(Integer speed) {
         this.speed = speed;
     }
 
-    /**
-     * @return the price
-     */
     public Integer getPrice() {
         return price;
     }
 
-    /**
-     * @param price the price to set
-     */
     public void setPrice(Integer price) {
         this.price = price;
     }
 
-    /**
-     * @return the locationlocationId
-     */
     public Location getLocationlocationId() {
         return locationlocationId;
     }
 
-    /**
-     * @param locationlocationId the locationlocationId to set
-     */
     public void setLocationlocationId(Location locationlocationId) {
         this.locationlocationId = locationlocationId;
     }
 
-    /**
-     * @return the status
-     */
     public String getStatus() {
         return status;
     }
 
-    /**
-     * @param status the status to set
-     */
     public void setStatus(String status) {
         this.status = status;
     }
 
-    /**
-     * @return the newAssetId
-     */
     public Integer getNewAssetId() {
         return newAssetId;
     }
 
-    /**
-     * @param newAssetId the newAssetId to set
-     */
     public void setNewAssetId(Integer newAssetId) {
         this.newAssetId = newAssetId;
     }
 
-    /**
-     * @return the quantity
-     */
     public Integer getQuantity() {
         return quantity;
     }
 
-    /**
-     * @param quantity the quantity to set
-     */
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
+    public SystemUser getLoginedUser() {
+        return loginedUser;
+    }
+
+    public void setLoginedUser(SystemUser loginedUser) {
+        this.loginedUser = loginedUser;
+    }
+
     
 
-    /**
-     * @return the location
-     */
-    public Location getLocation() {
-        return location;
-    }
-
-    /**
-     * @param location the location to set
-     */
-    public void setLocation(Location location) {
-        this.location = location;
-    }
 }
