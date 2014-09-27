@@ -16,6 +16,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import merlionportal.ci.administrationmodule.SystemAccessRightSessionBean;
 import merlionportal.oes.quotationmanagementmodule.QuotationManagerSessionBean;
 
 /**
@@ -25,6 +26,8 @@ import merlionportal.oes.quotationmanagementmodule.QuotationManagerSessionBean;
 @Named(value = "displayProductManagedBean")
 @RequestScoped
 public class DisplayProductManagedBean {
+    @EJB
+    private SystemAccessRightSessionBean accessRight;
 
     @EJB
     private QuotationManagerSessionBean quotationMB;
@@ -128,6 +131,11 @@ public class DisplayProductManagedBean {
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
+    }
+    
+    public Boolean canGenerateRequest(){
+        return accessRight.checkOESGeneratePO(userId);
+        
     }
     
 }

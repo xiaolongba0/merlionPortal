@@ -32,6 +32,7 @@ public class QuotationManagedBean implements Serializable {
 
     @EJB
     private QuotationManagerSessionBean quotationMB;
+    
     @EJB
     private SystemAccessRightSessionBean systemAccessRightSB;
 
@@ -76,7 +77,7 @@ public class QuotationManagedBean implements Serializable {
 
     }
 
-    public boolean checkUserGenerateQuotation(){
+    public boolean checkUserGenerateQuotation() {
         return systemAccessRightSB.checkOESGenerateQuotation(userId);
     }
 
@@ -93,7 +94,7 @@ public class QuotationManagedBean implements Serializable {
             System.out.println("=====================View all quoation This is staff =====================");
             allQuotation = quotationMB.viewAllRequestForQuotation(companyId);
         } else {
-                System.out.println(" =====================View all quoation This is customer=====================");
+            System.out.println(" =====================View all quoation This is customer=====================");
             allQuotation = quotationMB.viewAllRequestForQuotation(companyId, userId);
         }
         return allQuotation;
@@ -116,7 +117,7 @@ public class QuotationManagedBean implements Serializable {
         }
         System.out.println("this line will executed");
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "View", "Action Accepted"));
-                System.out.println("this line  executed  finished");
+        System.out.println("this line  executed  finished");
 
         return "generatequotation.xhtml";
 
@@ -289,7 +290,10 @@ public class QuotationManagedBean implements Serializable {
     }
 
     public Boolean checkAcceptable() {
-        return selectedQuotation.getStatus() == 2;
+         if(selectedQuotation.getStatus() == 2 && this.canGenerateRequest()){
+             return true;
+         }
+         return false;
     }
 
     public void acceptQuotation() {
@@ -317,6 +321,14 @@ public class QuotationManagedBean implements Serializable {
 
     public String goBackToAll() {
         return "viewallrequests.xhtml";
+    }
+
+    public Boolean canGenerateRequest() {
+        return systemAccessRightSB.checkOESGeneratePO(userId);
+
+    }
+    public Boolean canCancelQuotation(){
+        return systemAccessRightSB.checkOESGenerateQuotation(userId);
     }
 
 }
