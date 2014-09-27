@@ -29,25 +29,26 @@
         <h:form>
             <p:fieldset legend="Comany Information" style="margin-bottom:20px">
                 <h:panelGrid columns="2" cellpadding="5">
-                    <h4>   Company Name: </h4><h:outputText value="#{salesOrderManagedBean.customerInfor.get(0)}"/>
-                    <h4>        Address: </h4><h:outputText value="#{salesOrderManagedBean.customerInfor.get(1)}"/>
-                    <h4> Contact Person: </h4><h:outputText value="#{salesOrderManagedBean.customerInfor.get(2)}"/>
-                    <h4> Contact Number: </h4><h:outputText value="#{salesOrderManagedBean.customerInfor.get(3)}"/>
+                    <h4>   Company Name: </h4><h:outputText value="#{orderDetailMangedBean.customerInfor.get(0)}"/>
+                    <h4>        Address: </h4><h:outputText value="#{orderDetailMangedBean.customerInfor.get(1)}"/>
+                    <h4> Contact Person: </h4><h:outputText value="#{orderDetailMangedBean.customerInfor.get(2)}"/>
+                    <h4> Contact Number: </h4><h:outputText value="#{orderDetailMangedBean.customerInfor.get(3)}"/>
                 </h:panelGrid>
             </p:fieldset>
             <p:fieldset legend="Ship To " style="margin-bottom:20px">
                 <h:panelGrid id="detail" columns="2" cellpadding="5">
-                    <p>Contact Person: </p><h:outputText value="#{salesOrderManagedBean.myOrder.contactPersonName}"/>
-                    <p>Phone Number: </p><h:outputText value="#{salesOrderManagedBean.myOrder.contactPersonPhoneNumber}"/>
-                    <p>Address : </p><h:outputText value="#{salesOrderManagedBean.myOrder.shipTo}"/>
-                    <p>Quotation : </p><h:outputText value="#{salesOrderManagedBean.myOrder.quotationId}"/>
+                    <p>Contact Person: </p><h:outputText value="#{orderDetailMangedBean.order.contactPersonName}"/>
+                    <p>Phone Number: </p><h:outputText value="#{orderDetailMangedBean.order.contactPersonPhoneNumber}"/>
+                    <p>Address : </p><h:outputText value="#{orderDetailMangedBean.order.shipTo}"/>
+                    <p>Quotation : </p><h:outputText value="#{orderDetailMangedBean.order.quotationId}"/>
 
                 </h:panelGrid>
             </p:fieldset>
-
+            <br></br>
+            <p>Status : </p><h:outputText value="#{orderDetailMangedBean.displayStatus()}"/>
             <br></br>
             <br></br>
-            <p:dataTable var="lineItem" value="#{salesOrderManagedBean.myOrder.productOrderLineItemList}">
+            <p:dataTable var="lineItem" value="#{orderDetailMangedBean.order.productOrderLineItemList}">
                 <p:column headerText="Product">
                     <h:outputText value="#{lineItem.productproductId.productName}" />
                 </p:column>
@@ -69,6 +70,9 @@
                     <h:outputText value="#{lineItem.quantity*lineItem.price}" />
                 </p:column>
             </p:dataTable>
+            <br></br>
+            <p:commandButton action="displayallso.xhtml" value="Go Back">
+            </p:commandButton>  
         </h:form>
     </h:body>
 </html>

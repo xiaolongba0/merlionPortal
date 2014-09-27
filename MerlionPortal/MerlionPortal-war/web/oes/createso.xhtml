@@ -80,9 +80,9 @@
         <p:panel header="Reject Purchase Order" style="margin-bottom:10px;">
             <h:panelGrid columns="2" cellpadding="5">
                 <p:outputLabel for="Reason" value="Reject Reson " />
-                <p:selectOneMenu id="reson" value="#{dropdownView.reason}" style="width:150px">
+                <p:selectOneMenu id="reson" value="#{salesOrderManagedBean.reason}" style="width:150px">
                     <f:selectItem itemLabel="Select Reject Reson" itemValue="" noSelectionOption="true" />
-                    <f:selectItems value="#{dropdownView.rejectReasons}" />
+                    <f:selectItems value="#{salesOrderManagedBean.rejectReasons}" />
                 </p:selectOneMenu>
             </h:panelGrid>
             <p:separator />
