@@ -142,7 +142,7 @@ public class QuotationManagerSessionBean {
         myQuotation.setDescription(Description);
         Date date = this.getCurrentTime();
         myQuotation.setCreateDate(date);
-        myQuotation.setStatus(2);
+        myQuotation.setStatus(3);
         em.merge(myQuotation);
         em.flush();
 
