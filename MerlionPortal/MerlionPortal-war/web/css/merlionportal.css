@@ -36,10 +36,11 @@ h4.service-cost{
     color:#bbb;
 }
 h4.service-des{
-    font-size:20pt;
+    font-size:15pt;
     font-family:Arial;
-    color:#bbb;
-}
+    color:#808080;
+    font-style: italic;
+}   
 
 .alert-default{
     background-color:#bababa;
