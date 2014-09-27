@@ -7,6 +7,7 @@ package merlionportal.managedbean.oes;
 
 import entity.ProductOrder;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -32,7 +33,7 @@ public class ViewSalesOrderManagedBean {
     private SystemAccessRightSessionBean systemAccessRightSB;
     private Integer companyId;
     private Integer userId;
-    private List<ProductOrder> salesOrderList;
+    private List<ProductOrder> salesOrderList=new ArrayList();
     private ProductOrder filteredOrder;
     private ProductOrder selectedOrder;
     private List<String> statusList;

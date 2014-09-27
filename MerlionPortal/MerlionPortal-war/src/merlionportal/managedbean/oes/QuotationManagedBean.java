@@ -90,8 +90,10 @@ public class QuotationManagedBean implements Serializable {
 
     public List<Quotation> getAllQuotation() {
         if (!systemAccessRightSB.checkOESCustomer(userId)) {
+            System.out.println("=====================View all quoation This is staff =====================");
             allQuotation = quotationMB.viewAllRequestForQuotation(companyId);
         } else {
+                System.out.println(" =====================View all quoation This is customer=====================");
             allQuotation = quotationMB.viewAllRequestForQuotation(companyId, userId);
         }
         return allQuotation;
