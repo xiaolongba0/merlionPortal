@@ -1,10 +1,10 @@
 .bg-img{
-    background:url("http://www.logistic-partners.com/wp-content/uploads/2012/11/Logistic-Truck-Pic-v22.jpg") no-repeat center center fixed;
+    background:url("http://www.choosemontgomerymd.com/images/photos/transportation_image.jpg") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
 /*    -webkit-filter:blur(2px);*/
-    min-height: 550px;
+    min-height: 1000px;
 }
 
 .login-box{
@@ -27,5 +27,7 @@
 .some-quote-box h2{
     font-family:Century Gothic;
     font-size:15pt;
-    color:#fff;
+    color:#666;
+    background:rgba(255,255,255,0.4);
+    padding:3px;
 }
