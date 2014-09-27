@@ -42,36 +42,34 @@
                 </p:submenu>
             </p:megaMenu>
 
+           
             <p:panel id="panel" header="Add in Forecast Parameters"> 
-                <p:panelGrid>
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />  
+             <p:panelGrid>
                     <p:row>
                         <p:column>
                             <p:outputLabel for="periodicity" style="font-weight: bold" value="Periodicity: " />
                         </p:column>
                         <p:column>
                             <p:inputText required="true" label="Periodicity" requiredMessage="Periodicity is required." id="periodicity" value="#{forecastGetParameterManagedBean.periodicity}">
+                             <f:validateLength minimum="1" maximum="19"/>
                             </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="periodicity" />
                         </p:column>
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="expectedGrowth" style="font-weight: bold" value="Expected Growth due to external environment(unusual fluctuation): " />
+                            <p:outputLabel for="expectedGrowth" style="font-weight: bold" value="Expected Fluctuation due to Unusual Situation (in %): " />
                         </p:column>
                         <p:column>
                             <p:inputText required="true" label="ExpectedGrowth" requiredMessage="ExpectedGrowth is required." id="expectedGrowth" value="#{forecastGetParameterManagedBean.expectedGrowth}">
 
                             </p:inputText>
                         </p:column>
-                        <p:column>
-                            <p:message for="expectedGrowth" />
-                        </p:column>
                     </p:row>
                 </p:panelGrid>
 
                 <p:commandButton value="Proceed with forecasting" action="#{forecastGetParameterManagedBean.onParameterChange}" ajax="true"/>
+
             </p:panel>
         </h:form>
     </h:body>
