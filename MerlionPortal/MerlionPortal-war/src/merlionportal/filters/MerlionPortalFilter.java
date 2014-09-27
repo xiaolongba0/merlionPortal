@@ -2,7 +2,6 @@ package merlionportal.filters;
 
 import java.io.IOException;
 import javax.ejb.EJB;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -69,12 +68,116 @@ public class MerlionPortalFilter implements Filter {
                             if (filterbean.retrieveCompanyPac(companyId) == 1 || filterbean.retrieveCompanyPac(companyId) == 2) {
                                 //check user access right
                                 if (systemAccessRightsb.canUseOES(userId)) {
-                                    if (requestURI.contains("/oes/@@@@")) {
-                                        if (systemAccessRightsb.checkOESCustomer(userId)) {
+                                    if (requestURI.contains("/oes/createso.xhtml")) {
+                                        if (systemAccessRightsb.checkOESGenerateSO(userId)) {
                                         } else {
                                             //User cannot access this page
                                             redirect = true;
-                                            newPage = ctxtPath + "/mrp/mrp.xhtml";
+                                            newPage = ctxtPath + "/oes/oesindexpage.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/oes/displayallproducts.xhtml")) {
+                                        if (systemAccessRightsb.checkOESGenerateSO(userId)||systemAccessRightsb.checkOESGeneratePO(userId)||systemAccessRightsb.checkOESGenerateQuotation(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/oes/oesindexpage.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/oes/displayallquotations.xhtml")) {
+                                        if (systemAccessRightsb.checkOESGenerateSO(userId)||systemAccessRightsb.checkOESGeneratePO(userId)||systemAccessRightsb.checkOESGenerateQuotation(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/oes/oesindexpage.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/oes/displayallso.xhtml")) {
+                                        if (systemAccessRightsb.checkOESGenerateSO(userId)||systemAccessRightsb.checkOESGeneratePO(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/oes/oesindexpage.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/oes/displayrequestinfor.xhtml")) {
+                                        if (systemAccessRightsb.checkOESGeneratePO(userId)||systemAccessRightsb.checkOESGenerateQuotation(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/oes/oesindexpage.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/oes/editsavedorder.xhtml")) {
+                                        if (systemAccessRightsb.checkOESGeneratePO(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/oes/oesindexpage.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/oes/orderdetail.xhtml")) {
+                                        if (systemAccessRightsb.checkOESGeneratePO(userId) ||systemAccessRightsb.checkOESGenerateSO(userId) ) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/oes/oesindexpage.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/oes/pogeneration.xhtml")) {
+                                        if (systemAccessRightsb.checkOESGeneratePO(userId) ) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/oes/oesindexpage.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/oes/requestforreturn.xhtml")) {
+                                        if (systemAccessRightsb.checkOESGenerateSO(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/oes/oesindexpage.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/oes/retrievesavedorder.xhtml")) {
+                                        if (systemAccessRightsb.checkOESGeneratePO(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/oes/oesindexpage.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/oes/viewallpo.xhtml")) {
+                                        if (systemAccessRightsb.checkOESGeneratePO(userId) ||systemAccessRightsb.checkOESGenerateSO(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/oes/oesindexpage.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/oes/viewallrequests.xhtml")) {
+                                        if (systemAccessRightsb.checkOESGeneratePO(userId) ||systemAccessRightsb.checkOESGenerateSO(userId) ||systemAccessRightsb.checkOESGenerateQuotation(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/oes/oesindexpage.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/oes/viewquotationinfor.xhtml")) {
+                                        if (systemAccessRightsb.checkOESGeneratePO(userId) ||systemAccessRightsb.checkOESGenerateSO(userId) ||systemAccessRightsb.checkOESGenerateQuotation(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/oes/oesindexpage.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/oes/generatequotation.xhtml")) {
+                                        if (systemAccessRightsb.checkOESGenerateQuotation(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/oes/oesindexpage.xhtml";
                                         }
                                     }
 
