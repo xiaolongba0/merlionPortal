@@ -6,7 +6,9 @@
 package merlionportal.managedbean.oes;
 
 import entity.ProductOrder;
+import java.io.IOException;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -28,12 +30,35 @@ public class OrderDetailMangedBean {
     private List<String> customerInfor;
     private String rejectReason;
     private List<String> reasonList;
+    private Integer companyId;
+    private Integer userId;
 
     public OrderDetailMangedBean() {
     }
 
-    public ProductOrder getOrder() {
+    @PostConstruct
+    public void init() {
+        boolean redirect = true;
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
+            userId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
+            companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
+
+            if (userId != null) {
+                redirect = false;
+            }
+        }
+        if (redirect) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
         order = (ProductOrder) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("viewOrder");
+
+    }
+
+    public ProductOrder getOrder() {
         return order;
     }
 

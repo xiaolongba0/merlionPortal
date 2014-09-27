@@ -6,8 +6,8 @@
 package merlionportal.managedbean.oes;
 
 import entity.ProductOrder;
-import entity.ProductOrderLineItem;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -35,7 +35,6 @@ public class SalesOrderManagedBean {
     private List<String> rejectReasons;
     private String reason;
     private Boolean credit;
-    
 
     public SalesOrderManagedBean() {
     }
@@ -58,25 +57,28 @@ public class SalesOrderManagedBean {
                 ex.printStackTrace();
             }
         }
+        myOrder = (ProductOrder) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedOrder");
+        credit = purchaseOrderMB.checkCredit(myOrder.getCreatorId());
 
     }
 
-    private void setReasons() {
-        rejectReasons.add("01 Wrong product");
-        rejectReasons.add("02 Wrong product quantity");
-        rejectReasons.add("03 Wrong price");
-        rejectReasons.add("04 Wrong ship to address");
-        rejectReasons.add("05 Wrong contact person");
-        rejectReasons.add("06 Credit check fail ");
-        rejectReasons.add("07 Others please contact sales for more information");
-        rejectReasons.add("08 Customer request for cancelation");
-        rejectReasons.add("09 Unable to fulfill this order");
-
+    private List<String> setReasons() {
+        List<String> reasonList = new ArrayList();
+        reasonList.add("01 Wrong product");
+        reasonList.add("02 Wrong product quantity");
+        reasonList.add("03 Wrong price");
+        reasonList.add("04 Wrong ship to address");
+        reasonList.add("05 Wrong contact person");
+        reasonList.add("06 Credit check fail ");
+        reasonList.add("07 Others please contact sales for more information");
+        reasonList.add("08 Customer request for cancelation");
+        reasonList.add("09 Unable to fulfill this order");
+        return reasonList;
     }
 
     public void generateSo() {
         if (myOrder.getStatus() == 1 && credit) {
-            purchaseOrderMB.generateSo(userId,myOrder);
+            purchaseOrderMB.generateSo(userId, myOrder);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Sales order has benn created."));
 
         } else {
@@ -85,7 +87,6 @@ public class SalesOrderManagedBean {
     }
 
     public void checkCredit() {
-        credit = purchaseOrderMB.checkCredit(myOrder.getCreatorId());
         if (credit) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Credit check pass"));
         } else {
@@ -97,13 +98,12 @@ public class SalesOrderManagedBean {
     public void rejectPo() {
         int s = Integer.parseInt(reason.substring(0, 2));
         s = s + 6;
-        purchaseOrderMB.rejectPo(userId,myOrder, s);
+        purchaseOrderMB.rejectPo(userId, myOrder, s);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "This order has benn rejected."));
 
     }
 
     public ProductOrder getMyOrder() {
-        myOrder = (ProductOrder) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedOrder");
         return myOrder;
     }
 
@@ -137,6 +137,7 @@ public class SalesOrderManagedBean {
     }
 
     public List<String> getRejectReasons() {
+        rejectReasons=this.setReasons();
         return rejectReasons;
     }
 
