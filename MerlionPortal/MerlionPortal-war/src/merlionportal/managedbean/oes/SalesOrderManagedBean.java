@@ -35,6 +35,7 @@ public class SalesOrderManagedBean {
     private List<String> rejectReasons;
     private String reason;
     private Boolean credit;
+    
 
     public SalesOrderManagedBean() {
     }
