@@ -116,7 +116,7 @@ public class PurchaseOrderManagedBean {
     }
 
     public boolean checkUserIsCustomer() {
-        return systemAccessRightSB.checkOESCustomer(userId);
+        return systemAccessRightSB.checkOESGeneratePO(userId);
     }
 
     public void searchForQuotation() {

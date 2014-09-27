@@ -76,8 +76,8 @@ public class QuotationManagedBean implements Serializable {
 
     }
 
-    public boolean checkUserIsOrderProccessing() {
-        return systemAccessRightSB.checkOESOrderProcessing(userId);
+    public boolean checkUserGenerateQuotation(Integer userId){
+        return systemAccessRightSB.checkOESGenerateQuotation(userId);
     }
 
     public Quotation getSelectedRequest() {
@@ -89,7 +89,7 @@ public class QuotationManagedBean implements Serializable {
     }
 
     public List<Quotation> getAllQuotation() {
-        if (!systemAccessRightSB.checkOESCustomer(userId)) {
+        if (!systemAccessRightSB.checkOESGeneratePO(userId)) {
             System.out.println("=====================View all quoation This is staff =====================");
             allQuotation = quotationMB.viewAllRequestForQuotation(companyId);
         } else {
@@ -212,7 +212,7 @@ public class QuotationManagedBean implements Serializable {
     }
 
     public List<Quotation> getAllProcceQuotation() {
-        if (!systemAccessRightSB.checkOESCustomer(userId)) {
+        if (!systemAccessRightSB.checkOESGeneratePO(userId)) {
             allProcceQuotation = quotationMB.viewAllProQuotation(companyId);
         } else {
             allProcceQuotation = quotationMB.viewAllProQuotation(companyId, userId);

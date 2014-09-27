@@ -71,7 +71,7 @@ public class RetrieveSavedOrderManagedBean {
     }
 
     public List<ProductOrder> getProductOrderList() {
-        if (systemAccessRightSB.checkOESCustomer(userId)) {
+        if (systemAccessRightSB.checkOESGeneratePO(userId)) {
             productOrderList = purchaseOrderMB.viewAllProductOrder(1, companyId, userId);
         } else {
             productOrderList = purchaseOrderMB.viewAllProductOrder(1, companyId);
@@ -81,7 +81,7 @@ public class RetrieveSavedOrderManagedBean {
     }
 
     public boolean checkOESSales(){
-        return systemAccessRightSB.checkOESSales(userId);
+        return systemAccessRightSB.checkOESGenerateSO(userId);
     }
 
     public void setSavedOrderList(List<ProductOrder> savedOrderList) {
