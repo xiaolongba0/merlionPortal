@@ -94,6 +94,7 @@ public class PurchaseOrderManagerSessionBean {
         mpo.setStatus(2);
         mpo.setSalesPersonId(operator);
         em.merge(mpo);
+        em.flush();
     }
 
     public Boolean creaditCheck(int customerId) {
@@ -200,7 +201,7 @@ public class PurchaseOrderManagerSessionBean {
     public Boolean checkCredit(int cutomerId) {
         SystemUser customer = em.find(SystemUser.class, cutomerId);
         String credit = customer.getCredit();
-        if (credit.equals("pass")) {
+        if (credit.equals("Pass")) {
             return true;
         }
         return false;
