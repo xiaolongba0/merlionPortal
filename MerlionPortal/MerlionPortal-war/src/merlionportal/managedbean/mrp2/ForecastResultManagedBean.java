@@ -17,6 +17,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.mrp.forecastingmodule.ForecastSessionBean;
+import merlionportal.mrp.forecastingmodule.RetrieveSalesDataSessionBean;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.DateAxis;
@@ -31,6 +32,8 @@ public class ForecastResultManagedBean implements Serializable {
     UserAccountManagementSessionBean uamb;
     @EJB
     ForecastSessionBean fsb;
+    @EJB
+    RetrieveSalesDataSessionBean rsdsb;
 
     Integer companyId;
 
@@ -55,7 +58,10 @@ public class ForecastResultManagedBean implements Serializable {
 
     double expectedGrowth;
     int periodicity;
+    Integer productId;
 
+    List<String> dateList;
+    List<Integer> quantityList;
     private SystemUser loginedUser;
 
     //variables for forecasting
@@ -99,8 +105,11 @@ public class ForecastResultManagedBean implements Serializable {
 
         //produce a list of date correspond to sales
         //size need to be retrieved/computed later
+        productId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("productId");
+        dateList = rsdsb.retrieveDateList(productId);
+        quantityList = rsdsb.retrieveQuantityList(productId);
 
-        forecastR = fsb.computeResult(periodicity, expectedGrowth);
+        forecastR = fsb.computeResult(periodicity, expectedGrowth, dateList, quantityList);
         monthlyDateR = fsb.yaxisDate();
 
         forecastSales = new LineChartModel();
@@ -129,6 +138,5 @@ public class ForecastResultManagedBean implements Serializable {
         axis.setTickFormat("%b, %y");
 
     }
-
 
 }

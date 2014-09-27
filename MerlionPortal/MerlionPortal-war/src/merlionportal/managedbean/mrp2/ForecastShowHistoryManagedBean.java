@@ -17,6 +17,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.mrp.forecastingmodule.ForecastSessionBean;
+import merlionportal.mrp.forecastingmodule.RetrieveSalesDataSessionBean;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.DateAxis;
@@ -31,12 +32,18 @@ public class ForecastShowHistoryManagedBean implements Serializable {
     UserAccountManagementSessionBean uamb;
     @EJB
     ForecastSessionBean fsb;
+    @EJB
+    RetrieveSalesDataSessionBean rsdsb;
 
     Integer companyId;
 
     private LineChartModel purchaseHistory;
     Vector<String> monthlyDate;
     Vector<Integer> salesdata;
+    Integer productId;
+    
+    List<String> dateList;
+    List<Integer> quantityList;
 
     private SystemUser loginedUser;
 
@@ -73,18 +80,24 @@ public class ForecastShowHistoryManagedBean implements Serializable {
     public void createPurchaseHistoryModels() {
         //produce a list of date correspond to sales
         //size need to be retreved/computed later
-        size = fsb.createPurchaseDate().size();
+        
+        
+        productId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("productId");
+        dateList = rsdsb.retrieveDateList(productId);
+        quantityList = rsdsb.retrieveQuantityList(productId);
+
+        this.monthlyDate = fsb.createPurchaseDate(dateList);
+        this.salesdata = fsb.createPurchaseData(quantityList);
+
+        //put session the size of the history
+        size = salesdata.size();
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("size", size);
         
-        System.out.println("array size!!!!!!!!!!" + size);
-        this.monthlyDate = fsb.createPurchaseDate();
-        this.salesdata = fsb.createPurchaseData();
-
         purchaseHistory = new LineChartModel();
         LineChartSeries series1 = new LineChartSeries();
         series1.setLabel("Sales Figure");
-
-        for (int i = 0; i < 24; i++) {
+//changed on 1.53pm 
+        for (int i = (24-size); i < 24; i++) {
             series1.set(monthlyDate.get(i), salesdata.get(i));
         }
 

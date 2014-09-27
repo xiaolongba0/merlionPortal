@@ -48,7 +48,7 @@ public class MerlionPortalContextListener implements ServletContextListener {
     private void startMRP() {
         //create products
         if (productSessionBean.ifCanAdd("Bicycle")) {
-            productSessionBean.addNewProduct("Bicycle", "Bicycle", "Household Products", "Manufacturing", "US Dollar (USD)", 55.0, 12345);
+            productSessionBean.addNewProduct("Bicycle", "Bicycle", "Household Products", "Manufacturing", "US Dollar (USD)", 55.0, 1);
         }
         /* productSessionBean.addNewProduct("Water Bottle", "Water Bottle", "Household Products", "Manufacturing", "US Dollar (USD)", 10.0, 12345);
          productSessionBean.addNewProduct("Red Car", "Red Car", "Automotive", "Manufacturing", "US Dollar (USD)", 65555.0, 12345);

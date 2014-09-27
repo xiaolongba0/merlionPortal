@@ -8,6 +8,7 @@ package merlionportal.managedbean.mrp2;
 import entity.Product;
 import entity.SystemUser;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -272,6 +273,8 @@ private Product product;
 
     public void saveNewProduct(ActionEvent product) {
         try {
+            Date d= new Date();
+            System.out.println("DATE!!!!!!!!!!!!!!!!!!!!!!!!!" + d);
             newProductId = productSessionBean.addNewProduct(productName, description, category, productType, currency, price, companyId);
              FacesMessage msg = new FacesMessage("Product added successfully");
              FacesContext.getCurrentInstance().addMessage(null, msg);
