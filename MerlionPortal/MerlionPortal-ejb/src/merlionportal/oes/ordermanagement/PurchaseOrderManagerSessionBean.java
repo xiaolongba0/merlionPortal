@@ -265,24 +265,27 @@ public class PurchaseOrderManagerSessionBean {
 
     public String getOrderStatus(ProductOrder myOrder) {
         String result;
-        int status = myOrder.getStatus();
-        if (status == 1) {
-            result = "PO, Waiting for process";
-        } else if (status == 2) {
-            result = "SO, Waiting for fulfillment";
-        } else if (status == 3) {
-            result = "Product Shipped";
-        } else if (status == 4) {
-            result = "Order closed";
-        } else if (status == 5) {
-            result = "Order invoiced";
-        } else if (status == 6) {
-            result = "Request for return, waiting for approval";
+        if (myOrder == null) {
+            return " ";
         } else {
-            result = "Rejected";
+            int status = myOrder.getStatus();
+            if (status == 1) {
+                result = "PO, Waiting for process";
+            } else if (status == 2) {
+                result = "SO, Waiting for fulfillment";
+            } else if (status == 3) {
+                result = "Product Shipped";
+            } else if (status == 4) {
+                result = "Order closed";
+            } else if (status == 5) {
+                result = "Order invoiced";
+            } else if (status == 6) {
+                result = "Request for return, waiting for approval";
+            } else {
+                result = "Rejected";
+            }
         }
         return result;
-
     }
 
 }
