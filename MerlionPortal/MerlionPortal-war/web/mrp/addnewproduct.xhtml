@@ -6,12 +6,12 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-    
+
     <c:set var="import" value="templateuser.xhtml"/>
     <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
         <c:set var="import" value="templateadmin.xhtml"/>
     </c:if>
-    
+
     <ui:composition template="${root}/templates/${import}">        
         <ui:param name="pageName" value="MRP II Add New Product" />
 
@@ -22,148 +22,150 @@
         </ui:define>
 
         <ui:define name="left">
-            <h:form id="formMain">
-                <p:panelMenu>
-                    <p:menuitem value="MRP II" url="mrp.xhtml" />
-                    <p:submenu label="Product Management" styleClass="display:block">
+            <p:panelMenu>
+                <p:menuitem value="MRP II" url="mrp.xhtml" />
+                <p:submenu label="Product Management">
 
-                        <p:submenu label="Product Catalog Management">
-                            <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
-                            <p:menuitem value="View, Edit and Delete" url="viewallproducts.xhtml" />
-                        </p:submenu>
-                        <p:submenu label="BOM Management">
-                            <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
-                            <p:menuitem value="View, Edit and Delete BOM" url="viewbom.xhtml" />
-                        </p:submenu>
-
+                    <p:submenu label="Product Catalog Management">
+                        <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
+                        <p:menuitem value="View, Edit and Delete" url="viewallproducts.xhtml" />
                     </p:submenu>
-                    <p:submenu label="Material Requirement Planning" styleClass="display:block">
-
-                        <p:submenu label="Forecasting">
-                            <p:menuitem value="Forecasting" url="forecast.xhtml" />
-                        </p:submenu>
-
+                    <p:submenu label="BOM Management">
+                        <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
+                        <p:menuitem value="View, Edit and Delete BOM" url="viewbom.xhtml" />
                     </p:submenu>
-                </p:panelMenu>
-            </h:form>
+
+                </p:submenu>
+                <p:submenu label="Material Requirement Planning">
+
+                    <p:submenu label="Forecasting">
+                        <p:menuitem value="Forecasting" url="forecast.xhtml" />
+                    </p:submenu>
+
+                </p:submenu>
+            </p:panelMenu>
+
         </ui:define>
 
         <ui:define name="right">
-            <p:growl id="growl" showDetail="true" sticky="true" /> 
-            <p:panel id="panel" header="Add New Product">
-                <p:ajaxStatus style="width:16px;height:16px;">
-                    <f:facet name="start">
-                        <h:graphicImage value="/img/load.gif" />
-                    </f:facet>
-                    <f:facet name="complete">
-                        <h:outputText value="" />
-                    </f:facet>
-                </p:ajaxStatus>
-                <p:messages />
-                <p:panelGrid>
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="productName" style="font-weight: bold" value="Product Name: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="Product Name" requiredMessage="Product Name is required." id="productName" value="#{productManagedBean.productName}">
-                                <f:validateLength minimum="1" maximum="16" />
-                            </p:inputText>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="description" style="font-weight: bold" value="Description: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="Description" requiredMessage="Description is required." id="description" value="#{productManagedBean.description}">
-                                <f:validateLength minimum="1" maximum="19" />
-                            </p:inputText>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel for="category" style="font-weight: bold" value="Product Category:   *" />
-                        </p:column>
-                        <p:column>                        
-                            <h:selectOneMenu id="category" value="#{productManagedBean.category}" required="true" label="Product Category">
-                                <f:selectItem itemLabel="Select Product Category" itemValue="" noSelectionOption="true" />
-                                <f:selectItem itemLabel="Food - Fresh Products" itemValue="Fresh Products" />
-                                <f:selectItem itemLabel="Food - Frozen Products" itemValue="Food - Frozen Products" />
-                                <f:selectItem itemLabel="Food - Normal Products" itemValue="Food - Normal Products" />
-                                <f:selectItem itemLabel="Beverages" itemValue="Beverages" />
-                                <f:selectItem itemLabel="Retail and Apparel" itemValue="Retail and Apparel" />
-                                <f:selectItem itemLabel="Automotive" itemValue="Automotive" />
-                                <f:selectItem itemLabel="Household Products" itemValue="Household Products" />
-                                <f:selectItem itemLabel="Children Products" itemValue="Children Products" />
-                                <f:selectItem itemLabel="Personal Care Products" itemValue="Personal Care Products" />
-                                <f:selectItem itemLabel="Electronics" itemValue="Electronics" />
-                                <f:selectItem itemLabel="Semi-Finished Products" itemValue="Semi-Finished Products" />  
-                                <f:selectItem itemLabel="Raw Materials" itemValue="Raw Materials" />  
-                                <f:selectItem itemLabel="Others" itemValue="Others" />  
-                            </h:selectOneMenu> 
-                        </p:column>
-                    </p:row> 
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel for="productType" style="font-weight: bold" value="Product Type:   *" />
-                        </p:column>
-                        <p:column>                        
-                            <h:selectOneMenu id="productType" value="#{productManagedBean.productType}" required="true" label="Product Type">
-                                <f:selectItem itemLabel="Select Product Type" itemValue="" noSelectionOption="true" />
-                                <f:selectItem itemLabel="Manufacturing" itemValue="Manufacturing" />
-                                <f:selectItem itemLabel="Non-Manufacturing" itemValue="Non-Manufacturing" />
-                            </h:selectOneMenu>
-                        </p:column>
-                    </p:row>  
 
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel for="currency" style="font-weight: bold" value="Currency:   *" />
-                        </p:column>
-                        <p:column>                        
-                            <h:selectOneMenu id="currency" value="#{productManagedBean.currency}" required="true" label="Currency">
-                                <f:selectItem itemLabel="Select Currency" itemValue="" noSelectionOption="true" />
+            <h:form id="formMain">
+                <p:growl id="growl" showDetail="true" sticky="true" /> 
+                <p:panel id="panel" header="Add New Product">
+                    <p:ajaxStatus style="width:16px;height:16px;">
+                        <f:facet name="start">
+                            <h:graphicImage value="/img/load.gif" />
+                        </f:facet>
+                        <f:facet name="complete">
+                            <h:outputText value="" />
+                        </f:facet>
+                    </p:ajaxStatus>
+                    <p:messages />
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="productName" style="font-weight: bold" value="Product Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="Product Name" requiredMessage="Product Name is required." id="productName" value="#{productManagedBean.productName}">
+                                    <f:validateLength minimum="1" maximum="16" />
+                                </p:inputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="description" style="font-weight: bold" value="Description: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="Description" requiredMessage="Description is required." id="description" value="#{productManagedBean.description}">
+                                    <f:validateLength minimum="1" maximum="19" />
+                                </p:inputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="category" style="font-weight: bold" value="Product Category:   *" />
+                            </p:column>
+                            <p:column>                        
+                                <h:selectOneMenu id="category" value="#{productManagedBean.category}" required="true" label="Product Category">
+                                    <f:selectItem itemLabel="Select Product Category" itemValue="" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="Food - Fresh Products" itemValue="Fresh Products" />
+                                    <f:selectItem itemLabel="Food - Frozen Products" itemValue="Food - Frozen Products" />
+                                    <f:selectItem itemLabel="Food - Normal Products" itemValue="Food - Normal Products" />
+                                    <f:selectItem itemLabel="Beverages" itemValue="Beverages" />
+                                    <f:selectItem itemLabel="Retail and Apparel" itemValue="Retail and Apparel" />
+                                    <f:selectItem itemLabel="Automotive" itemValue="Automotive" />
+                                    <f:selectItem itemLabel="Household Products" itemValue="Household Products" />
+                                    <f:selectItem itemLabel="Children Products" itemValue="Children Products" />
+                                    <f:selectItem itemLabel="Personal Care Products" itemValue="Personal Care Products" />
+                                    <f:selectItem itemLabel="Electronics" itemValue="Electronics" />
+                                    <f:selectItem itemLabel="Semi-Finished Products" itemValue="Semi-Finished Products" />  
+                                    <f:selectItem itemLabel="Raw Materials" itemValue="Raw Materials" />  
+                                    <f:selectItem itemLabel="Others" itemValue="Others" />  
+                                </h:selectOneMenu> 
+                            </p:column>
+                        </p:row> 
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="productType" style="font-weight: bold" value="Product Type:   *" />
+                            </p:column>
+                            <p:column>                        
+                                <h:selectOneMenu id="productType" value="#{productManagedBean.productType}" required="true" label="Product Type">
+                                    <f:selectItem itemLabel="Select Product Type" itemValue="" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="Manufacturing" itemValue="Manufacturing" />
+                                    <f:selectItem itemLabel="Non-Manufacturing" itemValue="Non-Manufacturing" />
+                                </h:selectOneMenu>
+                            </p:column>
+                        </p:row>  
 
-                                <f:selectItem itemLabel="US Dollar (USD)" itemValue="USD" />
-                                <f:selectItem itemLabel="European Euro (EUR)" itemValue="EUR" />
-                                <f:selectItem itemLabel="Japan Yen (JPY)" itemValue="JPY" />
-                                <f:selectItem itemLabel="Pound Sterling (GBP)" itemValue="GBP" />
-                                <f:selectItem itemLabel="Australian Dollar (AUD)" itemValue="AUD" />
-                                <f:selectItem itemLabel="Swiss Franc (CHF)" itemValue="CHF" />
-                                <f:selectItem itemLabel="Canadian Dollar (CAD)" itemValue="CAD" />
-                                <f:selectItem itemLabel="Hong Kong Dollar (HKD)" itemValue="HKD" />
-                                <f:selectItem itemLabel="Swedish Krona (SEK)" itemValue="SEK" />
-                                <f:selectItem itemLabel="New Zealand Dollar (NZD)" itemValue="NZD" />
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="currency" style="font-weight: bold" value="Currency:   *" />
+                            </p:column>
+                            <p:column>                        
+                                <h:selectOneMenu id="currency" value="#{productManagedBean.currency}" required="true" label="Currency">
+                                    <f:selectItem itemLabel="Select Currency" itemValue="" noSelectionOption="true" />
 
-                                <f:selectItem itemLabel="South African Rand (ZAR)" itemValue="ZAR" />
-                                <f:selectItem itemLabel="Russian Ruble (RUB)" itemValue="RUB" />
-                                <f:selectItem itemLabel="Indian Rupee (INR)" itemValue="INR" />
-                                <f:selectItem itemLabel="Singapore Dollar (SGD)" itemValue="SGD" />
-                                <f:selectItem itemLabel="Bulgarian Lev (BGN)" itemValue="BGN" />
-                                <f:selectItem itemLabel="Chinese Yuan Renminbi (CNY)" itemValue="CNT" />
-                                <f:selectItem itemLabel="Thailand Baht (THB)" itemValue="THB" />
-                                <f:selectItem itemLabel="Hungary Forint(HUF)" itemValue="HUF" />   
-                                <f:selectItem itemLabel="Norwegian Krone (NOK)" itemValue="NOK" />
-                                <f:selectItem itemLabel="Mexican Peso (MXN)" itemValue="MXN" />
-                            </h:selectOneMenu>
-                        </p:column>
-                    </p:row>  
+                                    <f:selectItem itemLabel="US Dollar (USD)" itemValue="USD" />
+                                    <f:selectItem itemLabel="European Euro (EUR)" itemValue="EUR" />
+                                    <f:selectItem itemLabel="Japan Yen (JPY)" itemValue="JPY" />
+                                    <f:selectItem itemLabel="Pound Sterling (GBP)" itemValue="GBP" />
+                                    <f:selectItem itemLabel="Australian Dollar (AUD)" itemValue="AUD" />
+                                    <f:selectItem itemLabel="Swiss Franc (CHF)" itemValue="CHF" />
+                                    <f:selectItem itemLabel="Canadian Dollar (CAD)" itemValue="CAD" />
+                                    <f:selectItem itemLabel="Hong Kong Dollar (HKD)" itemValue="HKD" />
+                                    <f:selectItem itemLabel="Swedish Krona (SEK)" itemValue="SEK" />
+                                    <f:selectItem itemLabel="New Zealand Dollar (NZD)" itemValue="NZD" />
 
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="price" style="font-weight: bold" value="Price (piece): " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="Price" requiredMessage="Price is required." id="price" value="#{productManagedBean.price}">
-                                <f:validateLength minimum="1" maximum="19"/>
-                            </p:inputText>
-                        </p:column>
-                    </p:row>
-                   </p:panelGrid>
-                <p:commandButton id="btn" value="Save New Product" update="panel" actionListener="#{productManagedBean.saveNewProduct}" ajax="true" />
+                                    <f:selectItem itemLabel="South African Rand (ZAR)" itemValue="ZAR" />
+                                    <f:selectItem itemLabel="Russian Ruble (RUB)" itemValue="RUB" />
+                                    <f:selectItem itemLabel="Indian Rupee (INR)" itemValue="INR" />
+                                    <f:selectItem itemLabel="Singapore Dollar (SGD)" itemValue="SGD" />
+                                    <f:selectItem itemLabel="Bulgarian Lev (BGN)" itemValue="BGN" />
+                                    <f:selectItem itemLabel="Chinese Yuan Renminbi (CNY)" itemValue="CNT" />
+                                    <f:selectItem itemLabel="Thailand Baht (THB)" itemValue="THB" />
+                                    <f:selectItem itemLabel="Hungary Forint(HUF)" itemValue="HUF" />   
+                                    <f:selectItem itemLabel="Norwegian Krone (NOK)" itemValue="NOK" />
+                                    <f:selectItem itemLabel="Mexican Peso (MXN)" itemValue="MXN" />
+                                </h:selectOneMenu>
+                            </p:column>
+                        </p:row>  
 
-            </p:panel>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="price" style="font-weight: bold" value="Price (piece): " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="Price" requiredMessage="Price is required." id="price" value="#{productManagedBean.price}">
+                                    <f:validateLength minimum="1" maximum="19"/>
+                                </p:inputText>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:commandButton id="btn" value="Save New Product" update="panel" actionListener="#{productManagedBean.saveNewProduct}" ajax="true" />
+
+                </p:panel>
+            </h:form>
         </ui:define>
     </ui:composition>
 </html>                 
