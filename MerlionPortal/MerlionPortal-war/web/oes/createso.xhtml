@@ -70,23 +70,27 @@
                 <h:outputText value="#{lineItem.quantity*lineItem.price}" />
             </p:column>
         </p:dataTable>
+        <br></br>
+        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+        <br></br>
         <p:commandButton action="viewallpo" value="Cancel">
         </p:commandButton> 
         <p:commandButton action="#{salesOrderManagedBean.checkCredit()}" value=" Check customer credit">
         </p:commandButton> 
         <p:commandButton action="#{salesOrderManagedBean.generateSo()}" value=" Generat Sales Order">
         </p:commandButton> 
-        
+        <br></br>
+        <br></br>
         <p:panel header="Reject Purchase Order" style="margin-bottom:10px;">
             <h:panelGrid columns="2" cellpadding="5">
-                <p:outputLabel for="Reason" value="Reject Reson " />
+                <p:outputLabel value="Reject Reson " />
                 <p:selectOneMenu id="reson" value="#{salesOrderManagedBean.reason}" style="width:150px">
                     <f:selectItem itemLabel="Select Reject Reson" itemValue="" noSelectionOption="true" />
                     <f:selectItems value="#{salesOrderManagedBean.rejectReasons}" />
                 </p:selectOneMenu>
             </h:panelGrid>
             <p:separator />
-            <p:commandButton value="Reject this Order" update="msgs" actionListener="#{salesOrderManagedBean.rejectPo()}" icon="ui-icon-check" />
+            <p:commandButton value="Reject this Order" actionListener="#{salesOrderManagedBean.rejectPo()}" icon="ui-icon-check" />
         </p:panel>
     </h:body>
 </html>
