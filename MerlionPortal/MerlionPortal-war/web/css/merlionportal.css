@@ -198,9 +198,12 @@ h2.system-welcome{
 }
 
 .product-box{
-    min-height:600px;
+    /*min-height:400px;*/
 }
 
 .product-description{
-    min-height:400px;
+    min-height:250px;
+}
+.min-horizontal-width{
+    min-width: 50px;
 }

@@ -26,13 +26,13 @@
                             <div class="caption product-box">
                                 <h2 class="service-title">Package 1</h2>
                                 <div class="product-description">
-                                    This package is designed to suit the needs of First Party Logistics Service Providers (1PLs) whom are involved in manufacturing.<br/>
-                                    By subscribing to this package, your will gain access to the following systems:<br/> 
-                                    <span class="badge alert-orange"> OES</span>
-                                    <span class="badge alert-info">CRMS</span>
-                                    <span class="badge alert-success">WMS</span>
-                                    <span class="badge alert-warning">TMS</span>                               
-                                    <span class="badge alert-purple">MRP</span> 
+                                    This package is designed to suit the needs of First Party Logistics Service Providers (1PLs) whom are involved in manufacturing.<br /><br />
+                                    By subscribing to this package, your will gain access to the following systems:<br /><br/>
+                                    <span class="badge alert-orange"><font size="+1" class="min-horizontal-width"> OES</font></span>
+                                    <span class="badge alert-purple"><font size="+1" class="min-horizontal-width">CRMS</font></span>
+                                    <span class="badge alert-success"><font size="+1" class="min-horizontal-width">WMS</font></span>
+                                    <span class="badge alert-blue"><font size="+1" class="min-horizontal-width">TMS</font></span>                            
+                                    <span class="badge alert-danger"><font size="+1" class="min-horizontal-width">MRP</font></span>
                                 </div>
                                 <h4 class="service-cost">$7,000/yr</h4>
                                 <button class="btn btn-success" id="1plBuyBtn" onclick="toggleModal();">Buy Now</button>
@@ -45,13 +45,13 @@
                             <div class="caption product-box">
                                 <h2 class="service-title">Package 2</h2>
                                 <div class="product-description">
-                                    This package is designed to suit the needs of First Party Logistics Service Providers (1PLs) in general.<br/>
-                                    By subscribing to this package, your will gain access to the following systems:<br/>
-                                    <span class="badge alert-orange"> OES</span>
-                                    <span class="badge alert-info">CRMS</span>
-                                    <span class="badge alert-success">WMS</span>
-                                    <span class="badge alert-warning">TMS</span>                               
-                                    <span class="badge alert-danger">GRNS</span> 
+                                    This package is designed to suit the needs of First Party Logistics Service Providers (1PLs) in general.<br /><br /><br />
+                                    By subscribing to this package, your will gain access to the following systems:<br /><br />
+                                    <span class="badge alert-orange"><font size="+1" class="min-horizontal-width"> OES</font></span>
+                                    <span class="badge alert-purple"><font size="+1" class="min-horizontal-width">CRMS</font></span>
+                                    <span class="badge alert-success"><font size="+1" class="min-horizontal-width">WMS</font></span>
+                                    <span class="badge alert-blue"><font size="+1" class="min-horizontal-width">TMS</font></span>                            
+                                    <span class="badge alert-danger"><font size="+1" class="min-horizontal-width">GRNS</font></span>
                                 </div>
                                 <h4 class="service-cost">$6,000/yr</h4>
                                 <button class="btn btn-success" id="2plBuyBtn" onclick="toggleModal();">Buy Now</button>
@@ -64,11 +64,11 @@
                             <div class="caption product-box">
                                 <h2 class="service-title">Package 3</h2>
                                 <div class="product-description">
-                                    This package is designed to suit the needs of Second Party Logistics Service Providers (2PLs).<br/>
-                                    By subscribing to this package, your will gain access to the following systems:<br/>
-                                    <span class="badge alert-info">CRMS</span>
-                                    <span class="badge alert-warning">TMS</span>                               
-                                    <span class="badge alert-danger">GRNS</span>                           
+                                    This package is designed to suit the needs of Second Party Logistics Service Providers (2PLs).<br /><br /><br />
+                                    By subscribing to this package, your will gain access to the following systems:<br /><br />
+                                    <span class="badge alert-purple"><font size="+1" class="min-horizontal-width">CRMS</font></span>
+                                    <span class="badge alert-blue"><font size="+1" class="min-horizontal-width">TMS</font></span>                               
+                                    <span class="badge alert-danger"><font size="+1" class="min-horizontal-width">GRNS</font></span>                          
                                 </div>
                                 <h4 class="service-cost">$5,000/yr</h4>
                                 <button class="btn btn-success" id="3plBuyBtn" onclick="toggleModal();">Buy Now</button>
@@ -81,12 +81,12 @@
                             <div class="caption product-box">
                                 <h2 class="service-title">Package 4</h2>
                                 <div class="product-description">
-                                    This package is designed to suit the needs of Third and Fourth Party Logistics Service Providers (3PLs and 4PLs).<br />
-                                    By subscribing to this package, your will gain access to the following systems:<br />
-                                    <span class="badge alert-info">CRMS</span>
-                                    <span class="badge alert-success">WMS</span>
-                                    <span class="badge alert-warning">TMS</span>                               
-                                    <span class="badge alert-danger">GRNS</span>                              
+                                    This package is designed to suit the needs of Third and Fourth Party Logistics Service Providers (3PLs and 4PLs).<br /><br />
+                                    By subscribing to this package, your will gain access to the following systems:<br /><br />
+                                    <span class="badge alert-success"><font size="+1" class="min-horizontal-width">WMS</font></span>
+                                    <span class="badge alert-purple"><font size="+1" class="min-horizontal-width">CRMS</font></span>
+                                    <span class="badge alert-blue"><font size="+1" class="min-horizontal-width">TMS</font></span>                               
+                                    <span class="badge alert-danger"><font size="+1" class="min-horizontal-width">GRNS</font></span>                               
                                 </div>
                                 <h4 class="service-cost">6,000/yr</h4>
                                 <button class="btn btn-success" id="4plBuyBtn" onclick="toggleModal();">Buy Now</button>
@@ -162,17 +162,17 @@
 
             </h:form>
             <script type="text/javascript">
-                function toggleModal() {
+                    function toggleModal() {
                     $("#buyModal").modal('show');
-                }
+                        }
             </script>
             <script type="text/javascript">
-                PrimeFaces.validator['custom.emailValidator'] = {
-                    pattern: /\S+@\S+/,
-                    validate: function(element, value) {
-                        //use element.data() to access validation metadata, in this case there is none.
-                        if (!this.pattern.test(value)) {
-                            throw {
+                        PrimeFaces.validator['custom.emailValidator'] = {
+                            pattern: /\S+@\S+/,
+                                validate: function(element, value) {
+                            //use element.data() to access validation metadata, in this case there is none.
+                    if (!this.pattern.test(value)) {
+                throw {
                                 summary: 'Validation Error',
                                 detail: value + ' is not a valid email.'
                             }
