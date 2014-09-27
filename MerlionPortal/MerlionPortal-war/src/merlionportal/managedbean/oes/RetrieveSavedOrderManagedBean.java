@@ -66,7 +66,7 @@ public class RetrieveSavedOrderManagedBean {
     }
 
     public List<ProductOrder> getSavedOrderList() {
-        savedOrderList = purchaseOrderMB.viewAllProductOrder(4, companyId, userId);
+        savedOrderList = purchaseOrderMB.viewAllProductOrder(14, companyId, userId);
         return savedOrderList;
     }
 
@@ -120,11 +120,10 @@ public class RetrieveSavedOrderManagedBean {
         }
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
-        sessionMap.put("selectedOrder", selectedOrder);
+        sessionMap.put("savedOrder", selectedOrder);
         System.out.println("this line will executed");
         System.out.println("this line  executed  finished");
-        selectedOrder = null;
-        return "editsavedorder.xhtml";
+        return "editsavedorder.xhtml?faces-redirect=true";
 
     }
 

@@ -7,6 +7,7 @@ package merlionportal.managedbean.oes;
 
 import entity.ProductOrder;
 import entity.ProductOrderLineItem;
+import entity.Quotation;
 import java.io.IOException;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -47,6 +48,7 @@ public class PurchaseOrderManagedBean {
     private String postalCode;
     private List<ProductOrderLineItem> itemList;
     private int qutatuonId;
+    private ProductOrder myPo;
 
     public PurchaseOrderManagedBean() {
     }
@@ -120,7 +122,12 @@ public class PurchaseOrderManagedBean {
     }
 
     public void searchForQuotation() {
-        itemList = purchaseMB.copyFromQuotation(qutatuonId);
+        System.out.println(qutatuonId);
+        if (purchaseMB.checkQuotationValidity(qutatuonId)) {
+            itemList = purchaseMB.copyFromQuotation(qutatuonId);
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Quotation id invalid"));
+        }
 
     }
 
@@ -234,7 +241,7 @@ public class PurchaseOrderManagedBean {
         if (newPoId < 0) {
             System.out.println("PO is null");
         } else {
-            ProductOrder myPo = this.retrievePO(newPoId);
+            myPo = this.retrievePO(newPoId);
             for (Object o : itemList) {
                 ProductOrderLineItem pLine = (ProductOrderLineItem) o;
                 purchaseMB.createProductList(pLine, myPo);
@@ -265,7 +272,7 @@ public class PurchaseOrderManagedBean {
             if (newPoId < 0) {
                 System.out.println("PO is null");
             } else {
-                ProductOrder myPo = this.retrievePO(newPoId);
+                myPo = this.retrievePO(newPoId);
                 for (Object o : itemList) {
                     ProductOrderLineItem pLine = (ProductOrderLineItem) o;
                     purchaseMB.createProductList(pLine, myPo);
@@ -279,4 +286,15 @@ public class PurchaseOrderManagedBean {
     private ProductOrder retrievePO(Integer poId) {
         return purchaseMB.retrieveProductOrder(poId);
     }
+
+    public Boolean checkSubmittable() {
+        if(myPo==null){
+            return true;
+        }
+        if (myPo.getStatus() == 2 || myPo.getStatus() == 14) {
+            return false;
+        }
+        return true;
+    }
+
 }

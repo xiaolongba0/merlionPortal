@@ -76,7 +76,7 @@ public class QuotationManagedBean implements Serializable {
 
     }
 
-    public boolean checkUserGenerateQuotation(Integer userId){
+    public boolean checkUserGenerateQuotation(){
         return systemAccessRightSB.checkOESGenerateQuotation(userId);
     }
 
