@@ -227,30 +227,62 @@ public class PurchaseOrderManagerSessionBean {
         return result;
     }
 
+    public String viewMyOrderStatus(int status) {
+        String result;
+        if (status == 1) {
+            result = "PO, Waiting for process";
+        } else if (status == 2) {
+            result = "SO, Waiting for fulfillment";
+        } else if (status == 3) {
+            result = "Product Shipped";
+        } else if (status == 4) {
+            result = "Order closed";
+        } else if (status == 5) {
+            result = "Order invoiced";
+        } else if (status == 6) {
+            result = "Rejected Wrong product";
+        } else if (status == 7) {
+            result = "Rejected, Wrong product quantity";
+        } else if (status == 8) {
+            result = "Rejected, Wrong price";
+        } else if (status == 9) {
+            result = "Rejected, Wrong ship to address";
+        } else if (status == 10) {
+            result = "Rejected, Wrong contact person";
+        } else if (status == 11) {
+            result = "Rejected, Credit check fail";
+        } else if (status == 12) {
+            result = "Rejected, Others please contact sales for more information";
+        } else if (status == 13) {
+            result = "Rejected,Unable to fulfill this order";
+        } else if (status == 14) {
+            result = "Saved";
+        } else {
+            result = "Rejected, Customer request for cancelation";
+        }
+        return result;
+    }
+
     public String getOrderStatus(ProductOrder myOrder) {
         String result;
         int status = myOrder.getStatus();
         if (status == 1) {
             result = "PO, Waiting for process";
-        }
-        else if (status == 2) {
+        } else if (status == 2) {
             result = "SO, Waiting for fulfillment";
-        }
-        else if (status == 3) {
+        } else if (status == 3) {
             result = "Product Shipped";
-        }
-        else if (status == 4) {
+        } else if (status == 4) {
             result = "Order closed";
-        }
-        else if (status == 5) {
+        } else if (status == 5) {
             result = "Order invoiced";
-        }
-        else if (status == 6) {
+        } else if (status == 6) {
             result = "Request for return, waiting for approval";
         } else {
             result = "Rejected";
         }
         return result;
+
     }
 
 }
