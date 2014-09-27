@@ -3,95 +3,122 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head>
-        <title>Generate Quotation </title>
-    </h:head>
-    <h:body>
-        <h1>Generate Quotation </h1>
-        <h:form id="formMain">  
-            <p:menubar>
-                <p:menuitem value="HOME" url="oesindexpage.xhtml"/>
-                <p:menuitem value="PRODUCTS" url="displayallproducts.xhtml" />
-                <p:submenu label="QUOTATION" >
-                    <p:menuitem value="View All Request" url="viewallrequests.xhtml" />
-                    <p:menuitem value="View Quotation" url="displayallquotations.xhtml" />
-                </p:submenu>
-                <p:submenu label="ORDERS" >
-                    <p:menuitem value="Create Order" url="pogeneration.xhtml" />
-                    <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
-                    <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" />
-                    <p:menuitem value="Order Status" url="displayallso.xhtml" />
-                </p:submenu>
-                <p:submenu label="REPORTS" >
-                </p:submenu>
-            </p:menubar>
-            <br/>
 
-            <p:fieldset legend="Customer Information" style="margin-bottom:20px">
-                <h:panelGrid columns="2" cellpadding="5">
-                    <h:outputText value="Campany Name:"/>
-                    <h:outputText value="#{quotationManagedBean.selectedRequest.customerId}"/>
-                    <h:outputText value="Campany Name:"/>
-                    <h:outputText value="#{quotationManagedBean.selectedRequest.customerId}"/>
-                    <br></br>
-                    <h:outputText
-                        value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding.
-                        His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. T
-                        hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect,
-                        but given to ruthless violence whenever anything stands against the good of the family." />
-                </h:panelGrid>
-            </p:fieldset>
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="Generate Quotation" />
 
-            <f:facet name="header">
-                Quotation Items
-            </f:facet>
-            <p:dataTable var="lineItem" value="#{quotationManagedBean.listItem}" editable="true">
-                <p:growl id="msgs" showDetail="true"/>
-                <p:ajax event="rowEdit" listener="#{quotationManagedBean.onRowEdit}" update="msgs" />
-                <p:ajax event="rowEditCancel" listener="#{quotationManagedBean.onRowCancel}" update="msgs" />
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+
+            <h:form >
+                <p:panelMenu>
+                    <p:submenu label="Home" styleClass="display:block">
+                        <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Product" styleClass="display:block">
+                        <p:menuitem value="Products" url="displayallproducts.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Quotation" styleClass="display:block">
+                        <p:menuitem value="View All Request" url="viewallrequests.xhtml" />
+                        <p:menuitem value="View Quotation" url="displayallquotations.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Orders" styleClass="display:block">
+                        <p:menuitem value="Create Order" url="pogeneration.xhtml" />
+                        <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
+                        <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" />   
+                        <p:menuitem value="Order Status" url="displayallso.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Reports" styleClass="display:block">
+                        <p:menuitem value="Sales Reports" url="#" />
+                    </p:submenu>
+
+                </p:panelMenu>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">
+
+            <h:form id="formMain"> 
+                <p:fieldset legend="Customer Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputText value="Campany Name:"/>
+                        <h:outputText value="#{quotationManagedBean.selectedRequest.customerId}"/>
+                        <h:outputText value="Campany Name:"/>
+                        <h:outputText value="#{quotationManagedBean.selectedRequest.customerId}"/>
+                        <br></br>
+                        <h:outputText
+                            value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding.
+                            His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. T
+                            hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect,
+                            but given to ruthless violence whenever anything stands against the good of the family." />
+                    </h:panelGrid>
+                </p:fieldset>
 
                 <f:facet name="header">
-                    Product information
+                    Quotation Items
                 </f:facet>
-                <p:column headerText="SKU">
-                    <h:outputText value="#{lineItem.productproductId.productId}" />
-                </p:column>
-                <p:column headerText="Name">
-                    <h:outputText value="#{lineItem.productproductId.productName}" />
-                </p:column>
+                <p:dataTable var="lineItem" value="#{quotationManagedBean.listItem}" editable="true">
+                    <p:growl id="msgs" showDetail="true"/>
+                    <p:ajax event="rowEdit" listener="#{quotationManagedBean.onRowEdit}" update="msgs" />
+                    <p:ajax event="rowEditCancel" listener="#{quotationManagedBean.onRowCancel}" update="msgs" />
 
-                <p:column headerText="Description">
-                    <h:outputText value="#{lineItem.productproductId.description}" />
-                </p:column>
+                    <f:facet name="header">
+                        Product information
+                    </f:facet>
+                    <p:column headerText="SKU">
+                        <h:outputText value="#{lineItem.productproductId.productId}" />
+                    </p:column>
+                    <p:column headerText="Name">
+                        <h:outputText value="#{lineItem.productproductId.productName}" />
+                    </p:column>
 
-                <p:column headerText="Category">
-                    <h:outputText value="#{lineItem.productproductId.category}" />
-                </p:column>
-                <p:column headerText="Price">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{lineItem.lineItemPrice}" /></f:facet>
-                        <f:facet name="input"><p:inputText id="modelInput" value="#{lineItem.lineItemPrice}" style="width:96%"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
-                <p:column style="width:32px">
-                    <p:rowEditor />
-                </p:column>
-            </p:dataTable>
+                    <p:column headerText="Description">
+                        <h:outputText value="#{lineItem.productproductId.description}" />
+                    </p:column>
 
-            <br></br>
-            <h3 style="margin-top: 0">Terms and Conditions</h3>
-            <p>Please enter quotation terms and Conditions below</p>
-            <p:inputTextarea rows="10" cols="80" value="#{quotationManagedBean.inputText}" />
-            <h:outputText id="display" />
+                    <p:column headerText="Category">
+                        <h:outputText value="#{lineItem.productproductId.category}" />
+                    </p:column>
+                    <p:column headerText="Price">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{lineItem.lineItemPrice}" /></f:facet>
+                            <f:facet name="input"><p:inputText id="modelInput" value="#{lineItem.lineItemPrice}" style="width:96%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column style="width:32px">
+                        <p:rowEditor />
+                    </p:column>
+                </p:dataTable>
 
-            <br></br>
-            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-            <p:commandButton action="viewallrequests.xhtml" value="Go Back">
-            </p:commandButton>   
-            <p:commandButton actionListener="#{quotationManagedBean.generateQuotation}"  value="Submit Quotation">
-            </p:commandButton>        
-        </h:form>
-    </h:body>
+                <br></br>
+                <h3 style="margin-top: 0">Terms and Conditions</h3>
+                <p>Please enter quotation terms and Conditions below</p>
+                <p:inputTextarea rows="10" cols="80" value="#{quotationManagedBean.inputText}" />
+                <h:outputText id="display" />
+
+                <br></br>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <p:commandButton action="viewallrequests.xhtml" value="Go Back">
+                </p:commandButton>   
+                <p:commandButton actionListener="#{quotationManagedBean.generateQuotation}"  value="Submit Quotation">
+                </p:commandButton>        
+            </h:form>
+        </ui:define>
+    </ui:composition>
 </html>
 

@@ -3,67 +3,93 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head>
-        <title>All Quotation</title>
-    </h:head>
-    <h:body>
-        <h1>All Quotation </h1>
-        <h:form id="formMain">  
-            <p:growl id="messages"/>        
-            <p:menubar>
-                <p:menuitem value="HOME" url="oesindexpage.xhtml"/>
-                <p:menuitem value="PRODUCTS" url="displayallproducts.xhtml" />
-                <p:submenu label="QUOTATION" >
-                    <p:menuitem value="View All Request" url="viewallrequests.xhtml" />
-                    <p:menuitem value="View Quotation" url="displayallquotations.xhtml" />
-                </p:submenu>
-                <p:submenu label="ORDERS" >
-                    <p:menuitem value="Create Order" url="pogeneration.xhtml" />
-                    <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
-                    <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" />
-                    <p:menuitem value="Order Status" url="displayallso.xhtml" />
-                </p:submenu>
-                <p:submenu label="REPORTS" >
-                </p:submenu>
-            </p:menubar>
-            <br/>
-        </h:form>
-        <h:form>  
-            <p:dataTable id="allQuotation" var="quotation" value="#{quotationManagedBean.allProcceQuotation}" 
-                         filteredValue="#{displayProductManagedBean.filteredProducts}"
-                         selectionMode="single" selection="#{quotationManagedBean.selectedQuotation}" 
-                         rowKey="#{quotation.quotationId}"
-                         widgetVar="quotationTable"
-                         emptyMessage="No quotation found with given criteria">
-                <p:column  
-                    filterBy="#{quotation.quotationId}" 
-                    filterMatchMode="exact" headerText="Quotation Id" >
-                    <h:outputText value="#{quotation.quotationId}" />
-                </p:column>
-                <p:column  
-                    filterBy="#{quotation.customerId}" 
-                    filterMatchMode="exact" headerText="Customer" >
-                    <h:outputText value="#{quotation.customerId}" />
-                </p:column>
-                <p:column filterBy="#{quotationManagedBean.getqStatus(quotation.status)}" filterMatchMode="in" headerText="Status">
-                    <f:facet name="filter">
-                        <p:selectCheckboxMenu label="Select" 
-                                              onchange="PF('quotationTable').filter()" 
-                                              panelStyle="width:150px" scrollHeight="150">
-                            <f:selectItems value="#{quotationManagedBean.allStatus}" />
-                        </p:selectCheckboxMenu>
-                    </f:facet>
-                    <h:outputText value="#{quotationManagedBean.getqStatus(quotation.status)}" />
-                </p:column>
-                <p:column headerText="Create Date">
-                    <h:outputText value="#{quotation.createDate}" />
-                </p:column>
-            </p:dataTable> 
-            <br></br>
-            <p:commandButton action="#{quotationManagedBean.viewQuotation()}" value="View Quotation">
-            </p:commandButton>  
-        </h:form>
-    </h:body>
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="Display Quotations" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+
+            <h:form id="formMain">
+                <p:panelMenu>
+                    <p:submenu label="Home" styleClass="display:block">
+                        <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Product" styleClass="display:block">
+                        <p:menuitem value="Products" url="displayallproducts.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Quotation" styleClass="display:block">
+                        <p:menuitem value="View All Request" url="viewallrequests.xhtml" />
+                        <p:menuitem value="View Quotation" url="displayallquotations.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Orders" styleClass="display:block">
+                        <p:menuitem value="Create Order" url="pogeneration.xhtml" />
+                        <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
+                        <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" />
+                        <p:menuitem value="Order Status" url="displayallso.xhtml" />
+
+                    </p:submenu>
+
+                    <p:submenu label="Reports" styleClass="display:block">
+                        <p:menuitem value="Sales Reports" url="#" />
+                    </p:submenu>
+
+                </p:panelMenu>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">
+            <h:form>  
+                <p:dataTable id="allQuotation" var="quotation" value="#{quotationManagedBean.allProcceQuotation}" 
+                             filteredValue="#{displayProductManagedBean.filteredProducts}"
+                             selectionMode="single" selection="#{quotationManagedBean.selectedQuotation}" 
+                             rowKey="#{quotation.quotationId}"
+                             widgetVar="quotationTable"
+                             emptyMessage="No quotation found with given criteria">
+                    <p:column  
+                        filterBy="#{quotation.quotationId}" 
+                        filterMatchMode="exact" headerText="Quotation Id" >
+                        <h:outputText value="#{quotation.quotationId}" />
+                    </p:column>
+                    <p:column  
+                        filterBy="#{quotation.customerId}" 
+                        filterMatchMode="exact" headerText="Customer" >
+                        <h:outputText value="#{quotation.customerId}" />
+                    </p:column>
+                    <p:column filterBy="#{quotationManagedBean.getqStatus(quotation.status)}" filterMatchMode="in" headerText="Status">
+                        <f:facet name="filter">
+                            <p:selectCheckboxMenu label="Select" 
+                                                  onchange="PF('quotationTable').filter()" 
+                                                  panelStyle="width:150px" scrollHeight="150">
+                                <f:selectItems value="#{quotationManagedBean.allStatus}" />
+                            </p:selectCheckboxMenu>
+                        </f:facet>
+                        <h:outputText value="#{quotationManagedBean.getqStatus(quotation.status)}" />
+                    </p:column>
+                    <p:column headerText="Create Date">
+                        <h:outputText value="#{quotation.createDate}" />
+                    </p:column>
+                </p:dataTable> 
+                <br></br>
+                <p:commandButton action="#{quotationManagedBean.viewQuotation()}" value="View Quotation">
+                </p:commandButton>  
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
 </html>
 

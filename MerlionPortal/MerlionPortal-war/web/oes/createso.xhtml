@@ -3,95 +3,121 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        <h:form id="formMain">  
-            <p:menubar>
-                <p:menuitem value="HOME" url="oesindexpage.xhtml"/>
-                <p:menuitem value="PRODUCTS" url="displayallproducts.xhtml" />
-                <p:submenu label="QUOTATION" >
-                    <p:menuitem value="View All Request" url="viewallrequests.xhtml" />
-                    <p:menuitem value="View Quotation" url="displayallquotations.xhtml" />
-                    <p:menuitem value="Order Status" url="displayallso.xhtml" />
-                </p:submenu>
-                <p:submenu label="ORDERS" >
-                    <p:menuitem value="Create Order" url="pogeneration.xhtml" />
-                    <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
-                    <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" />
-                </p:submenu>
-                <p:submenu label="REPORTS" >
-                </p:submenu>
-            </p:menubar>
-            <br/>
-        </h:form>
-        <h:form>
-            <p:fieldset legend="Comany Information" style="margin-bottom:20px">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="Create SO" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+
+            <h:form id="formMain">
+                <p:panelMenu>
+                    <p:submenu label="Home" styleClass="display:block">
+                        <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Product" styleClass="display:block">
+                        <p:menuitem value="Products" url="displayallproducts.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Quotation" styleClass="display:block">
+                        <p:menuitem value="View All Request" url="viewallrequests.xhtml" />
+                        <p:menuitem value="View Quotation" url="displayallquotations.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Orders" styleClass="display:block">
+                        <p:menuitem value="Create Order" url="pogeneration.xhtml" />
+                        <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
+                        <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" />
+                        <p:menuitem value="Order Status" url="displayallso.xhtml" />
+
+                    </p:submenu>
+
+                    <p:submenu label="Reports" styleClass="display:block">
+                        <p:menuitem value="Sales Reports" url="#" />
+                    </p:submenu>
+
+                </p:panelMenu>
+            </h:form>
+        </ui:define>
+        <ui:define name="right">
+            <h:form>
+                <p:fieldset legend="Comany Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h4>   Company Name: </h4><h:outputText value="#{salesOrderManagedBean.customerInfor.get(0)}"/>
+                        <h4>        Address: </h4><h:outputText value="#{salesOrderManagedBean.customerInfor.get(1)}"/>
+                        <h4> Contact Person: </h4><h:outputText value="#{salesOrderManagedBean.customerInfor.get(2)}"/>
+                        <h4> Contact Number: </h4><h:outputText value="#{salesOrderManagedBean.customerInfor.get(3)}"/>
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:fieldset legend="Ship To " style="margin-bottom:20px">
+                    <h:panelGrid id="detail" columns="2" cellpadding="5">
+                        <p>Contact Person: </p><h:outputText value="#{salesOrderManagedBean.myOrder.contactPersonName}"/>
+                        <p>Phone Number: </p><h:outputText value="#{salesOrderManagedBean.myOrder.contactPersonPhoneNumber}"/>
+                        <p>Address : </p><h:outputText value="#{salesOrderManagedBean.myOrder.shipTo}"/>
+                        <p>Quotation : </p><h:outputText value="#{salesOrderManagedBean.myOrder.quotationId}"/>
+
+                    </h:panelGrid>
+                </p:fieldset>
+            </h:form>
+            <br></br>
+            <br></br>
+            <p:dataTable var="lineItem" value="#{salesOrderManagedBean.myOrder.productOrderLineItemList}">
+                <p:column headerText="Product">
+                    <h:outputText value="#{lineItem.productproductId.productName}" />
+                </p:column>
+
+                <p:column headerText="Description">
+                    <h:outputText value="#{lineItem.productproductId.description}" />
+                </p:column>
+
+                <p:column headerText="Category">
+                    <h:outputText value="#{lineItem.productproductId.category}" />
+                </p:column>
+                <p:column headerText="Unit Price">
+                    <h:outputText value="#{lineItem.price}" />
+                </p:column>
+                <p:column headerText="Quantity">
+                    <h:outputText value="#{lineItem.quantity}" />
+                </p:column>
+                <p:column headerText="Value">
+                    <h:outputText value="#{lineItem.quantity*lineItem.price}" />
+                </p:column>
+            </p:dataTable>
+            <br></br>
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <br></br>
+            <p:commandButton action="viewallpo" value="Cancel">
+            </p:commandButton> 
+            <p:commandButton action="#{salesOrderManagedBean.checkCredit()}" value=" Check customer credit">
+            </p:commandButton> 
+            <p:commandButton action="#{salesOrderManagedBean.generateSo()}" value=" Generat Sales Order">
+            </p:commandButton> 
+            <br></br>
+            <br></br>
+            <p:panel header="Reject Purchase Order" style="margin-bottom:10px;">
                 <h:panelGrid columns="2" cellpadding="5">
-                    <h4>   Company Name: </h4><h:outputText value="#{salesOrderManagedBean.customerInfor.get(0)}"/>
-                    <h4>        Address: </h4><h:outputText value="#{salesOrderManagedBean.customerInfor.get(1)}"/>
-                    <h4> Contact Person: </h4><h:outputText value="#{salesOrderManagedBean.customerInfor.get(2)}"/>
-                    <h4> Contact Number: </h4><h:outputText value="#{salesOrderManagedBean.customerInfor.get(3)}"/>
+                    <p:outputLabel value="Reject Reson " />
+                    <p:selectOneMenu id="reson" value="#{salesOrderManagedBean.reason}" style="width:150px">
+                        <f:selectItem itemLabel="Select Reject Reson" itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{salesOrderManagedBean.rejectReasons}" />
+                    </p:selectOneMenu>
                 </h:panelGrid>
-            </p:fieldset>
-            <p:fieldset legend="Ship To " style="margin-bottom:20px">
-                <h:panelGrid id="detail" columns="2" cellpadding="5">
-                    <p>Contact Person: </p><h:outputText value="#{salesOrderManagedBean.myOrder.contactPersonName}"/>
-                    <p>Phone Number: </p><h:outputText value="#{salesOrderManagedBean.myOrder.contactPersonPhoneNumber}"/>
-                    <p>Address : </p><h:outputText value="#{salesOrderManagedBean.myOrder.shipTo}"/>
-                    <p>Quotation : </p><h:outputText value="#{salesOrderManagedBean.myOrder.quotationId}"/>
-
-                </h:panelGrid>
-            </p:fieldset>
-        </h:form>
-        <br></br>
-        <br></br>
-        <p:dataTable var="lineItem" value="#{salesOrderManagedBean.myOrder.productOrderLineItemList}">
-            <p:column headerText="Product">
-                <h:outputText value="#{lineItem.productproductId.productName}" />
-            </p:column>
-
-            <p:column headerText="Description">
-                <h:outputText value="#{lineItem.productproductId.description}" />
-            </p:column>
-
-            <p:column headerText="Category">
-                <h:outputText value="#{lineItem.productproductId.category}" />
-            </p:column>
-            <p:column headerText="Unit Price">
-                <h:outputText value="#{lineItem.price}" />
-            </p:column>
-            <p:column headerText="Quantity">
-                <h:outputText value="#{lineItem.quantity}" />
-            </p:column>
-            <p:column headerText="Value">
-                <h:outputText value="#{lineItem.quantity*lineItem.price}" />
-            </p:column>
-        </p:dataTable>
-        <br></br>
-        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-        <br></br>
-        <p:commandButton action="viewallpo" value="Cancel">
-        </p:commandButton> 
-        <p:commandButton action="#{salesOrderManagedBean.checkCredit()}" value=" Check customer credit">
-        </p:commandButton> 
-        <p:commandButton action="#{salesOrderManagedBean.generateSo()}" value=" Generat Sales Order">
-        </p:commandButton> 
-        <br></br>
-        <br></br>
-        <p:panel header="Reject Purchase Order" style="margin-bottom:10px;">
-            <h:panelGrid columns="2" cellpadding="5">
-                <p:outputLabel value="Reject Reson " />
-                <p:selectOneMenu id="reson" value="#{salesOrderManagedBean.reason}" style="width:150px">
-                    <f:selectItem itemLabel="Select Reject Reson" itemValue="" noSelectionOption="true" />
-                    <f:selectItems value="#{salesOrderManagedBean.rejectReasons}" />
-                </p:selectOneMenu>
-            </h:panelGrid>
-            <p:separator />
-            <p:commandButton value="Reject this Order" actionListener="#{salesOrderManagedBean.rejectPo()}" icon="ui-icon-check" />
-        </p:panel>
-    </h:body>
+                <p:separator />
+                <p:commandButton value="Reject this Order" actionListener="#{salesOrderManagedBean.rejectPo()}" icon="ui-icon-check" />
+            </p:panel>
+        </ui:define>
+    </ui:composition>
 </html>
 

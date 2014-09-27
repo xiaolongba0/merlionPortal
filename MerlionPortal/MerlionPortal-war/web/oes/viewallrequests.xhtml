@@ -3,67 +3,89 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-    <h:head>
-        <title>All Pending Requests</title>
-    </h:head>
-    <h:body>
-        <h1>All Pending Requests </h1>
-        <h:form id="formMain">  
-            <p:growl id="messages"/>        
-            <p:menubar>
-                <p:menuitem value="HOME" url="oesindexpage.xhtml"/>
-                <p:menuitem value="PRODUCTS" url="displayallproducts.xhtml" />
-                <p:submenu label="QUOTATION" >
-                    <p:menuitem value="View All Request" url="viewallrequests.xhtml" />
-                    <p:menuitem value="View Quotation" url="displayallquotations.xhtml" />
-                </p:submenu>
-                <p:submenu label="ORDERS" >
-                    <p:menuitem value="Create Order" url="pogeneration.xhtml" />
-                    <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
-                    <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" />
-                    <p:menuitem value="Order Status" url="displayallso.xhtml" />
-                </p:submenu>
-                <p:submenu label="REPORTS" >
-                </p:submenu>
-            </p:menubar>
-            <br/>
-        </h:form>
-        <h:form>  
-            <p:dataTable id="allRequest" var="newRequest" value="#{quotationManagedBean.allQuotation}" selectionMode="single" selection="#{quotationManagedBean.selectedRequest}" rowKey="#{newRequest.quotationId}">
-                <p:column  
-                    filterBy="#{newRequest.quotationId}" 
-                    filterMatchMode="exact" headerText="Quotation Id" >
-                    <h:outputText value="#{newRequest.quotationId}" />
-                </p:column>
-                <p:column  
-                    filterBy="#{newRequest.customerId}" 
-                    filterMatchMode="exact" headerText="Customer" >
-                    <h:outputText value="#{newRequest.customerId}" />
-                </p:column>
-                <p:column headerText="Create Date">
-                    <h:outputText value="#{newRequest.createDate}" />
-                </p:column>
-            </p:dataTable>
-            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-            <br></br>
-            <p:commandButton action="#{quotationManagedBean.showRequest()}" value="View Request">
-                <f:param name="pageId" value="1" />
-            </p:commandButton>   
-            <br></br>
-            <p:commandButton action="#{quotationManagedBean.editQuotation()}" value="Generate Quotation">
-            </p:commandButton> 
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="Display Requests" />
 
-            <c:if test="#{quotationManagedBean.checkUserGenerateQuotation()}">
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+
+            <h:form id="formMain">
+                <p:panelMenu>
+                    <p:submenu label="Home" styleClass="display:block">
+                        <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Product" styleClass="display:block">
+                        <p:menuitem value="Products" url="displayallproducts.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Quotation" styleClass="display:block">
+                        <p:menuitem value="View All Request" url="viewallrequests.xhtml" />
+                        <p:menuitem value="View Quotation" url="displayallquotations.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Orders" styleClass="display:block">
+                        <p:menuitem value="Create Order" url="pogeneration.xhtml" />
+                        <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
+                        <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" />   
+                        <p:menuitem value="Order Status" url="displayallso.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Reports" styleClass="display:block">
+                        <p:menuitem value="Sales Reports" url="#" />
+                    </p:submenu>
+
+                </p:panelMenu>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">
+            <h:form>  
+                <p:dataTable id="allRequest" var="newRequest" value="#{quotationManagedBean.allQuotation}" selectionMode="single" selection="#{quotationManagedBean.selectedRequest}" rowKey="#{newRequest.quotationId}">
+                    <p:column  
+                        filterBy="#{newRequest.quotationId}" 
+                        filterMatchMode="exact" headerText="Quotation Id" >
+                        <h:outputText value="#{newRequest.quotationId}" />
+                    </p:column>
+                    <p:column  
+                        filterBy="#{newRequest.customerId}" 
+                        filterMatchMode="exact" headerText="Customer" >
+                        <h:outputText value="#{newRequest.customerId}" />
+                    </p:column>
+                    <p:column headerText="Create Date">
+                        <h:outputText value="#{newRequest.createDate}" />
+                    </p:column>
+                </p:dataTable>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
                 <br></br>
-                <p:commandButton action="#{quotationManagedBean.editQuotation()}" value="Generate Quotation">
-                </p:commandButton>       
-            </c:if>
-        </h:form>
+                <p:commandButton action="#{quotationManagedBean.showRequest()}" value="View Request">
+                    <f:param name="pageId" value="1" />
+                </p:commandButton>   
+                <br></br>
+          
+                <c:if test="#{quotationManagedBean.checkUserGenerateQuotation()}">
+                    <br></br>
+                    <p:commandButton action="#{quotationManagedBean.editQuotation()}" value="Generate Quotation">
+                    </p:commandButton>       
+                </c:if>
+            </h:form>
 
 
-    </h:body>
+
+        </ui:define>
+    </ui:composition>
 </html>
 
