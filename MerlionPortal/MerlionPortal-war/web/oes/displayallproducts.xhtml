@@ -102,9 +102,10 @@
                     </p:column>
                 </p:dataTable>
                 <br></br>
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <p:commandButton value="Request For Quotation" id="submitRequest" update=":form:selectedDetail" process="productSelect"  actionListener="#{displayProductManagedBean.submitRequest}" ajax="ture" />
-
+                <c:if test="#{displayProductManagedBean.canGenerateRequest()}">
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:commandButton value="Request For Quotation" id="submitRequest" update=":form:selectedDetail" process="productSelect"  actionListener="#{displayProductManagedBean.submitRequest}" ajax="ture" />
+                </c:if>
             </h:form>
 
         </ui:define>

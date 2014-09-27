@@ -103,7 +103,7 @@
                     <p:commandButton action="#{quotationManagedBean.rejectQuotation()}" value="Reject This Quotation">
                     </p:commandButton> 
                 </c:if>
-                <c:if test="#{quotationManagedBean.userId==1}">
+                <c:if test="#{quotationManagedBean.canCancelQuotation()}">
                     <p:commandButton action="#{quotationManagedBean.cancelQuotation()}" value="Cancel This Quotation">
                     </p:commandButton> 
                 </c:if>
