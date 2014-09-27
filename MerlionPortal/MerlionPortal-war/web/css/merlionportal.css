@@ -35,7 +35,11 @@ h4.service-cost{
     font-family:Arial;
     color:#bbb;
 }
-
+h4.service-des{
+    font-size:20pt;
+    font-family:Arial;
+    color:#bbb;
+}
 
 .alert-default{
     background-color:#bababa;
@@ -203,6 +207,9 @@ h2.system-welcome{
 
 .product-description{
     min-height:250px;
+}
+.product-des-wi{
+    min-height:650px;
 }
 .min-horizontal-width{
     min-width: 50px;
