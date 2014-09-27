@@ -46,8 +46,9 @@ public class ForecastSessionBean {
 
     Vector<String> monthlyDateR;
 
-    int expectedGrowth;
+    double expectedGrowth;
     int periodicity;
+
 
     public List<Product> getMyProducts(Integer companyId) {
         Query query = entityManager.createQuery("SELECT p FROM Product p WHERE p.companyId = :inCompanyId");
@@ -124,13 +125,16 @@ public class ForecastSessionBean {
         return salesdata;
     }
 
-    public Vector<Integer> computeResult(int periodicity, int expectedGrowth) {
+    public Vector<Integer> computeResult(int periodicity, double expectedGrowth) {
      this.periodicity = periodicity;
      this.expectedGrowth = expectedGrowth;
+     
+    expectedGrowth = (double)(expectedGrowth / 100.00) + 1.00;
+
+     
 //produce a list of date correspond to sales
         //size need to be retreved/computed later
-        System.out.println("Periodicity BEFORE  " + periodicity);
-        System.out.println("growth  BEFORE " + expectedGrowth);
+
 
         this.monthlyDate = createPurchaseDate();
         this.salesdata = createPurchaseData();
@@ -267,7 +271,7 @@ public class ForecastSessionBean {
             forecastR.add(0);
             int j = 1;
             for (int i = (size + 1); i <= size + periodicity; i++) {
-                forecastR.add((int) Math.round((m * i + b) * (finalSeasonalFactor.get(j))));
+                forecastR.add((int) Math.round((m * i + b) * (finalSeasonalFactor.get(j)) * expectedGrowth));
                 j++;
             }
 
@@ -385,7 +389,7 @@ public class ForecastSessionBean {
             forecastR.add(0);
             int j = 1;
             for (int i = (size + 1); i <= size + periodicity; i++) {
-                forecastR.add((int) Math.round((m * i + b) * (finalSeasonalFactor.get(j))));
+                forecastR.add((int) Math.round((m * i + b) * (finalSeasonalFactor.get(j)) * expectedGrowth));
                 j++;
             }
 
