@@ -58,7 +58,7 @@
                                 <p:outputLabel for="warehouse" value="Warehouse Name: " />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="warehouse" value="#{createStorageBinManagerBean.warehouseId}"  style="width:210px" required="true" requiredMessage="Please select a company">
+                                <p:selectOneMenu id="warehouse" value="#{createStorageBinManagerBean.warehouseId}"  style="width:210px" required="true" requiredMessage="Please select a warehouse">
                                     <p:ajax listener="#{createStorageBinManagerBean.onChangeWarehouse}" update="storageType" />
                                     <f:selectItem itemLabel="Select Warehouse" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{createStorageBinManagerBean.warehouses}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId}   Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"/>
@@ -70,8 +70,8 @@
                                 <p:outputLabel for="storageType" value="Storage Type Name: " />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="storageType" value="#{createStorageBinManagerBean.storageTypeId}"  style="width:210px" required="true" requiredMessage="Please select a company">
-                                    <f:selectItem itemLabel="Select Storage Bin" itemValue="" noSelectionOption="true" />
+                                <p:selectOneMenu id="storageType" value="#{createStorageBinManagerBean.storageTypeId}"  style="width:210px" required="true" requiredMessage="Please select a storage type">
+                                    <f:selectItem itemLabel="Select Storage Type" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{createStorageBinManagerBean.storageTypes}" var="storageType" itemLabel="ID:#{storageType.storageTypeId}   Name:#{storageType.name}"  itemValue="#{storageType.storageTypeId}"/>
                                 </p:selectOneMenu>
                             </p:column>
