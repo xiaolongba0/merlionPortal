@@ -64,10 +64,10 @@ public class ProductOrder implements Serializable {
     private Double price;
     @Column(name = "status")
     private Integer status;
-    @Size(max = 45)
+    @Size(max = 255)
     @Column(name = "shipTo")
     private String shipTo;
-    @Size(max = 45)
+    @Size(max = 255)
     @Column(name = "billTo")
     private String billTo;
     @Size(max = 45)
