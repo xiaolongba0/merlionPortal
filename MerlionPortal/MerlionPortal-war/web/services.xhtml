@@ -25,6 +25,7 @@
                             <img src="img/1pl.jpg" class="service-image" />
                             <div class="caption product-box">
                                 <h2 class="service-title">Package 1</h2>
+                                <h3>1PL Manufacturing</h3>
                                 <div class="product-description">
                                     This package is designed to suit the needs of First Party Logistics Service Providers (1PLs) whom are involved in manufacturing.<br /><br />
                                     By subscribing to this package, your will gain access to the following systems:<br /><br/>
@@ -44,6 +45,7 @@
                             <img src="img/2pl.jpg" class="service-image" />
                             <div class="caption product-box">
                                 <h2 class="service-title">Package 2</h2>
+                                <h3>1PL Non-Manufacturing</h3>
                                 <div class="product-description">
                                     This package is designed to suit the needs of First Party Logistics Service Providers (1PLs) in general.<br /><br /><br />
                                     By subscribing to this package, your will gain access to the following systems:<br /><br />
@@ -63,6 +65,7 @@
                             <img src="img/3pl.jpg" class="service-image" />
                             <div class="caption product-box">
                                 <h2 class="service-title">Package 3</h2>
+                                <h3>2PL</h3>
                                 <div class="product-description">
                                     This package is designed to suit the needs of Second Party Logistics Service Providers (2PLs).<br /><br /><br />
                                     By subscribing to this package, your will gain access to the following systems:<br /><br />
@@ -80,6 +83,7 @@
                             <img src="img/4pl.jpg" class="service-image" />
                             <div class="caption product-box">
                                 <h2 class="service-title">Package 4</h2>
+                                <h2 class="service-title">3PL and 4PL</h2>
                                 <div class="product-description">
                                     This package is designed to suit the needs of Third and Fourth Party Logistics Service Providers (3PLs and 4PLs).<br /><br />
                                     By subscribing to this package, your will gain access to the following systems:<br /><br />
@@ -140,10 +144,10 @@
                                     <br/>
                                     <h:outputLabel for="basic" style="font-weight: bold" value="Package Choice * " />
                                     <h:selectOneListbox  styleClass="form-control" id="basic" value="#{userAccountManagerBean.package1}" required="true" requiredMessage="Package choice is required.">
-                                        <f:selectItem itemLabel="Package for 1PL Manufacturing" itemValue="1" />
-                                        <f:selectItem itemLabel="Package for 1PL Non-Manufacturing" itemValue="2" />
-                                        <f:selectItem itemLabel="Package for 2PL" itemValue="3" />
-                                        <f:selectItem itemLabel="Package for 3PL and 4PL" itemValue="4" />
+                                        <f:selectItem itemLabel="Package1: 1PL Manufacturing" itemValue="1" />
+                                        <f:selectItem itemLabel="Package2: 1PL Non-Manufacturing" itemValue="2" />
+                                        <f:selectItem itemLabel="Package3: 2PL" itemValue="3" />
+                                        <f:selectItem itemLabel="Package4: 3PL and 4PL" itemValue="4" />
                                     </h:selectOneListbox>
 
                                 </h:panelGrid>
@@ -162,21 +166,21 @@
 
             </h:form>
             <script type="text/javascript">
-                    function toggleModal() {
+                function toggleModal() {
                     $("#buyModal").modal('show');
                         }
-            </script>
+                </script>
             <script type="text/javascript">
-                        PrimeFaces.validator['custom.emailValidator'] = {
+                    PrimeFaces.validator['custom.emailValidator'] = {
                             pattern: /\S+@\S+/,
-                                validate: function(element, value) {
+                        validate: function(element, value) {
                             //use element.data() to access validation metadata, in this case there is none.
-                    if (!this.pattern.test(value)) {
+                                if (!this.pattern.test(value)) {
                 throw {
                                 summary: 'Validation Error',
-                                detail: value + ' is not a valid email.'
-                            }
-                        }
+                    detail: value + ' is not a valid email.'
+                }
+            }
                     }
                 };
             </script>
