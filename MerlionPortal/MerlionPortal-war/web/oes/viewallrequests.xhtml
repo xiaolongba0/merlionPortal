@@ -56,7 +56,7 @@
             <p:commandButton action="#{quotationManagedBean.editQuotation()}" value="Generate Quotation">
             </p:commandButton> 
 
-            <c:if test="#{quotationManagedBean.checkUserIsOrderProccessing()}">
+            <c:if test="#{quotationManagedBean.checkUserGenerateQuotation()}">
                 <br></br>
                 <p:commandButton action="#{quotationManagedBean.editQuotation()}" value="Generate Quotation">
                 </p:commandButton>       
