@@ -95,6 +95,10 @@ public class ForecastManagedBean implements Serializable {
         return ("mps");
     }
     
+    public String backToHistory() {
+        return ("forecastviewhistory");
+    }
+    
     
 
 }
