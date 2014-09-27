@@ -98,7 +98,7 @@
                             </p:cellEditor>
                         </p:column>     
 
-                        <p:column  headerText="Description">
+                        <p:column  headerText="Description" filterBy="#{storagetype.description}" filterMatchMode="contains">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{storagetype.description}" /></f:facet>
                                 <f:facet name="input"><p:inputText value="#{storagetype.description}" style="width:100%" label="Description"/></f:facet>
