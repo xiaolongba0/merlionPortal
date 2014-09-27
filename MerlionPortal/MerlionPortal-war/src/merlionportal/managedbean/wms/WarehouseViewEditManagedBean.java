@@ -195,7 +195,6 @@ public class WarehouseViewEditManagedBean {
         System.out.println("ON ROW EDIT ===============================");
         warehouse = new Warehouse();
         warehouse = (Warehouse) event.getObject();
-        // System.out.println("[Checking if input is correct] ====================== : " + warehouseName);
         System.out.println("[AFTER EDIT] warehouse.getName(): " + warehouse.getName());
         assetManagementSessionBean.editWarehouse(warehouse.getName(), warehouse.getCountry(), warehouse.getCity(),
                 warehouse.getStreet(), warehouse.getDescription(), warehouse.getZipcode(), warehouse.getCompanyId(), warehouse.getWarehouseId());

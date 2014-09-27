@@ -91,7 +91,8 @@ public class StorageBinViewEditManagedBean {
         bin = (StorageBin) event.getObject();
         boolean result = assetManagementSessionBean.editStorageBin(bin.getBinName(), bin.getDescription(), bin.getBinType(), bin.getMaxQuantity(), bin.getMaxWeight(), bin.getStorageBinId());
         if (result) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Storage Bin is edited"));
+            FacesMessage msg = new FacesMessage("Storage with Storage Bin ID = " + bin.getStorageBinId() + " has sucessfully been edited");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong"));
 
