@@ -3,36 +3,30 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>Home</title>
-        <style type="text/css">
-            .gritter-notice-wrapper {
-                left:200px;
-                top: 50px;
-            }
-            .ui-layout, .ui-layout-doc, .ui-layout-unit, .ui-layout-wrap, .ui-layout-bd, .ui-layout-hd{
-                border: none;
-            }
-            .ui-bar{
-                background: red;
-            }
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
-            .ui-button.ui-state-hover, .ui-button.ui-state-active{
-                border: none;
-            }
-        </style>
-        <style>
-            h1   {color:#E9967A}
-        </style>
-    </h:head>
-    <h:body>
-        <h:form id="formMain">
-            <h1>Welcome to MRP II system</h1>
-            <p:megaMenu  style="margin-top:20px">
-                <p:menuitem value="MRP II" url="mrp.xhtml" />
-                <p:submenu label="Product Management" >
-                    <p:column>
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="MRP II home" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <h:form id="formMain">
+                <p:panelMenu>
+                    <p:menuitem value="MRP II" url="mrp.xhtml" />
+                    <p:submenu label="Product Management" styleClass="display:block">
+
                         <p:submenu label="Product Catalog Management">
                             <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
                             <p:menuitem value="View, Edit and Delete" url="viewallproducts.xhtml" />
@@ -41,31 +35,31 @@
                             <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
                             <p:menuitem value="View, Edit and Delete BOM" url="viewbom.xhtml" />
                         </p:submenu>
-                    </p:column>
-                </p:submenu>
-                <p:submenu label="Material Requirement Planning" >
-                    <p:column>
+
+                    </p:submenu>
+                    <p:submenu label="Material Requirement Planning" styleClass="display:block">
+
                         <p:submenu label="Forecasting">
                             <p:menuitem value="Forecasting" url="forecast.xhtml" />
                         </p:submenu>
-                    </p:column>
-                </p:submenu>
-            </p:megaMenu>
 
-            <p:layoutUnit position="center">   
-                <p:panel header="Welcome">
-                    Welcome to MRP II system!
-                    <Br/><Br/><Br/>
-                    MRP II system empowers your organization to:
-                    <Br/><Br/>
-                    1. Manage your products
-                    <Br/><Br/>
-                    2. Conduct material requirement planning. This ensures materials are available for production, products are available for delivery to customers and 
-                    the lowest possible material and product levels in store could be maintained
-                    <Br/><Br/>
-                    3. Plan delivery schedules and conduct purchasing activities.
-                </p:panel>
-            </p:layoutUnit>
-        </h:form>
-    </h:body>
+                    </p:submenu>
+                </p:panelMenu>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">
+            <div class="system-banner mrp-system-banner"></div>
+            <h2 class="system-welcome">Welcome to MRP II system!</h2>
+
+            <div class="system-description">MRP II system empowers your organization to:
+                <ol>
+                    <li>Manage your products</li>
+                    <li>Conduct material requirement planning. This ensures materials are available for production, products are available for delivery to customers and 
+                        the lowest possible material and product levels in store could be maintained </li>
+                    <li>Plan delivery schedules and conduct purchasing activities.</li>
+                </ol>
+            </div>
+        </ui:define>
+    </ui:composition>
 </html>
