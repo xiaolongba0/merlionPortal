@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -22,16 +23,12 @@ public class ForecastGetParameterManagedBean implements Serializable {
     @EJB
     UserAccountManagementSessionBean uamb;
 
-
     Integer companyId;
 
-
-    int expectedGrowth;
+    double expectedGrowth;
     int periodicity;
-
+    int size;
     private SystemUser loginedUser;
-
-    
 
     @PostConstruct
     public void init() {
@@ -53,12 +50,25 @@ public class ForecastGetParameterManagedBean implements Serializable {
         }
 
     }
-    
+
     public String onParameterChange() {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("expectedGrowth", expectedGrowth);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("periodicity", periodicity);
 
-        return "forecastresult?faces-redirect=true";
+        size = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("size");
+
+        if (periodicity < 1) {
+            FacesMessage msg = new FacesMessage("Periodicity must be greater than 1 month, please input periodicity again.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return "null";
+        } else if (periodicity >= size) {
+            FacesMessage msg = new FacesMessage("Periodicity can not be equal or greater than 24 months or greater than the number of months of sales history avaiable, please input periodicity again.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return "null";
+        } else {
+            return "forecastresult?faces-redirect=true";
+        }
+
     }
 
     public Integer getCompanyId() {
@@ -69,11 +79,11 @@ public class ForecastGetParameterManagedBean implements Serializable {
         this.companyId = companyId;
     }
 
-    public int getExpectedGrowth() {
+    public double getExpectedGrowth() {
         return expectedGrowth;
     }
 
-    public void setExpectedGrowth(int expectedGrowth) {
+    public void setExpectedGrowth(double expectedGrowth) {
         this.expectedGrowth = expectedGrowth;
     }
 
@@ -92,5 +102,5 @@ public class ForecastGetParameterManagedBean implements Serializable {
     public void setLoginedUser(SystemUser loginedUser) {
         this.loginedUser = loginedUser;
     }
-    
+
 }

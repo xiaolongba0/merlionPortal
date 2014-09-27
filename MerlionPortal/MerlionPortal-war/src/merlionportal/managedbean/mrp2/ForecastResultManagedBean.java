@@ -53,7 +53,7 @@ public class ForecastResultManagedBean implements Serializable {
     Vector<String> monthlyDateR;
     LineChartModel forecastSales;
 
-    int expectedGrowth;
+    double expectedGrowth;
     int periodicity;
 
     private SystemUser loginedUser;
@@ -79,17 +79,14 @@ public class ForecastResultManagedBean implements Serializable {
                 ex.printStackTrace();
             }
         }
-        expectedGrowth = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("expectedGrowth");
-        System.out.println("=========================expected growth===================" + expectedGrowth);
+        expectedGrowth = (double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("expectedGrowth");
         periodicity = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodicity");
-        System.out.println("=========================period==================" + periodicity);
 
         computeForecastResult();
 
     }
 
     public LineChartModel getForecastSales() {
-        System.out.println("Get to this stage!!!!!!!!!!");
         return forecastSales;
 
     }
@@ -102,8 +99,7 @@ public class ForecastResultManagedBean implements Serializable {
 
         //produce a list of date correspond to sales
         //size need to be retrieved/computed later
-        System.out.println("Periodicity BEFORE  " + periodicity);
-        System.out.println("growth  BEFORE " + expectedGrowth);
+
         forecastR = fsb.computeResult(periodicity, expectedGrowth);
         monthlyDateR = fsb.yaxisDate();
 
@@ -132,9 +128,7 @@ public class ForecastResultManagedBean implements Serializable {
         axis.setMax("2016-01-01");
         axis.setTickFormat("%b, %y");
 
-        System.out.println("XXXXXXXXXLATER periodicity" + periodicity);
-        System.out.println("XXXXXXXXXLATER growth" + expectedGrowth);
-
     }
+
 
 }
