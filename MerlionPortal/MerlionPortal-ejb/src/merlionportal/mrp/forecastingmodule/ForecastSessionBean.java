@@ -49,7 +49,6 @@ public class ForecastSessionBean {
     double expectedGrowth;
     int periodicity;
 
-
     public List<Product> getMyProducts(Integer companyId) {
         Query query = entityManager.createQuery("SELECT p FROM Product p WHERE p.companyId = :inCompanyId");
         query.setParameter("inCompanyId", companyId);
@@ -58,87 +57,40 @@ public class ForecastSessionBean {
 
     //take in two string from database (sales order fr OES), monthlyDate and salesdata, return two string
     //Parameter: ProducId
-    public Vector<String> createPurchaseDate() {
+    public Vector<String> createPurchaseDate(List<String> dateList) {
         //produce a list of date correspond to sales
         //size need to be retreved/computed later
         // later get this size from managed bean   size = 24;
         monthlyDate = new Vector<String>();
-        monthlyDate.add("2012-08-01");
-        monthlyDate.add("2012-09-01");
-        monthlyDate.add("2012-10-01");
-        monthlyDate.add("2012-11-01");
-        monthlyDate.add("2012-12-01");
-        monthlyDate.add("2013-01-01");
-        monthlyDate.add("2013-02-01");
-        monthlyDate.add("2013-03-01");
-        monthlyDate.add("2013-04-01");
-        monthlyDate.add("2013-05-01");
-        monthlyDate.add("2013-06-01");
-        monthlyDate.add("2013-07-01");
-        monthlyDate.add("2013-08-01");
-        monthlyDate.add("2013-09-01");
-        monthlyDate.add("2013-10-01");
-        monthlyDate.add("2013-11-01");
-        monthlyDate.add("2013-12-01");
-        monthlyDate.add("2014-01-01");
-        monthlyDate.add("2014-02-01");
-        monthlyDate.add("2014-03-01");
-        monthlyDate.add("2014-05-01");
-        monthlyDate.add("2014-06-01");
-        monthlyDate.add("2014-07-01");
-        monthlyDate.add("2014-08-01");
-
+        for (int i = 0; i < dateList.size(); i++) {
+            monthlyDate.add(dateList.get(i));
+        }
         return monthlyDate;
     }
 
-    public Vector<Integer> createPurchaseData() {
+    public Vector<Integer> createPurchaseData(List<Integer> quantityList) {
         //produce a list of date correspond to sales
         //size need to be retreved/computed later
         // later get this size from managed bean   size = 24;
 
         salesdata = new Vector();
-        salesdata.add(5000);
-        salesdata.add(4000);
-        salesdata.add(4000);
-        salesdata.add(2000);
-        salesdata.add(5000);
-        salesdata.add(7000);
-        salesdata.add(10000);
-        salesdata.add(14000);
-        salesdata.add(16000);
-        salesdata.add(16000);
-        salesdata.add(20000);
-        salesdata.add(12000);
-        salesdata.add(5000);
-        salesdata.add(2000);
-        salesdata.add(3000);
-        salesdata.add(2000);
-        salesdata.add(7000);
-        salesdata.add(6000);
-        salesdata.add(8000);
-        salesdata.add(10000);
-        salesdata.add(20000);
-        salesdata.add(20000);
-        salesdata.add(22000);
-        salesdata.add(9000);
-
+           for (int i = 0; i < quantityList.size(); i++) {
+            salesdata.add(quantityList.get(i));
+        }
         return salesdata;
     }
 
-    public Vector<Integer> computeResult(int periodicity, double expectedGrowth) {
-     this.periodicity = periodicity;
-     this.expectedGrowth = expectedGrowth;
-     
-    expectedGrowth = (double)(expectedGrowth / 100.00) + 1.00;
+    public Vector<Integer> computeResult(int periodicity, double expectedGrowth, List<String> dateList,List<Integer> quantityList ) {
+        this.periodicity = periodicity;
+        this.expectedGrowth = expectedGrowth;
 
-     
+        expectedGrowth = (double) (expectedGrowth / 100.00) + 1.00;
+
 //produce a list of date correspond to sales
         //size need to be retreved/computed later
-
-
-        this.monthlyDate = createPurchaseDate();
-        this.salesdata = createPurchaseData();
-        int size = monthlyDate.size();
+        this.monthlyDate = createPurchaseDate(dateList);
+        this.salesdata = createPurchaseData(quantityList);
+        int size = salesdata.size();
 
         //transform index (put index 0 = 0, populate the rest starting from index 1; Purpose: easier for computing)
         monthlyDateT = new Vector();
@@ -282,7 +234,7 @@ public class ForecastSessionBean {
                     max = forecastR.get(i);
                 }
             }
-           
+
             //later return max to managed bean
             max = max + 2000;
 
@@ -321,7 +273,7 @@ public class ForecastSessionBean {
                 tValue.add(i);
             }
 
-        //Linear regression to get m (gradient) and b (tangent)
+            //Linear regression to get m (gradient) and b (tangent)
             Double Xsum = 0.0;
             Double Ysum = 0.0;
             Double XYsum = 0.0;
@@ -403,37 +355,36 @@ public class ForecastSessionBean {
         }
         return forecastR;
     }
-    
-    
-     public Vector<String> yaxisDate() {
-            monthlyDateR = new Vector<String>();
-            monthlyDateR.add("0");
-            monthlyDateR.add("2014-09-01");
-            monthlyDateR.add("2014-10-01");
-            monthlyDateR.add("2014-11-01");
-            monthlyDateR.add("2014-12-01");
-            monthlyDateR.add("2015-01-01");
-            monthlyDateR.add("2015-02-01");
-            monthlyDateR.add("2015-03-01");
-            monthlyDateR.add("2015-04-01");
-            monthlyDateR.add("2015-05-01");
-            monthlyDateR.add("2015-06-01");
-            monthlyDateR.add("2015-07-01");
-            monthlyDateR.add("2015-08-01");
-            monthlyDateR.add("2015-09-01");
-            monthlyDateR.add("2015-10-01");
-            monthlyDateR.add("2015-11-01");
-            monthlyDateR.add("2015-12-01");
-            monthlyDateR.add("2016-01-01");
-            monthlyDateR.add("2016-02-01");
-            monthlyDateR.add("2016-03-01");
-            monthlyDateR.add("2016-04-01");
-            monthlyDateR.add("2016-05-01");
-            monthlyDateR.add("2016-06-01");
-            monthlyDateR.add("2016-07-01");
-            monthlyDateR.add("2016-08-01");
-            
-            return monthlyDateR;
-     }
+
+    public Vector<String> yaxisDate() {
+        monthlyDateR = new Vector<String>();
+        monthlyDateR.add("0");
+        monthlyDateR.add("2014-09-01");
+        monthlyDateR.add("2014-10-01");
+        monthlyDateR.add("2014-11-01");
+        monthlyDateR.add("2014-12-01");
+        monthlyDateR.add("2015-01-01");
+        monthlyDateR.add("2015-02-01");
+        monthlyDateR.add("2015-03-01");
+        monthlyDateR.add("2015-04-01");
+        monthlyDateR.add("2015-05-01");
+        monthlyDateR.add("2015-06-01");
+        monthlyDateR.add("2015-07-01");
+        monthlyDateR.add("2015-08-01");
+        monthlyDateR.add("2015-09-01");
+        monthlyDateR.add("2015-10-01");
+        monthlyDateR.add("2015-11-01");
+        monthlyDateR.add("2015-12-01");
+        monthlyDateR.add("2016-01-01");
+        monthlyDateR.add("2016-02-01");
+        monthlyDateR.add("2016-03-01");
+        monthlyDateR.add("2016-04-01");
+        monthlyDateR.add("2016-05-01");
+        monthlyDateR.add("2016-06-01");
+        monthlyDateR.add("2016-07-01");
+        monthlyDateR.add("2016-08-01");
+
+        return monthlyDateR;
+    }
 
 }
