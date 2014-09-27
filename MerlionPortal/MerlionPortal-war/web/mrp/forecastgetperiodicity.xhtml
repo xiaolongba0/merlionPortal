@@ -3,75 +3,83 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"> 
-    <h:head>
-        <title>Enter Forecast Parameter</title>
-        <style type="text/css">
-            .gritter-notice-wrapper {
-                left:200px;
-                top: 50px;
-            }
-        </style>
-        <style>
-            h1   {color:#E9967A}
-        </style>
-    </h:head>
-    <h:body>
-        <h:form>
-            <h1>Welcome to MRP II system</h1>
-            <p:megaMenu  style="margin-top:20px">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"> 
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="MRP II Add New Product" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+
+           <p:panelMenu>
                 <p:menuitem value="MRP II" url="mrp.xhtml" />
-                <p:submenu label="Product Management" >
-                    <p:column>
-                        <p:submenu label="Product Catalog Management">
-                            <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
-                            <p:menuitem value="View, Edit and Delete" url="viewallproducts.xhtml" />
-                        </p:submenu>
-                        <p:submenu label="BOM Management">
-                            <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
-                            <p:menuitem value="View, Edit and Delete BOM" url="viewbom.xhtml" />
-                        </p:submenu>
-                    </p:column>
+                <p:submenu label="Product Management">
+
+                    <p:submenu label="Product Catalog Management">
+                        <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
+                        <p:menuitem value="View, Edit and Delete" url="viewallproducts.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="BOM Management">
+                        <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
+                        <p:menuitem value="View, Edit and Delete BOM" url="viewbom.xhtml" />
+                    </p:submenu>
+
                 </p:submenu>
-                <p:submenu label="Material Requirement Planning" >
-                    <p:column>
-                        <p:submenu label="Forecasting">
-                            <p:menuitem value="Forecasting" url="forecast.xhtml" />
-                        </p:submenu>
-                    </p:column>
+                <p:submenu label="Material Requirement Planning">
+
+                    <p:submenu label="Forecasting">
+                        <p:menuitem value="Forecasting" url="forecast.xhtml" />
+                    </p:submenu>
+
                 </p:submenu>
-            </p:megaMenu>
+            </p:panelMenu>
 
-           
-            <p:panel id="panel" header="Add in Forecast Parameters"> 
-            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />  
-             <p:panelGrid>
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="periodicity" style="font-weight: bold" value="Periodicity: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="Periodicity" requiredMessage="Periodicity is required." id="periodicity" value="#{forecastGetParameterManagedBean.periodicity}">
-                             <f:validateLength minimum="1" maximum="19"/>
-                            </p:inputText>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="expectedGrowth" style="font-weight: bold" value="Expected Fluctuation due to Unusual Situation (in %): " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="ExpectedGrowth" requiredMessage="ExpectedGrowth is required." id="expectedGrowth" value="#{forecastGetParameterManagedBean.expectedGrowth}">
+        </ui:define>
 
-                            </p:inputText>
-                        </p:column>
-                    </p:row>
-                </p:panelGrid>
+        <ui:define name="right">
+            <h:form>
+                <p:panel id="panel" header="Add in Forecast Parameters"> 
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />  
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="periodicity" style="font-weight: bold" value="Periodicity: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="Periodicity" requiredMessage="Periodicity is required." id="periodicity" value="#{forecastGetParameterManagedBean.periodicity}">
+                                    <f:validateLength minimum="1" maximum="19"/>
+                                </p:inputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="expectedGrowth" style="font-weight: bold" value="Expected Fluctuation due to Unusual Situation (in %): " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="ExpectedGrowth" requiredMessage="ExpectedGrowth is required." id="expectedGrowth" value="#{forecastGetParameterManagedBean.expectedGrowth}">
 
-                <p:commandButton value="Proceed with forecasting" action="#{forecastGetParameterManagedBean.onParameterChange}" ajax="true"/>
+                                </p:inputText>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
 
-            </p:panel>
-        </h:form>
-    </h:body>
+                    <p:commandButton value="Proceed with forecasting" action="#{forecastGetParameterManagedBean.onParameterChange}" ajax="true"/>
+
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
 </html>
 
