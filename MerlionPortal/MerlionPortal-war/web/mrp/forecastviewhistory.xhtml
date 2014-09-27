@@ -53,11 +53,14 @@
                 </p:panel>
 
                 <p:panel header="Based on the available sales history, do you want to proceed?" style="margin-bottom:10px;"> 
-                    <h:panelGrid columns="1" style="margin-bottom:10px" cellpadding="5">
-                        <h:outputText value="Note: MRP II system uses Time Series Based Forecasting technique, in general, if number of months of sales record is less than 24 months, the forecasting result might have large deviation. Do you want to proceed?" />
+                  
+                        <div>Note: MRP II system uses Time Series Based Forecasting technique, in general, if number 
+                                      of months of sales record is less than 24 months, the forecasting result might have large deviation.
+                                      Do you want to proceed?</div>
+                        
                         <p:commandButton value="Yes"  action="#{forecastManagedBean.proceedGetUserInput}" />
                         <p:commandButton value="No"  action="#{forecastManagedBean.stopForecasting}" />
-                    </h:panelGrid>
+              
                 </p:panel>
             </h:form>
         </ui:define>
