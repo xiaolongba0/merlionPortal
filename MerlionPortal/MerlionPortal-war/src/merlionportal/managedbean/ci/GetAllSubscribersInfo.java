@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package merlionportal.managedbean.ci;
 
 import entity.Company;
@@ -34,13 +33,15 @@ public class GetAllSubscribersInfo {
     private List<Company> companys;
     private List<Company> filteredCompanys;
     private List<String> packages;
-    @EJB 
+    private String packageNumber;
+    @EJB
     UserAccountManagementSessionBean uamb;
     @EJB
     GetCompanySessionBean gcsb;
-    
+
     public GetAllSubscribersInfo() {
     }
+
     @PostConstruct
     public void init() {
         boolean redirect = true;
@@ -59,10 +60,12 @@ public class GetAllSubscribersInfo {
         }
         companys = (List<Company>) gcsb.getCompanies();
         packages = new ArrayList<>();
-        packages.add("1");
-        packages.add("2");
-        packages.add("3");
-        packages.add("4");
+        packages.add("Manufacturing 1PL");
+        packages.add("Non-Manufacturing 1PL");
+        packages.add("2PL");
+        packages.add("3/4PL");
+        packages.add("5PL");
+        packages.add("Platform Provider");
 
     }
 
@@ -97,6 +100,31 @@ public class GetAllSubscribersInfo {
     public void setPackages(List<String> packages) {
         this.packages = packages;
     }
-    
-    
+
+    public String getPackageNumber(int package1) {
+        if (package1 == 1) {
+            packageNumber = "Manufacturing 1PL";
+        }
+        if (package1 == 2) {
+            packageNumber = "Non-Manufacturing 1PL";
+        }
+        if (package1 == 3) {
+            packageNumber = "2PL";
+        }
+        if (package1 == 4) {
+            packageNumber = "3/4PL";
+        }
+        if (package1 == 0) {
+            packageNumber = "Platform Provider";
+        }
+        if (package1 == 5) {
+            packageNumber = "5PL";
+        }
+        return packageNumber;
+    }
+
+    public void setPackageNumber(String packageNumber) {
+        this.packageNumber = packageNumber;
+    }
+
 }
