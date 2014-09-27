@@ -49,7 +49,7 @@ public class SystemAccessRightSessionBean {
         return false;
     }
 // OES Rights
-    public boolean checkOESCustomer(Integer userId) {
+    public boolean checkOESGeneratePO(Integer userId) {
         SystemUser loginedUser = getUser(userId);
 
         if (loginedUser != null) {
@@ -60,7 +60,7 @@ public class SystemAccessRightSessionBean {
         return false;
 
     }
-    public boolean checkOESOrderProcessing(Integer userId){
+    public boolean checkOESGenerateQuotation(Integer userId){
         SystemUser loginedUser = getUser(userId);
 
         if (loginedUser != null) {
@@ -71,7 +71,7 @@ public class SystemAccessRightSessionBean {
         return false;
     }
 
-    public boolean checkOESSales(Integer userId) {
+    public boolean checkOESGenerateSO(Integer userId) {
         SystemUser loginedUser = getUser(userId);
 
         if (loginedUser != null) {
