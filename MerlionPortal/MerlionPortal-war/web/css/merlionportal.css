@@ -192,3 +192,15 @@ h2.system-welcome{
 .pad-it{
     padding-left: 10px;
 }
+
+.create-role-table-style td{
+    padding:3px 0px 3px 0px;
+}
+
+.product-box{
+    min-height:600px;
+}
+
+.product-description{
+    min-height:400px;
+}
