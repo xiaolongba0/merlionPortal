@@ -39,7 +39,6 @@ public class ProductReturnManagedBean {
     private int orderId;
     private int returenOrderId;
     private ProductOrder returnOrder;
-    private List<String> returnReasons;
     private String reason;
 
     @PostConstruct
@@ -78,6 +77,15 @@ public class ProductReturnManagedBean {
         this.myOrder = myOrder;
     }
 
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    
     public int getOrderId() {
         return orderId;
     }
@@ -118,35 +126,6 @@ public class ProductReturnManagedBean {
         this.returnOrder = returnOrder;
     }
 
-    private List<String> setReasons() {
-        List<String> reasonList = new ArrayList();
-        reasonList.add("01 Wrong product");
-        reasonList.add("02 Wrong product quantity");
-        reasonList.add("03 Wrong price");
-        reasonList.add("04 Wrong ship to address");
-        reasonList.add("05 Wrong contact person");
-        reasonList.add("06 Credit check fail ");
-        reasonList.add("07 Others please contact sales for more information");
-        reasonList.add("08 Unable to fulfill this order");
-        return reasonList;
-    }
-
-    public List<String> getReturnReasons() {
-        returnReasons = this.setReasons();
-        return returnReasons;
-    }
-
-    public void setReturnReasons(List<String> returnReasons) {
-        this.returnReasons = returnReasons;
-    }
-
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
 
     public void rejectWhole() {
         System.out.println(reason);
