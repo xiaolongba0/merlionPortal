@@ -25,6 +25,7 @@ public class InvoiceMangerSessionBean {
 
     @PersistenceContext(unitName = "MerlionPortal-ejbPU")
     private EntityManager em;
+    private ProductInvoice newInvoice;
 
     public InvoiceMangerSessionBean() {
     }
@@ -46,12 +47,14 @@ public class InvoiceMangerSessionBean {
     }
 
     public void generateInvoice(ProductOrder myOrder, int orderId, Double totalPrice, int customerId, String text) {
-        ProductInvoice newInvoice = new ProductInvoice();
+        System.out.println("Invoice Start====================");
+        System.out.println(myOrder.getProductPOId() + orderId+totalPrice+customerId+text);
+        newInvoice = new ProductInvoice();
         newInvoice.setCustomerId(customerId);
         newInvoice.setSalesOrderId(orderId);
         newInvoice.setTotalPrice(totalPrice);
         newInvoice.setStatus("Invoiced");
-        newInvoice.setCondition(text);
+        newInvoice.setConditionText(text);
         em.persist(newInvoice);
         myOrder.setStatus(5);
         em.merge(myOrder);
@@ -90,15 +93,15 @@ public class InvoiceMangerSessionBean {
         }
         return result;
     }
-    
-    public List<String> setAllStatus(){
-        List<String> allStatus =new ArrayList();
+
+    public List<String> setAllStatus() {
+        List<String> allStatus = new ArrayList();
         allStatus.add("Invoiced");
         allStatus.add("Waiting for credit");
         return allStatus;
     }
-    
-    public ProductOrder getMyOrder(int orderId){
+
+    public ProductOrder getMyOrder(int orderId) {
         ProductOrder myOrder = em.find(ProductOrder.class, orderId);
         return myOrder;
     }

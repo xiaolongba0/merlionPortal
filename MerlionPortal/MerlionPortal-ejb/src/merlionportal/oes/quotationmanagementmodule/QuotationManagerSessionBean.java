@@ -220,6 +220,7 @@ public class QuotationManagerSessionBean {
         em.flush();
     }
 
+
     //======================= Private Functions=================================
     private Boolean checkContains(String mainString, String subString) {
         Boolean result = false;
@@ -237,4 +238,5 @@ public class QuotationManagerSessionBean {
         Quotation result = (Quotation) em.find(Quotation.class, quotationId);
         return result;
     }
+    
 }
