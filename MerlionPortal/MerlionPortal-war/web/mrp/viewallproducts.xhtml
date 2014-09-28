@@ -51,7 +51,7 @@
 
         <ui:define name="right">
             <h:form id="form">
-                <p:growl id="msgs" showDetail="true"/>   
+                <p:growl id="msgs"/>   
                 <p:dataTable id="products" var="product" sortMode="multiple" value="#{productViewEditManagedBean.myCompanyProducts}" editable="true" style="margin-bottom:20px"
                              widgetVar="productsTable"
                              emptyMessage="No product found"
@@ -115,7 +115,6 @@
                             <f:facet name="output"><h:outputText value="#{product.currency}" /></f:facet>
                             <f:facet name="input">
                                 <h:selectOneMenu value="#{product.currency}" style="width:210px">
-                                    <f:selectItem itemLabel="Select Storage Bin Type" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{productViewEditManagedBean.currencies}" var="currency" itemLabel="#{currency}" itemValue="#{currency}" />
                                 </h:selectOneMenu>
                             </f:facet>
