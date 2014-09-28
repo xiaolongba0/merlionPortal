@@ -18,9 +18,9 @@ li > .black-link{
     text-decoration: none;
 }
 
-/*.input-addon-fixedwidth{
-    width:120px;
-}*/
+.input-addon-fixedwidth{
+    width:150px;
+}
 .service-image{
     width:500px;
     height:230px !important;
@@ -132,13 +132,13 @@ ul.rights-menu li{
 }*/
 
 .left-container{
-    width: 30%;
+    width: 27%;
     float:left;
     margin: 50px 0px;
 }
 
 .right-container{
-    width:70%;
+    width:73%;
     float:right;
     margin: 50px 0px;
 }
