@@ -47,13 +47,15 @@
                             </c:if>
                             <c:if test="#{dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
                                 <p:menuitem value="Reject Order" url="returnorder.xhtml" />
+                                <p:menuitem value="Generate Invoice" url="orderswaitingforinvoice.xhtml" />
+
                             </c:if>
                         </p:submenu>
                     </c:if>
                     <p:submenu label="Payment" styleClass="display:block">
                         <p:menuitem value="All invoice" url="allinvoice.xhtml" />
                         <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.loginedUser.userType == 'superuser'}">
-                            <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />
+                            <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />                           
                         </c:if>
 
                     </p:submenu>

@@ -23,7 +23,7 @@
         <ui:define name="left">
 
             <h:form >
-                                <p:panelMenu>
+                <p:panelMenu>
                     <p:submenu label="Home" styleClass="display:block">
                         <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
                     </p:submenu>
@@ -47,6 +47,8 @@
                             </c:if>
                             <c:if test="#{dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
                                 <p:menuitem value="Reject Order" url="returnorder.xhtml" />
+                                <p:menuitem value="Generate Invoice" url="orderswaitingforinvoice.xhtml" />
+
                             </c:if>
                         </p:submenu>
                     </c:if>
@@ -71,10 +73,14 @@
             <h:form id="formMain"> 
                 <p:fieldset legend="Customer Information" style="margin-bottom:20px">
                     <h:panelGrid columns="2" cellpadding="5">
-                        <h:outputText value="Campany Name:"/>
-                        <h:outputText value="#{quotationManagedBean.selectedRequest.customerId}"/>
-                        <h:outputText value="Campany Name:"/>
-                        <h:outputText value="#{quotationManagedBean.selectedRequest.customerId}"/>
+                        <h:outputText value="Customer Id:"/>
+                        <h:outputText value="#{quotationManagedBean.selectedQuotation.customerId}"/>
+                        <h:outputText value="Contact Person First Name:"/>
+                        <h:outputText value="#{quotationManagedBean.mycustomer.firstName}"/>
+                        <h:outputText value="Contact Person First Name:"/>
+                        <h:outputText value="#{quotationManagedBean.mycustomer.lastName}"/>
+                        <h:outputText value="Contact Number"/>
+                        <h:outputText value="#{quotationManagedBean.mycustomer.contactNumber}"/>
                         <br></br>
                         <h:outputText
                             value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding.
@@ -124,8 +130,6 @@
                 <h3 style="margin-top: 0">Terms and Conditions</h3>
                 <p>Please enter quotation terms and Conditions below</p>
                 <p:inputTextarea id="display" rows="10" cols="80" value="#{quotationManagedBean.inputText}" />
-                <h:outputText id="display" />
-
                 <br></br>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 <p:commandButton action="viewallrequests.xhtml" value="Go Back">

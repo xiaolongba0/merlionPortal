@@ -46,6 +46,8 @@
                         </c:if>
                         <c:if test="#{dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
                             <p:menuitem value="Reject Order" url="returnorder.xhtml" />
+                            <p:menuitem value="Generate Invoice" url="orderswaitingforinvoice.xhtml" />
+
                         </c:if>
                     </p:submenu>
                 </c:if>

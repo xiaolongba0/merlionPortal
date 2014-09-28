@@ -24,7 +24,7 @@
         <ui:define name="left">
 
             <h:form id="formMain">
-                                <p:panelMenu>
+                <p:panelMenu>
                     <p:submenu label="Home" styleClass="display:block">
                         <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
                     </p:submenu>
@@ -48,6 +48,8 @@
                             </c:if>
                             <c:if test="#{dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
                                 <p:menuitem value="Reject Order" url="returnorder.xhtml" />
+                                <p:menuitem value="Generate Invoice" url="orderswaitingforinvoice.xhtml" />
+
                             </c:if>
                         </p:submenu>
                     </c:if>
@@ -102,28 +104,28 @@
                             <div id="body" class="modal-body">
                                 <h:panelGrid columns="2" cellpadding="5">
                                     <p:outputLabel for="contact" value="Contact Person: " />
-                                    <p:inputText id="contact" value="#{purchaseOrderManagedBean.contactPerson}" required="true"/>
+                                    <p:inputText id="contact" value="#{purchaseOrderManagedBean.contactPerson}"/>
 
                                     <p:outputLabel for="cNumber" value="Phone Number: " />
-                                    <p:inputText id="cNumber" value="#{purchaseOrderManagedBean.contactNumber}" required="true" />
+                                    <p:inputText id="cNumber" value="#{purchaseOrderManagedBean.contactNumber}"/>
 
                                     <p:outputLabel for="line1" value="Address Line 1: " />
-                                    <p:inputText id="line1" value="#{purchaseOrderManagedBean.address1}" required="true"/>
+                                    <p:inputText id="line1" value="#{purchaseOrderManagedBean.address1}" />
 
                                     <p:outputLabel for="line2" value="Address Line 2: " />
-                                    <p:inputText id="line2" value="#{purchaseOrderManagedBean.address2}" required="true"/>
+                                    <p:inputText id="line2" value="#{purchaseOrderManagedBean.address2}"/>
 
                                     <p:outputLabel for="line3" value="Address Line 3: " />
                                     <p:inputText id="line3" value="#{purchaseOrderManagedBean.address3}" />
 
                                     <p:outputLabel for="city"  value="City: " />
-                                    <p:inputText id="city" value="#{purchaseOrderManagedBean.city}" required="true"/>
+                                    <p:inputText id="city" value="#{purchaseOrderManagedBean.city}"/>
 
                                     <p:outputLabel for="country"  value="Country: " />
-                                    <p:inputText id="country" value="#{purchaseOrderManagedBean.country}" required="true"/>
+                                    <p:inputText id="country" value="#{purchaseOrderManagedBean.country}"/>
 
                                     <p:outputLabel for="postal"  value="Postal Code " />
-                                    <p:inputText id="postal" value="#{purchaseOrderManagedBean.postalCode}" required="true"/>
+                                    <p:inputText id="postal" value="#{purchaseOrderManagedBean.postalCode}"/>
                                 </h:panelGrid>
                             </div>
                             <div class="modal-footer">

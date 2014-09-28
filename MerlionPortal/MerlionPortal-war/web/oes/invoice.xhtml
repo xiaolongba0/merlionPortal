@@ -47,6 +47,8 @@
                             </c:if>
                             <c:if test="#{dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
                                 <p:menuitem value="Reject Order" url="returnorder.xhtml" />
+                                <p:menuitem value="Generate Invoice" url="orderswaitingforinvoice.xhtml" />
+
                             </c:if>
                         </p:submenu>
                     </c:if>
@@ -63,60 +65,65 @@
                         </p:submenu>
                     </c:if>
                 </p:panelMenu>
+            </h:form>
         </ui:define>
-        <br></br>
-        <p:fieldset legend="Ship To " style="margin-bottom:20px">
-            <h:panelGrid id="detail" columns="2" cellpadding="5">
-                <p>Contact Person: </p><h:outputText value="#{generateInvoiceManagedBean.unInvoiced.contactPersonName}"/>
-                <p>Phone Number: </p><h:outputText value="#{generateInvoiceManagedBean.unInvoiced.contactPersonPhoneNumber}"/>
-                <p>Address : </p><h:outputText value="#{generateInvoiceManagedBean.unInvoiced.shipTo}"/>
-                <p>Quotation : </p><h:outputText value="#{generateInvoiceManagedBean.unInvoiced.quotationId}"/>
 
-            </h:panelGrid>
-        </p:fieldset>
-        <br></br>
-        <br></br>
-        <p:dataTable var="lineItem" value="#{generateInvoiceManagedBean.unInvoiced.productOrderLineItemList}">
-            <p:column headerText="Product">
-                <h:outputText value="#{lineItem.productproductId.productName}" />
-            </p:column>
+        <ui:define name="right">
+            <h:form>  
 
-            <p:column headerText="Description">
-                <h:outputText value="#{lineItem.productproductId.description}" />
-            </p:column>
+                <br></br>
+                <p:fieldset legend="Ship To " style="margin-bottom:20px">
+                    <h:panelGrid id="detail" columns="2" cellpadding="5">
+                        <p>Contact Person: </p><h:outputText value="#{generateInvoiceManagedBean.unInvoiced.contactPersonName}"/>
+                        <p>Phone Number: </p><h:outputText value="#{generateInvoiceManagedBean.unInvoiced.contactPersonPhoneNumber}"/>
+                        <p>Address : </p><h:outputText value="#{generateInvoiceManagedBean.unInvoiced.shipTo}"/>
+                        <p>Quotation : </p><h:outputText value="#{generateInvoiceManagedBean.unInvoiced.quotationId}"/>
 
-            <p:column headerText="Category">
-                <h:outputText value="#{lineItem.productproductId.category}" />
-            </p:column>
-            <p:column headerText="Unit Price">
-                <h:outputText value="#{lineItem.price}" />
-            </p:column>
-            <p:column headerText="Quantity">
-                <h:outputText value="#{lineItem.quantity}" />
-            </p:column>
-            <p:column headerText="Value">
-                <h:outputText value="#{lineItem.quantity*lineItem.price}" />
-            </p:column>
-            <p:summaryRow>
-                <p:column colspan="3" style="text-align:right">
-                    <h:outputText value="Total:" />
-                </p:column>
-                <p:column>
-                    <h:outputText value="#{generateInvoiceManagedBean.totalPrice}">
-                        <f:convertNumber type="currency" currencySymbol="$" />
-                    </h:outputText>
-                </p:column>
-            </p:summaryRow>
-        </p:dataTable>
-        <br></br>
-        <br></br>
-        <h3 style="margin-top: 0">Terms and Conditions</h3>
-        <p>Please enter quotation terms and Conditions below</p>
-        <p:inputTextarea rows="10" cols="80" value="#{generateInvoiceManagedBean.inputText}" />
-        <h:outputText id="display" />
-        <br></br>
-        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-        <p:commandButton value="Cancel" actionListener="orderswaitingforinvoice.xhtml" icon="ui-icon-check" />
-        <p:commandButton value="Generate Invoice" actionListener="#{generateInvoiceManagedBean.generateInvoice()}" icon="ui-icon-check" />
-        </h:form>
+                    </h:panelGrid>
+                </p:fieldset>
+                <br></br>
+                <br></br>
+                <p:dataTable var="lineItem" value="#{generateInvoiceManagedBean.unInvoiced.productOrderLineItemList}">
+                    <p:column headerText="Product">
+                        <h:outputText value="#{lineItem.productproductId.productName}" />
+                    </p:column>
+
+                    <p:column headerText="Description">
+                        <h:outputText value="#{lineItem.productproductId.description}" />
+                    </p:column>
+
+                    <p:column headerText="Category">
+                        <h:outputText value="#{lineItem.productproductId.category}" />
+                    </p:column>
+                    <p:column headerText="Unit Price">
+                        <h:outputText value="#{lineItem.price}" />
+                    </p:column>
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{lineItem.quantity}" />
+                    </p:column>
+                    <p:column headerText="Value">
+                        <h:outputText value="#{lineItem.quantity*lineItem.price}" />
+                    </p:column>
+                </p:dataTable>
+                &nbsp;
+                <p:fieldset legend="Total Price " style="margin-bottom:20px">
+                    <h:panelGrid id="totalPrice" columns="2" cellpadding="5">
+                        <h:outputText value="Total: "/>&nbsp;<h:outputText value="#{generateInvoiceManagedBean.totalPrice}"/>
+
+                    </h:panelGrid>
+                </p:fieldset>
+                <br></br>
+                <br></br>
+                <h3 style="margin-top: 0">Terms and Conditions</h3>
+                <p>Please enter quotation terms and Conditions below</p>
+                <p:inputTextarea rows="10" cols="80" value="#{generateInvoiceManagedBean.inputText}" />
+                <h:outputText id="display" />
+                <br></br>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <p:commandButton value="Cancel" actionListener="orderswaitingforinvoice.xhtml" icon="ui-icon-check" />
+                <p:commandButton value="Generate Invoice" actionListener="#{generateInvoiceManagedBean.generateInvoice()}" icon="ui-icon-check" />
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
 </html>

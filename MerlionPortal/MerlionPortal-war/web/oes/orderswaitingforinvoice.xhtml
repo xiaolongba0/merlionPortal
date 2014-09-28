@@ -22,7 +22,7 @@
         <ui:define name="left">
 
             <h:form id="formMain">
-                               <p:panelMenu>
+                <p:panelMenu>
                     <p:submenu label="Home" styleClass="display:block">
                         <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
                     </p:submenu>
@@ -46,6 +46,8 @@
                             </c:if>
                             <c:if test="#{dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
                                 <p:menuitem value="Reject Order" url="returnorder.xhtml" />
+                                <p:menuitem value="Generate Invoice" url="orderswaitingforinvoice.xhtml" />
+
                             </c:if>
                         </p:submenu>
                     </c:if>
@@ -86,6 +88,7 @@
 
                 <br></br>
                 <br></br>
+                <p:commandButton action="oesindexpage.xhtml" value="Go Back"></p:commandButton>
                 <p:commandButton action="#{invoiceManagedBean.generateInvoice()}" value="Generate Invoice">
                 </p:commandButton> 
             </h:form>
