@@ -206,15 +206,14 @@ public class PurchaseOrderManagerSessionBean {
         }
         return false;
     }
-    
-    public Boolean checkQuotationValidity(int quoationId){
+
+    public Boolean checkQuotationValidity(int quoationId) {
         Boolean result;
-        Quotation myQuotation = em.find(Quotation.class,quoationId); 
-        if(myQuotation==null){
+        Quotation myQuotation = em.find(Quotation.class, quoationId);
+        if (myQuotation == null) {
             System.out.println("myQuotation is null");
             return false;
-        }
-        else if(myQuotation.getStatus()==3){
+        } else if (myQuotation.getStatus() == 3) {
             return true;
         }
         return false;
@@ -295,6 +294,8 @@ public class PurchaseOrderManagerSessionBean {
                 result = "Order invoiced";
             } else if (status == 6) {
                 result = "Request for return, waiting for approval";
+            } else if (status == 14) {
+                result = "Saved";
             } else {
                 result = "Rejected";
             }
