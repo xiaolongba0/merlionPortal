@@ -62,18 +62,7 @@ public class SalesOrderManagedBean {
 
     }
 
-    private List<String> setReasons() {
-        List<String> reasonList = new ArrayList();
-        reasonList.add("01 Wrong product");
-        reasonList.add("02 Wrong product quantity");
-        reasonList.add("03 Wrong price");
-        reasonList.add("04 Wrong ship to address");
-        reasonList.add("05 Wrong contact person");
-        reasonList.add("06 Credit check fail ");
-        reasonList.add("07 Others please contact sales for more information");
-        reasonList.add("08 Unable to fulfill this order");
-        return reasonList;
-    }
+ 
 
     public void generateSo() {
         if (myOrder.getStatus() == 1 && credit) {
@@ -138,10 +127,6 @@ public class SalesOrderManagedBean {
         this.userId = userId;
     }
 
-    public List<String> getRejectReasons() {
-        rejectReasons = this.setReasons();
-        return rejectReasons;
-    }
 
     public void setRejectReasons(List<String> rejectReasons) {
         this.rejectReasons = rejectReasons;
