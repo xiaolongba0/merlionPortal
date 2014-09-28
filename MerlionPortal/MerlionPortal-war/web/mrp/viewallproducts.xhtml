@@ -106,7 +106,8 @@
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{product.currency}" /></f:facet>
                             <f:facet name="input">
-                                <h:selectOneMenu value="#{product.currency}" style="width:100%">
+                                <h:selectOneMenu value="#{product.currency}" style="width:210px">
+                                    <f:selectItem itemLabel="Select Storage Bin Type" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{productViewEditManagedBean.currencies}" var="currency" itemLabel="#{currency}" itemValue="#{currency}" />
                                 </h:selectOneMenu>
                             </f:facet>
