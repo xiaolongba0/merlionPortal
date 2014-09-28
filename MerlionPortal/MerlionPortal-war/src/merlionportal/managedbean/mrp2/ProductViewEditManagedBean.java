@@ -128,7 +128,6 @@ public class ProductViewEditManagedBean {
 
     public List<String> getCurrencies() {
         this.currencies = productSessionBean.getListCurrency();
-        System.out.println("[In WAR FILE - get storage bin type]" + currencies);
         return currencies;
     }
 
