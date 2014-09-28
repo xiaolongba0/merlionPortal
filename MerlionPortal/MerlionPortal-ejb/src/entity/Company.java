@@ -65,7 +65,7 @@ public class Company implements Serializable {
     @Size(max = 45)
     @Column(name = "emailAddress")
     private String emailAddress;
-    @Size(max = 45)
+    @Size(max = 255)
     @Column(name = "description")
     private String description;
     @Column(name = "package")

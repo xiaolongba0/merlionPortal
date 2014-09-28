@@ -41,7 +41,7 @@ public class ProductOrderLineItem implements Serializable {
     @Basic(optional = false)
     @Column(name = "line")
     private Integer line;
-    @Size(max = 255)
+    @Size(max = 45)
     @Column(name = "status")
     private String status;
     @Column(name = "quantity")
