@@ -7,14 +7,13 @@ package merlionportal.managedbean.oes;
 
 import entity.ProductOrder;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
 
 /**
@@ -22,7 +21,7 @@ import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
  * @author mac
  */
 @Named(value = "salesOrderManagedBean")
-@Dependent
+@ViewScoped
 public class SalesOrderManagedBean {
 
     @EJB
@@ -33,7 +32,7 @@ public class SalesOrderManagedBean {
     private ProductOrder myOrder;
     private List<String> customerInfor;
     private List<String> rejectReasons;
-    private String reason;
+    private String rejectReason;
     private Boolean credit;
 
     public SalesOrderManagedBean() {
@@ -84,8 +83,8 @@ public class SalesOrderManagedBean {
     }
 
     public void rejectPo() {
-        System.out.println(reason);
-        int s = Integer.parseInt(reason.substring(0, 2));
+        System.out.println(rejectReason);
+        int s = Integer.parseInt(rejectReason.substring(0, 2));
         System.out.println("=======================" + s);
         s = s + 5;
         System.out.println("=======================" + s);
@@ -132,12 +131,14 @@ public class SalesOrderManagedBean {
         this.rejectReasons = rejectReasons;
     }
 
-    public String getReason() {
-        return reason;
+    public String getRejectReason() {
+        return rejectReason;
     }
 
-    public void setReason(String reason) {
-        this.reason = reason;
+    public void setRejectReason(String rejectReason) {
+        this.rejectReason = rejectReason;
     }
+
+  
 
 }

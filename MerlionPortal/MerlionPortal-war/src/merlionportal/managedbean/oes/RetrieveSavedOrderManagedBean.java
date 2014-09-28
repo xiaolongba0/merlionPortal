@@ -138,7 +138,7 @@ public class RetrieveSavedOrderManagedBean {
         System.out.println("this line will executed");
         System.out.println("this line  executed  finished");
         selectedOrder = null;
-        return "createso.xhtml";
+        return "createso.xhtml?faces-redirect=true";
     }
 
 }

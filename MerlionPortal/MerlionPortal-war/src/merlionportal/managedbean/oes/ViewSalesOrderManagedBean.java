@@ -122,8 +122,8 @@ public class ViewSalesOrderManagedBean {
     }
     
     public String myOrderStatus(ProductOrder myorder){
-        String result=purchaseOrdrMB.getOrderStatus(myorder);
-        return result;
+        return purchaseOrdrMB.getOrderStatus(myorder);
+        
     }
     
     public String viewOrderDetail(){
