@@ -6,7 +6,7 @@
 package merlionportal.oes.ordermanagement;
 
 import entity.ProductOrder;
-import java.util.List;
+import entity.ProductOrderLineItem;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
@@ -29,8 +29,37 @@ public class ProductReturnManagerSessionBean {
     }
 
     public ProductOrder searchForOrder(int orderId) {
-        order=em.find(ProductOrder.class, orderId);
+        order = em.find(ProductOrder.class, orderId);
         return order;
+    }
+
+    public void rejectAllOrder(ProductOrder myorder, int reason) {
+        myorder.setStatus(reason);
+        em.merge(myorder);
+    }
+
+    public void rejectLineItem(ProductOrder myOrder,ProductOrderLineItem myLine) {
+        Double myPrice=myLine.getPrice();
+        Double orderPrice=myOrder.getPrice();
+        orderPrice = orderPrice - myPrice;
+        myOrder.setPrice(orderPrice);
+        myLine.setStatus("Rejected");
+        myLine.setPrice(0.0);
+        em.merge(myLine);
+        em.merge(myOrder);
+
+    }
+    
+    public Boolean checkOrderValidity(int orderId){
+        System.out.println("================================"+orderId);
+        ProductOrder newOrder =this.searchForOrder(orderId);
+        System.out.println("stats"+newOrder.getStatus());
+        
+        if(newOrder.getStatus()==2||newOrder.getStatus()==3||newOrder.getStatus()==4||newOrder.getStatus()==5){
+            System.out.println("&&&%%%%%%%%%%%%%%%%%%%%%%% false");
+            return true;
+        }
+        return false;
     }
 
 }
