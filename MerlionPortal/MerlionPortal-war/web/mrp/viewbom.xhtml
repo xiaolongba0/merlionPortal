@@ -7,11 +7,11 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
-   <c:set var="import" value="templateuser.xhtml"/>
+    <c:set var="import" value="templateuser.xhtml"/>
     <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
         <c:set var="import" value="templateadmin.xhtml"/>
     </c:if>
-    
+
     <ui:composition template="${root}/templates/${import}">        
         <ui:param name="pageName" value="MRP II Add New Product" />
 
@@ -22,64 +22,67 @@
         </ui:define>
 
         <ui:define name="left">
-       
-    <p:panelMenu>
-                <p:menuitem value="MRP II" url="mrp.xhtml" />
-                <p:submenu label="Product Management">
 
-                    <p:submenu label="Product Catalog Management">
-                        <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
-                        <p:menuitem value="View, Edit and Delete" url="viewallproducts.xhtml" />
-                    </p:submenu>
-                    <p:submenu label="BOM Management">
-                        <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
-                        <p:menuitem value="View, Edit and Delete BOM" url="viewbom.xhtml" />
-                    </p:submenu>
-
+            <p:panelMenu>
+                <p:submenu label="HOME" styleClass="display:block">
+                    <p:menuitem value="MRP II Home" url="mrp.xhtml" />
                 </p:submenu>
-                <p:submenu label="Material Requirement Planning">
-
-                    <p:submenu label="Forecasting">
-                        <p:menuitem value="Forecasting" url="forecast.xhtml" />
+                <c:if test="#{dashboardBean.checkMRPCanManageProductComponent() || dashboardBean.loginedUser.userType == 'superuser'}">
+                    <p:submenu label="Product Management" styleClass="display:block">
+                        <p:submenu label="Product Catalog Management">
+                            <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
+                            <p:menuitem value="View, Edit and Delete" url="viewallproducts.xhtml" />
+                        </p:submenu>
+                        <p:submenu label="BOM Management">
+                            <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
+                            <p:menuitem value="View, Edit and Delete BOM" url="viewbom.xhtml" />
+                        </p:submenu>
                     </p:submenu>
+                </c:if>
+                <c:if test="#{dashboardBean.checkMRPCanManageUseForecast() || dashboardBean.loginedUser.userType == 'superuser'}">
+                    <p:submenu label="Material Requirement Planning" styleClass="display:block">
+                        <p:submenu label="Forecasting">
+                            <p:menuitem value="Forecasting" url="forecast.xhtml" />
+                        </p:submenu>
+                    </p:submenu>
+                </c:if>
 
-                </p:submenu>
             </p:panelMenu>
-           
-             </ui:define>
+
+        </ui:define>
 
         <ui:define name="right">
-        <h:form id="formMain">
-            <p:panel header="Select a product for viewing BOM" style="margin-bottom:10px;">
-                <h:panelGrid columns="4" cellpadding="5">
-                    <p:outputLabel for="product" value="Please select a product: " />
-                    <p:selectOneMenu required="true" id="product" value="#{productComponentViewEditManagedBean.productId}">
-                        <p:ajax listener="#{productComponentViewEditManagedBean.onProductChange}" update="components" />
-                        <f:selectItem itemLabel="Select a product" itemValue="" noSelectionOption="true" />
-                        <f:selectItems value="#{productComponentViewEditManagedBean.products}"  var="product" itemLabel="ID:#{product.productId} Name:#{product.productName}"  itemValue="#{product.productId}"/>
-                    </p:selectOneMenu>
-                </h:panelGrid>
-                <p:separator/>
-            </p:panel>
+            <h:form id="formMain">
+                <p:panel header="Select a product for viewing BOM" style="margin-bottom:10px;">
+                    <h:panelGrid columns="4" cellpadding="5">
+                        <p:outputLabel for="product" value="Please select a product: " />
+                        <p:selectOneMenu required="true" id="product" value="#{productComponentViewEditManagedBean.productId}">
+                            <p:ajax listener="#{productComponentViewEditManagedBean.onProductChange}" update="components" />
+                            <f:selectItem itemLabel="Select a product" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{productComponentViewEditManagedBean.products}"  var="product" itemLabel="ID:#{product.productId} Name:#{product.productName}"  itemValue="#{product.productId}"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                    <p:separator/>
+                </p:panel>
 
 
 
-            <p:growl id="msgs" showDetail="true"/>   
-            <p:dataTable id="components" var="component1" sortMode="multiple" value="#{productComponentViewEditManagedBean.components}" editable="true" style="margin-bottom:20px"
-                         widgetVar="components"
-                         emptyMessage="No Component found"
-                         rowKey="#{component.componentId}">
+                <p:growl id="msgs" showDetail="true"/>   
+                <p:dataTable id="components" var="component1" sortMode="multiple" value="#{productComponentViewEditManagedBean.components}" editable="true" style="margin-bottom:20px"
+                             widgetVar="components"
+                             emptyMessage="No Component found"
+                             rowKey="#{component.componentId}">
 
-                <f:facet name="header">
-                    <p:outputPanel>
-                        <h:outputText value="Search Component fields:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('components').filter()" />
-                    </p:outputPanel>
-                </f:facet>
-                <!--note: havent handle supplier info for viewing and editing -->
+                    <f:facet name="header">
+                        <p:outputPanel>
+                            <h:outputText value="Search Component fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('components').filter()" />
+                        </p:outputPanel>
+                    </f:facet>
+                    <!--note: havent handle supplier info for viewing and editing -->
 
-                <p:ajax event="rowEdit" listener="#{productComponentViewEditManagedBean.onRowEdit}" update=":formMain:msgs" />
-                <p:ajax event="rowEditCancel" listener="#{productComponentViewEditManagedBean.onRowCancel}" update=":formMain:msgs" />
+                    <p:ajax event="rowEdit" listener="#{productComponentViewEditManagedBean.onRowEdit}" update=":formMain:msgs" />
+                    <p:ajax event="rowEditCancel" listener="#{productComponentViewEditManagedBean.onRowCancel}" update=":formMain:msgs" />
 
 
                 <p:column filterBy="#{component1.componentId}" width="50" filterStyle="width: 32px" filterMatchMode="exact"  headerText="ID" style="width:105px">
@@ -125,57 +128,57 @@
                     </p:cellEditor>
                 </p:column>
 
-                <p:column headerText="Lead Time (in weeks)">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{component1.leadTime}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{component1.leadTime}" style="width:100%" label="Component leadTime"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
+                    <p:column headerText="Lead Time (in weeks)">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{component1.leadTime}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{component1.leadTime}" style="width:100%" label="Component leadTime"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
 
-                <p:column headerText="Supplier Company ID">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{component1.supplierCompanyId}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{component1.supplierCompanyId}" style="width:100%" label="Component supplier Company ID"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
-                <p:column headerText="Supplier Contact Person">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{component1.supplierContactPerson}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{component1.supplierContactPerson}" style="width:100%" label="Supplier Contact Person"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
-                <p:column headerText="Supplier Contact Number">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{component1.supplierContactNumber}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{component1.supplierContactNumber}" style="width:100%" label="Supplier Contact Number"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
-                <p:column headerText="Supplier Contact Email">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{component1.supplierContactEmail}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{component1.supplierContactEmail}" style="width:100%" label="Supplier Contact Email"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
+                    <p:column headerText="Supplier Company ID">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{component1.supplierCompanyId}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{component1.supplierCompanyId}" style="width:100%" label="Component supplier Company ID"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Supplier Contact Person">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{component1.supplierContactPerson}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{component1.supplierContactPerson}" style="width:100%" label="Supplier Contact Person"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Supplier Contact Number">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{component1.supplierContactNumber}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{component1.supplierContactNumber}" style="width:100%" label="Supplier Contact Number"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Supplier Contact Email">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{component1.supplierContactEmail}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{component1.supplierContactEmail}" style="width:100%" label="Supplier Contact Email"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
 
-                <p:column style="width:42px">
-                    <p:commandButton action="#{productComponentViewEditManagedBean.deleteComponent(component1)}" update="components" icon="ui-icon-trash" >
-                        <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this component?" icon="ui-icon-alert" />
-                    </p:commandButton> 
-                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  update=":formMain:msgs"/>
-                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                    </p:confirmDialog>
-                </p:column>
+                    <p:column style="width:42px">
+                        <p:commandButton action="#{productComponentViewEditManagedBean.deleteComponent(component1)}" update="components" icon="ui-icon-trash" >
+                            <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this component?" icon="ui-icon-alert" />
+                        </p:commandButton> 
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  update=":formMain:msgs"/>
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </p:column>
 
 
-                <p:column style="width:32px">
-                    <p:rowEditor />
-                </p:column>
+                    <p:column style="width:32px">
+                        <p:rowEditor />
+                    </p:column>
 
-            </p:dataTable>
-       
-        </h:form>
-      </ui:define>
+                </p:dataTable>
+
+            </h:form>
+        </ui:define>
     </ui:composition>
 </html>
 
