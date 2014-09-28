@@ -82,11 +82,11 @@
                 <p:ajax event="rowEditCancel" listener="#{productComponentViewEditManagedBean.onRowCancel}" update=":formMain:msgs" />
 
 
-                <p:column filterBy="#{component1.componentId}" filterMatchMode="exact"  headerText="ID" style="width:105px">
+                <p:column filterBy="#{component1.componentId}" filterStyle="width: 70px" filterMatchMode="exact"  headerText="ID" style="width:105px">
                     <h:outputText value="#{component1.componentId}" />
                 </p:column>
 
-                <p:column filterBy="#{component1.componentName}" filterMatchMode="contains" headerText="Name" style="width:105px">
+                <p:column filterBy="#{component1.componentName}" filterStyle="width: 70px" filterMatchMode="contains" headerText="Name" style="width:105px">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{component1.componentName}" /></f:facet>
                         <f:facet name="input"><p:inputText value="#{component1.componentName}" style="width:100%" label="Component Name"/></f:facet>
