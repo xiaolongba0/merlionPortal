@@ -15,10 +15,8 @@
     </h:head>
     <h:body>
         <h:form id="formMain">
-           <h1> View My Warehouses</h1>
-            <h:form id="formMain">
             <h1>Welcome to Transportation Management System</h1>
-             <p:menubar>
+            <p:menubar>
                 <p:menuitem value="TMS Home" url="tmsindex.xhtml"/>
 
                 <p:submenu label="Location" >
@@ -29,12 +27,12 @@
                     <p:menuitem value="Add Transportation Asset" url="addnewtasset.xhtml" />
                     <p:menuitem value="View Transportation Assets" url="viewalltasset.xhtml" />
                 </p:submenu>
-                <p:submenu label="TAsset Schedule" >
+<!--                <p:submenu label="TAsset Schedule" >
                     <p:menuitem value="Add TAsset Schedule" url="addnewtassetschedule.xhtml" />
                     <p:menuitem value="View TAsset Schedule" url="viewalltassetschedule.xhtml" />
-                </p:submenu>
+                </p:submenu>-->
             </p:menubar>
-                    </h:form>
+
             <br/>
             <p:panel id="panel" header="Add Schedule">
                 <p:ajaxStatus style="width:16px;height:16px;">
@@ -55,7 +53,7 @@
                             <p:selectOneMenu id="location" value="#{tAssetScheduleManagerBean.locationId}"  style="width:210px" required="true" requiredMessage="Please select a location">
                                 <p:ajax listener="#{tAssetScheduleManagerBean.onChangeLocation}" update="tAsset" />
                                 <f:selectItem itemLabel="Select Location" itemValue="" noSelectionOption="true" />
-                                <f:selectItems value="#{tAssetScheduleManagerBean.locations}" var="warehouse" itemLabel="ID:#{location.locationId}   Name:#{location.locationName}"  itemValue="#{location.locationId}"/>
+                                <f:selectItems value="#{tAssetScheduleManagerBean.locations}" var="location" itemLabel="ID:#{location.locationId}   Name:#{location.locationName}"  itemValue="#{location.locationId}"/>
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
@@ -64,9 +62,9 @@
                             <p:outputLabel for="tAsset" value="TransportationAsset ID: " />
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="tAsset" value="#{tAssetScheduleManagerBean.tAssetId}"  style="width:210px" required="true" requiredMessage="Please select a company">
-                                <f:selectItem itemLabel="Select Storage Bin" itemValue="" noSelectionOption="true" />
-                                <f:selectItems value="#{tAssetScheduleManagerBean.tAssets}" var="tAsset" itemLabel="ID:#{tAsset.tAssetId}   Name:#{tAsset.assetType}"  itemValue="#{tAsset.tAssetId}"/>
+                            <p:selectOneMenu id="tAsset" value="#{tAssetScheduleManagerBean.tAssetId}"  style="width:210px" required="true" requiredMessage="Please select a Asset">
+                                <f:selectItem itemLabel="Select A Transportation Asset" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{tAssetScheduleManagerBean.tAssets}" var="tAsset" itemLabel="ID:#{tAsset.assetId}   Name:#{tAsset.assetType}"  itemValue="#{tAsset.assetId}"/>
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
@@ -75,8 +73,8 @@
                             <p:outputLabel for="startDate" style="font-weight: bold" value="Start Date:   " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="startDate" requiredMessage="Start Date is required." id="storageBinName" value="#{tAssetScheduleManagerBean.startDate}">
-                                <f:validateLength minimum="1" maximum="25" />
+                            <p:inputText required="true" label="startDate" requiredMessage="Start Date is required." id="startDate" value="#{tAssetScheduleManagerBean.startDate}">
+                                   
                             </p:inputText>
                         </p:column>
                     </p:row>
@@ -84,17 +82,17 @@
                         <p:column>
                             <h:outputLabel for="endDate" style="font-weight: bold" value="End Date:   " />
                         </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="endDate" requiredMessage="End Date is required." id="description" value="#{tAssetScheduleManagerBean.endDate}">
-                                <f:validateLength minimum="1" maximum="100" />
+                        <p:column> 
+                            <p:inputText required="true" label="endDate" requiredMessage="Start Date is required." id="endDate" value="#{tAssetScheduleManagerBean.endDate}">
+                                <p:inputMask mask="true"
                             </p:inputText>
                         </p:column>
                     </p:row>  
- 
-                        
-                 </p:panelGrid>
+
+
+                </p:panelGrid>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <p:commandButton id="btn" value="Create New Storage Bin" update="panel" actionListener="#{tAssetScheduleManagerBean.createTassetSchedule}" ajax="true" />
+                <p:commandButton id="btn" value="Create New Transportation Schedule" update="panel" actionListener="#{tAssetScheduleManagerBean.createTassetSchedule}" ajax="true" />
             </p:panel>
 
         </h:form>

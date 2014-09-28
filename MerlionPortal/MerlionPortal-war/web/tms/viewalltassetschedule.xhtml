@@ -14,8 +14,6 @@
         </style>
     </h:head>
     <h:body>
-        <h:form id="formMain">
-           <h1> View My Warehouses</h1>
             <h:form id="formMain">
             <h1>Welcome to Transportation Management System</h1>
               <p:menubar>
@@ -29,14 +27,14 @@
                     <p:menuitem value="Add Transportation Asset" url="addnewtasset.xhtml" />
                     <p:menuitem value="View Transportation Assets" url="viewalltasset.xhtml" />
                 </p:submenu>
-                <p:submenu label="TAsset Schedule" >
+<!--                <p:submenu label="TAsset Schedule" >
                     <p:menuitem value="Add TAsset Schedule" url="addnewtassetschedule.xhtml" />
                     <p:menuitem value="View TAsset Schedule" url="viewalltassetschedule.xhtml" />
-                </p:submenu>
+                </p:submenu>-->
             </p:menubar>
-                   </h:form> 
+ 
             <br/>
-            <p:panel id="panel" header=" View Storage Type for A Warehouse">
+            <p:panel id="panel" header=" View Transportation Assets for A Location">
                 <p:ajaxStatus style="width:16px;height:16px;">
                     <f:facet name="start">
                         <h:graphicImage value="/img/load.gif" />
@@ -48,87 +46,68 @@
                 <p:panelGrid>
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="warehouse" value="Warehouse Name: " />
+                            <p:outputLabel for="location" value="location Name: " />
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="warehouse" value="#{storageBinViewEditManagedBean.warehouseId}"  style="width:300px" required="true" requiredMessage="Please select a warehouse">
-                                <p:ajax listener="#{storageBinViewEditManagedBean.onWarehouseChange}" update="storageType" />
-                                <f:selectItem itemLabel="Select Warehouse" itemValue="" noSelectionOption="true" />
-                                <f:selectItems value="#{storageBinViewEditManagedBean.warehouses}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId} Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"/>
+                            <p:selectOneMenu id="location" value="#{tAssetScheduleViewEditManagedBean.locationId}"  style="width:300px" required="true" requiredMessage="Please select a Location">
+                                <p:ajax listener="#{tAssetScheduleViewEditManagedBean.onLocationChange}" update="location" />
+                                <f:selectItem itemLabel="Select location" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{tAssetScheduleViewEditManagedBean.locations}" var="location" itemLabel="ID:#{location.locationId} Name:#{location.locationName}"  itemValue="#{location.locationId}"/>
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="storageType" value="Storage Type Name: " />
+                            <p:outputLabel for="tAsset" value="Transportation Asset Type: " />
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="storageType" value="#{storageBinViewEditManagedBean.storageTypeId}"  style="width:300px" required="true" requiredMessage="Please select a storage type">
-                                <p:ajax listener="#{storageBinViewEditManagedBean.onStorageTypeChange}" update="storagebinData" />
-                                <f:selectItem itemLabel="Select Storage Type" itemValue="" noSelectionOption="true" />
-                                <f:selectItems value="#{storageBinViewEditManagedBean.storagetypes}" var="storageType" itemLabel="ID:#{storageType.storageTypeId} Name:#{storageType.name}"  itemValue="#{storageType.storageTypeId}"/>
+                            <p:selectOneMenu id="tAsset" value="#{tAssetScheduleViewEditManagedBean.tassetid}"  style="width:300px" required="true" requiredMessage="Please select a Transportation Asset">
+                                <p:ajax listener="#{tAssetScheduleViewEditManagedBean.onTAssetChange}" update="tAsset" />
+                                <f:selectItem itemLabel="Select Transportation Asset" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{tAssetScheduleViewEditManagedBean.tassetss}" var="tAsset" itemLabel="ID:#{tAsset.assetId} Name:#{tAsset.assetType}"  itemValue="#{tAsset.assetId}"/>
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
 
-                <p:dataTable id="storagebinData" var="storagebin" sortMode="multiple" editable="true" value="#{storageBinViewEditManagedBean.bins}" 
-                             widgetVar="storageBinTable"
-                             emptyMessage="No Storage Bin found"
-                             rowKey="#{storagebin.storageBinId}">
+                <p:dataTable id="scheduleData" var="schedule" sortMode="multiple" editable="true" value="#{tAssetScheduleViewEditManagedBean.schedules}" 
+                             widgetVar="scheduleTable"
+                             emptyMessage="No schedule found"
+                             rowKey="#{schedule.scheduleId}">
 
                     <f:facet name="header">                    
                         <p:outputPanel>
-                            <h:outputText value="Search Storage Bin fields:" />
-                            <p:inputText id="globalFilter" onkeyup="PF('storageBinTable').filter()" />
+                            <h:outputText value="Search Schedule fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('scheduleTable').filter()" />
                         </p:outputPanel>
                     </f:facet>
 
-                    <p:ajax event="rowEdit" listener="#{storageBinViewEditManagedBean.onRowEdit}"/>
-                    <p:ajax event="rowEditCancel" listener="#{storageBinViewEditManagedBean.onRowCancel}"/>                
+                    <p:ajax event="rowEdit" listener="#{tAssetScheduleViewEditManagedBean.onRowEdit}"/>
+                    <p:ajax event="rowEditCancel" listener="#{tAssetScheduleViewEditManagedBean.onRowCancel}"/>                
 
-                    <p:column filterBy="#{storagebin.storageBinId}" filterMatchMode="exact" headerText="Storage Bin ID" >
-                        <h:outputText value="#{storagebin.storageBinId}" />
+                    <p:column filterBy="#{schedule.scheduleId}" filterMatchMode="exact" headerText="Schedule ID" >
+                        <h:outputText value="#{schedule.scheduleId}" />
                     </p:column>
 
-                    <p:column  filterBy="#{storagebin.binName}" filterMatchMode="contains" headerText="Bin Name">
+                    <p:column  headerText="startDate" filterBy="#{schedule.startDate}" filterMatchMode="contains">
                         <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{storagebin.binName}" /></f:facet>
-                            <f:facet name="input"><p:inputText value="#{storagebin.binName}" style="width:100%" label="Bin Name"/></f:facet>
-                        </p:cellEditor>
-                    </p:column>  
-
-                    <p:column  headerText="Description" filterBy="#{storagebin.description}" filterMatchMode="contains">
-                        <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{storagebin.description}" /></f:facet>
-                            <f:facet name="input"><p:inputText value="#{storagebin.description}" style="width:100%" label="Description"/></f:facet>
+                            <f:facet name="output"><h:outputText value="#{schedule.startDate}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{sschedule.startDate}" style="width:100%" label="Description"/></f:facet>
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column  headerText="Bin Type" filterBy="#{storagebin.binType}" filterMatchMode="contains">
+                    <p:column  headerText="endDate" filterBy="#{schedule.endDate}" filterMatchMode="contains">
                         <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{storagebin.binType}" /></f:facet>
-                            <f:facet name="input"><p:inputText value="#{storagebin.binType}" style="width:100%" label="Bin Type"/></f:facet>
+                            <f:facet name="output"><h:outputText value="#{schedule.endDate}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{schedule.endDate}" style="width:100%" label="Bin Type"/></f:facet>
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column  headerText="Max Quantity" filterBy="#{storagebin.maxQuantity}" filterMatchMode="contains">
-                        <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{storagebin.maxQuantity}" /></f:facet>
-                            <f:facet name="input"><p:inputText value="#{storagebin.maxQuantity}" style="width:100%" label="Max Quantity"/></f:facet>
-                        </p:cellEditor>
-                    </p:column>
 
-                    <p:column  headerText="Max Weight" filterBy="#{storagebin.maxWeight}" filterMatchMode="contains">
-                        <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{storagebin.maxWeight}" /></f:facet>
-                            <f:facet name="input"><p:inputText value="#{storagebin.maxWeight}" style="width:100%" label="Max Weight"/></f:facet>
-                        </p:cellEditor>
-                    </p:column>
 
-                    <p:column headerText = "Delete Storage Bin">
-                        <p:commandButton action="#{storageBinViewEditManagedBean.deleteStorageBin(storagebin)}" update="storagebinData" value="Delete"  >
-                            <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this storage type?" icon="ui-icon-alert" />
+                    <p:column headerText = "Delete Schedule">
+                        <p:commandButton action="#{tAssetScheduleViewEditManagedBean.deleteAssetSchedule(schedule)}" update="scheduleData" value="Delete"  >
+                            <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this schedule?" icon="ui-icon-alert" />
                         </p:commandButton> 
                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                             <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
