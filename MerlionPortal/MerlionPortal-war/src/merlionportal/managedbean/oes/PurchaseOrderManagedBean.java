@@ -238,18 +238,16 @@ public class PurchaseOrderManagedBean {
 
     public void saveOrder() {
         int newPoId = purchaseMB.createPO(shipto, companyId, userId, qutatuonId, contactPerson, contactNumber);
-        if (newPoId < 0) {
-            System.out.println("PO is null");
-        } else {
-            myPo = this.retrievePO(newPoId);
+        myPo = this.retrievePO(newPoId);
+        if (itemList != null) {
             for (Object o : itemList) {
                 ProductOrderLineItem pLine = (ProductOrderLineItem) o;
                 purchaseMB.createProductList(pLine, myPo);
             }
-            purchaseMB.saveOrder(myPo);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Saved", "Order has been saved"));
-
         }
+        purchaseMB.saveOrder(myPo);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Saved", "Order has been saved"));
+
     }
 
     public void submitOrder(ActionEvent event) {
@@ -288,7 +286,7 @@ public class PurchaseOrderManagedBean {
     }
 
     public Boolean checkSubmittable() {
-        if(myPo==null){
+        if (myPo == null) {
             return true;
         }
         if (myPo.getStatus() == 2 || myPo.getStatus() == 14) {

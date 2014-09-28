@@ -29,7 +29,7 @@ public class GenerateInvoiceManagedBean {
     private Integer companyId;
     private Integer userId;
     private ProductOrder unInvoiced;
-    private Double totalPrice=0.0;
+    private Double totalPrice = 0.0;
     private String inputText;
 
     @PostConstruct
@@ -51,14 +51,17 @@ public class GenerateInvoiceManagedBean {
             }
         }
         unInvoiced = (ProductOrder) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("unInvoiced");
+        System.out.println("Generate Invoice" + unInvoiced.getProductPOId());
+        System.out.println("Generate Invoice" + unInvoiced.getContactPersonName());
         totalPrice = this.getPrice();
 
     }
 
     private Double getPrice() {
-       for (Object o : unInvoiced.getProductOrderLineItemList()) {
+        System.out.println("get total price Invoice");
+        for (Object o : unInvoiced.getProductOrderLineItemList()) {
             ProductOrderLineItem line = (ProductOrderLineItem) o;
-            totalPrice = totalPrice+line.getPrice()*line.getQuantity();
+            totalPrice = totalPrice + line.getPrice() * line.getQuantity();
             System.out.println("this line ****************????");
         }
         return totalPrice;
@@ -98,7 +101,7 @@ public class GenerateInvoiceManagedBean {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Credit check pass"));
         int orderId = unInvoiced.getProductPOId();
         int creator = unInvoiced.getCreatorId();
-        invoiceMB.generateInvoice(unInvoiced, orderId, totalPrice,creator,inputText);
+        invoiceMB.generateInvoice(unInvoiced, orderId, totalPrice, creator, inputText);
         return "orderswaitingforinvoice.xhtml";
     }
 

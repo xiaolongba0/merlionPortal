@@ -53,6 +53,7 @@ public class MakePayamentManagedBean {
                 ex.printStackTrace();
             }
         }
+        unpaidOrderList=paymentMB.getAllUnpaidOrder(userId);
     }
 
     public List<ProductOrder> getUnpaidOrderList() {
@@ -76,7 +77,7 @@ public class MakePayamentManagedBean {
         Map<String, Object> sessionMap = externalContext.getSessionMap();
         sessionMap.put("unpaidOrder", selectedOrder);
 
-        return "recordpayment.xhtml";
+        return "recordpayment.xhtml?faces-redirect=true;";
     }
 
 }
