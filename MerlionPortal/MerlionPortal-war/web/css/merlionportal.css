@@ -23,7 +23,7 @@ li > .black-link{
 }
 .service-image{
     width:500px;
-    height:auto;
+    height:230px !important;
 }
 .service-title{
     font-family:Century Gothic, sans-serif;
@@ -169,6 +169,7 @@ body{
     height: 100px; /* .push must be the same height as .footer */
 }
 //************************************************//
+
 
 // Sub-system layouts
 .no-border{
