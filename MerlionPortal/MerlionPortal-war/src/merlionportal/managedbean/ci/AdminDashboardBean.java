@@ -136,6 +136,19 @@ public class AdminDashboardBean implements Serializable {
     }
 //    END OF OES
     
+    
+//    MRP
+    public boolean checkMRPCanManageProductComponent(){
+        return systemAccessRightSB.checkMRPManageProduct(userId);
+    }
+    public boolean checkMRPCanManageUseForecast(){
+        return systemAccessRightSB.checkMRPUseForecast(userId);
+    }
+    public boolean checkMRPCanGenerateMRPList(){
+        return systemAccessRightSB.checkMRPGenerateMRPList(userId);
+    }
+//    END OF MRP
+    
     public SystemUser getLoginedUser() {
         return loginedUser;
     }
