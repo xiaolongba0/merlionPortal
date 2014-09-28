@@ -65,7 +65,6 @@ public class ForecastResultManagedBean implements Serializable {
     private SystemUser loginedUser;
 
     //variables for forecasting
-    int size = 0;
 
     @PostConstruct
     public void init() {

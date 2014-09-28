@@ -49,9 +49,9 @@ public class ProductViewEditManagedBean {
     private Integer productId;
     private Product product;
     private final static String[] productTypes;
-    private final static String[] currencies;
+    private List<String> currencies;
     private final static String[] categories;
-    
+
     private SystemUser loginedUser;
 
     public ProductViewEditManagedBean() {
@@ -59,8 +59,8 @@ public class ProductViewEditManagedBean {
 
     @PostConstruct
     public void init() {
-        
-         boolean redirect = true;
+
+        boolean redirect = true;
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
             loginedUser = uamb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
             companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
@@ -75,7 +75,7 @@ public class ProductViewEditManagedBean {
                 ex.printStackTrace();
             }
         }
-        
+
         products = productSessionBean.getMyProducts(companyId);
     }
 
@@ -84,28 +84,27 @@ public class ProductViewEditManagedBean {
         productTypes[0] = "Manufacturing";
         productTypes[1] = "Non-Manufacturing";
 
-        currencies = new String[20];
-        currencies[0] = "US Dollar (USD)";
-        currencies[1] = "European Euro (EUR)";
-        currencies[2] = "Japan Yen (JPY)";
-        currencies[3] = "Pound Sterling (GBP)";
-        currencies[4] = "Australian Dollar (AUD)";
-        currencies[5] = "Swiss Franc (CHF)";
-        currencies[6] = "Canadian Dollar";
-        currencies[7] = "Hong Kong Dollar (HKD)";
-        currencies[8] = "Swedish Krona (SEK)";
-        currencies[9] = "New Zealand Dollar (NZD)";
-        currencies[10] = "South African Rand (ZAR)";
-        currencies[11] = "Russian Ruble (RUB)";
-        currencies[12] = "Indian Rupee (INR)";
-        currencies[13] = "Singapore Dollar (SGD)";
-        currencies[14] = "Bulgarian Lev (BGN)";
-        currencies[15] = "Chinese Yuan Renminbi (CNY)";
-        currencies[16] = "Thailand Baht (THB)";
-        currencies[17] = "Hungary Forint(HUF)";
-        currencies[18] = "Norwegian Krone (NOK)";
-        currencies[19] = "Mexican Peso (MXN)";
-
+        /*  currencies = new String[20];
+         currencies[0] = "US Dollar (USD)";
+         currencies[1] = "European Euro (EUR)";
+         currencies[2] = "Japan Yen (JPY)";
+         currencies[3] = "Pound Sterling (GBP)";
+         currencies[4] = "Australian Dollar (AUD)";
+         currencies[5] = "Swiss Franc (CHF)";
+         currencies[6] = "Canadian Dollar";
+         currencies[7] = "Hong Kong Dollar (HKD)";
+         currencies[8] = "Swedish Krona (SEK)";
+         currencies[9] = "New Zealand Dollar (NZD)";
+         currencies[10] = "South African Rand (ZAR)";
+         currencies[11] = "Russian Ruble (RUB)";
+         currencies[12] = "Indian Rupee (INR)";
+         currencies[13] = "Singapore Dollar (SGD)";
+         currencies[14] = "Bulgarian Lev (BGN)";
+         currencies[15] = "Chinese Yuan Renminbi (CNY)";
+         currencies[16] = "Thailand Baht (THB)";
+         currencies[17] = "Hungary Forint(HUF)";
+         currencies[18] = "Norwegian Krone (NOK)";
+         currencies[19] = "Mexican Peso (MXN)";  */
         categories = new String[13];
         categories[0] = "Food - Fresh Products";
         categories[1] = "Food - Frozen Products";
@@ -127,7 +126,9 @@ public class ProductViewEditManagedBean {
         return productTypes;
     }
 
-    public String[] getCurrencies() {
+    public List<String> getCurrencies() {
+        this.currencies = productSessionBean.getListCurrency();
+        System.out.println("[In WAR FILE - get storage bin type]" + currencies);
         return currencies;
     }
 
@@ -197,14 +198,13 @@ public class ProductViewEditManagedBean {
     }
 
     public List<Product> getMyCompanyProducts() {
-         return products;
+        return products;
     }
-    
-    
+
     //ok. But see if user input (in xhtml) can be in Integer type directly.
     public void deleteProduct(Product product) {
         try {
-            productId = product.getProductId();      
+            productId = product.getProductId();
             productSessionBean.deleteProducts(companyId, productId);
             products.remove(product);
         } catch (Exception ex) {
@@ -213,7 +213,7 @@ public class ProductViewEditManagedBean {
     }
 
     public void onRowEdit(RowEditEvent event) {
-        
+
         product = new Product();
         product = (Product) event.getObject();
         System.err.println("product.getProductName(): " + product.getProductName());
