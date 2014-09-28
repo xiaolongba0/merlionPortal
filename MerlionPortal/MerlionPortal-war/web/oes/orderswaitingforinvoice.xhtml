@@ -4,15 +4,14 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <c:set var="import" value="templateuser.xhtml"/>
     <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
         <c:set var="import" value="templateadmin.xhtml"/>
     </c:if>
     <ui:composition template="${root}/templates/${import}">        
-        <ui:param name="pageName" value="Display SO" />
+        <ui:param name="pageName" value="Display PO" />
 
         <ui:define name="more-imports">
             <ui:insert>
@@ -34,14 +33,13 @@
                     <p:submenu label="Quotation" styleClass="display:block">
                         <p:menuitem value="View All Request" url="viewallrequests.xhtml" />
                         <p:menuitem value="View Quotation" url="displayallquotations.xhtml" />
-                        <p:menuitem value="Order Status" url="displayallso.xhtml" />
                     </p:submenu>
 
                     <p:submenu label="Orders" styleClass="display:block">
                         <p:menuitem value="Create Order" url="pogeneration.xhtml" />
                         <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
-                        <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" />
-                        <p:menuitem value="All Sales Order" url="viewallso.xhtml" />
+                        <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" />   
+                        <p:menuitem value="Order Status" url="displayallso.xhtml" />
                     </p:submenu>
                     <p:submenu label="Make Pyament" styleClass="display:block">
                         <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />
@@ -56,40 +54,29 @@
 
         <ui:define name="right">
             <h:form>  
-                <p:dataTable id="allso" var="salesorder" value="#{viewSalesOrderManagedBean.salesOrderList}" 
-                             filteredValue="#{viewSalesOrderManagedBean.filteredOrder}"
-                             selectionMode="single" selection="#{viewSalesOrderManagedBean.selectedOrder}" 
-                             rowKey="#{salesorder.productPOId}"
-                             widgetVar="salesOrderTalbe"
-                             emptyMessage="No Order found with given criteria">
+                <p:dataTable id="allUninvoiced" var="productOrder" value="#{invoiceManagedBean.allUnInvoiced}" selectionMode="single" selection="#{invoiceManagedBean.selectedOrder}" rowKey="#{productOrder.productPOId}">
                     <p:column  
-                        filterBy="#{salesorder.productPOId}" 
-                        filterMatchMode="exact" headerText="SO Number" >
-                        <h:outputText value="#{salesorder.productPOId}" />
+                        filterBy="#{productOrder.productPOId}" 
+                        filterMatchMode="exact" headerText="Saved Id" >
+                        <h:outputText value="#{productOrder.productPOId}" />
                     </p:column>
                     <p:column  
-                        filterBy="#{salesorder.creatorId}" 
-                        filterMatchMode="exact" headerText="Customer" >
-                        <h:outputText value="#{salesorder.creatorId}" />
-                    </p:column>
-                    <p:column filterBy="#{viewSalesOrderManagedBean.myOrderStatus(salesorder)}" filterMatchMode="in" headerText="Status">
-                        <f:facet name="filter">
-                            <p:selectCheckboxMenu label="Select" 
-                                                  onchange="PF('salesOrderTalbe').filter()" 
-                                                  panelStyle="width:150px" scrollHeight="150">
-                                <f:selectItems value="#{viewSalesOrderManagedBean.statusList}" />
-                            </p:selectCheckboxMenu>
-                        </f:facet>
-                        <h:outputText value="#{viewSalesOrderManagedBean.myOrderStatus(salesorder)}" />
+                        filterBy="#{productOrder.creatorId}" 
+                        filterMatchMode="exact" headerText="Creator" >
+                        <h:outputText value="#{productOrder.creatorId}" />
                     </p:column>
                     <p:column headerText="Create Date">
-                        <h:outputText value="#{quotation.createDate}" />
+                        <h:outputText value="#{productOrder.createdDate}" />
                     </p:column>
-                </p:dataTable> 
+                </p:dataTable>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
                 <br></br>
-                <p:commandButton action="#{viewSalesOrderManagedBean.viewOrderDetail()}" value="View Order">
-                </p:commandButton>  
+                <br></br>
+                <p:commandButton action="#{invoiceManagedBean.generateInvoice()}" value="Generate Invoice">
+                </p:commandButton> 
             </h:form>
+
         </ui:define>
     </ui:composition>
 </html>

@@ -43,7 +43,9 @@
                         <p:menuitem value="Order Status" url="displayallso.xhtml" />
 
                     </p:submenu>
-
+                    <p:submenu label="Make Pyament" styleClass="display:block">
+                        <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />
+                    </p:submenu>
                     <p:submenu label="Reports" styleClass="display:block">
                         <p:menuitem value="Sales Reports" url="#" />
                     </p:submenu>
@@ -73,50 +75,52 @@
             </h:form>
             <br></br>
             <br></br>
-            <p:dataTable var="lineItem" value="#{salesOrderManagedBean.myOrder.productOrderLineItemList}">
-                <p:column headerText="Product">
-                    <h:outputText value="#{lineItem.productproductId.productName}" />
-                </p:column>
+            <h:form>
+                <p:dataTable var="lineItem" value="#{salesOrderManagedBean.myOrder.productOrderLineItemList}">
+                    <p:column headerText="Product">
+                        <h:outputText value="#{lineItem.productproductId.productName}" />
+                    </p:column>
 
-                <p:column headerText="Description">
-                    <h:outputText value="#{lineItem.productproductId.description}" />
-                </p:column>
+                    <p:column headerText="Description">
+                        <h:outputText value="#{lineItem.productproductId.description}" />
+                    </p:column>
 
-                <p:column headerText="Category">
-                    <h:outputText value="#{lineItem.productproductId.category}" />
-                </p:column>
-                <p:column headerText="Unit Price">
-                    <h:outputText value="#{lineItem.price}" />
-                </p:column>
-                <p:column headerText="Quantity">
-                    <h:outputText value="#{lineItem.quantity}" />
-                </p:column>
-                <p:column headerText="Value">
-                    <h:outputText value="#{lineItem.quantity*lineItem.price}" />
-                </p:column>
-            </p:dataTable>
-            <br></br>
-            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-            <br></br>
-            <p:commandButton action="viewallpo" value="Cancel">
-            </p:commandButton> 
-            <p:commandButton action="#{salesOrderManagedBean.checkCredit()}" value=" Check customer credit">
-            </p:commandButton> 
-            <p:commandButton action="#{salesOrderManagedBean.generateSo()}" value=" Generat Sales Order">
-            </p:commandButton> 
-            <br></br>
-            <br></br>
-            <p:panel header="Reject Purchase Order" style="margin-bottom:10px;">
-                <h:panelGrid columns="2" cellpadding="5">
-                    <p:outputLabel value="Reject Reson " />
-                    <p:selectOneMenu id="reson" value="#{salesOrderManagedBean.reason}" style="width:150px">
-                        <f:selectItem itemLabel="Select Reject Reson" itemValue="" noSelectionOption="true" />
-                        <f:selectItems value="#{salesOrderManagedBean.rejectReasons}" />
-                    </p:selectOneMenu>
-                </h:panelGrid>
-                <p:separator />
-                <p:commandButton value="Reject this Order" actionListener="#{salesOrderManagedBean.rejectPo()}" icon="ui-icon-check" />
-            </p:panel>
+                    <p:column headerText="Category">
+                        <h:outputText value="#{lineItem.productproductId.category}" />
+                    </p:column>
+                    <p:column headerText="Unit Price">
+                        <h:outputText value="#{lineItem.price}" />
+                    </p:column>
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{lineItem.quantity}" />
+                    </p:column>
+                    <p:column headerText="Value">
+                        <h:outputText value="#{lineItem.quantity*lineItem.price}" />
+                    </p:column>
+                </p:dataTable>
+                <br></br>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <br></br>
+                <p:commandButton action="viewallpo" value="Cancel">
+                </p:commandButton> 
+                <p:commandButton action="#{salesOrderManagedBean.checkCredit()}" value=" Check customer credit">
+                </p:commandButton> 
+                <p:commandButton action="#{salesOrderManagedBean.generateSo()}" value=" Generat Sales Order">
+                </p:commandButton> 
+                <br></br>
+                <br></br>
+                <p:panel header="Reject Purchase Order" style="margin-bottom:10px;">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel value="Reject Reson " />
+                        <p:selectOneMenu id="reson" value="#{salesOrderManagedBean.reason}" style="width:150px">
+                            <f:selectItem itemLabel="Select Reject Reson" value="#{salesOrderManagedBean.reason}" noSelectionOption="true" />
+                            <f:selectItems value="#{salesOrderManagedBean.rejectReasons}" />
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                    <p:separator />
+                    <p:commandButton value="Reject this Order" actionListener="#{salesOrderManagedBean.rejectPo()}" icon="ui-icon-check" />
+                </p:panel>
+            </h:form>
         </ui:define>
     </ui:composition>
 </html>
