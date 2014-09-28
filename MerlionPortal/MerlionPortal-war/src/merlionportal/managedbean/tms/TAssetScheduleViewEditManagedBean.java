@@ -36,10 +36,10 @@ public class TAssetScheduleViewEditManagedBean {
     private UserAccountManagementSessionBean uamb;
 
     private List<Location> locations;
-    private List<TransportationAsset> tAssets;
+    private List<TransportationAsset> tassetss;
     private List<AssetSchedule> schedules;
     private Integer locationId;
-    private Integer tAssetId;
+    private Integer tassetid;
     private AssetSchedule schedule;
 
     private SystemUser loginedUser;
@@ -75,13 +75,13 @@ public class TAssetScheduleViewEditManagedBean {
     
     public void onLocationChange() {
         if (locationId != null) {
-            tAssets = tamsb.viewtAssetForALocation(locationId);
+            tassetss = tamsb.viewtAssetForALocation(locationId);
         }
     }
 
     public void onTAssetChange() {
-        if (tAssetId != null) {
-            schedules = tamsb.viewTAssetScheduleforTAsset(tAssetId);
+        if (tassetid != null) {
+            schedules = tamsb.viewTAssetScheduleforTAsset(tassetid);
         }
     }
  
@@ -159,17 +159,17 @@ public class TAssetScheduleViewEditManagedBean {
     }
 
     /**
-     * @return the tAssets
+     * @return the tassetss
      */
     public List<TransportationAsset> gettAssets() {
-        return tAssets;
+        return tassetss;
     }
 
     /**
-     * @param tAssets the tAssets to set
+     * @param tAssets the tassetss to set
      */
     public void settAssets(List<TransportationAsset> tAssets) {
-        this.tAssets = tAssets;
+        this.tassetss = tAssets;
     }
 
     /**
@@ -201,17 +201,17 @@ public class TAssetScheduleViewEditManagedBean {
     }
 
     /**
-     * @return the tAssetId
+     * @return the tassetid
      */
-    public Integer gettAssetId() {
-        return tAssetId;
+    public Integer getTassetid() {
+        return tassetid;
     }
 
     /**
-     * @param tAssetId the tAssetId to set
+     * @param tassetid the tassetid to set
      */
-    public void settAssetId(Integer tAssetId) {
-        this.tAssetId = tAssetId;
+    public void setTassetid(Integer tassetid) {
+        this.tassetid = tassetid;
     }
 
     /**
@@ -254,6 +254,14 @@ public class TAssetScheduleViewEditManagedBean {
      */
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
+    }
+
+    public List<TransportationAsset> getTassetss() {
+        return tassetss;
+    }
+
+    public void setTassetss(List<TransportationAsset> tassetss) {
+        this.tassetss = tassetss;
     }
  
 }

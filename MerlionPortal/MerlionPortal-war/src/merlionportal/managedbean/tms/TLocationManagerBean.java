@@ -72,7 +72,7 @@ public class TLocationManagerBean {
 
         try {
             System.out.println("[INSIDE WAR FILE]===========================Create New location");
-            newLocationId = getTassetManagementSessionBean().addNewLocation(locationName, locationType, companyId);
+            newLocationId = tassetManagementSessionBean.addNewLocation(locationName, locationType, companyId);
             if(newLocationId > -1){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Location Added!", ""));
             clearAllFields();
@@ -93,19 +93,7 @@ public class TLocationManagerBean {
         locationType = null;
   
     }
-    /**
-     * @return the tassetManagementSessionBean
-     */
-    public TAssetmanagementSessionBean getTassetManagementSessionBean() {
-        return tassetManagementSessionBean;
-    }
-
-    /**
-     * @param tassetManagementSessionBean the tassetManagementSessionBean to set
-     */
-    public void setTassetManagementSessionBean(TAssetmanagementSessionBean tassetManagementSessionBean) {
-        this.tassetManagementSessionBean = tassetManagementSessionBean;
-    }
+   
 
     /**
      * @return the uamb

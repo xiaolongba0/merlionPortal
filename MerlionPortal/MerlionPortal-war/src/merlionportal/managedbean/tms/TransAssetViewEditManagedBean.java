@@ -25,13 +25,14 @@ import entity.SystemUser;
  *
  * @author Yuanbo
  */
-@Named(value = "tAssetViewEditManagedBean")
+@Named(value = "TTassetViewEditManagedBean")
 @ViewScoped
-public class TAssetViewEditManagedBean {
-   @EJB
+public class TransAssetViewEditManagedBean {
+
+    @EJB
     private TAssetmanagementSessionBean tassetManagementSessionBean;
-   @EJB
-   private UserAccountManagementSessionBean uamb;
+    @EJB
+    private UserAccountManagementSessionBean uamb;
 
     private List<TransportationAsset> tassets;
     private List<Location> locations;
@@ -39,7 +40,7 @@ public class TAssetViewEditManagedBean {
     private String description;
 
     private Integer locationId;
-    private String assetType; 
+    private String assetType;
     private Integer capacity;
     private Integer speed;
     private Integer price;
@@ -51,8 +52,9 @@ public class TAssetViewEditManagedBean {
 
     private SystemUser loginedUser;
 
-    public TAssetViewEditManagedBean() {
+    public TransAssetViewEditManagedBean() {
     }
+
     @PostConstruct
     public void init() {
 
@@ -75,7 +77,7 @@ public class TAssetViewEditManagedBean {
 
     }
 
-    public List<TransportationAsset> onLocationChange() {
+    public void onLocationChange() {
         System.out.println("===============================[In Managed Bean - get Locations]");
         System.out.println("[In Managed Bean - getLocation] location ID : " + locationId);
         if (locationId != null) {
@@ -84,18 +86,18 @@ public class TAssetViewEditManagedBean {
                 System.out.println("============== FAILED TO VIEW STORAGE TYPE ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Storage Type. Please check if warehouse ID exists! ", ""));
             }
-            return tassets;
-        } 
-        return null;
+
+        }
+
     }
-    
+
     public void onRowEdit(RowEditEvent event) {
         System.out.println("IN ROW EDIT =================");
         tAsset = new TransportationAsset();
         tAsset = (TransportationAsset) event.getObject();
         System.out.println("[AFTER EDIT] Asset.getName(): " + tAsset.getAssetType());
         tassetManagementSessionBean.edittAsset(tAsset.getCapacity(), tAsset.getPrice(), tAsset.getSpeed(), tAsset.getStatus(), tAsset.getAssetId());
-        FacesMessage msg = new FacesMessage("Transportation Asset with tAsset ID = " + tAsset.getAssetId()+ " has sucessfully been edited");
+        FacesMessage msg = new FacesMessage("Transportation Asset with tAsset ID = " + tAsset.getAssetId() + " has sucessfully been edited");
 
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
@@ -115,7 +117,6 @@ public class TAssetViewEditManagedBean {
         }
     }
 
-    
     public void deleteTAsset(TransportationAsset tAsset) {
         try {
             System.out.println("[In WAR FILE - Delete TransportationAsset Function]" + tAsset);
@@ -247,7 +248,5 @@ public class TAssetViewEditManagedBean {
     public void setLoginedUser(SystemUser loginedUser) {
         this.loginedUser = loginedUser;
     }
-
-    
 
 }
