@@ -343,7 +343,7 @@ public class QuotationManagedBean implements Serializable {
     }
 
     public SystemUser getMycustomer() {
-        mycustomer = quotationMB.findCustomer(selectedQuotation.getCustomerId());
+        mycustomer = quotationMB.findCustomer(selectedRequest.getCustomerId());
         return mycustomer;
     }
 
