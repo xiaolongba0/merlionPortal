@@ -18,9 +18,9 @@ li > .black-link{
     text-decoration: none;
 }
 
-.input-addon-fixedwidth{
+/*.input-addon-fixedwidth{
     width:120px;
-}
+}*/
 .service-image{
     width:500px;
     height:230px !important;
@@ -233,4 +233,8 @@ ol.c {
 
 ol.d {
     list-style-type: lower-alpha;
+}
+
+.ui-icon-triangle-1-s{
+    background-position: -68px -16px;
 }
