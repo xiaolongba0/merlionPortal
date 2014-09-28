@@ -30,6 +30,32 @@ public class ProductSessionBean {
         return false;
     }
 
+    public List<String> getListCurrency() {
+        List<String> currencies = new ArrayList<>();
+        currencies.add("US Dollar (USD)");
+        currencies.add("European Euro (EUR)");
+        currencies.add("Japan Yen (JPY)");
+        currencies.add("Pound Sterling (GBP)");
+        currencies.add("Australian Dollar (AUD)");
+        currencies.add("Swiss Franc (CHF)");
+        currencies.add("Canadian Dollar");
+        currencies.add("Hong Kong Dollar (HKD)");
+        currencies.add("Swedish Krona (SEK)");
+        currencies.add("New Zealand Dollar (NZD)");
+        currencies.add("South African Rand (ZAR)");
+        currencies.add("Russian Ruble (RUB)");
+        currencies.add("Indian Rupee (INR)");
+        currencies.add("Singapore Dollar (SGD)");
+        currencies.add("Bulgarian Lev (BGN)");
+        currencies.add("Chinese Yuan Renminbi (CNY)");
+        currencies.add("Thailand Baht (THB)");
+        currencies.add("Hungary Forint(HUF)");
+        currencies.add("Norwegian Krone (NOK)");
+        currencies.add("Mexican Peso (MXN)");
+
+        return currencies;
+    }
+
     public List<Product> getAllProducts() {
         Query query = entityManager.createQuery("SELECT e FROM Product e");
         return query.getResultList();
