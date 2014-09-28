@@ -32,7 +32,7 @@ public class QuotationManagedBean implements Serializable {
 
     @EJB
     private QuotationManagerSessionBean quotationMB;
-    
+
     @EJB
     private SystemAccessRightSessionBean systemAccessRightSB;
 
@@ -196,7 +196,7 @@ public class QuotationManagedBean implements Serializable {
     }
 
     public SystemUser getCutomer() {
-        int customerId = selectedRequest.getCustomerId();
+        int customerId = selectedQuotation.getCustomerId();
         cutomer = quotationMB.findCustomer(customerId);
         return cutomer;
     }
@@ -291,10 +291,10 @@ public class QuotationManagedBean implements Serializable {
     }
 
     public Boolean checkAcceptable() {
-         if(selectedQuotation.getStatus() == 2 && this.canGenerateRequest()){
-             return true;
-         }
-         return false;
+        if (selectedQuotation.getStatus() == 2 && this.canGenerateRequest()) {
+            return true;
+        }
+        return false;
     }
 
     public void acceptQuotation() {
@@ -328,15 +328,14 @@ public class QuotationManagedBean implements Serializable {
         return systemAccessRightSB.checkOESGeneratePO(userId);
 
     }
-    public Boolean canCancelQuotation(){
+
+    public Boolean canCancelQuotation() {
         return systemAccessRightSB.checkOESGenerateQuotation(userId);
     }
-
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
     }
-
 
     public void setUserId(Integer userId) {
         this.userId = userId;
@@ -350,7 +349,5 @@ public class QuotationManagedBean implements Serializable {
     public void setMycustomer(SystemUser mycustomer) {
         this.mycustomer = mycustomer;
     }
-    
-    
 
 }
