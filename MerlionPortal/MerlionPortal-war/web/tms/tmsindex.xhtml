@@ -2,30 +2,25 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>TMS Home</title>
-        <style type="text/css">
-            .gritter-notice-wrapper {
-                left:200px;
-                top: 50px;
-            }
-            .ui-layout, .ui-layout-doc, .ui-layout-unit, .ui-layout-wrap, .ui-layout-bd, .ui-layout-hd{
-                border: none;
-            }
-            .panelGridCenter {
-            margin: 0 auto;
-            }
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    
 
-        </style>
-    </h:head>
-    <h:body>
-        <h:form id="formMain">
-            <h1>Welcome to Transportation Management System</h1>
+   <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="TMS home" />
 
-            <p:layout style="min-width:400px;min-height:1000px; borderless">      
-                <p:layoutUnit position="west" resizable="true" size="240" minSize="40" maxSize="1000">
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
 
                     <p:menu>
                         <p:submenu label =" Manage Your Transportation">
@@ -41,26 +36,23 @@
  
                         </p:submenu>
                     </p:menu>
+        </ui:define>
 
-                </p:layoutUnit>
+        <ui:define name="right">
 
-                <p:layoutUnit position="center">   
-                    <p:panel header="Welcome">
+            <div class="system-banner tms-system-banner"></div>
 
-                        Welcome to Transportation Management System!
-                        <Br/><Br/>
+                        
+            <h2 class="system-welcome">Welcome to Transportation Management System!</h2>
+            
+                        <div class="system-description">
                         Transportation Management System empowers your organization to be more efficient.
 
                         <Br/><Br/>
                        
                         <h:graphicImage value="/img/korcosmiku_5.jpg" width="533" height="800" />
-                        <Br/><Br/>
-                        <Br/><Br/>
-           
-                    </p:panel>
-                </p:layoutUnit>
-            </p:layout>
+                        </div>
+        </ui:define>
 
-        </h:form>
-    </h:body>
+    </ui:composition>
 </html>
