@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="Create SO" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+
+            <h:form id="formMain">
+                <p:panelMenu>
+                    <p:submenu label="Home" styleClass="display:block">
+                        <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Product" styleClass="display:block">
+                        <p:menuitem value="Products" url="displayallproducts.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Quotation" styleClass="display:block">
+                        <p:menuitem value="View All Request" url="viewallrequests.xhtml" />
+                        <p:menuitem value="View Quotation" url="displayallquotations.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Orders" styleClass="display:block">
+                        <p:menuitem value="Create Order" url="pogeneration.xhtml" />
+                        <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
+                        <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" />
+                        <p:menuitem value="Order Status" url="displayallso.xhtml" />
+
+                    </p:submenu>
+                    <p:submenu label="Make Pyament" styleClass="display:block">
+                        <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Reports" styleClass="display:block">
+                        <p:menuitem value="Sales Reports" url="#" />
+                    </p:submenu>
+
+                </p:panelMenu>
+        </ui:define>
+        <br></br>
+        <p:fieldset legend="Invoice" style="margin-bottom:20px">
+            <h:panelGrid id="inVodetail" columns="2" cellpadding="5">
+                <p>Invoice #: </p><h:outputText value="#{displayInvoiceManagedBean.myInvoice.invoiceId}"/>
+                <p>Total Price</p><h:outputText value="#{displayInvoiceManagedBean.myInvoice.totalPrice}"/>
+                <p>Terms and Condition</p><h:outputText value="#{displayInvoiceManagedBean.myInvoice.condition}"/>
+            </h:panelGrid>
+        </p:fieldset>
+        <br></br>
+        <p:fieldset legend="Ship To " style="margin-bottom:20px">
+            <h:panelGrid id="detail" columns="2" cellpadding="5">
+                <p>Contact Person: </p><h:outputText value="#{displayInvoiceManagedBean.myOrder.contactPersonName}"/>
+                <p>Phone Number: </p><h:outputText value="#{displayInvoiceManagedBean.myOrder.contactPersonPhoneNumber}"/>
+                <p>Address : </p><h:outputText value="#{displayInvoiceManagedBean.myOrder.shipTo}"/>
+                <p>Quotation : </p><h:outputText value="#{displayInvoiceManagedBean.myOrder.quotationId}"/>
+
+            </h:panelGrid>
+        </p:fieldset>
+        <br></br>
+        <br></br>
+        <p:dataTable var="lineItem" value="#{displayInvoiceManagedBean.myOrder.productOrderLineItemList}">
+            <p:column headerText="Product">
+                <h:outputText value="#{lineItem.productproductId.productName}" />
+            </p:column>
+
+            <p:column headerText="Description">
+                <h:outputText value="#{lineItem.productproductId.description}" />
+            </p:column>
+
+            <p:column headerText="Category">
+                <h:outputText value="#{lineItem.productproductId.category}" />
+            </p:column>
+            <p:column headerText="Unit Price">
+                <h:outputText value="#{lineItem.price}" />
+            </p:column>
+            <p:column headerText="Quantity">
+                <h:outputText value="#{lineItem.quantity}" />
+            </p:column>
+            <p:column headerText="Value">
+                <h:outputText value="#{lineItem.quantity*lineItem.price}" />
+            </p:column>
+        </p:dataTable>
+        <br></br>
+        <br></br>
+        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+        <p:commandButton value="Go Back" actionListener="allinvoice.xhtml" icon="ui-icon-check" />
+        </h:form>
+</html>
+

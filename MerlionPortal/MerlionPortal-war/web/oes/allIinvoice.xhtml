@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="Display Quotations" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+
+            <h:form id="formMain">
+                <p:panelMenu>
+                    <p:submenu label="Home" styleClass="display:block">
+                        <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Product" styleClass="display:block">
+                        <p:menuitem value="Products" url="displayallproducts.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Quotation" styleClass="display:block">
+                        <p:menuitem value="View All Request" url="viewallrequests.xhtml" />
+                        <p:menuitem value="View Quotation" url="displayallquotations.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Orders" styleClass="display:block">
+                        <p:menuitem value="Create Order" url="pogeneration.xhtml" />
+                        <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
+                        <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" />
+                        <p:menuitem value="Order Status" url="displayallso.xhtml" />
+
+                    </p:submenu>
+                    <p:submenu label="Make Pyament" styleClass="display:block">
+                        <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Reports" styleClass="display:block">
+                        <p:menuitem value="Sales Reports" url="#" />
+                    </p:submenu>
+
+                </p:panelMenu>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">
+            <h:form>  
+                <p:dataTable id="allinvoice" var="invoice" value="#{invoiceManagedBean.allInvoice}" 
+                             filteredValue="#{invoiceManagedBean.filteredInvoice}"
+                             selectionMode="single" selection="#{invoiceManagedBean.selectedInvoice}" 
+                             rowKey="#{invoice.invoiceId}"
+                             widgetVar="invoiceTalbe"
+                             emptyMessage="No invoice found with given criteria">
+                    <p:column  
+                        filterBy="#{invoice.invoiceId}" 
+                        filterMatchMode="exact" headerText="Invoice Id" >
+                        <h:outputText value="#{invoice.invoiceId}" />
+                    </p:column>
+                    <p:column  
+                        filterBy="#{invoice.customerId}" 
+                        filterMatchMode="exact" headerText="Customer" >
+                        <h:outputText value="#{invoice.customerId}" />
+                    </p:column>
+                    <p:column headerText="Order">
+                        <h:outputText value="#{invoice.salesOrderId}" />
+                    </p:column>
+                    <p:column headerText="Total Price">
+                        <h:outputText value="#{invoice.totalPrice}" />
+                    </p:column>
+                    <p:column filterBy="#{invoice.status}" filterMatchMode="in" headerText="Status">
+                        <f:facet name="filter">
+                            <p:selectCheckboxMenu label="Select" 
+                                                  onchange="PF('invoiceTalbe').filter()" 
+                                                  panelStyle="width:150px" scrollHeight="150">
+                                <f:selectItems value="#{invoiceManagedBean.invoiceStatus}" />
+                            </p:selectCheckboxMenu>
+                        </f:facet>
+                        <h:outputText value="#{invoice.status}" />
+                    </p:column>
+                </p:dataTable> 
+                <br></br>
+                <p:commandButton action="#{invoiceManagedBean.viewInvoice()}" value="View Invoice">
+                </p:commandButton>  
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</html>
+
+
