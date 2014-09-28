@@ -99,11 +99,12 @@ public class InvoiceManagedBean {
     }
 
     public String generateInvoice() {
+        System.out.println("this is classed generate invoice");
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
         sessionMap.put("unInvoiced", selectedOrder);
-
-        return "invoice.xhtml";
+        System.out.println("this is classed generate invoice");
+        return "invoice.xhtml?faces-redirect=true";
     }
 
     public List<ProductInvoice> getAllInvoice() {

@@ -29,7 +29,7 @@ public class GenerateInvoiceManagedBean {
     private Integer companyId;
     private Integer userId;
     private ProductOrder unInvoiced;
-    private Double totalPrice;
+    private Double totalPrice=0.0;
     private String inputText;
 
     @PostConstruct
@@ -56,10 +56,10 @@ public class GenerateInvoiceManagedBean {
     }
 
     private Double getPrice() {
-        totalPrice = 0.0;
-        for (Object o : unInvoiced.getProductOrderLineItemList()) {
+       for (Object o : unInvoiced.getProductOrderLineItemList()) {
             ProductOrderLineItem line = (ProductOrderLineItem) o;
-            totalPrice = +line.getPrice();
+            totalPrice = totalPrice+line.getPrice()*line.getQuantity();
+            System.out.println("this line ****************????");
         }
         return totalPrice;
     }
@@ -96,7 +96,9 @@ public class GenerateInvoiceManagedBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR!", "Terms and conditions cannot be empty"));
         }
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Credit check pass"));
-        invoiceMB.generateInvoice(unInvoiced, unInvoiced.getProductPOId(), totalPrice, unInvoiced.getCreatorId(),inputText);
+        int orderId = unInvoiced.getProductPOId();
+        int creator = unInvoiced.getCreatorId();
+        invoiceMB.generateInvoice(unInvoiced, orderId, totalPrice,creator,inputText);
         return "orderswaitingforinvoice.xhtml";
     }
 

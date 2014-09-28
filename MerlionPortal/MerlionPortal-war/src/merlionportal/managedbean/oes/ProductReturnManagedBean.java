@@ -133,7 +133,7 @@ public class ProductReturnManagedBean {
         System.out.println("=======================" + s);
         s = s + 5;
         System.out.println("=======================" + s);
-        returnMB.rejectAllOrder(myOrder, s);
+        returnMB.rejectAllOrder(returnOrder, s);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "This order has benn rejected."));
 
     }
