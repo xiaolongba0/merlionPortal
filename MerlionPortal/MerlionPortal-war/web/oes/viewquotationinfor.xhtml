@@ -45,14 +45,18 @@
                                 <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" /> 
                                 <p:menuitem value="Order Status" url="displayallso.xhtml" />
                             </c:if>
+                            <c:if test="#{dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                                <p:menuitem value="Reject Order" url="returnorder.xhtml" />
+                            </c:if>
                         </p:submenu>
                     </c:if>
-
-                    <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.loginedUser.userType == 'superuser'}">
-                        <p:submenu label="Make Pyament" styleClass="display:block">
+                    <p:submenu label="Payment" styleClass="display:block">
+                        <p:menuitem value="All invoice" url="allinvoice.xhtml" />
+                        <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.loginedUser.userType == 'superuser'}">
                             <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />
-                        </p:submenu>
-                    </c:if>
+                        </c:if>
+
+                    </p:submenu>
                     <c:if test="#{dashboardBean.checkOESCanGenerateSalesReport()||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:submenu label="Reports" styleClass="display:block">
                             <p:menuitem value="Sales Reports" url="#" />
@@ -67,10 +71,15 @@
             <h:form>
                 <p:fieldset legend="Customer Information" style="margin-bottom:20px">
                     <h:panelGrid columns="2" cellpadding="5">
-                        <h:outputText value="Campany Name:"/>
+                        <h:outputText value="Customer Id:"/>
                         <h:outputText value="#{quotationManagedBean.selectedQuotation.customerId}"/>
-                        <h:outputText value="Campany Name:"/>
-                        <h:outputText value="#{quotationManagedBean.selectedQuotation.customerId}"/>
+                        <h:outputText value="Contact Person First Name:"/>
+                        <h:outputText value="#{quotationManagedBean.mycustomer.firstName}"/>
+                        <h:outputText value="Contact Person First Name:"/>
+                        <h:outputText value="#{quotationManagedBean.mycustomer.lastName}"/>
+                        <h:outputText value="Contact Number"/>
+                        <h:outputText value="#{quotationManagedBean.mycustomer.contactNumber}"/>
+
                         <br></br>
                         <h:outputText
                             value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding.
@@ -114,6 +123,7 @@
                     <p:commandButton action="#{quotationManagedBean.rejectQuotation()}" value="Reject This Quotation">
                     </p:commandButton> 
                 </c:if>
+                <br></br>
                 <c:if test="#{quotationManagedBean.canCancelQuotation()}">
                     <p:commandButton action="#{quotationManagedBean.cancelQuotation()}" value="Cancel This Quotation">
                     </p:commandButton> 

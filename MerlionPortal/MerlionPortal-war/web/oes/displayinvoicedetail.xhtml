@@ -35,21 +35,33 @@
                         <p:menuitem value="View All Request" url="viewallrequests.xhtml" />
                         <p:menuitem value="View Quotation" url="displayallquotations.xhtml" />
                     </p:submenu>
-
-                    <p:submenu label="Orders" styleClass="display:block">
-                        <p:menuitem value="Create Order" url="pogeneration.xhtml" />
-                        <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
-                        <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" />
-                        <p:menuitem value="Order Status" url="displayallso.xhtml" />
+                    <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:submenu label="Orders" styleClass="display:block">
+                            <c:if test="#{dashboardBean.checkOESCanGeneratePO()|| dashboardBean.loginedUser.userType == 'superuser'}">
+                                <p:menuitem value="Create Order" url="pogeneration.xhtml" />
+                                <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
+                            </c:if>
+                            <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                                <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" /> 
+                                <p:menuitem value="Order Status" url="displayallso.xhtml" />
+                            </c:if>
+                            <c:if test="#{dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                                <p:menuitem value="Reject Order" url="returnorder.xhtml" />
+                            </c:if>
+                        </p:submenu>
+                    </c:if>
+                    <p:submenu label="Payment" styleClass="display:block">
+                        <p:menuitem value="All invoice" url="allinvoice.xhtml" />
+                        <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.loginedUser.userType == 'superuser'}">
+                            <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />
+                        </c:if>
 
                     </p:submenu>
-                    <p:submenu label="Make Pyament" styleClass="display:block">
-                        <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />
-                    </p:submenu>
-                    <p:submenu label="Reports" styleClass="display:block">
-                        <p:menuitem value="Sales Reports" url="#" />
-                    </p:submenu>
-
+                    <c:if test="#{dashboardBean.checkOESCanGenerateSalesReport()||dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:submenu label="Reports" styleClass="display:block">
+                            <p:menuitem value="Sales Reports" url="#" />
+                        </p:submenu>
+                    </c:if>
                 </p:panelMenu>
         </ui:define>
         <br></br>

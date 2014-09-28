@@ -23,7 +23,7 @@
         <ui:define name="left">
 
             <h:form >
-                <p:panelMenu>
+                                <p:panelMenu>
                     <p:submenu label="Home" styleClass="display:block">
                         <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
                     </p:submenu>
@@ -45,20 +45,23 @@
                                 <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" /> 
                                 <p:menuitem value="Order Status" url="displayallso.xhtml" />
                             </c:if>
+                            <c:if test="#{dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                                <p:menuitem value="Reject Order" url="returnorder.xhtml" />
+                            </c:if>
                         </p:submenu>
                     </c:if>
-
-                    <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.loginedUser.userType == 'superuser'}">
-                        <p:submenu label="Make Pyament" styleClass="display:block">
+                    <p:submenu label="Payment" styleClass="display:block">
+                        <p:menuitem value="All invoice" url="allinvoice.xhtml" />
+                        <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.loginedUser.userType == 'superuser'}">
                             <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />
-                        </p:submenu>
-                    </c:if>
+                        </c:if>
+
+                    </p:submenu>
                     <c:if test="#{dashboardBean.checkOESCanGenerateSalesReport()||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:submenu label="Reports" styleClass="display:block">
                             <p:menuitem value="Sales Reports" url="#" />
                         </p:submenu>
                     </c:if>
-
                 </p:panelMenu>
             </h:form>
         </ui:define>
@@ -120,14 +123,14 @@
                 <br></br>
                 <h3 style="margin-top: 0">Terms and Conditions</h3>
                 <p>Please enter quotation terms and Conditions below</p>
-                <p:inputTextarea rows="10" cols="80" value="#{quotationManagedBean.inputText}" />
+                <p:inputTextarea id="display" rows="10" cols="80" value="#{quotationManagedBean.inputText}" />
                 <h:outputText id="display" />
 
                 <br></br>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 <p:commandButton action="viewallrequests.xhtml" value="Go Back">
                 </p:commandButton>   
-                <p:commandButton actionListener="#{quotationManagedBean.generateQuotation}"  value="Submit Quotation">
+                <p:commandButton actionListener="#{quotationManagedBean.generateQuotation}"  update="display" value="Submit Quotation">
                 </p:commandButton>        
             </h:form>
         </ui:define>

@@ -45,20 +45,23 @@
                                 <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" /> 
                                 <p:menuitem value="Order Status" url="displayallso.xhtml" />
                             </c:if>
+                            <c:if test="#{dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                                <p:menuitem value="Reject Order" url="returnorder.xhtml" />
+                            </c:if>
                         </p:submenu>
                     </c:if>
-
-                    <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.loginedUser.userType == 'superuser'}">
-                        <p:submenu label="Make Pyament" styleClass="display:block">
+                    <p:submenu label="Payment" styleClass="display:block">
+                        <p:menuitem value="All invoice" url="allinvoice.xhtml" />
+                        <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.loginedUser.userType == 'superuser'}">
                             <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />
-                        </p:submenu>
-                    </c:if>
+                        </c:if>
+
+                    </p:submenu>
                     <c:if test="#{dashboardBean.checkOESCanGenerateSalesReport()||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:submenu label="Reports" styleClass="display:block">
                             <p:menuitem value="Sales Reports" url="#" />
                         </p:submenu>
                     </c:if>
-
                 </p:panelMenu>
         </ui:define>
         <br></br>
