@@ -189,16 +189,16 @@ h2.system-welcome{
     width:100%;
 }
 .wms-system-banner{
-    background: url("http://parkplacerecycling.com/wp-content/uploads/2013/09/warehousing.jpg") -550px -350px no-repeat;
+    background: url('../img/wms.jpg') -0px -0px no-repeat;
 }
 .oes-system-banner{
-    background: url("http://tweakyourbiz.com/sales/files/Fourteen-Traits-Of-A-Great-Sales-Person.jpg") -50px -240px no-repeat;
+    background: url('../img/OES.jpg') -0px -0px no-repeat;
 }
 .tms-system-banner{
-    background: url("http://www.hollingsworth-vose.com/Global/Industry%20Images/industry_transportation_truck_1020x420.jpg") -0px -70px no-repeat;
+    background: url('../img/TMS.jpg') -0px -0px no-repeat;
 }
 .mrp-system-banner{
-    background: url("http://stok-engineering.com//wp-content/uploads/2013/01/bottling-line-2.jpg") -50px -300px no-repeat;
+    background: url('../img/MRP.jpg') -0px -0px no-repeat;
 }
 
 .pad-it{
