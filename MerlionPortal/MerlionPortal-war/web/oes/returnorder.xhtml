@@ -121,15 +121,15 @@
                 <p:panel header="Reject Whole Order" style="margin-bottom:10px;">
                     <h:panelGrid columns="2" cellpadding="5">
                         <h:outputLabel value="Reject Reason " />
-                        <p:selectOneMenu id="reason" value="#{productReturnManagedBean.reason}" style="width:150px">
+                        <p:selectOneMenu id="reason" value="#{productReturnManagedBean.reason}" style="width:300px">
                             <f:selectItem itemLabel="Select Reject Reason" itemValue="" noSelectionOption="true" />
                             <f:selectItem itemLabel="01 Wrong product" itemValue="01 Wrong product"  />
                             <f:selectItem itemLabel="02 Wrong product quantity" itemValue="02 Wrong product quantity" />
                             <f:selectItem itemLabel="03 Wrong price" itemValue="03 Wrong price" />
                             <f:selectItem itemLabel="04 Wrong ship to address" itemValue="04 Wrong ship to address" />
                             <f:selectItem itemLabel="05 Wrong contact person" itemValue="05 Wrong contact person" />
-                            <f:selectItem itemLabel="06 Credit check fail" itemValue="" />
-                            <f:selectItem itemLabel="07 Others please contact sales for more information" itemValue="" />
+                            <f:selectItem itemLabel="06 Credit check fail" itemValue="06 Credit check fail" />
+                            <f:selectItem itemLabel="07 Others please contact sales for more information" itemValue="07 Others please contact sales for more information" />
                             <f:selectItem itemLabel="08 Unable to fulfill this order" itemValue="08 Unable to fulfill this order" />
                         </p:selectOneMenu>
                     </h:panelGrid>

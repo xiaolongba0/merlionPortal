@@ -75,7 +75,7 @@
                              selectionMode="single" 
                              selection="#{viewSalesOrderManagedBean.selectedOrder}" 
                              rowKey="#{salesorder.productPOId}"
-                             widgetVar="salesOrderTalbe"
+                             widgetVar="salesOrderTable"
                              emptyMessage="No Order found with given criteria">
                     <p:column  
                         filterBy="#{salesorder.productPOId}" 
@@ -90,8 +90,8 @@
                     <p:column filterBy="#{viewSalesOrderManagedBean.myOrderStatus(salesorder)}" filterMatchMode="in" headerText="Status">
                         <f:facet name="filter">
                             <p:selectCheckboxMenu label="Select" 
-                                                  onchange="PF('salesOrderTalbe').filter()" 
-                                                  panelStyle="width:250px" scrollHeight="150">
+                                                  onchange="PF('salesOrderTable').filter()" 
+                                                  panelStyle="width:350px" scrollHeight="150">
                                 <f:selectItems value="#{viewSalesOrderManagedBean.statusList}" />
                             </p:selectCheckboxMenu>
                         </f:facet>
