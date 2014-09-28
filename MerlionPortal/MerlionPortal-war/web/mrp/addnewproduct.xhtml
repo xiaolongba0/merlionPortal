@@ -29,7 +29,7 @@
                     <c:if test="#{dashboardBean.checkMRPCanManageProductComponent() || dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:submenu label="Product Management" styleClass="display:block">
                             <p:submenu label="Product Catalog Management">
-                                <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
+                                <p:menuitem value="Add New Product" url="addnewproduct.xhtml" style="background-color: lavender"/>
                                 <p:menuitem value="View, Edit and Delete" url="viewallproducts.xhtml" />
                             </p:submenu>
                             <p:submenu label="BOM Management">
