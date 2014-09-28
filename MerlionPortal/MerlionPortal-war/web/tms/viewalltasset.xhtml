@@ -1,36 +1,46 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html  xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>View My Transportation Assets</title>
-        <style type="text/css">
-            .gritter-notice-wrapper {
-                left:200px;
-                top: 50px;
-            }
-        </style>
-    </h:head>
-    <h:body>
-        <h:form id="formMain">
-            <h1>Welcome to Transportation Management System</h1>
-            <p:menubar>
-                <p:menuitem value="TMS Home" url="tmsindex.xhtml"/>
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">
+        <ui:param name="pageName" value="WMS home" />
 
-                <p:submenu label="Location" >
-                    <p:menuitem value="Add New Location" url="addnewlocation.xhtml" />
-                    <p:menuitem value="View All locations" url="viewalllocation.xhtml" />
-                </p:submenu>
-                <p:submenu label="Transportation Asset" >
-                    <p:menuitem value="Add Transportation Asset" url="addnewtasset.xhtml" />
-                    <p:menuitem value="View Transportation Assets" url="viewalltasset.xhtml" />
-                </p:submenu>
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+        
 
-            </p:menubar>
+        <ui:define name="left">
 
-            <br/>
+                    <p:menu>
+                        <p:submenu label =" Manage Your Transportation">
+                            <p:menuitem value="TMS Home" url="tmsindex.xhtml" />
+                            <p:submenu label="Location" >
+                                <p:menuitem value="Add A Location" url="addnewlocation.xhtml" />
+                                <p:menuitem value="View All Locations" url="viewalllocation.xhtml" />
+                            </p:submenu>
+                            <p:submenu label="Transportation Asset" >
+                                <p:menuitem value="Add Transportation Assets" url="addnewtasset.xhtml" />
+                                <p:menuitem value="View Transportation Assets" url="viewalltasset.xhtml" />
+                            </p:submenu>
+ 
+                        </p:submenu>
+                    </p:menu>
+        </ui:define>
+        
+         <ui:define name="right">       
+            <h:form id="formMain">
+
             <p:panel id="panel" header=" View Transportation Asset for A Location">
                 <p:ajaxStatus style="width:16px;height:16px;">
                     <f:facet name="start">
@@ -134,6 +144,7 @@
                 </p:dataTable>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
             </p:panel>
-        </h:form>
-    </h:body>
-</html>                 
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>                        
