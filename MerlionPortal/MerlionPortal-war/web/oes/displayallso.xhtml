@@ -72,7 +72,8 @@
             <h:form>  
                 <p:dataTable id="allso" var="salesorder" value="#{viewSalesOrderManagedBean.salesOrderList}" 
                              filteredValue="#{viewSalesOrderManagedBean.filteredOrder}"
-                             selectionMode="single" selection="#{viewSalesOrderManagedBean.selectedOrder}" 
+                             selectionMode="single" 
+                             selection="#{viewSalesOrderManagedBean.selectedOrder}" 
                              rowKey="#{salesorder.productPOId}"
                              widgetVar="salesOrderTalbe"
                              emptyMessage="No Order found with given criteria">
@@ -90,7 +91,7 @@
                         <f:facet name="filter">
                             <p:selectCheckboxMenu label="Select" 
                                                   onchange="PF('salesOrderTalbe').filter()" 
-                                                  panelStyle="width:150px" scrollHeight="150">
+                                                  panelStyle="width:250px" scrollHeight="150">
                                 <f:selectItems value="#{viewSalesOrderManagedBean.statusList}" />
                             </p:selectCheckboxMenu>
                         </f:facet>
