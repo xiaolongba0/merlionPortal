@@ -69,25 +69,25 @@
                     <p:ajax event="rowEditCancel" listener="#{productViewEditManagedBean.onRowCancel}" update=":form:msgs" />
 
 
-                    <p:column filterBy="#{product.productId}" filterStyle="width: 70px" width="65px" filterMatchMode="exact" headerText="Product ID">
+                    <p:column filterBy="#{product.productId}" width="55" filterStyle="width:35px" filterMatchMode="exact" headerText="ID">
                         <h:outputText value="#{product.productId}" />
                     </p:column>
 
-                    <p:column filterBy="#{product.productName}" filterStyle="width: 70px" filterMatchMode="contains" headerText="Product Name">
+                    <p:column filterBy="#{product.productName}" width="100" filterStyle="width: 70px" filterMatchMode="contains" headerText="Product Name">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{product.productName}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{product.productName}" style="width:100%" label="Product Name"/></f:facet>
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column filterBy="#{product.description}" filterStyle="width: 70px" filterMatchMode="contains" headerText="Product Description">
+                    <p:column filterBy="#{product.description}" filterStyle="width: 100px" filterMatchMode="contains" headerText="Product Description">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{product.description}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{product.description}" style="width:100%" label="Product Description"/></f:facet>
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column filterBy="#{product.category}" filterStyle="width: 70px" filterMatchMode="contains" headerText="Product Category">
+                    <p:column filterBy="#{product.category}" filterStyle="width: 100px" filterMatchMode="contains" headerText="Product Category">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{product.category}" /></f:facet>
                             <f:facet name="input">
@@ -98,7 +98,7 @@
                         </p:cellEditor>
                     </p:column> 
 
-                    <p:column filterBy="#{product.productType}" filterStyle="width: 70px" filterMatchMode="contains" headerText="Product Type">
+                    <p:column filterBy="#{product.productType}" filterStyle="width: 100px" filterMatchMode="contains" headerText="Product Type">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{product.productType}" /></f:facet>
                             <f:facet name="input">
@@ -110,7 +110,7 @@
                     </p:column>
 
 
-                    <p:column filterBy="#{product.currency}" filterStyle="width: 70px" filterMatchMode="contains" headerText="Product Currency">
+                    <p:column filterBy="#{product.currency}" filterStyle="width: 100px" filterMatchMode="contains" headerText="Product Currency">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{product.currency}" /></f:facet>
                             <f:facet name="input">
@@ -123,7 +123,7 @@
                     </p:column> 
 
 
-                    <p:column filterBy="#{product.price}" filterStyle="width: 70px" filterMatchMode="contains" headerText="Product Price">
+                    <p:column filterBy="#{product.price}" filterStyle="width: 45px" width="65" filterMatchMode="contains" headerText="Price">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{product.price}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{product.price}" style="width:100%" label="Product Price"/></f:facet>
