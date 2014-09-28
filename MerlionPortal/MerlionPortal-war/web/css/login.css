@@ -1,5 +1,5 @@
 .bg-img{
-    background:url("http://www.choosemontgomerymd.com/images/photos/transportation_image.jpg") no-repeat center center fixed;
+    background: url('../img/bgimg.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
