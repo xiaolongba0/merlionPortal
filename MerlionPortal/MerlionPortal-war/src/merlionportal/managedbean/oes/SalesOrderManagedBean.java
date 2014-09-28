@@ -71,8 +71,7 @@ public class SalesOrderManagedBean {
         reasonList.add("05 Wrong contact person");
         reasonList.add("06 Credit check fail ");
         reasonList.add("07 Others please contact sales for more information");
-        reasonList.add("08 Customer request for cancelation");
-        reasonList.add("09 Unable to fulfill this order");
+        reasonList.add("08 Unable to fulfill this order");
         return reasonList;
     }
 
@@ -96,8 +95,11 @@ public class SalesOrderManagedBean {
     }
 
     public void rejectPo() {
+        System.out.println(reason);
         int s = Integer.parseInt(reason.substring(0, 2));
-        s = s + 6;
+        System.out.println("=======================" + s);
+        s = s + 5;
+        System.out.println("=======================" + s);
         purchaseOrderMB.rejectPo(userId, myOrder, s);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "This order has benn rejected."));
 
@@ -137,7 +139,7 @@ public class SalesOrderManagedBean {
     }
 
     public List<String> getRejectReasons() {
-        rejectReasons=this.setReasons();
+        rejectReasons = this.setReasons();
         return rejectReasons;
     }
 
