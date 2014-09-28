@@ -49,6 +49,7 @@ public class QuotationManagedBean implements Serializable {
     private List<QuotationLineItem> qlistItem;
     private Quotation filteredQuotation;
     private Quotation selectedQuotation;
+    private SystemUser mycustomer;
 
     /**
      * Creates a new instance of QuotationManagedBean
@@ -330,5 +331,26 @@ public class QuotationManagedBean implements Serializable {
     public Boolean canCancelQuotation(){
         return systemAccessRightSB.checkOESGenerateQuotation(userId);
     }
+
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public SystemUser getMycustomer() {
+        mycustomer = quotationMB.findCustomer(selectedQuotation.getCustomerId());
+        return mycustomer;
+    }
+
+    public void setMycustomer(SystemUser mycustomer) {
+        this.mycustomer = mycustomer;
+    }
+    
+    
 
 }

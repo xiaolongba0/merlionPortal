@@ -32,6 +32,8 @@ public class EditSavedOrderManagedBean {
     private PurchaseOrderManagerSessionBean purchaseOrderMB;
     @EJB
     private EditSavedOrderSessionBean editSavedOrderMB;
+    @EJB
+    private PurchaseOrderManagerSessionBean purchaseMB;
 
     private Integer companyId;
     private Integer userId;
@@ -71,6 +73,16 @@ public class EditSavedOrderManagedBean {
             }
         }
         myOrder = (ProductOrder) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("savedOrder");
+        shipto = myOrder.getShipTo();
+        if (myOrder.getContactPersonName() != null) {
+            contactPerson = myOrder.getContactPersonName();
+        }
+        if (myOrder.getContactPersonPhoneNumber() != null) {
+            contactNumber = myOrder.getContactPersonPhoneNumber();
+        }
+        if (myOrder.getProductOrderLineItemList() != null) {
+            itemList = myOrder.getProductOrderLineItemList();
+        }
 
     }
 
@@ -90,8 +102,12 @@ public class EditSavedOrderManagedBean {
     }
 
     public void searchForQuotation() {
-        itemList = purchaseOrderMB.copyFromQuotation(qutatuonId);
-
+        System.out.println(qutatuonId);
+        if (purchaseMB.checkQuotationValidity(qutatuonId)) {
+            itemList = purchaseMB.copyFromQuotation(qutatuonId);
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Quotation id invalid"));
+        }
     }
 
     public String submitOrder() {
