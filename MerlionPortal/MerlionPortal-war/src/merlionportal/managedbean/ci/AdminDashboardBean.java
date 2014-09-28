@@ -9,6 +9,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.CheckAccessRightBean;
+import merlionportal.ci.administrationmodule.SystemAccessRightSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import util.accessRightControl.Right;
 
@@ -17,12 +18,15 @@ import util.accessRightControl.Right;
 public class AdminDashboardBean implements Serializable {
 
     private SystemUser loginedUser;
+    private Integer userId;
     
 
     @EJB
     UserAccountManagementSessionBean uamb;
     @EJB
     CheckAccessRightBean carb;
+    @EJB
+    SystemAccessRightSessionBean systemAccessRightSB;
 
     public AdminDashboardBean() {
     }
@@ -32,6 +36,7 @@ public class AdminDashboardBean implements Serializable {
         boolean redirect = true;
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
             loginedUser = uamb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
+            userId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
             if (loginedUser != null) {
                 redirect = false;
             }
@@ -115,12 +120,36 @@ public class AdminDashboardBean implements Serializable {
         return false;
     }
     
+    
+//    OES
+    public boolean checkOESCanGeneratePO(){
+        return systemAccessRightSB.checkOESGeneratePO(userId);
+    }
+    public boolean checkOESCanGenerateSO(){
+        return systemAccessRightSB.checkOESGenerateSO(userId);
+    }
+    public boolean checkOESCanGenerateQuotation(){
+        return systemAccessRightSB.checkOESGenerateQuotation(userId);
+    }
+    public boolean checkOESCanGenerateSalesReport(){
+        return systemAccessRightSB.checkOESReport(userId);
+    }
+//    END OF OES
+    
     public SystemUser getLoginedUser() {
         return loginedUser;
     }
 
     public void setLoginedUser(SystemUser loginedUser) {
         this.loginedUser = loginedUser;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
    
