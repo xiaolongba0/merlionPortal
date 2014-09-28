@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ProductInvoice.findByTotalPrice", query = "SELECT p FROM ProductInvoice p WHERE p.totalPrice = :totalPrice"),
     @NamedQuery(name = "ProductInvoice.findByCustomerId", query = "SELECT p FROM ProductInvoice p WHERE p.customerId = :customerId"),
     @NamedQuery(name = "ProductInvoice.findByStatus", query = "SELECT p FROM ProductInvoice p WHERE p.status = :status"),
-    @NamedQuery(name = "ProductInvoice.findByCondition", query = "SELECT p FROM ProductInvoice p WHERE p.condition = :condition")})
+    @NamedQuery(name = "ProductInvoice.findByConditionText", query = "SELECT p FROM ProductInvoice p WHERE p.conditionText = :conditionText")})
 public class ProductInvoice implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -52,8 +52,8 @@ public class ProductInvoice implements Serializable {
     @Column(name = "status")
     private String status;
     @Size(max = 255)
-    @Column(name = "condition")
-    private String condition;
+    @Column(name = "conditionText")
+    private String conditionText;
 
     public ProductInvoice() {
     }
@@ -102,12 +102,12 @@ public class ProductInvoice implements Serializable {
         this.status = status;
     }
 
-    public String getCondition() {
-        return condition;
+    public String getConditionText() {
+        return conditionText;
     }
 
-    public void setCondition(String condition) {
-        this.condition = condition;
+    public void setConditionText(String conditionText) {
+        this.conditionText = conditionText;
     }
 
     @Override
