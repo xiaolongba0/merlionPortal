@@ -55,6 +55,9 @@ public class OrderDetailMangedBean {
             }
         }
         order = (ProductOrder) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("viewOrder");
+        if(order.getProductOrderLineItemList().isEmpty()){
+            System.out.println("List empty__________________");
+        }
 
     }
 

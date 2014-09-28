@@ -98,7 +98,7 @@ public class GenerateInvoiceManagedBean {
         if (inputText == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR!", "Terms and conditions cannot be empty"));
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Credit check pass"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Invoice Generated"));
         int orderId = unInvoiced.getProductPOId();
         int creator = unInvoiced.getCreatorId();
         invoiceMB.generateInvoice(unInvoiced, orderId, totalPrice, creator, inputText);

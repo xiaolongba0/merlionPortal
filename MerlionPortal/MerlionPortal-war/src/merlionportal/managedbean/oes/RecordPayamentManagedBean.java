@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -53,8 +54,8 @@ public class RecordPayamentManagedBean {
                 ex.printStackTrace();
             }
         }
-         unpaidOrder = (ProductOrder) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("unpaidOrder");
-         maymentMethods=paymentMB.allPaymentMethods();
+        unpaidOrder = (ProductOrder) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("unpaidOrder");
+        maymentMethods = paymentMB.allPaymentMethods();
     }
 
     public Integer getCompanyId() {
@@ -104,7 +105,9 @@ public class RecordPayamentManagedBean {
     public void setMethod(String method) {
         this.method = method;
     }
-    public void makePayment(){
+
+    public void makePayment() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Pay successfully "));
         paymentMB.makePayement(unpaidOrder, method);
     }
 

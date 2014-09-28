@@ -153,7 +153,7 @@ public class InvoiceManagedBean {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
         sessionMap.put("selectedInvoice", selectedInvoice);
-        return "displayinvoicedetail.xhtml";
+        return "displayinvoicedetail.xhtml?faces-redirect=true";
     }
 
 }
