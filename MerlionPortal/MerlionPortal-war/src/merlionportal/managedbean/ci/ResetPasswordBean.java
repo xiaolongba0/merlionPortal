@@ -4,6 +4,8 @@ import entity.SystemUser;
 import java.util.Random;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
@@ -52,7 +54,7 @@ public class ResetPasswordBean {
             System.out.println("===============3===============");
 
             if (user.getLocked()) {
-                requestContext.execute("fail('Your account is locked. Fail to update password')");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Your account is locked", "Fail to update passwor"));
                 System.out.println("==============4================");
 
             } else {
@@ -72,18 +74,18 @@ public class ResetPasswordBean {
                     if (Postman.sendMail(sender, recipients, subject, content)) {
                         System.out.println("==============7================");
 
-                        requestContext.execute("success()");
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Reset Password Success!", "Please check your email for your new password"));
                     } else {
-                        requestContext.execute("fail('Unknown Error')");
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Reset Password Failed!", "Unknown Error"));
                     }
                 } else {
-                    requestContext.execute("fail('Fail to update password')");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Failed to update password", "Unknown Error"));
                 }
             }
         } else {
             System.out.println("================8==============");
             //Not user found
-            requestContext.execute("fail('Email not found')");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Email not found", "Please check if your email is entered correctly"));
         }
     }
 
