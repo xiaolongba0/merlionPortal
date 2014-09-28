@@ -46,6 +46,8 @@ public class TAssetmanagementSessionBean{
     public List<Location> viewMyLocations(Integer companyId) {
         List<Location> allMyLocation = new ArrayList<>();
         System.out.println("In viewMyLocation, Company ID ============================= : " + companyId);
+                System.out.println("NM===================== : " + companyId);
+
         Query query = em.createNamedQuery("Location.findByCompanyId").setParameter("companyId", companyId);
         for (Object o : query.getResultList()) {
             location = (Location) o;
@@ -224,10 +226,10 @@ public class TAssetmanagementSessionBean{
 
     
   
-    //Edit in progress
+
     public boolean addTAssetSchedule(Date startDate, Date endDate,Integer tAssetId) {
 
-        System.out.println("[INSIDE EJB]================================Add Storage Bin");
+        System.out.println("[INSIDE EJB]================================Add Transportation Asset Schedule");
         Query query = em.createNamedQuery("TransportationAsset.findBytAssetId").setParameter("tAssetId", tAssetId);
 
         TransportationAsset tAsset = (TransportationAsset) query.getSingleResult();
@@ -250,7 +252,7 @@ public class TAssetmanagementSessionBean{
 
     }
 
-//Edit in progress
+
     public List<AssetSchedule> viewTAssetScheduleforTAsset(Integer tAssetId) {
 
         System.out.println("In viewTAssetScheduleforTAsset, TAsset ID ============================= : " + tAssetId);
@@ -258,7 +260,7 @@ public class TAssetmanagementSessionBean{
 
         if (tAssetId != null) {
             assetTemp = em.find(TransportationAsset.class, tAssetId);
-            System.out.println("In viewMyStorageTypes, finding warehouse" + assetTemp);
+            System.out.println("In view my transportation assets, finding location" + assetTemp);
         }
         return assetTemp.getAssetScheduleList();
 
