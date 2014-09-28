@@ -42,9 +42,10 @@
                                 <p:menuitem value="Create Order" url="pogeneration.xhtml" />
                                 <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
                             </c:if>
-                            <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
-                                <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" /> 
+                            <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}"> 
+                                <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" />
                                 <p:menuitem value="Order Status" url="displayallso.xhtml" />
+
                             </c:if>
                             <c:if test="#{dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
                                 <p:menuitem value="Reject Order" url="returnorder.xhtml" />
@@ -139,7 +140,7 @@
                 </div>
 
                 <p:outputLabel for="quotation"  value="Quotation Number: " />
-                <p:inputText id="quotation" value="#{purchaseOrderManagedBean.qutatuonId}" required="true" label="Quotation Number"></p:inputText>
+                <p:inputText id="quotation" value="#{purchaseOrderManagedBean.qutatuonId}"  label="Quotation Number"></p:inputText>
                 <p:commandButton value="Search" actionListener="#{purchaseOrderManagedBean.searchForQuotation()}" update="productsTalbe" ajax="true"></p:commandButton>
                 <br></br>
                 <br></br>

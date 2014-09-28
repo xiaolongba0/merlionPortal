@@ -12,7 +12,7 @@
         <c:set var="import" value="templateadmin.xhtml"/>
     </c:if>
     <ui:composition template="${root}/templates/${import}">        
-        <ui:param name="pageName" value="Create SO" />
+        <ui:param name="pageName" value="Display PO" />
 
         <ui:define name="more-imports">
             <ui:insert>
@@ -65,54 +65,63 @@
                         </p:submenu>
                     </c:if>
                 </p:panelMenu>
+            </h:form>
         </ui:define>
-        <br></br>
-        <p:panel header="Select Payment Methods" style="margin-bottom:10px;">
-            <h:panelGrid columns="2" cellpadding="5">
-                <p:outputLabel value="Select " />
-                <p:selectOneMenu id="reson" value="#{recordPayamentManagedBean.method}" style="width:150px">
-                    <f:selectItem itemLabel="Select Reject Reson" value="#{recordPayamentManagedBean.method}" noSelectionOption="true" />
-                    <f:selectItems value="#{recordPayamentManagedBean.maymentMethods}" />
-                </p:selectOneMenu>
-            </h:panelGrid>
-            <p:separator />
-            <p:commandButton value="Make Payment" actionListener="#{recordPayamentManagedBean.makePayment()}" icon="ui-icon-check" />
-        </p:panel>
-        <p:fieldset legend="Ship To " style="margin-bottom:20px">
-            <h:panelGrid id="detail" columns="2" cellpadding="5">
-                <p>Contact Person: </p><h:outputText value="#{recordPayamentManagedBean.unpaidOrder.contactPersonName}"/>
-                <p>Phone Number: </p><h:outputText value="#{recordPayamentManagedBean.unpaidOrder.contactPersonPhoneNumber}"/>
-                <p>Address : </p><h:outputText value="#{recordPayamentManagedBean.unpaidOrder.shipTo}"/>
-                <p>Quotation : </p><h:outputText value="#{recordPayamentManagedBean.unpaidOrder.quotationId}"/>
 
-            </h:panelGrid>
-        </p:fieldset>
-        <br></br>
-        <br></br>
-        <p:dataTable var="lineItem" value="#{recordPayamentManagedBean.unpaidOrder.productOrderLineItemList}">
-            <p:column headerText="Product">
-                <h:outputText value="#{lineItem.productproductId.productName}" />
-            </p:column>
+        <ui:define name="right">
+            <h:form>
+                <br></br>
+                <p:panel header="Select Payment Methods" style="margin-bottom:10px;">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel value="Select " />&nbsp;
+                        <h:selectOneMenu id="reson" value="#{recordPayamentManagedBean.method}" style="width:150px">
+                            <f:selectItem itemLabel="Select Payment Methods" itemValue="" noSelectionOption="true" />
+                            <f:selectItem itemLabel="Credit Card" itemValue="Credit Card"  />                            
+                            <f:selectItem itemLabel="Telegraphic Transfer" itemValue="Telegraphic Transfer"  />
+                            <f:selectItem itemLabel="Check" itemValue="Check"  />                           
+                        </h:selectOneMenu>
+                    </h:panelGrid>
+                    <p:separator />
+                    <p:commandButton value="Make Payment" actionListener="#{recordPayamentManagedBean.makePayment()}" icon="ui-icon-check" />
+                </p:panel>
+                <p:fieldset legend="Ship To " style="margin-bottom:20px">
+                    <h:panelGrid id="detail" columns="2" cellpadding="5">
+                        <p>Contact Person: </p><h:outputText value="#{recordPayamentManagedBean.unpaidOrder.contactPersonName}"/>
+                        <p>Phone Number: </p><h:outputText value="#{recordPayamentManagedBean.unpaidOrder.contactPersonPhoneNumber}"/>
+                        <p>Address : </p><h:outputText value="#{recordPayamentManagedBean.unpaidOrder.shipTo}"/>
+                        <p>Quotation : </p><h:outputText value="#{recordPayamentManagedBean.unpaidOrder.quotationId}"/>
 
-            <p:column headerText="Description">
-                <h:outputText value="#{lineItem.productproductId.description}" />
-            </p:column>
+                    </h:panelGrid>
+                </p:fieldset>
+                <br></br>
+                <br></br>
+                <p:dataTable var="lineItem" value="#{recordPayamentManagedBean.unpaidOrder.productOrderLineItemList}">
+                    <p:column headerText="Product">
+                        <h:outputText value="#{lineItem.productproductId.productName}" />
+                    </p:column>
 
-            <p:column headerText="Category">
-                <h:outputText value="#{lineItem.productproductId.category}" />
-            </p:column>
-            <p:column headerText="Unit Price">
-                <h:outputText value="#{lineItem.price}" />
-            </p:column>
-            <p:column headerText="Quantity">
-                <h:outputText value="#{lineItem.quantity}" />
-            </p:column>
-            <p:column headerText="Value">
-                <h:outputText value="#{lineItem.quantity*lineItem.price}" />
-            </p:column>
-        </p:dataTable>
-        <br></br>
-        <p:commandButton value="Cancel" actionListener="makepayment.xhtml" icon="ui-icon-check" />
-        </h:form>
+                    <p:column headerText="Description">
+                        <h:outputText value="#{lineItem.productproductId.description}" />
+                    </p:column>
+
+                    <p:column headerText="Category">
+                        <h:outputText value="#{lineItem.productproductId.category}" />
+                    </p:column>
+                    <p:column headerText="Unit Price">
+                        <h:outputText value="#{lineItem.price}" />
+                    </p:column>
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{lineItem.quantity}" />
+                    </p:column>
+                    <p:column headerText="Value">
+                        <h:outputText value="#{lineItem.quantity*lineItem.price}" />
+                    </p:column>
+                </p:dataTable>
+                <br></br>
+                <p:commandButton value="Go Back" actionListener="makepayment.xhtml?faces-redirect=true" icon="ui-icon-check" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
 </html>
 
