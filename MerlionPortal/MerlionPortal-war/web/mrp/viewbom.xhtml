@@ -82,32 +82,32 @@
                 <p:ajax event="rowEditCancel" listener="#{productComponentViewEditManagedBean.onRowCancel}" update=":formMain:msgs" />
 
 
-                <p:column filterBy="#{component1.componentId}" filterStyle="width: 70px" filterMatchMode="exact"  headerText="ID" style="width:105px">
+                <p:column filterBy="#{component1.componentId}" width="50" filterStyle="width: 32px" filterMatchMode="exact"  headerText="ID" style="width:105px">
                     <h:outputText value="#{component1.componentId}" />
                 </p:column>
 
-                <p:column filterBy="#{component1.componentName}" filterStyle="width: 70px" filterMatchMode="contains" headerText="Name" style="width:105px">
+                <p:column filterBy="#{component1.componentName}" width="80" filterStyle="width: 60px" filterMatchMode="contains" headerText="Name" style="width:105px">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{component1.componentName}" /></f:facet>
                         <f:facet name="input"><p:inputText value="#{component1.componentName}" style="width:100%" label="Component Name"/></f:facet>
                     </p:cellEditor>
                 </p:column>
 
-                <p:column headerText="Description">
+                <p:column headerText="Description" width="80">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{component1.description}" /></f:facet>
                         <f:facet name="input"><p:inputText value="#{component1.description}" style="width:100%" label="Component Description"/></f:facet>
                     </p:cellEditor>
                 </p:column>
 
-                <p:column headerText="Required Quantity">
+                <p:column headerText="Required Quantity" width="70">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{component1.quantity}" /></f:facet>
                         <f:facet name="input"><p:inputText value="#{component1.quantity}" style="width:100%" label="Component Quantity"/></f:facet>
                     </p:cellEditor>
                 </p:column>
 
-                <p:column  headerText="Currency">
+                <p:column  headerText="Currency" width="70">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{component1.currency}" /></f:facet>
                         <f:facet name="input">
@@ -118,7 +118,7 @@
                     </p:cellEditor>
                 </p:column> 
 
-                <p:column headerText="Cost">
+                <p:column headerText="Cost" width="45">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{component1.cost}" /></f:facet>
                         <f:facet name="input"><p:inputText value="#{component1.cost}" style="width:100%" label="Component Cost"/></f:facet>
