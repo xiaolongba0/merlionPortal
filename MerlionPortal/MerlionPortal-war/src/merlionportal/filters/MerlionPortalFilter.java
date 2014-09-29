@@ -77,7 +77,7 @@ public class MerlionPortalFilter implements Filter {
                                         }
                                     }
                                     if (requestURI.contains("/oes/displayallproducts.xhtml")) {
-                                        if (systemAccessRightsb.checkOESGenerateSO(userId)||systemAccessRightsb.checkOESGeneratePO(userId)||systemAccessRightsb.checkOESGenerateQuotation(userId)) {
+                                        if (systemAccessRightsb.checkOESGenerateSO(userId) || systemAccessRightsb.checkOESGeneratePO(userId) || systemAccessRightsb.checkOESGenerateQuotation(userId)) {
                                         } else {
                                             //User cannot access this page
                                             redirect = true;
@@ -85,7 +85,7 @@ public class MerlionPortalFilter implements Filter {
                                         }
                                     }
                                     if (requestURI.contains("/oes/displayallquotations.xhtml")) {
-                                        if (systemAccessRightsb.checkOESGenerateSO(userId)||systemAccessRightsb.checkOESGeneratePO(userId)||systemAccessRightsb.checkOESGenerateQuotation(userId)) {
+                                        if (systemAccessRightsb.checkOESGenerateSO(userId) || systemAccessRightsb.checkOESGeneratePO(userId) || systemAccessRightsb.checkOESGenerateQuotation(userId)) {
                                         } else {
                                             //User cannot access this page
                                             redirect = true;
@@ -93,7 +93,7 @@ public class MerlionPortalFilter implements Filter {
                                         }
                                     }
                                     if (requestURI.contains("/oes/displayallso.xhtml")) {
-                                        if (systemAccessRightsb.checkOESGenerateSO(userId)||systemAccessRightsb.checkOESGeneratePO(userId)) {
+                                        if (systemAccessRightsb.checkOESGenerateSO(userId) || systemAccessRightsb.checkOESGeneratePO(userId)) {
                                         } else {
                                             //User cannot access this page
                                             redirect = true;
@@ -101,7 +101,7 @@ public class MerlionPortalFilter implements Filter {
                                         }
                                     }
                                     if (requestURI.contains("/oes/displayrequestinfor.xhtml")) {
-                                        if (systemAccessRightsb.checkOESGeneratePO(userId)||systemAccessRightsb.checkOESGenerateQuotation(userId)) {
+                                        if (systemAccessRightsb.checkOESGeneratePO(userId) || systemAccessRightsb.checkOESGenerateQuotation(userId)) {
                                         } else {
                                             //User cannot access this page
                                             redirect = true;
@@ -117,7 +117,7 @@ public class MerlionPortalFilter implements Filter {
                                         }
                                     }
                                     if (requestURI.contains("/oes/orderdetail.xhtml")) {
-                                        if (systemAccessRightsb.checkOESGeneratePO(userId) ||systemAccessRightsb.checkOESGenerateSO(userId) ) {
+                                        if (systemAccessRightsb.checkOESGeneratePO(userId) || systemAccessRightsb.checkOESGenerateSO(userId)) {
                                         } else {
                                             //User cannot access this page
                                             redirect = true;
@@ -125,7 +125,7 @@ public class MerlionPortalFilter implements Filter {
                                         }
                                     }
                                     if (requestURI.contains("/oes/pogeneration.xhtml")) {
-                                        if (systemAccessRightsb.checkOESGeneratePO(userId) ) {
+                                        if (systemAccessRightsb.checkOESGeneratePO(userId)) {
                                         } else {
                                             //User cannot access this page
                                             redirect = true;
@@ -149,7 +149,7 @@ public class MerlionPortalFilter implements Filter {
                                         }
                                     }
                                     if (requestURI.contains("/oes/viewallpo.xhtml")) {
-                                        if (systemAccessRightsb.checkOESGeneratePO(userId) ||systemAccessRightsb.checkOESGenerateSO(userId)) {
+                                        if (systemAccessRightsb.checkOESGeneratePO(userId) || systemAccessRightsb.checkOESGenerateSO(userId)) {
                                         } else {
                                             //User cannot access this page
                                             redirect = true;
@@ -157,7 +157,7 @@ public class MerlionPortalFilter implements Filter {
                                         }
                                     }
                                     if (requestURI.contains("/oes/viewallrequests.xhtml")) {
-                                        if (systemAccessRightsb.checkOESGeneratePO(userId) ||systemAccessRightsb.checkOESGenerateSO(userId) ||systemAccessRightsb.checkOESGenerateQuotation(userId)) {
+                                        if (systemAccessRightsb.checkOESGeneratePO(userId) || systemAccessRightsb.checkOESGenerateSO(userId) || systemAccessRightsb.checkOESGenerateQuotation(userId)) {
                                         } else {
                                             //User cannot access this page
                                             redirect = true;
@@ -165,7 +165,7 @@ public class MerlionPortalFilter implements Filter {
                                         }
                                     }
                                     if (requestURI.contains("/oes/viewquotationinfor.xhtml")) {
-                                        if (systemAccessRightsb.checkOESGeneratePO(userId) ||systemAccessRightsb.checkOESGenerateSO(userId) ||systemAccessRightsb.checkOESGenerateQuotation(userId)) {
+                                        if (systemAccessRightsb.checkOESGeneratePO(userId) || systemAccessRightsb.checkOESGenerateSO(userId) || systemAccessRightsb.checkOESGenerateQuotation(userId)) {
                                         } else {
                                             //User cannot access this page
                                             redirect = true;
@@ -184,13 +184,27 @@ public class MerlionPortalFilter implements Filter {
                                 } else {
                                     //User cannot access OES
                                     redirect = true;
-                                    newPage = ctxtPath + "/user/dashboard";
+                                    //System admin
+                                    if (filterbean.isSystemAdmin(userId)) {
+                                        newPage = ctxtPath + "/admin/dashboard.xhtml";
+
+                                    } else {
+                                        //Normal user
+                                        newPage = ctxtPath + "/user/dashboard.xhtml";
+                                    }
                                 }
 
                             } else {
                                 //User cannot access OES as not included in company package
                                 redirect = true;
-                                newPage = ctxtPath + "/user/dashboard";
+                                //System admin
+                                if (filterbean.isSystemAdmin(userId)) {
+                                    newPage = ctxtPath + "/admin/dashboard.xhtml";
+
+                                } else {
+                                    //Normal user
+                                    newPage = ctxtPath + "/user/dashboard.xhtml";
+                                }
                             }
                         }
 
@@ -312,14 +326,29 @@ public class MerlionPortalFilter implements Filter {
                                     }
 
                                 } else {
+
                                     //User Cannot access MRP System
                                     redirect = true;
-                                    newPage = ctxtPath + "/user/dashboard.xhtml";
+                                    //System admin
+                                    if (filterbean.isSystemAdmin(userId)) {
+                                        newPage = ctxtPath + "/admin/dashboard.xhtml";
+
+                                    } else {
+                                        //Normal user
+                                        newPage = ctxtPath + "/user/dashboard.xhtml";
+                                    }
                                 }
                             } else {
                                 //User Cannot access MRP System as not included in package
                                 redirect = true;
-                                newPage = ctxtPath + "/user/dashboard.xhtml";
+                                //System admin
+                                if (filterbean.isSystemAdmin(userId)) {
+                                    newPage = ctxtPath + "/admin/dashboard.xhtml";
+
+                                } else {
+                                    //Normal user
+                                    newPage = ctxtPath + "/user/dashboard.xhtml";
+                                }
                             }
                         }
                     } else {
@@ -401,12 +430,26 @@ public class MerlionPortalFilter implements Filter {
                                 } else {
                                     //User Cannot use WMS
                                     redirect = true;
-                                    newPage = ctxtPath + "/user/dashboard.xhtml";
+                                    //System admin
+                                    if (filterbean.isSystemAdmin(userId)) {
+                                        newPage = ctxtPath + "/admin/dashboard.xhtml";
+
+                                    } else {
+                                        //Normal user
+                                        newPage = ctxtPath + "/user/dashboard.xhtml";
+                                    }
                                 }
                             } else {
                                 //User Cannot use WMS as not included in company package
                                 redirect = true;
-                                newPage = ctxtPath + "/user/dashboard.xhtml";
+                                //System admin
+                                if (filterbean.isSystemAdmin(userId)) {
+                                    newPage = ctxtPath + "/admin/dashboard.xhtml";
+
+                                } else {
+                                    //Normal user
+                                    newPage = ctxtPath + "/user/dashboard.xhtml";
+                                }
                             }
                         }
 
@@ -460,7 +503,7 @@ public class MerlionPortalFilter implements Filter {
                                 //is super user can proceed
                             }
                         } else {
-                        //Check company package
+                            //Check company package
                             //2PL and 3/4/5PL has access
                             if (filterbean.retrieveCompanyPac(companyId) == 3 || filterbean.retrieveCompanyPac(companyId) == 4) {
 
@@ -495,7 +538,7 @@ public class MerlionPortalFilter implements Filter {
                             //System Admin cannot view all subscribers
                             if (requestURI.contains("/admin/viewallsubscribers.xhtml")) {
                                 redirect = true;
-                                newPage = ctxtPath + "/user/dashboard.xhtml";
+                                newPage = ctxtPath + "/admin/dashboard.xhtml";
                             }
 
                         } else {
