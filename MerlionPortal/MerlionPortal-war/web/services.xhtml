@@ -118,7 +118,7 @@
                                         <h:outputText value="" />
                                     </f:facet>
                                 </p:ajaxStatus>
-                                <p:messages id="messages" autoUpdate="true" closable="true"/>
+                                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
                                 <h:panelGrid columns="3" cellpadding="5">
 
                                     <h:outputLabel style="font-weight: bold" value="Company Name * "/>
@@ -168,19 +168,19 @@
             <script type="text/javascript">
                 function toggleModal() {
                     $("#buyModal").modal('show');
-                        }
-                </script>
-            <script type="text/javascript">
-                    PrimeFaces.validator['custom.emailValidator'] = {
-                            pattern: /\S+@\S+/,
-                        validate: function(element, value) {
-                            //use element.data() to access validation metadata, in this case there is none.
-                                if (!this.pattern.test(value)) {
-                throw {
-                                summary: 'Validation Error',
-                    detail: value + ' is not a valid email.'
                 }
-            }
+            </script>
+            <script type="text/javascript">
+                PrimeFaces.validator['custom.emailValidator'] = {
+                    pattern: /\S+@\S+/,
+                    validate: function(element, value) {
+                        //use element.data() to access validation metadata, in this case there is none.
+                        if (!this.pattern.test(value)) {
+                            throw {
+                                summary: 'Validation Error',
+                                detail: value + ' is not a valid email.'
+                            }
+                        }
                     }
                 };
             </script>
