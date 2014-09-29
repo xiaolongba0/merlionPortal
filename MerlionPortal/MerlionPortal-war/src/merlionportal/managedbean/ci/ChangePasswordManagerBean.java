@@ -74,7 +74,7 @@ public class ChangePasswordManagerBean {
         boolean result = false;
         if (changePasswordBean.checkExistingPassword(loginedUser.getSystemUserId(), MD5Generator.hash(existingPassword))) {
             if (password.equals("")) {
-                requestContext.execute("fail('Please enter new password.')");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Please enter a new password!", ""));
             } else {
                 if (password.equals(confirmPassword)) {
                     result = changePasswordBean.changeToNewPassword(MD5Generator.hash(password), loginedUser.getSystemUserId());
@@ -95,11 +95,11 @@ public class ChangePasswordManagerBean {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Something is very wrong!", "Change password unsuccesful"));
                     }
                 } else {
-                    requestContext.execute("fail('New Password mismatch. Please try again.')");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Password Mis-match!", "Please try again."));
                 }
             }
         } else {
-            requestContext.execute("fail('Existing Password is wrong. Please try again.')");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Existing Password is Wrong!", "Please try again."));
         }
     }
 
