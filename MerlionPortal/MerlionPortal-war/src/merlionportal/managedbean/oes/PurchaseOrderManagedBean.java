@@ -251,32 +251,34 @@ public class PurchaseOrderManagedBean {
     }
 
     public void submitOrder(ActionEvent event) {
+        boolean quantityIsEmpty = false;
 
         if (shipto == null || itemList.isEmpty() || itemList == null || contactPerson == null || contactNumber == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please make sure all compulsory filds are filled"));
 
-        }
-        boolean quantityIsEmpty = false;
-        for (Object o : itemList) {
-            ProductOrderLineItem pLine = (ProductOrderLineItem) o;
-            if (pLine.getQuantity() == null) {
-                quantityIsEmpty = true;
-            }
-        }
-        if (quantityIsEmpty) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please enter quantity for the product"));
         } else {
-            int newPoId = purchaseMB.createPO(shipto, companyId, userId, qutatuonId, contactPerson, contactNumber);
-            if (newPoId < 0) {
-                System.out.println("PO is null");
-            } else {
-                myPo = this.retrievePO(newPoId);
-                for (Object o : itemList) {
-                    ProductOrderLineItem pLine = (ProductOrderLineItem) o;
-                    purchaseMB.createProductList(pLine, myPo);
+            for (Object o : itemList) {
+                ProductOrderLineItem pLine = (ProductOrderLineItem) o;
+                if (pLine.getQuantity() == null) {
+                    quantityIsEmpty = true;
                 }
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Submited", "Order is submitted!"));
+            }
 
+            if (quantityIsEmpty) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please enter quantity for the product"));
+            } else {
+                int newPoId = purchaseMB.createPO(shipto, companyId, userId, qutatuonId, contactPerson, contactNumber);
+                if (newPoId < 0) {
+                    System.out.println("PO is null");
+                } else {
+                    myPo = this.retrievePO(newPoId);
+                    for (Object o : itemList) {
+                        ProductOrderLineItem pLine = (ProductOrderLineItem) o;
+                        purchaseMB.createProductList(pLine, myPo);
+                    }
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Submited", "Order is submitted!"));
+
+                }
             }
         }
     }
