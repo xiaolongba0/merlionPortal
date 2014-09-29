@@ -56,7 +56,9 @@
                             <h:inputText required="true" requiredMessage="Last Name is required" value="#{createUserManagerBean.lastName}" styleClass="form-control" />
 
                             <p:outputLabel style="font-weight: bold" value="Email Address * : " styleClass="pad-it"/>
-                            <h:inputText required="true" requiredMessage="Email Address is required" value="#{createUserManagerBean.emailAddress}" styleClass="form-control" />
+                            <h:inputText required="true" requiredMessage="Email Address is required" value="#{createUserManagerBean.emailAddress}" styleClass="form-control">
+                                <f:validator validatorId="custom.emailValidator" />
+                            </h:inputText>
 
                             <p:outputLabel style="font-weight: bold" value="Password * : "/>
                             <h:inputText required="true" requiredMessage="Password is required" value="#{createUserManagerBean.password}" styleClass="form-control" />
@@ -90,6 +92,20 @@
                     </p:panel>
                 </div>
             </h:form>
+            <script type="text/javascript">
+                PrimeFaces.validator['custom.emailValidator'] = {
+                    pattern: /\S+@\S+/,
+                    validate: function(element, value) {
+                        //use element.data() to access validation metadata, in this case there is none.
+                        if (!this.pattern.test(value)) {
+                            throw {
+                                summary: 'Validation Error',
+                                detail: value + ' is not a valid email.'
+                            }
+                        }
+                    }
+                };
+            </script>
 
         </ui:define>
     </ui:composition>
