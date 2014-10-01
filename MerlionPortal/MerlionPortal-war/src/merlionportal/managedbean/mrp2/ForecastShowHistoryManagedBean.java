@@ -83,6 +83,8 @@ public class ForecastShowHistoryManagedBean implements Serializable {
         
         
         productId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("productId");
+        
+        System.out.println("!!!!!!!!!!!!!!!!HistoryManagedBean: getProductId" + productId);
         dateList = rsdsb.retrieveDateList(productId);
         quantityList = rsdsb.retrieveQuantityList(productId);
 

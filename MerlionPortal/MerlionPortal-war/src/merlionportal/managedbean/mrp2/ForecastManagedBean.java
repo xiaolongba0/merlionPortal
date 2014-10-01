@@ -60,6 +60,8 @@ public class ForecastManagedBean implements Serializable {
     public void setProductId(Integer productId) {
         this.productId = productId;
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("productId", productId);
+        
+        System.out.println("!!!!!!!!!!!!!!!!forecastManagedBean: setProductId" + productId);
  }
 
     public List<Product> getProducts() {
