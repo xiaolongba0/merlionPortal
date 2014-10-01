@@ -38,6 +38,8 @@ public class RetrieveSalesDataSessionBean {
 
         List<ProductOrderLineItem> lineItems = product.getProductOrderLineItemList();
         ProductOrderLineItem lineItem;
+        
+        
 
 //        Get Today's date
         Date today = new Date();
@@ -233,9 +235,10 @@ public class RetrieveSalesDataSessionBean {
             lineItem = (ProductOrderLineItem) o;
             if (lineItem.getProductOrderproductPOId().getCreatedDate().before(month0) && lineItem.getProductOrderproductPOId().getCreatedDate().after(month1)) {
                 quantity1 = quantity1 + lineItem.getQuantity();
+
             } else if (lineItem.getProductOrderproductPOId().getCreatedDate().before(month1) && lineItem.getProductOrderproductPOId().getCreatedDate().after(month2)) {
                 quantity2 = quantity2 + lineItem.getQuantity();
-
+                
             } else if (lineItem.getProductOrderproductPOId().getCreatedDate().before(month2) && lineItem.getProductOrderproductPOId().getCreatedDate().after(month3)) {
                 quantity3 = quantity3 + lineItem.getQuantity();
 
@@ -301,6 +304,7 @@ public class RetrieveSalesDataSessionBean {
 
             } else if (lineItem.getProductOrderproductPOId().getCreatedDate().before(month23) && lineItem.getProductOrderproductPOId().getCreatedDate().after(month24)) {
                 quantity24 = quantity24 + lineItem.getQuantity();
+                
 
             } else {
 //                Do nothing
@@ -308,79 +312,84 @@ public class RetrieveSalesDataSessionBean {
         }
         List<Integer> quantityList = new ArrayList<>();
 //later check if quantitiy is empty, if it is, dun add in the quantityList, check in managedbean the size of quantityList
-        if(quantity24 != 0){
-            quantityList.add(quantity24);
-        }
-        if(quantity23 != 0){
-            quantityList.add(quantity23);
-        }
-        if(quantity22 != 0){
-            quantityList.add(quantity22);
-        }
-        if(quantity21 != 0){
-            quantityList.add(quantity21);
-        }
-        if(quantity20 != 0){
-            quantityList.add(quantity20);
-        }
-        if(quantity19 != 0){
-            quantityList.add(quantity19);
-        }
-        if(quantity18 != 0){
-            quantityList.add(quantity18);
-        }
-        if(quantity17 != 0){
-            quantityList.add(quantity17);
-        }
-        if(quantity16 != 0){
-            quantityList.add(quantity16);
-        }
-        if(quantity15 != 0){
-            quantityList.add(quantity15);
-        }
-        if(quantity14 != 0){
-            quantityList.add(quantity14);
-        }
-        if(quantity13 != 0){
-            quantityList.add(quantity13);
-        }
-        if(quantity12 != 0){
-            quantityList.add(quantity12);
-        }
-        if(quantity11 != 0){
-            quantityList.add(quantity11);
-        }
-        if(quantity10 != 0){
-            quantityList.add(quantity10);
-        }
-        if(quantity9 != 0){
-            quantityList.add(quantity9);
-        }
-        if(quantity8 != 0){
-            quantityList.add(quantity8);
-        }
-        if(quantity7 != 0){
-            quantityList.add(quantity7);
-        }
-        if(quantity6 != 0){
-            quantityList.add(quantity6);
-        }
-        if(quantity5 != 0){
-            quantityList.add(quantity5);
-        }
-        if(quantity4 != 0){
-            quantityList.add(quantity4);
-        }
-        if(quantity3 != 0){
-            quantityList.add(quantity3);
-        }
-        if(quantity2 != 0){
-            quantityList.add(quantity2);
-        }
-        if(quantity1 != 0){
-            quantityList.add(quantity1);
-        }
 
+            quantityList.add(quantity24);
+
+
+            quantityList.add(quantity23);
+
+
+            quantityList.add(quantity22);
+
+
+            quantityList.add(quantity21);
+
+
+            quantityList.add(quantity20);
+
+
+            quantityList.add(quantity19);
+
+
+            quantityList.add(quantity18);
+
+ 
+            quantityList.add(quantity17);
+   
+
+            quantityList.add(quantity16);
+ 
+     
+            quantityList.add(quantity15);
+  
+
+            quantityList.add(quantity14);
+
+
+            quantityList.add(quantity13);
+
+     
+            quantityList.add(quantity12);
+ 
+   
+            quantityList.add(quantity11);
+  
+     
+            quantityList.add(quantity10);
+      
+
+            quantityList.add(quantity9);
+     
+  
+            quantityList.add(quantity8);
+     
+      
+            quantityList.add(quantity7);
+    
+ 
+            quantityList.add(quantity6);
+    
+  
+            quantityList.add(quantity5);
+      
+   
+            quantityList.add(quantity4);
+   
+     
+            quantityList.add(quantity3);
+     
+       
+            quantityList.add(quantity2);
+     
+       
+            quantityList.add(quantity1);
+       
+System.out.println("quantityList:  " + quantityList.get(0));
+        System.out.println("quantityList:  " + quantityList.get(1));
+        System.out.println("quantityList:  " + quantityList.get(2));
+        System.out.println("quantityList:  " + quantityList.get(3));
+     //   System.out.println("quantityList23:  " + quantityList.get(23));
+        
         return quantityList;
     }
 }
