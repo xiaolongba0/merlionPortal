@@ -79,11 +79,11 @@ public class TransportationAsset implements Serializable {
     private List<TransportationOrder> transportationOrderList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "transporationAssetassetId")
     private List<AssetSchedule> assetScheduleList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "transporationAssetassetId")
+    private List<MaintenanceLog> maintenanceLogList;
     @JoinColumn(name = "Location_locationId", referencedColumnName = "locationId")
     @ManyToOne(optional = false)
     private Location locationlocationId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "transporationAssetassetId")
-    private List<MaintenanceLog> maintenanceLogList;
 
     public TransportationAsset() {
     }
@@ -191,14 +191,6 @@ public class TransportationAsset implements Serializable {
         this.assetScheduleList = assetScheduleList;
     }
 
-    public Location getLocationlocationId() {
-        return locationlocationId;
-    }
-
-    public void setLocationlocationId(Location locationlocationId) {
-        this.locationlocationId = locationlocationId;
-    }
-
     @XmlTransient
     public List<MaintenanceLog> getMaintenanceLogList() {
         return maintenanceLogList;
@@ -206,6 +198,14 @@ public class TransportationAsset implements Serializable {
 
     public void setMaintenanceLogList(List<MaintenanceLog> maintenanceLogList) {
         this.maintenanceLogList = maintenanceLogList;
+    }
+
+    public Location getLocationlocationId() {
+        return locationlocationId;
+    }
+
+    public void setLocationlocationId(Location locationlocationId) {
+        this.locationlocationId = locationlocationId;
     }
 
     @Override

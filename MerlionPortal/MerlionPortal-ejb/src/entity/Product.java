@@ -73,11 +73,11 @@ public class Product implements Serializable {
     @Column(name = "category")
     private String category;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productproductId")
+    private List<Component> componentList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productproductId")
     private List<QuotationLineItem> quotationLineItemList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productproductId")
     private List<ProductOrderLineItem> productOrderLineItemList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productproductId")
-    private List<Component> componentList;
 
     public Product() {
     }
@@ -157,6 +157,15 @@ public class Product implements Serializable {
     }
 
     @XmlTransient
+    public List<Component> getComponentList() {
+        return componentList;
+    }
+
+    public void setComponentList(List<Component> componentList) {
+        this.componentList = componentList;
+    }
+
+    @XmlTransient
     public List<QuotationLineItem> getQuotationLineItemList() {
         return quotationLineItemList;
     }
@@ -172,15 +181,6 @@ public class Product implements Serializable {
 
     public void setProductOrderLineItemList(List<ProductOrderLineItem> productOrderLineItemList) {
         this.productOrderLineItemList = productOrderLineItemList;
-    }
-
-    @XmlTransient
-    public List<Component> getComponentList() {
-        return componentList;
-    }
-
-    public void setComponentList(List<Component> componentList) {
-        this.componentList = componentList;
     }
 
     @Override
