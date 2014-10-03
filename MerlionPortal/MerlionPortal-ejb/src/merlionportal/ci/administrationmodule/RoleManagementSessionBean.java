@@ -111,11 +111,9 @@ public class RoleManagementSessionBean {
                 //Add a list of company
                 companyRole.setSystemUserList(userList);
 
-                List<Company> companies = new ArrayList<>();
                 Company company = getCompany(companyId);
                 if (company != null) {
-                    companies.add(company);
-                    companyRole.setCompanyList(companies);
+                    companyRole.setCompany(company);
 
                     List<UserRole> roles = new ArrayList<>();
                     roles.add(companyRole);
@@ -163,16 +161,16 @@ public class RoleManagementSessionBean {
                         System.out.println("There are users in this role");
                         return -2;
                     } else {
-                        for (Object o : userRole.getCompanyList()) {
-                            Company company = (Company) o;
-                            if (company.getUserRoleList().contains(userRole)) {
-                                company.getUserRoleList().remove(userRole);
-                                em.merge(company);
-                            }
+                        Company company = userRole.getCompany();
+                        if (company.getUserRoleList().contains(userRole)) {
+                            company.getUserRoleList().remove(userRole);
+                            em.merge(company);
                         }
+
                         em.remove(userRole);
                         em.flush();
                         return 1;
+
                     }
                 }
             }
@@ -189,7 +187,7 @@ public class RoleManagementSessionBean {
         SystemUser operator = em.find(SystemUser.class, operatorId);
         boolean canRun = false;
 
-        if (operator != null) {
+        if (operator!= null) {
             if (operator.getUserType() != null) {
                 if (operator.getUserType().equals("superuser")) {
                     canRun = true;
@@ -248,7 +246,9 @@ public class RoleManagementSessionBean {
             return -1;
 
         }
+
         System.out.println("Operator is null");
+
         return 0;
     }
 

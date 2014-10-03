@@ -15,9 +15,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -70,13 +67,10 @@ public class Company implements Serializable {
     private String description;
     @Column(name = "package")
     private Integer package1;
-    @JoinTable(name = "Company_has_UserRole", joinColumns = {
-        @JoinColumn(name = "companyId", referencedColumnName = "companyId")}, inverseJoinColumns = {
-        @JoinColumn(name = "userRoleId", referencedColumnName = "userRoleId")})
-    @ManyToMany
-    private List<UserRole> userRoleList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "companycompanyId")
     private List<SystemUser> systemUserList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
+    private List<UserRole> userRoleList;
 
     public Company() {
     }
@@ -150,21 +144,21 @@ public class Company implements Serializable {
     }
 
     @XmlTransient
-    public List<UserRole> getUserRoleList() {
-        return userRoleList;
-    }
-
-    public void setUserRoleList(List<UserRole> userRoleList) {
-        this.userRoleList = userRoleList;
-    }
-
-    @XmlTransient
     public List<SystemUser> getSystemUserList() {
         return systemUserList;
     }
 
     public void setSystemUserList(List<SystemUser> systemUserList) {
         this.systemUserList = systemUserList;
+    }
+
+    @XmlTransient
+    public List<UserRole> getUserRoleList() {
+        return userRoleList;
+    }
+
+    public void setUserRoleList(List<UserRole> userRoleList) {
+        this.userRoleList = userRoleList;
     }
 
     @Override

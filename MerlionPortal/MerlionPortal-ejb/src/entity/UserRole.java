@@ -14,7 +14,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -186,9 +188,10 @@ public class UserRole implements Serializable {
     @Column(name = "canManagePost")
     private boolean canManagePost;
     @ManyToMany(mappedBy = "userRoleList")
-    private List<Company> companyList;
-    @ManyToMany(mappedBy = "userRoleList")
     private List<SystemUser> systemUserList;
+    @JoinColumn(name = "company", referencedColumnName = "companyId")
+    @ManyToOne(optional = false)
+    private Company company;
 
     public UserRole() {
     }
@@ -470,21 +473,20 @@ public class UserRole implements Serializable {
     }
 
     @XmlTransient
-    public List<Company> getCompanyList() {
-        return companyList;
-    }
-
-    public void setCompanyList(List<Company> companyList) {
-        this.companyList = companyList;
-    }
-
-    @XmlTransient
     public List<SystemUser> getSystemUserList() {
         return systemUserList;
     }
 
     public void setSystemUserList(List<SystemUser> systemUserList) {
         this.systemUserList = systemUserList;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     @Override
