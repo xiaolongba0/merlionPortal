@@ -39,7 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ServiceCatalog.findByServiceType", query = "SELECT s FROM ServiceCatalog s WHERE s.serviceType = :serviceType"),
     @NamedQuery(name = "ServiceCatalog.findByPricePerTEU", query = "SELECT s FROM ServiceCatalog s WHERE s.pricePerTEU = :pricePerTEU"),
     @NamedQuery(name = "ServiceCatalog.findByCompanyId", query = "SELECT s FROM ServiceCatalog s WHERE s.companyId = :companyId"),
-    @NamedQuery(name = "ServiceCatalog.findByVoid1", query = "SELECT s FROM ServiceCatalog s WHERE s.void1 = :void1")})
+    @NamedQuery(name = "ServiceCatalog.findByVoid1", query = "SELECT s FROM ServiceCatalog s WHERE s.void1 = :void1"),
+    @NamedQuery(name = "ServiceCatalog.findByCompanyName", query = "SELECT s FROM ServiceCatalog s WHERE s.companyName = :companyName")})
 public class ServiceCatalog implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -64,6 +65,9 @@ public class ServiceCatalog implements Serializable {
     private Integer companyId;
     @Column(name = "void")
     private Boolean void1;
+    @Size(max = 45)
+    @Column(name = "companyName")
+    private String companyName;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "serviceCatalog")
     private List<ServiceQuotation> serviceQuotationList;
 
@@ -136,6 +140,14 @@ public class ServiceCatalog implements Serializable {
 
     public void setVoid1(Boolean void1) {
         this.void1 = void1;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     @XmlTransient
