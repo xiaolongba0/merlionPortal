@@ -50,7 +50,7 @@ public class ServiceCatalog implements Serializable {
     @Size(max = 255)
     @Column(name = "serviceName")
     private String serviceName;
-    @Size(max = 255)
+    @Size(max = 1000)
     @Column(name = "serviceDescription")
     private String serviceDescription;
     @Column(name = "publicView")
