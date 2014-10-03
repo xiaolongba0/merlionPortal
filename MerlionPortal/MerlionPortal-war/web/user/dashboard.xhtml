@@ -64,7 +64,7 @@
                         <c:if test ="#{dashboardBean.canUseCRMS() || dashboardBean.loginedUser.userType == 'superuser'}">
                             <c:set var="disablecrms" value="false" />
                         </c:if>
-                        <p:commandLink action="#" disabled="${disablecrms}" >
+                        <p:commandLink action="/crms/crmsindex.xhtml?faces-redirect=true" disabled="${disablecrms}" >
                             <p:graphicImage value="../img/crmstile.jpg"/>
                         </p:commandLink> 
                     </div>
