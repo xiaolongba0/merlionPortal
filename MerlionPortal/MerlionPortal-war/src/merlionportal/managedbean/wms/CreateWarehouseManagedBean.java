@@ -25,7 +25,7 @@ import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
  */
 @Named(value = "cwmb")
 @RequestScoped
-public class CreateWarehouseManagerBean {
+public class CreateWarehouseManagedBean {
 
     @EJB
     private AssetManagementSessionBean assetManagementSessionBean;
@@ -47,7 +47,7 @@ public class CreateWarehouseManagerBean {
     /**
      * Creates a new instance of AssestManagedBean
      */
-    public CreateWarehouseManagerBean() {
+    public CreateWarehouseManagedBean() {
     }
 
     @PostConstruct

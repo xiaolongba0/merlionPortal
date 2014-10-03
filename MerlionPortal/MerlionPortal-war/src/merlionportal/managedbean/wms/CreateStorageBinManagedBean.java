@@ -25,7 +25,7 @@ import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
  */
 @Named(value = "createStorageBinManagerBean")
 @ViewScoped
-public class CreateStorageBinManagerBean {
+public class CreateStorageBinManagedBean {
 
     /**
      * Creates a new instance of CreateStorageBinManagerBean
@@ -52,7 +52,7 @@ public class CreateStorageBinManagerBean {
 
     private List<String> listStorageBinType;
 
-    public CreateStorageBinManagerBean() {
+    public CreateStorageBinManagedBean() {
     }
 
     @PostConstruct
