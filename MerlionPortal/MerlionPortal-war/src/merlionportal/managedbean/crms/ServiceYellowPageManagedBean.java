@@ -23,7 +23,7 @@ import merlionportal.crms.accountmanagementmodule.ServiceCatalogSessionBean;
  */
 @Named(value = "serviceYellowPageManagerBean")
 @ViewScoped
-public class ServiceYellowPageManagerBean {
+public class ServiceYellowPageManagedBean {
 
     /**
      * Creates a new instance of ServiceYellowPageManagerBean
@@ -39,7 +39,7 @@ public class ServiceYellowPageManagerBean {
     private List<ServiceCatalog> filteredServices;
     
 
-    public ServiceYellowPageManagerBean() {
+    public ServiceYellowPageManagedBean() {
     }
 
     @PostConstruct

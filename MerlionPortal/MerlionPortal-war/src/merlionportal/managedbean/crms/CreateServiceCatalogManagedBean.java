@@ -20,7 +20,7 @@ import merlionportal.crms.accountmanagementmodule.ServiceCatalogSessionBean;
  */
 @Named(value = "createservicecatalog")
 @ViewScoped
-public class CreateServiceCatalogManagerBean {
+public class CreateServiceCatalogManagedBean {
 
     /**
      * Creates a new instance of CreateServiceCatalogManagerBean
@@ -37,7 +37,7 @@ public class CreateServiceCatalogManagerBean {
     private Integer type;
     private double price;
 
-    public CreateServiceCatalogManagerBean() {
+    public CreateServiceCatalogManagedBean() {
         view = false;
         price = 0;
 
