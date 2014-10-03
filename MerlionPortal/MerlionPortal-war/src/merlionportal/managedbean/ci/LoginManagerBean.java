@@ -24,7 +24,7 @@ import util.accessRightControl.Right;
 @ManagedBean
 @Named(value = "loginBean")
 @ViewScoped
-public class LoginBean {
+public class LoginManagerBean {
 
     private String username;
     private String password;
