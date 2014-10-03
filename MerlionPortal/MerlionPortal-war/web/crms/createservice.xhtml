@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="CRMS home" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <h:form id="formMain">
+                <p:panelMenu>
+                    <p:submenu label="CRMS HOME" styleClass="display:block">
+                        <p:menuitem value="CRMS Home" url="crmsindex.xhtml"/>
+                        <p:menuitem value="Service Yellow Pages" url="serviceyellowpages.xhtml"/>
+
+                    </p:submenu>
+                    <p:submenu label="Service Catalog Management" styleClass="display:block">
+                        <p:menuitem value="Create New Service" url="createservice.xhtml" />
+                        <p:menuitem value="View All Services" url="viewallservices.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Quotation" styleClass="display:block">
+                        <p:menuitem value="Coming Soon" url="#" />
+                    </p:submenu>
+                </p:panelMenu>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">
+            <h:form id="form">
+                <p:panel  header="Create New Service"  style="margin-bottom:20px">
+                    <p:ajaxStatus style="width:16px;height:16px;">
+                        <f:facet name="start">
+                            <h:graphicImage value="/img/load.gif" />
+                        </f:facet>
+                        <f:facet name="complete">
+                            <h:outputText value="" />
+                        </f:facet>
+                    </p:ajaxStatus>
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="serviceName" style="font-weight: bold" value="Service Name * "/>
+                            </p:column>
+                            <p:column >
+                                <h:inputText id="serviceName" required="true" styleClass="form-control" requiredMessage="Service Name is required." value="#{createservicecatalog.serviceName}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="serviceDescription" style="font-weight: bold" value="Service Description * "/>
+                            </p:column>
+                            <p:column>
+                                <p:inputTextarea id="serviceDescription" styleClass="form-control" required="true" requiredMessage="Service Description is required." rows="5" cols="30" counter="display" maxlength="999" counterTemplate="{0} characters remaining." autoResize="true" value="#{createservicecatalog.description}" />
+                            </p:column>
+
+                        </p:row>
+                        <p:row>
+                            <p:column >
+
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="display" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column >
+                                <h:outputLabel for="price" style="font-weight: bold" value="Price Per TEU "/>
+                            </p:column>
+                            <p:column>
+                                <h:inputText id="price" styleClass="form-control" value="#{createservicecatalog.price}" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="view" style="font-weight: bold" value="Make it public *"/>
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanButton id="view" value="#{createservicecatalog.view}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:80px"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column >
+                                <h:outputLabel for="type" style="font-weight: bold" value="Service Type * "/>
+                            </p:column>
+                            <p:column >
+                                <p:selectOneMenu  id="type"  required="true" requiredMessage="Service Type is required" value="#{createservicecatalog.type}" style="width:200px">
+                                    <f:selectItem itemLabel="Select Service Type" itemValue="" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="Warehouse Service" itemValue="1" />
+                                    <f:selectItem itemLabel="Transportation Service" itemValue="2" />
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+
+                    <p:messages id="messages" autoUpdate="true" closable="true" />
+                    <p:commandButton value="Create" icon="ui-icon-check" actionListener="#{createservicecatalog.createServiceCatalog}" ajax="true" update="form" />
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
