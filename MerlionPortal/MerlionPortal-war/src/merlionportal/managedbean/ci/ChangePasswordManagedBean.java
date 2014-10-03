@@ -26,7 +26,7 @@ import org.primefaces.context.RequestContext;
  */
 @Named(value = "changePasswordBean")
 @ViewScoped
-public class ChangePasswordManagerBean {
+public class ChangePasswordManagedBean {
 
     @EJB
     private UserAccountManagementSessionBean uamb;
@@ -38,7 +38,7 @@ public class ChangePasswordManagerBean {
     private String password;
     private String confirmPassword;
 
-    public ChangePasswordManagerBean() {
+    public ChangePasswordManagedBean() {
     }
 
     @PostConstruct

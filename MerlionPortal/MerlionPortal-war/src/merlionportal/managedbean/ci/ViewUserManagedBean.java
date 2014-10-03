@@ -29,7 +29,7 @@ import merlionportal.utility.MD5Generator;
  */
 @Named(value = "viewUserManagerBean")
 @ViewScoped
-public class ViewUserManagerBean {
+public class ViewUserManagedBean {
 
     /**
      * Creates a new instance of ViewUserManagerBean
@@ -55,7 +55,7 @@ public class ViewUserManagerBean {
     private List<UserRole> rolesToDisplay;
     private Integer roleToAdd;
 
-    public ViewUserManagerBean() {
+    public ViewUserManagedBean() {
     }
 
     @PostConstruct

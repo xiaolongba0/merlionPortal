@@ -15,7 +15,7 @@ import org.primefaces.context.RequestContext;
 
 @Named(value = "resetPasswordBean")
 @ViewScoped
-public class ResetPasswordBean {
+public class ResetPasswordManagedBean {
 
     private String email;
 
@@ -33,7 +33,7 @@ public class ResetPasswordBean {
 //2b. user account is locked
 //3. prompt user for error
 
-    public ResetPasswordBean() {
+    public ResetPasswordManagedBean() {
     }
 
     @PostConstruct

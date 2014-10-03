@@ -27,7 +27,7 @@ import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
  */
 @Named(value = "viewCompanyRoles")
 @ViewScoped
-public class ViewCompanyRolesManagerBean {
+public class ViewCompanyRolesManagedBean {
 
     @EJB
     GetCompanyRoleSessionBean gcrsb;
@@ -49,7 +49,7 @@ public class ViewCompanyRolesManagerBean {
     /**
      * Creates a new instance of ViewCompanyRoles
      */
-    public ViewCompanyRolesManagerBean() {
+    public ViewCompanyRolesManagedBean() {
     }
 
     @PostConstruct

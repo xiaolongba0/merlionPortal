@@ -16,12 +16,12 @@ import javax.faces.view.ViewScoped;
  */
 @Named(value = "logoutManagerBean")
 @ViewScoped
-public class LogoutManagerBean {
+public class LogoutManagedBean {
 
     /**
      * Creates a new instance of LogoutManagerBean
      */
-    public LogoutManagerBean() {
+    public LogoutManagedBean() {
     }
 
     public void logout() throws IOException {

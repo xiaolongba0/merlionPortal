@@ -24,7 +24,7 @@ import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
  */
 @Named(value = "getAllSubscribersInfo")
 @ViewScoped
-public class GetAllSubscribersInfoManagerBean {
+public class GetAllSubscribersInfoManagedBean {
 
     /**
      * Creates a new instance of GetAllSubscribersInfoManagerBean
@@ -39,7 +39,7 @@ public class GetAllSubscribersInfoManagerBean {
     @EJB
     GetCompanySessionBean gcsb;
 
-    public GetAllSubscribersInfoManagerBean() {
+    public GetAllSubscribersInfoManagedBean() {
     }
 
     @PostConstruct

@@ -22,7 +22,7 @@ import util.accessRightControl.Right;
  */
 @Named(value = "userDashBoardBean")
 @ViewScoped
-public class UserDashBoardBean {
+public class UserDashBoardManagedBean {
 
     /**
      * Creates a new instance of UserDashBoardBean
@@ -34,7 +34,7 @@ public class UserDashBoardBean {
     @EJB
     CheckAccessRightBean carb;
 
-    public UserDashBoardBean() {
+    public UserDashBoardManagedBean() {
     }
 
     @PostConstruct

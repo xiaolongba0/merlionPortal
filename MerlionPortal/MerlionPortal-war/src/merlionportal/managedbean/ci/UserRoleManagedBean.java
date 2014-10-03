@@ -29,7 +29,7 @@ import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
  */
 @Named(value = "createRole")
 @ViewScoped
-public class UserRoleManagerBean implements Serializable {
+public class UserRoleManagedBean implements Serializable {
 
     @EJB
     RoleManagementSessionBean rmb;
@@ -81,7 +81,7 @@ public class UserRoleManagerBean implements Serializable {
 
     private List<UserRole> roles;
 
-    public UserRoleManagerBean() {
+    public UserRoleManagedBean() {
         canGeneratePO = false;
         canGenerateSO = false;
         canGenerateQuotationAndProductContract = false;

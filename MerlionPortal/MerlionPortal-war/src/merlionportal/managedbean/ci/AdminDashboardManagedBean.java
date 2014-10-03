@@ -15,7 +15,7 @@ import util.accessRightControl.Right;
 
 @Named(value = "dashboardBean")
 @ViewScoped
-public class AdminDashboardBean implements Serializable {
+public class AdminDashboardManagedBean implements Serializable {
 
     private SystemUser loginedUser;
     private Integer userId;
@@ -28,7 +28,7 @@ public class AdminDashboardBean implements Serializable {
     @EJB
     SystemAccessRightSessionBean systemAccessRightSB;
 
-    public AdminDashboardBean() {
+    public AdminDashboardManagedBean() {
     }
 
     @PostConstruct

@@ -21,7 +21,7 @@ import org.primefaces.context.RequestContext;
  */
 @Named(value = "userAccountManagerBean")
 @ViewScoped
-public class RegisterCompanyManagerBean {
+public class RegisterCompanyManagedBean {
 
     /**
      * Creates a new instance of RegisterCompanyManagerBean
@@ -41,7 +41,7 @@ public class RegisterCompanyManagerBean {
     private String description;
     private Integer package1;
 
-    public RegisterCompanyManagerBean() {
+    public RegisterCompanyManagedBean() {
 
     }
 

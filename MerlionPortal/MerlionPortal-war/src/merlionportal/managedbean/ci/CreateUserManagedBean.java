@@ -34,7 +34,7 @@ import org.primefaces.context.RequestContext;
  */
 @Named(value = "createUserManagerBean")
 @ViewScoped
-public class CreateUserManagerBean {
+public class CreateUserManagedBean {
 
     private SystemUser loginedUser;
 
@@ -65,7 +65,7 @@ public class CreateUserManagerBean {
     /**
      * Creates a new instance of createUserManagerBean
      */
-    public CreateUserManagerBean() {
+    public CreateUserManagedBean() {
     }
 
     @PostConstruct
