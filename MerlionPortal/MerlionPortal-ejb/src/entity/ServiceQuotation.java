@@ -56,8 +56,9 @@ public class ServiceQuotation implements Serializable {
     @Basic(optional = false)
     @Column(name = "quotationId")
     private Integer quotationId;
+    @Size(max = 45)
     @Column(name = "serviceType")
-    private Integer serviceType;
+    private String serviceType;
     @Column(name = "createdDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
@@ -105,11 +106,11 @@ public class ServiceQuotation implements Serializable {
         this.quotationId = quotationId;
     }
 
-    public Integer getServiceType() {
+    public String getServiceType() {
         return serviceType;
     }
 
-    public void setServiceType(Integer serviceType) {
+    public void setServiceType(String serviceType) {
         this.serviceType = serviceType;
     }
 

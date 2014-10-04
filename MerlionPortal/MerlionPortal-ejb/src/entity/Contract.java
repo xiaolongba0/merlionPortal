@@ -54,8 +54,9 @@ public class Contract implements Serializable {
     @Basic(optional = false)
     @Column(name = "contractId")
     private Integer contractId;
+    @Size(max = 45)
     @Column(name = "serviceType")
-    private Integer serviceType;
+    private String serviceType;
     @Column(name = "partyA")
     private Integer partyA;
     @Column(name = "partyB")
@@ -106,11 +107,11 @@ public class Contract implements Serializable {
         this.contractId = contractId;
     }
 
-    public Integer getServiceType() {
+    public String getServiceType() {
         return serviceType;
     }
 
-    public void setServiceType(Integer serviceType) {
+    public void setServiceType(String serviceType) {
         this.serviceType = serviceType;
     }
 
