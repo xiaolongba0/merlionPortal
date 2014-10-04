@@ -58,9 +58,9 @@
                                 <p:outputLabel for="warehouse" value="Warehouse Name: " />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="warehouse" value="#{createStorageTypeMB.selectedWarehouseId}"  style="width:210px" required="true" requiredMessage="Please select a warehouse">
+                                <p:selectOneMenu id="warehouse" value="#{createStorageTypeManangedBean.selectedWarehouseId}"  style="width:210px" required="true" requiredMessage="Please select a warehouse">
                                     <f:selectItem itemLabel="Select Warehouse" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{createStorageTypeMB.warehouses}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId}   Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"/>
+                                    <f:selectItems value="#{createStorageTypeManangedBean.warehouses}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId}   Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
@@ -69,7 +69,7 @@
                                 <p:outputLabel for="storageTypeName" style="font-weight: bold" value="Storage Type Name : " />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="storageTypeName" requiredMessage="Storage Type is required." id="storageTypeName" value="#{createStorageTypeMB.storageTypeName}">
+                                <p:inputText required="true" label="storageTypeName" requiredMessage="Storage Type is required." id="storageTypeName" value="#{createStorageTypeManangedBean.storageTypeName}">
                                     <f:validateLength minimum="1" maximum="25" />
                                 </p:inputText>
                             </p:column>
@@ -79,7 +79,7 @@
                                 <h:outputLabel for="description" style="font-weight: bold" value="Description: *" />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="description" requiredMessage="Description is required." id="description" value="#{createStorageTypeMB.storagetDescription}">
+                                <p:inputText required="true" label="description" requiredMessage="Description is required." id="description" value="#{createStorageTypeManangedBean.storagetDescription}">
                                     <f:validateLength minimum="1" maximum="100" />
                                 </p:inputText>
                             </p:column>
@@ -87,7 +87,7 @@
 
                     </p:panelGrid>
                     <p:messages id="messages" autoUpdate="true" closable="true" />
-                    <p:commandButton id="btn" value="Create New Storage Type" update="panel" actionListener="#{createStorageTypeMB.createNewStorageType}" ajax="true" />
+                    <p:commandButton id="btn" value="Create New Storage Type" update="panel" actionListener="#{createStorageTypeManangedBean.createNewStorageType}" ajax="true" />
                 </p:panel>
             </h:form>
         </ui:define>

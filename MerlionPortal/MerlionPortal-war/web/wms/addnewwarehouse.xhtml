@@ -58,7 +58,7 @@
                                 <p:outputLabel for="warehouseName" style="font-weight: bold" value="Warehouse Name: " />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="Warehouse Name" requiredMessage="Warehouse Name is required." id="warehouseName" value="#{cwmb.warehouseName}">
+                                <p:inputText required="true" label="Warehouse Name" requiredMessage="Warehouse Name is required." id="warehouseName" value="#{createWarehouseManagedBean.warehouseName}">
                                     <f:validateLength minimum="4" maximum="40" />
                                 </p:inputText>
                             </p:column>                       
@@ -68,7 +68,7 @@
                                 <h:outputLabel for="country" style="font-weight: bold" value="Country:   *" />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="country" requiredMessage="Country is required." id="country" value="#{cwmb.country}">
+                                <p:inputText required="true" label="country" requiredMessage="Country is required." id="country" value="#{createWarehouseManagedBean.country}">
                                     <f:validateLength minimum="1" maximum="19" />
                                 </p:inputText>
                             </p:column>
@@ -80,7 +80,7 @@
                                 <h:outputLabel for="city" style="font-weight: bold" value="City:   *" />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="city" requiredMessage="City is required." id="city" value="#{cwmb.city}">
+                                <p:inputText required="true" label="city" requiredMessage="City is required." id="city" value="#{createWarehouseManagedBean.city}">
                                     <f:validateLength minimum="1" maximum="19" />
                                 </p:inputText>
                             </p:column>
@@ -92,7 +92,7 @@
                                 <h:outputLabel for="street" style="font-weight: bold" value="Street:   *" />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="street" requiredMessage="Street is required." id="street" value="#{cwmb.street}">
+                                <p:inputText required="true" label="street" requiredMessage="Street is required." id="street" value="#{createWarehouseManagedBean.street}">
                                     <f:validateLength minimum="1" maximum="19" />
                                 </p:inputText>
                             </p:column>
@@ -103,7 +103,7 @@
                                 <h:outputLabel for="zipcode" style="font-weight: bold" value="Zipcode:   *" />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="zipcode" requiredMessage="Zipcode is required." id="zipcode" value="#{cwmb.zipcode}">
+                                <p:inputText required="true" label="zipcode" requiredMessage="Zipcode is required." id="zipcode" value="#{createWarehouseManagedBean.zipcode}">
                                     <f:validateLength minimum="1" maximum="10" />
                                 </p:inputText>
                             </p:column>
@@ -114,7 +114,7 @@
                                 <h:outputLabel for="description" style="font-weight: bold" value="Description:   *" />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="description" requiredMessage="Description is required." id="description" value="#{cwmb.description}">
+                                <p:inputText required="true" label="description" requiredMessage="Description is required." id="description" value="#{createWarehouseManagedBean.description}">
                                     <f:validateLength minimum="1" maximum="100" />
                                 </p:inputText>
                             </p:column>
@@ -123,7 +123,7 @@
 
                     </p:panelGrid>
                     <p:messages id="messages" autoUpdate="true" closable="true" />
-                    <p:commandButton id="btn" value="Create New Warehouse" update="formMain" actionListener="#{cwmb.createNewWarehouse}" ajax="true" >
+                    <p:commandButton id="btn" value="Create New Warehouse" update="formMain" actionListener="#{createWarehouseManagedBean.createNewWarehouse}" ajax="true" >
                     </p:commandButton>
 
                 </p:panel>
