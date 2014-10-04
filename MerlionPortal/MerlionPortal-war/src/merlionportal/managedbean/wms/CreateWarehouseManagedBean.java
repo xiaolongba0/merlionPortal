@@ -23,7 +23,7 @@ import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
  *
  * @author YunWei
  */
-@Named(value = "cwmb")
+@Named(value = "createWarehouseManagedBean")
 @RequestScoped
 public class CreateWarehouseManagedBean {
 

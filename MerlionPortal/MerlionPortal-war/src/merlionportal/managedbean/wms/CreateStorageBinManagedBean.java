@@ -23,7 +23,7 @@ import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
  *
  * @author manliqi
  */
-@Named(value = "createStorageBinManagerBean")
+@Named(value = "createStorageBinManagedBean")
 @ViewScoped
 public class CreateStorageBinManagedBean {
 
