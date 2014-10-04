@@ -1,0 +1,212 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="MRP II home" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <h:form id="formMain">
+                <p:panelMenu>
+                    <p:submenu label="CRMS HOME" styleClass="display:block">
+                        <p:menuitem value="CRMS Home" url="crmsindex.xhtml"/>     
+                        <p:menuitem value="Service Yellow Pages" url="serviceyellowpages.xhtml"/>
+                    </p:submenu>
+                    <p:submenu label="Service Catalog Management" styleClass="display:block">
+                        <p:menuitem value="Create New Service" url="createservice.xhtml" />
+                        <p:menuitem value="View All Services" url="viewallservices.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Quotation" styleClass="display:block">
+                        <p:menuitem value="Coming Soon" url="#" />
+                    </p:submenu>
+                </p:panelMenu>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">
+            <h:form id="form">
+                <p:dataTable id="service" var="service" sortMode="multiple" value="#{viewServiceCatalogManagedBean.services}" 
+                             widgetVar="warehousesTable"
+                             emptyMessage="No warehouse found"
+                             rowKey="#{service.serviceCatalogId}">
+
+                    <f:facet name="header">                    
+                        <p:outputPanel>
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('serviceTable').filter()" />
+                        </p:outputPanel>
+                    </f:facet>
+
+
+                    <p:column filterBy="#{service.serviceCatalogId}" filterMatchMode="contains" headerText="Service ID" >
+                        <h:outputText value="#{service.serviceCatalogId}" />
+                    </p:column>
+                    <p:column filterBy="#{service.serviceName}" filterMatchMode="contains" headerText="Name" >
+                        <h:outputText value="#{service.serviceName}" />
+                    </p:column>
+
+                    <p:column  filterBy="#{service.serviceDescription}" filterMatchMode="contains" headerText="Description">
+                        <h:outputText value="#{service.serviceDescription}" />
+
+                    </p:column>
+
+                    <p:column  filterBy="#{service.publicView}" filterMatchMode="contains" headerText="Publish">
+                        <h:outputText value="#{service.publicView}" />
+                    </p:column>
+
+                    <p:column  filterBy="#{service.serviceType}" filterMatchMode="contains" headerText="Service Type">
+                        <h:outputText value="#{service.serviceType}" />
+                    </p:column>
+                    <p:column  filterBy="#{service.pricePerTEU}" filterFunction="#{viewServiceCatalogManagedBean.filterByPrice}" filterMatchMode="contains" headerText="Price">
+                        <h:outputText value="#{service.pricePerTEU}" />
+                    </p:column>
+                    <p:column width="50" >
+                        <p:commandButton action="#{viewServiceCatalogManagedBean.selectARow(service)}" oncomplete="toggleModal();" update=":form:serviceDetail" icon="ui-icon-pencil"/>
+                    </p:column>
+
+                    <p:column  width="50" >
+                        <p:commandButton action="#{viewServiceCatalogManagedBean.deleteServiceCatalog(service)}" icon="ui-icon-trash" update="service">
+                            <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this service?" icon="ui-icon-alert" />
+                        </p:commandButton> 
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </p:column>
+
+                </p:dataTable>
+                <br></br>
+                <p:messages id="message" showDetail="true" autoUpdate="true" closable="true" />
+
+                <div id="detailModal" class="modal fade">
+                    <div class="modal-dialog">
+
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3>Service Detail</h3>
+                            </div>
+                            <div class="modal-body">
+
+                                <p:outputPanel id="serviceDetail" style="text-align:left;">
+
+                                    <p:panelGrid rendered="#{not empty viewServiceCatalogManagedBean.selectedService}">
+                                        <p:row>
+                                            <p:column>
+                                                <h:outputText value="Company ID" />
+                                            </p:column>
+                                            <p:column>
+                                                <p:outputLabel value="#{viewServiceCatalogManagedBean.selectedService.companyId}" />
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column>
+                                                <h:outputText value="Company Name" />
+                                            </p:column>
+                                            <p:column>
+                                                <p:outputLabel value="#{viewServiceCatalogManagedBean.selectedService.companyName}" />
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column>
+                                                <h:outputText value="Service Name" />
+                                            </p:column>
+                                            <p:column>
+                                                <p:inplace  editor="true">
+                                                    <p:inputText value="#{viewServiceCatalogManagedBean.selectedService.serviceName}" required="true" label="text" />
+                                                </p:inplace> 
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column>
+                                                <h:outputText value="Description" />
+                                            </p:column>
+                                            <p:column>
+                                                <p:inplace  editor="true">
+                                                    <p:inputTextarea value="#{viewServiceCatalogManagedBean.selectedService.serviceDescription}" required="true" label="text" rows="5" cols="30" counter="display" maxlength="999" counterTemplate="{0} characters remaining." autoResize="true" />
+                                                </p:inplace> 
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column></p:column>
+                                            <p:column>
+                                                <h:outputText id="display" />
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column>
+                                                <h:outputText value="Service Type" />
+                                            </p:column>
+                                            <p:column>
+                                                <p:inplace  editor="true">
+                                                    <h:selectOneMenu value="#{viewServiceCatalogManagedBean.selectedService.serviceType}" required="true">
+                                                        <f:selectItem itemLabel="Transportation Service" itemValue="Transportation" />
+                                                        <f:selectItem itemLabel="Warehouse Service" itemValue="Warehouse" />
+                                                    </h:selectOneMenu>
+                                                </p:inplace> 
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column>
+                                                <h:outputText value="Price Per TEU" />
+                                            </p:column>
+
+                                            <p:column>
+                                                <p:inplace  editor="true">
+                                                    <p:inputText value="#{viewServiceCatalogManagedBean.selectedService.pricePerTEU}" label="text" />
+                                                </p:inplace> 
+                                            </p:column>
+                                        </p:row>
+                                        <p:row>
+                                            <p:column>
+                                                <h:outputText value="Publish" />
+                                            </p:column>
+                                            <p:column>
+                                                <p:inplace  editor="true">
+                                                    <p:selectBooleanButton value="#{viewServiceCatalogManagedBean.selectedService.publicView}" onLabel="true" offLabel="false" style="width:80px"/>
+                                                </p:inplace> 
+                                            </p:column>
+                                        </p:row>
+
+                                    </p:panelGrid>
+                                    <p:messages id="msg"  showDetail="true" autoUpdate="true" closable="true" />
+
+                                </p:outputPanel>
+                            </div>
+                            <div class="modal-footer">
+                                <p:commandButton value="Update"  update="service" actionListener="#{viewServiceCatalogManagedBean.updateServiceCatalog()}" styleClass="btn btn-success" />
+                                <p:commandButton value="Close"  pt:data-dismiss="modal" styleClass="btn btn-warning" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </h:form>
+            <script type="text/javascript">
+
+                function toggleModal() {
+                    $("#detailModal").modal('show');
+                }
+                function deleteModal() {
+                    $("#deleteConfirm").modal('show');
+                }
+            </script>
+
+        </ui:define>
+    </ui:composition>
+</html>

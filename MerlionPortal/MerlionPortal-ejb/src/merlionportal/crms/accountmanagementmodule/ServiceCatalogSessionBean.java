@@ -29,7 +29,7 @@ public class ServiceCatalogSessionBean {
     @PersistenceContext
     EntityManager em;
 
-    public int createServiceCatalog(Integer companyId, String serviceName, String description, boolean view, int type, double price) {
+    public int createServiceCatalog(Integer companyId, String serviceName, String description, boolean view, String type, double price) {
         ServiceCatalog serviceCatalog = new ServiceCatalog();
         serviceCatalog.setCompanyId(companyId);
         
@@ -54,7 +54,7 @@ public class ServiceCatalogSessionBean {
         return serviceCatalog.getServiceCatalogId();
     }
 
-    public int updateServiceCatalog(Integer serviceCatalogId, String serviceName, String description, boolean view, int type, double price) {
+    public int updateServiceCatalog(Integer serviceCatalogId, String serviceName, String description, boolean view, String type, double price) {
         ServiceCatalog serviceCatalog = em.find(ServiceCatalog.class, serviceCatalogId);
         serviceCatalog.setServiceName(serviceName);
         serviceCatalog.setServiceDescription(description);
@@ -89,6 +89,14 @@ public class ServiceCatalogSessionBean {
     public List<ServiceCatalog> getAllPublicServices(){
         Query q = em.createQuery("SELECT s FROM ServiceCatalog s WHERE s.void1 = false AND s.publicView = true");
         return (List<ServiceCatalog>) q.getResultList();
+    }
+    public List<ServiceCatalog> getCompanyServices(Integer companyId){
+        
+        Query q = em.createQuery("SELECT s FROM ServiceCatalog s WHERE s.companyId = :companyId AND s.void1 = false");
+        q.setParameter("companyId", companyId);
+        
+        return (List<ServiceCatalog>) q.getResultList(); 
+        
     }
 
 }

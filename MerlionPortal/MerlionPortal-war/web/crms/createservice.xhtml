@@ -30,7 +30,7 @@
                     </p:submenu>
                     <p:submenu label="Service Catalog Management" styleClass="display:block">
                         <p:menuitem value="Create New Service" url="createservice.xhtml" />
-                        <p:menuitem value="View All Services" url="viewallservices.xhtml" />
+                        <p:menuitem value="View All Services" url="viewcompanyservices.xhtml" />
                     </p:submenu>
                     <p:submenu label="Quotation" styleClass="display:block">
                         <p:menuitem value="Coming Soon" url="#" />
@@ -101,8 +101,8 @@
                             <p:column >
                                 <p:selectOneMenu  id="type"  required="true" requiredMessage="Service Type is required" value="#{createservicecatalog.type}" style="width:200px">
                                     <f:selectItem itemLabel="Select Service Type" itemValue="" noSelectionOption="true" />
-                                    <f:selectItem itemLabel="Warehouse Service" itemValue="1" />
-                                    <f:selectItem itemLabel="Transportation Service" itemValue="2" />
+                                    <f:selectItem itemLabel="Transportation Service" itemValue="Transportation" />
+                                    <f:selectItem itemLabel="Warehouse Service" itemValue="Warehouse" />
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
