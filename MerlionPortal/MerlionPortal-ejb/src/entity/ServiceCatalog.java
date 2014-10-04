@@ -56,8 +56,9 @@ public class ServiceCatalog implements Serializable {
     private String serviceDescription;
     @Column(name = "publicView")
     private Boolean publicView;
+    @Size(max = 45)
     @Column(name = "serviceType")
-    private Integer serviceType;
+    private String serviceType;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "pricePerTEU")
     private Double pricePerTEU;
@@ -110,11 +111,11 @@ public class ServiceCatalog implements Serializable {
         this.publicView = publicView;
     }
 
-    public Integer getServiceType() {
+    public String getServiceType() {
         return serviceType;
     }
 
-    public void setServiceType(Integer serviceType) {
+    public void setServiceType(String serviceType) {
         this.serviceType = serviceType;
     }
 
