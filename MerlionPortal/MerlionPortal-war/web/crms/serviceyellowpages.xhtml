@@ -49,17 +49,20 @@
                             <h:outputText value="" />
                         </f:facet>
                     </p:ajaxStatus>
-                    <p:dataTable var="service" value="#{serviceYellowPageManagerBean.services}" widgetVar="serviceTable"
-                                 emptyMessage="No services found with given criteria" filteredValue="#{serviceYellowPageManagerBean.filteredServices}">
+                    <p:dataTable var="service" value="#{serviceYellowPageManagerBean.services}" widgetVar="serviceTable" rowKey="#{service.serviceCatalogId}"
+                                 emptyMessage="No services found with given criteria" selectionMode="single" selection="#{serviceYellowPageManagerBean.selectedService}" filteredValue="#{serviceYellowPageManagerBean.filteredServices}"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="20,50,100">
 
                         <f:facet name="header">
+                            Select row to request for quotation
                             <p:outputPanel>
                                 <h:outputText value="Search all fields:" />
                                 <p:inputText id="globalFilter" onkeyup="PF('serviceTable').filter()" style="width:150px" placeholder="Enter keyword"/>
                             </p:outputPanel>
                         </f:facet>
 
-                        
+
                         <p:column filterBy="#{service.companyId}" headerText="Company ID" filterMatchMode="contains">
                             <h:outputText value="#{service.companyId}" />
                         </p:column>
@@ -78,12 +81,14 @@
                         <p:column filterBy="#{service.pricePerTEU}" filterFunction="#{serviceYellowPageManagerBean.filterByPrice}" headerText="Price Per TEU" filterMatchMode="contains">
                             <h:outputText value="#{service.pricePerTEU}" />
                         </p:column>
-                        
+
+
+
                     </p:dataTable>
 
 
-                    <p:messages id="messages" autoUpdate="true" closable="true" />
-                    <p:commandButton value="Create Request For Quotation" icon="ui-icon-check" actionListener="#{createservicecatalog.createServiceCatalog}" ajax="true" update="form" />
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:commandButton value="Create Request For Quotation" icon="ui-icon-check" action="#{serviceYellowPageManagerBean.generateRequestForQuotation()}" />
                 </p:panel>
             </h:form>
         </ui:define>

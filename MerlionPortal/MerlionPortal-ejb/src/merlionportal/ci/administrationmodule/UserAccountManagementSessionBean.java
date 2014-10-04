@@ -201,13 +201,11 @@ public class UserAccountManagementSessionBean {
         }
     }
 
-    private SystemUser
-            getOperator(Integer operatorId) {
+    private SystemUser getOperator(Integer operatorId) {
         return em.find(SystemUser.class, operatorId);
     }
 
-    private Company
-            getCompany(Integer companyId) {
+    public Company getCompany(Integer companyId) {
         return em.find(Company.class, companyId);
     }
 

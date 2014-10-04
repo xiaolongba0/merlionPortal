@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="Create Request For Quotation" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <h:form id="formMain">
+                <p:panelMenu>
+                    <p:submenu label="CRMS HOME" styleClass="display:block">
+                        <p:menuitem value="CRMS Home" url="crmsindex.xhtml"/>
+                        <p:menuitem value="Service Yellow Pages" url="serviceyellowpages.xhtml"/>
+                    </p:submenu>
+                    <p:submenu label="Service Catalog Management" styleClass="display:block">
+                        <p:menuitem value="Create New Service" url="createservice.xhtml" />
+                        <p:menuitem value="View All Services" url="viewcompanyservices.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Quotation" styleClass="display:block">
+                        <p:menuitem value="Coming Soon" url="#" />
+                    </p:submenu>
+                </p:panelMenu>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">
+            <h:form id="form">
+                <p:fieldset legend="Contact Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <h:outputText value="Sender Company ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{createRFQManagedBean.companyId}" />
+                        <h:outputText value="Sender Company Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{createRFQManagedBean.companyName}" />
+                        <h:outputText value="Sender Contact Person Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{createRFQManagedBean.loginedUser.firstName} #{createRFQManagedBean.loginedUser.lastName}"/>
+                        <h:outputText value="Sender Contact Person Contact Number:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{createRFQManagedBean.loginedUser.contactNumber}" />
+                    </h:panelGrid>
+                    <p:separator />
+
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <h:outputText value="Receiver Company ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{createRFQManagedBean.selectedService.companyId}" />
+                        <h:outputText value="Receiver Company Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{createRFQManagedBean.selectedService.companyName}" />
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:fieldset legend="Service Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <h:outputText value="Service ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{createRFQManagedBean.selectedService.serviceCatalogId}" />
+                        <h:outputText value="Service Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{createRFQManagedBean.selectedService.serviceName}" />
+                        <h:outputText value="Service Description" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{createRFQManagedBean.selectedService.serviceDescription}" />
+                        <h:outputText value="Price Per TEU" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{createRFQManagedBean.selectedService.pricePerTEU}" />
+                        <p:outputLabel for="startDate" value="Start Date" /><p:spacer width="20" height="20" />
+                        <p:calendar id="startDate" value="#{createRFQManagedBean.startDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{createRFQManagedBean.today}" />
+                        <p:outputLabel for="endDate" value="End Date" /><p:spacer width="20" height="20" />
+                        <p:calendar id="endDate" value="#{createRFQManagedBean.endDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{createRFQManagedBean.startDate}" />
+
+                        <p:outputLabel value="Origin" /><p:spacer width="20" height="20" />
+                        <p:inputText value="#{createRFQManagedBean.origin}" />
+                        <p:outputLabel value="Destination" /><p:spacer width="20" height="20" />
+                        <p:inputText value="#{createRFQManagedBean.destination}" />
+
+                    </h:panelGrid>
+
+                    <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold">
+                        <p:panelGrid id="display" columns="2" columnClasses="label,value">
+                            <h:outputText value="Start Date:" />
+                            <h:outputText value="#{createRFQManagedBean.startDate}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                            <h:outputText value="End Date:" />
+                            <h:outputText value="#{createRFQManagedBean.endDate}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:panelGrid>
+                    </p:dialog>
+                </p:fieldset>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <p:commandButton value="Send Request for Quotation" action="#{createRFQManagedBean.createRequestForQuotation()}" update="form" ajax="true" />
+                <p:commandButton value="Go Back" action="serviceyellowpages.xhtml?faces-redirect-true"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -37,7 +38,6 @@ public class ServiceYellowPageManagedBean {
     private List<ServiceCatalog> services;
     private ServiceCatalog selectedService;
     private List<ServiceCatalog> filteredServices;
-    
 
     public ServiceYellowPageManagedBean() {
     }
@@ -60,21 +60,29 @@ public class ServiceYellowPageManagedBean {
             }
         }
         services = serviceCatalogSB.getAllPublicServices();
-    }    
+    }
 
     public boolean filterByPrice(Object value, Object filter, Locale locale) {
         String filterText = (filter == null) ? null : filter.toString().trim();
-        if(filterText == null||filterText.equals("")) {
+        if (filterText == null || filterText.equals("")) {
             return true;
         }
-         
-        if(value == null) {
+
+        if (value == null) {
             return false;
         }
-         
+
         return ((Comparable) value).compareTo(Double.valueOf(filterText)) < 0;
     }
-    public void generateRequestForQuotation() {
+
+    public String generateRequestForQuotation() {
+        if (selectedService != null ) {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedService", selectedService);
+            return "createrequestforquotation.xhtml?faces-redirect=true";
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select a service to request!", ""));
+            return null;
+        }
 
     }
 
@@ -121,7 +129,5 @@ public class ServiceYellowPageManagedBean {
     public void setFilteredServices(List<ServiceCatalog> filteredServices) {
         this.filteredServices = filteredServices;
     }
-
-   
 
 }
