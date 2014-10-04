@@ -28,9 +28,9 @@
                         <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
                         <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
                     </p:submenu>
-                    <p:submenu label="Storage Type" >
-                        <p:menuitem value="Add Storage Type" url="addstoragetype.xhtml" style="background-color: lavender"/>
-                        <p:menuitem value="View Storage Types" url="viewstoragetype.xhtml" />
+                    <p:submenu label="Warehouse Zone" >
+                        <p:menuitem value="Add Warehouse Zone" url="addwarehousezone.xhtml" />
+                        <p:menuitem value="View Warehouse Zones" url="viewwarehousezone.xhtml" />
                     </p:submenu>
                     <p:submenu label="Storage Bin" >
                         <p:menuitem value="Add Storage Bin" url="addstoragebin.xhtml" />
@@ -42,7 +42,8 @@
 
         <ui:define name="right">
             <h:form>
-                <p:panel id="panel" header="Add Storage Type">
+                <p:panel id="panel" header="Add Warehouse Zone">
+<!--                    Storage Type is renamed to Warehouse Zone to make it clearer-->
                     <p:ajaxStatus style="width:16px;height:16px;">
                         <f:facet name="start">
                             <h:graphicImage value="/img/load.gif" />
@@ -66,10 +67,10 @@
                         </p:row>
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="storageTypeName" style="font-weight: bold" value="Storage Type Name : " />
+                                <p:outputLabel for="storageTypeName" style="font-weight: bold" value="Warehouse Zone Name : " />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="storageTypeName" requiredMessage="Storage Type is required." id="storageTypeName" value="#{createStorageTypeManangedBean.storageTypeName}">
+                                <p:inputText required="true" label="storageTypeName" requiredMessage="Warehouse Zone Name is required." id="storageTypeName" value="#{createStorageTypeManangedBean.storageTypeName}">
                                     <f:validateLength minimum="1" maximum="25" />
                                 </p:inputText>
                             </p:column>

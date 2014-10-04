@@ -23,18 +23,18 @@
 
             <p:panelMenu>
                 <p:submenu label =" Manage Your Warehouse">
-                    <p:menuitem value="WMS home" url="wmsindex.xhtml" />
+                    <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
                     <p:submenu label="Warehouse" >
                         <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
                         <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
                     </p:submenu>
-                    <p:submenu label="Storage Type" >
-                        <p:menuitem value="Add Storage Type" url="addstoragetype.xhtml" />
-                        <p:menuitem value="View Storage Types" url="viewstoragetype.xhtml" />
+                    <p:submenu label="Warehouse Zone" >
+                        <p:menuitem value="Add Warehouse Zone" url="addwarehousezone.xhtml" />
+                        <p:menuitem value="View Warehouse Zones" url="viewwarehousezone.xhtml" />
                     </p:submenu>
                     <p:submenu label="Storage Bin" >
                         <p:menuitem value="Add Storage Bin" url="addstoragebin.xhtml" />
-                        <p:menuitem value="View Storage Bin" url="viewstoragebin.xhtml" style="background-color: lavender"/>
+                        <p:menuitem value="View Storage Bin" url="viewstoragebin.xhtml" />
                     </p:submenu>
                 </p:submenu>
             </p:panelMenu>
@@ -42,7 +42,7 @@
         <ui:define name="right">
             <h:form id="formMain">
 
-                <p:panel id="panel" header=" View Storage Type for A Warehouse">
+                <p:panel id="panel" header=" View Storage Bins in A Warehouse Zone">
                     <p:ajaxStatus style="width:16px;height:16px;">
                         <f:facet name="start">
                             <h:graphicImage value="/img/load.gif" />
@@ -66,12 +66,12 @@
                         </p:row>
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="storageType" value="Storage Type Name: " />
+                                <p:outputLabel for="storageType" value="Warehouse Zone Name: " />
                             </p:column>
                             <p:column>
                                 <p:selectOneMenu id="storageType" value="#{storageBinViewEditManagedBean.storageTypeId}"  style="width:300px" required="true" requiredMessage="Please select a storage type">
                                     <p:ajax listener="#{storageBinViewEditManagedBean.onStorageTypeChange}" update="storagebinData" />
-                                    <f:selectItem itemLabel="Select Storage Type" itemValue="" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="Select Warehouse Zone" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{storageBinViewEditManagedBean.storagetypes}" var="storageType" itemLabel="ID:#{storageType.storageTypeId} Name:#{storageType.name}"  itemValue="#{storageType.storageTypeId}"/>
                                 </p:selectOneMenu>
                             </p:column>
