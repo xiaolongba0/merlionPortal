@@ -78,7 +78,7 @@ public class ViewAllQuotationsManagedBean {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedQuotation", selectedSentQuotation);
             return "viewquotationdetail.xhtml?faces-redirect=true";
         }else{
-            FacesContext.getCurrentInstance().addMessage(":form:", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select a quotation to view!", ""));
+            FacesContext.getCurrentInstance().addMessage(":form:messages", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select a quotation to view!", ""));
             return null;
         }
     }
@@ -87,7 +87,7 @@ public class ViewAllQuotationsManagedBean {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedQuotation", selectedReceivedQuotation);
             return "viewquotationdetail.xhtml?faces-redirect=true";
         }else{
-            FacesContext.getCurrentInstance().addMessage(":form:", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select a quotation to view!", ""));
+            FacesContext.getCurrentInstance().addMessage(":form:msg", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select a quotation to view!", ""));
             return null;
         }
     }
@@ -156,5 +156,5 @@ public class ViewAllQuotationsManagedBean {
     public void setFilteredQuotations(List<ServiceQuotation> filteredQuotations) {
         this.filteredQuotations = filteredQuotations;
     }
-    
+ 
 }

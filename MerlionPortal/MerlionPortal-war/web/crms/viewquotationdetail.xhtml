@@ -1,12 +1,110 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
-</html>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="View Quotation Detail" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <h:form id="formMain">
+                <p:panelMenu>
+                    <p:submenu label="CRMS HOME" styleClass="display:block">
+                        <p:menuitem value="CRMS Home" url="crmsindex.xhtml"/>     
+                        <p:menuitem value="Service Yellow Pages" url="serviceyellowpages.xhtml"/>
+                    </p:submenu>
+                    <p:submenu label="Service Catalog Management" styleClass="display:block">
+                        <p:menuitem value="Create New Service" url="createservice.xhtml" />
+                        <p:menuitem value="View All Services" url="viewcompanyservices.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Quotation" styleClass="display:block">
+                        <p:menuitem value="View All Requests" url="viewallrequests.xhtml" />
+                        <p:menuitem value="View All Quotations" url="viewallquotations.xhtml" />
+                    </p:submenu>
+                </p:panelMenu>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">
+            <h:form id="form">
+                <p:fieldset legend="Contact Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <h:outputText value="Sender Company ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.receiverCompanyId}" />
+                        <h:outputText value="Sender Company Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewQuotationManagedBean.senderCompanyName}" />
+                    </h:panelGrid>
+                    <p:separator />
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <h:outputText value="Receiver Company ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.senderCompanyId}" />
+                        <h:outputText value="Receiver Company Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewQuotationManagedBean.receiverCompanyName}" />
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:fieldset legend="Quotation Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <h:outputText value="Service ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.serviceCatalog.serviceCatalogId}" />
+                        <h:outputText value="Service Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.serviceCatalog.serviceName}" />
+
+                        <h:outputText value="Start Date:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.startDate}" />
+                        <h:outputText value="End Date:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.endDate}" />
+                        <h:outputText value="Origin:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.origin}" />
+                        <h:outputText value="Destination:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.destination}" />
+
+                        <h:outputText value="Quotation Price Per TEU:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.price}" />
+                        <h:outputText value="Discount in %:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.discountRate}" />
+
+                    </h:panelGrid>
+                    <p:separator />
+                    <h:panelGrid style="float:right">
+                        <h:panelGrid columns="3" cellpadding="6">
+                            <p:spacer width="20" height="20"/><p:spacer width="20" height="20"/><h:outputText value="Total" />
+
+                            <h:outputText value="Original Price" /><p:spacer width="20" height="20"/><h:outputText value="#{viewQuotationManagedBean.selectedQuotation.price}" />
+                            <h:outputText value="less discount" /><p:spacer width="20" height="20"/><h:outputText value="#{viewQuotationManagedBean.discountedPrice}" />
+                        </h:panelGrid>
+                        <p:separator/>
+                        <h:panelGrid columns="3" cellpadding="6" >
+                            <h:outputText value="Final Price:" /><p:spacer width="20" height="20"/><h:outputText value="#{viewQuotationManagedBean.finalPrice}"/>
+                        </h:panelGrid> 
+                    </h:panelGrid>
+
+
+
+
+
+                </p:fieldset>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <c:if test="#{viewQuotationManagedBean.companyId eq viewQuotationManagedBean.selectedQuotation.senderCompanyId}" >
+                    <p:commandButton value="Reject Quotation" icon="ui-icon-circle-close" action="#{viewQuotationManagedBean.rejectQuotation()}" update="form" ajax="true" />
+                    <p:commandButton value="Accept Quotation"  icon="ui-icon-circle-check" action="#{viewQuotationManagedBean.acceptQuotation()}" update="form" ajax="true" />
+                </c:if>
+                <p:commandButton value="Go Back" icon="ui-icon-circle-arrow-w" action="viewallquotations.xhtml?faces-redirect-true"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

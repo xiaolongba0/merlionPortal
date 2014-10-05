@@ -1,0 +1,165 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package merlionportal.managedbean.crms;
+
+import entity.ServiceQuotation;
+import entity.SystemUser;
+import java.io.IOException;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Named;
+import javax.faces.view.ViewScoped;
+import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.crms.contractmanagementmodule.QuotationManagementSessionBean;
+
+/**
+ *
+ * @author manliqi
+ */
+@Named(value = "viewQuotationManagedBean")
+@ViewScoped
+public class ViewQuotationDetailManagedBean {
+
+    @EJB
+    QuotationManagementSessionBean quotationManagementSB;
+    @EJB
+    UserAccountManagementSessionBean userAccountSB;
+    private Integer companyId;
+    private Integer userId;
+
+    private ServiceQuotation selectedQuotation;
+    private SystemUser loginedUser;
+
+    private String senderCompanyName;
+    private String receiverCompanyName;
+    private Double discountedPrice;
+    private Double finalPrice;
+
+    /**
+     * Creates a new instance of ViewQuotationManagedBean
+     */
+    public ViewQuotationDetailManagedBean() {
+    }
+
+    @PostConstruct
+    public void init() {
+        boolean redirect = true;
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
+            userId = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
+            companyId = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
+            if (userId != null) {
+                redirect = false;
+            }
+        }
+        if (redirect) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        loginedUser = userAccountSB.getUser(userId);
+        selectedQuotation = (ServiceQuotation) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedQuotation");
+        if (selectedQuotation != null) {
+            senderCompanyName = userAccountSB.getCompany(selectedQuotation.getReceiverCompanyId()).getName();
+            receiverCompanyName = userAccountSB.getCompany(selectedQuotation.getSenderCompanyId()).getName();
+            discountedPrice = selectedQuotation.getDiscountRate() * selectedQuotation.getPrice()/100;
+            finalPrice = selectedQuotation.getPrice() - discountedPrice;
+        }
+
+    }
+
+    public void rejectQuotation() {
+        int result = quotationManagementSB.rejectQuotation(selectedQuotation.getQuotationId());
+        if (result > 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Quotation is rejected"));
+
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Oops", "Something went wrong!"));
+
+        }
+    }
+
+    public void acceptQuotation() {
+        int result = quotationManagementSB.acceptQuotation(selectedQuotation.getQuotationId());
+        if (result > 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Quotation is accepted"));
+
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Oops", "Something went wrong!"));
+
+        }
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public ServiceQuotation getSelectedQuotation() {
+        return selectedQuotation;
+    }
+
+    public void setSelectedQuotation(ServiceQuotation selectedQuotation) {
+        this.selectedQuotation = selectedQuotation;
+    }
+
+    public SystemUser getLoginedUser() {
+        return loginedUser;
+    }
+
+    public void setLoginedUser(SystemUser loginedUser) {
+        this.loginedUser = loginedUser;
+    }
+
+    public String getSenderCompanyName() {
+        return senderCompanyName;
+    }
+
+    public void setSenderCompanyName(String senderCompanyName) {
+        this.senderCompanyName = senderCompanyName;
+    }
+
+    public String getReceiverCompanyName() {
+        return receiverCompanyName;
+    }
+
+    public void setReceiverCompanyName(String receiverCompanyName) {
+        this.receiverCompanyName = receiverCompanyName;
+    }
+
+    public Double getDiscountedPrice() {
+        return discountedPrice;
+    }
+
+    public void setDiscountedPrice(Double discountedPrice) {
+        this.discountedPrice = discountedPrice;
+    }
+
+    public Double getFinalPrice() {
+        return finalPrice;
+    }
+
+    public void setFinalPrice(Double finalPrice) {
+        this.finalPrice = finalPrice;
+    }
+
+}
