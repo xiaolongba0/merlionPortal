@@ -37,7 +37,9 @@ public class QuotationManagementSessionBean {
 //    3 valid
 //    4 rejected request
 //    5 rejected quotation
-//    6 fulfillment check
+//    6 pending fulfillment check
+//    7 fulfillment check fail
+//    8 fulfillment check success
 //    
     public int createRequestForQuotation(Integer serviceCatalogId, String serviceType, Date startDate, Date endDate, Integer senderCompanyId, Integer receiverCompanyId,
             String origin, String destination) {
@@ -87,6 +89,7 @@ public class QuotationManagementSessionBean {
         serviceQuotation.setStatus(2);
         serviceQuotation.setPrice(price);
         serviceQuotation.setDiscountRate(discountRate);
+        serviceQuotation.setCreatedDate(new Date());
 
         em.merge(serviceQuotation);
         em.flush();
@@ -96,13 +99,13 @@ public class QuotationManagementSessionBean {
     }
 
     public List<ServiceQuotation> viewAllRequestsSent(Integer myCompanyId) {
-        Query q = em.createNamedQuery("ServiceQuotation.findBySenderCompanyId").setParameter("senderCompanyId", myCompanyId);
+        Query q = em.createQuery("SELECT s FROM ServiceQuotation s WHERE s.senderCompanyId = :senderCompanyId AND (s.status=1 OR s.status=6)").setParameter("senderCompanyId", myCompanyId);
         return (List<ServiceQuotation>) q.getResultList();
 
     }
 
     public List<ServiceQuotation> viewAllRequestReceived(Integer myCompanyId) {
-        Query q = em.createNamedQuery("ServiceQuotation.findByReceiverCompanyId").setParameter("receiverCompanyId", myCompanyId);
+        Query q = em.createQuery("SELECT s FROM ServiceQuotation s WHERE s.receiverCompanyId = :receiverCompanyId AND (s.status=1 OR s.status=6 OR s.status=7 OR s.status=8)").setParameter("receiverCompanyId", myCompanyId);
         return (List<ServiceQuotation>) q.getResultList();
     }
 
@@ -136,6 +139,15 @@ public class QuotationManagementSessionBean {
         em.flush();
 
         return serviceQuotation.getQuotationId();
+    }
+    
+    public List<ServiceQuotation> viewAllQuotationsSent(Integer myCompanyId){
+        Query q = em.createQuery("SELECT s FROM ServiceQuotation s WHERE s.receiverCompanyId = :receiverCompanyId AND (s.status =2 OR s.status =3 OR s.status =4 OR s.status =5)").setParameter("receiverCompanyId", myCompanyId);
+        return (List<ServiceQuotation>) q.getResultList();
+    }
+    public List<ServiceQuotation> viewAllQuotationsReceived(Integer myCompanyId){
+        Query q = em.createQuery("SELECT s FROM ServiceQuotation s WHERE s.senderCompanyId = :senderCompanyId AND (s.status =2 OR s.status =3 OR s.status =4 OR s.status =5)").setParameter("senderCompanyId", myCompanyId);
+        return (List<ServiceQuotation>) q.getResultList();
     }
 
 }

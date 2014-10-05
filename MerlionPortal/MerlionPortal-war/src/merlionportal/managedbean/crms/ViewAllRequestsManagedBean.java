@@ -63,16 +63,14 @@ public class ViewAllRequestsManagedBean {
         receivedRequests = (List<ServiceQuotation>) quotationManagementSB.viewAllRequestReceived(companyId);
     }
 
-    public void generateQuotation() {
+    public String generateQuotation() {
+        
         if (selectedRequest != null) {
-            int result = quotationManagementSB.createQuotation(selectedRequest.getQuotationId(), selectedRequest.getPrice(), selectedRequest.getDiscountRate());
-            if (result > 0) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Quotation Created", "Both sender and receiver will be able to view this quotation"));
-
-            } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Something went wrong."));
-
-            }
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedRequest", selectedRequest);
+            return "generateservicequotation.xhtml?faces-redirect=true";
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select a service to request!", ""));
+            return null;
         }
 
     }

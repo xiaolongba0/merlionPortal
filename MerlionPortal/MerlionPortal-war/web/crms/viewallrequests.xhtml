@@ -81,6 +81,9 @@
                     </p:dataTable>
                 </p:panel>
 
+                <!--Received requests need to generate quotation and reject request-->
+
+
                 <p:panel  header="Received Requests"  style="margin-bottom:20px">
                     <p:dataTable var="requestReceived" value="#{viewAllRequestsManagedBean.receivedRequests}" widgetVar="requestTable2" rowKey="#{requestReceived.quotationId}"
                                  emptyMessage="No requests found with given criteria" selectionMode="single" selection="#{viewAllRequestsManagedBean.selectedRequest}" filteredValue="#{viewAllRequestsManagedBean.filteredRequests}"
@@ -88,7 +91,7 @@
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="20,50,100">
 
                         <f:facet name="header">
-                            Select row to view a request
+                            Select a request to generate quotation
                             <p:outputPanel>
                                 <h:outputText value="Search all fields:" />
                                 <p:inputText id="globalFilter" onkeyup="PF('requestTable2').filter()" style="width:150px" placeholder="Enter keyword"/>
@@ -112,8 +115,21 @@
                             <h:outputText value="#{requestReceived.status}" />
                         </p:column>
                     </p:dataTable>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+                    <p:commandButton value="Generate Quotation" icon="ui-icon-check" action="#{viewAllRequestsManagedBean.generateQuotation()}" />
+
                 </p:panel>
 
+
+
+
+
+
+
+
+
+                <!--Request Detail Modal for request Sent-->
 
                 <div id="requestModal" class="modal fade">
                     <div class="modal-dialog">
@@ -162,8 +178,7 @@
                         </div>
                     </div>
                 </div>
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <p:commandButton value="Generate Quotation" icon="ui-icon-check" action="#{serviceYellowPageManagerBean.generateRequestForQuotation()}" />
+
             </h:form>
             <script type="text/javascript">
                 function toggleModal() {
