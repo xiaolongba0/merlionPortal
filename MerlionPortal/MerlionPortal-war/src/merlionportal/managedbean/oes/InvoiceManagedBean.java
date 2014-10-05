@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -150,10 +151,14 @@ public class InvoiceManagedBean {
     }
 
     public String viewInvoice() {
+        if (selectedInvoice == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please select one Invoice ."));
+        }
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
         sessionMap.put("selectedInvoice", selectedInvoice);
         return "displayinvoicedetail.xhtml?faces-redirect=true";
+        
     }
 
 }
