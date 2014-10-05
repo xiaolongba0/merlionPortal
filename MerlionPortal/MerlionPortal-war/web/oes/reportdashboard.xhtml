@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="OES Home" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+
+            <h:form id="formMain">
+                <p:panelMenu>
+                    <p:submenu label="Home" styleClass="display:block">
+                        <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Product" styleClass="display:block">
+                        <p:menuitem value="Products" url="displayallproducts.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Quotation" styleClass="display:block">
+                        <p:menuitem value="View All Request" url="viewallrequests.xhtml" />
+                        <p:menuitem value="View Quotation" url="displayallquotations.xhtml" />
+                    </p:submenu>
+                    <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:submenu label="Orders" styleClass="display:block">
+                            <c:if test="#{dashboardBean.checkOESCanGeneratePO()|| dashboardBean.loginedUser.userType == 'superuser'}">
+                                <p:menuitem value="Create Order" url="pogeneration.xhtml" />
+                                <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
+                            </c:if>
+                            <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                                <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" /> 
+                                <p:menuitem value="Order Status" url="displayallso.xhtml" />
+                            </c:if>
+                            <c:if test="#{dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                                <p:menuitem value="Reject Order" url="returnorder.xhtml" />
+                                <p:menuitem value="Generate Invoice" url="orderswaitingforinvoice.xhtml" />
+
+                            </c:if>
+                        </p:submenu>
+                    </c:if>
+                    <p:submenu label="Payment" styleClass="display:block">
+                        <p:menuitem value="All invoice" url="allinvoice.xhtml" />
+                        <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.loginedUser.userType == 'superuser'}">
+                            <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />                           
+                        </c:if>
+
+                    </p:submenu>
+                    <c:if test="#{dashboardBean.checkOESCanGenerateSalesReport()||dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:submenu label="Reports" styleClass="display:block">
+                            <p:menuitem value="Sales Reports" url="reportdashboard.xhtml" />
+                        </p:submenu>
+                    </c:if>
+                </p:panelMenu>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">
+            <c:set var="root" value="${request.contextPath}" />
+            <div class="dashboard-content">
+                <div class="row">
+                    <h2>All Reports</h2>
+                    <div>Please select one report to continue</div>
+                    <div class="dashboard-box">
+                        <!--Sales Trend-->
+                        <c:set var="disableoes" value="true" />                      
+                        <c:set var="disableoes" value="false" />
+                        <p:commandLink action="reportsalestrend.xhtml?faces-redirect=true" disabled="${disableoes}" >
+                            <p:graphicImage value="../img/oestile.jpg"/>
+                        </p:commandLink>
+                    </div>
+                    <div class="dashboard-box">
+                        <!--Sales Summary-->
+                        <c:set var="disablemrp" value="true" />                    
+                        <c:set var="disablemrp" value="false" />
+                        <p:commandLink action="reportsalessum.xhtml?faces-redirect=true" disabled="${disablemrp}" >
+                            <p:graphicImage value="../img/mrptile.jpg"/>
+                        </p:commandLink>  
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="dashboard-box">
+                        <!--Customer History-->
+                        <c:set var="disablecrms" value="true" />
+                        <c:set var="disablecrms" value="false" />
+                        <p:commandLink action="/crms/crmsindex.xhtml?faces-redirect=true" disabled="${disablecrms}" >
+                            <p:graphicImage value="../img/crmstile.jpg"/>
+                        </p:commandLink> 
+                    </div>
+                    <div class="dashboard-box">
+                        <!--Product History-->
+                        <c:set var="disabletms" value="true" />
+                        <c:set var="disabletms" value="false" />
+                        <p:commandLink action="/tms/tmsindex.xhtml?faces-redirect=true" disabled="${disabletms}" >
+                            <p:graphicImage value="../img/tmstile.jpg"/>
+                        </p:commandLink> 
+                    </div>
+                </div>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>
+
+
