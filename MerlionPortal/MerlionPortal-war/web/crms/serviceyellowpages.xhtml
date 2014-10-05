@@ -5,7 +5,8 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
     <c:set var="import" value="templateuser.xhtml"/>
     <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
@@ -72,25 +73,60 @@
                         <p:column filterBy="#{service.serviceName}" headerText="Name" filterMatchMode="contains">
                             <h:outputText value="#{service.serviceName}" />
                         </p:column>
-                        <p:column filterBy="#{service.serviceDescription}" headerText="Description" filterMatchMode="contains">
-                            <h:outputText value="#{service.serviceDescription}" />
-                        </p:column>
                         <p:column filterBy="#{service.serviceType}" headerText="Type" filterMatchMode="contains">
                             <h:outputText value="#{service.serviceType}" />
                         </p:column>
                         <p:column filterBy="#{service.pricePerTEU}" filterFunction="#{serviceYellowPageManagerBean.filterByPrice}" headerText="Price Per TEU" filterMatchMode="contains">
                             <h:outputText value="#{service.pricePerTEU}" />
                         </p:column>
-
-
-
+                        <p:column width="50" >
+                            <p:commandButton action="#{serviceYellowPageManagerBean.viewASingleServices(service)}" update=":form:serviceDetail" oncomplete="toggleModal();" icon="ui-icon-search"/>
+                        </p:column>
                     </p:dataTable>
+
+                    <div id="serviceModal" class="modal fade">
+                        <div class="modal-dialog">
+
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2 class="modal-title">Service Detail</h2>
+                                </div>
+                                <div id="body" class="modal-body">
+                                    <p:panelGrid id="serviceDetail" columns="2">
+                                        <h:outputText value="Company ID"/>
+                                        <h:outputText value="#{serviceYellowPageManagerBean.serviceCatalogToView.companyId}"/>
+                                        <h:outputText value="Company Name" />
+                                        <h:outputText value="#{serviceYellowPageManagerBean.serviceCatalogToView.companyName}" /> 
+                                        <h:outputText value="Service Name" />
+                                        <h:outputText value="#{serviceYellowPageManagerBean.serviceCatalogToView.serviceName}" />
+                                        <h:outputText value="Description"/>
+                                        <h:outputText value="#{serviceYellowPageManagerBean.serviceCatalogToView.serviceDescription}" />
+                                        <h:outputText value="Service Type"/>
+                                        <h:outputText value="#{serviceYellowPageManagerBean.serviceCatalogToView.serviceType}" />
+                                        <h:outputText value="Price Per TEU" />
+                                        <h:outputText value="#{serviceYellowPageManagerBean.serviceCatalogToView.pricePerTEU}" />
+                                    </p:panelGrid>
+                                </div>
+                                <div class="modal-footer">
+                                    <h:commandButton value="Close" styleClass="btn btn-warning" pt:data-dismiss="modal"></h:commandButton>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
 
 
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                     <p:commandButton value="Create Request For Quotation" icon="ui-icon-check" action="#{serviceYellowPageManagerBean.generateRequestForQuotation()}" />
                 </p:panel>
             </h:form>
+            <script type="text/javascript">
+                function toggleModal() {
+                    $("#serviceModal").modal('show');
+                }
+            </script>
         </ui:define>
     </ui:composition>
 </html>

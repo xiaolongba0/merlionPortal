@@ -5,7 +5,6 @@
  */
 package merlionportal.managedbean.crms;
 
-import entity.Company;
 import entity.ServiceCatalog;
 import java.io.IOException;
 import java.util.List;
@@ -38,6 +37,8 @@ public class ServiceYellowPageManagedBean {
     private List<ServiceCatalog> services;
     private ServiceCatalog selectedService;
     private List<ServiceCatalog> filteredServices;
+
+    private ServiceCatalog serviceCatalogToView;
 
     public ServiceYellowPageManagedBean() {
     }
@@ -76,7 +77,7 @@ public class ServiceYellowPageManagedBean {
     }
 
     public String generateRequestForQuotation() {
-        if (selectedService != null ) {
+        if (selectedService != null) {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedService", selectedService);
             return "createrequestforquotation.xhtml?faces-redirect=true";
         } else {
@@ -86,8 +87,9 @@ public class ServiceYellowPageManagedBean {
 
     }
 
-    public void viewASingleServices() {
-
+    public void viewASingleServices(ServiceCatalog serviceCatalogView) {
+        System.out.println("Rubbish!");
+        serviceCatalogToView = serviceCatalogView;
     }
 
     public Integer getCompanyId() {
@@ -128,6 +130,14 @@ public class ServiceYellowPageManagedBean {
 
     public void setFilteredServices(List<ServiceCatalog> filteredServices) {
         this.filteredServices = filteredServices;
+    }
+
+    public ServiceCatalog getServiceCatalogToView() {
+        return serviceCatalogToView;
+    }
+
+    public void setServiceCatalogToView(ServiceCatalog serviceCatalogToView) {
+        this.serviceCatalogToView = serviceCatalogToView;
     }
 
 }
