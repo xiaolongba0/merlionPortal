@@ -27,16 +27,16 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 public class PurchaseOrderManagerSessionBean {
-
+    
     @PersistenceContext
     private EntityManager em;
-
+    
     private ProductOrderLineItem pLineItem;
     private Quotation quotation;
-
+    
     public PurchaseOrderManagerSessionBean() {
     }
-
+    
     public Quotation searchQuotation(int quotationId, int customerId) {
         quotation = em.find(Quotation.class, quotationId);
         int cId = quotation.getCustomerId();
@@ -45,7 +45,7 @@ public class PurchaseOrderManagerSessionBean {
         }
         return null;
     }
-
+    
     public Integer createPO(String shipto, int companyId, int customerId, int quotationId, String cName, String cNumber) {
         System.out.println("+++++++++++++++++++GeneratePO Start====================");
         ProductOrder po = new ProductOrder();
@@ -67,9 +67,9 @@ public class PurchaseOrderManagerSessionBean {
         System.out.println("+++++++++++++++++++GeneratePO Start=====3333===============");
         em.flush();
         return po.getProductPOId();
-
+        
     }
-
+    
     public void createProductList(ProductOrderLineItem pLine, ProductOrder mypo) {
         pLine.setProductOrderproductPOId(mypo);
         em.persist(pLine);
@@ -77,26 +77,34 @@ public class PurchaseOrderManagerSessionBean {
         em.merge(mypo);
         em.flush();
     }
-
+    
     public void rejectLineItem(ProductOrderLineItem poLine, String reason) {
         poLine.setStatus(reason);
         poLine.setPrice(0.0);
         em.merge(poLine);
     }
-
+    
     public void rejectPo(int operator, ProductOrder mPo, int reason) {
         mPo.setStatus(reason);
         mPo.setSalesPersonId(operator);
         em.merge(mPo);
     }
-
+    
     public void generateSo(int operator, ProductOrder mpo) {
+        List<ProductOrderLineItem> myList = new ArrayList();
+        Double totalPrice = 0.0;
         mpo.setStatus(2);
         mpo.setSalesPersonId(operator);
+        myList = mpo.getProductOrderLineItemList();
+        for (Object o : myList) {
+            ProductOrderLineItem myLine = (ProductOrderLineItem) o;
+            totalPrice += myLine.getPrice();
+        }
+        mpo.setPrice(totalPrice);
         em.merge(mpo);
         em.flush();
     }
-
+    
     public Boolean creaditCheck(int customerId) {
         SystemUser myCustomer = em.find(SystemUser.class, customerId);
         String myCredit = myCustomer.getCredit();
@@ -105,15 +113,15 @@ public class PurchaseOrderManagerSessionBean {
         }
         return true;
     }
-
+    
     public Boolean checkAvailavility() {
         return true;
     }
-
+    
     public String checkTimeToFulfill() {
         return "Need 5 days";
     }
-
+    
     public List<String> getCustomerCompany(int userid) {
         SystemUser cus = em.find(SystemUser.class, userid);
         Company com = cus.getCompanycompanyId();
@@ -124,7 +132,7 @@ public class PurchaseOrderManagerSessionBean {
         result.add(com.getContactNumber());
         return result;
     }
-
+    
     public List<ProductOrderLineItem> copyFromQuotation(int quotationId) {
         List<ProductOrderLineItem> poList = new ArrayList();
         quotation = em.find(Quotation.class, quotationId);
@@ -140,12 +148,12 @@ public class PurchaseOrderManagerSessionBean {
         }
         return poList;
     }
-
+    
     public void saveOrder(ProductOrder mypo) {
         mypo.setStatus(14);
         em.merge(mypo);
     }
-
+    
     public List<ProductOrder> viewAllProductOrder(int status, int companyId) {
         List<ProductOrder> resultList = new ArrayList();
         Query q = em.createQuery("SELECT q FROM ProductOrder q WHERE q.companyId = :companyId AND q.status = :mystatus").setParameter("companyId", companyId);
@@ -156,7 +164,7 @@ public class PurchaseOrderManagerSessionBean {
         }
         return resultList;
     }
-
+    
     public List<ProductOrder> viewAllProductOrder(int status, int companyId, int customerId) {
         List<ProductOrder> resultList = new ArrayList();
         Query q = em.createQuery("SELECT q FROM ProductOrder q WHERE q.companyId = :companyId AND q.status = :mystatus AND q.creatorId = :clientId").setParameter("companyId", companyId);
@@ -168,7 +176,7 @@ public class PurchaseOrderManagerSessionBean {
         }
         return resultList;
     }
-
+    
     public List<ProductOrder> viewAllOrder(int companyId, int customerId) {
         List<ProductOrder> resultList = new ArrayList();
         Query q = em.createQuery("SELECT q FROM ProductOrder q WHERE q.companyId = :companyId AND q.creatorId = :clientId").setParameter("companyId", companyId);
@@ -179,25 +187,25 @@ public class PurchaseOrderManagerSessionBean {
         }
         return resultList;
     }
-
+    
     public List<ProductOrder> viewAllOrder(int companyId) {
         List<ProductOrder> resultList = new ArrayList();
         Query q = em.createQuery("SELECT q FROM ProductOrder q WHERE q.companyId = :companyId").setParameter("companyId", companyId);
-
+        
         for (Object o : q.getResultList()) {
             ProductOrder pro = (ProductOrder) o;
             resultList.add(pro);
         }
         return resultList;
     }
-
+    
     public ProductOrder retrieveProductOrder(Integer poId) {
         ProductOrder po = new ProductOrder();
         po = em.find(ProductOrder.class, poId);
-
+        
         return po;
     }
-
+    
     public Boolean checkCredit(int cutomerId) {
         SystemUser customer = em.find(SystemUser.class, cutomerId);
         String credit = customer.getCredit();
@@ -206,7 +214,7 @@ public class PurchaseOrderManagerSessionBean {
         }
         return false;
     }
-
+    
     public Boolean checkQuotationValidity(int quoationId) {
         Boolean result;
         Quotation myQuotation = em.find(Quotation.class, quoationId);
@@ -218,7 +226,7 @@ public class PurchaseOrderManagerSessionBean {
         }
         return false;
     }
-
+    
     public List<String> getAllOrderStatus() {
         List<String> result = new ArrayList();
         result.add("PO, Waiting for process");
@@ -239,7 +247,7 @@ public class PurchaseOrderManagerSessionBean {
 //        result.add("Rejected, Unable to fulfill this order");
         return result;
     }
-
+    
     public String viewMyOrderStatus(int status) {
         String result;
         if (status == 1) {
@@ -275,7 +283,7 @@ public class PurchaseOrderManagerSessionBean {
         }
         return result;
     }
-
+    
     public String getOrderStatus(ProductOrder myOrder) {
         String result;
         if (myOrder == null) {
@@ -302,5 +310,5 @@ public class PurchaseOrderManagerSessionBean {
         }
         return result;
     }
-
+    
 }
