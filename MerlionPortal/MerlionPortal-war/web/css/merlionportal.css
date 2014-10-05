@@ -89,6 +89,10 @@ h2.roleTitle{
     margin-top:5px;
     margin-bottom:5px;
 }
+.morespacing{
+    margin-top:10px;
+    margin-bottom:10px;
+}
 .rights-btn{
     min-width:450px;
 }
@@ -240,4 +244,10 @@ ol.d {
 
 .ui-icon-triangle-1-s{
     background-position: -68px -16px;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
 }

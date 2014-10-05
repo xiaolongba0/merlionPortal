@@ -1,12 +1,75 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
-</html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
 
+    <ui:composition template="templates/template.xhtml">
+
+        <ui:param name="pageName" value="About Us" />
+
+        <!-- Override Content -->
+        <ui:define name="content">
+            <div class="container">
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                        <img src="img/feedback.jpg" class="service-image" />
+                        <div class="caption product-box">
+                            <h2 class="service-title">Categories</h2><br></br>
+                            <div class="product-des-wi">
+                                <nav>
+                                    <ul>
+                                        <h4 class="service-des">
+                                            <li><a>CRM</a></li>
+                                            <li><a>MRP</a></li>
+                                            <li><a>WMS</a></li>
+                                            <li><a>OES</a></li>
+                                            <li><a>TMS</a></li>
+                                            <li><a>GRNS</a></li>
+                                        </h4>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class = "center">
+                        We Welcome Your Feedback
+                    </div>
+                    <div class="col-md-4">
+                        <div>
+                            <div>
+                                <div class="caption product-box">
+                                    <h2 class="service-title">Topic</h2>
+                                </div>
+                            </div>                                                                      
+                        </div>                  
+                    </div>
+                    <div class="col-md-4">
+                        <div>
+                            <div>
+                                <div class="caption product-box">
+                                    <h2 class="service-title">Time</h2>
+                                </div>
+                            </div>                                                                      
+                        </div>                  
+                    </div>
+                    <div class="col-md-4">
+                        <div>
+                            <div>
+                                <div class="caption product-box">
+                                    <h2 class="service-title">Posts</h2>
+                                </div>
+                            </div>                                                                      
+                        </div>                  
+                    </div>
+                </div>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>
