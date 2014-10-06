@@ -359,7 +359,7 @@ public class ForecastSessionBean {
     public Vector<String> yaxisDate() {
         monthlyDateR = new Vector<String>();
         monthlyDateR.add("0");
-        monthlyDateR.add("2014-09-01");
+
         monthlyDateR.add("2014-10-01");
         monthlyDateR.add("2014-11-01");
         monthlyDateR.add("2014-12-01");
@@ -383,6 +383,7 @@ public class ForecastSessionBean {
         monthlyDateR.add("2016-06-01");
         monthlyDateR.add("2016-07-01");
         monthlyDateR.add("2016-08-01");
+        monthlyDateR.add("2016-10-01");
 
         return monthlyDateR;
     }
