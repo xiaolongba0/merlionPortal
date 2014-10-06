@@ -52,6 +52,8 @@
 
         <ui:define name="right">
             <h:form>
+                
+                
                 <p:panel header="Enter Buffer If Necessary" style="margin-bottom:10px;">
                     <p:panelGrid style="margin-top:20px">
                         <p:row>
@@ -72,11 +74,10 @@
                         </p:row>
                         <p:row>
                             <p:column>
-                                <h:outputLabel for="buffer" value="Enter Buffer:" style="font-weight:bold" />
+                                <h:outputLabel for="buffer" value="Buffer:" style="font-weight:bold" />
                             </p:column>
                             <p:column> 
                                 <p:inputText id="buffer" value="#{mPSResultManagedBean.buffer}" />
-
                             </p:column>
                         </p:row>
                         <p:row>
@@ -84,7 +85,7 @@
                                 <h:outputText value="Demand in Production Plan:  " />
                             </p:column>
                             <p:column>
-                                <h:outputText id="requiredDemand" value="#{mPSResultManagedBean.requiredDemand}" />
+                                <h:outputText id="out" value="#{mPSResultManagedBean.requiredDemand}" />
                             </p:column>
                         </p:row>
                     </p:panelGrid>
@@ -116,19 +117,19 @@
                         <p:row>
                             <p:column style="font-weight: bold;" colspan="2">Monthly Demand</p:column>
                             <p:column>
-                                <h:outputText value="#{mPSResultManagedBean.requiredDemand}" />
+                                <h:outputText value="#{mPSResultManagedBean.requiredAmt1}" />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{mPSResultManagedBean.requiredDemand}" />
+                                <h:outputText value="#{mPSResultManagedBean.requiredAmt1}" />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{mPSResultManagedBean.requiredDemand}" />
+                                <h:outputText value="#{mPSResultManagedBean.requiredAmt1}" />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{mPSResultManagedBean.requiredDemand}" />
+                                <h:outputText value="#{mPSResultManagedBean.requiredAmt1}" />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{mPSResultManagedBean.requiredDemand}" />
+                                <h:outputText value="#{mPSResultManagedBean.requiredAmt1}" />
                             </p:column>
                         </p:row>
 
@@ -152,15 +153,14 @@
 
                         <p:row>
                             <p:column style="font-weight: bold;" colspan="2">MPS Weekly Demand</p:column>
-                            <p:column><h:outputText value="#{mPSResultManagedBean.wk1Demand}" /></p:column>
-                            <p:column><h:outputText value="#{mPSResultManagedBean.wk2Demand}" /></p:column>
-                            <p:column><h:outputText value="#{mPSResultManagedBean.wk3Demand}" /></p:column>
-                            <p:column><h:outputText value="#{mPSResultManagedBean.wk4Demand}" /></p:column>
-                            <p:column><h:outputText value="#{mPSResultManagedBean.wk5Demand}" /></p:column>
+                            <p:column>600</p:column>
+                            <p:column>600</p:column>
+                            <p:column>600</p:column>
+                            <p:column>600</p:column>
+                            <p:column>600</p:column>
                         </p:row>
 
                     </p:panelGrid>
-                                        <p:commandButton value="Go Back"  action="#{mPSResultManagedBean.backToHistory}" />
                 </p:panel>
 
 
@@ -175,4 +175,5 @@
     </ui:composition>
 
 </html>
+
 
