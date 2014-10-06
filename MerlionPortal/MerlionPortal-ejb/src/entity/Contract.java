@@ -52,7 +52,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Contract.findByWarehouseId", query = "SELECT c FROM Contract c WHERE c.warehouseId = :warehouseId"),
     @NamedQuery(name = "Contract.findByContactPersonId", query = "SELECT c FROM Contract c WHERE c.contactPersonId = :contactPersonId"),
     @NamedQuery(name = "Contract.findByContactPersonName", query = "SELECT c FROM Contract c WHERE c.contactPersonName = :contactPersonName"),
-    @NamedQuery(name = "Contract.findByContactPersonNumber", query = "SELECT c FROM Contract c WHERE c.contactPersonNumber = :contactPersonNumber")})
+    @NamedQuery(name = "Contract.findByContactPersonNumber", query = "SELECT c FROM Contract c WHERE c.contactPersonNumber = :contactPersonNumber"),
+    @NamedQuery(name = "Contract.findByReasonModification", query = "SELECT c FROM Contract c WHERE c.reasonModification = :reasonModification")})
 public class Contract implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -67,7 +68,7 @@ public class Contract implements Serializable {
     private Integer partyA;
     @Column(name = "partyB")
     private Integer partyB;
-    @Size(max = 1000)
+    @Size(max = 9000)
     @Column(name = "conditionText")
     private String conditionText;
     @Column(name = "status")
@@ -100,6 +101,9 @@ public class Contract implements Serializable {
     @Size(max = 45)
     @Column(name = "contactPersonNumber")
     private String contactPersonNumber;
+    @Size(max = 1000)
+    @Column(name = "reasonModification")
+    private String reasonModification;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "contract")
     private List<ServicePO> servicePOList;
     @JoinColumn(name = "serviceQuotation", referencedColumnName = "quotationId")
@@ -239,6 +243,14 @@ public class Contract implements Serializable {
 
     public void setContactPersonNumber(String contactPersonNumber) {
         this.contactPersonNumber = contactPersonNumber;
+    }
+
+    public String getReasonModification() {
+        return reasonModification;
+    }
+
+    public void setReasonModification(String reasonModification) {
+        this.reasonModification = reasonModification;
     }
 
     @XmlTransient
