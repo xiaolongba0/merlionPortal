@@ -40,6 +40,8 @@ public class ViewQuotationDetailManagedBean {
     private String receiverCompanyName;
     private Double discountedPrice;
     private Double finalPrice;
+    
+    private String status;
 
     /**
      * Creates a new instance of ViewQuotationManagedBean
@@ -70,9 +72,15 @@ public class ViewQuotationDetailManagedBean {
         if (selectedQuotation != null) {
             senderCompanyName = userAccountSB.getCompany(selectedQuotation.getReceiverCompanyId()).getName();
             receiverCompanyName = userAccountSB.getCompany(selectedQuotation.getSenderCompanyId()).getName();
-            discountedPrice = selectedQuotation.getDiscountRate() * selectedQuotation.getPrice()/100;
-            finalPrice = selectedQuotation.getPrice() - discountedPrice;
+            if (selectedQuotation.getDiscountRate() != null) {
+                discountedPrice = selectedQuotation.getDiscountRate() * selectedQuotation.getPrice() / 100;
+                finalPrice = selectedQuotation.getPrice() - discountedPrice;
+            }else{
+                discountedPrice = 0.0;
+                finalPrice = selectedQuotation.getPrice();
+            }
         }
+        this.StatusText(selectedQuotation.getStatus());
 
     }
 
@@ -98,6 +106,34 @@ public class ViewQuotationDetailManagedBean {
         }
     }
 
+    
+    private String StatusText(int passedStatus){
+        if (passedStatus == 1) {
+            status = "Request for quotation";
+        }
+        if (passedStatus == 2) {
+            status = "Waiting for acception";
+        }
+        if (passedStatus == 3) {
+            status = "Valid";
+        }
+        if (passedStatus == 4) {
+            status = "Rejected request";
+        }
+        if (passedStatus == 5) {
+            status = "Rejected quotation";
+        }
+        if (passedStatus == 6) {
+            status = "Pending fulfillment check";
+        }
+        if (passedStatus == 7) {
+            status = "Fulfillment check fail";
+        }
+        if (passedStatus == 8) {
+            status = "Fulfillment check success";
+        }
+        return status;
+    }
     public Integer getCompanyId() {
         return companyId;
     }
@@ -160,6 +196,14 @@ public class ViewQuotationDetailManagedBean {
 
     public void setFinalPrice(Double finalPrice) {
         this.finalPrice = finalPrice;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 }

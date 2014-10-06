@@ -78,8 +78,13 @@ public class ServiceYellowPageManagedBean {
 
     public String generateRequestForQuotation() {
         if (selectedService != null) {
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedService", selectedService);
-            return "createrequestforquotation.xhtml?faces-redirect=true";
+            if ((int) selectedService.getCompanyId() != companyId) {
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedService", selectedService);
+                return "createrequestforquotation.xhtml?faces-redirect=true";
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "You can not request your own company's service", "Please select a service from other companies"));
+                return null;
+            }
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select a service to request!", ""));
             return null;

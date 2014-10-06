@@ -7,6 +7,7 @@ package merlionportal.managedbean.crms;
 
 import entity.ServiceQuotation;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -35,6 +36,9 @@ public class ViewAllRequestsManagedBean {
 
     private ServiceQuotation selectedRequest;
     private ServiceQuotation requestToView;
+    
+    private List<String> status;
+    private String statusNumber;
 
     /**
      * Creates a new instance of ViewAllRequestsManagedBean
@@ -61,8 +65,17 @@ public class ViewAllRequestsManagedBean {
         }
         sentRequests = (List<ServiceQuotation>) quotationManagementSB.viewAllRequestsSent(companyId);
         receivedRequests = (List<ServiceQuotation>) quotationManagementSB.viewAllRequestReceived(companyId);
+        status = new ArrayList<>();
+        status.add("Request for quotation");
+        status.add("Waiting for acception");
+        status.add("Valid");
+        status.add("Rejected request");
+        status.add("Rejected quotation");
+        status.add("Pending fulfillment check");
+        status.add("Fulfillment check fail");
+        status.add("Fulfillment check success");
     }
-
+    
     public String generateQuotation() {
         
         if (selectedRequest != null) {
@@ -78,6 +91,44 @@ public class ViewAllRequestsManagedBean {
     public void viewARequest(ServiceQuotation viewRequest){
         requestToView = viewRequest;
     }
+    
+    
+    public String getStatusNumber(int passedStatus){
+        if (passedStatus == 1) {
+            statusNumber = "Request for quotation";
+        }
+        if (passedStatus == 2) {
+            statusNumber = "Waiting for acception";
+        }
+        if (passedStatus == 3) {
+            statusNumber = "Valid";
+        }
+        if (passedStatus == 4) {
+            statusNumber = "Rejected request";
+        }
+        if (passedStatus == 5) {
+            statusNumber = "Rejected quotation";
+        }
+        if (passedStatus == 6) {
+            statusNumber = "Pending fulfillment check";
+        }
+        if (passedStatus == 7) {
+            statusNumber = "Fulfillment check fail";
+        }
+        if (passedStatus == 8) {
+            statusNumber = "Fulfillment check success";
+        }
+        return statusNumber;
+    }
+
+    public void setStatusNumber(String statusNumber) {
+        this.statusNumber = statusNumber;
+    }
+    
+    
+    
+    
+    
     public Integer getCompanyId() {
         return companyId;
     }
@@ -133,5 +184,14 @@ public class ViewAllRequestsManagedBean {
     public void setRequestToView(ServiceQuotation requestToView) {
         this.requestToView = requestToView;
     }
+
+    public List<String> getStatus() {
+        return status;
+    }
+
+    public void setStatus(List<String> status) {
+        this.status = status;
+    }
+    
     
 }

@@ -62,6 +62,10 @@
                         <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.serviceCatalog.serviceCatalogId}" />
                         <h:outputText value="Service Name:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.serviceCatalog.serviceName}" />
+                        <h:outputText value="Service Description" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.serviceCatalog.serviceDescription}" />
+                        <h:outputText value="Service Type" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.serviceCatalog.serviceType}" />
 
                         <h:outputText value="Start Date:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.startDate}" />
@@ -76,6 +80,9 @@
                         <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.price}" />
                         <h:outputText value="Discount in %:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.discountRate}" />
+                        
+                        <h:outputText value="Status:" style="color: red" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewQuotationManagedBean.status}"  style="color: red" />
 
                     </h:panelGrid>
                     <p:separator />

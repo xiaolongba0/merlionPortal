@@ -71,8 +71,14 @@
                         <p:column filterBy="#{quotation.createdDate}" headerText="Created Date" filterMatchMode="contains">
                             <h:outputText value="#{quotation.createdDate}" />
                         </p:column>
-                        <p:column filterBy="#{quotation.status}" headerText="Status" filterMatchMode="contains">
-                            <h:outputText value="#{quotation.status}" />
+
+                        <p:column filterBy="#{viewAllQuotationsManagedBean.getStatusNumber(quotation.status)}" headerText="Status" filterMatchMode="in">
+                            <f:facet name="filter">
+                                <p:selectCheckboxMenu label="Status" onchange="PF('quotationsTable').filter()" panelStyle="width:250px" scrollHeight="150">
+                                    <f:selectItems value="#{viewAllQuotationsManagedBean.status}" />
+                                </p:selectCheckboxMenu>
+                            </f:facet>
+                            <h:outputText value="#{viewAllQuotationsManagedBean.getStatusNumber(quotation.status)}" />
                         </p:column>
                     </p:dataTable>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
@@ -103,8 +109,13 @@
                         <p:column filterBy="#{receivedQuotation.createdDate}" headerText="Created Date" filterMatchMode="contains">
                             <h:outputText value="#{receivedQuotation.createdDate}" />
                         </p:column>
-                        <p:column filterBy="#{receivedQuotation.status}" headerText="Status" filterMatchMode="contains">
-                            <h:outputText value="#{receivedQuotation.status}" />
+                        <p:column filterBy="#{viewAllQuotationsManagedBean.getStatusNumber(receivedQuotation.status)}" headerText="Status" filterMatchMode="in">
+                            <f:facet name="filter">
+                                <p:selectCheckboxMenu label="Status" onchange="PF('quotationsTable2').filter()" panelStyle="width:250px" scrollHeight="150">
+                                    <f:selectItems value="#{viewAllQuotationsManagedBean.status}" />
+                                </p:selectCheckboxMenu>
+                            </f:facet>
+                            <h:outputText value="#{viewAllQuotationsManagedBean.getStatusNumber(receivedQuotation.status)}" />
                         </p:column>
                     </p:dataTable>
                     <p:messages id="msg" showDetail="true" autoUpdate="true" closable="true" />

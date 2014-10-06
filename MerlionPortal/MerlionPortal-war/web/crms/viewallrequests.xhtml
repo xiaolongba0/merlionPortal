@@ -72,8 +72,13 @@
                         <p:column filterBy="#{requestForQuotation.createdDate}" headerText="Created Date" filterMatchMode="contains">
                             <h:outputText value="#{requestForQuotation.createdDate}" />
                         </p:column>
-                        <p:column filterBy="#{requestForQuotation.status}" headerText="Status" filterMatchMode="contains">
-                            <h:outputText value="#{requestForQuotation.status}" />
+                        <p:column filterBy="#{viewAllRequestsManagedBean.getStatusNumber(requestForQuotation.status)}" headerText="Status" filterMatchMode="in">
+                            <f:facet name="filter">
+                                <p:selectCheckboxMenu label="Status" onchange="PF('requestsTable').filter()" panelStyle="width:250px" scrollHeight="150">
+                                    <f:selectItems value="#{viewAllRequestsManagedBean.status}" />
+                                </p:selectCheckboxMenu>
+                            </f:facet>
+                            <h:outputText value="#{viewAllRequestsManagedBean.getStatusNumber(requestForQuotation.status)}" />
                         </p:column>
                         <p:column width="50" >
                             <p:commandButton action="#{viewAllRequestsManagedBean.viewARequest(requestForQuotation)}" update=":form:requestDetail :form:requestDetail2" oncomplete="toggleModal();" icon="ui-icon-search"/>
@@ -111,9 +116,15 @@
                         <p:column filterBy="#{requestReceived.createdDate}" headerText="Created Date" filterMatchMode="contains">
                             <h:outputText value="#{requestReceived.createdDate}" />
                         </p:column>
-                        <p:column filterBy="#{requestReceived.status}" headerText="Status" filterMatchMode="contains">
-                            <h:outputText value="#{requestReceived.status}" />
+                        <p:column filterBy="#{viewAllRequestsManagedBean.getStatusNumber(requestReceived.status)}" headerText="Status" filterMatchMode="in">
+                            <f:facet name="filter">
+                                <p:selectCheckboxMenu label="Status" onchange="PF('requestTable2').filter()" panelStyle="width:250px" scrollHeight="150">
+                                    <f:selectItems value="#{viewAllRequestsManagedBean.status}" />
+                                </p:selectCheckboxMenu>
+                            </f:facet>
+                            <h:outputText value="#{viewAllRequestsManagedBean.getStatusNumber(requestReceived.status)}" />
                         </p:column>
+                       
                     </p:dataTable>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 
