@@ -7,6 +7,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -21,6 +22,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -54,9 +57,8 @@ public class Contract implements Serializable {
     @Basic(optional = false)
     @Column(name = "contractId")
     private Integer contractId;
-    @Size(max = 45)
     @Column(name = "serviceType")
-    private String serviceType;
+    private Integer serviceType;
     @Column(name = "partyA")
     private Integer partyA;
     @Column(name = "partyB")
@@ -66,15 +68,15 @@ public class Contract implements Serializable {
     private String conditionText;
     @Column(name = "status")
     private Integer status;
-    @Size(max = 45)
     @Column(name = "startDate")
-    private String startDate;
-    @Size(max = 45)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date startDate;
     @Column(name = "endDate")
-    private String endDate;
-    @Size(max = 45)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date endDate;
     @Column(name = "createdDate")
-    private String createdDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "price")
     private Double price;
@@ -107,11 +109,11 @@ public class Contract implements Serializable {
         this.contractId = contractId;
     }
 
-    public String getServiceType() {
+    public Integer getServiceType() {
         return serviceType;
     }
 
-    public void setServiceType(String serviceType) {
+    public void setServiceType(Integer serviceType) {
         this.serviceType = serviceType;
     }
 
@@ -147,27 +149,27 @@ public class Contract implements Serializable {
         this.status = status;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
-    public String getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(String createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
