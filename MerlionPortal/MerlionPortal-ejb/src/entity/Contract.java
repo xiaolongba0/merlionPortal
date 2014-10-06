@@ -49,7 +49,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Contract.findByPrice", query = "SELECT c FROM Contract c WHERE c.price = :price"),
     @NamedQuery(name = "Contract.findByOrigin", query = "SELECT c FROM Contract c WHERE c.origin = :origin"),
     @NamedQuery(name = "Contract.findByDestination", query = "SELECT c FROM Contract c WHERE c.destination = :destination"),
-    @NamedQuery(name = "Contract.findByWarehouseId", query = "SELECT c FROM Contract c WHERE c.warehouseId = :warehouseId")})
+    @NamedQuery(name = "Contract.findByWarehouseId", query = "SELECT c FROM Contract c WHERE c.warehouseId = :warehouseId"),
+    @NamedQuery(name = "Contract.findByContactPersonId", query = "SELECT c FROM Contract c WHERE c.contactPersonId = :contactPersonId"),
+    @NamedQuery(name = "Contract.findByContactPersonName", query = "SELECT c FROM Contract c WHERE c.contactPersonName = :contactPersonName"),
+    @NamedQuery(name = "Contract.findByContactPersonNumber", query = "SELECT c FROM Contract c WHERE c.contactPersonNumber = :contactPersonNumber")})
 public class Contract implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -57,8 +60,9 @@ public class Contract implements Serializable {
     @Basic(optional = false)
     @Column(name = "contractId")
     private Integer contractId;
+    @Size(max = 45)
     @Column(name = "serviceType")
-    private Integer serviceType;
+    private String serviceType;
     @Column(name = "partyA")
     private Integer partyA;
     @Column(name = "partyB")
@@ -88,6 +92,14 @@ public class Contract implements Serializable {
     private String destination;
     @Column(name = "warehouseId")
     private Integer warehouseId;
+    @Column(name = "contactPersonId")
+    private Integer contactPersonId;
+    @Size(max = 45)
+    @Column(name = "contactPersonName")
+    private String contactPersonName;
+    @Size(max = 45)
+    @Column(name = "contactPersonNumber")
+    private String contactPersonNumber;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "contract")
     private List<ServicePO> servicePOList;
     @JoinColumn(name = "serviceQuotation", referencedColumnName = "quotationId")
@@ -109,11 +121,11 @@ public class Contract implements Serializable {
         this.contractId = contractId;
     }
 
-    public Integer getServiceType() {
+    public String getServiceType() {
         return serviceType;
     }
 
-    public void setServiceType(Integer serviceType) {
+    public void setServiceType(String serviceType) {
         this.serviceType = serviceType;
     }
 
@@ -203,6 +215,30 @@ public class Contract implements Serializable {
 
     public void setWarehouseId(Integer warehouseId) {
         this.warehouseId = warehouseId;
+    }
+
+    public Integer getContactPersonId() {
+        return contactPersonId;
+    }
+
+    public void setContactPersonId(Integer contactPersonId) {
+        this.contactPersonId = contactPersonId;
+    }
+
+    public String getContactPersonName() {
+        return contactPersonName;
+    }
+
+    public void setContactPersonName(String contactPersonName) {
+        this.contactPersonName = contactPersonName;
+    }
+
+    public String getContactPersonNumber() {
+        return contactPersonNumber;
+    }
+
+    public void setContactPersonNumber(String contactPersonNumber) {
+        this.contactPersonNumber = contactPersonNumber;
     }
 
     @XmlTransient
