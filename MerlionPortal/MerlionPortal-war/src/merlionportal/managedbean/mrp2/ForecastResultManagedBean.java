@@ -110,6 +110,10 @@ public class ForecastResultManagedBean implements Serializable {
 
         forecastR = fsb.computeResult(periodicity, expectedGrowth, dateList, quantityList);
         monthlyDateR = fsb.yaxisDate();
+        
+        //put results into the session
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("forecastR",  forecastR);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("monthlyDateR", monthlyDateR);
 
         forecastSales = new LineChartModel();
         LineChartSeries series1 = new LineChartSeries();
@@ -132,8 +136,8 @@ public class ForecastResultManagedBean implements Serializable {
 
         DateAxis axis = new DateAxis("Dates");
         forecastSales.getAxes().put(AxisType.X, axis);
-        axis.setMin("2014-05-01");
-        axis.setMax("2016-01-01");
+        axis.setMin("2014-07-01");
+        axis.setMax("2016-03-01");
         axis.setTickFormat("%b, %y");
 
     }
