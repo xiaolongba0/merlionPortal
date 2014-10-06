@@ -67,10 +67,10 @@ public class ViewAllRequestsManagedBean {
         receivedRequests = (List<ServiceQuotation>) quotationManagementSB.viewAllRequestReceived(companyId);
         status = new ArrayList<>();
         status.add("Request for quotation");
-        status.add("Waiting for acception");
-        status.add("Valid");
-        status.add("Rejected request");
-        status.add("Rejected quotation");
+//        status.add("Waiting for acception");
+//        status.add("Valid");
+//        status.add("Rejected request");
+//        status.add("Rejected quotation");
         status.add("Pending fulfillment check");
         status.add("Fulfillment check fail");
         status.add("Fulfillment check success");

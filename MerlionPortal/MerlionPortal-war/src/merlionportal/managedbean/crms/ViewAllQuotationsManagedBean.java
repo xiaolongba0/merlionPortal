@@ -73,14 +73,14 @@ public class ViewAllQuotationsManagedBean {
         loginedUser = userAccountSB.getUser(userId);
 
         status = new ArrayList<>();
-        status.add("Request for quotation");
+//        status.add("Request for quotation");
         status.add("Waiting for acception");
         status.add("Valid");
         status.add("Rejected request");
         status.add("Rejected quotation");
-        status.add("Pending fulfillment check");
-        status.add("Fulfillment check fail");
-        status.add("Fulfillment check success");
+//        status.add("Pending fulfillment check");
+//        status.add("Fulfillment check fail");
+//        status.add("Fulfillment check success");
     }
 
     public String viewSentQuotation() {
