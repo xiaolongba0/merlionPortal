@@ -42,8 +42,8 @@ public class DisplayChartManagedBean {
     private List<ProductOrder> productOrderList;
     private LineChartModel dateModel = new LineChartModel();
     private LineChartModel lineModel2;
-    private Double min = 1000.0;
-    private Double max = 1000.0;
+    private Double min = 50.0;
+    private Double max = 50.0;
 
     @PostConstruct
     public void init() {
@@ -71,8 +71,12 @@ public class DisplayChartManagedBean {
     }
 
     private void createMyModels() {
-
-        lineModel2 = initMyModel();
+        int totalMonth = reportMB.retrieveTotalMonth(startDate, endDate);
+        if (totalMonth > 2) {
+            lineModel2 = initMyModel();
+        } else {
+            lineModel2 = initDayModel();
+        }
         lineModel2.setTitle("Sales Trend ");
         lineModel2.setLegendPosition("e");
         lineModel2.setShowPointLabels(true);
@@ -93,20 +97,11 @@ public class DisplayChartManagedBean {
         int startMonth = cal.get(Calendar.MONTH);
         startMonth++;
         int startYear = cal.get(Calendar.YEAR);
-        System.out.println("+++++++++++++++++++++++Init category model " + startMonth + " " + startYear);
         Calendar cal1 = Calendar.getInstance();
-        cal1.setTime(endDate);
+        cal.setTime(endDate);
         int endMonth = cal1.get(Calendar.MONTH);
+        endMonth++;
         int endYear = cal1.get(Calendar.YEAR);
-        if (endMonth == 12) {
-            endMonth = 1;
-            endYear++;
-        } else {
-            endMonth++;
-        }
-        String maxDate = Integer.toString(endYear) + "-" + Integer.toString(endMonth);
-
-        System.out.println("Total monthes selected " + totalMonth);
 
         for (int i = 1; i <= totalMonth; i++) {
             totalValue = reportMB.getTotalValueOfMonth(productOrderList, startMonth, startYear);
@@ -117,8 +112,6 @@ public class DisplayChartManagedBean {
                 max = totalValue;
             }
             String xPoint = Integer.toString(startYear) + "-" + Integer.toString(startMonth);
-            System.out.println("starting year and month  " + startYear + " " + startMonth);
-            System.out.println("Xpoint   " + xPoint);
             series1.set(xPoint, totalValue);
             if (startMonth == 12) {
                 startMonth = 1;
@@ -127,6 +120,65 @@ public class DisplayChartManagedBean {
                 startMonth++;
             }
         }
+
+        series1.setLabel("Sales");
+
+        model.addSeries(series1);
+
+        return model;
+    }
+
+    private LineChartModel initDayModel() {
+        System.out.println("start date and end date  " + startDate + " " + endDate);
+        Double totalValue = 0.0;
+        long totalDay = reportMB.retrieveTotalDay(startDate, endDate);
+        System.out.println("total day of period  " + totalDay);
+        LineChartModel model = new LineChartModel();
+        ChartSeries series1 = new ChartSeries();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(startDate);
+        int startDay = cal.get(Calendar.DAY_OF_MONTH);
+        int startMonth = cal.get(Calendar.MONTH);
+        startMonth++;
+        int startYear = cal.get(Calendar.YEAR);
+        Calendar cal1 = Calendar.getInstance();
+        cal.setTime(startDate);
+        int endDay = cal1.get(Calendar.DAY_OF_MONTH);
+        int endMonth = cal1.get(Calendar.MONTH);
+        endMonth++;
+        int endYear = cal1.get(Calendar.YEAR);
+
+        for (int i = 1; i <= totalDay; i++) {
+            totalValue = reportMB.getTotalValueofDay(productOrderList, startDay, startMonth, startYear);
+            if (totalValue < min) {
+                min = totalValue;
+            }
+            if (totalValue > max) {
+                max = totalValue;
+            }
+            String xPoint = Long.toString(startDay);
+            series1.set(xPoint, totalValue);
+            if (startDay == 31 && (startMonth == 1 || startMonth == 3 || startMonth == 5 || startMonth == 7 || startMonth == 8 || startMonth == 10)) {
+                startMonth++;
+                startDay = 1;
+            } else if (startMonth == 12 && startDay == 31) {
+                startMonth = 1;
+                startDay = 1;
+                startYear++;
+            } else if (startDay == 30 && (startMonth == 4 || startMonth == 6 || startMonth == 9 || startMonth == 11)) {
+                startMonth++;
+                startDay = 1;
+            } else if (startMonth == 2 && startDay == 29 && startYear % 4 == 0) {
+                startMonth++;
+                startDay = 1;
+            } else if (startMonth == 2 && startDay == 28 && startYear % 4 != 0) {
+                startMonth++;
+                startDay = 1;
+            } else {
+                startDay++;
+            }
+        }
+
         series1.setLabel("Sales");
 
         model.addSeries(series1);
