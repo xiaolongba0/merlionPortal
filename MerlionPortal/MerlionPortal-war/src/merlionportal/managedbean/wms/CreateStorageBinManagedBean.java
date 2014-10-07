@@ -21,7 +21,7 @@ import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
 
 /**
  *
- * @author manliqi
+ * @author YunWei
  */
 @Named(value = "createStorageBinManagedBean")
 @ViewScoped
@@ -87,6 +87,7 @@ public class CreateStorageBinManagedBean {
     }
 
     public void onChangeWarehouse() {
+        System.out.println("[IN MANAGED BEAN -- Create BIN MB] ====================== onChangeWarehouse, Warehouse ID: " + warehouseId);
         if (warehouseId != null) {
             storageTypes = amsb.viewStorageTypesForAWarehouse(warehouseId);
         }
@@ -100,7 +101,6 @@ public class CreateStorageBinManagedBean {
         storageBinType = null;
         maxQuantity = null;
         maxWeight = null;
-
     }
 
     public List<String> getListStorageBinType() {

@@ -83,7 +83,7 @@ public class CreateStorageTypeManagedBean {
 
             } else {
                 System.out.println("============== FAILED TO ADD STORAGE TYPE DUE TO WRONG WAREHOUSE ID ===============");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed to Add Storage Type. Please check warehouseID! ", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed to Add Warehouse Zone ", ""));
 
             }
 

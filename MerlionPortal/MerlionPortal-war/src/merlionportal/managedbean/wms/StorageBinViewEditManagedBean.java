@@ -108,9 +108,9 @@ public class StorageBinViewEditManagedBean {
             boolean result = assetManagementSessionBean.deleteStorageBin(bin.getStorageBinId());
             if (result) {
                 bins.remove(bin);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Storage Bin is deleted"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success! Storage Bin is deleted", ""));
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error! Please check if Bin contains Stock.", ""));
 
             }
         } catch (Exception ex) {

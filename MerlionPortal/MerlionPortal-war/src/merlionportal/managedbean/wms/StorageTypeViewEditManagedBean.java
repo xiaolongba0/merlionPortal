@@ -70,13 +70,13 @@ public class StorageTypeViewEditManagedBean {
     }
 
     public List<StorageType> onWarehouseChange() {
-        System.out.println("===============================[In Managed Bean - getStorageTypes]");
-        System.out.println("[In Managed Bean - getStorageTypes] warehouse ID : " + warehouseId);
+        System.out.println("===============================[In Managed Bean - onWarehouseChange]");
+        System.out.println("[In Managed Bean - onWarehouseChange] warehouse ID : " + warehouseId);
         if (warehouseId != null) {
             storagetypes = assetManagementSessionBean.viewStorageTypesForAWarehouse(warehouseId);
             if (storagetypes == null) {
                 System.out.println("============== FAILED TO VIEW STORAGE TYPE ===============");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Storage Type. Please check if warehouse ID exists! ", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Warehouse Zone.", ""));
             }
             return storagetypes;
         }
