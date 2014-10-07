@@ -36,6 +36,9 @@
                         <p:menuitem value="Add Storage Bin" url="addstoragebin.xhtml" />
                         <p:menuitem value="View Storage Bin" url="viewstoragebin.xhtml" />
                     </p:submenu>
+                    <p:submenu label="Stock" >
+                        <p:menuitem value="Add Stock" url="addstock.xhtml" style="background-color: lavender"/>
+                    </p:submenu>
                 </p:submenu>
             </p:panelMenu>
         </ui:define>
@@ -117,7 +120,7 @@
                                 <f:facet name="input">                            
                                     <p:selectOneMenu id="storageBinType" value="#{storagebin.binType}"  style="width:210px">
                                         <f:selectItem itemLabel="Select Storage Bin Type" itemValue="" noSelectionOption="true" />
-                                        <f:selectItems value="#{createStorageBinManagerBean.listStorageBinType}" var="storageType" itemLabel="#{listStorageBinType}" />
+                                        <f:selectItems value="#{createStorageBinManagedBean.listStorageBinType}" var="storageBinType" itemLabel="#{listStorageBinType}" />
                                     </p:selectOneMenu>
                                 </f:facet>
         <!--                            <p:inputText value="#{storagebin.binType}" style="width:100%" label="Bin Type"/>-->
@@ -140,7 +143,7 @@
 
                         <p:column style="width:48px">
                             <p:commandButton action="#{storageBinViewEditManagedBean.deleteStorageBin(storagebin)}" update="storagebinData" icon = "ui-icon-trash"  >
-                                <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this storage type?" icon="ui-icon-alert" />
+                                <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this storage bin?" icon="ui-icon-alert" />
                             </p:commandButton> 
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />

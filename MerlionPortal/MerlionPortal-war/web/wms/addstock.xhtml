@@ -23,7 +23,7 @@
 
             <p:panelMenu>
                 <p:submenu label =" Manage Your Warehouse">
-                    <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
+                    <p:menuitem value="WMS home" url="wmsindex.xhtml" />
                     <p:submenu label="Warehouse" >
                         <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
                         <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
@@ -33,15 +33,17 @@
                         <p:menuitem value="View Warehouse Zones" url="viewwarehousezone.xhtml" />
                     </p:submenu>
                     <p:submenu label="Storage Bin" >
-                        <p:menuitem value="Add Storage Bin" url="addstoragebin.xhtml" />
+                        <p:menuitem value="Add Storage Bin" url="addstoragebin.xhtml"/>
                         <p:menuitem value="View Storage Bin" url="viewstoragebin.xhtml" />
                     </p:submenu>
-                    <p:submenu label="Stock" >
-                        <p:menuitem value="Add Stock" url="addstock.xhtml" style="background-color: lavender"/>
-                    </p:submenu>
+                </p:submenu>
+                <p:submenu label="Stock" >
+                    <p:menuitem value="Add Stock" url="addstock.xhtml"/>
                 </p:submenu>
             </p:panelMenu>
         </ui:define>
+        
+        
         <ui:define name="right">
             <h:form id="formMain">
                 <p:panel id="panel" header="Add Storage Bin">
@@ -54,16 +56,15 @@
                         </f:facet>
                     </p:ajaxStatus>
                     <p:panelGrid>
-
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="warehouse" value="Warehouse Name: " />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="warehouse" value="#{createStorageBinManagedBean.warehouseId}"  style="width:210px" required="true" requiredMessage="Please select a warehouse">
-                                    <p:ajax listener="#{createStorageBinManagedBean.onChangeWarehouse}" update="storageType" />
+                                <p:selectOneMenu id="warehouse" value="#{createStockManagedBean.warehouseId}"  style="width:210px" required="true" requiredMessage="Please select a warehouse">
+                                    <p:ajax listener="#{createStockManagedBean.onChangeWarehouse}" update="storageType" />
                                     <f:selectItem itemLabel="Select Warehouse" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{createStorageBinManagedBean.warehouses}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId}   Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"/>
+                                    <f:selectItems value="#{createStockManagedBean.warehouses}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId}   Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
@@ -72,50 +73,50 @@
                                 <p:outputLabel for="storageType" value="Storage Type Name: " />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="storageType" value="#{createStorageBinManagedBean.storageTypeId}"  style="width:210px" required="true" requiredMessage="Please select a storage type">
+                                <p:selectOneMenu id="storageType" value="#{createStockManagedBean.storageTypeId}"  style="width:210px" required="true" requiredMessage="Please select a storage type">
+                                    <p:ajax listener="#{createStockManagedBean.onChangeStorageType}" update="storageBin" />
                                     <f:selectItem itemLabel="Select Storage Type" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{createStorageBinManagedBean.storageTypes}" var="storageType" itemLabel="ID:#{storageType.storageTypeId}   Name:#{storageType.name}"  itemValue="#{storageType.storageTypeId}"/>
+                                    <f:selectItems value="#{createStockManagedBean.storageTypes}" var="storageType" itemLabel="ID:#{storageType.storageTypeId}   Name:#{storageType.name}"  itemValue="#{storageType.storageTypeId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="storageBinName" style="font-weight: bold" value="Storage Bin Name :   " />
+                                <p:outputLabel for="storageBin" value="Storage Bin Name: " />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="storageBinName" requiredMessage="Storage Bin Name is required." id="storageBinName" value="#{createStorageBinManagedBean.storageBinName}">
+                                <p:selectOneMenu id="storageBin" value="#{createStockManagedBean.storageBinId}"  style="width:210px" required="true" requiredMessage="Please select a storage type">
+                                    <f:selectItem itemLabel="Select Storage Bin" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{createStockManagedBean.storageBins}" var="storageBin" itemLabel="ID:#{storageBin.storageBinId}   Name:#{storageBin.binName} Bin Type: Name:#{storageBin.binType}"  itemValue="#{storageBin.storageBinId}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="stockName" style="font-weight: bold" value="Stock Name :   " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="stockName" requiredMessage="Stock Name is required." id="stockName" value="#{createStockManagedBean.stockName}">
                                     <f:validateLength minimum="1" maximum="25" />
                                 </p:inputText>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column>
-                                <h:outputLabel for="description" style="font-weight: bold" value="Description:   *" />
+                                <h:outputLabel for="comments" style="font-weight: bold" value="Comments:   *" />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="description" requiredMessage="Description is required." id="description" value="#{createStorageBinManagedBean.storagebinDescription}">
-                                    <f:validateLength minimum="1" maximum="100" />
+                                <p:inputText required="true" label="comments" requiredMessage="Comments is required." id="description" value="#{createStockManagedBean.comments}">
+                                    <f:validateLength minimum="1" maximum="200" />
                                 </p:inputText>
                             </p:column>
                         </p:row>  
                         <p:row>
                             <p:column>
-                                <h:outputLabel for="storageBinType" style="font-weight: bold" value="Storage Bin Type:   *" />
+                                <h:outputLabel for="wuantity" style="font-weight: bold" value="Quantity:   *" />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="storageBinType" value="#{createStorageBinManagedBean.storageBinType}"  style="width:210px" required="true" requiredMessage="Please select a storage bin type">
-                                    <f:selectItem itemLabel="Select Storage Bin Type" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{createStorageBinManagedBean.listStorageBinType}" var="storageBinType" itemLabel="#{listStorageBinType}" />
-                                </p:selectOneMenu>
-                            </p:column>
-
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="maxQuantity" style="font-weight: bold" value="Maximum Quantity:   *" />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="maxQuantity" requiredMessage="Maximum Quantity is required." id="maxQuantity" value="#{createStorageBinManagedBean.maxQuantity}">
+                                <p:inputText required="true" label="quantity" requiredMessage="Quantity is required." id="quantity" value="#{createStockManagedBean.quantity}">
                                     <f:validateLength minimum="1" maximum="19" />
                                 </p:inputText>
                             </p:column>
@@ -123,10 +124,10 @@
 
                         <p:row>
                             <p:column>
-                                <h:outputLabel for="maxWeight" style="font-weight: bold" value="Maximum Weight (in KG) :   *" />
+                                <h:outputLabel for="productId" style="font-weight: bold" value="Product ID :   *" />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="maxWeight" requiredMessage="Maximum Weight is required." id="maxWeight" value="#{createStorageBinManagedBean.maxWeight}">
+                                <p:inputText required="true" label="productId" requiredMessage="Product ID is required." id="productId" value="#{createStockManagedBean.productId}">
                                     <f:validateLength minimum="1" maximum="19" />
                                 </p:inputText>
                             </p:column>
@@ -134,7 +135,7 @@
                         </p:row>
                     </p:panelGrid>
                     <p:messages id="messages" autoUpdate="true" closable="true" />
-                    <p:commandButton id="btn" value="Create New Storage Bin" update="panel" actionListener="#{createStorageBinManagedBean.createStorageBin}" ajax="true" />
+                    <p:commandButton id="btn" value="Create Stock" update="panel" actionListener="#{createStockManagedBean.addStock()}" ajax="true" />
                 </p:panel>
 
             </h:form>
