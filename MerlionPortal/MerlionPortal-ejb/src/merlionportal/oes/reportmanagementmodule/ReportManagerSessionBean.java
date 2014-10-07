@@ -53,7 +53,6 @@ public class ReportManagerSessionBean {
     }
 
     public Double getTotalValueOfMonth(List<ProductOrder> orderList, int month, int year) {
-        System.out.println("getTotalValueOfMonth "+month+" "+year);
         Double result = 0.0;
         Date date1;
         Calendar cal = Calendar.getInstance();
@@ -74,15 +73,46 @@ public class ReportManagerSessionBean {
 
     }
 
+    public Double getTotalValueofDay(List<ProductOrder> orderList, long day, int month, int year) {
+        Double result = 0.0;
+        Date date1;
+        Calendar cal = Calendar.getInstance();
+        if (orderList != null) {
+            for (Object o : orderList) {
+                ProductOrder myOrder = (ProductOrder) o;
+                date1 = myOrder.getCreatedDate();
+                cal.setTime(date1);
+                int orderDay = cal.get(Calendar.DAY_OF_MONTH);
+                System.out.println("this is gettotalCalueofDay " + orderDay);
+                int orderMonth = cal.get(Calendar.MONTH);
+                orderMonth++;
+                int orderYear = cal.get(Calendar.YEAR);
+                if (orderDay == day && orderMonth == month && orderYear == year) {
+                    result += myOrder.getPrice();
+                }
+            }
+        }
+        return result;
+
+    }
+
+    public long retrieveTotalDay(Date start, Date end) {
+        long diffDay = 0;
+        long days = 0;
+        diffDay = end.getTime() - start.getTime();
+        days = diffDay / (24 * 60 * 60 * 1000);
+        return days;
+    }
+
     public int retrieveTotalMonth(Date start, Date end) {
-        int diffMonth=0;
-        if(start!=null&&end!=null){
-        Calendar startCalendar = Calendar.getInstance();
-        startCalendar.setTime(start);
-        Calendar endCalendar = Calendar.getInstance();
-        endCalendar.setTime(end);
-        int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
-        diffMonth = diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH)+1;
+        int diffMonth = 0;
+        if (start != null && end != null) {
+            Calendar startCalendar = Calendar.getInstance();
+            startCalendar.setTime(start);
+            Calendar endCalendar = Calendar.getInstance();
+            endCalendar.setTime(end);
+            int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
+            diffMonth = diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH) + 1;
         }
         return diffMonth;
 
