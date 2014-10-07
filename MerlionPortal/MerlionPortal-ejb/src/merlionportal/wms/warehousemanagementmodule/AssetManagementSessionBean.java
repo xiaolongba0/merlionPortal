@@ -6,6 +6,7 @@
 package merlionportal.wms.warehousemanagementmodule;
 
 import entity.Company;
+import entity.Stock;
 import entity.StorageBin;
 import entity.StorageType;
 import entity.Warehouse;
@@ -29,27 +30,15 @@ public class AssetManagementSessionBean {
     @PersistenceContext
     EntityManager em;
     private Warehouse warehouse;
-    private Integer warehouseId;
+    private Stock stock;
 
+    // Storage Type is renamed to Warehouse Zone at the front end to minimize confusion
     private ArrayList<StorageType> storageTypeList;
-    private StorageType storageType;
+
     private ArrayList<StorageBin> storageBinList;
+    private ArrayList<Stock> stockList;
 
-    private StorageBin bin;
-
-    public List<String> listStorageBinTypes () {
-        List<String> allStorageBinTypes = new ArrayList<>();
-        System.out.println("In ASSET MANAGEMENT SESSION BEAN ================ LIST STORAGE BIN TYPES" );
-        
-        allStorageBinTypes.add("Stacking Bins");
-        allStorageBinTypes.add("Shelf Bins");
-        allStorageBinTypes.add("Containers");
-        allStorageBinTypes.add("Styrofoam Containers");
-        allStorageBinTypes.add("Others");
-        
-        return allStorageBinTypes;
-    }
-
+    // Methods related to warehouse
     public Integer addNewWarehouse(String warehouseName, String country, String city, String street,
             String description, Integer zipcode, Integer companyId) {
         System.out.println("[INSIDE EJB]================================Add New Warehouse");
@@ -139,6 +128,7 @@ public class AssetManagementSessionBean {
 
     }
 
+    // Methods related to storage type
     public Integer addStorageType(String storageTypeName, String storagetDescription,
             Integer companyId, Integer warehouseId) {
 
@@ -166,7 +156,6 @@ public class AssetManagementSessionBean {
         System.out.println("Storage Type Name :" + storageTypeName);
         System.out.println("Storage Description: " + storagetDescription);
 
-        ///check later 
         if (warehse.getWarehouseId() == null) {
             System.out.println("WAREHOUSE ID IS NULL");
             return -1;
@@ -232,6 +221,7 @@ public class AssetManagementSessionBean {
 
     }
 
+    // Methods related to storage Bin
     public boolean addStorageBin(String binName, String binType, String description, Integer maxQuantity, Double maxWeight,
             Integer storageTypeId) {
 
@@ -249,6 +239,9 @@ public class AssetManagementSessionBean {
             bin.setStorageTypestorageTypeId(storageType);
             storageType.getStorageBinList().add(bin);
 
+            stockList = new ArrayList<Stock>();
+            bin.setStockList(stockList);
+
             em.merge(storageType);
             em.persist(bin);
             em.flush();
@@ -262,7 +255,7 @@ public class AssetManagementSessionBean {
 
     public List<StorageBin> viewStorageBinForStorageType(Integer storageTypeId) {
 
-        System.out.println("In viewStorageBinForType, Warehouse ID ============================= : " + storageTypeId);
+        System.out.println("In viewStorageBinForType, StorageTypeID ============================= : " + storageTypeId);
         StorageType typeTemp = null;
 
         if (storageTypeId != null) {
@@ -273,12 +266,14 @@ public class AssetManagementSessionBean {
 
     }
 
+    // Check if there are stock in the bin, if there are no stock, then the bin can be deleted
     public Boolean deleteStorageBin(Integer storageBinId) {
 
         Query query = em.createNamedQuery("StorageBin.findByStorageBinId").setParameter("storageBinId", storageBinId);
         StorageBin bin = (StorageBin) query.getSingleResult();
-        System.out.println("DeleteStorageBin ================= : " + bin);
-        if (bin == null) {
+
+        System.out.println("DeleteStorageBin ================= : " + bin + "Check if Bin is Empty! " + bin.getStockList().isEmpty());
+        if (bin == null || !bin.getStockList().isEmpty()) {
             return false;
         }
         StorageType storageType = bin.getStorageTypestorageTypeId();
@@ -312,4 +307,93 @@ public class AssetManagementSessionBean {
         }
 
     }
+
+    public List<String> listStorageBinTypes() {
+        List<String> allStorageBinTypes = new ArrayList<>();
+        System.out.println("In ASSET MANAGEMENT SESSION BEAN ================ LIST STORAGE BIN TYPES");
+
+        allStorageBinTypes.add("Stacking Bins");
+        allStorageBinTypes.add("Shelf Bins");
+        allStorageBinTypes.add("Containers");
+        allStorageBinTypes.add("Styrofoam Containers");
+        allStorageBinTypes.add("Others");
+
+        return allStorageBinTypes;
+    }
+
+    // Methods related to stock
+    public boolean addStock(String stockName, String comments, Integer quantity, Integer productId,
+            Integer storageBinId) {
+
+        System.out.println("[INSIDE EJB]================================Add Stock");
+        System.out.println("[INSIDE EJB, Add Stock]===== StorageBinId: " + storageBinId);
+        Query query = em.createNamedQuery("StorageBin.findByStorageBinId").setParameter("storageBinId", storageBinId);
+
+        StorageBin bin = (StorageBin) query.getSingleResult();
+        System.out.println("StorageBin ================ " + bin);
+
+        if (bin != null) {
+            Stock stock = new Stock();
+
+            stock.setName(stockName);
+            stock.setComments(comments);
+            stock.setQuantity(quantity);
+            stock.setProductId(productId);
+            stock.setStorageBin(bin);
+
+            bin.getStockList().add(stock);
+
+            em.merge(bin);
+            em.persist(stock);
+            em.flush();
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    // TO BE EDITED AND INTEGRATED WTTH MRP
+    public List<String> listProductId(Integer companyId) {
+        List<String> listProductId = new ArrayList<>();
+        System.out.println("In ASSET MANAGEMENT SESSION BEAN ================ LIST PRODUCT IDs");
+
+        List<Warehouse> allMyWarehouses = new ArrayList<>();
+        allMyWarehouses = viewMyWarehouses(companyId);
+
+        return listProductId;
+    }
+
+    public List<Stock> viewStock(Integer productId) {
+
+        System.out.println("In viewStock, Product ID ============================= : " + productId);
+
+        List<Stock> allStocks = new ArrayList<>();
+        String stockId = null;
+        Query query = em.createNamedQuery("Stock.findByProductId").setParameter("productId", productId);
+
+        for (Object o : query.getResultList()) {
+            stock = (Stock) o;
+            allStocks.add(stock);
+            System.out.println("Stock: " + stock);
+        }
+        return allStocks;
+    }
+    
+    public Integer countTotalStock(Integer productId){
+        Stock tempStock = null;
+        Integer totalQuantity = 0;
+        
+        List<Stock> stocks = new ArrayList<>();
+        stocks = viewStock(productId);
+        
+        for (Object o : stocks) {
+            tempStock = (Stock) o;
+            totalQuantity = totalQuantity + tempStock.getQuantity();
+            System.out.println("[AMSB] =============== Stock: " + tempStock + "Quantity: " + tempStock.getQuantity());
+        }
+
+        return totalQuantity;
+    }
+
 }
