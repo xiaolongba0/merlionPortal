@@ -52,6 +52,26 @@ public class ReportManagerSessionBean {
         return orderList;
     }
 
+    public List<ProductOrder> findAllProduct(int companyId, Date start, Date end, int cId) {
+        Query q = em.createQuery("SELECT p FROM ProductOrder p WHERE p.companyId =:companyId AND p.creatorId =:customerId").setParameter("companyId", companyId);
+        q.setParameter("customerId", cId);
+        Boolean result;
+        Boolean validity = false;
+        Date orderDate;
+        List<ProductOrder> orderList = new ArrayList();
+
+        for (Object o : q.getResultList()) {
+            ProductOrder order = (ProductOrder) o;
+            validity = this.checkIfValidOrder(order);
+            orderDate = order.getCreatedDate();
+            result = this.compareDate(start, orderDate, end);
+            if (result && validity) {
+                orderList.add(order);
+            }
+        }
+        return orderList;
+    }
+
     public Double getTotalValueOfMonth(List<ProductOrder> orderList, int month, int year) {
         Double result = 0.0;
         Date date1;
