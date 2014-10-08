@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="Customer Report" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+
+            <h:form id="formMain">
+                <p:panelMenu>
+                    <p:submenu label="Home" styleClass="display:block">
+                        <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Product" styleClass="display:block">
+                        <p:menuitem value="Products" url="displayallproducts.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Quotation" styleClass="display:block">
+                        <p:menuitem value="View All Request" url="viewallrequests.xhtml" />
+                        <p:menuitem value="View Quotation" url="displayallquotations.xhtml" />
+                    </p:submenu>
+                    <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:submenu label="Orders" styleClass="display:block">
+                            <c:if test="#{dashboardBean.checkOESCanGeneratePO()|| dashboardBean.loginedUser.userType == 'superuser'}">
+                                <p:menuitem value="Create Order" url="pogeneration.xhtml" />
+                                <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
+                            </c:if>
+                            <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                                <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" /> 
+                                <p:menuitem value="Order Status" url="displayallso.xhtml" />
+                            </c:if>
+                            <c:if test="#{dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                                <p:menuitem value="Reject Order" url="returnorder.xhtml" />
+                                <p:menuitem value="Generate Invoice" url="orderswaitingforinvoice.xhtml" />
+
+                            </c:if>
+                        </p:submenu>
+                    </c:if>
+                    <p:submenu label="Payment" styleClass="display:block">
+                        <p:menuitem value="All invoice" url="allinvoice.xhtml" />
+                        <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.loginedUser.userType == 'superuser'}">
+                            <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />                           
+                        </c:if>
+
+                    </p:submenu>
+                    <c:if test="#{dashboardBean.checkOESCanGenerateSalesReport()||dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:submenu label="Reports" styleClass="display:block">
+                            <p:menuitem value="Sales Reports" url="reportdashboard.xhtml" />
+                        </p:submenu>
+                    </c:if>
+                </p:panelMenu>
+            </h:form>
+        </ui:define>
+        <ui:define name="right">
+            <h:form>
+
+                <p:fieldset legend="Please select period" style="margin-bottom:20px">
+                    <h:panelGrid columns="3" cellpadding="5">
+                        <p:outputLabel  value="Customer Id" /><p:spacer width="20" height="20" />
+                        <p:inputText value="#{reportManagedBean.customerId}"/>
+                        <p:outputLabel  value="First Period Starting Date" /><p:spacer width="20" height="20" />
+                        <p:calendar value="#{reportManagedBean.firstStartDate}" />
+                        <p:outputLabel  value="First Period End Date" /><p:spacer width="20" height="20" />
+                        <p:calendar  value="#{reportManagedBean.firstEndDate}" />
+                        <p:outputLabel  value="Second Period Starting Date" /><p:spacer width="20" height="20" />
+                        <p:calendar  value="#{reportManagedBean.secondStartDate}" />
+                        <p:outputLabel value="Second Period End Date" /><p:spacer width="20" height="20" />
+                        <p:calendar value="#{reportManagedBean.secondEndDate}" />
+                        
+                        <br></br><p:spacer width="20" height="20" /><br></br>
+                        <p:commandButton value="Get report" action="#{reportManagedBean.allCustomerOrders()}" ajax="true"></p:commandButton>
+                    </h:panelGrid>
+                </p:fieldset>
+                <br></br>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <p:commandButton value="Go Back" action="reportdashboard.xhtml?faces-redirect=ture" icon="ui-icon-circle-arrow-w" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+
+
