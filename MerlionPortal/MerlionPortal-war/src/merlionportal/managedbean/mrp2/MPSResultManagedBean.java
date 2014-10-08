@@ -24,7 +24,6 @@ import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.mrp.mpsmodule.MpsSessionBean;
 
-
 /**
  *
  * @author yao
@@ -65,13 +64,13 @@ public class MPSResultManagedBean {
     String week5S;
     int week5WorkingDays;
     int totalWorkingDays;
-    
+
     int wk1Demand;
     int wk2Demand;
     int wk3Demand;
     int wk4Demand;
     int wk5Demand;
-  
+
     int tempNum;
 
     @PostConstruct
@@ -95,6 +94,7 @@ public class MPSResultManagedBean {
 
         forecastData = (Vector<Integer>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("forecastR");
         forecastDate = (Vector<String>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("monthlyDateR");
+        buffer = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("buffer");
 
         requiredAmt1 = forecastData.get(1);
         requiredAmt2 = forecastData.get(2);
@@ -111,16 +111,20 @@ public class MPSResultManagedBean {
             ca.setTime(date1);
             int start = ca.get(Calendar.WEEK_OF_MONTH);
 
+            DateFormat df = new SimpleDateFormat("dd/MM");
+            Date startDate = ca.getTime();
+            System.out.println("Start Date: " + startDate);
+
             ca.add(Calendar.MONTH, 1);
             ca.add(Calendar.DATE, -1);
             int end = ca.get(Calendar.WEEK_OF_MONTH);
+            Date endDate = ca.getTime();
+            System.out.println("End Date: " + endDate);
             weeksPerMonth = end - start + 1;
 
             //reset time to the begining of the month
             ca.setTime(date1);
             ca.setMinimalDaysInFirstWeek(1);
-
-            DateFormat df = new SimpleDateFormat("dd/MM");
 
             //produce the date string of week 1
             int j = 0;
@@ -167,28 +171,44 @@ public class MPSResultManagedBean {
             System.out.println("XXXXXXXXXXXXXXXX week4WorkingDays:  " + week4WorkingDays);
 
             //produce the date string of week 5
-            week5WorkingDays = 5;
             ca.add(Calendar.DATE, +1);
             week5S = df.format(ca.getTime());
-            ca.add(Calendar.DATE, +6);
+            int a = 0;
+            int b = 0;
+            while (ca.get(Calendar.WEEK_OF_MONTH) == 5) {
+                if (ca.getTime().before(endDate) || ca.getTime().equals(endDate)) {
+                    a++;
+                    ca.add(Calendar.DATE, +1);
+                }
+
+                if (ca.getTime().after(endDate)) {
+                    b++;
+                    ca.add(Calendar.DATE, +1);
+                }
+
+            }
             week5S += "-" + df.format(ca.getTime());
+
+            week5WorkingDays = a;
+
+            ca.add(Calendar.DATE, +6);
+
             System.out.println("XXXXXXXXXXXXXXXX week 5 string:  " + week5S);
             System.out.println("XXXXXXXXXXXXXXXX week5WorkingDays:  " + week5WorkingDays);
-            
+
+            //check if a date belongs to a month
             totalWorkingDays = week1WorkingDays + week2WorkingDays + week3WorkingDays + week4WorkingDays + week5WorkingDays;
-            
-            buffer = 0;
+
             currentInv = 100;
-            requiredDemand = requiredAmt1 - currentInv;
-            
-            wk1Demand = (week1WorkingDays * requiredDemand) /totalWorkingDays ;
-            wk2Demand = (week2WorkingDays * requiredDemand) /totalWorkingDays ;
-            wk3Demand = (week3WorkingDays * requiredDemand) /totalWorkingDays ;
-            wk4Demand = (week4WorkingDays * requiredDemand) /totalWorkingDays ;
-            wk5Demand = (week5WorkingDays * requiredDemand) /totalWorkingDays ;
-            
-            
-            
+            requiredDemand = requiredAmt1 - currentInv + buffer;
+
+            System.out.println("SEE required demand: " + requiredDemand);
+
+            wk1Demand = (week1WorkingDays * requiredDemand) / totalWorkingDays;
+            wk2Demand = (week2WorkingDays * requiredDemand) / totalWorkingDays;
+            wk3Demand = (week3WorkingDays * requiredDemand) / totalWorkingDays;
+            wk4Demand = (week4WorkingDays * requiredDemand) / totalWorkingDays;
+            wk5Demand = (week5WorkingDays * requiredDemand) / totalWorkingDays;
 
         } catch (ParseException ex) {
             Logger.getLogger(MPSResultManagedBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -208,11 +228,12 @@ public class MPSResultManagedBean {
     public void computeDate() {
 
     }
-    
-    public void onBufferChange(){
-         if (buffer != 0) {requiredDemand = requiredAmt1 - currentInv + buffer;
-        System.out.println("RRRRRRRRRRRRRRR");
-         }
+
+    public void onBufferChange() {
+        if (buffer != 0) {
+            requiredDemand = requiredAmt1 - currentInv + buffer;
+            System.out.println("RRRRRRRRRRRRRRR");
+        }
     }
 
     public int getThisMonthDemand() {
@@ -226,10 +247,6 @@ public class MPSResultManagedBean {
     public int getTotalWorkingDays() {
         return totalWorkingDays;
     }
-
- 
-    
-    
 
     public String getWeek1S() {
         return week1S;
@@ -286,8 +303,6 @@ public class MPSResultManagedBean {
     public int getCurrentInv() {
         return currentInv;
     }
-    
-    
 
     public void setRequiredDemand(int requiredDemand) {
         this.requiredDemand = requiredDemand;
@@ -316,9 +331,9 @@ public class MPSResultManagedBean {
     public int getWk5Demand() {
         return wk5Demand;
     }
-    
-    public String backToHistory() {
-        return ("forecastresult");
+
+    public String backToMPSBuffer() {
+        return ("mps");
     }
 
 }
