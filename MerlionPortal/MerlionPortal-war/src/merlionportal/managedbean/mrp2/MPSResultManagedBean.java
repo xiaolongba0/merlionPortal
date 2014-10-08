@@ -210,6 +210,12 @@ public class MPSResultManagedBean {
             wk4Demand = (week4WorkingDays * requiredDemand) / totalWorkingDays;
             wk5Demand = (week5WorkingDays * requiredDemand) / totalWorkingDays;
 
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("wk1Demand", wk1Demand);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("wk2Demand", wk2Demand);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("wk3Demand", wk3Demand);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("wk4Demand", wk4Demand);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("wk5Demand", wk5Demand);
+
         } catch (ParseException ex) {
             Logger.getLogger(MPSResultManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -334,6 +340,10 @@ public class MPSResultManagedBean {
 
     public String backToMPSBuffer() {
         return ("mps");
+    }
+
+    public String proceedToMaterialReq() {
+        return ("materialreq");
     }
 
 }
