@@ -1,5 +1,5 @@
 .bg-img{
-    background: url('../img/bgimg.jpg') no-repeat center center fixed;
+    background: url('../img/bgimgcargocrop_1.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -9,6 +9,10 @@
 
 .login-box{
     float:right;
+    background-color: rgba(245,245,245,0.3);
+    border-radius: 10px;
+    padding-bottom: 20px;
+    margin-top:45px;
 }
 
 .bg-img > .wrapper > .login-nav{
@@ -16,19 +20,19 @@
 }
 
 .login-box > h2{
-    color:#ffffee;
+    color:#555;
 }
 
 .some-quote-box{
     position:absolute;
-    bottom:100px;
-    left:10%;
+    bottom:60px;
+    left:6%;
     position:fixed;
 }
 .some-quote-box h2{
     font-family:Century Gothic;
     font-size:15pt;
-    color:#666;
+    color:#000;
     background:rgba(255,255,255,0.4);
     padding:3px;
 }
