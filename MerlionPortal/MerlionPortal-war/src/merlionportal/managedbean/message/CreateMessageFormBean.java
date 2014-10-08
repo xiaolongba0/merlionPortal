@@ -1,21 +1,16 @@
-package merlionportal.managedbean;
+package merlionportal.managedbean.message;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.bean.RequestScoped;
 import javax.inject.Named;
-import merlionportal.ci.messagingmodule.MessageSessionBean;
 
-@Named(value="messageFormBean")
+@Named(value = "messageFormBean")
 @RequestScoped
 public class CreateMessageFormBean {
 
     private String title;
     private String recipient;
     private String message;
-    
-    @EJB
-    MessageSessionBean messageSessionBean;
 
     public CreateMessageFormBean() {
     }
@@ -25,7 +20,7 @@ public class CreateMessageFormBean {
     }
 
     public void sendMessage() {
-        messageSessionBean.createMessage(title,recipient,message);
+
     }
 
     //<editor-fold defaultstate="collapsed" desc="Getters & Setters">
