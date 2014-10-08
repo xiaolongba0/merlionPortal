@@ -45,6 +45,7 @@ public class CreateRFQManagedBean {
     private String origin;
     private String destination;
     private Date today;
+    private Integer quantityPerMonth;
 
     private ServiceCatalog selectedService;
 
@@ -79,7 +80,7 @@ public class CreateRFQManagedBean {
     }
 
     public void createRequestForQuotation() {
-        int result = quotationManagementSB.createRequestForQuotation(selectedService.getServiceCatalogId(), selectedService.getServiceType(), startDate, endDate, companyId, selectedService.getCompanyId(), origin, destination);
+        int result = quotationManagementSB.createRequestForQuotation(selectedService.getServiceCatalogId(), selectedService.getServiceType(), startDate, endDate, companyId, selectedService.getCompanyId(), origin, destination, quantityPerMonth);
         if (result > 0) {
             this.clearAllField();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Request for quotation is sent"));
@@ -94,6 +95,7 @@ public class CreateRFQManagedBean {
         endDate = null;
         origin = null;
         destination = null;
+        quantityPerMonth = null;
     }
 
     public Integer getUserId() {
@@ -174,6 +176,14 @@ public class CreateRFQManagedBean {
 
     public void setToday(Date today) {
         this.today = today;
+    }
+
+    public Integer getQuantityPerMonth() {
+        return quantityPerMonth;
+    }
+
+    public void setQuantityPerMonth(Integer quantityPerMonth) {
+        this.quantityPerMonth = quantityPerMonth;
     }
 
 }

@@ -42,7 +42,7 @@ public class QuotationManagementSessionBean {
 //    8 fulfillment check success
 //    
     public int createRequestForQuotation(Integer serviceCatalogId, String serviceType, Date startDate, Date endDate, Integer senderCompanyId, Integer receiverCompanyId,
-            String origin, String destination) {
+            String origin, String destination, Integer quantityPerMonth) {
         ServiceQuotation serviceQuotation = new ServiceQuotation();
         serviceQuotation.setServiceType(serviceType);
         serviceQuotation.setCreatedDate(new Date());
@@ -51,6 +51,7 @@ public class QuotationManagementSessionBean {
         serviceQuotation.setSenderCompanyId(senderCompanyId);
         serviceQuotation.setReceiverCompanyId(receiverCompanyId);
         serviceQuotation.setStatus(1);
+        serviceQuotation.setQuantityPerMonth(quantityPerMonth);
 
         if (serviceType.equals("Transportation") && !origin.isEmpty() && !destination.isEmpty()) {
             serviceQuotation.setDestination(destination);

@@ -36,6 +36,11 @@
                         <p:menuitem value="View All Requests" url="viewallrequests.xhtml" />
                         <p:menuitem value="View All Quotations" url="viewallquotations.xhtml" />
                     </p:submenu>
+                    <p:submenu label="Contract" styleClass="display:block">
+                        <p:menuitem value="Create Service Contract" url="createservicecontract.xhtml" />
+                        <p:menuitem value="View All Contracts" url="viewallcontracts.xhtml" />
+                        <p:menuitem value="Renew Contracts" url="renewservicecontract.xhtml" />
+                    </p:submenu>
                 </p:panelMenu>
             </h:form>
         </ui:define>
@@ -181,6 +186,8 @@
                                     <h:outputText value="#{viewAllRequestsManagedBean.requestToView.origin}" />
                                     <h:outputText value="Destination"/>
                                     <h:outputText value="#{viewAllRequestsManagedBean.requestToView.destination}" />
+                                    <h:outputText value="Expected Quantity Per Month (TEU)"/>
+                                    <h:outputText value="#{viewAllRequestsManagedBean.requestToView.quantityPerMonth}" />
                                 </p:panelGrid>
                             </div>
                             <div class="modal-footer">

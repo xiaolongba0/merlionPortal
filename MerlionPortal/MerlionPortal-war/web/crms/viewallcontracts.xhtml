@@ -3,9 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
     <c:set var="import" value="templateuser.xhtml"/>
     <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
@@ -13,7 +14,7 @@
     </c:if>
 
     <ui:composition template="${root}/templates/${import}">        
-        <ui:param name="pageName" value="View All Quotations" />
+        <ui:param name="pageName" value="View All Contracts" />
 
         <ui:define name="more-imports">
             <ui:insert>
@@ -45,7 +46,7 @@
         </ui:define>
 
         <ui:define name="right">
-            <h:form id="form">
+           <h:form id="form">
                 <p:ajaxStatus style="width:16px;height:16px;">
                     <f:facet name="start">
                         <h:graphicImage value="/img/load.gif" />
@@ -54,79 +55,77 @@
                         <h:outputText value="" />
                     </f:facet>
                 </p:ajaxStatus>
-                <p:panel  header="Sent Quotations"  style="margin-bottom:20px">
-                    <p:dataTable var="quotation" value="#{viewAllQuotationsManagedBean.sentQuotations}" widgetVar="quotationsTable" rowKey="#{quotation.quotationId}"
-                                 emptyMessage="No quotations found with given criteria" selectionMode="single" selection="#{viewAllQuotationsManagedBean.selectedSentQuotation}"
-                                 filteredValue="#{viewAllQuotationsManagedBean.filteredQuotations}" paginator="true"
+                <p:panel  header="Sent Contracts"  style="margin-bottom:20px">
+                    <p:dataTable var="contract" value="#{viewAllContractsManagedBean.sentContracts}" widgetVar="contractsTable" rowKey="#{contract.contractId}"
+                                 emptyMessage="No contracts found with given criteria" selectionMode="single" selection="#{viewAllContractsManagedBean.selectedSentContract}"
+                                 filteredValue="#{viewAllContractsManagedBean.filteredContracts}" paginator="true"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="20,50,100">
 
                         <f:facet name="header">
                             <p:outputPanel>
                                 <h:outputText value="Search all fields:" />
-                                <p:inputText id="globalFilter" onkeyup="PF('quotationsTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                                <p:inputText id="globalFilter" onkeyup="PF('contractsTable').filter()" style="width:150px" placeholder="Enter keyword"/>
                             </p:outputPanel>
                         </f:facet>
 
-                        <p:column filterBy="#{quotation.quotationId}" headerText="Quotation ID" filterMatchMode="contains">
-                            <h:outputText value="#{quotation.quotationId}" />
+                        <p:column filterBy="#{contract.contractId}" headerText="Contract ID" filterMatchMode="contains">
+                            <h:outputText value="#{contract.contractId}" />
                         </p:column>
-                        <p:column headerText="Service Type" filterBy="#{quotation.serviceType}" filterMatchMode="contains">
-                            <h:outputText value="#{quotation.serviceType}" />
+                        <p:column headerText="Party B ID" filterBy="#{contract.partyB}" filterMatchMode="contains">
+                            <h:outputText value="#{contract.partyB}" />
                         </p:column>
-                        <p:column filterBy="#{quotation.createdDate}" headerText="Created Date" filterMatchMode="contains">
-                            <h:outputText value="#{quotation.createdDate}" />
+                        <p:column filterBy="#{contract.createdDate}" headerText="Created Date" filterMatchMode="contains">
+                            <h:outputText value="#{contract.createdDate}" />
                         </p:column>
 
-                        <p:column filterBy="#{viewAllQuotationsManagedBean.getStatusNumber(quotation.status)}" headerText="Status" filterMatchMode="in">
+                        <p:column filterBy="#{viewAllContractsManagedBean.getStatusNumber(contract.status)}" headerText="Status" filterMatchMode="in">
                             <f:facet name="filter">
-                                <p:selectCheckboxMenu label="Status" onchange="PF('quotationsTable').filter()" panelStyle="width:250px" scrollHeight="150">
-                                    <f:selectItems value="#{viewAllQuotationsManagedBean.status}" />
+                                <p:selectCheckboxMenu label="Status" onchange="PF('contractsTable').filter()" panelStyle="width:250px" scrollHeight="150">
+                                    <f:selectItems value="#{viewAllContractsManagedBean.status}" />
                                 </p:selectCheckboxMenu>
                             </f:facet>
-                            <h:outputText value="#{viewAllQuotationsManagedBean.getStatusNumber(quotation.status)}" />
+                            <h:outputText value="#{viewAllContractsManagedBean.getStatusNumber(contract.status)}" />
                         </p:column>
                     </p:dataTable>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                    <p:commandButton value="View Quotation" action="#{viewAllQuotationsManagedBean.viewSentQuotation()}" />
+                    <p:commandButton value="View Contract" action="#{viewAllContractsManagedBean.viewSentContract()}" />
                 </p:panel>
-                <p:panel  header="Received Quotations"  style="margin-bottom:20px">
-                    <p:dataTable var="receivedQuotation" value="#{viewAllQuotationsManagedBean.receivedQuotations}" widgetVar="quotationsTable2" rowKey="#{receivedQuotation.quotationId}"
-                                 emptyMessage="No quotations found with given criteria" selectionMode="single" selection="#{viewAllQuotationsManagedBean.selectedReceivedQuotation}" 
-                                 filteredValue="#{viewAllQuotationsManagedBean.filteredQuotations}" paginator="true"
+                <p:panel  header="Received Contracts"  style="margin-bottom:20px">
+                    <p:dataTable var="receivedContract" value="#{viewAllContractsManagedBean.receivedContracts}" widgetVar="contractsTable2" rowKey="#{receivedContract.contractId}"
+                                 emptyMessage="No contracts found with given criteria" selectionMode="single" selection="#{viewAllContractsManagedBean.selectedReceivedContract}" 
+                                 filteredValue="#{viewAllContractsManagedBean.filteredContracts}" paginator="true"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="20,50,100">
 
                         <f:facet name="header">
                             <p:outputPanel>
                                 <h:outputText value="Search all fields:" />
-                                <p:inputText id="globalFilter" onkeyup="PF('quotationsTable2').filter()" style="width:150px" placeholder="Enter keyword"/>
+                                <p:inputText id="globalFilter" onkeyup="PF('contractsTable2').filter()" style="width:150px" placeholder="Enter keyword"/>
                             </p:outputPanel>
                         </f:facet>
 
-                        <p:column filterBy="#{receivedQuotation.quotationId}" headerText="Quotation ID" filterMatchMode="contains">
+                        <p:column filterBy="#{receivedContract.contractId}" headerText="Contract ID" filterMatchMode="contains">
                             <h:outputText value="#{receivedQuotation.quotationId}" />
                         </p:column>
-                        <p:column filterBy="#{receivedQuotation.receiverCompanyId}" headerText="Sender Company ID" filterMatchMode="contains">
-                            <h:outputText value="#{receivedQuotation.receiverCompanyId}" />
+                        <p:column filterBy="#{receivedContract.partyA}" headerText="Party A ID" filterMatchMode="contains">
+                            <h:outputText value="#{receivedContract.partyA}" />
                         </p:column>
-                        <p:column headerText="Service Type" filterBy="#{receivedQuotation.serviceType}" filterMatchMode="contains">
-                            <h:outputText value="#{receivedQuotation.serviceType}" />
+                        <p:column filterBy="#{receivedContract.createdDate}" headerText="Created Date" filterMatchMode="contains">
+                            <h:outputText value="#{receivedContract.createdDate}" />
                         </p:column>
-                        <p:column filterBy="#{receivedQuotation.createdDate}" headerText="Created Date" filterMatchMode="contains">
-                            <h:outputText value="#{receivedQuotation.createdDate}" />
-                        </p:column>
-                        <p:column filterBy="#{viewAllQuotationsManagedBean.getStatusNumber(receivedQuotation.status)}" headerText="Status" filterMatchMode="in">
+                        <p:column filterBy="#{viewAllContractsManagedBean.getStatusNumber(receivedContract.status)}" headerText="Status" filterMatchMode="in">
                             <f:facet name="filter">
-                                <p:selectCheckboxMenu label="Status" onchange="PF('quotationsTable2').filter()" panelStyle="width:250px" scrollHeight="150">
-                                    <f:selectItems value="#{viewAllQuotationsManagedBean.status}" />
+                                <p:selectCheckboxMenu label="Status" onchange="PF('contractsTable2').filter()" panelStyle="width:250px" scrollHeight="150">
+                                    <f:selectItems value="#{viewAllContractsManagedBean.status}" />
                                 </p:selectCheckboxMenu>
                             </f:facet>
-                            <h:outputText value="#{viewAllQuotationsManagedBean.getStatusNumber(receivedQuotation.status)}" />
+                            <h:outputText value="#{viewAllContractsManagedBean.getStatusNumber(receivedContract.status)}" />
                         </p:column>
                     </p:dataTable>
                     <p:messages id="msg" showDetail="true" autoUpdate="true" closable="true" />
-                    <p:commandButton value="View Quotation" action="#{viewAllQuotationsManagedBean.viewReceivedQuotation()}" />
+                    <p:commandButton value="View Quotation" action="#{viewAllContractsManagedBean.viewReceivedContract()}" />
                 </p:panel>
             </h:form>
+                
         </ui:define>
     </ui:composition>
 </html>
