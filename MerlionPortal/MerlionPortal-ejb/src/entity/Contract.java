@@ -50,10 +50,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Contract.findByOrigin", query = "SELECT c FROM Contract c WHERE c.origin = :origin"),
     @NamedQuery(name = "Contract.findByDestination", query = "SELECT c FROM Contract c WHERE c.destination = :destination"),
     @NamedQuery(name = "Contract.findByWarehouseId", query = "SELECT c FROM Contract c WHERE c.warehouseId = :warehouseId"),
+    @NamedQuery(name = "Contract.findByStorageZoneId", query = "SELECT c FROM Contract c WHERE c.storageZoneId = :storageZoneId"),
     @NamedQuery(name = "Contract.findByContactPersonId", query = "SELECT c FROM Contract c WHERE c.contactPersonId = :contactPersonId"),
     @NamedQuery(name = "Contract.findByContactPersonName", query = "SELECT c FROM Contract c WHERE c.contactPersonName = :contactPersonName"),
     @NamedQuery(name = "Contract.findByContactPersonNumber", query = "SELECT c FROM Contract c WHERE c.contactPersonNumber = :contactPersonNumber"),
-    @NamedQuery(name = "Contract.findByReasonModification", query = "SELECT c FROM Contract c WHERE c.reasonModification = :reasonModification")})
+    @NamedQuery(name = "Contract.findByReasonModification", query = "SELECT c FROM Contract c WHERE c.reasonModification = :reasonModification"),
+    @NamedQuery(name = "Contract.findByStorageBinId", query = "SELECT c FROM Contract c WHERE c.storageBinId = :storageBinId")})
 public class Contract implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -93,6 +95,8 @@ public class Contract implements Serializable {
     private String destination;
     @Column(name = "warehouseId")
     private Integer warehouseId;
+    @Column(name = "storageZoneId")
+    private Integer storageZoneId;
     @Column(name = "contactPersonId")
     private Integer contactPersonId;
     @Size(max = 45)
@@ -104,6 +108,8 @@ public class Contract implements Serializable {
     @Size(max = 1000)
     @Column(name = "reasonModification")
     private String reasonModification;
+    @Column(name = "storageBinId")
+    private Integer storageBinId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "contract")
     private List<ServicePO> servicePOList;
     @JoinColumn(name = "serviceQuotation", referencedColumnName = "quotationId")
@@ -221,6 +227,14 @@ public class Contract implements Serializable {
         this.warehouseId = warehouseId;
     }
 
+    public Integer getStorageZoneId() {
+        return storageZoneId;
+    }
+
+    public void setStorageZoneId(Integer storageZoneId) {
+        this.storageZoneId = storageZoneId;
+    }
+
     public Integer getContactPersonId() {
         return contactPersonId;
     }
@@ -251,6 +265,14 @@ public class Contract implements Serializable {
 
     public void setReasonModification(String reasonModification) {
         this.reasonModification = reasonModification;
+    }
+
+    public Integer getStorageBinId() {
+        return storageBinId;
+    }
+
+    public void setStorageBinId(Integer storageBinId) {
+        this.storageBinId = storageBinId;
     }
 
     @XmlTransient

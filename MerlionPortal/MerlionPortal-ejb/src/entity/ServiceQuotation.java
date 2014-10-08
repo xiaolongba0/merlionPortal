@@ -48,7 +48,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ServiceQuotation.findByPrice", query = "SELECT s FROM ServiceQuotation s WHERE s.price = :price"),
     @NamedQuery(name = "ServiceQuotation.findByDestination", query = "SELECT s FROM ServiceQuotation s WHERE s.destination = :destination"),
     @NamedQuery(name = "ServiceQuotation.findByOrigin", query = "SELECT s FROM ServiceQuotation s WHERE s.origin = :origin"),
-    @NamedQuery(name = "ServiceQuotation.findByDiscountRate", query = "SELECT s FROM ServiceQuotation s WHERE s.discountRate = :discountRate")})
+    @NamedQuery(name = "ServiceQuotation.findByDiscountRate", query = "SELECT s FROM ServiceQuotation s WHERE s.discountRate = :discountRate"),
+    @NamedQuery(name = "ServiceQuotation.findByQuantityPerMonth", query = "SELECT s FROM ServiceQuotation s WHERE s.quantityPerMonth = :quantityPerMonth"),
+    @NamedQuery(name = "ServiceQuotation.findByStorageBinId", query = "SELECT s FROM ServiceQuotation s WHERE s.storageBinId = :storageBinId"),
+    @NamedQuery(name = "ServiceQuotation.findByStorageZoneId", query = "SELECT s FROM ServiceQuotation s WHERE s.storageZoneId = :storageZoneId"),
+    @NamedQuery(name = "ServiceQuotation.findByWarehoueId", query = "SELECT s FROM ServiceQuotation s WHERE s.warehoueId = :warehoueId")})
 public class ServiceQuotation implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -85,6 +89,14 @@ public class ServiceQuotation implements Serializable {
     private String origin;
     @Column(name = "discountRate")
     private Integer discountRate;
+    @Column(name = "quantityPerMonth")
+    private Integer quantityPerMonth;
+    @Column(name = "storageBinId")
+    private Integer storageBinId;
+    @Column(name = "storageZoneId")
+    private Integer storageZoneId;
+    @Column(name = "warehoueId")
+    private Integer warehoueId;
     @JoinColumn(name = "serviceCatalog", referencedColumnName = "serviceCatalogId")
     @ManyToOne(optional = false)
     private ServiceCatalog serviceCatalog;
@@ -192,6 +204,38 @@ public class ServiceQuotation implements Serializable {
 
     public void setDiscountRate(Integer discountRate) {
         this.discountRate = discountRate;
+    }
+
+    public Integer getQuantityPerMonth() {
+        return quantityPerMonth;
+    }
+
+    public void setQuantityPerMonth(Integer quantityPerMonth) {
+        this.quantityPerMonth = quantityPerMonth;
+    }
+
+    public Integer getStorageBinId() {
+        return storageBinId;
+    }
+
+    public void setStorageBinId(Integer storageBinId) {
+        this.storageBinId = storageBinId;
+    }
+
+    public Integer getStorageZoneId() {
+        return storageZoneId;
+    }
+
+    public void setStorageZoneId(Integer storageZoneId) {
+        this.storageZoneId = storageZoneId;
+    }
+
+    public Integer getWarehoueId() {
+        return warehoueId;
+    }
+
+    public void setWarehoueId(Integer warehoueId) {
+        this.warehoueId = warehoueId;
     }
 
     public ServiceCatalog getServiceCatalog() {
