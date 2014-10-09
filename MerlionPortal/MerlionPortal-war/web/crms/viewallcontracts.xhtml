@@ -104,7 +104,7 @@
                         </f:facet>
 
                         <p:column filterBy="#{receivedContract.contractId}" headerText="Contract ID" filterMatchMode="contains">
-                            <h:outputText value="#{receivedQuotation.quotationId}" />
+                            <h:outputText value="#{receivedContract.contractId}" />
                         </p:column>
                         <p:column filterBy="#{receivedContract.partyA}" headerText="Party A ID" filterMatchMode="contains">
                             <h:outputText value="#{receivedContract.partyA}" />
@@ -122,7 +122,7 @@
                         </p:column>
                     </p:dataTable>
                     <p:messages id="msg" showDetail="true" autoUpdate="true" closable="true" />
-                    <p:commandButton value="View Quotation" action="#{viewAllContractsManagedBean.viewReceivedContract()}" />
+                    <p:commandButton value="View Contract" action="#{viewAllContractsManagedBean.viewReceivedContract()}" />
                 </p:panel>
             </h:form>
                 

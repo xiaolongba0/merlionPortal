@@ -1,12 +1,124 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
-</html>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="View Contract Detail" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <h:form id="formMain">
+                <p:panelMenu>
+                    <p:submenu label="CRMS HOME" styleClass="display:block">
+                        <p:menuitem value="CRMS Home" url="crmsindex.xhtml"/>     
+                        <p:menuitem value="Service Yellow Pages" url="serviceyellowpages.xhtml"/>
+                    </p:submenu>
+                    <p:submenu label="Service Catalog Management" styleClass="display:block">
+                        <p:menuitem value="Create New Service" url="createservice.xhtml" />
+                        <p:menuitem value="View All Services" url="viewcompanyservices.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Quotation" styleClass="display:block">
+                        <p:menuitem value="View All Requests" url="viewallrequests.xhtml" />
+                        <p:menuitem value="View All Quotations" url="viewallquotations.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Contract" styleClass="display:block">
+                        <p:menuitem value="Create Service Contract" url="createservicecontract.xhtml" />
+                        <p:menuitem value="View All Contracts" url="viewallcontracts.xhtml" />
+                        <p:menuitem value="Renew Contracts" url="renewservicecontract.xhtml" />
+                    </p:submenu>
+                </p:panelMenu>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">
+            <h:form id="form">
+                <p:fieldset legend="Contact Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <h:outputText value="Party A Company ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewContractManagedBean.selectedContract.partyA}" />
+                        <h:outputText value="Party A Company Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewContractManagedBean.partyACompanyName}" />
+                    </h:panelGrid>
+                    <p:separator />
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <h:outputText value="Party B Company ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewContractManagedBean.selectedContract.partyB}" />
+                        <h:outputText value="Party B Company Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewContractManagedBean.partyBCompanyName}" />
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:fieldset legend="Contract Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <h:outputText value="Service ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewContractManagedBean.selectedContract.serviceQuotation.serviceCatalog.serviceCatalogId}" />
+                        <h:outputText value="Service Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewContractManagedBean.selectedContract.serviceQuotation.serviceCatalog.serviceName}" />
+                        <h:outputText value="Service Description" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewContractManagedBean.selectedContract.serviceQuotation.serviceCatalog.serviceDescription}" />
+                        <h:outputText value="Service Type" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewContractManagedBean.selectedContract.serviceType}" />
+
+                        <h:outputText value="Start Date:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewContractManagedBean.selectedContract.startDate}" />
+                        <h:outputText value="End Date:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewContractManagedBean.selectedContract.endDate}" />
+
+                        <h:outputText value="Expected Quantity Per Month (TEU):" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewContractManagedBean.selectedContract.serviceQuotation.quantityPerMonth}" />
+
+                        <c:if test="#{viewContractManagedBean.selectedContract.serviceType eq 'Transportation'}" >
+                            <h:outputText value="Origin:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewContractManagedBean.selectedContract.origin}" />
+                            <h:outputText value="Destination:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewContractManagedBean.selectedContract.destination}" />
+                        </c:if>
+                        <c:if test="#{viewContractManagedBean.selectedContract.serviceType eq 'Warehouse'}" >
+                            <h:outputText value="Warehouse ID:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewContractManagedBean.selectedContract.warehouseId}" />
+                            <h:outputText value="Storage Zone ID:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewContractManagedBean.selectedContract.storageZoneId}" />
+                            <h:outputText value="Storage Bin ID:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewContractManagedBean.selectedContract.storageBinId}" />
+                        </c:if>
+                        <h:outputText value="Final Contract Price Per TEU:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewContractManagedBean.selectedContract.price}" />
+                        <h:outputText value="Terms &amp; Conditions:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewContractManagedBean.selectedContract.conditionText}" />
+
+
+                        <h:outputText value="Status:" style="color: red" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewContractManagedBean.status}"  style="color: red" />
+
+                    </h:panelGrid>
+                    <p:separator />
+
+                </p:fieldset>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <c:if test="#{((viewContractManagedBean.selectedContract.status eq 1) or (viewContractManagedBean.selectedContract.status eq 3 )) and viewContractManagedBean.selectedContract.partyB eq viewContractManagedBean.companyId}" >
+                    <p:commandButton value="Request To Modify" action="#{viewContractManagedBean.requestToModifyContract()}" update="form" ajax="true" />
+                    <p:commandButton value="Accept Contract"  action="#{viewContractManagedBean.acceptContract()}" update="form" ajax="true" />
+                </c:if>
+                <c:if test="#{viewContractManagedBean.selectedContract.status eq 4}">
+                    <p:commandButton value="View PDF Contract"  action="#{viewContractManagedBean.previewPDFContract}" ajax="false" />
+                    <p:commandButton value="Download PDF Contract"  action="#{viewContractManagedBean.downloadPDFContract}" ajax="false"/>
+                </c:if>
+                <p:commandButton value="Go Back" icon="ui-icon-circle-arrow-w" action="viewallcontracts.xhtml?faces-redirect-true"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

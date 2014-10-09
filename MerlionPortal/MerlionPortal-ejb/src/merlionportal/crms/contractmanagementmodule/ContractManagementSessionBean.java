@@ -153,6 +153,20 @@ public class ContractManagementSessionBean {
             return -1;
         }
     }
+    public int acceptContract(Integer contractId){
+        Contract contract = em.find(Contract.class, contractId);
+        if (contract != null) {
+            contract.setStatus(4);
+            contract.setCreatedDate(new Date());
+
+            em.merge(contract);
+            em.flush();
+
+            return 1;
+        } else {
+            return -1;
+        }
+    }
 
     public int renewContract(Integer contractId, Date startDate, Date endDate, Integer creatorId) {
         Contract contract = em.find(Contract.class, contractId);
