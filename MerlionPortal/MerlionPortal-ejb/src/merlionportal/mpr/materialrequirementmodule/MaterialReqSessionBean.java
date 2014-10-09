@@ -8,6 +8,7 @@ package merlionportal.mpr.materialrequirementmodule;
 
 import entity.Component;
 import entity.Product;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -21,8 +22,10 @@ import javax.persistence.PersistenceContext;
 @Stateless
 @LocalBean
 public class MaterialReqSessionBean {
- @PersistenceContext
+ 
     private EntityManager entityManager;
+    private ArrayList<Component> componentList; //componentList refers to BOM of a product
+    private Product product;
  
        // Notes: take in companyId automatically after Login, later change to getMyProducts(Integer companyId)
     public List<Component> getComponentsForAProduct(Integer productId) {
