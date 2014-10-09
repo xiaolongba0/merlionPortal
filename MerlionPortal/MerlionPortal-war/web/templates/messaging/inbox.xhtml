@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition>
+            <script type="text/javascript">
+                function openEditor() {
+                    $("#editorDialog").modal('show');
+                }
+                function closeEditor() {
+                    $("#editorDialog").modal('hide');
+                }
+                $(document).ready(function () {
+                    $("#editorDialog").on('hide.bs.modal', function (e) {
+
+                    });
+                });
+            </script>
+            <div class="container">
+                <h2>Inbox</h2>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-primary" onclick="openEditor();">Write Message <i class="glyphicon glyphicon-pencil"></i></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        No messages found. Start sending a <span class="message-link text-primary" onclick="openEditor();">message</span> today!
+                    </div>
+                </div>
+            </div>
+
+            <div id="editorDialog" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content wide-modal">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h3 class="modal-title">Create Message</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row morespacing">
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            Receipent (Email)
+                                        </div>
+                                        <input class="form-control" type="text" id="emailAddress" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row morespacing">
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            Subject
+                                        </div>
+                                        <input class="form-control" type="text" id="subject" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row morespacing">
+                                <div class="col-md-12">
+                                    <textarea class="form-control message-content-area" type="text" id="content"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary">Send Message</button>
+                            <button type="button" class="btn btn-warning" onclick="closeEditor();">Close</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -6,6 +6,15 @@
     margin-bottom:5px;
 }
 
+.message-link{
+    text-decoration:underline;
+    cursor:pointer;
+}
+
+.message-link:hover{
+    text-decoration:none;
+}
+
 .pointer{
     cursor:pointer;
 }
@@ -93,6 +102,13 @@ h2.roleTitle{
     margin-top:10px;
     margin-bottom:10px;
 }
+.message-content-area{
+    min-height:250px;
+}
+.wide-modal{
+    min-width: 700px;
+}
+
 .rights-btn{
     min-width:450px;
 }
