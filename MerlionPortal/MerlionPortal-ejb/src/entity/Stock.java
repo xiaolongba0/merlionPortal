@@ -7,6 +7,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -34,7 +37,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Stock.findByName", query = "SELECT s FROM Stock s WHERE s.name = :name"),
     @NamedQuery(name = "Stock.findByComments", query = "SELECT s FROM Stock s WHERE s.comments = :comments"),
     @NamedQuery(name = "Stock.findByQuantity", query = "SELECT s FROM Stock s WHERE s.quantity = :quantity"),
-    @NamedQuery(name = "Stock.findByProductId", query = "SELECT s FROM Stock s WHERE s.productId = :productId")})
+    @NamedQuery(name = "Stock.findByProductId", query = "SELECT s FROM Stock s WHERE s.productId = :productId"),
+    @NamedQuery(name = "Stock.findByExpiryDate", query = "SELECT s FROM Stock s WHERE s.expiryDate = :expiryDate")})
 public class Stock implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -52,6 +56,9 @@ public class Stock implements Serializable {
     private Integer quantity;
     @Column(name = "productId")
     private Integer productId;
+    @Column(name = "expiryDate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date expiryDate;
     @JoinColumn(name = "storageBin", referencedColumnName = "storageBinId")
     @ManyToOne(optional = false)
     private StorageBin storageBin;
@@ -101,6 +108,14 @@ public class Stock implements Serializable {
 
     public void setProductId(Integer productId) {
         this.productId = productId;
+    }
+
+    public Date getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
     public StorageBin getStorageBin() {
