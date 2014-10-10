@@ -14,6 +14,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.mpr.materialrequirementmodule.MaterialReqSessionBean;
 import merlionportal.mrp.mpsmodule.MpsSessionBean;
 
 /**
@@ -25,17 +26,34 @@ import merlionportal.mrp.mpsmodule.MpsSessionBean;
 public class MaterialReqManagedBean {
 
     @EJB
-    MpsSessionBean mpsSessionBean;
+    MaterialReqSessionBean materialReqSessionBean;
+    
     @EJB
     UserAccountManagementSessionBean uamb;
     private SystemUser loginedUser;
     Integer companyId;
+    Integer productId;
 
     int wk1Demand;
     int wk2Demand;
     int wk3Demand;
     int wk4Demand;
     int wk5Demand;
+    
+    int quantity;
+    int grossReq1;
+    int grossReq2;
+    int grossReq3;
+    int grossReq4;
+    int grossReq5;
+    
+    int scheduledReceipt1;
+    int scheduledReceipt2;
+    int scheduledReceipt3;
+    int scheduledReceipt4;
+    int scheduledReceipt5;
+    
+    
     
     List<String> testing;
 
@@ -58,15 +76,33 @@ public class MaterialReqManagedBean {
             }
         }
 
+        productId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("productId");
+    //    quantity = materialReqSessionBean.getComponentsForAProduct(productId).get(0).getQuantity();
+      //  System.out.println("!!!!!!!!!!!!getComponentNAme: " + materialReqSessionBean.getComponentsForAProduct(productId).get(0).getComponentName());
+        //System.out.println("!!!!!!!!!!!!quantity: " + quantity);
+        
+        quantity = 2;
+        
         wk1Demand = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("wk1Demand");
         wk2Demand = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("wk2Demand");
         wk3Demand = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("wk3Demand");
         wk4Demand = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("wk4Demand");
         wk5Demand = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("wk5Demand");
+        
+        grossReq1 = wk1Demand * quantity;
+        grossReq2 = wk2Demand * quantity;
+        grossReq3 = wk3Demand * quantity;
+        grossReq4 = wk4Demand * quantity;
+        grossReq5 = wk5Demand * quantity;
+        
+     
+        
+        
 
     }
 
     public MaterialReqManagedBean() {
+
     }
     
     //For testing passing a list only
@@ -83,7 +119,8 @@ public class MaterialReqManagedBean {
     public List<String> getTesting() {
         return testing;
     }
-    
+
+
     
     
     
@@ -113,6 +150,26 @@ public class MaterialReqManagedBean {
 
     public int getWk5Demand() {
         return wk5Demand;
+    }
+
+    public int getGrossReq1() {
+        return grossReq1;
+    }
+
+    public int getGrossReq2() {
+        return grossReq2;
+    }
+
+    public int getGrossReq3() {
+        return grossReq3;
+    }
+
+    public int getGrossReq4() {
+        return grossReq4;
+    }
+
+    public int getGrossReq5() {
+        return grossReq5;
     }
     
     
