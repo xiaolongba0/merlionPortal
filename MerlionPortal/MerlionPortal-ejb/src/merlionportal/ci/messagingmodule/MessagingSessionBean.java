@@ -25,7 +25,7 @@ public class MessagingSessionBean {
             return -1;
         } else {
             SystemUser su = (SystemUser) q.getResultList().get(0);
-            return su.getSystemUserId();
+            return su.getSystemUserId().intValue();
         }
     }
     
@@ -69,5 +69,9 @@ public class MessagingSessionBean {
             inbox = q.getResultList();
         }
         return inbox;
+    }
+    
+    public Message getMail(int mailid){
+        return em.find(Message.class, mailid);
     }
 }

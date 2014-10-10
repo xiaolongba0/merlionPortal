@@ -16,63 +16,180 @@
                 function closeEditor() {
                     $("#editorDialog").modal('hide');
                 }
+
+                function verifyEmail(result) {
+                    if (result > -1) {
+                        $("#receipentid").val(result);
+                        $("#sendemailBtn").removeAttr("disabled");
+                        $.notify("User found.", "success");
+                    } else {
+                        $("#sendemailBtn").attr("disabled", "disabled");
+                        $.notify("User do not exist in system.", "error");
+                        $("#emailAddress").val("");
+                    }
+                }
+                function sendEmail() {
+                    document.getElementById('messagingForm:sendEmail').click();
+                    return false;
+                }
+
+
+                function postReadMail(title, content, senderEmail) {
+                    var mailReader = $("#messageReader");
+                    $("#readMsgTitle").html(title);
+//                    $("#readMsgSender").html(content);
+                    $("#readMsgContent").html(content);
+                    $("readMsgSender").html("From " + senderEmail);
+                    $("#replyBtn").unbind("click");
+                    $("#replyBtn").click({
+                        "senderEmail": senderEmail
+                    }, function (e) {
+                        reply(e.data.senderEmail);
+                    });
+                    mailReader.removeClass("hide");
+                }
+
+                function readMail(menuitem, id) {
+                    $("#inboxMessages").find("li").removeClass("active");
+                    $(menuitem).addClass("active");
+                    $("#selectmsgid").val(id);
+                    document.getElementById('messagingForm:readEmail').click();
+                    return false;
+                }
+
+                function reply(email) {
+                    openEditor();
+                    $("#emailAddress").val(email);
+                    document.getElementById('messagingForm:verifyEmail').click();
+                    return false;
+                }
+
+                function postEmail(res) {
+                    if (res > -1) {
+                        $.notify("Message sent.", "success");
+                        closeEditor();
+                    } else {
+                        $.notify("Message not sent.", "error");
+                    }
+                }
+
                 $(document).ready(function () {
                     $("#editorDialog").on('hide.bs.modal', function (e) {
-
+                        $("#emailAddress").val("");
+                        $("#subject").val("");
+                        $("#content").val("");
+                        $("#sendemailBtn").attr("disabled", "disabled");
                     });
-                });
-            </script>
+                    $("#emailAddress").keypress(function (e) {
+                        if (e.keyCode === 13) {
+                            document.getElementById('messagingForm:verifyEmail').click();
+                            return false;
+                        }
+                    });
+                    $("#emailAddress").on("focusout", function (e) {
+                        document.getElementById('messagingForm:verifyEmail').click();
+                        return false;
+                    });
+                });</script>
             <div class="container">
-                <h2>Inbox</h2>
                 <div class="row">
                     <div class="col-md-12">
-                        <button class="btn btn-primary" onclick="openEditor();">Write Message <i class="glyphicon glyphicon-pencil"></i></button>
+                        <h2>Inbox 
+                            <button class="btn btn-primary" onclick="openEditor();">Write Message <i class="glyphicon glyphicon-pencil"></i></button>
+                        </h2>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
-                        No messages found. Start sending a <span class="message-link text-primary" onclick="openEditor();">message</span> today!
-                    </div>
+                    <c:choose> 
+                        <c:when test="${empty messagerBean.inbox}">
+                            <div class="col-md-12">
+                                No messages found. Start sending a <span class="message-link text-primary" onclick="openEditor();">message</span> today!
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="col-md-4">
+                                <h4>Messages</h4>
+                                <ul id="inboxMessages" class="list-group">
+                                    <c:forEach items="#{messagerBean.inbox}" var="message">
+                                        <c:choose>
+                                            <c:when test="#{message.status == 9990}">
+                                                <li class="list-group-item list-group-item-info pointer" onclick="readMail(this,#{message.messageId});">#{message.messageTitle}</li>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <li class="list-group-item pointer" onclick="readMail(this,#{message.messageId});">#{message.messageTitle}</li>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </ul>
+                            </div>
+                            <div class="col-md-8">
+                                <div id="messageReader" class="hide">
+                                    <h2 id="readMsgTitle"></h2>
+                                    <div id="readMsgSender"></div>
+                                    <div id="readMsgContent"></div>
+                                    <button id="replyBtn" class="btn btn-primary">Reply</button>
+                                </div>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
-
             <div id="editorDialog" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content wide-modal">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            <h3 class="modal-title">Create Message</h3>
+                            <h3 class="modal-title">Compose Message</h3>
                         </div>
                         <div class="modal-body">
-                            <div class="row morespacing">
-                                <div class="col-md-12">
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            Receipent (Email)
+                            <h:form id="messagingForm">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                From
+                                            </div>
+                                            <input value="#{dashboardBean.loginedUser.emailAddress}" type="text" class="form-control" disabled="disabled" />
                                         </div>
-                                        <input class="form-control" type="text" id="emailAddress" />
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row morespacing">
-                                <div class="col-md-12">
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            Subject
+                                <div class="row morespacing">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                To
+                                            </div>
+                                            <input class="form-control" type="text" id="emailAddress" name="emailAddress" />
                                         </div>
-                                        <input class="form-control" type="text" id="subject" />
+                                        <div id="receipenterrbox" class="text-danger hide"></div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row morespacing">
-                                <div class="col-md-12">
-                                    <textarea class="form-control message-content-area" type="text" id="content"></textarea>
+                                <div class="row morespacing">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                Subject
+                                            </div>
+                                            <input class="form-control" type="text" id="subject" name="subject" />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="row morespacing">
+                                    <div class="col-md-12">
+                                        <textarea class="form-control message-content-area" type="text" id="content" name="content"></textarea>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="receipentid" name="receipentid" value="" />
+                                <p:commandLink id="readEmail" style="display:none;" actionListener="#{messagerBean.readMail}" ajax="true" />
+                                <p:commandLink id="verifyEmail" style="display:none;" actionListener="#{messagerBean.verifyEmail}" ajax="true" />
+                                <p:commandLink id="sendEmail" style="display:none;" actionListener="#{messagerBean.sendEmail}" ajax="true" />
+                                <!-- Hidden Fields -->
+                                <input type="hidden" id="selectmsgid" name="selectmsgid" value="-1" />
+                            </h:form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">Send Message</button>
-                            <button type="button" class="btn btn-warning" onclick="closeEditor();">Close</button>
+                            <button id="sendemailBtn" type="button" class="btn btn-primary" onclick="sendEmail();" disabled="disabled">Send Email</button>
+                            <button id="closeEditorBtn" type="button" class="btn btn-danger" onclick="closeEditor();">Close</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
