@@ -7,9 +7,12 @@ package merlionportal.managedbean.oes;
 
 import entity.ProductOrder;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -49,6 +52,10 @@ public class CustomerAnalysisManagedBean {
     private LineChartModel lineModel2;
     private Double min = 50.0;
     private Double max = 50.0;
+    private List firstList = new ArrayList();
+    private List secondList = new ArrayList();
+    private int minMonth;
+    List<Map> listOfResult = new ArrayList();
 
     @PostConstruct
     public void init() {
@@ -76,6 +83,7 @@ public class CustomerAnalysisManagedBean {
         productOrderList = (List<ProductOrder>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("FirstOrderList");
         secondOrderList = (List<ProductOrder>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("SecondOrderList");
         createMyModels();
+        listOfResult = this.initTable();
 
     }
 
@@ -95,18 +103,17 @@ public class CustomerAnalysisManagedBean {
         Double totalValue = 0.0;
         int totalMonth1 = reportMB.retrieveTotalMonth(firstStartDate, firstEndDate);
         int totalMonth2 = reportMB.retrieveTotalMonth(secondStartDate, secondEndDate);
-        
+
         LineChartModel model = new LineChartModel();
         ChartSeries series1 = new ChartSeries();
         ChartSeries series2 = new ChartSeries();
 
-        
         Calendar cal = Calendar.getInstance();
         cal.setTime(firstStartDate);
         int startMonth = cal.get(Calendar.MONTH);
         startMonth++;
         int startYear = cal.get(Calendar.YEAR);
-        
+
         Calendar cal2 = Calendar.getInstance();
         cal.setTime(secondStartDate);
         int startMonth1 = cal.get(Calendar.MONTH);
@@ -123,6 +130,7 @@ public class CustomerAnalysisManagedBean {
             }
             String xPoint = Integer.toString(i);
             series1.set(xPoint, totalValue);
+            firstList.add(totalValue);
             if (startMonth == 12) {
                 startMonth = 1;
                 startYear++;
@@ -140,6 +148,7 @@ public class CustomerAnalysisManagedBean {
             }
             String xPoint = Integer.toString(i);
             series2.set(xPoint, totalValue);
+            secondList.add(totalValue);
             if (startMonth1 == 12) {
                 startMonth1 = 1;
                 startYear1++;
@@ -150,6 +159,12 @@ public class CustomerAnalysisManagedBean {
 
         series1.setLabel("First Period");
         series2.setLabel("Second Period");
+
+        if (totalMonth1 >= totalMonth2) {
+            minMonth = totalMonth2;
+        } else {
+            minMonth = totalMonth1;
+        }
 
         model.addSeries(series1);
         model.addSeries(series2);
@@ -262,6 +277,68 @@ public class CustomerAnalysisManagedBean {
 
     public void setMax(Double max) {
         this.max = max;
+    }
+
+    public List getFirstList() {
+        return firstList;
+    }
+
+    public void setFirstList(List firstList) {
+        this.firstList = firstList;
+    }
+
+    public List getSecondList() {
+        return secondList;
+    }
+
+    public void setSecondList(List secondList) {
+        this.secondList = secondList;
+    }
+
+    public int getMinMonth() {
+        return minMonth;
+    }
+
+    public void setMinMonth(int minMonth) {
+        this.minMonth = minMonth;
+    }
+
+    public List<Map> initTable() {
+        List<Map> myMap = new ArrayList();
+        for (int i = 0; i < minMonth; i++) {
+            Map mapA = new HashMap();
+            mapA.put("first", firstList.get(i));
+            mapA.put("second", secondList.get(i));
+            myMap.add(mapA);
+
+        }
+        return myMap;
+    }
+
+    public List<Map> getListOfResult() {
+
+        return listOfResult;
+    }
+
+    public void setListOfResult(List<Map> listOfResult) {
+        this.listOfResult = listOfResult;
+    }
+
+    public Double myFirstNumber(Map myResult) {
+        Double result = null;
+        if (myResult != null) {
+            result = (Double) myResult.get("first");
+        }
+        System.out.println(result + "==========================");
+        return result;
+    }
+
+    public Double mySecondNumber(Map myResult) {
+        Double result = null;
+        if (myResult != null) {
+            result = (Double) myResult.get("second");
+        }
+        return result;
     }
 
 }
