@@ -8,7 +8,6 @@ package merlionportal.managedbean.crms;
 import entity.Contract;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +17,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.servlet.ServletOutputStream;
@@ -30,7 +28,6 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 /**
@@ -62,6 +59,8 @@ public class ViewContractDetailManagedBean {
     private String reason;
     private String status;
     private List<DTOContract> contractToPrint;
+
+    private String conditionText;
 
     public ViewContractDetailManagedBean() {
     }
@@ -116,7 +115,6 @@ public class ViewContractDetailManagedBean {
         dtoContract.setCreatedDate(selectedContract.getCreatedDate());
         dtoContract.setPrice(selectedContract.getPrice());
         dtoContract.setAgreedQuantity(selectedContract.getServiceQuotation().getQuantityPerMonth().toString());
-        
 
         dtoContract.setOrigin("N.A.");
         if (selectedContract.getOrigin() != null) {
@@ -149,14 +147,40 @@ public class ViewContractDetailManagedBean {
     }
 
     public void requestToModifyContract() {
-        int result = contractManagementSB.requestToModify(selectedContract.getContractId(), reason);
-        if (result == 1) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Request to modify contract is sent!", "Please wait for the other party to respond"));
-
+        if (reason == null || reason.isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "You must provide a reason for modification", ""));
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Oops", "Something went wrong!"));
+            int result = contractManagementSB.requestToModify(selectedContract.getContractId(), reason);
+            if (result == 1) {
+                this.clearAllFields();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Request to modify contract is sent!", "Please wait for the other party to respond"));
 
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Oops", "Something went wrong!"));
+
+            }
         }
+    }
+
+    public void modifyContract() {
+        if (conditionText == null || conditionText.isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "You must provide a new condition of the contract", ""));
+        } else {
+            int result = contractManagementSB.modifyContract(selectedContract.getContractId(), conditionText);
+            if (result == 1) {
+                this.clearAllFields();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Contract is modified!", "Please wait for the other party to review"));
+
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Oops", "Something went wrong!"));
+
+            }
+        }
+    }
+
+    private void clearAllFields() {
+        reason = null;
+        conditionText = null;
     }
 
     private void statusText(int passedStatus) {
@@ -170,7 +194,7 @@ public class ViewContractDetailManagedBean {
             status = "Waiting for review";
         }
         if (passedStatus == 4) {
-            status = "Waiting To be Signed";
+            status = "Waiting to be signed";
         }
         if (passedStatus == 5) {
             status = "Valid";
@@ -193,7 +217,7 @@ public class ViewContractDetailManagedBean {
             JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(contractToPrint);
             HashMap parameters = new HashMap();
             InputStream reportStream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/jasperreports/servicecontract.jasper");
-            HttpServletResponse response = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
             outputStream = response.getOutputStream();
             JasperPrint japerPrint = JasperFillManager.fillReport(reportStream, parameters, beanCollectionDataSource);
             JasperExportManager.exportReportToPdfStream(japerPrint, outputStream);
@@ -211,15 +235,15 @@ public class ViewContractDetailManagedBean {
         }
 
     }
-    
-    public void downloadPDFContract(){
+
+    public void downloadPDFContract() {
         ServletOutputStream outputStream = null;
         try {
             JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(contractToPrint);
             HashMap parameters = new HashMap();
             InputStream reportStream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/jasperreports/servicecontract.jasper");
-            HttpServletResponse response = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();
-            response.addHeader("Content-disposition", "attachment; filename=servicecontract"+selectedContract.getContractId()+".pdf");
+            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            response.addHeader("Content-disposition", "attachment; filename=servicecontract" + selectedContract.getContractId() + ".pdf");
             outputStream = response.getOutputStream();
             JasperPrint japerPrint = JasperFillManager.fillReport(reportStream, parameters, beanCollectionDataSource);
             JasperExportManager.exportReportToPdfStream(japerPrint, outputStream);
@@ -307,6 +331,14 @@ public class ViewContractDetailManagedBean {
 
     public void setContractToPrint(List<DTOContract> contractToPrint) {
         this.contractToPrint = contractToPrint;
+    }
+
+    public String getConditionText() {
+        return conditionText;
+    }
+
+    public void setConditionText(String conditionText) {
+        this.conditionText = conditionText;
     }
 
 }

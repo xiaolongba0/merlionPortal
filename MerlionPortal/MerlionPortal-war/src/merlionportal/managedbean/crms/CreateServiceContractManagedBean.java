@@ -97,6 +97,9 @@ public class CreateServiceContractManagedBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Not a valid Quotation!", "You can only search for a valid quotation"));
             quotation = null;
 
+        } else if (contractManagementSB.hasDuplicateContract(quotationId)) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Contract Exist!", "Contract Exsit for this quotation, if you wish to renew contract, please go to renew contract page"));
+            quotation = null;
         } else {
             quotation = contractManagementSB.searchAValidQuotation(quotationId, companyId);
             partyAName = contractManagementSB.retrieveCompanyName(quotation.getReceiverCompanyId());

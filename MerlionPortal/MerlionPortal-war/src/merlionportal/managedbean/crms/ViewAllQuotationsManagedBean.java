@@ -85,6 +85,7 @@ public class ViewAllQuotationsManagedBean {
 
     public String viewSentQuotation() {
         if (selectedSentQuotation != null) {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedQuotation");
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedQuotation", selectedSentQuotation);
             return "viewquotationdetail.xhtml?faces-redirect=true";
         } else {
@@ -95,6 +96,7 @@ public class ViewAllQuotationsManagedBean {
 
     public String viewReceivedQuotation() {
         if (selectedReceivedQuotation != null) {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedQuotation");
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedQuotation", selectedReceivedQuotation);
             return "viewquotationdetail.xhtml?faces-redirect=true";
         } else {

@@ -71,13 +71,14 @@ public class ViewAllContractsManagedBean {
         status.add("Initial contract");
         status.add("Request to modify");
         status.add("Waiting for review");
-        status.add("Waiting To be Signed");
+        status.add("Waiting to be signed");
         status.add("Valid");
 
     }
 
     public String viewSentContract() {
         if (selectedSentContract != null) {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedContract");
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedContract", selectedSentContract);
             return "viewcontractdetail.xhtml?faces-redirect=true";
         } else {
@@ -88,6 +89,7 @@ public class ViewAllContractsManagedBean {
 
     public String viewReceivedContract() {
         if (selectedReceivedContract != null) {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedContract");
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedContract", selectedReceivedContract);
             return "viewcontractdetail.xhtml?faces-redirect=true";
         } else {
@@ -107,7 +109,7 @@ public class ViewAllContractsManagedBean {
             statusNumber = "Waiting for review";
         }
         if (passedStatus == 4) {
-            statusNumber = "Waiting To be Signed";
+            statusNumber = "Waiting to be signed";
         }
         if (passedStatus == 5) {
             statusNumber = "Valid";
