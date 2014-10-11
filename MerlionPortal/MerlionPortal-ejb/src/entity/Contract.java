@@ -115,6 +115,8 @@ public class Contract implements Serializable {
     @JoinColumn(name = "serviceQuotation", referencedColumnName = "quotationId")
     @ManyToOne(optional = false)
     private ServiceQuotation serviceQuotation;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contract")
+    private List<SignedContract> signedContractList;
 
     public Contract() {
     }
@@ -290,6 +292,15 @@ public class Contract implements Serializable {
 
     public void setServiceQuotation(ServiceQuotation serviceQuotation) {
         this.serviceQuotation = serviceQuotation;
+    }
+
+    @XmlTransient
+    public List<SignedContract> getSignedContractList() {
+        return signedContractList;
+    }
+
+    public void setSignedContractList(List<SignedContract> signedContractList) {
+        this.signedContractList = signedContractList;
     }
 
     @Override
