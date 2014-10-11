@@ -16,7 +16,7 @@ import org.primefaces.context.RequestContext;
 
 @Named(value = "messagerBean")
 @ViewScoped
-public class MessageManagerBean {
+public class MessageManagedBean {
 
     private List<Message> inbox;
     private String receipentEmail;
@@ -30,7 +30,7 @@ public class MessageManagerBean {
     @EJB
     private MessagingSessionBean msb;
 
-    public MessageManagerBean() {
+    public MessageManagedBean() {
     }
 
     @PostConstruct
