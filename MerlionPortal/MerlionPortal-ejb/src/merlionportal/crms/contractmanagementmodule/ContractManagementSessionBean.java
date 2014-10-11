@@ -61,6 +61,7 @@ public class ContractManagementSessionBean {
             contract.setContactPersonName(name);
             contract.setContactPersonNumber(user.getContactNumber());
             contract.setServiceQuotation(quotation);
+            contract.setConditionText(condition);
 
             List<ServicePO> servicePOList = new ArrayList<>();
             contract.setServicePOList(servicePOList);
@@ -89,7 +90,7 @@ public class ContractManagementSessionBean {
         if (quotation != null) {
             contract.setStartDate(quotation.getStartDate());
             contract.setEndDate(quotation.getEndDate());
-            contract.setPrice(quotation.getPrice());
+            contract.setPrice(quotation.getPrice() - quotation.getDiscountRate() * quotation.getPrice() / 100);
             contract.setServiceType(quotation.getServiceType());
             contract.setPartyA(quotation.getReceiverCompanyId());
             contract.setPartyB(quotation.getSenderCompanyId());
@@ -97,6 +98,7 @@ public class ContractManagementSessionBean {
             contract.setContactPersonName(name);
             contract.setContactPersonNumber(user.getContactNumber());
             contract.setServiceQuotation(quotation);
+            contract.setConditionText(condition);
 
             List<ServicePO> servicePOList = new ArrayList<>();
             contract.setServicePOList(servicePOList);
@@ -111,11 +113,11 @@ public class ContractManagementSessionBean {
             return -1;
         }
     }
-    
-    public ServiceQuotation searchAValidQuotation(Integer quotationId, Integer myCompanyId){
+
+    public ServiceQuotation searchAValidQuotation(Integer quotationId, Integer myCompanyId) {
         ServiceQuotation quotation = em.find(ServiceQuotation.class, quotationId);
-        if(quotation != null){
-            if(quotation.getStatus()==3 && (int)quotation.getReceiverCompanyId() == myCompanyId){
+        if (quotation != null) {
+            if (quotation.getStatus() == 3 && (int) quotation.getReceiverCompanyId() == myCompanyId) {
                 return quotation;
             }
         }
@@ -153,7 +155,8 @@ public class ContractManagementSessionBean {
             return -1;
         }
     }
-    public int acceptContract(Integer contractId){
+
+    public int acceptContract(Integer contractId) {
         Contract contract = em.find(Contract.class, contractId);
         if (contract != null) {
             contract.setStatus(4);
@@ -170,56 +173,66 @@ public class ContractManagementSessionBean {
 
     public int renewContract(Integer contractId, Date startDate, Date endDate, Integer creatorId) {
         Contract contract = em.find(Contract.class, contractId);
-        
+
         SystemUser user = em.find(SystemUser.class, creatorId);
         String name = user.getFirstName() + "  " + user.getLastName();
-        
+
         if (contract != null) {
             Contract renewContract = new Contract();
             renewContract = contract;
             renewContract.setCreatedDate(new Date());
             renewContract.setStartDate(startDate);
             renewContract.setEndDate(endDate);
-            
+
             renewContract.setContactPersonId(creatorId);
             renewContract.setContactPersonName(name);
             renewContract.setContactPersonNumber(user.getContactNumber());
-            
+
             ServiceQuotation quotation = em.find(ServiceQuotation.class, contract.getServiceQuotation().getQuotationId());
             quotation.getContractList().add(renewContract);
-            
+
             List<ServicePO> servicePOList = new ArrayList<>();
             renewContract.setServicePOList(servicePOList);
-            
+
             em.persist(renewContract);
             em.merge(quotation);
             em.merge(contract);
             em.flush();
-            
+
             return renewContract.getContractId();
-        }else{
+        } else {
             return -1;
         }
     }
-    
-    public List<Contract> viewSentContracts(Integer myCompanyId){
+
+    public List<Contract> viewSentContracts(Integer myCompanyId) {
         Query q = em.createNamedQuery("Contract.findByPartyA").setParameter("partyA", myCompanyId);
-        return (List<Contract>)q.getResultList();
+        return (List<Contract>) q.getResultList();
     }
-    public List<Contract> viewReceivedContracts(Integer myCompanyId){
+
+    public List<Contract> viewReceivedContracts(Integer myCompanyId) {
         Query q = em.createNamedQuery("Contract.findByPartyB").setParameter("partyB", myCompanyId);
-        return (List<Contract>)q.getResultList();
+        return (List<Contract>) q.getResultList();
     }
-    
-    
-    
-    public String retrieveCompanyName(Integer companyId){
+
+    public String retrieveCompanyName(Integer companyId) {
         Company company = em.find(Company.class, companyId);
         return company.getName();
     }
-    
-    public int saveSignedContract(){
+
+    public int saveSignedContract() {
         return 1;
+    }
+    
+    public boolean hasDuplicateContract(Integer quotationId){
+        ServiceQuotation quotation  = em.find(ServiceQuotation.class,quotationId);
+        if(quotation.getContractList().isEmpty() || quotation.getContractList() ==null){
+            //No duplicate contract for this quotation
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
 }
