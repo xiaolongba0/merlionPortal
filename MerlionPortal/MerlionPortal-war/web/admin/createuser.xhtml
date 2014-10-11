@@ -69,12 +69,9 @@
                             <p:outputLabel style="font-weight: bold" value="Contact Number * : "/>
                             <h:inputText required="true" requiredMessage="Contact Number is required" value="#{createUserManagerBean.contactNumber}" styleClass="form-control" />
 
-                            <p:outputLabel value="Credit * :" style="font-weight: bold" styleClass="pad-it"/>
-                            <h:selectOneMenu required="true" requiredMessage="Please select credit" id="credit" value="#{createUserManagerBean.credit}" styleClass="form-control">
-                                <f:selectItem itemLabel="Not Applicable" itemValue="Not Applicable" />
-                                <f:selectItem itemLabel="Pass" itemValue="Pass" />
-                                <f:selectItem itemLabel="Fail" itemValue="Fail" />
-                            </h:selectOneMenu>
+                            <p:outputLabel value="Credit Limit * :" style="font-weight: bold" styleClass="pad-it"/>
+                            <h:inputText required="true" requiredMessage="Please select credit" id="credit" value="#{createUserManagerBean.credit}" styleClass="form-control" />
+                               
 
 
                             <p:outputLabel value="Select Roles * :" style="font-weight: bold" />

@@ -85,7 +85,7 @@ public class UserAccountManagementSessionBean {
         superUser.setCreatedDate(new Date());
         superUser.setUserType("superuser");
         superUser.setActivated(true);
-        superUser.setCredit("Not Applicable");
+        superUser.setCreditLimit(1000000);
         Company company = em.find(Company.class, companyId);
         if (company != null) {
             superUser.setCompanycompanyId(company);
@@ -136,7 +136,7 @@ public class UserAccountManagementSessionBean {
 
     //Used by super user and company superuser
     public int createSystemUser(Integer operatorId, Integer companyId, List<Integer> roles, String firstName, String lastName, String emailAddress, String password, String postalAddress,
-            String contactNumber, String salution, String credit) {
+            String contactNumber, String salution, Integer credit) {
 
         SystemUser operator = em.find(SystemUser.class, operatorId);
         boolean canRun = false;
@@ -165,7 +165,7 @@ public class UserAccountManagementSessionBean {
                 user.setResetPasswordUponLogin(true);
                 user.setCreatedDate(new Date());
                 user.setActivated(true);
-                user.setCredit(credit);
+                user.setCreditLimit(credit);
 
                 Company company = getCompany(companyId);
                 if (company != null) {
@@ -287,7 +287,7 @@ public class UserAccountManagementSessionBean {
                     user.setLocked(updatedUser.getLocked());
                     user.setResetPasswordUponLogin(updatedUser.getResetPasswordUponLogin());
                     user.setActivated(updatedUser.getActivated());
-                    user.setCredit(updatedUser.getCredit());
+                    user.setCreditLimit(updatedUser.getCreditLimit());
 
                     em.merge(user);
                     em.flush();
@@ -302,8 +302,7 @@ public class UserAccountManagementSessionBean {
 
         }
 
-        System.out.println(
-                "Operator is null");
+        System.out.println("Operator is null");
 
         return 0;
 
@@ -312,7 +311,7 @@ public class UserAccountManagementSessionBean {
     public int detachRoleFromUser(Integer systemAdminId, Integer userId, Integer roleId) {
         SystemUser operator = em.find(SystemUser.class, systemAdminId);
         boolean canRun = false;
-        if (operator!= null) {
+        if (operator != null) {
             if (operator.getUserType() != null) {
                 if (operator.getUserType().equals("superuser")) {
                     canRun = true;
@@ -356,7 +355,7 @@ public class UserAccountManagementSessionBean {
     public int addRoleToUser(Integer systemAdminId, Integer userId, Integer roleId) {
         SystemUser operator = em.find(SystemUser.class, systemAdminId);
         boolean canRun = false;
-        if (operator!= null) {
+        if (operator != null) {
             if (operator.getUserType() != null) {
                 if (operator.getUserType().equals("superuser")) {
                     canRun = true;
@@ -393,7 +392,7 @@ public class UserAccountManagementSessionBean {
     public boolean checkLocked(Integer userId) {
         boolean result = false;
         SystemUser user = (SystemUser) em.find(SystemUser.class, userId);
-        if (user!= null) {
+        if (user != null) {
             if (user.getLocked()) {
                 result = true;
             }
@@ -404,7 +403,7 @@ public class UserAccountManagementSessionBean {
     public boolean checkResetPasswordUponLogin(Integer userId) {
         boolean result = false;
         SystemUser user = (SystemUser) em.find(SystemUser.class, userId);
-        if (user!= null) {
+        if (user != null) {
             if (user.getResetPasswordUponLogin()) {
                 result = true;
             }

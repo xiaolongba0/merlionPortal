@@ -48,7 +48,7 @@ public class CreateUserManagedBean {
     private String contactNumber;
     private String salution;
 
-    private String credit;
+    private Integer credit;
 
     private List<Company> companys;
     private List<UserRole> roles;
@@ -229,11 +229,11 @@ public class CreateUserManagedBean {
         this.salution = salution;
     }
 
-    public String getCredit() {
+    public Integer getCredit() {
         return credit;
     }
 
-    public void setCredit(String credit) {
+    public void setCredit(Integer credit) {
         this.credit = credit;
     }
 

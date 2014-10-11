@@ -53,7 +53,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "SystemUser.findByCreatedDate", query = "SELECT s FROM SystemUser s WHERE s.createdDate = :createdDate"),
     @NamedQuery(name = "SystemUser.findByUserType", query = "SELECT s FROM SystemUser s WHERE s.userType = :userType"),
     @NamedQuery(name = "SystemUser.findByActivated", query = "SELECT s FROM SystemUser s WHERE s.activated = :activated"),
-    @NamedQuery(name = "SystemUser.findByCredit", query = "SELECT s FROM SystemUser s WHERE s.credit = :credit")})
+    @NamedQuery(name = "SystemUser.findByCreditLimit", query = "SELECT s FROM SystemUser s WHERE s.creditLimit = :creditLimit")})
 public class SystemUser implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -98,9 +98,8 @@ public class SystemUser implements Serializable {
     @NotNull
     @Column(name = "activated")
     private boolean activated;
-    @Size(max = 45)
-    @Column(name = "credit")
-    private String credit;
+    @Column(name = "creditLimit")
+    private Integer creditLimit;
     @JoinTable(name = "SystemUser_has_UserRole", joinColumns = {
         @JoinColumn(name = "systemUserId", referencedColumnName = "systemUserId")}, inverseJoinColumns = {
         @JoinColumn(name = "userRoleId", referencedColumnName = "userRoleId")})
@@ -229,12 +228,12 @@ public class SystemUser implements Serializable {
         this.activated = activated;
     }
 
-    public String getCredit() {
-        return credit;
+    public Integer getCreditLimit() {
+        return creditLimit;
     }
 
-    public void setCredit(String credit) {
-        this.credit = credit;
+    public void setCreditLimit(Integer creditLimit) {
+        this.creditLimit = creditLimit;
     }
 
     @XmlTransient
