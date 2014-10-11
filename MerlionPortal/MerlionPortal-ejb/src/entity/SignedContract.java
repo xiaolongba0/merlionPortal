@@ -32,38 +32,38 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "SignedContract.findAll", query = "SELECT s FROM SignedContract s"),
-    @NamedQuery(name = "SignedContract.findByContractId", query = "SELECT s FROM SignedContract s WHERE s.contractId = :contractId"),
+    @NamedQuery(name = "SignedContract.findBySignedContractId", query = "SELECT s FROM SignedContract s WHERE s.signedContractId = :signedContractId"),
     @NamedQuery(name = "SignedContract.findByUploadedDate", query = "SELECT s FROM SignedContract s WHERE s.uploadedDate = :uploadedDate")})
 public class SignedContract implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "contractId")
-    private Integer contractId;
+    @Column(name = "signedContractId")
+    private Integer signedContractId;
     @Lob
     @Column(name = "pdf")
     private byte[] pdf;
     @Column(name = "uploadedDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date uploadedDate;
-    @JoinColumn(name = "contractId", referencedColumnName = "contractId", insertable = false, updatable = false)
+    @JoinColumn(name = "signedContractId", referencedColumnName = "contractId", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private Contract contract;
 
     public SignedContract() {
     }
 
-    public SignedContract(Integer contractId) {
-        this.contractId = contractId;
+    public SignedContract(Integer signedContractId) {
+        this.signedContractId = signedContractId;
     }
 
-    public Integer getContractId() {
-        return contractId;
+    public Integer getSignedContractId() {
+        return signedContractId;
     }
 
-    public void setContractId(Integer contractId) {
-        this.contractId = contractId;
+    public void setSignedContractId(Integer signedContractId) {
+        this.signedContractId = signedContractId;
     }
 
     public byte[] getPdf() {
@@ -93,7 +93,7 @@ public class SignedContract implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (contractId != null ? contractId.hashCode() : 0);
+        hash += (signedContractId != null ? signedContractId.hashCode() : 0);
         return hash;
     }
 
@@ -104,7 +104,7 @@ public class SignedContract implements Serializable {
             return false;
         }
         SignedContract other = (SignedContract) object;
-        if ((this.contractId == null && other.contractId != null) || (this.contractId != null && !this.contractId.equals(other.contractId))) {
+        if ((this.signedContractId == null && other.signedContractId != null) || (this.signedContractId != null && !this.signedContractId.equals(other.signedContractId))) {
             return false;
         }
         return true;
@@ -112,7 +112,7 @@ public class SignedContract implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.SignedContract[ contractId=" + contractId + " ]";
+        return "entity.SignedContract[ signedContractId=" + signedContractId + " ]";
     }
     
 }
