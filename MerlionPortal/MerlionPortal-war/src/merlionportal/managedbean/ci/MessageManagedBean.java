@@ -1,4 +1,4 @@
-package merlionportal.managedbean.message;
+package merlionportal.managedbean.ci;
 
 import entity.Message;
 import entity.SystemUser;
