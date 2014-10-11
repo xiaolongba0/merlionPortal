@@ -107,10 +107,10 @@ public class PurchaseOrderManagerSessionBean {
     
     public Boolean creaditCheck(int customerId) {
         SystemUser myCustomer = em.find(SystemUser.class, customerId);
-        String myCredit = myCustomer.getCredit();
-        if (myCredit.equalsIgnoreCase("fail")) {
-            return false;
-        }
+        int myCredit = myCustomer.getCreditLimit();
+//        if (myCredit.equalsIgnoreCase("fail")) {
+//            return false;
+//        }
         return true;
     }
     
@@ -208,10 +208,10 @@ public class PurchaseOrderManagerSessionBean {
     
     public Boolean checkCredit(int cutomerId) {
         SystemUser customer = em.find(SystemUser.class, cutomerId);
-        String credit = customer.getCredit();
-        if (credit.equals("Pass")) {
-            return true;
-        }
+//        String credit = customer.getCredit();
+//        if (credit.equals("Pass")) {
+//            return true;
+//        }
         return false;
     }
     
