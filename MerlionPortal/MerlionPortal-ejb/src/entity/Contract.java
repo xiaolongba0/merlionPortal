@@ -21,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -115,8 +116,8 @@ public class Contract implements Serializable {
     @JoinColumn(name = "serviceQuotation", referencedColumnName = "quotationId")
     @ManyToOne(optional = false)
     private ServiceQuotation serviceQuotation;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "contract")
-    private List<SignedContract> signedContractList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "contract")
+    private SignedContract signedContract;
 
     public Contract() {
     }
@@ -294,13 +295,12 @@ public class Contract implements Serializable {
         this.serviceQuotation = serviceQuotation;
     }
 
-    @XmlTransient
-    public List<SignedContract> getSignedContractList() {
-        return signedContractList;
+    public SignedContract getSignedContract() {
+        return signedContract;
     }
 
-    public void setSignedContractList(List<SignedContract> signedContractList) {
-        this.signedContractList = signedContractList;
+    public void setSignedContract(SignedContract signedContract) {
+        this.signedContract = signedContract;
     }
 
     @Override

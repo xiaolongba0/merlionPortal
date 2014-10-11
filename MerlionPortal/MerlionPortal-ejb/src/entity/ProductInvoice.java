@@ -7,7 +7,6 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,11 +16,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -58,8 +56,8 @@ public class ProductInvoice implements Serializable {
     @Size(max = 255)
     @Column(name = "conditionText")
     private String conditionText;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "invoice")
-    private List<ProductPayment> productPaymentList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "productInvoice")
+    private ProductPayment productPayment;
 
     public ProductInvoice() {
     }
@@ -116,13 +114,12 @@ public class ProductInvoice implements Serializable {
         this.conditionText = conditionText;
     }
 
-    @XmlTransient
-    public List<ProductPayment> getProductPaymentList() {
-        return productPaymentList;
+    public ProductPayment getProductPayment() {
+        return productPayment;
     }
 
-    public void setProductPaymentList(List<ProductPayment> productPaymentList) {
-        this.productPaymentList = productPaymentList;
+    public void setProductPayment(ProductPayment productPayment) {
+        this.productPayment = productPayment;
     }
 
     @Override

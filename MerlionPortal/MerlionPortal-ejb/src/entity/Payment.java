@@ -11,16 +11,15 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -44,8 +43,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Payment implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @NotNull
     @Column(name = "paymentId")
     private Integer paymentId;
     @Column(name = "method")
@@ -67,9 +66,9 @@ public class Payment implements Serializable {
     private Double amount;
     @Column(name = "swiftCode")
     private Integer swiftCode;
-    @JoinColumn(name = "invoiceId", referencedColumnName = "invoiceId")
-    @ManyToOne(optional = false)
-    private ServiceInvoice invoiceId;
+    @JoinColumn(name = "paymentId", referencedColumnName = "invoiceId", insertable = false, updatable = false)
+    @OneToOne(optional = false)
+    private ServiceInvoice serviceInvoice;
 
     public Payment() {
     }
@@ -142,12 +141,12 @@ public class Payment implements Serializable {
         this.swiftCode = swiftCode;
     }
 
-    public ServiceInvoice getInvoiceId() {
-        return invoiceId;
+    public ServiceInvoice getServiceInvoice() {
+        return serviceInvoice;
     }
 
-    public void setInvoiceId(ServiceInvoice invoiceId) {
-        this.invoiceId = invoiceId;
+    public void setServiceInvoice(ServiceInvoice serviceInvoice) {
+        this.serviceInvoice = serviceInvoice;
     }
 
     @Override

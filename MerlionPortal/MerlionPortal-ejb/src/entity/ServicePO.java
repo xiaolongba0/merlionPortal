@@ -8,7 +8,6 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,13 +19,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -87,8 +85,8 @@ public class ServicePO implements Serializable {
     @JoinColumn(name = "contract", referencedColumnName = "contractId")
     @ManyToOne(optional = false)
     private Contract contract;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "servicePO")
-    private List<ServiceInvoice> serviceInvoiceList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "servicePO")
+    private ServiceInvoice serviceInvoice;
 
     public ServicePO() {
     }
@@ -201,13 +199,12 @@ public class ServicePO implements Serializable {
         this.contract = contract;
     }
 
-    @XmlTransient
-    public List<ServiceInvoice> getServiceInvoiceList() {
-        return serviceInvoiceList;
+    public ServiceInvoice getServiceInvoice() {
+        return serviceInvoice;
     }
 
-    public void setServiceInvoiceList(List<ServiceInvoice> serviceInvoiceList) {
-        this.serviceInvoiceList = serviceInvoiceList;
+    public void setServiceInvoice(ServiceInvoice serviceInvoice) {
+        this.serviceInvoice = serviceInvoice;
     }
 
     @Override

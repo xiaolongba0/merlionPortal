@@ -11,16 +11,15 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -33,7 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ProductPayment.findAll", query = "SELECT p FROM ProductPayment p"),
-    @NamedQuery(name = "ProductPayment.findByPaymentId", query = "SELECT p FROM ProductPayment p WHERE p.paymentId = :paymentId"),
+    @NamedQuery(name = "ProductPayment.findByInvoiceId", query = "SELECT p FROM ProductPayment p WHERE p.invoiceId = :invoiceId"),
     @NamedQuery(name = "ProductPayment.findByMethod", query = "SELECT p FROM ProductPayment p WHERE p.method = :method"),
     @NamedQuery(name = "ProductPayment.findByReceivedDate", query = "SELECT p FROM ProductPayment p WHERE p.receivedDate = :receivedDate"),
     @NamedQuery(name = "ProductPayment.findByCreatedDate", query = "SELECT p FROM ProductPayment p WHERE p.createdDate = :createdDate"),
@@ -44,10 +43,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ProductPayment implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "paymentId")
-    private Integer paymentId;
+    @NotNull
+    @Column(name = "invoiceId")
+    private Integer invoiceId;
     @Column(name = "method")
     private Integer method;
     @Column(name = "receivedDate")
@@ -67,23 +66,23 @@ public class ProductPayment implements Serializable {
     private Double amount;
     @Column(name = "swiftCode")
     private Integer swiftCode;
-    @JoinColumn(name = "invoice", referencedColumnName = "invoiceId")
-    @ManyToOne(optional = false)
-    private ProductInvoice invoice;
+    @JoinColumn(name = "invoiceId", referencedColumnName = "invoiceId", insertable = false, updatable = false)
+    @OneToOne(optional = false)
+    private ProductInvoice productInvoice;
 
     public ProductPayment() {
     }
 
-    public ProductPayment(Integer paymentId) {
-        this.paymentId = paymentId;
+    public ProductPayment(Integer invoiceId) {
+        this.invoiceId = invoiceId;
     }
 
-    public Integer getPaymentId() {
-        return paymentId;
+    public Integer getInvoiceId() {
+        return invoiceId;
     }
 
-    public void setPaymentId(Integer paymentId) {
-        this.paymentId = paymentId;
+    public void setInvoiceId(Integer invoiceId) {
+        this.invoiceId = invoiceId;
     }
 
     public Integer getMethod() {
@@ -142,18 +141,18 @@ public class ProductPayment implements Serializable {
         this.swiftCode = swiftCode;
     }
 
-    public ProductInvoice getInvoice() {
-        return invoice;
+    public ProductInvoice getProductInvoice() {
+        return productInvoice;
     }
 
-    public void setInvoice(ProductInvoice invoice) {
-        this.invoice = invoice;
+    public void setProductInvoice(ProductInvoice productInvoice) {
+        this.productInvoice = productInvoice;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (paymentId != null ? paymentId.hashCode() : 0);
+        hash += (invoiceId != null ? invoiceId.hashCode() : 0);
         return hash;
     }
 
@@ -164,7 +163,7 @@ public class ProductPayment implements Serializable {
             return false;
         }
         ProductPayment other = (ProductPayment) object;
-        if ((this.paymentId == null && other.paymentId != null) || (this.paymentId != null && !this.paymentId.equals(other.paymentId))) {
+        if ((this.invoiceId == null && other.invoiceId != null) || (this.invoiceId != null && !this.invoiceId.equals(other.invoiceId))) {
             return false;
         }
         return true;
@@ -172,7 +171,7 @@ public class ProductPayment implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.ProductPayment[ paymentId=" + paymentId + " ]";
+        return "entity.ProductPayment[ invoiceId=" + invoiceId + " ]";
     }
     
 }

@@ -7,23 +7,19 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -44,8 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
 public class ServiceInvoice implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @NotNull
     @Column(name = "invoiceId")
     private Integer invoiceId;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -62,11 +58,11 @@ public class ServiceInvoice implements Serializable {
     @Size(max = 1000)
     @Column(name = "conditionText")
     private String conditionText;
-    @JoinColumn(name = "servicePO", referencedColumnName = "servicePOId")
-    @ManyToOne(optional = false)
+    @JoinColumn(name = "invoiceId", referencedColumnName = "servicePOId", insertable = false, updatable = false)
+    @OneToOne(optional = false)
     private ServicePO servicePO;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "invoiceId")
-    private List<Payment> paymentList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "serviceInvoice")
+    private Payment payment;
 
     public ServiceInvoice() {
     }
@@ -139,13 +135,12 @@ public class ServiceInvoice implements Serializable {
         this.servicePO = servicePO;
     }
 
-    @XmlTransient
-    public List<Payment> getPaymentList() {
-        return paymentList;
+    public Payment getPayment() {
+        return payment;
     }
 
-    public void setPaymentList(List<Payment> paymentList) {
-        this.paymentList = paymentList;
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     @Override
