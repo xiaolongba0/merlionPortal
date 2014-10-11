@@ -114,6 +114,16 @@ public class ContractManagementSessionBean {
         }
     }
 
+    public Contract searchAValidContractToRenew(Integer contractId, Integer myCompanyId) {
+        Contract contract = em.find(Contract.class, contractId);
+        if (contractId != null) {
+            if (contract.getStatus() == 5 && (int) contract.getPartyA() == myCompanyId) {
+                return contract;
+            }
+        }
+        return null;
+    }
+
     public ServiceQuotation searchAValidQuotation(Integer quotationId, Integer myCompanyId) {
         ServiceQuotation quotation = em.find(ServiceQuotation.class, quotationId);
         if (quotation != null) {
@@ -199,7 +209,7 @@ public class ContractManagementSessionBean {
             em.merge(contract);
             em.flush();
 
-            return renewContract.getContractId();
+            return 1;
         } else {
             return -1;
         }
@@ -223,14 +233,13 @@ public class ContractManagementSessionBean {
     public int saveSignedContract() {
         return 1;
     }
-    
-    public boolean hasDuplicateContract(Integer quotationId){
-        ServiceQuotation quotation  = em.find(ServiceQuotation.class,quotationId);
-        if(quotation.getContractList().isEmpty() || quotation.getContractList() ==null){
+
+    public boolean hasDuplicateContract(Integer quotationId) {
+        ServiceQuotation quotation = em.find(ServiceQuotation.class, quotationId);
+        if (quotation.getContractList().isEmpty() || quotation.getContractList() == null) {
             //No duplicate contract for this quotation
             return false;
-        }
-        else{
+        } else {
             return true;
         }
     }
