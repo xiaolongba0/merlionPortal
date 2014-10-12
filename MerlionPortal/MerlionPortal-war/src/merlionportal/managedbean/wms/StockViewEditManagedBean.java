@@ -5,6 +5,7 @@
  */
 package merlionportal.managedbean.wms;
 
+import entity.Product;
 import entity.Stock;
 import entity.StorageBin;
 import entity.StorageType;
@@ -21,7 +22,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.mrp.productcatalogmodule.ProductSessionBean;
 import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
+import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -35,21 +38,18 @@ public class StockViewEditManagedBean {
     private AssetManagementSessionBean amsb;
     @EJB
     private UserAccountManagementSessionBean uamb;
-
-    private List<Warehouse> warehouses;
-    private Integer warehouseId;
-    private List<StorageType> storagetypes;
-    private Integer storageTypeId;
-    private List<StorageBin> bins;
-    private Integer storageBinId;
+    @EJB
+    private ProductSessionBean psb;
 
     private List<Stock> stocks;
     private Integer productId;
     private Stock stock;
     private Integer radioValue;
-    private List<String> productIdList;
     private Integer totalQuantity;
-
+    
+    private List<Product> productList;
+    private Product product;
+    
     private Integer companyId;
     private SystemUser loginedUser;
 
@@ -70,7 +70,7 @@ public class StockViewEditManagedBean {
                 ex.printStackTrace();
             }
         }
-
+        productList = psb.getMyProducts(companyId);
     }
 
     /**
@@ -92,15 +92,61 @@ public class StockViewEditManagedBean {
         System.out.println("In countTotalQuantity, TotalQuantity ============================= : " + totalQuantity);
     }
 
-    // TO BE EDITED AND INTEGRATED WITH MRP
-    public List<String> getProductIdList() {
-        productIdList = amsb.listProductId(companyId);
-        System.out.println("[In WAR FILE - get PRODUCTID LIST]" + productIdList);
-        return productIdList;
+    public void viewStocks() {
+        System.out.println("===============================[In Managed Bean - view Stocks]");
+        System.out.println("[In Managed Bean - getStocks] Product ID : " + productId);
+        totalQuantity = 0;
+        if (productId != null) {
+            stocks = amsb.viewStock(productId);
+            totalQuantity = amsb.countTotalStock(productId);
+            if (stocks == null) {
+                System.out.println("============== FAILED TO VIEW STOCK ===============");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Stock.", ""));
+            }
+        }
     }
 
-    public void setProductIdList(List<String> productIdList) {
-        this.productIdList = productIdList;
+    // INTEGRATED WITH MRP
+//    public void displayProducts() {
+//
+//        System.out.println("[IN MANAGED BEAN -- VIEW EDIT STOCK MB] ====================== displayproducts");
+//        if (companyId != null) {
+//            productList = psb.getMyProducts(companyId);
+//        }
+//    }
+
+    public void deleteStock(Stock stock) {
+        try {
+            boolean result = amsb.deleteStock(stock.getStockId());
+            if (result) {
+                stocks.remove(stock);
+                FacesMessage msg = new FacesMessage("Stock with ID = " + stock.getStockId() + " has sucessfully been deleted");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", ""));
+
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void onRowEdit(RowEditEvent event) {
+        stock = new Stock();
+        stock = (Stock) event.getObject();
+        System.out.println("[In Managed Bean - STOCK ON ROW EDIT]===============================: " + stock.getQuantity());
+        boolean result = amsb.editStock(stock.getName(), stock.getComments(), stock.getQuantity(), stock.getProductId(), stock.getStockId(), stock.getExpiryDate());
+        if (result) {
+            FacesMessage msg = new FacesMessage("Stock with ID = " + stock.getStockId() + " has sucessfully been edited");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong"));
+
+        }
+    }
+
+    public void onRowCancel(RowEditEvent event) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Edit Cancelled"));
     }
 
     public Integer getProductId() {
@@ -120,19 +166,7 @@ public class StockViewEditManagedBean {
     }
 
     public List<Stock> getStocks() {
-        System.out.println("===============================[In Managed Bean - getStocks]");
-        System.out.println("[In Managed Bean - getStocks] Product ID : " + productId);
-        totalQuantity = 0;
-        if (productId != null) {
-            stocks = amsb.viewStock(productId);
-            totalQuantity = amsb.countTotalStock(productId);
-            if (stocks == null) {
-                System.out.println("============== FAILED TO VIEW STOCK ===============");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Stock.", ""));
-            }
         return stocks;
-        }
-        return null;
     }
 
     public void setStocks(List<Stock> stocks) {
@@ -153,6 +187,22 @@ public class StockViewEditManagedBean {
 
     public void setTotalQuantity(Integer totalQuantity) {
         this.totalQuantity = totalQuantity;
+    }
+
+    public List<Product> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
 }

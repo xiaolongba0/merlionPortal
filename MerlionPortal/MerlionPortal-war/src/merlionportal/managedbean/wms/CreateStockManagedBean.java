@@ -5,11 +5,13 @@
  */
 package merlionportal.managedbean.wms;
 
+import entity.Product;
 import entity.StorageBin;
 import entity.StorageType;
 import entity.SystemUser;
 import entity.Warehouse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -18,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.mrp.productcatalogmodule.ProductSessionBean;
 import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
 
 /**
@@ -35,9 +38,12 @@ public class CreateStockManagedBean {
     private AssetManagementSessionBean amsb;
     @EJB
     private UserAccountManagementSessionBean uamb;
+    @EJB
+    private ProductSessionBean psb;
 
     private SystemUser loginedUser;
     private Integer companyId;
+    private Integer radioValue;
 
     private Integer warehouseId;
     private List<Warehouse> warehouses;
@@ -52,12 +58,16 @@ public class CreateStockManagedBean {
     private String stockName;
     private String comments;
     private Integer quantity;
-    private Integer productId;
+    private Date expiryDate;
     
+    private Integer productId;  
+    private List<Product> productList;
+    private Product product;
+
     public CreateStockManagedBean() {
     }
-    
-     @PostConstruct
+
+    @PostConstruct
     public void init() {
 
         boolean redirect = true;
@@ -76,17 +86,18 @@ public class CreateStockManagedBean {
             }
         }
         warehouses = amsb.viewMyWarehouses(companyId);
+        productList = psb.getMyProducts(companyId);
     }
 
     public void addStock() {
         System.out.println("[IN MANAGED BEAN -- Create STOCK MB] ====================== add stock, Storage Bin ID: " + storageBinId);
-        
-        boolean result = amsb.addStock(stockName, comments, quantity, productId, storageBinId);
+
+        boolean result = amsb.addStock(stockName, comments, quantity, productId, storageBinId, expiryDate);
         if (result) {
             clearAllFields();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "New Stock Added!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success! Stock Added!", "New Stock Added!"));
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error! Please check if Bin has reached its max quantity", "Something went wrong."));
         }
     }
 
@@ -104,6 +115,14 @@ public class CreateStockManagedBean {
         }
     }
 
+    public void displayProducts() {
+
+        System.out.println("[IN MANAGED BEAN -- Create STOCK MB]  ====================== displayproducts");
+        if (companyId != null) {
+            productList = psb.getMyProducts(companyId);
+        }
+    }
+
     private void clearAllFields() {
         warehouseId = null;
         storageTypeId = null;
@@ -112,6 +131,7 @@ public class CreateStockManagedBean {
         comments = null;
         quantity = null;
         productId = null;
+        expiryDate = null;
     }
 
     public SystemUser getLoginedUser() {
@@ -217,6 +237,38 @@ public class CreateStockManagedBean {
 
     public void setProductId(Integer productId) {
         this.productId = productId;
+    }
+
+    public List<Product> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
+    }
+
+    public Integer getRadioValue() {
+        return radioValue;
+    }
+
+    public void setRadioValue(Integer radioValue) {
+        this.radioValue = radioValue;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Date getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
 }

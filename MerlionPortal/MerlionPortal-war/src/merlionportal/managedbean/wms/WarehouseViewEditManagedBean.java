@@ -92,7 +92,8 @@ public class WarehouseViewEditManagedBean {
             System.out.println("[In WAR FILE - Delete Warehouse Function] Warehouse ID========== :" + warehouseId);
             assetManagementSessionBean.deleteWarehouse(warehouseId);
             warehouses.remove(warehouse);
-
+            FacesMessage msg = new FacesMessage("Warehouse with Warehouse ID = " + warehouse.getWarehouseId() + " has sucessfully been deleted");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -189,7 +190,6 @@ public class WarehouseViewEditManagedBean {
     public void setCountry(String country) {
         this.country = country;
     }
-
 
     public void onRowEdit(RowEditEvent event) {
         System.out.println("ON ROW EDIT ===============================");

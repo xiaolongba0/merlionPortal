@@ -23,7 +23,7 @@ import org.primefaces.event.RowEditEvent;
 
 /**
  *
- * @author manliqi
+ * @author yunwei
  */
 @Named(value = "storageBinViewEditManagedBean")
 @ViewScoped
@@ -91,7 +91,7 @@ public class StorageBinViewEditManagedBean {
         bin = (StorageBin) event.getObject();
         boolean result = assetManagementSessionBean.editStorageBin(bin.getBinName(), bin.getDescription(), bin.getBinType(), bin.getMaxQuantity(), bin.getMaxWeight(), bin.getStorageBinId());
         if (result) {
-            FacesMessage msg = new FacesMessage("Storage with Storage Bin ID = " + bin.getStorageBinId() + " has sucessfully been edited");
+            FacesMessage msg = new FacesMessage("Bin with Storage Bin ID = " + bin.getStorageBinId() + " has sucessfully been edited");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong"));
@@ -108,7 +108,8 @@ public class StorageBinViewEditManagedBean {
             boolean result = assetManagementSessionBean.deleteStorageBin(bin.getStorageBinId());
             if (result) {
                 bins.remove(bin);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success! Storage Bin is deleted", ""));
+                FacesMessage msg = new FacesMessage("Bin with Storage Bin ID = " + bin.getStorageBinId() + " has sucessfully been deleted");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error! Please check if Bin contains Stock.", ""));
 
