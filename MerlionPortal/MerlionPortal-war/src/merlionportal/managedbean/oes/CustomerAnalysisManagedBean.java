@@ -20,6 +20,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import merlionportal.oes.ordermanagement.CommonFunctionSessionBean;
 import merlionportal.oes.reportmanagementmodule.ReportManagerSessionBean;
+import merlionportal.utility.DTOReportList;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.CategoryAxis;
@@ -55,7 +56,7 @@ public class CustomerAnalysisManagedBean {
     private List firstList = new ArrayList();
     private List secondList = new ArrayList();
     private int minMonth;
-    List<Map> listOfResult = new ArrayList();
+    private List<DTOReportList> myReportList;
 
     @PostConstruct
     public void init() {
@@ -83,7 +84,7 @@ public class CustomerAnalysisManagedBean {
         productOrderList = (List<ProductOrder>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("FirstOrderList");
         secondOrderList = (List<ProductOrder>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("SecondOrderList");
         createMyModels();
-        listOfResult = this.initTable();
+        myReportList = this.initMyList(firstList, secondList);
 
     }
 
@@ -315,30 +316,25 @@ public class CustomerAnalysisManagedBean {
         return myMap;
     }
 
-    public List<Map> getListOfResult() {
-
-        return listOfResult;
+    public List<DTOReportList> getMyReportList() {
+        return myReportList;
     }
 
-    public void setListOfResult(List<Map> listOfResult) {
-        this.listOfResult = listOfResult;
+    public void setMyReportList(List<DTOReportList> myReportList) {
+        this.myReportList = myReportList;
     }
-
-    public Double myFirstNumber(Map myResult) {
-        Double result = null;
-        if (myResult != null) {
-            result = (Double) myResult.get("first");
+    
+    public List<DTOReportList> initMyList(List myFirst, List mySecond){
+        List<DTOReportList> myResult = new ArrayList();
+        for(int i=0; i<minMonth;i++){
+            DTOReportList d1=new DTOReportList();
+            d1.setFirst((Double)myFirst.get(i));
+            d1.setSecond((Double)mySecond.get(i));
+            myResult.add(d1);
         }
-        System.out.println(result + "==========================");
-        return result;
+        return myResult;
     }
-
-    public Double mySecondNumber(Map myResult) {
-        Double result = null;
-        if (myResult != null) {
-            result = (Double) myResult.get("second");
-        }
-        return result;
-    }
+    
+    
 
 }

@@ -57,7 +57,7 @@ public class SalesOrderManagedBean {
             }
         }
         myOrder = (ProductOrder) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedOrder");
-        credit = purchaseOrderMB.checkCredit(myOrder.getCreatorId());
+        credit = purchaseOrderMB.checkCredit(myOrder.getCreatorId(),myOrder);
 
     }
 
