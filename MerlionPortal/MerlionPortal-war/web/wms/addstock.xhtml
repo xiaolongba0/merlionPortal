@@ -20,30 +20,30 @@
         </ui:define>
 
         <ui:define name="left">
-
             <p:panelMenu>
-                <p:submenu label =" Manage Your Warehouse">
-                    <p:menuitem value="WMS home" url="wmsindex.xhtml" />
-                    <p:submenu label="Warehouse" >
-                        <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
-                        <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
-                    </p:submenu>
-                    <p:submenu label="Warehouse Zone" >
-                        <p:menuitem value="Add Warehouse Zone" url="addwarehousezone.xhtml" />
-                        <p:menuitem value="View Warehouse Zones" url="viewwarehousezone.xhtml" />
-                    </p:submenu>
-                    <p:submenu label="Storage Bin" >
-                        <p:menuitem value="Add Storage Bin" url="addstoragebin.xhtml"/>
-                        <p:menuitem value="View Storage Bin" url="viewstoragebin.xhtml" />
-                    </p:submenu>
+                <p:submenu label =" WMS HOME" styleClass="display:block">
+                    <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
                 </p:submenu>
-                <p:submenu label="Stock" >
+                <p:submenu label =" Warehouse" styleClass="display:block">
+                    <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
+                    <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
+                </p:submenu>
+                <p:submenu label="Warehouse Zone" styleClass="display:block" >
+                    <p:menuitem value="Add Warehouse Zone" url="addwarehousezone.xhtml" />
+                    <p:menuitem value="View Warehouse Zones" url="viewwarehousezone.xhtml" />
+                </p:submenu>
+                <p:submenu label="Storage Bin" styleClass="display:block" >
+                    <p:menuitem value="Add Storage Bin" url="addstoragebin.xhtml" />
+                    <p:menuitem value="View Storage Bin" url="viewstoragebin.xhtml" />
+                </p:submenu>
+                <p:submenu label="Stock" styleClass="display:block" >
                     <p:menuitem value="Add Stock" url="addstock.xhtml"/>
+                    <p:menuitem value="View Stock" url="viewstock.xhtml"/>
                 </p:submenu>
             </p:panelMenu>
         </ui:define>
-        
-        
+
+
         <ui:define name="right">
             <h:form id="formMain">
                 <p:panel id="panel" header="Add Storage Bin">
@@ -55,7 +55,7 @@
                             <h:outputText value="" />
                         </f:facet>
                     </p:ajaxStatus>
-                    <p:panelGrid>
+                    <p:panelGrid columns="1" >
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="warehouse" value="Warehouse Name: " />
@@ -92,6 +92,30 @@
                             </p:column>
                         </p:row>
                         <p:row>
+
+                            <p:selectOneRadio id="myRadioID" value="#{createStockManagedBean.radioValue}" layout="custom">
+                                <f:selectItem itemLabel="Choose ID" itemValue="1"/>
+                                <f:selectItem itemLabel="Enter " itemValue="2"/>
+                                <p:ajax process="@this" update="formMain" />
+                            </p:selectOneRadio>
+
+                            <!--                            <h:panelGrid columns="7" id="area">-->
+                            <p:radioButton id="id00" for="myRadioID" itemIndex="0"/>
+                            <h:outputLabel for="id00" value="Choose Product ID "/>
+
+                            <p:selectOneMenu id="product" value="#{createStockManagedBean.productId}"  style="width:200px" required="true" requiredMessage="Product ID is required." disabled="#{createStockManagedBean.radioValue != '1'}">
+                                <f:selectItem itemLabel="Select Product ID" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{createStockManagedBean.productList}" var="product" itemLabel="ID:#{product.productId}   Name:#{product.productName}" itemValue="#{product.productId}"/>
+                            </p:selectOneMenu>
+
+                            <p:radioButton id="id01" for="myRadioID" itemIndex="1"/>
+                            <h:outputLabel for="id01" value="Enter Product ID "/>
+                            <p:inputText id="input01" value="#{createStockManagedBean.productId}" disabled="#{createStockManagedBean.radioValue != '2'}" required="true" requiredMessage="Product ID is required.">
+                            </p:inputText>
+                            <!--                            </h:panelGrid>-->
+                        </p:row>
+
+                        <p:row>
                             <p:column>
                                 <p:outputLabel for="stockName" style="font-weight: bold" value="Stock Name :   " />
                             </p:column>
@@ -106,14 +130,14 @@
                                 <h:outputLabel for="comments" style="font-weight: bold" value="Comments:   *" />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="comments" requiredMessage="Comments is required." id="description" value="#{createStockManagedBean.comments}">
+                                <p:inputText required="true" label="comments" requiredMessage="Comments is required." id="comments" value="#{createStockManagedBean.comments}">
                                     <f:validateLength minimum="1" maximum="200" />
                                 </p:inputText>
                             </p:column>
                         </p:row>  
                         <p:row>
                             <p:column>
-                                <h:outputLabel for="wuantity" style="font-weight: bold" value="Quantity:   *" />
+                                <h:outputLabel for="quantity" style="font-weight: bold" value="Quantity:   *" />
                             </p:column>
                             <p:column>
                                 <p:inputText required="true" label="quantity" requiredMessage="Quantity is required." id="quantity" value="#{createStockManagedBean.quantity}">
@@ -121,17 +145,11 @@
                                 </p:inputText>
                             </p:column>
                         </p:row>
-
                         <p:row>
                             <p:column>
-                                <h:outputLabel for="productId" style="font-weight: bold" value="Product ID :   *" />
+                                <h:outputLabel for="expiryDate" style="font-weight: bold" value="Expiry Date: (Please leave blank if Not Applicable)" />
+                                <p:calendar id="expiryDate" value="#{createStockManagedBean.expiryDate}" />
                             </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="productId" requiredMessage="Product ID is required." id="productId" value="#{createStockManagedBean.productId}">
-                                    <f:validateLength minimum="1" maximum="19" />
-                                </p:inputText>
-                            </p:column>
-
                         </p:row>
                     </p:panelGrid>
                     <p:messages id="messages" autoUpdate="true" closable="true" />

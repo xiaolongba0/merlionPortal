@@ -21,23 +21,24 @@
 
         <ui:define name="left">
             <p:panelMenu>
-                <p:submenu label =" Manage Your Warehouse">
+                <p:submenu label =" WMS HOME" styleClass="display:block">
                     <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
-                    <p:submenu label="Warehouse" >
-                        <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
-                        <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
-                    </p:submenu>
-                    <p:submenu label="Warehouse Zone" >
-                        <p:menuitem value="Add Warehouse Zone" url="addwarehousezone.xhtml" />
-                        <p:menuitem value="View Warehouse Zones" url="viewwarehousezone.xhtml" />
-                    </p:submenu>
-                    <p:submenu label="Storage Bin" >
-                        <p:menuitem value="Add Storage Bin" url="addstoragebin.xhtml" />
-                        <p:menuitem value="View Storage Bin" url="viewstoragebin.xhtml" />
-                    </p:submenu>
-                    <p:submenu label="Stock" >
-                        <p:menuitem value="Add Stock" url="addstock.xhtml" style="background-color: lavender"/>
-                    </p:submenu>
+                </p:submenu>
+                <p:submenu label =" Warehouse" styleClass="display:block">
+                    <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
+                    <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
+                </p:submenu>
+                <p:submenu label="Warehouse Zone" styleClass="display:block" >
+                    <p:menuitem value="Add Warehouse Zone" url="addwarehousezone.xhtml" />
+                    <p:menuitem value="View Warehouse Zones" url="viewwarehousezone.xhtml" />
+                </p:submenu>
+                <p:submenu label="Storage Bin" styleClass="display:block" >
+                    <p:menuitem value="Add Storage Bin" url="addstoragebin.xhtml" />
+                    <p:menuitem value="View Storage Bin" url="viewstoragebin.xhtml" />
+                </p:submenu>
+                <p:submenu label="Stock" styleClass="display:block" >
+                    <p:menuitem value="Add Stock" url="addstock.xhtml"/>
+                    <p:menuitem value="View Stock" url="viewstock.xhtml"/>
                 </p:submenu>
             </p:panelMenu>
         </ui:define>
@@ -63,18 +64,18 @@
                     <h:panelGrid columns="7" id="area">
                         <p:radioButton id="id00" for="myRadioID" itemIndex="0"/>
                         <h:outputLabel for="id00" value="Choose Product ID "/>
-<!--                        <p:inputText id="input00" value="#{stockViewEditManagedBean.productId}" disabled="#{stockViewEditManagedBean.radioValue != '1'}"/>                          -->
 
-                        <p:selectOneMenu id="productId" value="#{stockViewEditManagedBean.productId}"  style="width:200px" disabled="#{stockViewEditManagedBean.radioValue != '1'}">
-<!--                            <p:ajax listener="#{stockViewEditManagedBean.ProductIdList}" update="stockData" />-->
+                        <p:selectOneMenu id="product" value="#{stockViewEditManagedBean.productId}"  style="width:200px" disabled="#{stockViewEditManagedBean.radioValue != '1'}">
                             <f:selectItem itemLabel="Select Product ID" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{stockViewEditManagedBean.productId}" var="stock" itemValue="#{stockViewEditManagedBean.productId}"/>
+                            <f:selectItems value="#{stockViewEditManagedBean.productList}" var="product" itemLabel="ID:#{product.productId}   Name:#{product.productName}" itemValue="#{product.productId}"/>
+                            <p:ajax listener="#{stockViewEditManagedBean.viewStocks()}" update="stockData" />
+                            <p:ajax update="totalQuantity" />
                         </p:selectOneMenu>
 
                         <p:radioButton id="id01" for="myRadioID" itemIndex="1"/>
                         <h:outputLabel for="id01" value="Enter Product ID "/>
                         <p:inputText id="input01" value="#{stockViewEditManagedBean.productId}" disabled="#{stockViewEditManagedBean.radioValue != '2'}">
-                            <p:ajax update="stockData" />
+                            <p:ajax listener="#{stockViewEditManagedBean.viewStocks()}" update="stockData" />
                             <p:ajax update="totalQuantity" />
                         </p:inputText>
                     </h:panelGrid>
@@ -91,19 +92,19 @@
                             </p:outputPanel>
                         </f:facet>
 
-                        <p:ajax event="rowEdit" listener="#{storageBinViewEditManagedBean.onRowEdit}"/>
-                        <p:ajax event="rowEditCancel" listener="#{storageBinViewEditManagedBean.onRowCancel}"/>                
+                        <p:ajax event="rowEdit" listener="#{stockViewEditManagedBean.onRowEdit}" />
+                        <p:ajax event="rowEditCancel" listener="#{stockViewEditManagedBean.onRowCancel}"/>                
 
-                        <p:column filterBy="#{stock.storageBin.storageTypestorageTypeId.warehousewarehouseId.warehouseId}" filterMatchMode="exact" headerText="Warehouse" >
+                        <p:column filterBy="#{stock.storageBin.storageTypestorageTypeId.warehousewarehouseId.warehouseId}" filterMatchMode="contains" headerText="Warehouse" >
                             <h:outputText value="ID: #{stock.storageBin.storageTypestorageTypeId.warehousewarehouseId.warehouseId} Name: #{stock.storageBin.storageTypestorageTypeId.warehousewarehouseId.name}"  />
                         </p:column>
-                        <p:column filterBy="#{stock.storageBin.storageTypestorageTypeId.storageTypeId}" filterMatchMode="exact" headerText="Warehouse Zone" >
+                        <p:column filterBy="#{stock.storageBin.storageTypestorageTypeId.storageTypeId}" filterMatchMode="contains" headerText="Warehouse Zone" >
                             <h:outputText value="ID: #{stock.storageBin.storageTypestorageTypeId.storageTypeId} Name:#{stock.storageBin.storageTypestorageTypeId.name} " />
                         </p:column>
-                        <p:column filterBy="#{stock.storageBin.storageBinId}" filterMatchMode="exact" headerText="Storage Bin ID" >
+                        <p:column filterBy="#{stock.storageBin.storageBinId}" filterMatchMode="contains" headerText="Storage Bin ID" >
                             <h:outputText value="ID: #{stock.storageBin.storageBinId} Name:#{stock.storageBin.binName} " />
                         </p:column>
-                        <p:column filterBy="#{stock.stockId}" filterMatchMode="exact" headerText="Stock ID" >
+                        <p:column filterBy="#{stock.stockId}" filterMatchMode="contains" headerText="Stock ID" >
                             <h:outputText value="#{stock.stockId}" />
                         </p:column>
 
@@ -112,7 +113,7 @@
                                 <f:facet name="output"><h:outputText value="#{stock.name}" /></f:facet>
                                 <f:facet name="input"><p:inputText value="#{stock.name}" style="width:100%" label="Stock Name"/></f:facet>
                             </p:cellEditor>
-                        </p:column>  
+                        </p:column> 
 
                         <p:column  headerText="Comments" filterBy="#{stock.comments}" filterMatchMode="contains">
                             <p:cellEditor>
@@ -128,19 +129,29 @@
                             </p:cellEditor>
                         </p:column>
 
+                        <p:column  headerText="Expiry Date" filterBy="#{stock.expiryDate}" filterMatchMode="contains">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{stock.expiryDate}" /></f:facet>
+                                <f:facet name="input"><p:calendar id="expiryDate" value="#{stock.expiryDate}" /></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        
                         <p:column style="width:48px">
-                            <p:commandButton action="#{storageBinViewEditManagedBean.deleteStorageBin(storagebin)}" update="stockData" icon = "ui-icon-trash"  >
+                            <p:commandButton action="#{stockViewEditManagedBean.deleteStock(stock)}" update="stockData" oncomplete="updateQuantity()" icon = "ui-icon-trash"  >
+
                                 <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this stock?" icon="ui-icon-alert" />
                             </p:commandButton> 
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                             </p:confirmDialog>
-                        </p:column>
+                        </p:column> 
+                        <!--                        <p:remoteCommand name="updateQuantity" update="totalQuantity" />-->
                         <p:column style="width:42px">
                             <p:rowEditor />
                         </p:column>
                     </p:dataTable>
+
                     <p:messages id="messages" autoUpdate="true" closable="true" />
                     <br></br>
                     <h:outputLabel id="totalQuantity" value="Total Quantity: #{stockViewEditManagedBean.totalQuantity}" />
