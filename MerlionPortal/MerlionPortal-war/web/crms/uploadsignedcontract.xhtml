@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="Upload Signed Contract" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <h:form id="formMain">
+                <p:panelMenu>
+                    <p:submenu label="CRMS HOME" styleClass="display:block">
+                        <p:menuitem value="CRMS Home" url="crmsindex.xhtml"/>     
+                        <p:menuitem value="Service Yellow Pages" url="serviceyellowpages.xhtml"/>
+                    </p:submenu>
+                    <p:submenu label="Service Catalog Management" styleClass="display:block">
+                        <p:menuitem value="Create New Service" url="createservice.xhtml" />
+                        <p:menuitem value="View All Services" url="viewcompanyservices.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Quotation" styleClass="display:block">
+                        <p:menuitem value="View All Requests" url="viewallrequests.xhtml" />
+                        <p:menuitem value="View All Quotations" url="viewallquotations.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Contract" styleClass="display:block">
+                        <p:menuitem value="Create Service Contract" url="createservicecontract.xhtml" />
+                        <p:menuitem value="View All Contracts" url="viewallcontracts.xhtml" />
+                        <p:menuitem value="Renew Contracts" url="renewservicecontract.xhtml" />
+                    </p:submenu>
+                </p:panelMenu>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">
+            <h:form enctype="multipart/form-data">
+
+                <p:panel header="Upload Signed Contract" >
+
+                    <h:panelGrid columns="3">
+                        <h:outputLabel value="Contract ID:" /><p:spacer width="20" height="20" />
+                        <h:outputLabel value="#{uploadSignedContractManagedBean.contractId}" />
+                    </h:panelGrid>
+                    <p:fileUpload  fileUploadListener="#{uploadSignedContractManagedBean.upload}" mode="advanced" dragDropSupport="true"
+                                   update="messages" sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(pdf)$/" />
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                </p:panel>
+            </h:form>
+            <h:form>                
+                <p:commandButton action="viewcontractdetail.xhtml?faces-redirect=true" value="Go Back" icon="ui-icon-circle-arrow-w" />
+            </h:form>
+
+
+
+        </ui:define>
+    </ui:composition>
+</html>

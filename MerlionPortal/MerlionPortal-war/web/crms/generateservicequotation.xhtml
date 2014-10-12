@@ -68,34 +68,34 @@
                 </p:fieldset>
                 <p:fieldset legend="Request Information" style="margin-bottom:20px">
                     <h:panelGrid columns="3" cellpadding="6">
-                        <h:outputText value="Service ID:" /><p:spacer width="20" height="20" />
+                        <p:outputLabel value="Service ID:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{generateQuotationManagedBean.selectedRequest.serviceCatalog.serviceCatalogId}" />
-                        <h:outputText value="Service Name:" /><p:spacer width="20" height="20" />
+                        <p:outputLabel value="Service Name:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{generateQuotationManagedBean.selectedRequest.serviceCatalog.serviceName}" />
-                        <h:outputText value="Service Description" /><p:spacer width="20" height="20" />
+                        <p:outputLabel value="Service Description:"/><p:spacer width="20" height="20" />
                         <h:outputText value="#{generateQuotationManagedBean.selectedRequest.serviceCatalog.serviceDescription}" />
-                        <h:outputText value="Service Type" /><p:spacer width="20" height="20" />
+                        <p:outputLabel value="Service Type:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{generateQuotationManagedBean.selectedRequest.serviceCatalog.serviceType}" />
-                        <h:outputText value="Listed Price Per TEU:" /><p:spacer width="20" height="20" />
+                        <p:outputLabel value="Listed Price Per TEU:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{generateQuotationManagedBean.selectedRequest.price}" />
-                        <h:outputText value="Start Date:" /><p:spacer width="20" height="20" />
+                        <p:outputLabel value="Start Date:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{generateQuotationManagedBean.selectedRequest.startDate}" />
-                        <h:outputText value="End Date:" /><p:spacer width="20" height="20" />
+                        <p:outputLabel value="End Date:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{generateQuotationManagedBean.selectedRequest.endDate}" />
-                        <h:outputText value="Origin:" /><p:spacer width="20" height="20" />
+                        <p:outputLabel value="Origin:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{generateQuotationManagedBean.selectedRequest.origin}" />
-                        <h:outputText value="Destination:" /><p:spacer width="20" height="20" />
+                        <p:outputLabel value="Destination:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{generateQuotationManagedBean.selectedRequest.destination}" />
-                        <h:outputText value="Expected Quantity Per Month (TEU)" /><p:spacer width="20" height="20" />
+                        <p:outputLabel value="Expected Quantity Per Month (TEU) :" style="width: 150px" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{generateQuotationManagedBean.selectedRequest.quantityPerMonth}" />
                     </h:panelGrid>
                 </p:fieldset>
                 <p:fieldset legend="Quotation Information" style="margin-bottom:20px">
                     <h:panelGrid columns="3" cellpadding="10">
-                        <h:outputText value="Quotation Price Per TEU:" /><p:spacer width="20" height="20" />
-                        <h:inputText value="#{generateQuotationManagedBean.price}" />
-                        <h:outputText value="Discount in %:" /><p:spacer width="20" height="20" />
-                        <h:inputText value="#{generateQuotationManagedBean.discountRate}" />
+                        <p:outputLabel value="Quotation Price Per TEU:" /><p:spacer width="20" height="20" />
+                        <h:inputText value="#{generateQuotationManagedBean.price}" required="true" requiredMessage="Price is required" styleClass="form-control" />
+                        <p:outputLabel value="Discount in %:" /><p:spacer width="20" height="20" />
+                        <h:inputText value="#{generateQuotationManagedBean.discountRate}" styleClass="form-control" />
                     </h:panelGrid>
                 </p:fieldset>
 
@@ -103,9 +103,9 @@
                 <p:commandButton value="Generate Quotation" icon="ui-icon-check" action="#{generateQuotationManagedBean.createQuotation()}" update="form" ajax="true" />
                 <p:commandButton value="Fulfillment Check"  icon="ui-icon-star" action="#{generateQuotationManagedBean.fulfillmentCheck()}" update="form" ajax="true" />
                 <p:commandButton value="Reject this request" icon="ui-icon-closethick" action="#{generateQuotationManagedBean.rejectRequestForQuotation()}" update="form" ajax="true" />
-                <p:commandButton value="Go Back" action="viewallrequests.xhtml?faces-redirect-true"/>
-
             </h:form>
+            <p:commandButton value="Go Back" action="viewallrequests.xhtml?faces-redirect-true"/>
+
         </ui:define>
     </ui:composition>
 </html>

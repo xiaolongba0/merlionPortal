@@ -48,21 +48,21 @@
             <h:form id="form">
                 <p:fieldset legend="Contact Information" style="margin-bottom:20px">
                     <h:panelGrid columns="3" cellpadding="6">
-                        <h:outputText value="Sender Company ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="Sender Company ID:" /><p:spacer width="35" height="20" />
                         <h:outputText value="#{createRFQManagedBean.companyId}" />
-                        <h:outputText value="Sender Company Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="Sender Company Name:" /><p:spacer width="35" height="20" />
                         <h:outputText value="#{createRFQManagedBean.companyName}" />
-                        <h:outputText value="Sender Contact Person Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="Sender Contact Person Name:" /><p:spacer width="35" height="20" />
                         <h:outputText value="#{createRFQManagedBean.loginedUser.firstName} #{createRFQManagedBean.loginedUser.lastName}"/>
-                        <h:outputText value="Sender Contact Person Contact Number:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="Sender Contact Person Contact Number:" /><p:spacer width="35" height="20" />
                         <h:outputText value="#{createRFQManagedBean.loginedUser.contactNumber}" />
                     </h:panelGrid>
                     <p:separator />
 
                     <h:panelGrid columns="3" cellpadding="6">
-                        <h:outputText value="Receiver Company ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="Receiver Company ID:" /><p:spacer width="50" height="20" />
                         <h:outputText value="#{createRFQManagedBean.selectedService.companyId}" />
-                        <h:outputText value="Receiver Company Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="Receiver Company Name:" /><p:spacer width="50" height="20" />
                         <h:outputText value="#{createRFQManagedBean.selectedService.companyName}" />
                     </h:panelGrid>
                 </p:fieldset>
@@ -76,17 +76,17 @@
                         <h:outputText value="#{createRFQManagedBean.selectedService.serviceDescription}" />
                         <h:outputText value="Price Per TEU" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{createRFQManagedBean.selectedService.pricePerTEU}" />
-                        <p:outputLabel for="startDate" value="Start Date" /><p:spacer width="20" height="20" />
-                        <p:calendar id="startDate" value="#{createRFQManagedBean.startDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{createRFQManagedBean.today}" />
-                        <p:outputLabel for="endDate" value="End Date" /><p:spacer width="20" height="20" />
-                        <p:calendar id="endDate" value="#{createRFQManagedBean.endDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{createRFQManagedBean.startDate}" />
+                        <p:outputLabel for="startDate" value="Start Date " /><p:spacer width="20" height="20" />
+                        <p:calendar id="startDate" required="true" requiredMessage="Start Date is required" value="#{createRFQManagedBean.startDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{createRFQManagedBean.today}" />
+                        <p:outputLabel for="endDate" value="End Date " /><p:spacer width="20" height="20" />
+                        <p:calendar id="endDate" required="true" requiredMessage="End Date is required" value="#{createRFQManagedBean.endDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{createRFQManagedBean.startDate}" />
 
-                        <p:outputLabel value="Origin" /><p:spacer width="20" height="20" />
-                        <p:inputText value="#{createRFQManagedBean.origin}" />
-                        <p:outputLabel value="Destination" /><p:spacer width="20" height="20" />
-                        <p:inputText value="#{createRFQManagedBean.destination}" />
-                        <p:outputLabel value="Expected Quantity Per Month (TEU)" /><p:spacer width="20" height="20" />
-                        <p:inputText value="#{createRFQManagedBean.quantityPerMonth}" />
+                        <p:outputLabel value="Origin *" /><p:spacer width="20" height="20" />
+                        <p:inputText value="#{createRFQManagedBean.origin}"  required="true" requiredMessage="Origin is required" />
+                        <p:outputLabel value="Destination *" /><p:spacer width="20" height="20" />
+                        <p:inputText value="#{createRFQManagedBean.destination}" required="true" requiredMessage="Destination is required" />
+                        <p:outputLabel value="Expected Quantity Per Month (TEU) *" style="width: 150px"  /><p:spacer width="20" height="20" />
+                        <p:inputText value="#{createRFQManagedBean.quantityPerMonth}" required="true" requiredMessage="Expected Quantity is required" />
 
                     </h:panelGrid>
 
@@ -105,8 +105,9 @@
                 </p:fieldset>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 <p:commandButton value="Send Request for Quotation" action="#{createRFQManagedBean.createRequestForQuotation()}" update="form" ajax="true" />
+            </h:form>
+            <h:form id="back">
                 <p:commandButton value="Go Back" action="serviceyellowpages.xhtml?faces-redirect-true"/>
-
             </h:form>
         </ui:define>
     </ui:composition>

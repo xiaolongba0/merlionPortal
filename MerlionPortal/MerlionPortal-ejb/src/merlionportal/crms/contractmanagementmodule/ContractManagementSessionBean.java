@@ -9,6 +9,7 @@ import entity.Company;
 import entity.Contract;
 import entity.ServicePO;
 import entity.ServiceQuotation;
+import entity.SignedContract;
 import entity.SystemUser;
 import java.util.ArrayList;
 import java.util.Date;
@@ -189,7 +190,18 @@ public class ContractManagementSessionBean {
 
         if (contract != null) {
             Contract renewContract = new Contract();
-            renewContract = contract;
+            renewContract.setPartyA(contract.getPartyA());
+            renewContract.setPartyB(contract.getPartyB());
+            renewContract.setConditionText(contract.getConditionText());
+            renewContract.setOrigin(contract.getOrigin());
+            renewContract.setDestination(contract.getDestination());
+            renewContract.setPrice(contract.getPrice());
+            renewContract.setServiceQuotation(contract.getServiceQuotation());
+            renewContract.setServiceType(contract.getServiceType());
+            renewContract.setWarehouseId(contract.getWarehouseId());
+            renewContract.setStorageZoneId(contract.getStorageZoneId());
+            renewContract.setStorageBinId(contract.getStorageBinId());
+
             renewContract.setCreatedDate(new Date());
             renewContract.setStartDate(startDate);
             renewContract.setEndDate(endDate);
@@ -230,7 +242,20 @@ public class ContractManagementSessionBean {
         return company.getName();
     }
 
-    public int saveSignedContract() {
+    public int saveSignedContract(Integer contractId, byte[] pdfFileByteArray) {
+        Contract contract = em.find(Contract.class, contractId);
+        SignedContract signedContract = new SignedContract();
+        signedContract.setSignedContractId(contractId);
+        signedContract.setUploadedDate(new Date());
+        signedContract.setPdf(pdfFileByteArray);
+        signedContract.setContract(contract);
+
+        contract.setSignedContract(signedContract);
+        contract.setStatus(5);
+        em.persist(signedContract);
+        em.merge(contract);
+        em.flush();
+
         return 1;
     }
 

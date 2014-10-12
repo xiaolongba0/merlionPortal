@@ -260,6 +260,11 @@ public class ViewContractDetailManagedBean {
             }
         }
     }
+    
+    public String uploadContract(){
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("contractId",selectedContract.getContractId());
+        return "uploadsignedcontract.xhtml?faces-redirect=true";
+    }
 
     public Integer getCompanyId() {
         return companyId;
