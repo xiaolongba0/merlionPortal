@@ -82,8 +82,22 @@
                 <p:fieldset id="salesReport" legend="Report" style="margin-bottom:20px">
                     <p:chart type="line" model="#{customerAnalysisManagedBean.lineModel2}" style="height:400px;"/>
                 </p:fieldset>
-             
-                <p:commandButton value="Go Back" action="reportdashboard.xhtml?faces-redirect=ture" icon="ui-icon-circle-arrow-w" />
+                <br></br>
+
+                <p:fieldset id="salesReportTable" legend="Report Table" style="margin-bottom:20px">
+                    <p:dataTable var="myresult" value="#{customerAnalysisManagedBean.myReportList}">
+                        <p:column headerText="First Period">
+                            <h:outputText value="#{myresult.first}"></h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Second Period">
+                            <h:outputText value="#{myresult.second}"></h:outputText>
+                        </p:column>
+
+                    </p:dataTable>
+                </p:fieldset>
+
+                <p:commandButton value="Go Back" action="customeranalysis.xhtml?faces-redirect=ture" icon="ui-icon-circle-arrow-w" />
             </h:form>
         </ui:define>
     </ui:composition>

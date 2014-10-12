@@ -42,10 +42,9 @@
                                 <p:menuitem value="Create Order" url="pogeneration.xhtml" />
                                 <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
                             </c:if>
-                            <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}"> 
-                                <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" />
+                            <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                                <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" /> 
                                 <p:menuitem value="Order Status" url="displayallso.xhtml" />
-
                             </c:if>
                             <c:if test="#{dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
                                 <p:menuitem value="Reject Order" url="returnorder.xhtml" />
@@ -57,13 +56,13 @@
                     <p:submenu label="Payment" styleClass="display:block">
                         <p:menuitem value="All invoice" url="allinvoice.xhtml" />
                         <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.loginedUser.userType == 'superuser'}">
-                            <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />
+                            <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />                           
                         </c:if>
 
                     </p:submenu>
                     <c:if test="#{dashboardBean.checkOESCanGenerateSalesReport()||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:submenu label="Reports" styleClass="display:block">
-                            <p:menuitem value="Sales Reports" url="#" />
+                            <p:menuitem value="Sales Reports" url="reportdashboard.xhtml" />
                         </p:submenu>
                     </c:if>
                 </p:panelMenu>
@@ -186,7 +185,7 @@
                 <br></br>
                 <br></br>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <p:commandButton value="Go Back"  action="oesindexpage.xhtml" />
+                <p:commandButton value="Go Back"  action="oesindexpage.xhtml" icon="ui-icon-circle-arrow-w" />
                 <c:if test="#{purchaseOrderManagedBean.checkSubmittable()}">
                     <p:commandButton value="Save Order" actionListener="#{purchaseOrderManagedBean.saveOrder()}" ajax="true"></p:commandButton>
                     <p:commandButton value="Submit Order" actionListener="#{purchaseOrderManagedBean.submitOrder}"  ajax="true"></p:commandButton>

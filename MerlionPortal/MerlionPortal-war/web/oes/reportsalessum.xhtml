@@ -76,53 +76,27 @@
 
                 <h3 style="margin-top:0">Customer Analysis</h3>
                 <p:tabView>
+                    <p:tab title="Most profitable customer of this month">
+                            <p:dataTable var="cust" value="#{monthlyReportManagedBean.topThreeOfCurrent()}">
+                                <p:column headerText="Cusotmer ">
+                                    <h:outputText value="#{monthlyReportManagedBean.viewCustomerName(cust.customerId)}" />
+                                </p:column>
+                                <p:column headerText="Total Value Of current Month">
+                                    <h:outputText value="#{cust.customerCurrentValue}" />
+                                </p:column>                               
+                            </p:dataTable>
+                    </p:tab>
                     <p:tab title="Most profitable customer">
-                        <h:panelGrid columns="1" cellpadding="10">
-                            <h:outputText
-                                value="The story begins as Don Vito Corleone..." />
-                        </h:panelGrid>
-                    </p:tab>
-                    <p:tab title="Most active customer">
-                        <h:panelGrid columns="1" cellpadding="10">
-                            <h:outputText value="Francis Ford Coppola's legendary..." />
-                        </h:panelGrid>
-                    </p:tab>
-                    <p:tab title="Less active customer">
-                        <h:panelGrid columns="1" cellpadding="10">
-                            <h:outputText value="After a break of more than 15 years..." />
-                        </h:panelGrid>
-                    </p:tab>
-                    <p:tab title="Less profitable customer">
-                        <h:panelGrid columns="1" cellpadding="10">
-                            <h:outputText value="After a break of more than 15 years..." />
-                        </h:panelGrid>
-                    </p:tab>
-                </p:tabView>
-                <h3 style="margin-top:0">Product Analysis</h3>
-                <p:tabView>
-                    <p:tab title="Most purchased Prodcut">
-                        <h:panelGrid columns="2" cellpadding="10">
-                            <h:outputText
-                                value="The story begins as Don Vito Corleone..." />
-                        </h:panelGrid>
-                    </p:tab>
-                    <p:tab title="Most profitable Product">
-                        <h:panelGrid columns="2" cellpadding="10">
-                            <h:outputText value="Francis Ford Coppola's legendary..." />
-                        </h:panelGrid>
-                    </p:tab>
-                    <p:tab title="Less purchased Prodcut">
-                        <h:panelGrid columns="2" cellpadding="10">
-                            <h:outputText
-                                value="The story begins as Don Vito Corleone..." />
-                        </h:panelGrid>
-                    </p:tab>
-                    <p:tab title="Less profitable Product">
-                        <h:panelGrid columns="2" cellpadding="10">
-                            <h:outputText value="Francis Ford Coppola's legendary..." />
-                        </h:panelGrid>
-                    </p:tab>
-                </p:tabView>
+                        <p:dataTable var="cust" value="#{monthlyReportManagedBean.topThreeOfYear()}">
+                                <p:column headerText="Customer">
+                                    <h:outputText value="#{monthlyReportManagedBean.viewCustomerName(cust.customerId)}" />
+                                </p:column>
+                                <p:column headerText="Total Value">
+                                    <h:outputText value="#{cust.customerCurrentValue}" />
+                                </p:column>                               
+                            </p:dataTable>
+                    </p:tab>                   
+                </p:tabView>                        
                 <br></br>
                 <p:commandButton value="Go Back" action="reportdashboard.xhtml?faces-redirect=ture" icon="ui-icon-circle-arrow-w" />
             </h:form>

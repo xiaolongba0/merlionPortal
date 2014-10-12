@@ -55,13 +55,13 @@
                     <p:submenu label="Payment" styleClass="display:block">
                         <p:menuitem value="All invoice" url="allinvoice.xhtml" />
                         <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.loginedUser.userType == 'superuser'}">
-                            <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />
+                            <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />                           
                         </c:if>
 
                     </p:submenu>
                     <c:if test="#{dashboardBean.checkOESCanGenerateSalesReport()||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:submenu label="Reports" styleClass="display:block">
-                            <p:menuitem value="Sales Reports" url="#" />
+                            <p:menuitem value="Sales Reports" url="reportdashboard.xhtml" />
                         </p:submenu>
                     </c:if>
                 </p:panelMenu>
@@ -114,7 +114,7 @@
                 </p:dataTable>
                 <br></br>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <p:commandButton action="viewallrequests.xhtml" value="Go Back">
+                <p:commandButton action="viewallrequests.xhtml" value="Go Back" icon="ui-icon-circle-arrow-w">
                 </p:commandButton> 
                 <c:if test="#{quotationManagedBean.canGenerateRequest()}">
                     <p:commandButton action="#{quotationManagedBean.deletRequest}" value="Cancel This Request">
