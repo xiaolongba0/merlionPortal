@@ -6,11 +6,9 @@
 package merlionportal.oes.ordermanagement;
 
 import entity.ProductOrder;
-import java.io.IOException;
+import entity.SystemUser;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
@@ -62,6 +60,13 @@ public class PaymentManagerSessionBean {
             return false;
         }
         myorder.setBillTo(billto);
+        Double totalPrice;
+        totalPrice = myorder.getPrice();
+        int cId= myorder.getCreatorId();
+        SystemUser myCustomer= em.find(SystemUser.class, cId);
+        int credit = myCustomer.getCreditLimit()+totalPrice.intValue();
+        myCustomer.setCreditLimit(credit);
+        em.merge(myCustomer);
         myorder.setStatus(4);
         em.merge(myorder);
         return true;
