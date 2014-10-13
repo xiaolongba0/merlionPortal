@@ -15,6 +15,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -51,6 +53,9 @@ public class Location implements Serializable {
     private String locationType;
     @Column(name = "companyId")
     private Integer companyId;
+    @JoinColumn(name = "nodeId", referencedColumnName = "nodeId")
+    @ManyToOne(optional = false)
+    private Node nodeId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "locationlocationId")
     private List<TransportationAsset> transportationAssetList;
 
@@ -91,6 +96,14 @@ public class Location implements Serializable {
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
+    }
+
+    public Node getNodeId() {
+        return nodeId;
+    }
+
+    public void setNodeId(Node nodeId) {
+        this.nodeId = nodeId;
     }
 
     @XmlTransient

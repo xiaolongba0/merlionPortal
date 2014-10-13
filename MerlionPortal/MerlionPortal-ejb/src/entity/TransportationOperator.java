@@ -7,6 +7,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -21,6 +22,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -37,7 +40,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TransportationOperator.findByOperatorId", query = "SELECT t FROM TransportationOperator t WHERE t.operatorId = :operatorId"),
     @NamedQuery(name = "TransportationOperator.findByIsAvailable", query = "SELECT t FROM TransportationOperator t WHERE t.isAvailable = :isAvailable"),
     @NamedQuery(name = "TransportationOperator.findByOperatorStatus", query = "SELECT t FROM TransportationOperator t WHERE t.operatorStatus = :operatorStatus"),
-    @NamedQuery(name = "TransportationOperator.findByOperatorType", query = "SELECT t FROM TransportationOperator t WHERE t.operatorType = :operatorType")})
+    @NamedQuery(name = "TransportationOperator.findByOperatorType", query = "SELECT t FROM TransportationOperator t WHERE t.operatorType = :operatorType"),
+    @NamedQuery(name = "TransportationOperator.findByOperatorName", query = "SELECT t FROM TransportationOperator t WHERE t.operatorName = :operatorName"),
+    @NamedQuery(name = "TransportationOperator.findByGender", query = "SELECT t FROM TransportationOperator t WHERE t.gender = :gender"),
+    @NamedQuery(name = "TransportationOperator.findByBirthday", query = "SELECT t FROM TransportationOperator t WHERE t.birthday = :birthday"),
+    @NamedQuery(name = "TransportationOperator.findByCompanyId", query = "SELECT t FROM TransportationOperator t WHERE t.companyId = :companyId")})
 public class TransportationOperator implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -53,6 +60,17 @@ public class TransportationOperator implements Serializable {
     @Size(max = 45)
     @Column(name = "operatorType")
     private String operatorType;
+    @Size(max = 150)
+    @Column(name = "operatorName")
+    private String operatorName;
+    @Size(max = 45)
+    @Column(name = "gender")
+    private String gender;
+    @Column(name = "birthday")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date birthday;
+    @Column(name = "companyId")
+    private Integer companyId;
     @JoinColumn(name = "AssetSchedule_scheduleId", referencedColumnName = "scheduleId")
     @ManyToOne(optional = false)
     private AssetSchedule assetSchedulescheduleId;
@@ -96,6 +114,38 @@ public class TransportationOperator implements Serializable {
 
     public void setOperatorType(String operatorType) {
         this.operatorType = operatorType;
+    }
+
+    public String getOperatorName() {
+        return operatorName;
+    }
+
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 
     public AssetSchedule getAssetSchedulescheduleId() {

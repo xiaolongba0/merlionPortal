@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -37,7 +38,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Route.findByRouteType", query = "SELECT r FROM Route r WHERE r.routeType = :routeType"),
     @NamedQuery(name = "Route.findByOrigin", query = "SELECT r FROM Route r WHERE r.origin = :origin"),
     @NamedQuery(name = "Route.findByDestination", query = "SELECT r FROM Route r WHERE r.destination = :destination"),
-    @NamedQuery(name = "Route.findByDistance", query = "SELECT r FROM Route r WHERE r.distance = :distance")})
+    @NamedQuery(name = "Route.findByDistance", query = "SELECT r FROM Route r WHERE r.distance = :distance"),
+    @NamedQuery(name = "Route.findByEndNodeId", query = "SELECT r FROM Route r WHERE r.endNodeId = :endNodeId")})
 public class Route implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -56,11 +58,16 @@ public class Route implements Serializable {
     private String destination;
     @Column(name = "distance")
     private Integer distance;
+    @Column(name = "endNodeId")
+    private Integer endNodeId;
     @JoinTable(name = "TransporationAsset_has_Route", joinColumns = {
         @JoinColumn(name = "Route_routeId", referencedColumnName = "routeId")}, inverseJoinColumns = {
         @JoinColumn(name = "TransporationAsset_assetId", referencedColumnName = "assetId")})
     @ManyToMany
     private List<TransportationAsset> transportationAssetList;
+    @JoinColumn(name = "startNodeId", referencedColumnName = "nodeId")
+    @ManyToOne(optional = false)
+    private Node startNodeId;
 
     public Route() {
     }
@@ -109,6 +116,14 @@ public class Route implements Serializable {
         this.distance = distance;
     }
 
+    public Integer getEndNodeId() {
+        return endNodeId;
+    }
+
+    public void setEndNodeId(Integer endNodeId) {
+        this.endNodeId = endNodeId;
+    }
+
     @XmlTransient
     public List<TransportationAsset> getTransportationAssetList() {
         return transportationAssetList;
@@ -116,6 +131,14 @@ public class Route implements Serializable {
 
     public void setTransportationAssetList(List<TransportationAsset> transportationAssetList) {
         this.transportationAssetList = transportationAssetList;
+    }
+
+    public Node getStartNodeId() {
+        return startNodeId;
+    }
+
+    public void setStartNodeId(Node startNodeId) {
+        this.startNodeId = startNodeId;
     }
 
     @Override
