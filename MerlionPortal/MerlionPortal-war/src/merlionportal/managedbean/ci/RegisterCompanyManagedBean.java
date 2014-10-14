@@ -12,6 +12,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.utility.Postman;
 import org.primefaces.context.RequestContext;
 
@@ -28,6 +29,8 @@ public class RegisterCompanyManagedBean {
      */
     @EJB
     private UserAccountManagementSessionBean uamb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private FacesContext ctx;
 
@@ -62,13 +65,13 @@ public class RegisterCompanyManagedBean {
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Company Registered!", "Please wait for our system administrator to contact you. "));
                 }
-                
 
             }
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email exist", "This is a registered Email, please use another email to register!"));
 
         }
+        systemLogSB.recordSystemLog(userId, "CI user registered new company");
     }
 
     private void clearAllFields() {

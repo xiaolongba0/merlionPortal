@@ -18,6 +18,7 @@ import javax.inject.Named;
 import merlionportal.ci.administrationmodule.CheckAccessRightBean;
 import merlionportal.ci.administrationmodule.LoginSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.utility.MD5Generator;
 import util.accessRightControl.Right;
 
@@ -35,6 +36,8 @@ public class LoginManagedBean {
     UserAccountManagementSessionBean uamsb;
     @EJB
     CheckAccessRightBean checkRight;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     public void login(ActionEvent event) {
 
@@ -104,6 +107,7 @@ public class LoginManagedBean {
                 }
             }
         }
+        systemLogSB.recordSystemLog(uamsb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")).getSystemUserId(), "CI User Logged in");
     }
 
 //<editor-fold defaultstate="collapsed" desc="getters and setters">

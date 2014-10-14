@@ -7,8 +7,6 @@ package merlionportal.managedbean.ci;
 
 import entity.SystemUser;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -17,6 +15,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.ChangePasswordSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.utility.MD5Generator;
 import org.primefaces.context.RequestContext;
 
@@ -32,6 +31,8 @@ public class ChangePasswordManagedBean {
     private UserAccountManagementSessionBean uamb;
     @EJB
     private ChangePasswordSessionBean changePasswordBean;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private SystemUser loginedUser;
     private String existingPassword;
@@ -101,6 +102,7 @@ public class ChangePasswordManagedBean {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Existing Password is Wrong!", "Please try again."));
         }
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI Change login password");
     }
 
 //<editor-fold defaultstate="collapsed" desc="Getters and Setters">

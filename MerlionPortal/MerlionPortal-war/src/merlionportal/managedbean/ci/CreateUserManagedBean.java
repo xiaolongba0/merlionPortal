@@ -24,6 +24,7 @@ import merlionportal.ci.administrationmodule.GetCompanyRoleSessionBean;
 import merlionportal.ci.administrationmodule.GetCompanySessionBean;
 import merlionportal.ci.administrationmodule.RoleManagementSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.utility.MD5Generator;
 import merlionportal.utility.Postman;
 import org.primefaces.context.RequestContext;
@@ -61,7 +62,8 @@ public class CreateUserManagedBean {
     GetCompanySessionBean gcsb;
     @EJB
     GetCompanyRoleSessionBean gcrsb;
-
+    @EJB
+    private SystemLogSessionBean systemLogSB;
     /**
      * Creates a new instance of createUserManagerBean
      */
@@ -136,6 +138,7 @@ public class CreateUserManagedBean {
             }
 
         }
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI Create system user");
 
     }
 

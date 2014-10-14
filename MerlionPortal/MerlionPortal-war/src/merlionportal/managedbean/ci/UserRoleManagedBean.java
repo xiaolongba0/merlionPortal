@@ -22,6 +22,7 @@ import merlionportal.ci.administrationmodule.CheckCompanyPackageSessionBean;
 import merlionportal.ci.administrationmodule.GetCompanySessionBean;
 import merlionportal.ci.administrationmodule.RoleManagementSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 
 /**
  *
@@ -38,6 +39,8 @@ public class UserRoleManagedBean implements Serializable {
     UserAccountManagementSessionBean uamb;
     @EJB
     GetCompanySessionBean gcsb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private SystemUser loginedUser;
 
@@ -156,7 +159,7 @@ public class UserRoleManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Role Name Exist", "Please change another role name"));
 
         }
-
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User User created user role");
     }
 
     public void checkCompanyPackage() {
@@ -166,6 +169,7 @@ public class UserRoleManagedBean implements Serializable {
             companyId = selectCompanyId;
         }
         companyPackage = ccpsb.checkCompanyPackage(companyId);
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User User checked company package");
 
     }
 

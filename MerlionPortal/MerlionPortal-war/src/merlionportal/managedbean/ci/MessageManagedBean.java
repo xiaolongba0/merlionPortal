@@ -11,6 +11,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.GetCompanyUserSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.ci.messagingmodule.MessagingSessionBean;
 import merlionportal.utility.MessagingStatus;
 import org.primefaces.context.RequestContext;
@@ -33,6 +34,9 @@ public class MessageManagedBean {
 
     @EJB
     private GetCompanyUserSessionBean gcusb;
+
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     public MessageManagedBean() {
     }
@@ -75,6 +79,7 @@ public class MessageManagedBean {
                 RequestContext.getCurrentInstance().execute(functionCall);
             }
         }
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User broadcasted message");
     }
 
     public void verifyEmail() {
@@ -101,6 +106,7 @@ public class MessageManagedBean {
                 RequestContext.getCurrentInstance().execute(functionCall);
             }
         }
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User read message");
     }
 
     public void deleteEmail() {
@@ -119,6 +125,7 @@ public class MessageManagedBean {
                 RequestContext.getCurrentInstance().execute(functionCall);
             }
         }
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User deleted message");
     }
 
     public void sendEmail() {
@@ -136,6 +143,7 @@ public class MessageManagedBean {
         }
         String functionCall = "postEmail(" + success + ")";
         RequestContext.getCurrentInstance().execute(functionCall);
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User sent message");
     }
 
     //<editor-fold defaultstate="collapsed" desc="Getters and Setters">

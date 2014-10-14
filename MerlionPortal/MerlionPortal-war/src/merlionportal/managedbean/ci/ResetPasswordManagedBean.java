@@ -9,6 +9,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.utility.MD5Generator;
 import merlionportal.utility.Postman;
 import org.primefaces.context.RequestContext;
@@ -21,6 +22,10 @@ public class ResetPasswordManagedBean {
 
     @EJB
     private UserAccountManagementSessionBean uamsb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
+    @EJB
+    private UserAccountManagementSessionBean uamb;
 //    1. check that email exists in database
 //2. get the user from the database via email call ejb bean to get user
 //3. generate new password
@@ -87,6 +92,7 @@ public class ResetPasswordManagedBean {
             //Not user found
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Email not found", "Please check if your email is entered correctly"));
         }
+        systemLogSB.recordSystemLog(uamb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")).getSystemUserId(), "CI User request to reset password");
     }
 
     public String getEmail() {
