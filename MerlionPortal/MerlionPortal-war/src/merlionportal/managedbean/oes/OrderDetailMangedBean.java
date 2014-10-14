@@ -13,6 +13,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
 
 /**
@@ -23,6 +24,8 @@ import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
 @RequestScoped
 public class OrderDetailMangedBean {
 
+    @EJB
+    private SystemLogSessionBean systemLogSB;
     @EJB
     private PurchaseOrderManagerSessionBean purchaseOrderMB;
 
@@ -55,9 +58,6 @@ public class OrderDetailMangedBean {
             }
         }
         order = (ProductOrder) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("viewOrder");
-        if(order.getProductOrderLineItemList().isEmpty()){
-            System.out.println("List empty__________________");
-        }
 
     }
 

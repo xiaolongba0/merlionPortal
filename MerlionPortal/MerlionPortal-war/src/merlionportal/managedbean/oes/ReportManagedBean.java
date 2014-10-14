@@ -15,8 +15,9 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.oes.ordermanagement.CommonFunctionSessionBean;
 import merlionportal.oes.reportmanagementmodule.ReportManagerSessionBean;
 
@@ -28,6 +29,8 @@ import merlionportal.oes.reportmanagementmodule.ReportManagerSessionBean;
 @ViewScoped
 public class ReportManagedBean {
 
+    @EJB
+    private SystemLogSessionBean systemLogSB;
     @EJB
     private CommonFunctionSessionBean commonMB;
     @EJB
@@ -50,6 +53,7 @@ public class ReportManagedBean {
 
     @PostConstruct
     public void init() {
+        systemLogSB.recordSystemLog(userId, "OES View Report. ");
         boolean redirect = true;
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
             userId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
@@ -86,11 +90,11 @@ public class ReportManagedBean {
     }
 
     public String allCustomerOrders() {
-        if (firstStartDate == null||secondStartDate==null) {
+        if (firstStartDate == null || secondStartDate == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "!", "Please specify Starting date"));
             return null;
 
-        } else if (firstEndDate == null||secondEndDate==null) {
+        } else if (firstEndDate == null || secondEndDate == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "!", "Please specify End date"));
             return null;
 
@@ -101,7 +105,7 @@ public class ReportManagedBean {
         } else {
             System.out.println(startDate + " " + endDate + " " + customerId);
             productOrderList = reportMB.findAllProduct(companyId, firstStartDate, firstEndDate, customerId);
-            secondOrderList= reportMB.findAllProduct(companyId, secondStartDate, secondEndDate, customerId);
+            secondOrderList = reportMB.findAllProduct(companyId, secondStartDate, secondEndDate, customerId);
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             Map<String, Object> sessionMap = externalContext.getSessionMap();
             sessionMap.put("FirstOrderList", productOrderList);

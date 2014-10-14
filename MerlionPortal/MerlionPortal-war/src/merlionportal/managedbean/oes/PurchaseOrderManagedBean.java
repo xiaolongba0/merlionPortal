@@ -7,7 +7,6 @@ package merlionportal.managedbean.oes;
 
 import entity.ProductOrder;
 import entity.ProductOrderLineItem;
-import entity.Quotation;
 import java.io.IOException;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -18,6 +17,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.SystemAccessRightSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
 import org.primefaces.event.RowEditEvent;
 
@@ -29,6 +29,8 @@ import org.primefaces.event.RowEditEvent;
 @ViewScoped
 public class PurchaseOrderManagedBean {
 
+    @EJB
+    private SystemLogSessionBean systemLogSB;
     @EJB
     private PurchaseOrderManagerSessionBean purchaseMB;
     @EJB
@@ -237,6 +239,7 @@ public class PurchaseOrderManagedBean {
     }
 
     public void saveOrder() {
+        systemLogSB.recordSystemLog(userId, "OES Save Purchase Order for future process. ");
         int newPoId = purchaseMB.createPO(shipto, companyId, userId, qutatuonId, contactPerson, contactNumber);
         myPo = this.retrievePO(newPoId);
         if (itemList != null) {
@@ -251,6 +254,7 @@ public class PurchaseOrderManagedBean {
     }
 
     public void submitOrder(ActionEvent event) {
+        systemLogSB.recordSystemLog(userId, "OES Submit Purchase Order. ");
         boolean quantityIsEmpty = false;
 
         if (shipto == null || itemList.isEmpty() || itemList == null || contactPerson == null || contactNumber == null) {
@@ -284,6 +288,7 @@ public class PurchaseOrderManagedBean {
     }
 
     private ProductOrder retrievePO(Integer poId) {
+        systemLogSB.recordSystemLog(userId, "OES Retrieve saved order. ");
         return purchaseMB.retrieveProductOrder(poId);
     }
 

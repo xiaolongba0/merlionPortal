@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +18,7 @@ import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.oes.ordermanagement.CommonFunctionSessionBean;
 import merlionportal.oes.reportmanagementmodule.MonthlyReportManagerSessionBean;
 import merlionportal.oes.reportmanagementmodule.ReportManagerSessionBean;
@@ -37,6 +37,8 @@ import org.primefaces.model.chart.LineChartModel;
 @ViewScoped
 public class MonthlyReportManagedBean {
 
+    @EJB
+    private SystemLogSessionBean systemLogSB;
     @EJB
     private CommonFunctionSessionBean commonMB;
     @EJB
@@ -76,6 +78,7 @@ public class MonthlyReportManagedBean {
         }
 
         createMyModels();
+        systemLogSB.recordSystemLog(userId, "OES View Monthely Report. ");
 
     }
 
@@ -168,7 +171,7 @@ public class MonthlyReportManagedBean {
         }
         return result;
     }
-    
+
     private List<DTOCustomerValue> companyCustomerAllValue() {
         System.out.println("Managed Bean companyCustomerAllValue +================= ");
         List<DTOCustomerValue> result = new ArrayList();
@@ -193,28 +196,24 @@ public class MonthlyReportManagedBean {
         List<DTOCustomerValue> top3 = new ArrayList();
         if (customerYearList.size() <= 3) {
             top3 = customerYearList;
-        }
-        else
-        {
+        } else {
             top3 = customerYearList.subList(0, 1);
         }
         return top3;
     }
-    
-    public List<DTOCustomerValue> topThreeOfCurrent(){
+
+    public List<DTOCustomerValue> topThreeOfCurrent() {
         System.out.println("Managed Bean top three of Year +================= ");
         customerValueList = this.companyCustomerValue();
         Collections.sort(customerValueList);
         List<DTOCustomerValue> top3 = new ArrayList();
         if (customerValueList.size() <= 3) {
             top3 = customerValueList;
-        }
-        else
-        {
+        } else {
             top3 = customerValueList.subList(0, 3);
         }
         return top3;
-        
+
     }
 
     public String viewCustomerName(int customerId) {

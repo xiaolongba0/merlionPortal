@@ -27,6 +27,7 @@ import merlionportal.oes.quotationmanagementmodule.QuotationManagerSessionBean;
 @Named(value = "displayProductManagedBean")
 @RequestScoped
 public class DisplayProductManagedBean {
+
     @EJB
     private SystemLogSessionBean systemLogSB;
     @EJB
@@ -34,7 +35,6 @@ public class DisplayProductManagedBean {
     @EJB
     private QuotationManagerSessionBean quotationMB;
 
-   
     private List<Product> products;
     private List<Product> selectedProducts;
     private Quotation newRequest;
@@ -96,6 +96,7 @@ public class DisplayProductManagedBean {
     }
 
     public void submitRequest(ActionEvent event) {
+
         if (selectedProducts == null || selectedProducts.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please select at least one product ."));
         } else {
@@ -105,9 +106,10 @@ public class DisplayProductManagedBean {
                 Product p = (Product) o;
                 quotationMB.createLineItem(companyId, p, newRequest);
             }
+            systemLogSB.recordSystemLog(userId, "OES Generate request for quotation");
+
         }
-        systemLogSB.recordSystemLog(userId, "Generate request for quotation");
-        
+
         selectedProducts.clear();
     }
 
@@ -136,10 +138,10 @@ public class DisplayProductManagedBean {
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
     }
-    
-    public Boolean canGenerateRequest(){
+
+    public Boolean canGenerateRequest() {
         return accessRight.checkOESGeneratePO(userId);
-        
+
     }
-    
+
 }

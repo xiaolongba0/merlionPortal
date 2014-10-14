@@ -19,6 +19,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import merlionportal.ci.administrationmodule.SystemAccessRightSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.oes.quotationmanagementmodule.QuotationManagerSessionBean;
 import org.primefaces.event.RowEditEvent;
 
@@ -30,6 +31,8 @@ import org.primefaces.event.RowEditEvent;
 @SessionScoped
 public class QuotationManagedBean implements Serializable {
 
+    @EJB
+    private SystemLogSessionBean systemLogSB;
     @EJB
     private QuotationManagerSessionBean quotationMB;
 
@@ -116,9 +119,7 @@ public class QuotationManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please select one request ."));
             return "viewallrequests.xhtml";
         }
-        System.out.println("this line will executed");
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "View", "Action Accepted"));
-        System.out.println("this line  executed  finished");
 
         return "generatequotation.xhtml";
 
@@ -142,7 +143,7 @@ public class QuotationManagedBean implements Serializable {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Quotation generated."));
             quotationMB.generateQuotation(selectedRequest, inputText);
-            System.out.println("Quotation Generated");
+            systemLogSB.recordSystemLog(userId, "OES Generate Quotation. ");
             inputText = null;
         }
 
@@ -299,17 +300,20 @@ public class QuotationManagedBean implements Serializable {
 
     public void acceptQuotation() {
         quotationMB.acceptQuotation(selectedQuotation);
+        systemLogSB.recordSystemLog(userId, "OES Accept Quotation ");
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Quotation accepted."));
 
     }
 
     public void rejectQuotation() {
+        systemLogSB.recordSystemLog(userId, "OES Reject Quotation. ");
         quotationMB.rejectQuotation(selectedQuotation);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Quotation rejected."));
 
     }
 
     public void cancelQuotation() {
+        systemLogSB.recordSystemLog(userId, "OES Cancel Quotation. ");
         quotationMB.cancelQuotation(selectedQuotation);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Quotation canceled."));
 

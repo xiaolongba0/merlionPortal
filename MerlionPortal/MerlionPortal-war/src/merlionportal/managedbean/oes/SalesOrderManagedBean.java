@@ -14,6 +14,7 @@ import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
 
 /**
@@ -23,7 +24,8 @@ import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
 @Named(value = "salesOrderManagedBean")
 @ViewScoped
 public class SalesOrderManagedBean {
-
+ @EJB
+    private SystemLogSessionBean systemLogSB;
     @EJB
     private PurchaseOrderManagerSessionBean purchaseOrderMB;
 
@@ -67,9 +69,11 @@ public class SalesOrderManagedBean {
         if (myOrder.getStatus() == 1 && credit) {
             purchaseOrderMB.generateSo(userId, myOrder);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Sales order has benn created."));
+            systemLogSB.recordSystemLog(userId, "OES Generate Sales Order Success SO# "+myOrder.getProductPOId()+" .");
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR!", "Unable to generate sales order."));
+            systemLogSB.recordSystemLog(userId, "OES Generate Sales Order Fail. ");
         }
     }
 
@@ -90,6 +94,7 @@ public class SalesOrderManagedBean {
         System.out.println("=======================" + s);
         purchaseOrderMB.rejectPo(userId, myOrder, s);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "This order has benn rejected."));
+        systemLogSB.recordSystemLog(userId, "OES Reject Purchase Order PO#"+myOrder.getProductPOId()+" .");
 
     }
 

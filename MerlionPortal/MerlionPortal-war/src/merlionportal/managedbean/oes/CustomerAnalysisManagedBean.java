@@ -18,6 +18,7 @@ import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.oes.ordermanagement.CommonFunctionSessionBean;
 import merlionportal.oes.reportmanagementmodule.ReportManagerSessionBean;
 import merlionportal.utility.DTOReportList;
@@ -35,6 +36,8 @@ import org.primefaces.model.chart.LineChartModel;
 @ViewScoped
 public class CustomerAnalysisManagedBean {
 
+    @EJB
+    private SystemLogSessionBean systemLogSB;
     @EJB
     private ReportManagerSessionBean reportMB;
     @EJB
@@ -323,18 +326,16 @@ public class CustomerAnalysisManagedBean {
     public void setMyReportList(List<DTOReportList> myReportList) {
         this.myReportList = myReportList;
     }
-    
-    public List<DTOReportList> initMyList(List myFirst, List mySecond){
+
+    public List<DTOReportList> initMyList(List myFirst, List mySecond) {
         List<DTOReportList> myResult = new ArrayList();
-        for(int i=0; i<minMonth;i++){
-            DTOReportList d1=new DTOReportList();
-            d1.setFirst((Double)myFirst.get(i));
-            d1.setSecond((Double)mySecond.get(i));
+        for (int i = 0; i < minMonth; i++) {
+            DTOReportList d1 = new DTOReportList();
+            d1.setFirst((Double) myFirst.get(i));
+            d1.setSecond((Double) mySecond.get(i));
             myResult.add(d1);
         }
         return myResult;
     }
-    
-    
 
 }

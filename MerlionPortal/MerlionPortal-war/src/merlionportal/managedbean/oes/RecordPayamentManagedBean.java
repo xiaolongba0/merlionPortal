@@ -14,6 +14,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.oes.ordermanagement.PaymentManagerSessionBean;
 
 /**
@@ -24,6 +25,8 @@ import merlionportal.oes.ordermanagement.PaymentManagerSessionBean;
 @ViewScoped
 public class RecordPayamentManagedBean {
 
+    @EJB
+    private SystemLogSessionBean systemLogSB;
     @EJB
     private PaymentManagerSessionBean paymentMB;
     private Integer companyId;
@@ -109,6 +112,7 @@ public class RecordPayamentManagedBean {
     public void makePayment() {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Pay successfully "));
         paymentMB.makePayement(unpaidOrder, method);
+        systemLogSB.recordSystemLog(userId, "OES Make Payment ");
     }
 
 }

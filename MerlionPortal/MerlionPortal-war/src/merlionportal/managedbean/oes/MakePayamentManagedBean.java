@@ -15,6 +15,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.oes.ordermanagement.PaymentManagerSessionBean;
 
 /**
@@ -25,6 +26,8 @@ import merlionportal.oes.ordermanagement.PaymentManagerSessionBean;
 @ViewScoped
 public class MakePayamentManagedBean {
 
+    @EJB
+    private SystemLogSessionBean systemLogSB;
     @EJB
     private PaymentManagerSessionBean paymentMB;
     private Integer companyId;
@@ -53,7 +56,7 @@ public class MakePayamentManagedBean {
                 ex.printStackTrace();
             }
         }
-        unpaidOrderList=paymentMB.getAllUnpaidOrder(userId);
+        unpaidOrderList = paymentMB.getAllUnpaidOrder(userId);
     }
 
     public List<ProductOrder> getUnpaidOrderList() {

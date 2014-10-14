@@ -17,6 +17,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import merlionportal.ci.administrationmodule.SystemAccessRightSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
 
 /**
@@ -26,6 +27,8 @@ import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
 @Named(value = "viewSalesOrderManagedBean")
 @RequestScoped
 public class ViewSalesOrderManagedBean {
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     @EJB
     private PurchaseOrderManagerSessionBean purchaseOrdrMB;

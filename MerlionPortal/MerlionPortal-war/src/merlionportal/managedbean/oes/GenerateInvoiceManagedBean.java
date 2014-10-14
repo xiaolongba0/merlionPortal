@@ -14,6 +14,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.oes.ordermanagement.InvoiceMangerSessionBean;
 
 /**
@@ -24,6 +25,8 @@ import merlionportal.oes.ordermanagement.InvoiceMangerSessionBean;
 @ViewScoped
 public class GenerateInvoiceManagedBean {
 
+    @EJB
+    private SystemLogSessionBean systemLogSB;
     @EJB
     private InvoiceMangerSessionBean invoiceMB;
     private Integer companyId;
@@ -95,6 +98,7 @@ public class GenerateInvoiceManagedBean {
     }
 
     public String generateInvoice() {
+        systemLogSB.recordSystemLog(userId, "OES Generate Invoice. ");
         if (inputText == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR!", "Terms and conditions cannot be empty"));
         }

@@ -16,6 +16,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.oes.ordermanagement.ProductReturnManagerSessionBean;
 import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
 
@@ -27,6 +28,8 @@ import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
 @ViewScoped
 public class ProductReturnManagedBean {
 
+    @EJB
+    private SystemLogSessionBean systemLogSB;
     @EJB
     private ProductReturnManagerSessionBean returnMB;
     @EJB
@@ -85,7 +88,6 @@ public class ProductReturnManagedBean {
         this.reason = reason;
     }
 
-    
     public int getOrderId() {
         return orderId;
     }
@@ -108,6 +110,7 @@ public class ProductReturnManagedBean {
     }
 
     public void returnMyOrder() {
+        systemLogSB.recordSystemLog(userId, "OES Return Product. ");
         System.out.println("======***************" + returenOrderId);
         if (returnMB.checkOrderValidity(returenOrderId)) {
             returnOrder = returnMB.searchForOrder(returenOrderId);
@@ -126,8 +129,8 @@ public class ProductReturnManagedBean {
         this.returnOrder = returnOrder;
     }
 
-
     public void rejectWhole() {
+        systemLogSB.recordSystemLog(userId, "OES Return whole Sales Order. ");
         System.out.println(reason);
         int s = Integer.parseInt(reason.substring(0, 2));
         System.out.println("=======================" + s);
@@ -139,6 +142,7 @@ public class ProductReturnManagedBean {
     }
 
     public void rejectLineItem(ProductOrderLineItem myLine) {
+        systemLogSB.recordSystemLog(userId, "OES Reject Order Line Item. ");
 
         returnMB.rejectLineItem(returnOrder, myLine);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "This Line Item has benn rejected."));

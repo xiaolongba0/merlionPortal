@@ -18,6 +18,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.SystemAccessRightSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.oes.ordermanagement.InvoiceMangerSessionBean;
 
 /**
@@ -28,6 +29,8 @@ import merlionportal.oes.ordermanagement.InvoiceMangerSessionBean;
 @ViewScoped
 public class InvoiceManagedBean {
 
+    @EJB
+    private SystemLogSessionBean systemLogSB;
     @EJB
     private InvoiceMangerSessionBean invoiceMB;
     @EJB
@@ -104,7 +107,6 @@ public class InvoiceManagedBean {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
         sessionMap.put("unInvoiced", selectedOrder);
-        System.out.println("this is classed generate invoice");
         return "invoice.xhtml?faces-redirect=true";
     }
 
@@ -158,7 +160,7 @@ public class InvoiceManagedBean {
         Map<String, Object> sessionMap = externalContext.getSessionMap();
         sessionMap.put("selectedInvoice", selectedInvoice);
         return "displayinvoicedetail.xhtml?faces-redirect=true";
-        
+
     }
 
 }

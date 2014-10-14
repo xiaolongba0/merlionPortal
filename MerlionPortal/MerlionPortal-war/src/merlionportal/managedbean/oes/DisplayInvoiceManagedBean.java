@@ -13,6 +13,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 import javax.faces.context.FacesContext;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.oes.ordermanagement.InvoiceMangerSessionBean;
 
 /**
@@ -23,6 +24,9 @@ import merlionportal.oes.ordermanagement.InvoiceMangerSessionBean;
 @Dependent
 public class DisplayInvoiceManagedBean {
 
+    @EJB
+    private SystemLogSessionBean systemLogSB;
+    
     @EJB
     private InvoiceMangerSessionBean invoiceMB;
     private Integer companyId;
@@ -50,7 +54,7 @@ public class DisplayInvoiceManagedBean {
             }
         }
         myInvoice = (ProductInvoice) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedInvoice");
-        orderId=myInvoice.getSalesOrderId();
+        orderId = myInvoice.getSalesOrderId();
         myOrder = invoiceMB.getMyOrder(orderId);
 
     }
@@ -97,7 +101,5 @@ public class DisplayInvoiceManagedBean {
     public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
-    
-    
 
 }

@@ -16,6 +16,7 @@ import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.oes.ordermanagement.EditSavedOrderSessionBean;
 import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
 import org.primefaces.event.RowEditEvent;
@@ -28,6 +29,8 @@ import org.primefaces.event.RowEditEvent;
 @ViewScoped
 public class EditSavedOrderManagedBean {
 
+    @EJB
+    private SystemLogSessionBean systemLogSB;
     @EJB
     private PurchaseOrderManagerSessionBean purchaseOrderMB;
     @EJB
@@ -111,6 +114,7 @@ public class EditSavedOrderManagedBean {
     }
 
     public String submitOrder() {
+        systemLogSB.recordSystemLog(userId, "OES Generate Purchase Order. ");
         Double price = 0.0;
         if (shipto == null || itemList.isEmpty() || itemList == null || contactPerson == null || contactNumber == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please make sure all compulsory filds are filled"));

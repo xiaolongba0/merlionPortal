@@ -17,6 +17,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import merlionportal.ci.administrationmodule.SystemAccessRightSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
 
 /**
@@ -26,7 +27,8 @@ import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
 @Named(value = "retrieveSavedOrder")
 @RequestScoped
 public class RetrieveSavedOrderManagedBean {
-
+ @EJB
+    private SystemLogSessionBean systemLogSB;
     @EJB
     private PurchaseOrderManagerSessionBean purchaseOrderMB;
 
@@ -113,7 +115,6 @@ public class RetrieveSavedOrderManagedBean {
     }
 
     public String editOrder() {
-
         if (selectedOrder == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please select one order ."));
             return "retrievesavedorder.xhtml";
@@ -135,8 +136,6 @@ public class RetrieveSavedOrderManagedBean {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
         sessionMap.put("selectedOrder", selectedOrder);
-        System.out.println("this line will executed");
-        System.out.println("this line  executed  finished");
         selectedOrder = null;
         return "createso.xhtml?faces-redirect=true";
     }

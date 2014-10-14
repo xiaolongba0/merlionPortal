@@ -15,6 +15,7 @@ import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.oes.ordermanagement.CommonFunctionSessionBean;
 import merlionportal.oes.reportmanagementmodule.ReportManagerSessionBean;
 import org.primefaces.model.chart.Axis;
@@ -31,6 +32,8 @@ import org.primefaces.model.chart.LineChartModel;
 @ViewScoped
 public class DisplayChartManagedBean {
 
+    @EJB
+    private SystemLogSessionBean systemLogSB;
     @EJB
     private ReportManagerSessionBean reportMB;
     @EJB
