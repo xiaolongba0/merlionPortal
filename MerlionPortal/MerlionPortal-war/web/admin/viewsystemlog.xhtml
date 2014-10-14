@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+    <c:set var="root" value="${request.contextPath}" />
+    <ui:composition template="${root}/templates/templateadmin.xhtml">
+        <ui:param name="pageName" value="View Roles" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <link rel="stylesheet" href="${request.contextPath}/css/viewroles.css" type="text/css" />
+                <script src="${request.contextPath}/js/tableformat.js" type="text/javascript"></script>
+            </ui:insert>
+        </ui:define>
+
+        <!-- Override Content -->
+        <ui:define name="content">
+            <c:set var="root" value="${request.contextPath}" />
+            <div class="container" >
+                <h2>View User Log</h2>
+
+                <h:form id="mainForm">
+                    <p:panel id="panel" header="Search Form" style="margin-bottom:10px;">                      
+                        <h:panelGrid columns="4" cellpadding="5">                           
+                            <h:outputLabel value="User Name" />
+                            <p:inputText value="#{systemLogManagedBean.actionerName}"  label="Company Name"/> 
+                            <h:outputLabel value="User Id" />
+                            <p:inputText value="#{systemLogManagedBean.actionerId}"  label="Company Name"/> 
+                            <p:outputLabel  value="Starting date" />
+                            <p:calendar  value="#{systemLogManagedBean.startDate}" />
+                            <p:outputLabel  value="End date" />
+                            <p:calendar  value="#{systemLogManagedBean.endDate}" />                                                       
+                        </h:panelGrid>
+                    </p:panel>
+
+                    <h:panelGrid columns="2">
+                        <p:commandButton actionListener="#{systemLogManagedBean.navigationSearch()}" update="listTalbe" value="Search" />                      
+                    </h:panelGrid>
+
+                    <p:dataTable id="listTalbe" var="log" value="#{systemLogManagedBean.allLogList}" widgetVar="logTalbe"
+                                 emptyMessage="No log found with given criteria" filteredValue="#{systemLogManagedBean.filteredLogs}">       
+
+                        <p:column filterBy="#{systemLogManagedBean.getCompanyName(log)}" headerText="Company Name"  filterMatchMode="contains">
+                            <h:outputText value="#{systemLogManagedBean.getCompanyName(log)}" />
+                        </p:column>
+
+                        <p:column filterBy="#{systemLogManagedBean.getActionerName(log)}" headerText="Actioner"  filterMatchMode="contains">
+                            <h:outputText value="#{systemLogManagedBean.getActionerName(log)}" />
+                        </p:column>                                             
+
+                        <p:column filterBy="#{log.action}" headerText="Action "  filterMatchMode="contains">
+                            <h:outputText value="#{log.action}" />
+                        </p:column> 
+
+                        <p:column filterBy="#{log.logTime}" headerText="Time"  filterMatchMode="contains">
+                            <h:outputText value="#{log.logTime}" />
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+
