@@ -39,10 +39,14 @@
                         </h:panelGrid>
                     </p:panel>
                     <h:panelGrid columns="2">
-                        <p:commandButton actionListener="#{systemLogManagedBean.navigationSearch()}" update="listTalbe" value="Search" />                      
+                        <p:commandButton actionListener="#{systemLogManagedBean.navigationSearch()}" update="listTalbe" value="Search" ajax="true"/> 
+                        <p:commandButton actionListener="#{systemLogManagedBean.revertSearch()}" update="listTalbe" value="Revert" ajax="true"/> 
                     </h:panelGrid>
                     <br></br>
-                    <p:dataTable id="listTalbe" var="log" value="#{systemLogManagedBean.allLogList}" widgetVar="logTalbe"
+                    <p:dataTable id="listTalbe" var="log" value="#{systemLogManagedBean.allLogList}" rows="20"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15" widgetVar="logTalbe"
                                  emptyMessage="No log found with given criteria" filteredValue="#{systemLogManagedBean.filteredLogs}">       
 
                         <p:column filterBy="#{systemLogManagedBean.getCompanyName(log)}" headerText="Company Name"  filterMatchMode="contains">
