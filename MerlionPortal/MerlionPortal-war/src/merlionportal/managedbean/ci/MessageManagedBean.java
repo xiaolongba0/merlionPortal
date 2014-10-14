@@ -9,6 +9,7 @@ import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.administrationmodule.GetCompanyUserSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.ci.messagingmodule.MessagingSessionBean;
 import merlionportal.utility.MessagingStatus;
@@ -29,6 +30,9 @@ public class MessageManagedBean {
 
     @EJB
     private MessagingSessionBean msb;
+
+    @EJB
+    private GetCompanyUserSessionBean gcusb;
 
     public MessageManagedBean() {
     }
@@ -57,6 +61,22 @@ public class MessageManagedBean {
         }
     }
 
+    public void broadcastMail() {
+        int companyId = msb.findCompany(loginedUser.getSystemUserId());
+        if (companyId > -1) {
+            List<SystemUser> allUsers = gcusb.getAllUsersInCompany(companyId);
+            if (allUsers != null) {
+                subject = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("subject");
+                content = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("content");
+                for (SystemUser s : allUsers) {
+                    msb.createMessage(loginedUser.getSystemUserId(), s.getSystemUserId(), subject, content, MessagingStatus.MAIL_UNREAD);
+                }
+                String functionCall = "postEmail(1)";
+                RequestContext.getCurrentInstance().execute(functionCall);
+            }
+        }
+    }
+
     public void verifyEmail() {
         String email = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("emailAddress");
         int userid = msb.findUser(email);
@@ -78,20 +98,19 @@ public class MessageManagedBean {
             if (m != null) {
                 String s = m.getMessageBody().replace("\n", " ");
                 String functionCall = "postReadMail('" + m.getMessageTitle() + "','" + s + "','" + msb.findEmail(m.getSender()) + "')";
-
                 RequestContext.getCurrentInstance().execute(functionCall);
             }
         }
     }
-    
-    public void deleteEmail(){
+
+    public void deleteEmail() {
         int mailid = -1;
-        try{
+        try {
             mailid = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("selectmsgid"));
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        if(mailid > -1){
+        if (mailid > -1) {
             Message m = msb.getMail(mailid);
             msb.changeMailStatus(mailid, MessagingStatus.MAIL_DELETED);
             if (m != null) {

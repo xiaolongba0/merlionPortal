@@ -28,11 +28,16 @@
                         $("#emailAddress").val("");
                     }
                 }
+
                 function sendEmail() {
                     document.getElementById('messagingForm:sendEmail').click();
                     return false;
                 }
 
+                function broadCastMail() {
+                    document.getElementById('messagingForm:broadCastMail').click();
+                    return false;
+                }
 
                 function postReadMail(title, content, senderEmail) {
                     var mailReader = $("#messageReader");
@@ -42,9 +47,9 @@
                     $("#replyBtn").unbind("click");
                     $("#replyBtn").click({
                         "senderEmail": senderEmail,
-                        "title" : title
+                        "title": title
                     }, function (e) {
-                        reply(e.data.senderEmail,e.data.title);
+                        reply(e.data.senderEmail, e.data.title);
                     });
 
                     $("#deleteBtn").unbind("click");
@@ -81,7 +86,7 @@
                     return false;
                 }
 
-                function reply(email,title) {
+                function reply(email, title) {
                     openEditor();
                     $("#emailAddress").val(email);
                     $("#subject").val("RE: " + title);
@@ -210,12 +215,14 @@
                                 <p:commandLink id="verifyEmail" style="display:none;" actionListener="#{messagerBean.verifyEmail}" ajax="true" />
                                 <p:commandLink id="sendEmail" style="display:none;" actionListener="#{messagerBean.sendEmail}" ajax="true" />
                                 <p:commandLink id="deleteEmail" style="display:none;" actionListener="#{messagerBean.deleteEmail}" ajax="true" />
+                                <p:commandLink id="broadCastMail" style="display:none;" actionListener="#{messagerBean.broadcastMail}" ajax="true" />
                                 <!-- Hidden Fields -->
                                 <input type="hidden" id="selectmsgid" name="selectmsgid" value="-1" />
                             </h:form>
                         </div>
                         <div class="modal-footer">
                             <button id="sendemailBtn" type="button" class="btn btn-primary" onclick="sendEmail();" disabled="disabled">Send Email</button>
+                            <button id="broadcastmailBtn" type="button" class="btn btn-warning" onclick="broadCastMail();">Broadcast Email</button>
                             <button id="closeEditorBtn" type="button" class="btn btn-danger" onclick="closeEditor();">Close</button>
                         </div>
                     </div><!-- /.modal-content -->
