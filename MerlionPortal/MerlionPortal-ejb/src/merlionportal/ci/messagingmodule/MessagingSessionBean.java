@@ -84,4 +84,13 @@ public class MessagingSessionBean {
             em.refresh(m);
         }
     }
+
+    public int findCompany(int userid) {
+        SystemUser su = em.find(SystemUser.class, userid);
+        if (su != null) {
+            return su.getCompanycompanyId().getCompanyId();
+        } else {
+            return -1;
+        }
+    }
 }
