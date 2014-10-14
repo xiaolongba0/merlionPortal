@@ -28,12 +28,12 @@ public class MessagingSessionBean {
             return su.getSystemUserId().intValue();
         }
     }
-    
-    public String findEmail(int id){
+
+    public String findEmail(int id) {
         SystemUser su = em.find(SystemUser.class, id);
-        if(su != null){
+        if (su != null) {
             return su.getEmailAddress();
-        }else{
+        } else {
             return "";
         }
     }
@@ -41,20 +41,20 @@ public class MessagingSessionBean {
     //Return message id upon successful creation.
     public int createMessage(int senderId, int receiverId, String title, String body, int status) {
         int response = -1;
-        try{
-        Message msg = new Message();
-        msg.setMessageTitle(title);
-        msg.setMessageBody(body);
-        msg.setSender(senderId);
-        msg.setReceiver(receiverId);
-        msg.setSentTime(new Date());
-        msg.setStatus(status);
-        msg.setMessageType("mail");
-        em.persist(msg);
-        em.flush();
-        em.refresh(msg);
-        response = msg.getMessageId();
-        }catch(Exception e){
+        try {
+            Message msg = new Message();
+            msg.setMessageTitle(title);
+            msg.setMessageBody(body);
+            msg.setSender(senderId);
+            msg.setReceiver(receiverId);
+            msg.setSentTime(new Date());
+            msg.setStatus(status);
+            msg.setMessageType("mail");
+            em.persist(msg);
+            em.flush();
+            em.refresh(msg);
+            response = msg.getMessageId();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return response;
@@ -62,7 +62,7 @@ public class MessagingSessionBean {
 
     public List<Message> getInbox(int customerId) {
         List<Message> inbox;
-        q = em.createNamedQuery("Message.findByReceiver").setParameter("receiver", customerId);
+        q = em.createQuery("SELECT m FROM Message m WHERE m.receiver = :receiver AND m.status != :status ORDER BY m.sentTime DESC").setParameter("receiver", customerId).setParameter("status", 9992);
         if (q.getResultList().isEmpty()) {
             inbox = new ArrayList<Message>();
         } else {
@@ -70,8 +70,18 @@ public class MessagingSessionBean {
         }
         return inbox;
     }
-    
-    public Message getMail(int mailid){
+
+    public Message getMail(int mailid) {
         return em.find(Message.class, mailid);
+    }
+
+    public void changeMailStatus(int mailid, int status) {
+        Message m = em.find(Message.class, mailid);
+        if (m != null) {
+            m.setStatus(status);
+            em.merge(m);
+            em.flush();
+            em.refresh(m);
+        }
     }
 }

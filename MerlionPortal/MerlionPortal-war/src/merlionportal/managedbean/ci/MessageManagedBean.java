@@ -73,10 +73,30 @@ public class MessageManagedBean {
         }
         if (mailid > -1) {
             Message m = msb.getMail(mailid);
+            //Change mail status
+            msb.changeMailStatus(mailid, MessagingStatus.MAIL_READ);
             if (m != null) {
                 String s = m.getMessageBody().replace("\n", " ");
                 String functionCall = "postReadMail('" + m.getMessageTitle() + "','" + s + "','" + msb.findEmail(m.getSender()) + "')";
 
+                RequestContext.getCurrentInstance().execute(functionCall);
+            }
+        }
+    }
+    
+    public void deleteEmail(){
+        int mailid = -1;
+        try{
+            mailid = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("selectmsgid"));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        if(mailid > -1){
+            Message m = msb.getMail(mailid);
+            msb.changeMailStatus(mailid, MessagingStatus.MAIL_DELETED);
+            if (m != null) {
+                String s = m.getMessageBody().replace("\n", " ");
+                String functionCall = "postDeleteMail()";
                 RequestContext.getCurrentInstance().execute(functionCall);
             }
         }

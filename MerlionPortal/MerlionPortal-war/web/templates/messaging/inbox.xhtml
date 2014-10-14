@@ -37,16 +37,40 @@
                 function postReadMail(title, content, senderEmail) {
                     var mailReader = $("#messageReader");
                     $("#readMsgTitle").html(title);
-//                    $("#readMsgSender").html(content);
                     $("#readMsgContent").html(content);
                     $("readMsgSender").html("From " + senderEmail);
                     $("#replyBtn").unbind("click");
                     $("#replyBtn").click({
-                        "senderEmail": senderEmail
+                        "senderEmail": senderEmail,
+                        "title" : title
                     }, function (e) {
-                        reply(e.data.senderEmail);
+                        reply(e.data.senderEmail,e.data.title);
                     });
+
+                    $("#deleteBtn").unbind("click");
+                    $("#deleteBtn").click(function (e) {
+                        deleteMail();
+                    });
+
                     mailReader.removeClass("hide");
+                }
+
+                function deleteMail() {
+                    document.getElementById('messagingForm:deleteEmail').click();
+                    return false;
+                }
+
+                function postDeleteMail() {
+                    var msgid = $("#selectmsgid").val();
+                    $("#msg_" + msgid).remove();
+                    $("#selectmsgid").val("-1");
+                    var mailReader = $("#messageReader");
+                    $("#inboxMessages").find("li").removeClass("active");
+                    $("#readMsgTitle").html("");
+                    $("#readMsgContent").html("");
+                    $("readMsgSender").html("");
+                    mailReader.addClass("hide");
+                    $.notify("Mail Deleted", "success");
                 }
 
                 function readMail(menuitem, id) {
@@ -57,9 +81,10 @@
                     return false;
                 }
 
-                function reply(email) {
+                function reply(email,title) {
                     openEditor();
                     $("#emailAddress").val(email);
+                    $("#subject").val("RE: " + title);
                     document.getElementById('messagingForm:verifyEmail').click();
                     return false;
                 }
@@ -113,11 +138,11 @@
                                     <c:forEach items="#{messagerBean.inbox}" var="message">
                                         <c:choose>
                                             <c:when test="#{message.status == 9990}">
-                                                <li class="list-group-item list-group-item-info pointer" onclick="readMail(this,#{message.messageId});">#{message.messageTitle}</li>
+                                                <li id="msg_#{message.messageId}" class="list-group-item list-group-item-info pointer" onclick="readMail(this,#{message.messageId});">#{message.messageTitle}</li>
                                             </c:when>
-                                            <c:otherwise>
-                                                <li class="list-group-item pointer" onclick="readMail(this,#{message.messageId});">#{message.messageTitle}</li>
-                                            </c:otherwise>
+                                            <c:when test="#{message.status == 9991}">
+                                                <li id="msg_#{message.messageId}" class="list-group-item pointer" onclick="readMail(this,#{message.messageId});">#{message.messageTitle}</li>
+                                            </c:when>
                                         </c:choose>
                                     </c:forEach>
                                 </ul>
@@ -128,6 +153,7 @@
                                     <div id="readMsgSender"></div>
                                     <div id="readMsgContent"></div>
                                     <button id="replyBtn" class="btn btn-primary">Reply</button>
+                                    <button id="deleteBtn" class="btn btn-danger">Delete</button>
                                 </div>
                             </div>
                         </c:otherwise>
@@ -183,6 +209,7 @@
                                 <p:commandLink id="readEmail" style="display:none;" actionListener="#{messagerBean.readMail}" ajax="true" />
                                 <p:commandLink id="verifyEmail" style="display:none;" actionListener="#{messagerBean.verifyEmail}" ajax="true" />
                                 <p:commandLink id="sendEmail" style="display:none;" actionListener="#{messagerBean.sendEmail}" ajax="true" />
+                                <p:commandLink id="deleteEmail" style="display:none;" actionListener="#{messagerBean.deleteEmail}" ajax="true" />
                                 <!-- Hidden Fields -->
                                 <input type="hidden" id="selectmsgid" name="selectmsgid" value="-1" />
                             </h:form>
@@ -198,4 +225,3 @@
         </ui:composition>
     </h:body>
 </html>
-
