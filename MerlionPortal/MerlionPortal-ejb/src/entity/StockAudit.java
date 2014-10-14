@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "StockAudit.findByActualQuantity", query = "SELECT s FROM StockAudit s WHERE s.actualQuantity = :actualQuantity"),
     @NamedQuery(name = "StockAudit.findByRemarks", query = "SELECT s FROM StockAudit s WHERE s.remarks = :remarks"),
     @NamedQuery(name = "StockAudit.findByStockAuditStatus", query = "SELECT s FROM StockAudit s WHERE s.stockAuditStatus = :stockAuditStatus"),
-    @NamedQuery(name = "StockAudit.findByProductId", query = "SELECT s FROM StockAudit s WHERE s.productId = :productId"),
+    @NamedQuery(name = "StockAudit.findByStorageBinId", query = "SELECT s FROM StockAudit s WHERE s.storageBinId = :storageBinId"),
     @NamedQuery(name = "StockAudit.findByExpectedQuantity", query = "SELECT s FROM StockAudit s WHERE s.expectedQuantity = :expectedQuantity")})
 public class StockAudit implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -74,8 +74,8 @@ public class StockAudit implements Serializable {
     private String remarks;
     @Column(name = "stockAuditStatus")
     private Integer stockAuditStatus;
-    @Column(name = "productId")
-    private Integer productId;
+    @Column(name = "storageBinId")
+    private Integer storageBinId;
     @Column(name = "expectedQuantity")
     private Integer expectedQuantity;
 
@@ -174,12 +174,12 @@ public class StockAudit implements Serializable {
         this.stockAuditStatus = stockAuditStatus;
     }
 
-    public Integer getProductId() {
-        return productId;
+    public Integer getStorageBinId() {
+        return storageBinId;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setStorageBinId(Integer storageBinId) {
+        this.storageBinId = storageBinId;
     }
 
     public Integer getExpectedQuantity() {
