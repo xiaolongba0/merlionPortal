@@ -27,22 +27,21 @@
 
                 <h:form id="mainForm">
                     <p:panel id="panel" header="Search Form" style="margin-bottom:10px;">                      
-                        <h:panelGrid columns="4" cellpadding="5">                           
+                        <h:panelGrid columns="5" cellpadding="5">                           
                             <h:outputLabel value="User Name" />
-                            <p:inputText value="#{systemLogManagedBean.actionerName}"  label="Company Name"/> 
+                            <p:inputText value="#{systemLogManagedBean.actionerName}"  label="Company Name"/> <p:spacer width="20" height="10" />
                             <h:outputLabel value="User Id" />
                             <p:inputText value="#{systemLogManagedBean.actionerId}"  label="Company Name"/> 
                             <p:outputLabel  value="Starting date" />
-                            <p:calendar  value="#{systemLogManagedBean.startDate}" />
+                            <p:calendar  value="#{systemLogManagedBean.startDate}" /><p:spacer width="20" height="10" />
                             <p:outputLabel  value="End date" />
                             <p:calendar  value="#{systemLogManagedBean.endDate}" />                                                       
                         </h:panelGrid>
                     </p:panel>
-
                     <h:panelGrid columns="2">
                         <p:commandButton actionListener="#{systemLogManagedBean.navigationSearch()}" update="listTalbe" value="Search" />                      
                     </h:panelGrid>
-
+                    <br></br>
                     <p:dataTable id="listTalbe" var="log" value="#{systemLogManagedBean.allLogList}" widgetVar="logTalbe"
                                  emptyMessage="No log found with given criteria" filteredValue="#{systemLogManagedBean.filteredLogs}">       
 
