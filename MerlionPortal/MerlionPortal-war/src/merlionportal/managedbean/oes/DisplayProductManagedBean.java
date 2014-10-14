@@ -17,6 +17,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import merlionportal.ci.administrationmodule.SystemAccessRightSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.oes.quotationmanagementmodule.QuotationManagerSessionBean;
 
 /**
@@ -27,8 +28,9 @@ import merlionportal.oes.quotationmanagementmodule.QuotationManagerSessionBean;
 @RequestScoped
 public class DisplayProductManagedBean {
     @EJB
+    private SystemLogSessionBean systemLogSB;
+    @EJB
     private SystemAccessRightSessionBean accessRight;
-
     @EJB
     private QuotationManagerSessionBean quotationMB;
 
@@ -104,6 +106,8 @@ public class DisplayProductManagedBean {
                 quotationMB.createLineItem(companyId, p, newRequest);
             }
         }
+        systemLogSB.recordSystemLog(userId, "Generate request for quotation");
+        
         selectedProducts.clear();
     }
 
