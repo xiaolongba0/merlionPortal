@@ -10,6 +10,7 @@ import entity.SystemUser;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -28,13 +29,14 @@ public class SystemLogManagedBean {
     private SystemLogSessionBean systemLogSB;
     private List<SystemLog> allLogList;
     private Integer companyId;
-    private Integer userId; 
+    private Integer userId;
     private List<SystemLog> filteredLogs;
     private Date startDate;
     private Date endDate;
     private String actionerName;
     private Integer actionerId;
 
+    @PostConstruct
     public void init() {
         boolean redirect = true;
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
@@ -95,13 +97,21 @@ public class SystemLogManagedBean {
         this.filteredLogs = filteredLogs;
     }
 
-    public String getCompanyName(SystemLog sLog){
-        SystemUser myUser=sLog.getSystemUsersystemUserId();      
-        return systemLogSB.getCompanyName(myUser);
+    public String getCompanyName(SystemLog sLog) {
+        String result = "";
+        if (sLog != null) {
+            SystemUser myUser = sLog.getSystemUsersystemUserId();
+            result = systemLogSB.getCompanyName(myUser);
+        }
+        return result;
     }
-    
-    public String getActionerName(SystemLog sLog){
-        return sLog.getSystemUsersystemUserId().getFirstName()+" "+sLog.getSystemUsersystemUserId().getLastName();
+
+    public String getActionerName(SystemLog sLog) {
+        String result = "";
+        if (sLog != null) {
+            result = sLog.getSystemUsersystemUserId().getFirstName() + " " + sLog.getSystemUsersystemUserId().getLastName();
+        }
+        return result;
     }
 
     public Date getStartDate() {
@@ -135,21 +145,25 @@ public class SystemLogManagedBean {
     public void setActionerId(Integer actionerId) {
         this.actionerId = actionerId;
     }
-    
-    public void navigationSearch(){
-        if(actionerId!=null){
-           allLogList= systemLogSB.searchForLogByUserId(allLogList, userId);
+
+    public void navigationSearch() {
+        if (actionerId != null) {
+            System.out.println("navigation search 1" + actionerId);
+            allLogList = systemLogSB.searchForLogByUserId(allLogList, userId);
+        } else if (actionerName != null) {
+            System.out.println("navigation search 1" + actionerId);
+            allLogList = systemLogSB.searchForLogByListOfUser(allLogList, actionerName);
         }
-        else if(actionerName!=null){
-            allLogList=systemLogSB.searchForLogByListOfUser(allLogList, actionerName);
-        }
-        if(startDate!=null){
+        if (startDate != null) {
             allLogList = systemLogSB.searchForLogAfter(allLogList, startDate);
         }
-        if(startDate!=null){
+        if (startDate != null) {
             allLogList = systemLogSB.searchForLogBefore(allLogList, endDate);
         }
-              
+
     }
 
+    public void revertSearch() {
+        allLogList = systemLogSB.getAllLog();
+    }
 }
