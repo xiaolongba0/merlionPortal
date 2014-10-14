@@ -54,6 +54,9 @@ public class SystemLogManagedBean {
         }
 
         allLogList = systemLogSB.getAllLog();
+        if(allLogList == null){
+            System.out.print("null pointer exc=ep============================");
+        }
 
     }
 
