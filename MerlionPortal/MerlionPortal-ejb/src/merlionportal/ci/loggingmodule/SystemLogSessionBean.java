@@ -104,7 +104,8 @@ public class SystemLogSessionBean {
         List<SystemLog> allLog = new ArrayList();
         Query q = em.createQuery("SELECT s FROM SystemLog s");
         for (Object o : q.getResultList()) {
-            allLog.add((SystemLog) o);
+            SystemLog sysLog = (SystemLog)o;
+            allLog.add(sysLog);
         }
         return allLog;
     }
@@ -177,5 +178,6 @@ public class SystemLogSessionBean {
         result = myUser.getCompanycompanyId().getName();
         return result;
     }
+    
 
 }
