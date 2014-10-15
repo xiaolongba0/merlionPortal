@@ -42,7 +42,7 @@
                             <h:form>
                                 <li class="dropdown nav navbar-nav navbar-right header-push-bottom"><a href="#"  class="dropdown-toggle black-link" data-toggle="dropdown"><h:outputText value="${dashboardBean.loginedUser.firstName}"/><span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#"><i class="glyphicon glyphicon-envelope"></i>  Messages</a></li>
+                                        <li><a href="${root}/admin/message.xhtml"><i class="glyphicon glyphicon-envelope"></i>  Messages</a></li>
                                         <li><h:commandLink actionListener="#{logoutManagerBean.logout}">Logout</h:commandLink></li>
                                     </ul>
                                 </li>
