@@ -33,13 +33,13 @@ public class LogoutManagedBean {
     }
 
     public void logout() throws IOException {
+        systemLogSB.recordSystemLog(uamsb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")).getSystemUserId(), "CI User logged out");
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         try {
             FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/logout.xhtml");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        systemLogSB.recordSystemLog(uamsb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")).getSystemUserId(), "CI User logged out");
     }
 
 }
