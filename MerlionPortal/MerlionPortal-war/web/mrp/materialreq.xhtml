@@ -127,7 +127,7 @@
                                         <p:column colspan="7">Material Requirement Planning</p:column>
                                     </p:row>
                                     <p:row>
-                                        <p:column colspan="2" >MPS</p:column>
+                                        <p:column colspan="2" >LeadTime</p:column>
                                         <p:column colspan="1">Week 1</p:column>
                                         <p:column colspan="1">Week 2</p:column>
                                         <p:column colspan="1">Week 3</p:column>
@@ -135,6 +135,24 @@
                                         <p:column colspan="1">Week 5</p:column>
                                     </p:row>
                                 </f:facet>
+                                <p:row>
+                                    <p:column style="font-weight: bold;" colspan="2">Monthly Demand</p:column>
+                                    <p:column>
+                                        <h:outputText value="#{materialReqManagedBean.wk1Demand}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{materialReqManagedBean.wk2Demand}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{materialReqManagedBean.wk3Demand}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{materialReqManagedBean.wk4Demand}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{materialReqManagedBean.wk5Demand}" />
+                                    </p:column>
+                                </p:row>
 
                                 <p:row>
                                     <p:column style="font-weight: bold;" colspan="2">Monthly Demand</p:column>
