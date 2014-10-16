@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.mrp.materialrequirementmodule.MaterialReqPlanningSessionBean;
 import merlionportal.mrp.mpsmodule.MpsSessionBean;
 
 /**
@@ -31,7 +32,8 @@ import merlionportal.mrp.mpsmodule.MpsSessionBean;
 @Named(value = "mPSBufferManagedBean")
 @ViewScoped
 public class MPSBufferManagedBean {
-
+  
+ 
     @EJB
     MpsSessionBean mpsSessionBean;
     @EJB
@@ -43,6 +45,7 @@ public class MPSBufferManagedBean {
     Vector<Integer> forecastData;
     Vector<String> forecastDate;
 
+    
     int thisMonthDemand = 4000;
     int buffer;
     int currentInv;
@@ -293,6 +296,7 @@ public class MPSBufferManagedBean {
 
     public String proceedToMPSResult() {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("buffer", buffer);
+
         return ("mpsresult");
     }
 

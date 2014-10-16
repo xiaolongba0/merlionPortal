@@ -14,7 +14,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
-import merlionportal.mpr.materialrequirementmodule.MaterialReqSessionBean;
+import merlionportal.mrp.materialrequirementmodule.MaterialReqPlanningSessionBean;
 import merlionportal.mrp.mpsmodule.MpsSessionBean;
 
 /**
@@ -26,7 +26,7 @@ import merlionportal.mrp.mpsmodule.MpsSessionBean;
 public class MaterialReqManagedBean {
 
     @EJB
-    MaterialReqSessionBean materialReqSessionBean;
+    MaterialReqPlanningSessionBean materialReqPlanningSessionBean;
     
     @EJB
     UserAccountManagementSessionBean uamb;
@@ -96,7 +96,7 @@ public class MaterialReqManagedBean {
         grossReq5 = wk5Demand * quantity;
         
      
-        
+    //   materialReqPlanningSessionBean.addNewMrpList(productId);
         
 
     }

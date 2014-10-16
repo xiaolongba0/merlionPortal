@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.mrp.materialrequirementmodule.MaterialReqPlanningSessionBean;
 import merlionportal.mrp.mpsmodule.MpsSessionBean;
 
 /**
@@ -33,11 +34,15 @@ import merlionportal.mrp.mpsmodule.MpsSessionBean;
 public class MPSResultManagedBean {
 
     @EJB
+    MaterialReqPlanningSessionBean materialReqPlanningSessionBean;
+
+    @EJB
     MpsSessionBean mpsSessionBean;
     @EJB
     UserAccountManagementSessionBean uamb;
     private SystemUser loginedUser;
     Integer companyId;
+    Integer productId;
 
     List<Integer> weeklyDemand;
     Vector<Integer> forecastData;
@@ -343,6 +348,8 @@ public class MPSResultManagedBean {
     }
 
     public String proceedToMaterialReq() {
+        productId = 1;
+        materialReqPlanningSessionBean.addNewMrpList(productId);
         return ("materialreq");
     }
 
