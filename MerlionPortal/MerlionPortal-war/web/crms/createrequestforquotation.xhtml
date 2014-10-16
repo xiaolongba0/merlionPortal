@@ -42,7 +42,7 @@
                     </p:submenu>
                     <p:submenu label="Service PO" styleClass="display:block">
                         <p:menuitem value="Create Service PO" url="createservicepo.xhtml" />
-                        <p:menuitem value="View All Service PO" url="viewservicepo.xhtml" />
+                        <p:menuitem value="View All Service PO" url="viewallservicepos.xhtml" />
                     </p:submenu>
                 </p:panelMenu>
             </h:form>
@@ -78,19 +78,24 @@
                         <h:outputText value="#{createRFQManagedBean.selectedService.serviceName}" />
                         <h:outputText value="Service Description" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{createRFQManagedBean.selectedService.serviceDescription}" />
+                        <h:outputText value="Service Type" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{createRFQManagedBean.selectedService.serviceType}" />
                         <h:outputText value="Price Per TEU" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{createRFQManagedBean.selectedService.pricePerTEU}" />
                         <p:outputLabel for="startDate" value="Start Date " /><p:spacer width="20" height="20" />
                         <p:calendar id="startDate" required="true" requiredMessage="Start Date is required" value="#{createRFQManagedBean.startDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{createRFQManagedBean.today}" />
                         <p:outputLabel for="endDate" value="End Date " /><p:spacer width="20" height="20" />
                         <p:calendar id="endDate" required="true" requiredMessage="End Date is required" value="#{createRFQManagedBean.endDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{createRFQManagedBean.startDate}" />
-
-                        <p:outputLabel value="Origin *" /><p:spacer width="20" height="20" />
-                        <p:inputText value="#{createRFQManagedBean.origin}"  required="true" requiredMessage="Origin is required" />
-                        <p:outputLabel value="Destination *" /><p:spacer width="20" height="20" />
-                        <p:inputText value="#{createRFQManagedBean.destination}" required="true" requiredMessage="Destination is required" />
-                        <p:outputLabel value="Expected Quantity Per Month (TEU) *" style="width: 150px"  /><p:spacer width="20" height="20" />
+                        <c:if test="#{createRFQManagedBean.selectedService.serviceType eq 'Transportation'}" >
+                            <p:outputLabel value="Origin *" /><p:spacer width="20" height="20" />
+                            <p:inputText value="#{createRFQManagedBean.origin}"  required="true" requiredMessage="Origin is required" />
+                            <p:outputLabel value="Destination *" /><p:spacer width="20" height="20" />
+                            <p:inputText value="#{createRFQManagedBean.destination}" required="true" requiredMessage="Destination is required" />
+                        </c:if>
+                        <p:outputLabel value="Total Expected Quantity (TEU) *" style="width: 150px"  /><p:spacer width="20" height="20" />
                         <p:inputText value="#{createRFQManagedBean.quantityPerMonth}" required="true" requiredMessage="Expected Quantity is required" />
+
+
 
                     </h:panelGrid>
 

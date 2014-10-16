@@ -42,7 +42,7 @@
                     </p:submenu>
                     <p:submenu label="Service PO" styleClass="display:block">
                         <p:menuitem value="Create Service PO" url="createservicepo.xhtml" />
-                        <p:menuitem value="View All Service PO" url="viewservicepo.xhtml" />
+                        <p:menuitem value="View All Service PO" url="viewallservicepos.xhtml" />
                     </p:submenu>
                 </p:panelMenu>
             </h:form>
@@ -80,19 +80,21 @@
                         <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.startDate}" />
                         <p:outputLabel value="End Date:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.endDate}" />
-                        <p:outputLabel value="Origin:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.origin}" />
-                        <p:outputLabel value="Destination:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.destination}" />
-                        <p:outputLabel value="Expected Quantity Per Month (TEU):" style="width: 150px" /><p:spacer width="20" height="20" />
+                        <c:if test="#{viewQuotationManagedBean.selectedQuotation.serviceType eq 'Transportation'}" >
+                            <p:outputLabel value="Origin:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.origin}" />
+                            <p:outputLabel value="Destination:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.destination}" />
+                        </c:if>
+                        <p:outputLabel value="Total Expected Quantity (TEU):" style="width: 150px" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.quantityPerMonth}" />
-          
+
 
                         <p:outputLabel value="Quotation Price Per TEU:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.price}" />
                         <p:outputLabel value="Discount in %:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.discountRate}" />
-                        
+
                         <p:outputLabel value="Status:" style="color: red" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewQuotationManagedBean.status}"  style="color: red" />
 

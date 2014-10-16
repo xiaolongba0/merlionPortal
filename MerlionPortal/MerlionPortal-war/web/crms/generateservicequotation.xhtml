@@ -42,7 +42,7 @@
                     </p:submenu>
                     <p:submenu label="Service PO" styleClass="display:block">
                         <p:menuitem value="Create Service PO" url="createservicepo.xhtml" />
-                        <p:menuitem value="View All Service PO" url="viewservicepo.xhtml" />
+                        <p:menuitem value="View All Service PO" url="viewallservicepos.xhtml" />
                     </p:submenu>
                 </p:panelMenu>
             </h:form>
@@ -86,11 +86,15 @@
                         <h:outputText value="#{generateQuotationManagedBean.selectedRequest.startDate}" />
                         <p:outputLabel value="End Date:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{generateQuotationManagedBean.selectedRequest.endDate}" />
-                        <p:outputLabel value="Origin:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{generateQuotationManagedBean.selectedRequest.origin}" />
-                        <p:outputLabel value="Destination:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{generateQuotationManagedBean.selectedRequest.destination}" />
-                        <p:outputLabel value="Expected Quantity Per Month (TEU) :" style="width: 150px" /><p:spacer width="20" height="20" />
+
+                        <c:if test="#{generateQuotationManagedBean.selectedRequest.serviceType eq 'Transportation'}" >
+                            <p:outputLabel value="Origin:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{generateQuotationManagedBean.selectedRequest.origin}" />
+                            <p:outputLabel value="Destination:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{generateQuotationManagedBean.selectedRequest.destination}" />
+
+                        </c:if>
+                        <p:outputLabel value="Total Expected Quantity (TEU) :" style="width: 150px" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{generateQuotationManagedBean.selectedRequest.quantityPerMonth}" />
                     </h:panelGrid>
                 </p:fieldset>
