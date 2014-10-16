@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="View Service PO Detail" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <h:form id="formMain">
+                <p:panelMenu>
+                    <p:submenu label="CRMS HOME" styleClass="display:block">
+                        <p:menuitem value="CRMS Home" url="crmsindex.xhtml"/>     
+                        <p:menuitem value="Service Yellow Pages" url="serviceyellowpages.xhtml"/>
+                    </p:submenu>
+                    <p:submenu label="Service Catalog Management" styleClass="display:block">
+                        <p:menuitem value="Create New Service" url="createservice.xhtml" />
+                        <p:menuitem value="View All Services" url="viewcompanyservices.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Quotation" styleClass="display:block">
+                        <p:menuitem value="View All Requests" url="viewallrequests.xhtml" />
+                        <p:menuitem value="View All Quotations" url="viewallquotations.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Contract" styleClass="display:block">
+                        <p:menuitem value="Create Service Contract" url="createservicecontract.xhtml" />
+                        <p:menuitem value="View All Contracts" url="viewallcontracts.xhtml" />
+                        <p:menuitem value="Renew Contracts" url="renewservicecontract.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Service PO" styleClass="display:block">
+                        <p:menuitem value="Create Service PO" url="createservicepo.xhtml" />
+                        <p:menuitem value="View All Service PO" url="viewallservicepos.xhtml" />
+                    </p:submenu>
+                </p:panelMenu>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">
+            <h:form id="form">
+                <p:fieldset legend="Service Contact Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <h:outputText value="Sender Company ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.senderCompanyId}" />
+                        <h:outputText value="Sender Company Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewServicePODetailManagedBean.senderCompanyName}" />
+                    </h:panelGrid>
+                    <p:separator />
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <h:outputText value="Receiver Company ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.receiverCompanyId}" />
+                        <h:outputText value="Receiver Company Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewServicePODetailManagedBean.receiverCompanyName}" />
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:fieldset legend="Contract Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <p:outputLabel value="Service ID:" style="width: 150px"/><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.serviceQuotation.serviceCatalog.serviceCatalogId}" />
+                        <p:outputLabel value="Service Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.serviceQuotation.serviceCatalog.serviceName}" />
+                        <p:outputLabel value="Service Description:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.serviceQuotation.serviceCatalog.serviceDescription}" />
+                        <p:outputLabel value="Service Type:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.serviceType}" />
+
+                        <p:outputLabel value="Start Date:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.startDate}" />
+                        <p:outputLabel value="End Date:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.endDate}" />
+
+                        <p:outputLabel value="Expected Quantity Per Month (TEU):" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.serviceQuotation.quantityPerMonth}" />
+
+                        <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Transportation'}" >
+                            <p:outputLabel value="Origin:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.origin}" />
+                            <p:outputLabel value="Destination:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.destination}" />
+                        </c:if>
+                        <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Warehouse'}" >
+                            <p:outputLabel value="Warehouse ID:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.warehouseId}" />
+                            <p:outputLabel value="Storage Zone ID:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.storageZoneId}" />
+                            <p:outputLabel value="Storage Bin ID:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.storageBinId}" />
+                        </c:if>
+                        <p:outputLabel value="Final Contract Price Per TEU:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.price}" />
+                        <p:outputLabel value="Terms &amp; Conditions:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.conditionText}" />
+
+                    </h:panelGrid>
+                </p:fieldset>
+
+                <p:fieldset legend="Purchase Order Information" style="margin-bottom:20px">
+                    <h:panelGrid id="po" columns="3" cellpadding="6" >
+                        <p:outputLabel value="PO Quantity in TEU:"/><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewServicePODetailManagedBean.volume}"/>
+
+                        <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Transportation'}" >
+                            <p:outputLabel value="Delivery Date:"/><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.deliveryDate}"/>
+                        </c:if>
+
+                        <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Warehouse'}" >
+                            <p:outputLabel value="Service Start Date:"/><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.serviceStartDate}"/>
+                            <p:outputLabel value="Service End Date:"/><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.serviceEndDate}"/>
+                        </c:if>
+
+                        <p:outputLabel value="Price:" style="color: red" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewServicePODetailManagedBean.price}" style="color: red" />
+
+
+                        <p:outputLabel value="PO Status:" style="color: red" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewServicePODetailManagedBean.status}"  style="color: red" />
+                    </h:panelGrid>
+                    <p:messages id="msg" showDetail="true" autoUpdate="true" closable="true" />
+
+
+                </p:fieldset>
+                <c:if test="#{(viewServicePODetailManagedBean.selectedServicePO.status eq 1)and (viewServicePODetailManagedBean.selectedServicePO.senderCompanyId eq viewServicePODetailManagedBean.companyId)}" >
+                    <p:commandButton value="Modify PO" type="button" onclick="PF('dlg1').show();" />
+                    <p:commandButton value="Deleted PO"  action="#{viewServicePODetailManagedBean.deletePO()}" update="form" ajax="true" />
+                </c:if>
+                <p:dialog header="Update PO Information" widgetVar="dlg1" minHeight="40">
+                    <h:panelGrid id="detail" columns="3">
+                        <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Transportation'}" >
+                            <p:outputLabel for="deliveryDate" value="Service Delivery Date " /><p:spacer width="20" height="20" />
+                            <p:calendar id="deliveryDate" required="true" requiredMessage="Delivery Date is required" value="#{viewServicePODetailManagedBean.deliveryDate}" pattern="dd-MM-yyyy" mindate="#{viewServicePODetailManagedBean.today}" />
+                        </c:if>
+
+                        <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Warehouse'}" >
+                            <p:outputLabel for="startDate" value="Service Start Date "  /><p:spacer width="20" height="20" />
+                            <p:calendar id="startDate" required="true" requiredMessage="Service Start Date is required" value="#{viewServicePODetailManagedBean.serviceStartDate}" pattern="dd-MM-yyyy" mindate="#{viewServicePODetailManagedBean.today}" >
+                                <p:ajax update="endDate" />
+                            </p:calendar>
+                            <p:outputLabel for="endDate"  value="Service End Date " /><p:spacer width="20" height="20" />
+                            <p:calendar id="endDate"  required="true" requiredMessage="Service End Date is required" value="#{viewServicePODetailManagedBean.serviceEndDate}" pattern="dd-MM-yyyy" mindate="#{viewServicePODetailManagedBean.serviceStartDate}" />
+                        </c:if>
+
+
+                        <h:outputLabel  style="font-weight: bold" value="Quantity in TEU * "/><p:spacer width="20" height="20" />
+                        <p:inputText  value="#{viewServicePODetailManagedBean.volume2}" required="true" requiredMessage="Quantity in TEU is required!" />
+                    </h:panelGrid>
+                    <p:messages id="modalMsg" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:commandButton value="Confirm" action="#{viewServicePODetailManagedBean.updatePO()}" ajax="true" update="form" />
+
+                </p:dialog>
+
+            </h:form>
+            <p:commandButton value="Go Back" icon="ui-icon-circle-arrow-w" action="viewallservicepos.xhtml?faces-redirect=true"/>
+
+        </ui:define>
+    </ui:composition>
+</html>

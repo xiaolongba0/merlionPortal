@@ -10,7 +10,6 @@ import entity.ServiceInvoice;
 import entity.ServicePO;
 import java.util.Date;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
@@ -27,7 +26,6 @@ public class ServicePOManagementSessionBean {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    @EJB
     @PersistenceContext
     EntityManager em;
 
@@ -107,11 +105,26 @@ public class ServicePOManagementSessionBean {
 
     public Contract searchAValidContract(Integer contractId, Integer myCompanyId) {
         Contract contract = em.find(Contract.class, contractId);
-        if (contractId != null) {
+        if (contract != null) {
             if (contract.getStatus() == 5 && (int) contract.getPartyB() == myCompanyId) {
                 return contract;
             }
         }
         return null;
+    }
+
+    public int updateServicePO(Integer servicePOId, Date deliveryDate, Date serviceStartDate, Date serviceEndDate, Integer volume, Integer creatorId) {
+        ServicePO po = em.find(ServicePO.class, servicePOId);
+        po.setServiceStartDate(serviceStartDate);
+        po.setServiceEndDate(serviceEndDate);
+        po.setServiceDeliveryDate(deliveryDate);
+        po.setVolume(volume);
+        System.out.println("volume is :" + volume);
+        po.setPrice(volume*po.getContract().getPrice());
+        
+        em.merge(po);
+        em.flush();
+        
+        return 1;
     }
 }
