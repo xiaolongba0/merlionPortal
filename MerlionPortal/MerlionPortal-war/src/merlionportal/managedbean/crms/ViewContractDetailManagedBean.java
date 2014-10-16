@@ -204,7 +204,7 @@ public class ViewContractDetailManagedBean {
     public void acceptContract() {
         int result = contractManagementSB.acceptContract(selectedContract.getContractId());
         if (result == 1) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Contract Accepted!", "Please download and sign contract, and upload contract afterwards"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Contract Accepted!", "Please download and sign contract, and send to service provider through email after signing contract"));
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Oops", "Something went wrong!"));
         }
