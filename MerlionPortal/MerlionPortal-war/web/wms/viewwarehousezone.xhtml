@@ -63,55 +63,55 @@
                                 <p:outputLabel for="warehouse" value="Warehouse Name: " />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="warehouse" value="#{storageTypeViewEditManagedBean.warehouseId}"  style="width:300px" required="true" requiredMessage="Please select a warehouse">
-                                    <p:ajax listener="#{storageTypeViewEditManagedBean.onWarehouseChange}" update="storagetypeData" />
+                                <p:selectOneMenu id="warehouse" value="#{warehouseZoneViewEditManagedBean.warehouseId}"  style="width:300px" required="true" requiredMessage="Please select a warehouse">
+                                    <p:ajax listener="#{warehouseZoneViewEditManagedBean.onWarehouseChange}" update="warehousezoneData" />
                                     <f:selectItem itemLabel="Select Warehouse" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{storageTypeViewEditManagedBean.warehouses}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId} Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"/>
+                                    <f:selectItems value="#{warehouseZoneViewEditManagedBean.warehouses}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId} Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
                     </p:panelGrid>
 
-                    <p:dataTable id="storagetypeData" var="storagetype" sortMode="multiple" editable="true" value="#{storageTypeViewEditManagedBean.warehouseZones}" 
-                                 widgetVar="storageTypesTable"
+                    <p:dataTable id="warehousezoneData" var="warehousezone" sortMode="multiple" editable="true" value="#{warehouseZoneViewEditManagedBean.warehouseZones}" 
+                                 widgetVar="warehouseZoneTable"
                                  emptyMessage="No Warehouse Zone found"
-                                 rowKey="#{storagetype.warehouseZoneId}">
+                                 rowKey="#{warehousezone.warehouseZoneId}">
 
                         <f:facet name="header">                    
                             <p:outputPanel>
                                 <h:outputText value="Search Warehouse Zone fields:" />
-                                <p:inputText id="globalFilter" onkeyup="PF('storageTypesTable').filter()" />
+                                <p:inputText id="globalFilter" onkeyup="PF('warehouseZoneTable').filter()" />
                             </p:outputPanel>
                         </f:facet>
 
-                        <p:ajax event="rowEdit" listener="#{storageTypeViewEditManagedBean.onRowEdit}" />
-                        <p:ajax event="rowEditCancel" listener="#{storageTypeViewEditManagedBean.onRowCancel}"/>                
+                        <p:ajax event="rowEdit" listener="#{warehouseZoneViewEditManagedBean.onRowEdit}" />
+                        <p:ajax event="rowEditCancel" listener="#{warehouseZoneViewEditManagedBean.onRowCancel}"/>                
 
                         <p:column headerText="Warehouse Id" >
-                            <h:outputText value="#{storagetype.warehouse.warehouseId}" />
+                            <h:outputText value="#{warehousezone.warehouse.warehouseId}" />
                         </p:column>
 
-                        <p:column filterBy="#{storagetype.warehouseZoneId}" filterMatchMode="exact" headerText="Warehouse Zone ID" >
-                            <h:outputText value="#{storagetype.warehouseZoneId}" />
+                        <p:column filterBy="#{warehousezone.warehouseZoneId}" filterMatchMode="exact" headerText="Warehouse Zone ID" >
+                            <h:outputText value="#{warehousezone.warehouseZoneId}" />
                         </p:column>
 
-                        <p:column  filterBy="#{storagetype.name}" filterMatchMode="contains" headerText="Warehouse Zone">
+                        <p:column  filterBy="#{warehousezone.name}" filterMatchMode="contains" headerText="Warehouse Zone">
                             <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{storagetype.name}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{storagetype.name}" style="width:100%" label="Warehouse Zone"/></f:facet>
+                                <f:facet name="output"><h:outputText value="#{warehousezone.name}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{warehousezone.name}" style="width:100%" label="Warehouse Zone"/></f:facet>
                             </p:cellEditor>
                         </p:column>     
 
-                        <p:column  headerText="Description" filterBy="#{storagetype.description}" filterMatchMode="contains">
+                        <p:column  headerText="Description" filterBy="#{warehousezone.description}" filterMatchMode="contains">
                             <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{storagetype.description}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{storagetype.description}" style="width:100%" label="Description"/></f:facet>
+                                <f:facet name="output"><h:outputText value="#{warehousezone.description}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{warehousezone.description}" style="width:100%" label="Description"/></f:facet>
                             </p:cellEditor>
                         </p:column>
 
                         <p:column style="width:48px">
-                            <p:commandButton action="#{storageTypeViewEditManagedBean.deleteStorageType(storagetype)}" update="storagetypeData" icon = "ui-icon-trash">
-                                <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this storage type?" icon="ui-icon-alert" />
+                            <p:commandButton action="#{warehouseZoneViewEditManagedBean.deleteWarehouseZone(warehousezone)}" update="warehousezoneData" icon = "ui-icon-trash">
+                                <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this Warehouse Zone?" icon="ui-icon-alert" />
                             </p:commandButton> 
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />

@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">
+        <ui:param name="pageName" value="WMS home" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <p:panelMenu>
+                <p:submenu label =" WMS HOME" styleClass="display:block">
+                    <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
+                </p:submenu>
+                <p:submenu label =" Warehouse" styleClass="display:block">
+                    <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
+                    <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
+                </p:submenu>
+                <p:submenu label="Warehouse Zone" styleClass="display:block" >
+                    <p:menuitem value="Add Warehouse Zone" url="addwarehousezone.xhtml" />
+                    <p:menuitem value="View Warehouse Zones" url="viewwarehousezone.xhtml" />
+                </p:submenu>
+                <p:submenu label="Storage Bin" styleClass="display:block" >
+                    <p:menuitem value="Add Storage Bin" url="addstoragebin.xhtml" />
+                    <p:menuitem value="View Storage Bin" url="viewstoragebin.xhtml" />
+                </p:submenu>
+                <p:submenu label="Stock" styleClass="display:block" >
+                    <p:menuitem value="Add Stock" url="addstock.xhtml"/>
+                    <p:menuitem value="View Stock" url="viewstock.xhtml"/>
+                </p:submenu>
+            </p:panelMenu>
+        </ui:define>
+
+        <ui:define name="right">
+            <h:form id="formMain">
+                <p:panel id="panel" header="Create Stock Audit Schedule">
+                    <p:ajaxStatus style="width:16px;height:16px;">
+                        <f:facet name="start">
+                            <h:graphicImage value="/img/load.gif" />
+                        </f:facet>
+                        <f:facet name="complete">
+                            <h:outputText value="" />
+                        </f:facet>
+                    </p:ajaxStatus>
+
+
+                    <!--                    <p:row>
+                                            <p:selectOneRadio id="myRadioID" value="#{stockAuditManagedBean.radioValue}" layout="custom">
+                                                <f:selectItem itemLabel="Choose ID" itemValue="1"/>
+                                                <f:selectItem itemLabel="Enter " itemValue="2"/>
+                                                <p:ajax process="@this" update="formMain" />
+                                            </p:selectOneRadio>
+                    
+                                            <p:radioButton id="id00" for="myRadioID" itemIndex="0"/>
+                                            <h:outputLabel for="id00" value="Choose Product ID "/>
+                    
+                                            <p:selectOneMenu id="product" value="#{stockAuditManagedBean.productId}"  style="width:200px" required="true" requiredMessage="Product ID is required." disabled="#{stockAuditManagedBean.radioValue != '1'}">
+                                                <f:selectItem itemLabel="Select Product ID" itemValue="" noSelectionOption="true" />
+                                                <f:selectItems value="#{stockAuditManagedBean.productList}" var="product" itemLabel="ID:#{product.productId}   Name:#{product.productName}" itemValue="#{product.productId}"/>
+                                            </p:selectOneMenu>
+                    
+                                            <p:radioButton id="id01" for="myRadioID" itemIndex="1"/>
+                                            <h:outputLabel for="id01" value="Enter Product ID "/>
+                                            <p:inputText id="input01" value="#{stockAuditManagedBean.productId}" disabled="#{stockAuditManagedBean.radioValue != '2'}" required="true" requiredMessage="Product ID is required.">
+                                            </p:inputText>
+                                        </p:row>-->
+
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="warehouse" value="Warehouse Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="warehouse" value="#{stockAuditManagedBean.warehouseId}"  style="width:210px" required="true" requiredMessage="Please select a warehouse">
+                                    <p:ajax listener="#{stockAuditManagedBean.onChangeWarehouse}" update="warehouseZone" />
+                                    <f:selectItem itemLabel="Select Warehouse" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{stockAuditManagedBean.warehouses}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId}   Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="warehouseZone" value="Warehouse Zone Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="warehouseZone" value="#{stockAuditManagedBean.warehouseZoneId}"  style="width:210px" required="true" requiredMessage="Please select a storage type">
+                                    <p:ajax listener="#{stockAuditManagedBean.onChangeWarehouseZone}" update="storageBin" />
+                                    <f:selectItem itemLabel="Select Storage Type" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{stockAuditManagedBean.warehouseZones}" var="warehouseZone" itemLabel="ID:#{warehouseZone.warehouseZoneId}   Name:#{warehouseZone.name}"  itemValue="#{warehouseZone.warehouseZoneId}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="storageBin" value="Storage Bin Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="storageBin" value="#{stockAuditManagedBean.storageBinId}"  style="width:210px" required="true" requiredMessage="Please select a storage type">
+                                    <f:selectItem itemLabel="Select Storage Bin" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{stockAuditManagedBean.storageBins}" var="storageBin" itemLabel="ID:#{storageBin.storageBinId}   Name:#{storageBin.binName} Bin Type: Name:#{storageBin.binType}"  itemValue="#{storageBin.storageBinId}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="supervisorId" style="font-weight: bold" value="Supervisor ID: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="supervisorId" requiredMessage="Supervisor ID is required." id="supervisorId" value="#{stockAuditManagedBean.supervisorId}">
+                                    <f:validateLength minimum="0" maximum="40" />
+                                </p:inputText>
+                            </p:column>                       
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="staffId" style="font-weight: bold" value="Staff ID: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="staffId" requiredMessage="Staff ID is required." id="staffId" value="#{stockAuditManagedBean.staffId}">
+                                    <f:validateLength minimum="0" maximum="40" />
+                                </p:inputText>
+                            </p:column>                       
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="scheduledDate" style="font-weight: bold" value="Scheduled Stock Audit Date: *"  />
+                            </p:column>
+                            <p:column>
+                                <p:calendar id="scheduledDate" value="#{stockAuditManagedBean.scheduledDate}" required="true" label="scheduledDate" requiredMessage="Scheduled Date is required." />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="stockAuditType" style="font-weight: bold" value="Stock Audit Type:   *" />
+                            </p:column>
+                            <p:column>
+                                <h:selectOneMenu id="stockAuditType" value="#{stockAuditManagedBean.stockAuditType}" required="true" label="stockAuditType">
+                                    <f:selectItem itemLabel="Select One" itemValue="" noSelectionOption="false" />
+                                    <f:selectItem itemLabel="Random Sampling" itemValue="1" />
+                                    <f:selectItem itemLabel="Count All" itemValue="2" />
+                                </h:selectOneMenu>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="remarks" style="font-weight: bold" value="Remarks:   *" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="remarks" requiredMessage="Remarks is required." id="remarks" value="#{stockAuditManagedBean.remarks}">
+                                    <f:validateLength minimum="1" maximum="300" />
+                                </p:inputText>
+                            </p:column>
+                        </p:row> 
+                        <br></br>
+                    </p:panelGrid>
+                    <p:messages id="messages" autoUpdate="true" closable="true" />
+                    <p:commandButton id="btn" value="Create New Stock Audit" update="formMain" actionListener="#{stockAuditManagedBean.addStockAudit()}" ajax="true" >
+                    </p:commandButton>
+
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>                 
+
