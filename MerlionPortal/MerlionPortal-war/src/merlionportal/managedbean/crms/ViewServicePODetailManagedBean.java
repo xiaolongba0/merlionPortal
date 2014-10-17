@@ -15,6 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.crms.ordermanagementmodule.POProcessingManagementSessionBean;
 import merlionportal.crms.ordermanagementmodule.ServicePOManagementSessionBean;
 
 /**
@@ -32,6 +33,8 @@ public class ViewServicePODetailManagedBean {
     ServicePOManagementSessionBean servicePOSB;
     @EJB
     UserAccountManagementSessionBean userAccountSB;
+    @EJB
+    POProcessingManagementSessionBean poProcessingSB;
 
     private Integer companyId;
     private Integer userId;
@@ -87,7 +90,7 @@ public class ViewServicePODetailManagedBean {
     public void updatePO() {
         //Need to check status 
         if (selectedServicePO != null) {
-            
+
             int result = servicePOSB.updateServicePO(selectedServicePO.getServicePOId(), deliveryDate, serviceStartDate, serviceEndDate, volume2, userId);
             if (result == 1) {
                 volume = volume2;
@@ -119,6 +122,55 @@ public class ViewServicePODetailManagedBean {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong, please go back to previous page"));
         }
+    }
+
+    public void releasePOHold() {
+        if (selectedServicePO != null) {
+            int result = poProcessingSB.releasePOHold(selectedServicePO.getServicePOId());
+            if (result == 1) {
+                status = "SO Waiting for fulfillment";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PO Hold is released", ""));
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong, please go back to previous page"));
+        }
+    }
+
+    public void rejectPO() {
+        if (selectedServicePO != null) {
+            int result = poProcessingSB.rejectPO(selectedServicePO.getServicePOId());
+            if (result == 1) {
+                status = "PO Rejected";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PO is rejected", ""));
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong, please go back to previous page"));
+        }
+    }
+
+    public void checkCredit() {
+        if (selectedServicePO != null) {
+            boolean result = poProcessingSB.passCreditCheck(selectedServicePO.getSenderCompanyId() , selectedServicePO.getContract().getContractId(), selectedServicePO.getServicePOId());
+            if (result) {
+                status = "SO Waiting for fulfillment";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Credit Check passed", "SO is generated"));
+            } else {
+                status = "PO Hold";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Credit Check failed!", "Previous order payment under this contract is not settled. PO is on Hold"));
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong, please go back to previous page"));
+        }
+    }
+
+    public String generateInvoice() {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedServicePO");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedServicePO", selectedServicePO);
+        return "generateserviceinvoice.xhtml?faces-redirect=true";
     }
 
     private void getStatusText(int statusNumber) {

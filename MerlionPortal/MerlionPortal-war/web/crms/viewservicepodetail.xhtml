@@ -136,10 +136,14 @@
 
 
                 </p:fieldset>
+
+                <!--PO not processed yet, I am the sender-->
                 <c:if test="#{(viewServicePODetailManagedBean.selectedServicePO.status eq 1)and (viewServicePODetailManagedBean.selectedServicePO.senderCompanyId eq viewServicePODetailManagedBean.companyId)}" >
                     <p:commandButton value="Modify PO" type="button" onclick="PF('dlg1').show();" />
                     <p:commandButton value="Deleted PO"  action="#{viewServicePODetailManagedBean.deletePO()}" update="form" ajax="true" />
                 </c:if>
+
+
                 <p:dialog header="Update PO Information" widgetVar="dlg1" minHeight="40">
                     <h:panelGrid id="detail" columns="3">
                         <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Transportation'}" >
@@ -162,8 +166,30 @@
                     </h:panelGrid>
                     <p:messages id="modalMsg" showDetail="true" autoUpdate="true" closable="true" />
                     <p:commandButton value="Confirm" action="#{viewServicePODetailManagedBean.updatePO()}" ajax="true" update="form" />
-
                 </p:dialog>
+            </h:form>
+
+
+            <h:form>
+                <!--PO not processed yet, I am service provider-->
+                <c:if test="#{(viewServicePODetailManagedBean.selectedServicePO.status eq 1)and (viewServicePODetailManagedBean.selectedServicePO.receiverCompanyId eq viewServicePODetailManagedBean.companyId)}" >
+                    <p:commandButton value="Credit Check" action="#{viewServicePODetailManagedBean.checkCredit()}" update=":form" ajax="true" />
+                    <p:commandButton value="Reject PO" action="#{viewServicePODetailManagedBean.rejectPO()}" update=":form" ajax="true" />
+                </c:if>
+
+                <!--PO is on hold and I am the Service Provider-->
+                <c:if test="#{(viewServicePODetailManagedBean.selectedServicePO.status eq 3)and (viewServicePODetailManagedBean.selectedServicePO.receiverCompanyId eq viewServicePODetailManagedBean.companyId)}" >
+                    <p:commandButton value="Credit Check" action="#{viewServicePODetailManagedBean.checkCredit()}" update=":form" ajax="true" />
+                    <p:commandButton value="Release PO Hold" action="#{viewServicePODetailManagedBean.releasePOHold()}" update=":form" ajax="true" />
+                    <p:commandButton value="Reject PO" action="#{viewServicePODetailManagedBean.rejectPO()}" update=":form" ajax="true" />
+                </c:if>
+
+                <!--SO waiting for fulfillment, I am service provider-->
+                <c:if test="#{(viewServicePODetailManagedBean.selectedServicePO.status eq 5)and (viewServicePODetailManagedBean.selectedServicePO.receiverCompanyId eq viewServicePODetailManagedBean.companyId)}" >
+                    <p:commandButton value="Generate Invoice" action="#{viewServicePODetailManagedBean.generateInvoice()}" />
+                </c:if>
+
+
 
             </h:form>
             <p:commandButton value="Go Back" icon="ui-icon-circle-arrow-w" action="viewallservicepos.xhtml?faces-redirect=true"/>

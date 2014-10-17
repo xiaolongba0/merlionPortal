@@ -113,7 +113,7 @@
                 <p:commandButton value="Fulfillment Check"  icon="ui-icon-star" action="#{generateQuotationManagedBean.fulfillmentCheck()}" update="form" ajax="true" />
                 <p:commandButton value="Reject this request" icon="ui-icon-closethick" action="#{generateQuotationManagedBean.rejectRequestForQuotation()}" update="form" ajax="true" />
             </h:form>
-            <p:commandButton value="Go Back" action="viewallrequests.xhtml?faces-redirect-true"/>
+            <p:commandButton value="Go Back" action="viewallrequests.xhtml?faces-redirect=true"/>
 
         </ui:define>
     </ui:composition>

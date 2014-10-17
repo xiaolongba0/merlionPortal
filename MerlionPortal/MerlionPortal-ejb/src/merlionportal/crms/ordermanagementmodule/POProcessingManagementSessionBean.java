@@ -58,9 +58,8 @@ public class POProcessingManagementSessionBean {
             em.merge(po);
             em.flush();
 
-           
         }
-       
+
     }
 
     //Invoice status
@@ -107,24 +106,28 @@ public class POProcessingManagementSessionBean {
     }
 
     public boolean passCreditCheck(Integer companyId, Integer contractId, Integer servicePOId) {
-        boolean result = false;
+        boolean result = true;
+        System.out.println("Enter EJB passCreditCheck");
         Query q = em.createNamedQuery("ServicePO.findBySenderCompanyId").setParameter("senderCompanyId", companyId);
         for (Object o : q.getResultList()) {
+            System.out.println("Enter EJB Loop passCreditCheck");
+
             ServicePO po = (ServicePO) o;
             //This contract, but not this po
-            if (po.getContract().getContractId() == (int) contractId && po.getServicePOId() != (int) servicePOId) {
+            if (po.getContract().getContractId() == (int) contractId) {
                 //not paid
-                if (po.getServiceInvoice().getStatus() != 3) {
+                if (po.getStatus() != 7) {
+                    System.out.println("Enter EJB Order not paid" + po.getServicePOId());
                     result = false;
                 }
             }
         }
-        if(result == false){
-           ServicePO thisPO = em.find(ServicePO.class, servicePOId);
-           thisPO.setStatus(3);
-           em.merge(thisPO);
-           em.flush();
-        }else{
+        if (result == false) {
+            ServicePO thisPO = em.find(ServicePO.class, servicePOId);
+            thisPO.setStatus(3);
+            em.merge(thisPO);
+            em.flush();
+        } else {
             this.generateSO(servicePOId);
             result = true;
         }
