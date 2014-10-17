@@ -63,9 +63,9 @@ public class StorageBin implements Serializable {
     private Double maxWeight;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "storageBin")
     private List<Stock> stockList;
-    @JoinColumn(name = "StorageType_storageTypeId", referencedColumnName = "storageTypeId")
+    @JoinColumn(name = "warehouseZone", referencedColumnName = "warehouseZoneId")
     @ManyToOne(optional = false)
-    private StorageType storageTypestorageTypeId;
+    private WarehouseZone warehouseZone;
 
     public StorageBin() {
     }
@@ -131,12 +131,12 @@ public class StorageBin implements Serializable {
         this.stockList = stockList;
     }
 
-    public StorageType getStorageTypestorageTypeId() {
-        return storageTypestorageTypeId;
+    public WarehouseZone getWarehouseZone() {
+        return warehouseZone;
     }
 
-    public void setStorageTypestorageTypeId(StorageType storageTypestorageTypeId) {
-        this.storageTypestorageTypeId = storageTypestorageTypeId;
+    public void setWarehouseZone(WarehouseZone warehouseZone) {
+        this.warehouseZone = warehouseZone;
     }
 
     @Override

@@ -66,8 +66,8 @@ public class Warehouse implements Serializable {
     private Integer zipcode;
     @Column(name = "companyId")
     private Integer companyId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "warehousewarehouseId")
-    private List<StorageType> storageTypeList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "warehouse")
+    private List<WarehouseZone> warehouseZoneList;
 
     public Warehouse() {
     }
@@ -141,12 +141,12 @@ public class Warehouse implements Serializable {
     }
 
     @XmlTransient
-    public List<StorageType> getStorageTypeList() {
-        return storageTypeList;
+    public List<WarehouseZone> getWarehouseZoneList() {
+        return warehouseZoneList;
     }
 
-    public void setStorageTypeList(List<StorageType> storageTypeList) {
-        this.storageTypeList = storageTypeList;
+    public void setWarehouseZoneList(List<WarehouseZone> warehouseZoneList) {
+        this.warehouseZoneList = warehouseZoneList;
     }
 
     @Override

@@ -30,45 +30,45 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author manliqi
  */
 @Entity
-@Table(name = "StorageType")
+@Table(name = "WarehouseZone")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "StorageType.findAll", query = "SELECT s FROM StorageType s"),
-    @NamedQuery(name = "StorageType.findByStorageTypeId", query = "SELECT s FROM StorageType s WHERE s.storageTypeId = :storageTypeId"),
-    @NamedQuery(name = "StorageType.findByName", query = "SELECT s FROM StorageType s WHERE s.name = :name"),
-    @NamedQuery(name = "StorageType.findByDescription", query = "SELECT s FROM StorageType s WHERE s.description = :description")})
-public class StorageType implements Serializable {
+    @NamedQuery(name = "WarehouseZone.findAll", query = "SELECT w FROM WarehouseZone w"),
+    @NamedQuery(name = "WarehouseZone.findByWarehouseZoneId", query = "SELECT w FROM WarehouseZone w WHERE w.warehouseZoneId = :warehouseZoneId"),
+    @NamedQuery(name = "WarehouseZone.findByName", query = "SELECT w FROM WarehouseZone w WHERE w.name = :name"),
+    @NamedQuery(name = "WarehouseZone.findByDescription", query = "SELECT w FROM WarehouseZone w WHERE w.description = :description")})
+public class WarehouseZone implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "storageTypeId")
-    private Integer storageTypeId;
+    @Column(name = "warehouseZoneId")
+    private Integer warehouseZoneId;
     @Size(max = 45)
     @Column(name = "name")
     private String name;
     @Size(max = 45)
     @Column(name = "description")
     private String description;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "storageTypestorageTypeId")
-    private List<StorageBin> storageBinList;
-    @JoinColumn(name = "Warehouse_warehouseId", referencedColumnName = "warehouseId")
+    @JoinColumn(name = "warehouse", referencedColumnName = "warehouseId")
     @ManyToOne(optional = false)
-    private Warehouse warehousewarehouseId;
+    private Warehouse warehouse;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "warehouseZone")
+    private List<StorageBin> storageBinList;
 
-    public StorageType() {
+    public WarehouseZone() {
     }
 
-    public StorageType(Integer storageTypeId) {
-        this.storageTypeId = storageTypeId;
+    public WarehouseZone(Integer warehouseZoneId) {
+        this.warehouseZoneId = warehouseZoneId;
     }
 
-    public Integer getStorageTypeId() {
-        return storageTypeId;
+    public Integer getWarehouseZoneId() {
+        return warehouseZoneId;
     }
 
-    public void setStorageTypeId(Integer storageTypeId) {
-        this.storageTypeId = storageTypeId;
+    public void setWarehouseZoneId(Integer warehouseZoneId) {
+        this.warehouseZoneId = warehouseZoneId;
     }
 
     public String getName() {
@@ -87,6 +87,14 @@ public class StorageType implements Serializable {
         this.description = description;
     }
 
+    public Warehouse getWarehouse() {
+        return warehouse;
+    }
+
+    public void setWarehouse(Warehouse warehouse) {
+        this.warehouse = warehouse;
+    }
+
     @XmlTransient
     public List<StorageBin> getStorageBinList() {
         return storageBinList;
@@ -96,29 +104,21 @@ public class StorageType implements Serializable {
         this.storageBinList = storageBinList;
     }
 
-    public Warehouse getWarehousewarehouseId() {
-        return warehousewarehouseId;
-    }
-
-    public void setWarehousewarehouseId(Warehouse warehousewarehouseId) {
-        this.warehousewarehouseId = warehousewarehouseId;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (storageTypeId != null ? storageTypeId.hashCode() : 0);
+        hash += (warehouseZoneId != null ? warehouseZoneId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof StorageType)) {
+        if (!(object instanceof WarehouseZone)) {
             return false;
         }
-        StorageType other = (StorageType) object;
-        if ((this.storageTypeId == null && other.storageTypeId != null) || (this.storageTypeId != null && !this.storageTypeId.equals(other.storageTypeId))) {
+        WarehouseZone other = (WarehouseZone) object;
+        if ((this.warehouseZoneId == null && other.warehouseZoneId != null) || (this.warehouseZoneId != null && !this.warehouseZoneId.equals(other.warehouseZoneId))) {
             return false;
         }
         return true;
@@ -126,7 +126,7 @@ public class StorageType implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.StorageType[ storageTypeId=" + storageTypeId + " ]";
+        return "entity.WarehouseZone[ warehouseZoneId=" + warehouseZoneId + " ]";
     }
     
 }

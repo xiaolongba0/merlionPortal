@@ -5,12 +5,10 @@
  */
 package merlionportal.wms.warehousemanagementmodule;
 
-import entity.Company;
 import entity.Stock;
 import entity.StorageBin;
-import entity.StorageType;
 import entity.Warehouse;
-import java.text.SimpleDateFormat;
+import entity.WarehouseZone;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +33,7 @@ public class AssetManagementSessionBean {
     private Stock stock;
 
     // Storage Type is renamed to Warehouse Zone at the front end to minimize confusion
-    private ArrayList<StorageType> storageTypeList;
+    private ArrayList<WarehouseZone> warehouseZoneList;
     private ArrayList<StorageBin> storageBinList;
     private ArrayList<Stock> stockList;
 
@@ -54,8 +52,8 @@ public class AssetManagementSessionBean {
         warehouse.setZipcode(zipcode);
         warehouse.setCompanyId(companyId);
 
-        storageTypeList = new ArrayList<StorageType>();
-        warehouse.setStorageTypeList(storageTypeList);
+        warehouseZoneList = new ArrayList<WarehouseZone>();
+        warehouse.setWarehouseZoneList(warehouseZoneList);
 
         System.out.println("==========Warehouse Name========== :" + warehouseName);
         System.out.println("==========Country========== :" + country);
@@ -130,7 +128,7 @@ public class AssetManagementSessionBean {
     }
 
     // Methods related to storage type
-    public Integer addStorageType(String storageTypeName, String storagetDescription,
+    public Integer addWarehouseZone(String storageTypeName, String storagetDescription,
             Integer companyId, Integer warehouseId) {
 
         System.out.println("[INSIDE EJB]================================Add Storage Type");
@@ -144,13 +142,13 @@ public class AssetManagementSessionBean {
                 warehse = w;
             }
         }
-        StorageType storageType = new StorageType();
-        storageType.setName(storageTypeName);
-        storageType.setDescription(storagetDescription);
-        storageType.setWarehousewarehouseId(warehse);
+        WarehouseZone warehouseZone = new WarehouseZone();
+        warehouseZone.setName(storageTypeName);
+        warehouseZone.setDescription(storagetDescription);
+        warehouseZone.setWarehouse(warehse);
 
         storageBinList = new ArrayList<StorageBin>();
-        storageType.setStorageBinList(storageBinList);
+        warehouseZone.setStorageBinList(storageBinList);
 
         System.out.println("Warehouse : " + warehse);
         System.out.println("Warehouse ID ============ : " + warehse.getWarehouseId());
@@ -161,18 +159,18 @@ public class AssetManagementSessionBean {
             System.out.println("WAREHOUSE ID IS NULL");
             return -1;
         } else {
-            em.persist(storageType);
+            em.persist(warehouseZone);
             em.flush();
 
-            warehse.getStorageTypeList().add(storageType);
+            warehse.getWarehouseZoneList().add(warehouseZone);
             em.merge(warehse);
             em.flush();
-            return storageType.getStorageTypeId();
+            return warehouseZone.getWarehouseZoneId();
         }
 
     }
 
-    public List<StorageType> viewStorageTypesForAWarehouse(Integer warehouseId) {
+    public List<WarehouseZone> viewWarehouseZoneForAWarehouse(Integer warehouseId) {
 
         System.out.println("In viewMyStorageTypes, Warehouse ID ============================= : " + warehouseId);
         Warehouse warehouseTemp = null;
@@ -181,44 +179,44 @@ public class AssetManagementSessionBean {
             warehouseTemp = em.find(Warehouse.class, warehouseId);
             System.out.println("In viewMyStorageTypes, finding warehouse" + warehouseTemp);
         }
-        return warehouseTemp.getStorageTypeList();
+        return warehouseTemp.getWarehouseZoneList();
 
     }
 
-    public Boolean deleteStorageType(Integer storageTypeId) {
+    public Boolean deleteWarehouseZone(Integer storageTypeId) {
 
-        StorageType storageType = new StorageType();
-        Query query = em.createNamedQuery("StorageType.findByStorageTypeId").setParameter("storageTypeId", storageTypeId);
-        storageType = (StorageType) query.getSingleResult();
-        System.out.println("DeleteStorageType ================= : " + storageType);
-        if (storageType == null) {
+        WarehouseZone warehouseZone = new WarehouseZone();
+        Query query = em.createNamedQuery("WarehouseZone.findByWarehouseZoneId").setParameter("warehouseZoneId", storageTypeId);
+        warehouseZone = (WarehouseZone) query.getSingleResult();
+        System.out.println("DeleteStorageType ================= : " + warehouseZone);
+        if (warehouseZone == null) {
             return false;
         }
-        Warehouse warehouse = storageType.getWarehousewarehouseId();
-        warehouse.getStorageTypeList().remove(storageType);
+        Warehouse warehouse = warehouseZone.getWarehouse();
+        warehouse.getWarehouseZoneList().remove(warehouseZone);
         em.merge(warehouse);
-        em.remove(storageType);
+        em.remove(warehouseZone);
         em.flush();
         System.out.println("END OF DELETE STORAGE TYPE FUNCTION IN SESSION BEAN");
         return true;
     }
 
-    public Integer editStorageType(String storageTypeName, String description, Integer storageTypeId) {
+    public Integer editWarehouseZone(String storageTypeName, String description, Integer storageTypeId) {
 
         System.out.println("[EJB]================================edit storage type");
-        StorageType storageType = new StorageType();
-        Query query = em.createNamedQuery("StorageType.findByStorageTypeId").setParameter("storageTypeId", storageTypeId);
-        storageType = (StorageType) query.getSingleResult();
-        System.out.println("EditStorageType ================= : " + storageType);
+        WarehouseZone warehouseZone = new WarehouseZone();
+        Query query = em.createNamedQuery("WarehouseZone.findByWarehouseZoneId").setParameter("warehouseZoneId", storageTypeId);
+        warehouseZone = (WarehouseZone) query.getSingleResult();
+        System.out.println("EditStorageType ================= : " + warehouseZone);
 
-        storageType.setName(storageTypeName);
-        storageType.setDescription(description);
+        warehouseZone.setName(storageTypeName);
+        warehouseZone.setDescription(description);
 
-        em.merge(storageType);
+        em.merge(warehouseZone);
         em.flush();
 
         System.out.println("[EJB]================================Successfully EDITED StorageType");
-        return storageType.getStorageTypeId();
+        return warehouseZone.getWarehouseZoneId();
 
     }
 
@@ -227,23 +225,23 @@ public class AssetManagementSessionBean {
             Integer storageTypeId) {
 
         System.out.println("[INSIDE EJB]================================Add Storage Bin");
-        Query query = em.createNamedQuery("StorageType.findByStorageTypeId").setParameter("storageTypeId", storageTypeId);
+        Query query = em.createNamedQuery("WarehouseZone.findByWarehouseZoneId").setParameter("warehouseZoneId", storageTypeId);
 
-        StorageType storageType = (StorageType) query.getSingleResult();
-        if (storageType != null) {
+        WarehouseZone warehouseZone = (WarehouseZone) query.getSingleResult();
+        if (warehouseZone != null) {
             StorageBin bin = new StorageBin();
             bin.setBinName(binName);
             bin.setBinType(binType);
             bin.setDescription(description);
             bin.setMaxQuantity(maxQuantity);
             bin.setMaxWeight(maxWeight);
-            bin.setStorageTypestorageTypeId(storageType);
-            storageType.getStorageBinList().add(bin);
+            bin.setWarehouseZone(warehouseZone);
+            warehouseZone.getStorageBinList().add(bin);
 
             stockList = new ArrayList<Stock>();
             bin.setStockList(stockList);
 
-            em.merge(storageType);
+            em.merge(warehouseZone);
             em.persist(bin);
             em.flush();
 
@@ -254,13 +252,13 @@ public class AssetManagementSessionBean {
 
     }
 
-    public List<StorageBin> viewStorageBinForStorageType(Integer storageTypeId) {
+    public List<StorageBin> viewStorageBinForWarehouseZone(Integer storageTypeId) {
 
         System.out.println("In viewStorageBinForType, StorageTypeID ============================= : " + storageTypeId);
-        StorageType typeTemp = null;
+        WarehouseZone typeTemp = null;
 
         if (storageTypeId != null) {
-            typeTemp = em.find(StorageType.class, storageTypeId);
+            typeTemp = em.find(WarehouseZone.class, storageTypeId);
             System.out.println("In viewMyStorageTypes, finding warehouse" + typeTemp);
         }
         return typeTemp.getStorageBinList();
@@ -268,7 +266,7 @@ public class AssetManagementSessionBean {
     }
 
     // Check if there are stock in the bin, if there are no stock, then the bin can be deleted
-    public Boolean deleteStorageBin(Integer storageBinId) {
+    public boolean deleteStorageBin(Integer storageBinId) {
 
         Query query = em.createNamedQuery("StorageBin.findByStorageBinId").setParameter("storageBinId", storageBinId);
         StorageBin bin = (StorageBin) query.getSingleResult();
@@ -277,13 +275,14 @@ public class AssetManagementSessionBean {
         if (bin == null || !bin.getStockList().isEmpty()) {
             return false;
         }
-        StorageType storageType = bin.getStorageTypestorageTypeId();
-        storageType.getStorageBinList().remove(bin);
-        em.merge(storageType);
+        WarehouseZone warehouseZone = bin.getWarehouseZone();
+        warehouseZone.getStorageBinList().remove(bin);
+        em.merge(warehouseZone);
         em.remove(bin);
         em.flush();
 
         System.out.println("END OF DELETE STORAGE BIN FUNCTION IN SESSION BEAN");
+        
         return true;
     }
 

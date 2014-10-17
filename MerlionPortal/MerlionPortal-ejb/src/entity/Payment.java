@@ -39,7 +39,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Payment.findByAccountInfo", query = "SELECT p FROM Payment p WHERE p.accountInfo = :accountInfo"),
     @NamedQuery(name = "Payment.findByCreditCardNo", query = "SELECT p FROM Payment p WHERE p.creditCardNo = :creditCardNo"),
     @NamedQuery(name = "Payment.findByAmount", query = "SELECT p FROM Payment p WHERE p.amount = :amount"),
-    @NamedQuery(name = "Payment.findBySwiftCode", query = "SELECT p FROM Payment p WHERE p.swiftCode = :swiftCode")})
+    @NamedQuery(name = "Payment.findBySwiftCode", query = "SELECT p FROM Payment p WHERE p.swiftCode = :swiftCode"),
+    @NamedQuery(name = "Payment.findByCheckNumber", query = "SELECT p FROM Payment p WHERE p.checkNumber = :checkNumber")})
 public class Payment implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -66,6 +67,8 @@ public class Payment implements Serializable {
     private Double amount;
     @Column(name = "swiftCode")
     private Integer swiftCode;
+    @Column(name = "checkNumber")
+    private Integer checkNumber;
     @JoinColumn(name = "paymentId", referencedColumnName = "invoiceId", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private ServiceInvoice serviceInvoice;
@@ -139,6 +142,14 @@ public class Payment implements Serializable {
 
     public void setSwiftCode(Integer swiftCode) {
         this.swiftCode = swiftCode;
+    }
+
+    public Integer getCheckNumber() {
+        return checkNumber;
+    }
+
+    public void setCheckNumber(Integer checkNumber) {
+        this.checkNumber = checkNumber;
     }
 
     public ServiceInvoice getServiceInvoice() {

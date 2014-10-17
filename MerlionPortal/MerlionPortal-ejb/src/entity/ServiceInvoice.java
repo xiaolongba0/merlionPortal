@@ -7,6 +7,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,6 +18,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -36,7 +39,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ServiceInvoice.findByReceiverCompanyId", query = "SELECT s FROM ServiceInvoice s WHERE s.receiverCompanyId = :receiverCompanyId"),
     @NamedQuery(name = "ServiceInvoice.findByCreatorId", query = "SELECT s FROM ServiceInvoice s WHERE s.creatorId = :creatorId"),
     @NamedQuery(name = "ServiceInvoice.findByStatus", query = "SELECT s FROM ServiceInvoice s WHERE s.status = :status"),
-    @NamedQuery(name = "ServiceInvoice.findByConditionText", query = "SELECT s FROM ServiceInvoice s WHERE s.conditionText = :conditionText")})
+    @NamedQuery(name = "ServiceInvoice.findByConditionText", query = "SELECT s FROM ServiceInvoice s WHERE s.conditionText = :conditionText"),
+    @NamedQuery(name = "ServiceInvoice.findByCreateDate", query = "SELECT s FROM ServiceInvoice s WHERE s.createDate = :createDate")})
 public class ServiceInvoice implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -58,6 +62,9 @@ public class ServiceInvoice implements Serializable {
     @Size(max = 1000)
     @Column(name = "conditionText")
     private String conditionText;
+    @Column(name = "createDate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createDate;
     @JoinColumn(name = "invoiceId", referencedColumnName = "servicePOId", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private ServicePO servicePO;
@@ -125,6 +132,14 @@ public class ServiceInvoice implements Serializable {
 
     public void setConditionText(String conditionText) {
         this.conditionText = conditionText;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public ServicePO getServicePO() {
