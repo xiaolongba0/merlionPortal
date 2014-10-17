@@ -17,6 +17,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
 import org.primefaces.event.RowEditEvent;
 
@@ -24,14 +25,16 @@ import org.primefaces.event.RowEditEvent;
  *
  * @author YunWei
  */
-@Named(value = "storageTypeViewEditManagedBean")
+@Named(value = "warehouseZoneViewEditManagedBean")
 @ViewScoped
-public class StorageTypeViewEditManagedBean {
+public class WarehouseZoneViewEditManagedBean {
 
     @EJB
     private AssetManagementSessionBean assetManagementSessionBean;
     @EJB
     private UserAccountManagementSessionBean uamb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private List<Warehouse> warehouses;
     private List<WarehouseZone> warehouseZones;
@@ -40,11 +43,12 @@ public class StorageTypeViewEditManagedBean {
 
     private SystemUser loginedUser;
     private Integer companyId;
+    private Integer userId;
 
     /**
-     * Creates a new instance of StorageTypeViewEditManagedBean
+     * Creates a new instance of WarehouseZoneViewEditManagedBean
      */
-    public StorageTypeViewEditManagedBean() {
+    public WarehouseZoneViewEditManagedBean() {
     }
 
     @PostConstruct
@@ -53,6 +57,7 @@ public class StorageTypeViewEditManagedBean {
         boolean redirect = true;
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
             loginedUser = uamb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
+            userId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
             companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
             if (loginedUser != null) {
                 redirect = false;
@@ -87,11 +92,15 @@ public class StorageTypeViewEditManagedBean {
         System.out.println("ON ROW EDIT ===============================");
         warehouseZone = new WarehouseZone();
         warehouseZone = (WarehouseZone) event.getObject();
-        // System.out.println("[Checking if input is correct] ====================== : " + warehouseName);
         System.out.println("[AFTER EDIT] warehouseZone.getName(): " + warehouseZone.getName());
-        assetManagementSessionBean.editWarehouseZone(warehouseZone.getName(), warehouseZone.getDescription(), warehouseZone.getWarehouseZoneId());
-        FacesMessage msg = new FacesMessage("Storage Type with Storage Type ID = " + warehouseZone.getWarehouseZoneId()+ " has sucessfully been edited");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        boolean result = assetManagementSessionBean.editWarehouseZone(warehouseZone.getName(), warehouseZone.getDescription(), warehouseZone.getWarehouseZoneId());
+        if (result) {
+            systemLogSB.recordSystemLog(userId, "WMS edit warehouse zone");
+            FacesMessage msg = new FacesMessage("Warehouse Zone with ID = " + warehouseZone.getWarehouseZoneId() + " has sucessfully been edited");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong"));
+        }
     }
 
     public void onRowCancel(RowEditEvent event) {
@@ -100,17 +109,16 @@ public class StorageTypeViewEditManagedBean {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public void deleteStorageType(WarehouseZone warehouseZone) {
-        try {
-            System.out.println("[In WAR FILE - Delete warehouseZone Function]" + warehouseZone);
-            System.out.println("[In WAR FILE - Delete warehouseZone Function] warehouseZone ID========== :" + warehouseZone.getWarehouseZoneId());
-            assetManagementSessionBean.deleteWarehouseZone(warehouseZone.getWarehouseZoneId());
+    public void deleteWarehouseZone(WarehouseZone warehouseZone) {
+        System.out.println("[In WAR FILE - Delete warehouseZone Function]" + warehouseZone);
+        boolean result = assetManagementSessionBean.deleteWarehouseZone(warehouseZone.getWarehouseZoneId());
+        if (result) {
             warehouseZones.remove(warehouseZone);
-            FacesMessage msg = new FacesMessage("Storage Type with Storage Type ID = " + warehouseZone.getWarehouseZoneId()+ " has sucessfully been edited");
+            systemLogSB.recordSystemLog(userId, "WMS delete storage bin");
+            FacesMessage msg = new FacesMessage("Warehouse Zone ID = " + warehouseZone.getWarehouseZoneId() + " has sucessfully been deleted");
             FacesContext.getCurrentInstance().addMessage(null, msg);
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong"));
         }
     }
 
@@ -122,7 +130,6 @@ public class StorageTypeViewEditManagedBean {
         this.warehouses = warehouses;
     }
 
-    
     public Integer getWarehouseId() {
         return warehouseId;
     }
@@ -147,8 +154,6 @@ public class StorageTypeViewEditManagedBean {
         this.warehouseZone = warehouseZone;
     }
 
-    
-
     public SystemUser getLoginedUser() {
         return loginedUser;
     }
@@ -163,6 +168,14 @@ public class StorageTypeViewEditManagedBean {
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
 }

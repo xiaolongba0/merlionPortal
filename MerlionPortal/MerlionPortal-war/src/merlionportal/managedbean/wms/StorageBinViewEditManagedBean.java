@@ -15,9 +15,10 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
 import org.primefaces.event.RowEditEvent;
 
@@ -33,6 +34,8 @@ public class StorageBinViewEditManagedBean {
     private AssetManagementSessionBean assetManagementSessionBean;
     @EJB
     private UserAccountManagementSessionBean uamb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private List<Warehouse> warehouses;
     private List<WarehouseZone> warehouseZones;
@@ -43,6 +46,7 @@ public class StorageBinViewEditManagedBean {
 
     private SystemUser loginedUser;
     private Integer companyId;
+     private Integer userId;
 
     private List<String> storageBinType;
 
@@ -58,6 +62,7 @@ public class StorageBinViewEditManagedBean {
         boolean redirect = true;
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
             loginedUser = uamb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
+            userId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
             companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
             if (loginedUser != null) {
                 redirect = false;
@@ -91,11 +96,11 @@ public class StorageBinViewEditManagedBean {
         bin = (StorageBin) event.getObject();
         boolean result = assetManagementSessionBean.editStorageBin(bin.getBinName(), bin.getDescription(), bin.getBinType(), bin.getMaxQuantity(), bin.getMaxWeight(), bin.getStorageBinId());
         if (result) {
+            systemLogSB.recordSystemLog(userId, "WMS edit storage bin");
             FacesMessage msg = new FacesMessage("Bin with Storage Bin ID = " + bin.getStorageBinId() + " has sucessfully been edited");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong"));
-
         }
     }
 
@@ -108,6 +113,7 @@ public class StorageBinViewEditManagedBean {
             boolean result = assetManagementSessionBean.deleteStorageBin(bin.getStorageBinId());
             if (result) {
                 bins.remove(bin);
+                systemLogSB.recordSystemLog(userId, "WMS delete storage bin");
                 FacesMessage msg = new FacesMessage("Bin with Storage Bin ID = " + bin.getStorageBinId() + " has sucessfully been deleted");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
             } else {

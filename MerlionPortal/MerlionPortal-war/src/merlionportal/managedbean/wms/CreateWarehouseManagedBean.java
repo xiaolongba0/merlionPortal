@@ -7,7 +7,6 @@ package merlionportal.managedbean.wms;
 
 import entity.SystemUser;
 import entity.Warehouse;
-
 import java.io.IOException;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -17,6 +16,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
 
 /**
@@ -31,6 +31,9 @@ public class CreateWarehouseManagedBean {
     private AssetManagementSessionBean assetManagementSessionBean;
     @EJB
     private UserAccountManagementSessionBean uamb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
+
     private Integer newWarehouseId;
 
     private String warehouseName;
@@ -43,6 +46,7 @@ public class CreateWarehouseManagedBean {
     private Warehouse warehouse;
 
     private SystemUser loginedUser;
+    private Integer userId;
 
     /**
      * Creates a new instance of AssestManagedBean
@@ -56,6 +60,7 @@ public class CreateWarehouseManagedBean {
         boolean redirect = true;
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
             loginedUser = uamb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
+            userId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
             companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
             if (loginedUser != null) {
                 redirect = false;
@@ -80,6 +85,7 @@ public class CreateWarehouseManagedBean {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Warehouse Added!", ""));
                 clearAllFields();
                 System.out.println("[WAR FILE]===========================Create New Warehouse");
+                systemLogSB.recordSystemLog(userId, "WMS create warehouse");
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Something went wrong!", ""));
 
@@ -177,6 +183,14 @@ public class CreateWarehouseManagedBean {
 
     public void setWarehouse(Warehouse warehouse) {
         this.warehouse = warehouse;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
 }

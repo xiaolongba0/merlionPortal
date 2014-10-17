@@ -14,9 +14,10 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
 
 /**
@@ -32,6 +33,8 @@ public class CreateStorageBinManagedBean {
      */
     @EJB
     private AssetManagementSessionBean amsb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
     @EJB
     private UserAccountManagementSessionBean uamb;
 
@@ -49,6 +52,7 @@ public class CreateStorageBinManagedBean {
 
     private SystemUser loginedUser;
     private Integer companyId;
+    private Integer userId;
 
     private List<String> listStorageBinType;
 
@@ -61,6 +65,7 @@ public class CreateStorageBinManagedBean {
         boolean redirect = true;
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
             loginedUser = uamb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
+            userId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
             companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
             if (loginedUser != null) {
                 redirect = false;
@@ -81,6 +86,7 @@ public class CreateStorageBinManagedBean {
         if (result) {
             clearAllFields();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "New Storage Bin created!"));
+            systemLogSB.recordSystemLog(userId, "WMS create storage bin");
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
         }
@@ -145,8 +151,6 @@ public class CreateStorageBinManagedBean {
         this.warehouseZones = warehouseZones;
     }
 
-    
-
     public String getStorageBinName() {
         return storageBinName;
     }
@@ -201,6 +205,14 @@ public class CreateStorageBinManagedBean {
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
 }

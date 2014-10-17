@@ -20,8 +20,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.mrp.productcatalogmodule.ProductSessionBean;
 import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
+import merlionportal.wms.warehousemanagementmodule.ReceivingPutawaySessionBean;
 
 /**
  *
@@ -37,18 +39,23 @@ public class CreateStockManagedBean {
     @EJB
     private AssetManagementSessionBean amsb;
     @EJB
+    private ReceivingPutawaySessionBean rpsb;
+    @EJB
     private UserAccountManagementSessionBean uamb;
     @EJB
     private ProductSessionBean psb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private SystemUser loginedUser;
     private Integer companyId;
+    private Integer userId;
     private Integer radioValue;
 
     private Integer warehouseId;
     private List<Warehouse> warehouses;
 
-    private Integer storageTypeId;
+    private Integer warehouseZoneId;
     private List<WarehouseZone> warehouseZones;
 
     private Integer storageBinId;
@@ -59,8 +66,8 @@ public class CreateStockManagedBean {
     private String comments;
     private Integer quantity;
     private Date expiryDate;
-    
-    private Integer productId;  
+
+    private Integer productId;
     private List<Product> productList;
     private Product product;
 
@@ -73,6 +80,7 @@ public class CreateStockManagedBean {
         boolean redirect = true;
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
             loginedUser = uamb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
+            userId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
             companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
             if (loginedUser != null) {
                 redirect = false;
@@ -92,10 +100,11 @@ public class CreateStockManagedBean {
     public void addStock() {
         System.out.println("[IN MANAGED BEAN -- Create STOCK MB] ====================== add stock, Storage Bin ID: " + storageBinId);
 
-        boolean result = amsb.addStock(stockName, comments, quantity, productId, storageBinId, expiryDate);
+        boolean result = rpsb.addStock(stockName, comments, quantity, productId, storageBinId, expiryDate);
         if (result) {
             clearAllFields();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success! Stock Added!", "New Stock Added!"));
+            systemLogSB.recordSystemLog(userId, "WMS add stock");
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error! Please check if Bin has reached its max quantity", "Something went wrong."));
         }
@@ -108,10 +117,10 @@ public class CreateStockManagedBean {
         }
     }
 
-    public void onChangeStorageType() {
-        System.out.println("[IN MANAGED BEAN -- Create STOCK MB] ====================== onChangeStorageType");
-        if (warehouseId != null & storageTypeId != null) {
-            storageBins = amsb.viewStorageBinForWarehouseZone(storageTypeId);
+    public void onChangeWarehouseZone() {
+        System.out.println("[IN MANAGED BEAN -- Create STOCK MB] ====================== onChangeWarehouseZone");
+        if (warehouseId != null & warehouseZoneId != null) {
+            storageBins = amsb.viewStorageBinForWarehouseZone(warehouseZoneId);
         }
     }
 
@@ -125,7 +134,7 @@ public class CreateStockManagedBean {
 
     private void clearAllFields() {
         warehouseId = null;
-        storageTypeId = null;
+        warehouseZoneId = null;
         storageBinId = null;
         stockName = null;
         comments = null;
@@ -167,12 +176,12 @@ public class CreateStockManagedBean {
         this.warehouses = warehouses;
     }
 
-    public Integer getStorageTypeId() {
-        return storageTypeId;
+    public Integer getWarehouseZoneId() {
+        return warehouseZoneId;
     }
 
-    public void setStorageTypeId(Integer storageTypeId) {
-        this.storageTypeId = storageTypeId;
+    public void setWarehouseZoneId(Integer warehouseZoneId) {
+        this.warehouseZoneId = warehouseZoneId;
     }
 
     public List<WarehouseZone> getWarehouseZones() {
@@ -182,8 +191,6 @@ public class CreateStockManagedBean {
     public void setWarehouseZones(List<WarehouseZone> warehouseZones) {
         this.warehouseZones = warehouseZones;
     }
-
-    
 
     public Integer getStorageBinId() {
         return storageBinId;
@@ -271,6 +278,14 @@ public class CreateStockManagedBean {
 
     public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
 }

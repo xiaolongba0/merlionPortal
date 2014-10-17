@@ -16,6 +16,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
 import org.primefaces.event.RowEditEvent;
 
@@ -31,6 +32,8 @@ public class WarehouseViewEditManagedBean {
     private AssetManagementSessionBean assetManagementSessionBean;
     @EJB
     private UserAccountManagementSessionBean uamb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private List<Warehouse> warehouses;
 
@@ -47,12 +50,14 @@ public class WarehouseViewEditManagedBean {
 
     private Integer companyId;
     private SystemUser loginedUser;
+    private Integer userId;
 
     @PostConstruct
     public void init() {
         boolean redirect = true;
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
             loginedUser = uamb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
+            userId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
             companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
             if (loginedUser != null) {
                 redirect = false;
@@ -87,16 +92,40 @@ public class WarehouseViewEditManagedBean {
     }
 
     public void deleteWarehouse(Warehouse warehouse) {
-        try {
-            warehouseId = warehouse.getWarehouseId();
-            System.out.println("[In WAR FILE - Delete Warehouse Function] Warehouse ID========== :" + warehouseId);
-            assetManagementSessionBean.deleteWarehouse(warehouseId);
+        warehouseId = warehouse.getWarehouseId();
+        System.out.println("[In WAR FILE - Delete Warehouse Function] Warehouse ID========== :" + warehouseId);
+        boolean result = assetManagementSessionBean.deleteWarehouse(warehouseId);
+        if (result) {
             warehouses.remove(warehouse);
+            systemLogSB.recordSystemLog(userId, "WMS delete warehouse");
             FacesMessage msg = new FacesMessage("Warehouse with Warehouse ID = " + warehouse.getWarehouseId() + " has sucessfully been deleted");
             FacesContext.getCurrentInstance().addMessage(null, msg);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong"));
         }
+
+    }
+
+    public void onRowEdit(RowEditEvent event) {
+        System.out.println("ON ROW EDIT ===============================");
+        warehouse = new Warehouse();
+        warehouse = (Warehouse) event.getObject();
+        boolean result = assetManagementSessionBean.editWarehouse(warehouse.getName(), warehouse.getCountry(), warehouse.getCity(),
+                warehouse.getStreet(), warehouse.getDescription(), warehouse.getZipcode(), warehouse.getCompanyId(), warehouse.getWarehouseId());
+        if (result) {
+            systemLogSB.recordSystemLog(userId, "WMS edit warehouse");
+            FacesMessage msg = new FacesMessage("Warehouse with Warehouse ID = " + warehouse.getWarehouseId() + " has sucessfully been edited");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+        else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong"));
+        }
+    }
+
+    public void onRowCancel(RowEditEvent event) {
+        System.out.println("ON ROW CANCEL =============================");
+        FacesMessage msg = new FacesMessage("Edit Cancelled");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public Integer getStorageTypeId() {
@@ -191,21 +220,12 @@ public class WarehouseViewEditManagedBean {
         this.country = country;
     }
 
-    public void onRowEdit(RowEditEvent event) {
-        System.out.println("ON ROW EDIT ===============================");
-        warehouse = new Warehouse();
-        warehouse = (Warehouse) event.getObject();
-        System.out.println("[AFTER EDIT] warehouse.getName(): " + warehouse.getName());
-        assetManagementSessionBean.editWarehouse(warehouse.getName(), warehouse.getCountry(), warehouse.getCity(),
-                warehouse.getStreet(), warehouse.getDescription(), warehouse.getZipcode(), warehouse.getCompanyId(), warehouse.getWarehouseId());
-        FacesMessage msg = new FacesMessage("Warehouse with Warehouse ID = " + warehouse.getWarehouseId() + " has sucessfully been edited");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void onRowCancel(RowEditEvent event) {
-        System.out.println("ON ROW CANCEL =============================");
-        FacesMessage msg = new FacesMessage("Edit Cancelled");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
 }

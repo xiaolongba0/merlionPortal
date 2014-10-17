@@ -14,39 +14,43 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
 
 /**
  *
  * @author manliqi
  */
-@Named(value = "createStorageTypeManangedBean")
+@Named(value = "createWarehouseZoneManangedBean")
 @ViewScoped
-public class CreateStorageTypeManagedBean {
+public class CreateWarehouseZoneManagedBean {
 
     /**
-     * Creates a new instance of CreateStorageTypeManagerBean
+     * Creates a new instance of CreateWarehouseZoneManagerBean
      */
     @EJB
     private AssetManagementSessionBean assetManagementSessionBean;
     @EJB
     private UserAccountManagementSessionBean uamb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private SystemUser loginedUser;
     private Integer companyId;
+    private Integer userId;
 
-    private Integer newStorageTypeId;
-    private String storageTypeName;
-    private String storagetDescription;
+    private Integer newWarehouseZoneId;
+    private String warehouseZoneTypeName;
+    private String zoneDescription;
 
     private Integer storageTypeId;
     private Integer selectedWarehouseId;
     private List<Warehouse> warehouses;
 
-    public CreateStorageTypeManagedBean() {
+    public CreateWarehouseZoneManagedBean() {
     }
 
     @PostConstruct
@@ -55,6 +59,7 @@ public class CreateStorageTypeManagedBean {
         boolean redirect = true;
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
             loginedUser = uamb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
+            userId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
             companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
             if (loginedUser != null) {
                 redirect = false;
@@ -70,32 +75,32 @@ public class CreateStorageTypeManagedBean {
         warehouses = assetManagementSessionBean.viewMyWarehouses(companyId);
     }
 
-    public void createNewStorageType(ActionEvent warehouse) {
+    public void createNewWarehouseZone(ActionEvent warehouse) {
 
         try {
-            System.out.println("[INSIDE WAR FILE]===========================Create New Storage Type");
-            System.out.println("STORAGE TYPE NAMEEEEEEE ; " + storageTypeName);
-            newStorageTypeId = assetManagementSessionBean.addWarehouseZone(storageTypeName, storagetDescription, companyId, selectedWarehouseId);
-            System.out.println("NEW STORAGE TYPE ID =================: " + newStorageTypeId);
-            if (newStorageTypeId > -1) {
+            System.out.println("[INSIDE WAR FILE]===========================Create New Warehouse Zone");
+            System.out.println("STORAGE TYPE NAMEEEEEEE ; " + warehouseZoneTypeName);
+            newWarehouseZoneId = assetManagementSessionBean.addWarehouseZone(warehouseZoneTypeName, zoneDescription, companyId, selectedWarehouseId);
+            System.out.println("NEW STORAGE TYPE ID =================: " + newWarehouseZoneId);
+            if (newWarehouseZoneId > -1) {
                 clearAllFields();
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Warehouse Zone Added!", ""));
-
+                systemLogSB.recordSystemLog(userId, "WMS create warehouse zone");
             } else {
                 System.out.println("============== FAILED TO ADD STORAGE TYPE DUE TO WRONG WAREHOUSE ID ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed to Add Warehouse Zone ", ""));
 
             }
 
-            System.out.println("[WAR FILE]===========================Create New Storage Type");
+            System.out.println("[WAR FILE]===========================Create New Warehouse Zone");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     private void clearAllFields() {
-        storageTypeName = null;
-        storagetDescription = null;
+        warehouseZoneTypeName = null;
+        zoneDescription = null;
         selectedWarehouseId = null;
     }
 
@@ -115,35 +120,35 @@ public class CreateStorageTypeManagedBean {
         this.companyId = companyId;
     }
 
-    public Integer getNewStorageTypeId() {
-        return newStorageTypeId;
+    public Integer getNewWarehouseZoneId() {
+        return newWarehouseZoneId;
     }
 
-    public void setNewStorageTypeId(Integer newStorageTypeId) {
-        this.newStorageTypeId = newStorageTypeId;
+    public void setNewWarehouseZoneId(Integer newWarehouseZoneId) {
+        this.newWarehouseZoneId = newWarehouseZoneId;
     }
 
-    public String getStorageTypeName() {
-        return storageTypeName;
+    public String getWarehouseZoneName() {
+        return warehouseZoneTypeName;
     }
 
-    public void setStorageTypeName(String storageTypeName) {
-        this.storageTypeName = storageTypeName;
+    public void setWarehouseZoneName(String warehouseZoneTypeName) {
+        this.warehouseZoneTypeName = warehouseZoneTypeName;
     }
 
     public String getStoragetDescription() {
-        return storagetDescription;
+        return zoneDescription;
     }
 
-    public void setStoragetDescription(String storagetDescription) {
-        this.storagetDescription = storagetDescription;
+    public void setStoragetDescription(String zoneDescription) {
+        this.zoneDescription = zoneDescription;
     }
 
-    public Integer getStorageTypeId() {
+    public Integer getWarehouseZoneId() {
         return storageTypeId;
     }
 
-    public void setStorageTypeId(Integer storageTypeId) {
+    public void setWarehouseZoneId(Integer storageTypeId) {
         this.storageTypeId = storageTypeId;
     }
 
@@ -155,8 +160,6 @@ public class CreateStorageTypeManagedBean {
         this.selectedWarehouseId = selectedWarehouseId;
     }
 
-   
-
     public List<Warehouse> getWarehouses() {
         return warehouses;
     }
@@ -164,4 +167,13 @@ public class CreateStorageTypeManagedBean {
     public void setWarehouses(List<Warehouse> warehouses) {
         this.warehouses = warehouses;
     }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+    
 }

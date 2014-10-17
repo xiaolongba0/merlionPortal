@@ -18,8 +18,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.mrp.productcatalogmodule.ProductSessionBean;
 import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
+import merlionportal.wms.warehousemanagementmodule.ReceivingPutawaySessionBean;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -33,27 +35,33 @@ public class StockViewEditManagedBean {
     @EJB
     private AssetManagementSessionBean amsb;
     @EJB
+    private ReceivingPutawaySessionBean rpsb;
+    @EJB
     private UserAccountManagementSessionBean uamb;
     @EJB
     private ProductSessionBean psb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private List<Stock> stocks;
     private Integer productId;
     private Stock stock;
     private Integer radioValue;
     private Integer totalQuantity;
-    
+
     private List<Product> productList;
     private Product product;
-    
+
     private Integer companyId;
     private SystemUser loginedUser;
+    private Integer userId;
 
     @PostConstruct
     public void init() {
         boolean redirect = true;
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
             loginedUser = uamb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
+            userId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
             companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
             if (loginedUser != null) {
                 redirect = false;
@@ -75,26 +83,27 @@ public class StockViewEditManagedBean {
     public StockViewEditManagedBean() {
     }
 
-    public void countTotalQuantity() {
-        List<Integer> productIdList = new ArrayList<>();
-        Stock tempStock = null;
-
-        for (Object o : stocks) {
-            tempStock = (Stock) o;
-            totalQuantity = totalQuantity + tempStock.getQuantity();
-            System.out.println("Stock: " + tempStock + "Quantity: " + tempStock.getQuantity());
-        }
-
-        System.out.println("In countTotalQuantity, TotalQuantity ============================= : " + totalQuantity);
-    }
+//    public void countTotalQuantity() {
+//        List<Integer> productIdList = new ArrayList<>();
+//        Stock tempStock = null;
+//
+//        for (Object o : stocks) {
+//            tempStock = (Stock) o;
+//            totalQuantity = totalQuantity + tempStock.getQuantity();
+//            System.out.println("Stock: " + tempStock + "Quantity: " + tempStock.getQuantity());
+//        }
+//
+//        System.out.println("In countTotalQuantity, TotalQuantity ============================= : " + totalQuantity);
+//    }
 
     public void viewStocks() {
         System.out.println("===============================[In Managed Bean - view Stocks]");
         System.out.println("[In Managed Bean - getStocks] Product ID : " + productId);
         totalQuantity = 0;
         if (productId != null) {
-            stocks = amsb.viewStock(productId);
-            totalQuantity = amsb.countTotalStock(productId);
+            stocks = rpsb.viewStock(productId);
+            totalQuantity = rpsb.countTotalStock(productId);
+            systemLogSB.recordSystemLog(userId, "WMS view stocks");
             if (stocks == null) {
                 System.out.println("============== FAILED TO VIEW STOCK ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Stock.", ""));
@@ -110,12 +119,12 @@ public class StockViewEditManagedBean {
 //            productList = psb.getMyProducts(companyId);
 //        }
 //    }
-
     public void deleteStock(Stock stock) {
         try {
-            boolean result = amsb.deleteStock(stock.getStockId());
+            boolean result = rpsb.deleteStock(stock.getStockId());
             if (result) {
                 stocks.remove(stock);
+                systemLogSB.recordSystemLog(userId, "WMS delete stock");
                 FacesMessage msg = new FacesMessage("Stock with ID = " + stock.getStockId() + " has sucessfully been deleted");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
             } else {
@@ -131,8 +140,9 @@ public class StockViewEditManagedBean {
         stock = new Stock();
         stock = (Stock) event.getObject();
         System.out.println("[In Managed Bean - STOCK ON ROW EDIT]===============================: " + stock.getQuantity());
-        boolean result = amsb.editStock(stock.getName(), stock.getComments(), stock.getQuantity(), stock.getProductId(), stock.getStockId(), stock.getExpiryDate());
+        boolean result = rpsb.editStock(stock.getName(), stock.getComments(), stock.getQuantity(), stock.getProductId(), stock.getStockId(), stock.getExpiryDate());
         if (result) {
+            systemLogSB.recordSystemLog(userId, "WMS edit stock");
             FacesMessage msg = new FacesMessage("Stock with ID = " + stock.getStockId() + " has sucessfully been edited");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         } else {
@@ -199,6 +209,30 @@ public class StockViewEditManagedBean {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
+    public SystemUser getLoginedUser() {
+        return loginedUser;
+    }
+
+    public void setLoginedUser(SystemUser loginedUser) {
+        this.loginedUser = loginedUser;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
 }
