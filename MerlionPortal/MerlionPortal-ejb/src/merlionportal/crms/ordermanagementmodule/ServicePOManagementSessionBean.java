@@ -93,12 +93,12 @@ public class ServicePOManagementSessionBean {
         return -1;
     }
 
-    public List<ServiceInvoice> viewAllReceivedInvoice(Integer myCompanyId) {
+    public List<ServiceInvoice> viewAllReceivedInvoices(Integer myCompanyId) {
         Query q = em.createNamedQuery("ServiceInvoice.findByReceiverCompanyId").setParameter("receiverCompanyId", myCompanyId);
         return (List<ServiceInvoice>) q.getResultList();
     }
 
-    public List<ServiceInvoice> viewAllSentInvoice(Integer myCompanyId) {
+    public List<ServiceInvoice> viewAllSentInvoices(Integer myCompanyId) {
         Query q = em.createNamedQuery("ServiceInvoice.findBySenderCompanId").setParameter("senderCompanId", myCompanyId);
         return (List<ServiceInvoice>) q.getResultList();
     }
@@ -127,4 +127,5 @@ public class ServicePOManagementSessionBean {
         
         return 1;
     }
+
 }

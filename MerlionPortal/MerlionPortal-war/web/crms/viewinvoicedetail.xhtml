@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="View Invoice Detail" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <h:form id="formMain">
+                <p:panelMenu>
+                    <p:submenu label="CRMS HOME" styleClass="display:block">
+                        <p:menuitem value="CRMS Home" url="crmsindex.xhtml"/>     
+                        <p:menuitem value="Service Yellow Pages" url="serviceyellowpages.xhtml"/>
+                    </p:submenu>
+                    <p:submenu label="Service Catalog Management" styleClass="display:block">
+                        <p:menuitem value="Create New Service" url="createservice.xhtml" />
+                        <p:menuitem value="View All Services" url="viewcompanyservices.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Quotation Management" styleClass="display:block">
+                        <p:menuitem value="View All Requests" url="viewallrequests.xhtml" />
+                        <p:menuitem value="View All Quotations" url="viewallquotations.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Contract Management" styleClass="display:block">
+                        <p:menuitem value="Create Service Contract" url="createservicecontract.xhtml" />
+                        <p:menuitem value="View All Contracts" url="viewallcontracts.xhtml" />
+                        <p:menuitem value="Renew Contracts" url="renewservicecontract.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Order Management" styleClass="display:block">
+                        <p:menuitem value="Create Service PO" url="createservicepo.xhtml" />
+                        <p:menuitem value="View All Orders" url="viewallservicepos.xhtml" />
+                        <p:menuitem value="View All Invoices" url="viewallinvoices.xhtml" />
+                    </p:submenu>
+                </p:panelMenu>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">
+            <h:form id="form">
+                <p:fieldset legend="Contact Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <h:outputText value="Sender Company ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.senderCompanId}" />
+                        <h:outputText value="Sender Company Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.senderCompanyName}" />
+                    </h:panelGrid>
+                    <p:separator />
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <h:outputText value="Receiver Company ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.receiverCompanyId}" />
+                        <h:outputText value="Reciever Company Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.receiverCompanyName}" />
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:fieldset legend="Purchase Order Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <p:outputLabel value="Purchase Order ID:" style="width: 150px"/><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.servicePO.servicePOId}" />
+
+                        <p:outputLabel value="Service Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.servicePO.contract.serviceQuotation.serviceCatalog.serviceName}" />
+
+                        <p:outputLabel value="Service Description:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.servicePO.contract.serviceQuotation.serviceCatalog.serviceDescription}" />
+
+                        <p:outputLabel value="Service Type:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.servicePO.serviceType}" />
+
+                        <p:outputLabel value="Contract Price Per TEU:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.servicePO.contract.price}" />
+
+                        <p:outputLabel value="Purchase Order Quantity (TEU):" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.servicePO.volume}" />
+
+                        <p:outputLabel value="Purchase Order Price:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.servicePO.price}" />
+
+                        <p:outputLabel value="Order Status:" style="color: red" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.orderstatus}"  style="color: red" />
+
+                    </h:panelGrid>
+                    <p:separator />
+
+                </p:fieldset>
+                <p:fieldset legend="Invoice Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="3" cellpadding="6">
+
+                        <p:outputLabel value="Invoice ID:" style="width: 150px"/><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.invoiceId}" />
+
+                        <p:outputLabel value="Creator Id:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.creatorId}" />
+                        
+                        <p:outputLabel value="Invoice Condition:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.conditionText}" />
+
+                        <p:outputLabel value="Invoice Created Date:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.createDate}" />
+
+                        <p:outputLabel value="Invoice Status:" style="color: red"/><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.status}" style="color: red" />
+
+                        <p:outputLabel value="Invoice Price:" style="color: red"/><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.price}" style="color: red" />
+
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:commandButton value="Record Payment Info" action="" />
+                <p:commandButton value="Update payment status" action="" />
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</html>
