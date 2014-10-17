@@ -7,13 +7,9 @@ package merlionportal.managedbean.wms;
 
 import entity.Product;
 import entity.Stock;
-import entity.StorageBin;
-import entity.StorageType;
 import entity.SystemUser;
-import entity.Warehouse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;

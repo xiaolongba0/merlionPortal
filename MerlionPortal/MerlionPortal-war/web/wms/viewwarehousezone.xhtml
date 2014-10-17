@@ -72,10 +72,10 @@
                         </p:row>
                     </p:panelGrid>
 
-                    <p:dataTable id="storagetypeData" var="storagetype" sortMode="multiple" editable="true" value="#{storageTypeViewEditManagedBean.storagetypes}" 
+                    <p:dataTable id="storagetypeData" var="storagetype" sortMode="multiple" editable="true" value="#{storageTypeViewEditManagedBean.warehouseZones}" 
                                  widgetVar="storageTypesTable"
                                  emptyMessage="No Warehouse Zone found"
-                                 rowKey="#{storagetype.storageTypeId}">
+                                 rowKey="#{storagetype.warehouseZoneId}">
 
                         <f:facet name="header">                    
                             <p:outputPanel>
@@ -88,11 +88,11 @@
                         <p:ajax event="rowEditCancel" listener="#{storageTypeViewEditManagedBean.onRowCancel}"/>                
 
                         <p:column headerText="Warehouse Id" >
-                            <h:outputText value="#{storagetype.warehousewarehouseId.warehouseId}" />
+                            <h:outputText value="#{storagetype.warehouse.warehouseId}" />
                         </p:column>
 
-                        <p:column filterBy="#{storagetype.storageTypeId}" filterMatchMode="exact" headerText="Warehouse Zone ID" >
-                            <h:outputText value="#{storagetype.storageTypeId}" />
+                        <p:column filterBy="#{storagetype.warehouseZoneId}" filterMatchMode="exact" headerText="Warehouse Zone ID" >
+                            <h:outputText value="#{storagetype.warehouseZoneId}" />
                         </p:column>
 
                         <p:column  filterBy="#{storagetype.name}" filterMatchMode="contains" headerText="Warehouse Zone">

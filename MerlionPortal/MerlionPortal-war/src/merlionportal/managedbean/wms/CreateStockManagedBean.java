@@ -7,9 +7,9 @@ package merlionportal.managedbean.wms;
 
 import entity.Product;
 import entity.StorageBin;
-import entity.StorageType;
 import entity.SystemUser;
 import entity.Warehouse;
+import entity.WarehouseZone;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -49,7 +49,7 @@ public class CreateStockManagedBean {
     private List<Warehouse> warehouses;
 
     private Integer storageTypeId;
-    private List<StorageType> storageTypes;
+    private List<WarehouseZone> warehouseZones;
 
     private Integer storageBinId;
     private List<String> listStorageBinType;
@@ -104,14 +104,14 @@ public class CreateStockManagedBean {
     public void onChangeWarehouse() {
         System.out.println("[IN MANAGED BEAN -- Create STOCK MB] ====================== onChangeWarehouse, Warehouse ID: " + warehouseId);
         if (warehouseId != null) {
-            storageTypes = amsb.viewStorageTypesForAWarehouse(warehouseId);
+            warehouseZones = amsb.viewWarehouseZoneForAWarehouse(warehouseId);
         }
     }
 
     public void onChangeStorageType() {
         System.out.println("[IN MANAGED BEAN -- Create STOCK MB] ====================== onChangeStorageType");
         if (warehouseId != null & storageTypeId != null) {
-            storageBins = amsb.viewStorageBinForStorageType(storageTypeId);
+            storageBins = amsb.viewStorageBinForWarehouseZone(storageTypeId);
         }
     }
 
@@ -175,13 +175,15 @@ public class CreateStockManagedBean {
         this.storageTypeId = storageTypeId;
     }
 
-    public List<StorageType> getStorageTypes() {
-        return storageTypes;
+    public List<WarehouseZone> getWarehouseZones() {
+        return warehouseZones;
     }
 
-    public void setStorageTypes(List<StorageType> storageTypes) {
-        this.storageTypes = storageTypes;
+    public void setWarehouseZones(List<WarehouseZone> warehouseZones) {
+        this.warehouseZones = warehouseZones;
     }
+
+    
 
     public Integer getStorageBinId() {
         return storageBinId;

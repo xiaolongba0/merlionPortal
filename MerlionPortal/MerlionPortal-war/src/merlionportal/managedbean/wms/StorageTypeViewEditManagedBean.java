@@ -5,9 +5,9 @@
  */
 package merlionportal.managedbean.wms;
 
-import entity.StorageType;
 import entity.SystemUser;
 import entity.Warehouse;
+import entity.WarehouseZone;
 import java.io.IOException;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -34,9 +34,9 @@ public class StorageTypeViewEditManagedBean {
     private UserAccountManagementSessionBean uamb;
 
     private List<Warehouse> warehouses;
-    private List<StorageType> storagetypes;
+    private List<WarehouseZone> warehouseZones;
     private Integer warehouseId;
-    private StorageType storagetype;
+    private WarehouseZone warehouseZone;
 
     private SystemUser loginedUser;
     private Integer companyId;
@@ -69,28 +69,28 @@ public class StorageTypeViewEditManagedBean {
 
     }
 
-    public List<StorageType> onWarehouseChange() {
+    public List<WarehouseZone> onWarehouseChange() {
         System.out.println("===============================[In Managed Bean - onWarehouseChange]");
         System.out.println("[In Managed Bean - onWarehouseChange] warehouse ID : " + warehouseId);
         if (warehouseId != null) {
-            storagetypes = assetManagementSessionBean.viewStorageTypesForAWarehouse(warehouseId);
-            if (storagetypes == null) {
+            warehouseZones = assetManagementSessionBean.viewWarehouseZoneForAWarehouse(warehouseId);
+            if (warehouseZones == null) {
                 System.out.println("============== FAILED TO VIEW STORAGE TYPE ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Warehouse Zone.", ""));
             }
-            return storagetypes;
+            return warehouseZones;
         }
         return null;
     }
 
     public void onRowEdit(RowEditEvent event) {
         System.out.println("ON ROW EDIT ===============================");
-        storagetype = new StorageType();
-        storagetype = (StorageType) event.getObject();
+        warehouseZone = new WarehouseZone();
+        warehouseZone = (WarehouseZone) event.getObject();
         // System.out.println("[Checking if input is correct] ====================== : " + warehouseName);
-        System.out.println("[AFTER EDIT] storageType.getName(): " + storagetype.getName());
-        assetManagementSessionBean.editStorageType(storagetype.getName(), storagetype.getDescription(), storagetype.getStorageTypeId());
-        FacesMessage msg = new FacesMessage("Storage Type with Storage Type ID = " + storagetype.getStorageTypeId() + " has sucessfully been edited");
+        System.out.println("[AFTER EDIT] warehouseZone.getName(): " + warehouseZone.getName());
+        assetManagementSessionBean.editWarehouseZone(warehouseZone.getName(), warehouseZone.getDescription(), warehouseZone.getWarehouseZoneId());
+        FacesMessage msg = new FacesMessage("Storage Type with Storage Type ID = " + warehouseZone.getWarehouseZoneId()+ " has sucessfully been edited");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
@@ -100,13 +100,13 @@ public class StorageTypeViewEditManagedBean {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public void deleteStorageType(StorageType storageType) {
+    public void deleteStorageType(WarehouseZone warehouseZone) {
         try {
-            System.out.println("[In WAR FILE - Delete StorageType Function]" + storageType);
-            System.out.println("[In WAR FILE - Delete StorageType Function] storageType ID========== :" + storageType.getStorageTypeId());
-            assetManagementSessionBean.deleteStorageType(storageType.getStorageTypeId());
-            storagetypes.remove(storageType);
-            FacesMessage msg = new FacesMessage("Storage Type with Storage Type ID = " + storagetype.getStorageTypeId() + " has sucessfully been edited");
+            System.out.println("[In WAR FILE - Delete warehouseZone Function]" + warehouseZone);
+            System.out.println("[In WAR FILE - Delete warehouseZone Function] warehouseZone ID========== :" + warehouseZone.getWarehouseZoneId());
+            assetManagementSessionBean.deleteWarehouseZone(warehouseZone.getWarehouseZoneId());
+            warehouseZones.remove(warehouseZone);
+            FacesMessage msg = new FacesMessage("Storage Type with Storage Type ID = " + warehouseZone.getWarehouseZoneId()+ " has sucessfully been edited");
             FacesContext.getCurrentInstance().addMessage(null, msg);
 
         } catch (Exception ex) {
@@ -122,14 +122,7 @@ public class StorageTypeViewEditManagedBean {
         this.warehouses = warehouses;
     }
 
-    public List<StorageType> getStoragetypes() {
-        return storagetypes;
-    }
-
-    public void setStoragetypes(List<StorageType> storagetypes) {
-        this.storagetypes = storagetypes;
-    }
-
+    
     public Integer getWarehouseId() {
         return warehouseId;
     }
@@ -138,13 +131,23 @@ public class StorageTypeViewEditManagedBean {
         this.warehouseId = warehouseId;
     }
 
-    public StorageType getStoragetype() {
-        return storagetype;
+    public List<WarehouseZone> getWarehouseZones() {
+        return warehouseZones;
     }
 
-    public void setStoragetype(StorageType storagetype) {
-        this.storagetype = storagetype;
+    public void setWarehouseZones(List<WarehouseZone> warehouseZones) {
+        this.warehouseZones = warehouseZones;
     }
+
+    public WarehouseZone getWarehouseZone() {
+        return warehouseZone;
+    }
+
+    public void setWarehouseZone(WarehouseZone warehouseZone) {
+        this.warehouseZone = warehouseZone;
+    }
+
+    
 
     public SystemUser getLoginedUser() {
         return loginedUser;

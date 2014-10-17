@@ -76,7 +76,7 @@
                                 <p:selectOneMenu id="storageType" value="#{storageBinViewEditManagedBean.storageTypeId}"  style="width:300px" required="true" requiredMessage="Please select a storage type">
                                     <p:ajax listener="#{storageBinViewEditManagedBean.onStorageTypeChange}" update="storagebinData" />
                                     <f:selectItem itemLabel="Select Warehouse Zone" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{storageBinViewEditManagedBean.storagetypes}" var="storageType" itemLabel="ID:#{storageType.storageTypeId} Name:#{storageType.name}"  itemValue="#{storageType.storageTypeId}"/>
+                                    <f:selectItems value="#{storageBinViewEditManagedBean.warehouseZones}" var="storageType" itemLabel="ID:#{storageType.warehouseZoneId} Name:#{storageType.name}"  itemValue="#{storageType.warehouseZoneId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
@@ -124,7 +124,6 @@
                                         <f:selectItems value="#{createStorageBinManagedBean.listStorageBinType}" var="storageBinType" itemLabel="#{listStorageBinType}" />
                                     </p:selectOneMenu>
                                 </f:facet>
-        <!--                            <p:inputText value="#{storagebin.binType}" style="width:100%" label="Bin Type"/>-->
                             </p:cellEditor>
                         </p:column>
 

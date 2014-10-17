@@ -5,9 +5,9 @@
  */
 package merlionportal.managedbean.wms;
 
-import entity.StorageType;
 import entity.SystemUser;
 import entity.Warehouse;
+import entity.WarehouseZone;
 import java.io.IOException;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -39,7 +39,7 @@ public class CreateStorageBinManagedBean {
     private List<Warehouse> warehouses;
 
     private Integer storageTypeId;
-    private List<StorageType> storageTypes;
+    private List<WarehouseZone> warehouseZones;
 
     private String storageBinName;
     private String storagebinDescription;
@@ -89,7 +89,7 @@ public class CreateStorageBinManagedBean {
     public void onChangeWarehouse() {
         System.out.println("[IN MANAGED BEAN -- Create BIN MB] ====================== onChangeWarehouse, Warehouse ID: " + warehouseId);
         if (warehouseId != null) {
-            storageTypes = amsb.viewStorageTypesForAWarehouse(warehouseId);
+            warehouseZones = amsb.viewWarehouseZoneForAWarehouse(warehouseId);
         }
     }
 
@@ -137,13 +137,15 @@ public class CreateStorageBinManagedBean {
         this.storageTypeId = storageTypeId;
     }
 
-    public List<StorageType> getStorageTypes() {
-        return storageTypes;
+    public List<WarehouseZone> getWarehouseZones() {
+        return warehouseZones;
     }
 
-    public void setStorageTypes(List<StorageType> storageTypes) {
-        this.storageTypes = storageTypes;
+    public void setWarehouseZones(List<WarehouseZone> warehouseZones) {
+        this.warehouseZones = warehouseZones;
     }
+
+    
 
     public String getStorageBinName() {
         return storageBinName;

@@ -70,12 +70,12 @@
                         </p:row>
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="storageType" value="Storage Type Name: " />
+                                <p:outputLabel for="storageType" value="Warehouse Zone Name: " />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="storageType" value="#{createStorageBinManagedBean.storageTypeId}"  style="width:210px" required="true" requiredMessage="Please select a storage type">
-                                    <f:selectItem itemLabel="Select Storage Type" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{createStorageBinManagedBean.storageTypes}" var="storageType" itemLabel="ID:#{storageType.storageTypeId}   Name:#{storageType.name}"  itemValue="#{storageType.storageTypeId}"/>
+                                <p:selectOneMenu id="storageType" value="#{createStorageBinManagedBean.storageTypeId}"  style="width:210px" required="true" requiredMessage="Please select a warehouse zone">
+                                    <f:selectItem itemLabel="Select Warehouse Zone" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{createStorageBinManagedBean.warehouseZones}" var="storageType" itemLabel="ID:#{storageType.warehouseZoneId}   Name:#{storageType.name}"  itemValue="#{storageType.warehouseZoneId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>

@@ -6,9 +6,9 @@
 package merlionportal.managedbean.wms;
 
 import entity.StorageBin;
-import entity.StorageType;
 import entity.SystemUser;
 import entity.Warehouse;
+import entity.WarehouseZone;
 import java.io.IOException;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -35,7 +35,7 @@ public class StorageBinViewEditManagedBean {
     private UserAccountManagementSessionBean uamb;
 
     private List<Warehouse> warehouses;
-    private List<StorageType> storagetypes;
+    private List<WarehouseZone> warehouseZones;
     private List<StorageBin> bins;
     private Integer warehouseId;
     private Integer storageTypeId;
@@ -76,13 +76,13 @@ public class StorageBinViewEditManagedBean {
 
     public void onWarehouseChange() {
         if (warehouseId != null) {
-            storagetypes = assetManagementSessionBean.viewStorageTypesForAWarehouse(warehouseId);
+            warehouseZones = assetManagementSessionBean.viewWarehouseZoneForAWarehouse(warehouseId);
         }
     }
 
     public void onStorageTypeChange() {
         if (storageTypeId != null) {
-            bins = assetManagementSessionBean.viewStorageBinForStorageType(storageTypeId);
+            bins = assetManagementSessionBean.viewStorageBinForWarehouseZone(storageTypeId);
         }
     }
 
@@ -133,13 +133,15 @@ public class StorageBinViewEditManagedBean {
         this.warehouses = warehouses;
     }
 
-    public List<StorageType> getStoragetypes() {
-        return storagetypes;
+    public List<WarehouseZone> getWarehouseZones() {
+        return warehouseZones;
     }
 
-    public void setStoragetypes(List<StorageType> storagetypes) {
-        this.storagetypes = storagetypes;
+    public void setWarehouseZones(List<WarehouseZone> warehouseZones) {
+        this.warehouseZones = warehouseZones;
     }
+
+   
 
     public List<StorageBin> getBins() {
         return bins;

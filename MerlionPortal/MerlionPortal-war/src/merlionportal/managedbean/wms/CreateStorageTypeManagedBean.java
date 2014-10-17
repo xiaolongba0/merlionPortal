@@ -75,11 +75,11 @@ public class CreateStorageTypeManagedBean {
         try {
             System.out.println("[INSIDE WAR FILE]===========================Create New Storage Type");
             System.out.println("STORAGE TYPE NAMEEEEEEE ; " + storageTypeName);
-            newStorageTypeId = assetManagementSessionBean.addStorageType(storageTypeName, storagetDescription, companyId, selectedWarehouseId);
+            newStorageTypeId = assetManagementSessionBean.addWarehouseZone(storageTypeName, storagetDescription, companyId, selectedWarehouseId);
             System.out.println("NEW STORAGE TYPE ID =================: " + newStorageTypeId);
             if (newStorageTypeId > -1) {
                 clearAllFields();
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Storage Type Added!", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Warehouse Zone Added!", ""));
 
             } else {
                 System.out.println("============== FAILED TO ADD STORAGE TYPE DUE TO WRONG WAREHOUSE ID ===============");
