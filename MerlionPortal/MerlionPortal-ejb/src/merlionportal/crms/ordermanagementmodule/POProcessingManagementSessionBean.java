@@ -140,7 +140,7 @@ public class POProcessingManagementSessionBean {
     //1. Telegrapgic Transfer
     //2. Credit Card
     //3. Paper Check
-    public boolean recordPaymentInfo(Integer invoiceId, Integer method, Date receivedDate, Date createdDate, String accountInfo, String creditCardNo, Double amount, Integer swiftcode, Integer checkNumber) {
+    public boolean recordPaymentInfo(Integer invoiceId, Integer method, Date receivedDate, String accountInfo, String creditCardNo, Double amount, Integer swiftcode, Integer checkNumber) {
         Payment payment = new Payment();
         payment.setMethod(method);
         if (method == 1) {
@@ -157,6 +157,8 @@ public class POProcessingManagementSessionBean {
         } else if (method == 3) {
             payment.setCheckNumber(checkNumber);
             payment.setReceiveDate(receivedDate);
+            payment.setAmount(amount);
+
         } else {
             //Method not supported
 
@@ -180,7 +182,7 @@ public class POProcessingManagementSessionBean {
         if (invoice != null) {
             invoice.setStatus(3);
             ServicePO po = invoice.getServicePO();
-            po.setStatus(7);
+            po.setStatus(8);
             em.merge(po);
 
             em.merge(invoice);

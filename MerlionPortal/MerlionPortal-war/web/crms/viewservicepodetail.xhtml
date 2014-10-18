@@ -46,6 +46,10 @@
                         <p:menuitem value="View All Orders" url="viewallservicepos.xhtml" />
                         <p:menuitem value="View All Invoices" url="viewallinvoices.xhtml" />
                     </p:submenu>
+                    <p:submenu label="Key Account Management" styleClass="display:block">
+                        <p:menuitem value="View Order Statistics" url="vieworderstatistics.xhtml" />
+                        <p:menuitem value="Create Key Account" url="createkeyaccount.xhtml" />
+                    </p:submenu>
                 </p:panelMenu>
             </h:form>
         </ui:define>
@@ -110,8 +114,12 @@
 
                 <p:fieldset legend="Purchase Order Information" style="margin-bottom:20px">
                     <h:panelGrid id="po" columns="3" cellpadding="6" >
+                        <p:outputLabel value="PO ID:"/><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.servicePOId}"/>
+                        
                         <p:outputLabel value="PO Quantity in TEU:"/><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewServicePODetailManagedBean.volume}"/>
+                        
 
                         <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Transportation'}" >
                             <p:outputLabel value="Delivery Date:"/><p:spacer width="20" height="20" />

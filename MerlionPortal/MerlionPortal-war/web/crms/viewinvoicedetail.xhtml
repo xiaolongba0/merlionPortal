@@ -46,6 +46,10 @@
                         <p:menuitem value="View All Orders" url="viewallservicepos.xhtml" />
                         <p:menuitem value="View All Invoices" url="viewallinvoices.xhtml" />
                     </p:submenu>
+                    <p:submenu label="Key Account Management" styleClass="display:block">
+                        <p:menuitem value="View Order Statistics" url="vieworderstatistics.xhtml" />
+                        <p:menuitem value="Create Key Account" url="createkeyaccount.xhtml" />
+                    </p:submenu>
                 </p:panelMenu>
             </h:form>
         </ui:define>
@@ -105,7 +109,7 @@
 
                         <p:outputLabel value="Creator Id:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.creatorId}" />
-                        
+
                         <p:outputLabel value="Invoice Condition:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.conditionText}" />
 
@@ -120,9 +124,85 @@
 
                     </h:panelGrid>
                 </p:fieldset>
-                <p:commandButton value="Record Payment Info"  />
-                <p:commandButton value="Update payment status" />
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <c:if test="#{(viewInvoiceDetailManagedBean.selectedInvoice.receiverCompanyId eq viewInvoiceDetailManagedBean.companyId)and(viewInvoiceDetailManagedBean.selectedInvoice.status eq 1)}" >
+                    <p:commandButton value="Record Payment Info" type="button" onclick="PF('dlg1').show();" />
+                </c:if>
+                <c:if test="#{(viewInvoiceDetailManagedBean.selectedInvoice.senderCompanId eq viewInvoiceDetailManagedBean.companyId)and(viewInvoiceDetailManagedBean.selectedInvoice.status eq 2)}" >
+                    <p:commandButton value="Update payment status" action="#{viewInvoiceDetailManagedBean.updatePaymentStatus()}" update=":form" >
+                        <p:confirm header="Confirmation" message="Payment information has been verified and payment is received. 
+                                   Please click on yes button to update payment status." icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="fade" >
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                </c:if>
+                <c:if test="#{viewInvoiceDetailManagedBean.selectedInvoice.status eq 2}" >
+                    <p:commandButton value="View Payment info" type="button" onclick="PF('dlg3').show();" />
+                </c:if>
+
             </h:form>
+            <h:form>
+                <p:dialog header="Record Payment Information" widgetVar="dlg1" minHeight="40">
+                    <p:outputLabel for="method" value="Payment Method: " />
+                    <p:selectOneMenu id="method" value="#{viewInvoiceDetailManagedBean.method}" style="width:250px">
+                        <p:ajax listener="#{viewInvoiceDetailManagedBean.onMethodChange}" update="change" />
+                        <f:selectItem itemLabel="Please select payment method" itemValue="" noSelectionOption="true"  />
+                        <f:selectItem itemLabel="Telegraphic Transfer" itemValue="1"  />
+                        <f:selectItem itemLabel="Credit Card" itemValue="2" />
+                        <f:selectItem itemLabel="Paper Check" itemValue="3"  />
+                    </p:selectOneMenu> 
+                    <h:panelGroup id="change" >
+                        <h:panelGrid id="tt" rendered="#{viewInvoiceDetailManagedBean.method eq 1}" columns="3">
+                            <p:outputLabel value="Swift Code:" /> <p:spacer width="20" height="20" />
+                            <h:inputText value="#{viewInvoiceDetailManagedBean.swiftcode}" styleClass="form-control" />
+                            <p:outputLabel value="Account Info:" /> <p:spacer width="20" height="20" />
+                            <h:inputText value="#{viewInvoiceDetailManagedBean.accountInfo}"  styleClass="form-control" />
+                            <p:outputLabel value="Amount:" /> <p:spacer width="20" height="20" />
+                            <h:inputText value="#{viewInvoiceDetailManagedBean.amount}"  styleClass="form-control" />
+                            <p:outputLabel value="Expected Receive Date:" /> <p:spacer width="20" height="20" />
+                            <p:calendar value="#{viewInvoiceDetailManagedBean.receivedDate}" />
+                            <p:commandButton value="Submit Payment Info" action="#{viewInvoiceDetailManagedBean.recordPaymentInfo()}" update=":form" />
+
+                        </h:panelGrid >
+                        <h:panelGrid id="cc" rendered="#{viewInvoiceDetailManagedBean.method eq 2}" columns="3">
+                            <p:outputLabel value="Credit Card Number:" /> <p:spacer width="20" height="20" />
+                            <h:inputText value="#{viewInvoiceDetailManagedBean.creditCardNo}"  styleClass="form-control" />
+                            <p:outputLabel value="Amount:" /> <p:spacer width="20" height="20" />
+                            <h:inputText value="#{viewInvoiceDetailManagedBean.amount}"  styleClass="form-control" />
+                            <p:outputLabel value="Expected Receive Date:" /> <p:spacer width="20" height="20" />
+                            <p:calendar value="#{viewInvoiceDetailManagedBean.receivedDate}" />
+                            <p:commandButton value="Submit Payment Info" action="#{viewInvoiceDetailManagedBean.recordPaymentInfo()}" update=":form" />
+
+                        </h:panelGrid>
+                        <h:panelGrid id="pc" rendered="#{viewInvoiceDetailManagedBean.method eq 3}" columns="3">
+                            <p:outputLabel value="Check Number:" /> <p:spacer width="20" height="20" />
+                            <h:inputText value="#{viewInvoiceDetailManagedBean.swiftcode}"  styleClass="form-control" />
+                            <p:outputLabel value="Amount:" /> <p:spacer width="20" height="20" />
+                            <h:inputText value="#{viewInvoiceDetailManagedBean.amount}"  styleClass="form-control" />
+                            <p:outputLabel value="Expected Receive Date:" /> <p:spacer width="20" height="20" />
+                            <p:calendar value="#{viewInvoiceDetailManagedBean.receivedDate}" />
+                            <p:commandButton value="Submit Payment Info" action="#{viewInvoiceDetailManagedBean.recordPaymentInfo()}" update=":form" />
+
+                        </h:panelGrid>
+                    </h:panelGroup>
+                </p:dialog>
+            </h:form>
+
+            <h:form>
+                <p:dialog header="View Payment Information" widgetVar="dlg3" minHeight="40">
+                    <h:outputText value="Resistance to PrimeFaces is futile!" />
+                </p:dialog>
+            </h:form>
+
+            <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold">
+                <p:panelGrid id="display" columns="2" columnClasses="label,value">
+                    <h:outputText value="#{viewInvoiceDetailManagedBean.receivedDate}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                </p:panelGrid>
+            </p:dialog>
 
         </ui:define>
     </ui:composition>

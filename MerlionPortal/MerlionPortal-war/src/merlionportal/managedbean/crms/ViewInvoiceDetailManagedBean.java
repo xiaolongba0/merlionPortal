@@ -3,17 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package merlionportal.managedbean.crms;
 
 import entity.ServiceInvoice;
 import java.io.IOException;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.crms.ordermanagementmodule.POProcessingManagementSessionBean;
 
 /**
  *
@@ -26,22 +28,31 @@ public class ViewInvoiceDetailManagedBean {
     /**
      * Creates a new instance of ViewInvoiceDetailManagedBean
      */
-    
     private Integer companyId;
     private Integer userId;
-    
+
     @EJB
     UserAccountManagementSessionBean userAccountSB;
-    
+    @EJB
+    POProcessingManagementSessionBean poProcessingSB;
+
     private ServiceInvoice selectedInvoice;
     private String status;
     private String senderCompanyName;
     private String receiverCompanyName;
     private String orderstatus;
-    
+
+    private int method;
+    private Date receivedDate;
+    private String accountInfo;
+    private String creditCardNo;
+    private Double amount;
+    private Integer swiftcode;
+    private Integer checkNumber;
+
     public ViewInvoiceDetailManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         boolean redirect = true;
@@ -68,7 +79,31 @@ public class ViewInvoiceDetailManagedBean {
         }
 
     }
-    
+
+    public void updatePaymentStatus() {
+        int result = poProcessingSB.updatePaymentStatus(selectedInvoice.getInvoiceId());
+        if (result == 1) {
+            this.getStatusText(3);
+            this.getOrderStatusText(8);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Payment Status updated", ""));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
+        }
+    }
+
+    public void recordPaymentInfo() {
+        boolean result = poProcessingSB.recordPaymentInfo(selectedInvoice.getInvoiceId(), method, receivedDate, accountInfo, creditCardNo, amount, swiftcode, checkNumber);
+        if (result) {
+            this.getStatusText(2);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Payment Information Recorded", ""));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
+        }
+    }
+    public void onMethodChange(){
+        System.out.println("Method: "+method);
+    }
+
     private void getStatusText(int statusNumber) {
 
         if (statusNumber == 1) {
@@ -81,7 +116,7 @@ public class ViewInvoiceDetailManagedBean {
             status = "Paid";
         }
     }
-    
+
     private void getOrderStatusText(int statusNumber) {
 
         if (statusNumber == 1) {
@@ -168,6 +203,61 @@ public class ViewInvoiceDetailManagedBean {
     public void setOrderstatus(String orderstatus) {
         this.orderstatus = orderstatus;
     }
-    
-    
+
+    public int getMethod() {
+        return method;
+    }
+
+    public void setMethod(int method) {
+        this.method = method;
+    }
+
+    public Date getReceivedDate() {
+        return receivedDate;
+    }
+
+    public void setReceivedDate(Date receivedDate) {
+        this.receivedDate = receivedDate;
+    }
+
+    public String getAccountInfo() {
+        return accountInfo;
+    }
+
+    public void setAccountInfo(String accountInfo) {
+        this.accountInfo = accountInfo;
+    }
+
+    public String getCreditCardNo() {
+        return creditCardNo;
+    }
+
+    public void setCreditCardNo(String creditCardNo) {
+        this.creditCardNo = creditCardNo;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public Integer getSwiftcode() {
+        return swiftcode;
+    }
+
+    public void setSwiftcode(Integer swiftcode) {
+        this.swiftcode = swiftcode;
+    }
+
+    public Integer getCheckNumber() {
+        return checkNumber;
+    }
+
+    public void setCheckNumber(Integer checkNumber) {
+        this.checkNumber = checkNumber;
+    }
+
 }
