@@ -39,7 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "FeedBack.findByCreateDate", query = "SELECT f FROM FeedBack f WHERE f.createDate = :createDate"),
     @NamedQuery(name = "FeedBack.findByPoster", query = "SELECT f FROM FeedBack f WHERE f.poster = :poster"),
     @NamedQuery(name = "FeedBack.findByLikes", query = "SELECT f FROM FeedBack f WHERE f.likes = :likes"),
-    @NamedQuery(name = "FeedBack.findByContent", query = "SELECT f FROM FeedBack f WHERE f.content = :content")})
+    @NamedQuery(name = "FeedBack.findByContent", query = "SELECT f FROM FeedBack f WHERE f.content = :content"),
+    @NamedQuery(name = "FeedBack.findByTitle", query = "SELECT f FROM FeedBack f WHERE f.title = :title")})
 public class FeedBack implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -57,6 +58,9 @@ public class FeedBack implements Serializable {
     @Size(max = 5000)
     @Column(name = "content")
     private String content;
+    @Size(max = 1000)
+    @Column(name = "title")
+    private String title;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "feedback")
     private List<Comment> commentList;
 
@@ -105,6 +109,14 @@ public class FeedBack implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @XmlTransient
