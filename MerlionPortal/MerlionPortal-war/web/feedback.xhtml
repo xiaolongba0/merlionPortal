@@ -8,65 +8,82 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition template="templates/template.xhtml">
+    <ui:composition template="${root}/templates/template.xhtml">
+        <ui:param name="pageName" value="Feedback" />
 
-        <ui:param name="pageName" value="About Us" />
+        <ui:define name="more-imports">
 
-        <!-- Override Content -->
+        </ui:define>
+
         <ui:define name="content">
+            <c:set var="root" value="${request.contextPath}" />
             <div class="container">
-                <div class="col-md-4">
-                    <div class="thumbnail">
-                        <img src="img/feedback.jpg" class="service-image" />
-                        <div class="caption product-box">
-                            <h2 class="service-title">Categories</h2><br></br>
-                            <div class="product-des-wi">
-                                <nav>
-                                    <ul>
-                                        <h4 class="service-des">
-                                            <li><a>CRM</a></li>
-                                            <li><a>MRP</a></li>
-                                            <li><a>WMS</a></li>
-                                            <li><a>OES</a></li>
-                                            <li><a>TMS</a></li>
-                                            <li><a>GRNS</a></li>
-                                        </h4>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
+                <div class="row spacing">
+                    <div class="col-md-12">
+                        <c:choose>
+                            <c:when test="#{empty feedbackBean.loginedUser}">
+                                You are not logined. Please login to submit your feedback.
+                            </c:when>
+                            <c:otherwise>
+                                Hello #{feedbackBean.loginedUser.firstName},
+                                <br/><br/>
+                                <button class="btn btn-primary">Create Feedback</button>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
-                <div class="col-md-7">
-                    <div class = "center">
-                        We Welcome Your Feedback
-                    </div>
-                    <div class="col-md-4">
-                        <div>
-                            <div>
-                                <div class="caption product-box">
-                                    <h2 class="service-title">Topic</h2>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <p:accordionPanel>
+                            <p:tab title="Java Stack push method NullPointerException">
+                                All of these return a null exception. Asserted that Character reaches inside the method fine. I used java.util.Stack; when it failed, I implemented my own. But it still failed.
+                                What could I be doing wrong?
+                                Any kind of help is appreciated!
+                                <br/><br/>
+                                <i class="glyphicon glyphicon-thumbs-up"></i><span class="badge alert-primary">5</span>
+                                <br/><br/>
+                                <div class="row spacing">
+                                    <div class="col-md-11 col-md-offset-1">
+                                        <i class="glyphicon glyphicon-chevron-right"></i>
+                                        FYI, if you ran this through a debugger you would have known exactly what was wrong in about 90 seconds
+                                        <br/><br/>
+                                        <i class="glyphicon glyphicon-thumbs-up"></i><span class="badge alert-primary">5</span>
+                                    </div>
                                 </div>
-                            </div>                                                                      
-                        </div>                  
-                    </div>
-                    <div class="col-md-4">
-                        <div>
-                            <div>
-                                <div class="caption product-box">
-                                    <h2 class="service-title">Time</h2>
+
+                                <div class="row spacing">
+                                    <div class="col-md-11 col-md-offset-1">
+                                        <i class="glyphicon glyphicon-chevron-right"></i>
+                                        Cruncher I haven't gotten really comfortable with debuggers yet. It's only my first year of programming, and 4 months of java.
+                                        <br/><br/>
+                                        <i class="glyphicon glyphicon-thumbs-up"></i><span class="badge alert-primary">5</span>
+                                    </div>
                                 </div>
-                            </div>                                                                      
-                        </div>                  
-                    </div>
-                    <div class="col-md-4">
-                        <div>
-                            <div>
-                                <div class="caption product-box">
-                                    <h2 class="service-title">Posts</h2>
-                                </div>
-                            </div>                                                                      
-                        </div>                  
+                            </p:tab>
+                            <p:tab title="Feedback title 2">
+                                <h:panelGrid>
+                                    test test
+                                </h:panelGrid>
+                            </p:tab>
+
+                            <p:tab title="Feedback title 3">
+                                <h:panelGrid>
+                                    test test
+                                </h:panelGrid>
+                            </p:tab>
+
+                            <p:tab title="Feedback title 4">
+                                <h:panelGrid>
+                                    test test
+                                </h:panelGrid>
+                            </p:tab>
+
+                            <p:tab title="Feedback title 5">
+                                <h:panelGrid>
+                                    test test
+                                </h:panelGrid>
+                            </p:tab>
+                        </p:accordionPanel>
                     </div>
                 </div>
             </div>

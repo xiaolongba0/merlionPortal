@@ -1,22 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package merlionportal.ci.messagingmodule;
 
+import entity.FeedBack;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 
-/**
- *
- * @author wenxin274
- */
 @Stateless
 @LocalBean
 public class FeedbackSessionBean {
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+    public int createFeedback(int creatorId, String content){
+        FeedBack fb = new FeedBack();
+        return -1;
+    }
+    
+    public int addLike(int id,int threadType){
+        return -1;
+    }
+    
+    public int createComment(int creatorId, String content, int feedbackId){
+        return -1;
+    }
+    
 }

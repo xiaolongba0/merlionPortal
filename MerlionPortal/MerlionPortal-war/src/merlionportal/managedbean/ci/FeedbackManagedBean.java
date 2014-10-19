@@ -1,58 +1,51 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package merlionportal.managedbean.ci;
 
-import entity.SystemLog;
+import entity.SystemUser;
 import java.io.IOException;
-import java.util.Date;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 
-/**
- *
- * @author wenxin274
- */
-@Named(value = "feedbackManagedBean")
+@Named(value = "feedbackBean")
 @ViewScoped
 public class FeedbackManagedBean {
 
     @EJB
     private SystemLogSessionBean systemLogSB;
+
+    @EJB
+    private UserAccountManagementSessionBean uamsb;
+
     private Integer companyId;
     private Integer userId;
+    private SystemUser loginedUser;
 
+    @PostConstruct
     public void init() {
-        boolean redirect = true;
+        userId = null;
+        loginedUser = null;
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
             userId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
-            companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
+            if (userId > 0) {
+                loginedUser = uamsb.getUser(userId);
+            }
+        }
+    }
 
-            if (userId != null) {
-                redirect = false;
-            }
-        }
-        if (redirect) {
-            try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath());
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
+    public void postFeedback() {
+
     }
-    public void postFeedback(){
-        
+
+    public void replyFeedback() {
+
     }
-    public void replyFeedback(){
-        
-    }
-    public void voteFeedback(){
-        
+
+    public void likeFeedback() {
+
     }
 
     public SystemLogSessionBean getSystemLogSB() {
@@ -77,5 +70,13 @@ public class FeedbackManagedBean {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public SystemUser getLoginedUser() {
+        return loginedUser;
+    }
+
+    public void setLoginedUser(SystemUser loginedUser) {
+        this.loginedUser = loginedUser;
     }
 }
