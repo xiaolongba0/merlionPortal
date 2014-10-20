@@ -5,6 +5,7 @@
  */
 package merlionportal.wms.warehousemanagementmodule;
 
+import merlionportal.wms.mobilitymanagementmodule.ReceivingPutawaySessionBean;
 import entity.Stock;
 import entity.StockAudit;
 import entity.StorageBin;

@@ -130,7 +130,7 @@ public class AssetManagementSessionBean {
         }
     }
 
-    // Methods related to storage type
+    // Methods related to warehouse zone 
     public Integer addWarehouseZone(String warehouseZoneName, String storagetDescription,
             Integer companyId, Integer warehouseId) {
 
