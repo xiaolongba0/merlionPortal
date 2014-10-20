@@ -16,77 +16,115 @@
         </ui:define>
 
         <ui:define name="content">
-            <c:set var="root" value="${request.contextPath}" />
-            <div class="container">
-                <div class="row spacing">
-                    <div class="col-md-12">
-                        <c:choose>
-                            <c:when test="#{empty feedbackBean.loginedUser}">
-                                You are not logined. Please login to submit your feedback.
-                            </c:when>
-                            <c:otherwise>
-                                Hello #{feedbackBean.loginedUser.firstName},
-                                <br/><br/>
-                                <button class="btn btn-primary">Create Feedback</button>
-                            </c:otherwise>
-                        </c:choose>
+            <script type="text/javascript">
+                function postCreateFeedback() {
+                    $.notify("Feedback created", "success");
+                }
+
+                function commentCreated() {
+                    $.notify("Comment posted", "success");
+                }
+
+                function noUserFound() {
+                    $.notify("Please login first!", "error");
+                }
+
+                function feedbackLiked(title) {
+                    $.notify("You have liked " + title, "success");
+                }
+
+                function commentLiked() {
+                    $.notify("Comment Liked.", "success");
+                }
+
+            </script>
+            <h:form id="feedbackForm">
+                <f:event listener="#{feedbackBean.onLoad}" type="preRenderView" />
+                <c:set var="root" value="${request.contextPath}" />
+                <div class="container">
+                    <div class="row spacing">
+                        <div class="col-md-12">
+                            <c:choose>
+                                <c:when test="#{empty feedbackBean.loginedUser}">
+                                    You are not logined. Please login to submit your feedback.
+                                </c:when>
+                                <c:otherwise>
+                                    Hello #{feedbackBean.loginedUser.firstName},
+                                    <div>
+                                        <h3>Post Feedback</h3>
+                                        <p:inputText id="titleInput" value="#{feedbackBean.feedBackTitle}" style="width:100%;">
+                                            <p:watermark for="titleInput" value="Feedback Title" id="titleWatermark" />
+                                        </p:inputText>
+                                        <br/><br/>
+                                        <p:inputTextarea style="width:100%;height:150px;" counter="remainingText" maxlength="200" counterTemplate="{0} characters remaining." value="#{feedbackBean.feedBackContent}" autoResize="false" /><br/>
+                                        <h:outputText id="remainingText" /><br/>
+                                        <p:commandButton value="Post Feedback" actionListener="#{feedbackBean.postFeedback()}" update="feedbackForm" />
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <h2>Feedbacks</h2>
+                            <c:choose>
+                                <c:when test="${empty feedbackBean.feedbackList}">
+                                    No feedbacks found! Post your feedbacks today!
+                                </c:when>
+                                <c:otherwise>
+                                    <p:accordionPanel id="accordPanel">
+                                        <c:forEach items="${feedbackBean.feedbackList}" var="fb">
+                                            <p:tab id="tab-#{fb.feedbackId}" title="#{fb.title}">
+                                                <div class="feedback-content-box">#{fb.content}</div>
+                                                <i>Posted on  <h:outputText value="#{fb.createDate}">
+                                                        <f:convertDateTime timeZone="Asia/Singapore" pattern="dd/MM/yyyy h:mm a" />
+                                                    </h:outputText></i>
+                                                <div class="like-box">
+                                                    <p:commandLink actionListener="#{feedbackBean.likeFeedback}" update="accordPanel">
+                                                        <i class="glyphicon glyphicon-thumbs-up"></i>
+                                                        <f:param name="fbid" value="#{fb.feedbackId}" />
+                                                    </p:commandLink>
+                                                    <span class="badge alert-info">#{fb.likes}</span>
+                                                </div>
+                                                <!-- Insert Comment -->
+                                                <c:if test="#{not empty feedbackBean.userId}">
+                                                    <div class="add-comment-box">
+                                                        <textarea class="form-control" id="commentInput-#{fb.feedbackId}" name="commentInput-#{fb.feedbackId}"
+                                                                  style="min-height:75px;"></textarea>
+                                                        <p:commandButton value="Post Comment" actionListener="#{feedbackBean.postComment}" update="accordPanel">
+                                                            <f:param name="fbid" value="#{fb.feedbackId}" />
+                                                        </p:commandButton>
+                                                    </div>
+                                                </c:if>
+                                                <!-- List Comments -->
+                                                <c:if test="#{not empty fb.commentList}">
+                                                    <c:forEach items="#{fb.commentList}" var="comment">
+                                                        <div class="row">
+                                                            <div class="col-md-11 col-md-offset-1">
+                                                                <div class="comment-box">#{comment.commentBody}</div>
+                                                                <i>Posted on <h:outputText value="#{comment.createDate}">
+                                                                        <f:convertDateTime timeZone="Asia/Singapore" pattern="dd/MM/yyyy h:mm a" />
+                                                                    </h:outputText></i>
+                                                                <div class="like-box">
+                                                                    <p:commandLink actionListener="#{feedbackBean.likeComment}" update="accordPanel">
+                                                                        <i class="glyphicon glyphicon-thumbs-up"></i>
+                                                                        <f:param name="commentid" value="#{comment.commentId}" />
+                                                                    </p:commandLink>
+                                                                    <span class="badge alert-info">#{comment.likes}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </c:forEach>
+                                                </c:if>
+                                            </p:tab>
+                                        </c:forEach>                
+                                    </p:accordionPanel>      
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
-                        <p:accordionPanel>
-                            <p:tab title="Java Stack push method NullPointerException">
-                                All of these return a null exception. Asserted that Character reaches inside the method fine. I used java.util.Stack; when it failed, I implemented my own. But it still failed.
-                                What could I be doing wrong?
-                                Any kind of help is appreciated!
-                                <br/><br/>
-                                <i class="glyphicon glyphicon-thumbs-up"></i><span class="badge alert-primary">5</span>
-                                <br/><br/>
-                                <div class="row spacing">
-                                    <div class="col-md-11 col-md-offset-1">
-                                        <i class="glyphicon glyphicon-chevron-right"></i>
-                                        FYI, if you ran this through a debugger you would have known exactly what was wrong in about 90 seconds
-                                        <br/><br/>
-                                        <i class="glyphicon glyphicon-thumbs-up"></i><span class="badge alert-primary">5</span>
-                                    </div>
-                                </div>
-
-                                <div class="row spacing">
-                                    <div class="col-md-11 col-md-offset-1">
-                                        <i class="glyphicon glyphicon-chevron-right"></i>
-                                        Cruncher I haven't gotten really comfortable with debuggers yet. It's only my first year of programming, and 4 months of java.
-                                        <br/><br/>
-                                        <i class="glyphicon glyphicon-thumbs-up"></i><span class="badge alert-primary">5</span>
-                                    </div>
-                                </div>
-                            </p:tab>
-                            <p:tab title="Feedback title 2">
-                                <h:panelGrid>
-                                    test test
-                                </h:panelGrid>
-                            </p:tab>
-
-                            <p:tab title="Feedback title 3">
-                                <h:panelGrid>
-                                    test test
-                                </h:panelGrid>
-                            </p:tab>
-
-                            <p:tab title="Feedback title 4">
-                                <h:panelGrid>
-                                    test test
-                                </h:panelGrid>
-                            </p:tab>
-
-                            <p:tab title="Feedback title 5">
-                                <h:panelGrid>
-                                    test test
-                                </h:panelGrid>
-                            </p:tab>
-                        </p:accordionPanel>
-                    </div>
-                </div>
-            </div>
+            </h:form>
         </ui:define>
     </ui:composition>
 </html>

@@ -113,6 +113,19 @@ h2.roleTitle{
     min-width:450px;
 }
 
+.feedback-content-box{
+    background: rgba(240,240,240,0.85);
+    border-radius:10px;
+    padding:15px;
+    
+}
+
+.like-box{
+    padding-left:10px;
+    padding-right:10px;
+    display:inline-block;
+}
+
 .ui-messages-error-icon{
     display:none;
 }
