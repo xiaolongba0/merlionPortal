@@ -20,7 +20,7 @@
         </ui:define>
 
         <ui:define name="left">
-                      <p:panelMenu>
+            <p:panelMenu>
                 <p:submenu label =" WMS HOME" styleClass="display:block">
                     <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
                 </p:submenu>
@@ -39,6 +39,10 @@
                 <p:submenu label="Stock" styleClass="display:block" >
                     <p:menuitem value="Add Stock" url="addstock.xhtml"/>
                     <p:menuitem value="View Stock" url="viewstock.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Stock Audit" styleClass="display:block" >
+                    <p:menuitem value="Create Stock Audit" url="createstockaudit.xhtml"/>
+                    <p:menuitem value="View Stock Audit Schedule" url="viewstockauditschedule.xhtml"/>
                 </p:submenu>
             </p:panelMenu>
         </ui:define>
@@ -74,7 +78,7 @@
                             </p:column>
                             <p:column>
                                 <p:selectOneMenu id="storageType" value="#{storageBinViewEditManagedBean.storageTypeId}"  style="width:300px" required="true" requiredMessage="Please select a storage type">
-                                    <p:ajax listener="#{storageBinViewEditManagedBean.onStorageTypeChange}" update="storagebinData" />
+                                    <p:ajax listener="#{storageBinViewEditManagedBean.onWarehouseZoneChange()}" update="storagebinData" />
                                     <f:selectItem itemLabel="Select Warehouse Zone" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{storageBinViewEditManagedBean.warehouseZones}" var="storageType" itemLabel="ID:#{storageType.warehouseZoneId} Name:#{storageType.name}"  itemValue="#{storageType.warehouseZoneId}"/>
                                 </p:selectOneMenu>
