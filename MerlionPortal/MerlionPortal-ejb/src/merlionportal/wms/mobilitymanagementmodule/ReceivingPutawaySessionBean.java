@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package merlionportal.wms.warehousemanagementmodule;
+package merlionportal.wms.mobilitymanagementmodule;
 
 import entity.Stock;
 import entity.StorageBin;
