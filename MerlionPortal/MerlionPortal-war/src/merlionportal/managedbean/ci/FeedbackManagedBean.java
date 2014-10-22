@@ -6,6 +6,7 @@ import entity.SystemUser;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -64,8 +65,10 @@ public class FeedbackManagedBean {
     public void postFeedback() {
         if (fsb.createFeedback(userId, feedBackTitle, feedBackContent) > -1) {
             RequestContext.getCurrentInstance().execute("postCreateFeedback()");
+            onLoad();
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Feedback Not Posted!", "Please fill in the required fields."));
         }
-        onLoad();
     }
 
     public void postComment() {
@@ -77,6 +80,8 @@ public class FeedbackManagedBean {
             if (fsb.createComment(userId, commentMsg, id) > -1) {
                 RequestContext.getCurrentInstance().execute("commentCreated()");
                 onLoad();
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Feedback Not Posted!", "Please fill in the required fields."));
             }
         }
     }
