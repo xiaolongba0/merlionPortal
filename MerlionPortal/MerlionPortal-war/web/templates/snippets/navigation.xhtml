@@ -10,13 +10,14 @@
             <c:set var="root" value="${request.contextPath}" />
             <nav>
                 <div class="navbar navbar-default navbar-static-top" role="navigation">
-                    <div class="container-fluid">
+                    <div class="top-nav"></div>
+                    <div class="container">
                         <div class="navbar-header">        
-                            <img src="${root}/img/logo.png" style="width: 160px; height: 50px " />
+                            <img src="${root}/img/header-logo.png" style="height: 50px " />
                         </div>
                         <div class="navbar-collapse collapse">
-                            <ul class="nav navbar-nav">
-                                <li class="inactive"><a href="${root}/index.xhtml">Home</a></li>
+                            <ul class="nav navbar-nav title-font" style="padding-left:25px">
+                                <li><a href="${root}/index.xhtml">Home</a></li>
                                 <li><a href="${root}/services.xhtml">Packages</a></li>
                                 <li><a href="${root}/servicedescription.xhtml">Services</a></li>
                                 <li><a href="${root}/aboutus.xhtml">Contact</a></li>
