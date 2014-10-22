@@ -56,7 +56,7 @@
                                             <p:watermark for="titleInput" value="Feedback Title" id="titleWatermark" />
                                         </p:inputText>
                                         <br/><br/>
-                                        <p:inputTextarea styleClass="form-control" required="true" requiredMessage="Topic is required." style="width:100%;height:150px;" counter="remainingText" maxlength="200" counterTemplate="{0} characters remaining." value="#{feedbackBean.feedBackContent}" autoResize="false" /><br/>
+                                        <p:inputTextarea styleClass="form-control" required="true" requiredMessage="Content is required." style="width:100%;height:150px;" counter="remainingText" maxlength="200" counterTemplate="{0} characters remaining." value="#{feedbackBean.feedBackContent}" autoResize="false" /><br/>
                                         <h:outputText id="remainingText" /><br/>
                                         <p:commandButton value="Post Feedback" actionListener="#{feedbackBean.postFeedback()}" update="feedbackForm" />
                                     </div>
