@@ -133,7 +133,6 @@ public class UserAccountManagementSessionBean {
             return false;
         }
     }
-
     //Used by super user and company superuser
     public int createSystemUser(Integer operatorId, Integer companyId, List<Integer> roles, String firstName, String lastName, String emailAddress, String password, String postalAddress,
             String contactNumber, String salution, Integer credit) {
@@ -383,8 +382,7 @@ public class UserAccountManagementSessionBean {
             return 1;
         }
 
-        System.out.println(
-                "System Admin is null");
+        System.out.println("System Admin is null");
 
         return 0;
     }
