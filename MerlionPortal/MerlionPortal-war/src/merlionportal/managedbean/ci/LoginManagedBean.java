@@ -77,6 +77,8 @@ public class LoginManagedBean {
                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("companyId", sessionMap.get("companyId"));
                         try {
 //                            check if user is locked
+                            systemLogSB.recordSystemLog(uamsb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")).getSystemUserId(), "CI User Logged in");
+
                             if (uamsb.checkLocked((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"))) {
                                 FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
 
@@ -107,7 +109,6 @@ public class LoginManagedBean {
                 }
             }
         }
-        systemLogSB.recordSystemLog(uamsb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")).getSystemUserId(), "CI User Logged in");
     }
 
 //<editor-fold defaultstate="collapsed" desc="getters and setters">
