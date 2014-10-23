@@ -15,7 +15,6 @@ import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 /**
  *
  * @author YunWei
@@ -127,17 +126,21 @@ public class ReceivingPutawaySessionBean {
 
         Query query = em.createNamedQuery("Stock.findByStockId").setParameter("stockId", stockId);
         Stock stock = (Stock) query.getSingleResult();
-
         System.out.println("[IN EJB AMSB, deleteStock] ======================================");
 
-        StorageBin bin = stock.getStorageBin();
+        if (stock != null){
+                 StorageBin bin = stock.getStorageBin();
         bin.getStockList().remove(stock);
         em.merge(bin);
         em.remove(stock);
         em.flush();
 
         System.out.println("END OF DELETE STOCK FUNCTION IN SESSION BEAN");
-        return true;
+        return true;   
+        }
+        else {
+            return false;
+        }
     }
 
     public boolean editStock(String stockName, String comments, Integer quantity, Integer productId,
