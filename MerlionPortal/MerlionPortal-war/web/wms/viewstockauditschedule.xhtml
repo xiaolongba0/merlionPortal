@@ -50,70 +50,115 @@
 
         <ui:define name="right">
             <h:form id="formMain">
+                <p:panel id="panel" header=" View Stock Audit for a Warehouse">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="warehouse" value="Warehouse Name: " />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="warehouse" value="#{stockAuditViewEditManagedBean.warehouseId}"  style="width:210px" required="true" requiredMessage="Please select a warehouse">
+                                <f:selectItem itemLabel="Select Warehouse" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{stockAuditViewEditManagedBean.warehouses}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId}   Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"/>
+                                <p:ajax listener="#{stockAuditViewEditManagedBean.viewStockAudits()}" update="stockAuditData" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
 
-                <p:tabView>
-                    <p:tab title="Table View">
-                        <p:dataTable id="stockAuditData" var="stockaudit" sortMode="multiple" editable="true" value="#{stockAuditViewEditManagedBean.stockAudits}" 
-                                     widgetVar="stockAuditTable"
-                                     emptyMessage="No stock audit recrods found"
-                                     rowKey="#{stockaudit.stockAuditId}">
+                    <p:dataTable id="stockAuditData" var="stockaudit" sortMode="multiple" editable="true" value="#{stockAuditViewEditManagedBean.stockAudits}" 
+                                 widgetVar="stockAuditTable"
+                                 emptyMessage="No stock audit records found"
+                                 rowKey="#{stockaudit.stockAuditId}">
 
-                            <f:facet name="header">                    
-                                <p:outputPanel>
-                                    <h:outputText value="Search Stock Audit fields:" />
-                                    <p:inputText id="globalFilter" onkeyup="PF('stockAuditTable').filter()" />
-                                </p:outputPanel>
-                            </f:facet>
+                        <f:facet name="header">                    
+                            <p:outputPanel>
+                                <h:outputText value="Search Stock Audit fields:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('stockAuditTable').filter()" />
+                            </p:outputPanel>
+                        </f:facet>
 
-                            <p:ajax event="rowEdit" listener="#{stockAuditViewEditManagedBean.onRowEdit}" />
-                            <p:ajax event="rowEditCancel" listener="#{stockAuditViewEditManagedBean.onRowCancel}"/>                
+                        <p:ajax event="rowEdit" listener="#{stockAuditViewEditManagedBean.onRowEdit}" />
+                        <p:ajax event="rowEditCancel" listener="#{stockAuditViewEditManagedBean.onRowCancel}"/>                
 
-                            <p:column  filterBy="#{stockaudit.storageBinId}" filterMatchMode="contains" headerText="Stock Name">
-                                <p:cellEditor>
-                                    <f:facet name="output"><h:outputText value="#{stockaudit.storageBinId}" /></f:facet>
-                                    <f:facet name="input"><p:inputText value="#{stockaudit.storageBinId}" style="width:100%" label="Storage Bin"/></f:facet>
-                                </p:cellEditor>
-                            </p:column>
+                        <p:column  filterBy="#{stockaudit.storageBinId}" filterMatchMode="contains" headerText="Storage Bin ID">
+                            <h:outputText value="#{stockaudit.storageBinId}" />
+                        </p:column>
 
-                            <p:column filterBy="#{stockaudit.createdDate}" filterMatchMode="contains" headerText="Scheduled Date: " >
-                                <h:outputText value="#{stockaudit.createdDate}"  />
-                            </p:column>
-                            <p:column filterBy="#{stockaudit.stockAuditType}" filterMatchMode="contains" headerText="Stock Audit Type" >
-                                <h:outputText value="#{stockaudit.stockAuditType}" />
-                            </p:column>
-                            <p:column filterBy="#{stockaudit.stockAuditStatus}" filterMatchMode="contains" headerText="Stock ID" >
-                                <h:outputText value="#{stockaudit.stockAuditStatus}" />
-                            </p:column>
+                        <p:column  filterBy="#{stockaudit.stockAuditId}" filterMatchMode="contains" headerText="Stock Audit ID">
+                            <h:outputText value="#{stockaudit.stockAuditId}" />
+                        </p:column>
 
-                            <p:column style="width:48px">
-                                <p:commandButton action="#{stockAuditViewEditManagedBean.deleteStock(stock)}" update="stockAuditData" oncomplete="updateQuantity()" icon = "ui-icon-trash"  >
+                        <p:column filterBy="#{stockaudit.supervisorId}" filterMatchMode="contains" headerText="Supervisor ID: " >
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{stockaudit.supervisorId}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{stockaudit.supervisorId}" style="width:100%" label="supervisorId"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
 
-                                    <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this stock?" icon="ui-icon-alert" />
-                                </p:commandButton> 
-                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                                </p:confirmDialog>
-                            </p:column> 
-                            <p:column style="width:42px">
-                                <p:rowEditor />
-                            </p:column>
-                        </p:dataTable>
-                    </p:tab>
+                        <p:column filterBy="#{stockaudit.staffId}" filterMatchMode="contains" headerText="Staff ID: " >
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{stockaudit.staffId}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{stockaudit.staffId}" style="width:100%" label="staffId"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
 
-                    <p:tab title="Calandar View">
-                        <p:schedule id="schedule" value="#{scheduleView.eventModel}" widgetVar="myschedule" timeZone="GMT+8">
+                        <p:column filterBy="#{stockaudit.createdDate}" filterMatchMode="contains" headerText="Scheduled Date: " >
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{stockaudit.createdDate}" /></f:facet>
+                                <f:facet name="input"><p:calendar value="#{stockaudit.createdDate}"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
 
-                            <p:ajax event="dateSelect" listener="#{scheduleView.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
-                            <p:ajax event="eventSelect" listener="#{scheduleView.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
-                            <p:ajax event="eventMove" listener="#{scheduleView.onEventMove}" update="messages" />
-                            <p:ajax event="eventResize" listener="#{scheduleView.onEventResize}" update="messages" />
+                        <p:column filterBy="#{stockAuditViewEditManagedBean.getAuditType(stockaudit.stockAuditType)}" filterMatchMode="contains" headerText="Stock Audit Type" >
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{stockAuditViewEditManagedBean.getAuditType(stockaudit.stockAuditType)}" /></f:facet>
+                                <f:facet name="input">                                
+                                    <h:selectOneMenu id="stockAuditType" value="#{stockaudit.stockAuditType}" label="stockAuditType"  style="color: black" >
+                                        <f:selectItem itemLabel="Select One" itemValue="" noSelectionOption="false" />
+                                        <f:selectItem itemLabel="Count All" itemValue="1" />
+                                        <f:selectItem itemLabel="Random Sampling" itemValue="2" />
+                                    </h:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
 
-                        </p:schedule>
-                    </p:tab>
-                </p:tabView>
-                <br></br>
-                <p:messages id="msgs" autoUpdate="true" closable="true" />
+                        <p:column filterBy="#{stockAuditViewEditManagedBean.getAuditStatus(stockaudit.stockAuditStatus)}" filterMatchMode="contains" headerText="Stock Audit Status" >
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{stockAuditViewEditManagedBean.getAuditStatus(stockaudit.stockAuditStatus)}" /></f:facet>
+                                <f:facet name="input">
+                                    <h:selectOneMenu id="stockAuditStstus" value="#{stockaudit.stockAuditStatus}" label="stockAuditStstus"  style="color: black" >
+                                        <f:selectItem itemLabel="Select One" itemValue="" noSelectionOption="false" />
+                                        <f:selectItem itemLabel="Not Done" itemValue="0" />
+                                        <f:selectItem itemLabel="Completed" itemValue="1" />
+                                        <f:selectItem itemLabel="On Hold" itemValue="2" />
+                                    </h:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column filterBy="#{stockaudit.remarks}" filterMatchMode="contains" headerText="Remarks: " >
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{stockaudit.remarks}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{stockaudit.remarks}" style="width:100%" label="remarks"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column style="width:48px">
+                            <p:commandButton action="#{stockAuditViewEditManagedBean.deleteStockAudit(stockaudit)}" update="stockAuditData" icon = "ui-icon-trash"  >
+                                <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this stock audit?" icon="ui-icon-alert" />
+                            </p:commandButton> 
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </p:column>
+
+                        <p:column style="width:42px">
+                            <p:rowEditor />
+                        </p:column>
+                    </p:dataTable>
+                    <br></br>
+                    <p:messages id="msgs" autoUpdate="true" closable="true" />
+                </p:panel>
             </h:form>
         </ui:define>
     </ui:composition>
