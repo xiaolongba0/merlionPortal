@@ -137,15 +137,43 @@ public class StockAuditSessionBean {
         StockAudit stockAudit = (StockAudit) query.getSingleResult();
         System.out.println("[IN EJB SASB, deleteStockAudit] ======================================");
 
-        if (stockAudit != null){
-        em.remove(stockAudit);
-        em.flush();
+        if (stockAudit != null) {
+            em.remove(stockAudit);
+            em.flush();
 
-        System.out.println("END OF DELETE STOCK AUDIT FUNCTION IN SESSION BEAN");
-        return true;
-        }
-        else{
+            System.out.println("END OF DELETE STOCK AUDIT FUNCTION IN SESSION BEAN");
+            return true;
+        } else {
             return false;
         }
+    }
+
+    public boolean editStockAudit(Integer stockAuditId, Integer supervisorId, Integer staffId, Date scheduledDate,
+            Integer stockAuditType, Integer stockAuditStatus, String remarks) {
+
+        Query query = em.createNamedQuery("StockAudit.findByStockAuditId").setParameter("stockAuditId", stockAuditId);
+        StockAudit stockAudit = (StockAudit) query.getSingleResult();
+
+        System.out.println("[IN EJB SASB, editStockAudit] ======================================" + stockAuditId);
+
+        if (stockAudit != null) {
+
+            System.out.println("[IN EJB SASB, editStockAudit] ====================================== Supervisor ID: " + supervisorId);
+            stockAuditTemp.setSupervisorId(supervisorId);
+            stockAuditTemp.setStaffId(staffId);
+
+            stockAuditTemp.setStockAuditStatus(stockAuditStatus);
+            stockAuditTemp.setStockAuditType(stockAuditType);
+            
+            stockAuditTemp.setCreatedDate(scheduledDate);
+            stockAuditTemp.setRemarks(remarks);
+            em.merge(stockAudit);
+            em.flush();
+            return true;
+
+        } else {
+            return false;
+        }
+
     }
 }
