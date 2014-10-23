@@ -5,10 +5,11 @@
  */
 package merlionportal.wms.warehousemanagementmodule;
 
-import merlionportal.wms.mobilitymanagementmodule.ReceivingPutawaySessionBean;
 import entity.Stock;
 import entity.StockAudit;
 import entity.StorageBin;
+import entity.Warehouse;
+import entity.WarehouseZone;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import merlionportal.wms.mobilitymanagementmodule.ReceivingPutawaySessionBean;
 
 /**
  *
@@ -29,11 +31,13 @@ public class StockAuditSessionBean {
 
     @PersistenceContext
     EntityManager em;
-    
+
     @EJB
     private ReceivingPutawaySessionBean rpsb;
-    
-    private Stock stock;
+
+    @EJB
+    private AssetManagementSessionBean amsb;
+
     private StockAudit stockAuditTemp;
     private StockAudit stockAudit;
 
@@ -61,9 +65,12 @@ public class StockAuditSessionBean {
         // check if storage bin is empty
         List<Stock> allStocks = new ArrayList<>();
         Query query = em.createNamedQuery("StorageBin.findByStorageBinId").setParameter("storageBinId", storageBinId);
+        StorageBin bin = new StorageBin();
+        bin = em.find(StorageBin.class, storageBinId);
+        allStocks = bin.getStockList();
 
         System.out.println("[INSIDE SASB EJB, addStockAudit] ========== query: " + query.getResultList());
-        if (query.getResultList().isEmpty()) {
+        if (allStocks.isEmpty()) {
             return false;
         } else {
 
@@ -92,20 +99,53 @@ public class StockAuditSessionBean {
 
     }
 
-    public List<StockAudit> viewStockAudits(Integer productId) {
+    public List<StockAudit> viewStockAuditsForAWarehouse(Integer warehouseId) {
 
-        System.out.println("In viewStock, Product ID ============================= : " + productId);
+        List<StockAudit> allMyStockAudits = new ArrayList<>();
+        System.out.println("In viewStockAudits=============================");
 
-        List<StockAudit> allStockAudit = new ArrayList<>();
-        String stockAuditId = null;
-        Query query = em.createNamedQuery("Stock.findByProductId").setParameter("productId", productId);
+        List<WarehouseZone> allWarehouseZones = new ArrayList<>();
+        allWarehouseZones = amsb.viewWarehouseZoneForAWarehouse(warehouseId);
 
-        for (Object o : query.getResultList()) {
-            stockAudit = (StockAudit) o;
-            allStockAudit.add(stockAudit);
-            System.out.println("Stock Audit: " + stockAudit);
+        List<StorageBin> allBins = new ArrayList<>();
+        int j = 0;
+        while (j < allWarehouseZones.size()) {
+            allBins.addAll(allWarehouseZones.get(j).getStorageBinList());
+            j++;
         }
-        return allStockAudit;
+
+        int i = 0;
+        while (i < allBins.size()) {
+            StorageBin bin = new StorageBin();
+            bin = allBins.get(i);
+            Integer storageBinId = bin.getStorageBinId();
+            System.out.println(i + " In viewStockAudits, ALL BINS =============================" + storageBinId);
+            Query query = em.createNamedQuery("StockAudit.findByStorageBinId").setParameter("storageBinId", storageBinId);
+
+            for (Object o : query.getResultList()) {
+                stockAudit = (StockAudit) o;
+                allMyStockAudits.add(stockAudit);
+            }
+            i++;
+        }
+        return allMyStockAudits;
     }
 
+    public Boolean deleteStockAudit(Integer stockAuditId) {
+
+        Query query = em.createNamedQuery("StockAudit.findByStockAuditId").setParameter("stockAuditId", stockAuditId);
+        StockAudit stockAudit = (StockAudit) query.getSingleResult();
+        System.out.println("[IN EJB SASB, deleteStockAudit] ======================================");
+
+        if (stockAudit != null){
+        em.remove(stockAudit);
+        em.flush();
+
+        System.out.println("END OF DELETE STOCK AUDIT FUNCTION IN SESSION BEAN");
+        return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
