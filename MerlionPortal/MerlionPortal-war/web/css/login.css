@@ -8,11 +8,12 @@
 }
 
 .login-box{
-    float:right;
-    background-color: rgba(245,245,245,0.3);
+    
+    background-color: rgba(245,245,245,0.8);
     border-radius: 10px;
     padding-bottom: 20px;
-    margin-top:45px;
+    margin-top:150px;
+    margin-left: 440px
 }
 
 .bg-img > .wrapper > .login-nav{

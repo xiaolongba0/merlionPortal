@@ -14,6 +14,11 @@
     <ui:composition template="templates/template.xhtml">
 
         <ui:param name="pageName" value="Our Services" />
+        <ui:define name="more-imports">
+            <ui:insert>
+                <link rel="stylesheet" href="${request.contextPath}/css/login.css" type="text/css" />
+            </ui:insert>
+        </ui:define>
 
         <!-- Override Content -->
         <ui:define name="content">

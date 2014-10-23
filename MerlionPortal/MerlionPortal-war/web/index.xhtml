@@ -32,34 +32,7 @@
                         </div>
                     </ui:insert>
                     <!-- Content -->
-                    <div class="container">
-                        <ui:insert name="content">
-                            <h:form>
-                                <!-- login form -->
-                                <div class="row">
-                                    <div class="col-md-4 login-box">
-                                        <h2>Login</h2>
-                                        <div class="input-group form-control-spacing">
-                                            <div class="input-group-addon input-addon-fixedwidth">Username</div>
-                                            <h:inputText id="usernameInput" value="#{loginBean.username}" styleClass="form-control" pt:placeholder="Enter your username">
-                                                <f:validator validatorId="custom.emailValidator" />
-                                            </h:inputText>
-                                            <h:message styleClass="errorMsg" for="usernameInput" />
-                                        </div>
-
-                                        <div class="input-group form-control-spacing">
-                                            <div class="input-group-addon input-addon-fixedwidth">Password</div>
-                                            <h:inputSecret id="passwordInput" value="#{loginBean.password}" styleClass="form-control" pt:placeholder="Enter your password" />
-                                        </div>
-                                        <h:link value="Forget your password?" outcome="/resetpassword.xhtml" />
-                                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
-                                        <p:commandButton value="Login" id="ajax" actionListener="#{loginBean.login}" styleClass="btn btn-success" ></p:commandButton>
-                                    </div>
-                                </div>
-                            </h:form>
-                            <div class="push"></div>
-                        </ui:insert>
-                    </div>
+                    
                 </div>
                 <!-- Footer -->
 <!--                <ui:insert name="footer" >
@@ -79,6 +52,7 @@
                         }
                     }
                 };
+                
             </script>
         </ui:define>
 

@@ -14,7 +14,11 @@
     <ui:composition template="templates/template.xhtml">
 
         <ui:param name="pageName" value="Our Services" />
-
+        <ui:define name="more-imports">
+            <ui:insert>
+                <link rel="stylesheet" href="${request.contextPath}/css/login.css" type="text/css" />
+            </ui:insert>
+        </ui:define>
         <!-- Override Content -->
         <ui:define name="content">
             <div class="container">
@@ -151,91 +155,6 @@
                     </div>
                 </div>
             </div>
-<!--            <h:form>
-                <div id="buyModal" class="modal fade">
-                    <div class="modal-dialog">
-
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                <h2 class="modal-title">Buy now!</h2>
-                            </div>
-                            <div id="body" class="modal-body">
-                                <h3>Register Company Information</h3>
-                                <p:ajaxStatus style="width:16px;height:16px;">
-                                    <f:facet name="start">
-                                        <h:graphicImage value="/img/load.gif" />
-                                    </f:facet>
-                                    <f:facet name="complete">
-                                        <h:outputText value="" />
-                                    </f:facet>
-                                </p:ajaxStatus>
-                                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
-                                <h:panelGrid columns="3" cellpadding="5">
-
-                                    <h:outputLabel style="font-weight: bold" value="Company Name * "/>
-                                    <h:inputText  styleClass="form-control" required="true" requiredMessage="Company Name is required." id="companyName" value="#{userAccountManagerBean.companyName}" />
-
-                                    <br/>
-                                    <h:outputLabel style="font-weight: bold" value="Company Address * "/>
-                                    <h:inputText   styleClass="form-control" required="true" requiredMessage="Company Address is required." id="companyAddress" value="#{userAccountManagerBean.companyAddress}" />
-                                    <br/>
-                                    <h:outputLabel style="font-weight: bold" value="Contact Person Name * "/>
-                                    <h:inputText  styleClass="form-control" required="true" requiredMessage="Contact Person Name is required." id="companyContactPersonName" value="#{userAccountManagerBean.contactPersonName}" />
-                                    <br/>
-                                    <h:outputLabel style="font-weight: bold" value="Contact Number * "/>
-                                    <h:inputText   styleClass="form-control" required="true" requiredMessage="Contact Number is required." id="companyContactNumber" value="#{userAccountManagerBean.contactNumber}" />
-                                    <br/>
-                                    <h:outputLabel style="font-weight: bold" value="Email Address * "/>
-                                    <h:inputText   styleClass="form-control" required="true" requiredMessage="Email Address is required." id="companyEmailAddress" value="#{userAccountManagerBean.emailAddress}">
-                                        <f:validator validatorId="custom.emailValidator" />
-                                    </h:inputText>
-                                    <br/>
-                                    <h:outputLabel style="font-weight: bold" value="Company Description * "/>
-                                    <h:inputText  styleClass="form-control" required="true" requiredMessage="Company Description is required." id="companyDescription" value="#{userAccountManagerBean.description}" />
-                                    <br/>
-                                    <h:outputLabel for="basic" style="font-weight: bold" value="Package Choice * " />
-                                    <h:selectOneListbox  styleClass="form-control" id="basic" value="#{userAccountManagerBean.package1}" required="true" requiredMessage="Package choice is required.">
-                                        <f:selectItem itemLabel="Package for 1PL Manufacturing" itemValue="1" />
-                                        <f:selectItem itemLabel="Package for 1PL Non-Manufacturing" itemValue="2" />
-                                        <f:selectItem itemLabel="Package for 2PL" itemValue="3" />
-                                        <f:selectItem itemLabel="Package for 3PL and 4PL" itemValue="4" />
-                                    </h:selectOneListbox>
-
-                                </h:panelGrid>
-                            </div>
-                            <div class="modal-footer">
-
-                                <p:commandButton value="Register" styleClass="btn btn-success" update="companyName companyAddress companyContactPersonName companyContactNumber companyEmailAddress companyDescription basic" actionListener="#{userAccountManagerBean.registerNewCompany}" ajax="true" validateClient="true" ></p:commandButton>
-                                <p:commandButton value="Close" styleClass="btn btn-warning" pt:data-dismiss="modal"></p:commandButton>
-
-
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-            </h:form>-->
-            <script type="text/javascript">
-                function toggleModal() {
-                    $("#buyModal").modal('show');
-                }
-            </script>
-            <script type="text/javascript">
-                PrimeFaces.validator['custom.emailValidator'] = {
-                    pattern: /\S+@\S+/,
-                    validate: function(element, value) {
-                        //use element.data() to access validation metadata, in this case there is none.
-                        if (!this.pattern.test(value)) {
-                            throw {
-                                summary: 'Validation Error',
-                                detail: value + ' is not a valid email.'
-                            }
-                        }
-                    }
-                };
-            </script>
         </ui:define>
 
     </ui:composition>

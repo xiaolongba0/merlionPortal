@@ -11,7 +11,12 @@
     <ui:composition template="templates/template.xhtml">
 
         <ui:param name="pageName" value="About Us" />
-
+        <ui:define name="more-imports">
+            <ui:insert>
+                <link rel="stylesheet" href="${request.contextPath}/css/login.css" type="text/css" />
+            </ui:insert>
+        </ui:define>
+        
         <!-- Override Content -->
         <ui:define name="content">
             <div class="container">
@@ -44,12 +49,12 @@
                     In order to provide an integrated suite of outsourced logistics services for 1PLs to 4PLs, we propose a MerLION Platform, which offers the following key functions:</div>
                 <h3>What Merlion does:</h3>
                 <div>
-                   Customer Relationship Management System (CRMS)<br></br><br></br>
-                        Order Entry System (OES)<br></br><br></br>
-                        Manufacturing Resource PLanning System (MRP II)<br></br><br></br>
-                        Warehouse Management System (WMS)<br></br><br></br>
-                        Transportation Management System (TMS)<br></br><br></br>
-                        Global Rates Negotiation System (GRNS)<br></br><br></br></div>
+                    Customer Relationship Management System (CRMS)<br></br><br></br>
+                    Order Entry System (OES)<br></br><br></br>
+                    Manufacturing Resource PLanning System (MRP II)<br></br><br></br>
+                    Warehouse Management System (WMS)<br></br><br></br>
+                    Transportation Management System (TMS)<br></br><br></br>
+                    Global Rates Negotiation System (GRNS)<br></br><br></br></div>
                 <div>
                     <h3>
                         Who are we:
@@ -57,7 +62,7 @@
                     <div>
                         Kent Ridge Technology (KRT) is an established IT consulting company recognized for its excellent track record in developing IT Systems. Our staffs are highly skilled in both designing and delivering high quality IT solutions. We are confident and pleased to undertake the task of developing MerLION Platform to assist Merlion Logistics to become a world-class logistics service provider.
                     </div>
-                    </div>
+                </div>
             </div>
         </ui:define>
 
