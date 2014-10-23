@@ -6,8 +6,10 @@
 package merlionportal.managedbean.wms;
 
 import entity.Product;
+import entity.Stock;
 import entity.StockAudit;
 import entity.SystemUser;
+import entity.Warehouse;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +22,9 @@ import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.mrp.productcatalogmodule.ProductSessionBean;
+import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
 import merlionportal.wms.warehousemanagementmodule.StockAuditSessionBean;
+import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -42,16 +46,23 @@ public class StockAuditViewEditManagedBean {
     @EJB
     private SystemLogSessionBean systemLogSB;
 
+    @EJB
+    private AssetManagementSessionBean amsb;
+
     private Integer companyId;
     private SystemUser loginedUser;
     private Integer radioValue;
     private Integer userId;
 
     private List<StockAudit> stockAudits;
+    private String auditStatus;
     private Date scheduledDate;
+    private String auditType;
 
     private List<Product> productList;
-    private Integer productId;
+    private List<Warehouse> warehouses;
+    private Integer warehouseId;
+    private Integer storageBinId;
 
     @PostConstruct
     public void init() {
@@ -71,21 +82,81 @@ public class StockAuditViewEditManagedBean {
                 ex.printStackTrace();
             }
         }
-        productList = psb.getMyProducts(companyId);
+        warehouses = amsb.viewMyWarehouses(companyId);
     }
 
     public void viewStockAudits() {
-        System.out.println("===============================[In Managed Bean - view StockAudits]");
-        System.out.println("[In Managed Bean - getStocks] Product ID : " + productId);
+        System.out.println("[In Managed Bean - viewstockAudits] =============================== Warehouse ID : " + warehouseId);
 
-        if (productId != null) {
-            stockAudits = sasb.viewStockAudits(productId);
+        if (warehouseId != null) {
+            stockAudits = sasb.viewStockAuditsForAWarehouse(warehouseId);
             systemLogSB.recordSystemLog(userId, "WMS view stock audit");
-            if (stockAudits == null) {
+            if (warehouseId == null) {
                 System.out.println("============== FAILED TO VIEW STOCK Audits ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Stock Audit", ""));
             }
         }
+    }
+
+    public String getAuditStatus(int stockAuditStatus) {
+        if (stockAuditStatus == 0) {
+            auditStatus = "Not Done";
+        }
+        if (stockAuditStatus == 1) {
+            auditStatus = "Completed";
+        }
+        if (stockAuditStatus == 2) {
+            auditStatus = "On Hold";
+        }
+
+        return auditStatus;
+    }
+
+    public String getAuditType(int stockAuditType) {
+        if (stockAuditType == 1) {
+            auditType = "Count All";
+        }
+        if (stockAuditType == 2) {
+            auditType = "Random Sampling";
+        }
+        return auditType;
+    }
+    
+        public void deleteStockAudit(StockAudit stockAudit) {
+        try {
+            System.out.println("In StockAuditViewEditManagedBean, delete stock ======================");
+            boolean result = sasb.deleteStockAudit(stockAudit.getStockAuditId());
+            if (result) {
+                stockAudits.remove(stockAudit);
+                systemLogSB.recordSystemLog(userId, "WMS delete stock audit");
+                FacesMessage msg = new FacesMessage("Stock Audit with ID = " + stockAudit.getStockAuditId() + " has sucessfully been deleted");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", ""));
+
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+        public void onRowEdit(RowEditEvent event) {
+        StockAudit stockAudit = new StockAudit();
+        stockAudit = (StockAudit) event.getObject();
+            System.out.println("[In Managed Bean - STOCK AUDIT ON ROW EDIT]=============================== " );
+            boolean result = sasb.editStockAudit(stockAudit.getStockAuditId(), stockAudit.getSupervisorId(), stockAudit.getStaffId(), stockAudit.getCreatedDate(),
+                    stockAudit.getStockAuditType(), stockAudit.getStockAuditStatus(), stockAudit.getRemarks());
+            if (result) {
+                systemLogSB.recordSystemLog(userId, "WMS edit stock audit");
+                FacesMessage msg = new FacesMessage("Stock Audit with ID = " + stockAudit.getStockAuditId() + " has sucessfully been edited");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong"));
+
+            }
+    }
+
+    public void onRowCancel(RowEditEvent event) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Edit Cancelled"));
     }
 
     /**
@@ -142,12 +213,12 @@ public class StockAuditViewEditManagedBean {
         this.productList = productList;
     }
 
-    public Integer getProductId() {
-        return productId;
+    public Integer getStorageBinId() {
+        return storageBinId;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setStorageBinId(Integer storageBinId) {
+        this.storageBinId = storageBinId;
     }
 
     public Date getScheduledDate() {
@@ -164,6 +235,30 @@ public class StockAuditViewEditManagedBean {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getAuditStatus() {
+        return auditStatus;
+    }
+
+    public void setAuditStatus(String auditStatus) {
+        this.auditStatus = auditStatus;
+    }
+
+    public List<Warehouse> getWarehouses() {
+        return warehouses;
+    }
+
+    public void setWarehouses(List<Warehouse> warehouses) {
+        this.warehouses = warehouses;
+    }
+
+    public Integer getWarehouseId() {
+        return warehouseId;
+    }
+
+    public void setWarehouseId(Integer warehouseId) {
+        this.warehouseId = warehouseId;
     }
 
 }

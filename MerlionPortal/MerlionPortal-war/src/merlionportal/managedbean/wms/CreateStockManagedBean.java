@@ -23,7 +23,7 @@ import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.mrp.productcatalogmodule.ProductSessionBean;
 import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
-import merlionportal.wms.warehousemanagementmodule.ReceivingPutawaySessionBean;
+import merlionportal.wms.mobilitymanagementmodule.ReceivingPutawaySessionBean;
 
 /**
  *
@@ -124,13 +124,13 @@ public class CreateStockManagedBean {
         }
     }
 
-    public void displayProducts() {
-
-        System.out.println("[IN MANAGED BEAN -- Create STOCK MB]  ====================== displayproducts");
-        if (companyId != null) {
-            productList = psb.getMyProducts(companyId);
-        }
-    }
+//    public void displayProducts() {
+//
+//        System.out.println("[IN MANAGED BEAN -- Create STOCK MB]  ====================== displayproducts");
+//        if (companyId != null) {
+//            productList = psb.getMyProducts(companyId);
+//        }
+//    }
 
     private void clearAllFields() {
         warehouseId = null;

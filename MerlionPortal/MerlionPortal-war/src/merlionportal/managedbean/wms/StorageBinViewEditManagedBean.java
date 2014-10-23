@@ -85,7 +85,7 @@ public class StorageBinViewEditManagedBean {
         }
     }
 
-    public void onStorageTypeChange() {
+    public void onWarehouseZoneChange() {
         if (storageTypeId != null) {
             bins = assetManagementSessionBean.viewStorageBinForWarehouseZone(storageTypeId);
         }

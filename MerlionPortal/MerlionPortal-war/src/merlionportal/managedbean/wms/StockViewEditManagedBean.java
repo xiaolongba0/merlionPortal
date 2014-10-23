@@ -7,6 +7,7 @@ package merlionportal.managedbean.wms;
 
 import entity.Product;
 import entity.Stock;
+import entity.StockAudit;
 import entity.SystemUser;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.mrp.productcatalogmodule.ProductSessionBean;
 import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
-import merlionportal.wms.warehousemanagementmodule.ReceivingPutawaySessionBean;
+import merlionportal.wms.mobilitymanagementmodule.ReceivingPutawaySessionBean;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -51,6 +52,9 @@ public class StockViewEditManagedBean {
 
     private List<Product> productList;
     private Product product;
+    
+    private StockAudit stockaudit;
+    private List<StockAudit> stockAudits;
 
     private Integer companyId;
     private SystemUser loginedUser;
@@ -111,14 +115,7 @@ public class StockViewEditManagedBean {
         }
     }
 
-    // INTEGRATED WITH MRP
-//    public void displayProducts() {
-//
-//        System.out.println("[IN MANAGED BEAN -- VIEW EDIT STOCK MB] ====================== displayproducts");
-//        if (companyId != null) {
-//            productList = psb.getMyProducts(companyId);
-//        }
-//    }
+
     public void deleteStock(Stock stock) {
         try {
             boolean result = rpsb.deleteStock(stock.getStockId());
@@ -233,6 +230,22 @@ public class StockViewEditManagedBean {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public StockAudit getStockaudit() {
+        return stockaudit;
+    }
+
+    public void setStockaudit(StockAudit stockaudit) {
+        this.stockaudit = stockaudit;
+    }
+
+    public List<StockAudit> getStockAudits() {
+        return stockAudits;
+    }
+
+    public void setStockAudits(List<StockAudit> stockAudits) {
+        this.stockAudits = stockAudits;
     }
 
 }
