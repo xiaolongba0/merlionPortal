@@ -24,9 +24,6 @@ public class EditSavedOrderSessionBean {
     @PersistenceContext(unitName = "MerlionPortal-ejbPU")
     private EntityManager em;
 
-    public void persist(Object object) {
-        em.persist(object);
-    }
 
     public EditSavedOrderSessionBean() {
     }
