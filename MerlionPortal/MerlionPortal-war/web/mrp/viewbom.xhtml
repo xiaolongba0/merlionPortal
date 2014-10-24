@@ -23,32 +23,27 @@
 
         <ui:define name="left">
 
-            <p:panelMenu>
-                <p:submenu label="HOME" styleClass="display:block">
-                    <p:menuitem value="MRP II Home" url="mrp.xhtml" />
+            <p:menu>
+                <p:submenu label="MRP HOME" styleClass="display:block">
+                    <p:menuitem value="MRP II Home" url="mrp.xhtml" style="background-color: lavender"/>
                 </p:submenu>
                 <c:if test="#{dashboardBean.checkMRPCanManageProductComponent() || dashboardBean.loginedUser.userType == 'superuser'}">
-                    <p:submenu label="Product Management" styleClass="display:block">
-                        <p:submenu label="Product Catalog Management">
-                            <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
-                            <p:menuitem value="View, Edit and Delete" url="viewallproducts.xhtml" />
-                        </p:submenu>
-                        <p:submenu label="BOM Management">
-                            <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
-                            <p:menuitem value="View, Edit and Delete BOM" url="viewbom.xhtml" style="background-color: lavender"/>
-                        </p:submenu>
+                    <p:submenu label="Product Catalog Management">
+                        <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
+                        <p:menuitem value="View, Edit and Delete" url="viewallproducts.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="BOM Management">
+                        <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
+                        <p:menuitem value="View, Edit and Delete BOM" url="viewbom.xhtml" />
                     </p:submenu>
                 </c:if>
                 <c:if test="#{dashboardBean.checkMRPCanManageUseForecast() || dashboardBean.loginedUser.userType == 'superuser'}">
-                    <p:submenu label="Material Requirement Planning" styleClass="display:block">
-                        <p:submenu label="Forecasting">
-                            <p:menuitem value="Forecasting" url="forecast.xhtml" />
-                        </p:submenu>
+                    <p:submenu label="MRP">
+                        <p:menuitem value="Material Requirement Planning" url="forecast.xhtml" />
                     </p:submenu>
                 </c:if>
 
-            </p:panelMenu>
-
+            </p:menu>
         </ui:define>
 
         <ui:define name="right">
@@ -86,48 +81,48 @@
                     <p:ajax event="rowEditCancel" listener="#{productComponentViewEditManagedBean.onRowCancel}" update=":formMain:msgs" />
 
 
-                <p:column filterBy="#{component1.componentId}" width="50" filterStyle="width: 32px" filterMatchMode="exact"  headerText="ID" style="width:105px">
-                    <h:outputText value="#{component1.componentId}" />
-                </p:column>
+                    <p:column filterBy="#{component1.componentId}" width="50" filterStyle="width: 32px" filterMatchMode="exact"  headerText="ID" style="width:105px">
+                        <h:outputText value="#{component1.componentId}" />
+                    </p:column>
 
-                <p:column filterBy="#{component1.componentName}" width="80" filterStyle="width: 60px" filterMatchMode="contains" headerText="Name" style="width:105px">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{component1.componentName}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{component1.componentName}" style="width:100%" label="Component Name"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
+                    <p:column filterBy="#{component1.componentName}" width="80" filterStyle="width: 60px" filterMatchMode="contains" headerText="Name" style="width:105px">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{component1.componentName}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{component1.componentName}" style="width:100%" label="Component Name"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
 
-                <p:column headerText="Description" width="80">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{component1.description}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{component1.description}" style="width:100%" label="Component Description"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
+                    <p:column headerText="Description" width="80">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{component1.description}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{component1.description}" style="width:100%" label="Component Description"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
 
-                <p:column headerText="Required Quantity" width="70">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{component1.quantity}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{component1.quantity}" style="width:100%" label="Component Quantity"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
+                    <p:column headerText="Required Quantity" width="70">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{component1.quantity}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{component1.quantity}" style="width:100%" label="Component Quantity"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
 
-                <p:column  headerText="Currency" width="70">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{component1.currency}" /></f:facet>
-                        <f:facet name="input">
-                            <h:selectOneMenu value="#{component1.currency}" style="width:100%">
-                                <f:selectItems value="#{productComponentViewEditManagedBean.currencies}" var="currency" itemLabel="#{currency}" itemValue="#{currency}" />
-                            </h:selectOneMenu>
-                        </f:facet>
-                    </p:cellEditor>
-                </p:column> 
+                    <p:column  headerText="Currency" width="70">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{component1.currency}" /></f:facet>
+                            <f:facet name="input">
+                                <h:selectOneMenu value="#{component1.currency}" style="width:100%">
+                                    <f:selectItems value="#{productComponentViewEditManagedBean.currencies}" var="currency" itemLabel="#{currency}" itemValue="#{currency}" />
+                                </h:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column> 
 
-                <p:column headerText="Cost" width="45">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{component1.cost}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{component1.cost}" style="width:100%" label="Component Cost"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
+                    <p:column headerText="Cost" width="45">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{component1.cost}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{component1.cost}" style="width:100%" label="Component Cost"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
 
                     <p:column headerText="Lead Time (in weeks)">
                         <p:cellEditor>
