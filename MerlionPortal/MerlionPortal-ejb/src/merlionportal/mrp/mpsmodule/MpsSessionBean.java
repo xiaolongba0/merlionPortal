@@ -5,6 +5,9 @@
  */
 package merlionportal.mrp.mpsmodule;
 
+import entity.ForecastResult;
+import entity.MRPList;
+import entity.Mps;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.LocalBean;
@@ -44,5 +47,27 @@ public class MpsSessionBean {
 
         return weeklyDemand;
     }
+    
+    
+    public int getCurrentInventory(Integer productId){
+        return 100;
+    }
+    
+    public Integer storeMPS(Integer buffer, Integer demand, Integer forecastResultID){
+       ForecastResult fResult = entityManager.find(ForecastResult.class, forecastResultID);
+       System.out.println("TESTINGGGG:1 " + fResult.getForecastResultId());
+       Mps mps = fResult.getMps();
+       mps.setBuffer(buffer);
+       mps.setDemand(demand);
+
+       MRPList mrplist = new MRPList();
+       mps.setMRPList(mrplist);
+
+       entityManager.merge(mps);
+       entityManager.flush();
+ 
+       return 1;
+    }
+    
 
 }

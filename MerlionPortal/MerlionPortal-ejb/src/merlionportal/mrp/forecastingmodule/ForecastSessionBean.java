@@ -5,7 +5,12 @@
  */
 package merlionportal.mrp.forecastingmodule;
 
+import entity.ForecastResult;
+import entity.MonthForecastResult;
+import entity.Mps;
 import entity.Product;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import javax.ejb.LocalBean;
@@ -74,13 +79,13 @@ public class ForecastSessionBean {
         // later get this size from managed bean   size = 24;
 
         salesdata = new Vector();
-           for (int i = 0; i < quantityList.size(); i++) {
+        for (int i = 0; i < quantityList.size(); i++) {
             salesdata.add(quantityList.get(i));
         }
         return salesdata;
     }
 
-    public Vector<Integer> computeResult(int periodicity, double expectedGrowth, List<String> dateList,List<Integer> quantityList ) {
+    public Vector<Integer> computeResult(int periodicity, double expectedGrowth, List<String> dateList, List<Integer> quantityList) {
         this.periodicity = periodicity;
         this.expectedGrowth = expectedGrowth;
 
@@ -353,7 +358,41 @@ public class ForecastSessionBean {
             }
             max = max + 2000;
         }
+
         return forecastR;
+    }
+
+    public Integer storeForecast(int periodicity, double expectedGrowth, List<String> dateList, List<Integer> quantityList) {
+        ForecastResult forecastResult = new ForecastResult();
+        forecastResult.setForecastResultDate(new Date());
+        forecastResult.setPeriodicity(periodicity);
+        forecastResult.setFluctuation(expectedGrowth);
+        forecastResult.setProductId(1);
+
+        Mps mps = new Mps();
+        forecastResult.setMps(mps);
+
+        List<MonthForecastResult> monthForecastResults = new ArrayList<MonthForecastResult>();
+
+        Vector<String> dateName = this.yaxisDate();
+        Vector<Integer> quantity = this.computeResult(periodicity, expectedGrowth, dateList, quantityList);
+
+        for (int i = 1; i <= periodicity; i++) {
+            MonthForecastResult monthForecastResult = new MonthForecastResult();
+            monthForecastResult.setMonthName(dateName.get(i));
+
+            monthForecastResult.setForecastedQuantity(quantity.get(i));
+
+            monthForecastResult.setForecastResult(forecastResult);
+            monthForecastResults.add(monthForecastResult);
+        }
+
+        forecastResult.setMonthForecastResultList(monthForecastResults);
+
+        entityManager.persist(forecastResult);
+        entityManager.flush();
+
+        return forecastResult.getForecastResultId();
     }
 
     public Vector<String> yaxisDate() {

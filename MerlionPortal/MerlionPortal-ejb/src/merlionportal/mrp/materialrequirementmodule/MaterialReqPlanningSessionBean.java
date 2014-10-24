@@ -31,8 +31,9 @@ public class MaterialReqPlanningSessionBean {
     Mrp mrp;
     ArrayList<Mrp> mrps;
 
-    public void addNewMrpList(Integer productId) {
-        productMRP = new MRPList();
+    public void addNewMrpList(Integer productId, Integer mrplistId) {
+        
+        productMRP = entityManager.find(MRPList.class, mrplistId);
         productMRP.setMrpDate(new Date());
         productMRP.setProductId(productId);
         mrps = new ArrayList<Mrp>();
