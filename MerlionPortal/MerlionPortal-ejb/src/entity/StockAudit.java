@@ -36,7 +36,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "StockAudit.findByStaffId", query = "SELECT s FROM StockAudit s WHERE s.staffId = :staffId"),
     @NamedQuery(name = "StockAudit.findByCreatedDate", query = "SELECT s FROM StockAudit s WHERE s.createdDate = :createdDate"),
     @NamedQuery(name = "StockAudit.findByActualDate", query = "SELECT s FROM StockAudit s WHERE s.actualDate = :actualDate"),
-    @NamedQuery(name = "StockAudit.findByStockAuditType", query = "SELECT s FROM StockAudit s WHERE s.stockAuditType = :stockAuditType"),
     @NamedQuery(name = "StockAudit.findByPassQuantity", query = "SELECT s FROM StockAudit s WHERE s.passQuantity = :passQuantity"),
     @NamedQuery(name = "StockAudit.findByFailQuantity", query = "SELECT s FROM StockAudit s WHERE s.failQuantity = :failQuantity"),
     @NamedQuery(name = "StockAudit.findByActualQuantity", query = "SELECT s FROM StockAudit s WHERE s.actualQuantity = :actualQuantity"),
@@ -61,8 +60,6 @@ public class StockAudit implements Serializable {
     @Column(name = "actualDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date actualDate;
-    @Column(name = "stockAuditType")
-    private Integer stockAuditType;
     @Column(name = "passQuantity")
     private Integer passQuantity;
     @Column(name = "failQuantity")
@@ -124,14 +121,6 @@ public class StockAudit implements Serializable {
 
     public void setActualDate(Date actualDate) {
         this.actualDate = actualDate;
-    }
-
-    public Integer getStockAuditType() {
-        return stockAuditType;
-    }
-
-    public void setStockAuditType(Integer stockAuditType) {
-        this.stockAuditType = stockAuditType;
     }
 
     public Integer getPassQuantity() {
