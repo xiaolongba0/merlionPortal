@@ -75,7 +75,8 @@ public class MPSResultManagedBean {
     int wk3Demand;
     int wk4Demand;
     int wk5Demand;
-
+    Integer fResultId;
+    Integer mrpListId;
     int tempNum;
 
     @PostConstruct
@@ -97,6 +98,14 @@ public class MPSResultManagedBean {
             }
         }
 
+        computeDemand();
+
+    }
+
+    public MPSResultManagedBean() {
+    }
+
+    public void computeDemand() {
         forecastData = (Vector<Integer>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("forecastR");
         forecastDate = (Vector<String>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("monthlyDateR");
         buffer = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("buffer");
@@ -225,14 +234,10 @@ public class MPSResultManagedBean {
             Logger.getLogger(MPSResultManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    }
-
-    public MPSResultManagedBean() {
-    }
-
-    public void computeDemand() {
-        //pass in two list of result into sessionBean, get two computed list with ending inv.
-
+        fResultId = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("forecastResultID");
+        mrpListId = mpsSessionBean.storeMPS(buffer, requiredDemand, fResultId);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mrpListId",  mrpListId);
+        
     }
 
     //intake string to display
@@ -348,8 +353,6 @@ public class MPSResultManagedBean {
     }
 
     public String proceedToMaterialReq() {
-        productId = 1;
-        materialReqPlanningSessionBean.addNewMrpList(productId);
         return ("materialreq");
     }
 

@@ -63,9 +63,9 @@ public class ForecastResultManagedBean implements Serializable {
     List<String> dateList;
     List<Integer> quantityList;
     private SystemUser loginedUser;
+    Integer forecastResultID;
 
     //variables for forecasting
-
     @PostConstruct
     public void init() {
 
@@ -110,10 +110,13 @@ public class ForecastResultManagedBean implements Serializable {
 
         forecastR = fsb.computeResult(periodicity, expectedGrowth, dateList, quantityList);
         monthlyDateR = fsb.yaxisDate();
-        
+
+        forecastResultID = fsb.storeForecast(periodicity, expectedGrowth, dateList, quantityList);
+
         //put results into the session
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("forecastR",  forecastR);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("forecastR", forecastR);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("monthlyDateR", monthlyDateR);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("forecastResultID",  forecastResultID);
 
         forecastSales = new LineChartModel();
         LineChartSeries series1 = new LineChartSeries();

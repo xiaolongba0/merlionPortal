@@ -25,7 +25,7 @@ import merlionportal.mrp.mpsmodule.MpsSessionBean;
 @ViewScoped
 public class MaterialReqManagedBean {
 
-    @EJB
+   @EJB
     MaterialReqPlanningSessionBean materialReqPlanningSessionBean;
     
     @EJB
@@ -53,7 +53,7 @@ public class MaterialReqManagedBean {
     int scheduledReceipt4;
     int scheduledReceipt5;
     
-    
+    Integer mrplistId;
     
     List<String> testing;
 
@@ -95,8 +95,8 @@ public class MaterialReqManagedBean {
         grossReq4 = wk4Demand * quantity;
         grossReq5 = wk5Demand * quantity;
         
-     
-    //   materialReqPlanningSessionBean.addNewMrpList(productId);
+     mrplistId = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mrpListId");
+       materialReqPlanningSessionBean.addNewMrpList(productId, mrplistId);
         
 
     }
