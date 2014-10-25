@@ -43,7 +43,8 @@
                 </p:submenu>
                 <p:submenu label="Stock Audit" styleClass="display:block" >
                     <p:menuitem value="Create Stock Audit" url="createstockaudit.xhtml"/>
-                    <p:menuitem value="View Stock Audit Schedule" url="viewstockauditschedule.xhtml"/>
+                    <p:menuitem value="View All Stock Audits" url="viewallstockaudit.xhtml"/>
+                    <p:menuitem value="View Today's Stock Audits" url="viewduestockaudit.xhtml"/>
                 </p:submenu>
             </p:panelMenu>
         </ui:define>
@@ -108,19 +109,6 @@
                             </p:cellEditor>
                         </p:column>
 
-                        <p:column filterBy="#{stockAuditViewEditManagedBean.getAuditType(stockaudit.stockAuditType)}" filterMatchMode="contains" headerText="Stock Audit Type" >
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{stockAuditViewEditManagedBean.getAuditType(stockaudit.stockAuditType)}" /></f:facet>
-                                <f:facet name="input">                                
-                                    <h:selectOneMenu id="stockAuditType" value="#{stockaudit.stockAuditType}" label="stockAuditType"  style="color: black" >
-                                        <f:selectItem itemLabel="Select One" itemValue="" noSelectionOption="false" />
-                                        <f:selectItem itemLabel="Count All" itemValue="1" />
-                                        <f:selectItem itemLabel="Random Sampling" itemValue="2" />
-                                    </h:selectOneMenu>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-
                         <p:column filterBy="#{stockAuditViewEditManagedBean.getAuditStatus(stockaudit.stockAuditStatus)}" filterMatchMode="contains" headerText="Stock Audit Status" >
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{stockAuditViewEditManagedBean.getAuditStatus(stockaudit.stockAuditStatus)}" /></f:facet>
@@ -128,7 +116,6 @@
                                     <h:selectOneMenu id="stockAuditStstus" value="#{stockaudit.stockAuditStatus}" label="stockAuditStstus"  style="color: black" >
                                         <f:selectItem itemLabel="Select One" itemValue="" noSelectionOption="false" />
                                         <f:selectItem itemLabel="Not Done" itemValue="0" />
-                                        <f:selectItem itemLabel="Completed" itemValue="1" />
                                         <f:selectItem itemLabel="On Hold" itemValue="2" />
                                     </h:selectOneMenu>
                                 </f:facet>

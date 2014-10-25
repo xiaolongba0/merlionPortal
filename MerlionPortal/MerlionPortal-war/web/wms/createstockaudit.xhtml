@@ -43,7 +43,8 @@
                 </p:submenu>
                 <p:submenu label="Stock Audit" styleClass="display:block" >
                     <p:menuitem value="Create Stock Audit" url="createstockaudit.xhtml"/>
-                    <p:menuitem value="View Stock Audit Schedule" url="viewstockauditschedule.xhtml"/>
+                    <p:menuitem value="View All Stock Audits" url="viewallstockaudit.xhtml"/>
+                    <p:menuitem value="View Today's Stock Audits" url="viewduestockaudit.xhtml"/>
                 </p:submenu>
             </p:panelMenu>
         </ui:define>
@@ -59,28 +60,6 @@
                             <h:outputText value="" />
                         </f:facet>
                     </p:ajaxStatus>
-
-
-                    <!--                    <p:row>
-                                            <p:selectOneRadio id="myRadioID" value="#{stockAuditManagedBean.radioValue}" layout="custom">
-                                                <f:selectItem itemLabel="Choose ID" itemValue="1"/>
-                                                <f:selectItem itemLabel="Enter " itemValue="2"/>
-                                                <p:ajax process="@this" update="formMain" />
-                                            </p:selectOneRadio>
-                    
-                                            <p:radioButton id="id00" for="myRadioID" itemIndex="0"/>
-                                            <h:outputLabel for="id00" value="Choose Product ID "/>
-                    
-                                            <p:selectOneMenu id="product" value="#{stockAuditManagedBean.productId}"  style="width:200px" required="true" requiredMessage="Product ID is required." disabled="#{stockAuditManagedBean.radioValue != '1'}">
-                                                <f:selectItem itemLabel="Select Product ID" itemValue="" noSelectionOption="true" />
-                                                <f:selectItems value="#{stockAuditManagedBean.productList}" var="product" itemLabel="ID:#{product.productId}   Name:#{product.productName}" itemValue="#{product.productId}"/>
-                                            </p:selectOneMenu>
-                    
-                                            <p:radioButton id="id01" for="myRadioID" itemIndex="1"/>
-                                            <h:outputLabel for="id01" value="Enter Product ID "/>
-                                            <p:inputText id="input01" value="#{stockAuditManagedBean.productId}" disabled="#{stockAuditManagedBean.radioValue != '2'}" required="true" requiredMessage="Product ID is required.">
-                                            </p:inputText>
-                                        </p:row>-->
 
                     <p:panelGrid>
                         <p:row>
@@ -149,20 +128,7 @@
                                 <p:calendar id="scheduledDate" value="#{stockAuditManagedBean.scheduledDate}" required="true" label="scheduledDate" requiredMessage="Scheduled Date is required." />
                             </p:column>
                         </p:row>
-
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="stockAuditType" style="font-weight: bold" value="Stock Audit Type:   *" />
-                            </p:column>
-                            <p:column>
-                                <h:selectOneMenu id="stockAuditType" value="#{stockAuditManagedBean.stockAuditType}" required="true" label="stockAuditType">
-                                    <f:selectItem itemLabel="Select One" itemValue="" noSelectionOption="false" />
-                                    <f:selectItem itemLabel="Count All" itemValue="1" />
-                                    <f:selectItem itemLabel="Random Sampling" itemValue="2" />
-                                </h:selectOneMenu>
-                            </p:column>
-                        </p:row>
-
+                        
                         <p:row>
                             <p:column>
                                 <h:outputLabel for="remarks" style="font-weight: bold" value="Remarks:   *" />
@@ -172,7 +138,8 @@
                                     <f:validateLength minimum="1" maximum="300" />
                                 </p:inputText>
                             </p:column>
-                        </p:row> 
+                        </p:row>
+                        
                         <br></br>
                     </p:panelGrid>
                     <p:messages id="messages" autoUpdate="true" closable="true" />
