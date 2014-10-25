@@ -10,7 +10,6 @@ import entity.Stock;
 import entity.StockAudit;
 import entity.SystemUser;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
