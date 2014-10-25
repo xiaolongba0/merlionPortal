@@ -42,7 +42,7 @@ public class StockAuditSessionBean {
     private StockAudit stockAudit;
 
     public boolean addStockAudit(Integer storageBinId, Integer supervisorId, Integer staffId, Date scheduledDate, Date actualDate,
-            Integer stockAuditStatus, Integer stockAuditType, Integer expectedQuantity, Integer passQuantity, Integer failQuantity, Integer actualQuantity, String remarks) {
+            Integer stockAuditStatus, Integer expectedQuantity, Integer passQuantity, Integer failQuantity, Integer actualQuantity, String remarks) {
 
         // stockAuditType:
         // 1: Random Sampling (In this case, expected quantity and actual quantity is the same, usually used to check quality only)
@@ -81,7 +81,6 @@ public class StockAuditSessionBean {
             stockAuditTemp.setStaffId(staffId);
 
             stockAuditTemp.setStockAuditStatus(stockAuditStatus);
-            stockAuditTemp.setStockAuditType(stockAuditType);
 
             stockAuditTemp.setCreatedDate(scheduledDate);
             stockAuditTemp.setActualDate(actualDate);
@@ -149,7 +148,7 @@ public class StockAuditSessionBean {
     }
 
     public boolean editStockAudit(Integer stockAuditId, Integer supervisorId, Integer staffId, Date scheduledDate,
-            Integer stockAuditType, Integer stockAuditStatus, String remarks) {
+            Integer stockAuditStatus, String remarks) {
 
         Query query = em.createNamedQuery("StockAudit.findByStockAuditId").setParameter("stockAuditId", stockAuditId);
         StockAudit stockAudit = (StockAudit) query.getSingleResult();
@@ -159,14 +158,13 @@ public class StockAuditSessionBean {
         if (stockAudit != null) {
 
             System.out.println("[IN EJB SASB, editStockAudit] ====================================== Supervisor ID: " + supervisorId);
-            stockAuditTemp.setSupervisorId(supervisorId);
-            stockAuditTemp.setStaffId(staffId);
+            stockAudit.setSupervisorId(supervisorId);
+            stockAudit.setStaffId(staffId);
 
-            stockAuditTemp.setStockAuditStatus(stockAuditStatus);
-            stockAuditTemp.setStockAuditType(stockAuditType);
-            
-            stockAuditTemp.setCreatedDate(scheduledDate);
-            stockAuditTemp.setRemarks(remarks);
+            stockAudit.setStockAuditStatus(stockAuditStatus);
+
+            stockAudit.setCreatedDate(scheduledDate);
+            stockAudit.setRemarks(remarks);
             em.merge(stockAudit);
             em.flush();
             return true;
@@ -175,5 +173,41 @@ public class StockAuditSessionBean {
             return false;
         }
 
+    }
+
+    public List<StockAudit> viewDueStockAuditsForAWarehouse(Integer warehouseId) {
+
+        List<StockAudit> allMyStockAudits = new ArrayList<>();
+        System.out.println("In viewDUEStockAudits=============================");
+        Date todayDate = new Date();
+        System.out.println("Today's Date: " + todayDate);
+        
+        List<WarehouseZone> allWarehouseZones = new ArrayList<>();
+        allWarehouseZones = amsb.viewWarehouseZoneForAWarehouse(warehouseId);
+
+        List<StorageBin> allBins = new ArrayList<>();
+        int j = 0;
+        while (j < allWarehouseZones.size()) {
+            allBins.addAll(allWarehouseZones.get(j).getStorageBinList());
+            j++;
+        }
+
+        int i = 0;
+        while (i < allBins.size()) {
+            StorageBin bin = new StorageBin();
+            bin = allBins.get(i);
+            Integer storageBinId = bin.getStorageBinId();
+            System.out.println(i + " In viewStockAudits, ALL BINS =============================" + storageBinId);
+            Query query = em.createNamedQuery("StockAudit.findByStorageBinId").setParameter("storageBinId", storageBinId);
+
+            for (Object o : query.getResultList()) {
+                stockAudit = (StockAudit) o;
+                if (stockAudit.getCreatedDate() == todayDate) {
+                    allMyStockAudits.add(stockAudit);
+                }
+            }
+            i++;
+        }
+        return allMyStockAudits;
     }
 }
