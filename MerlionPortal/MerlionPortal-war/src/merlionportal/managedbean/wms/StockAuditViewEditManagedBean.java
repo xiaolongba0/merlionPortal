@@ -144,7 +144,7 @@ public class StockAuditViewEditManagedBean {
         stockAudit = (StockAudit) event.getObject();
             System.out.println("[In Managed Bean - STOCK AUDIT ON ROW EDIT]=============================== " );
             boolean result = sasb.editStockAudit(stockAudit.getStockAuditId(), stockAudit.getSupervisorId(), stockAudit.getStaffId(), stockAudit.getCreatedDate(),
-                    stockAudit.getStockAuditType(), stockAudit.getStockAuditStatus(), stockAudit.getRemarks());
+                    stockAudit.getStockAuditStatus(), stockAudit.getRemarks());
             if (result) {
                 systemLogSB.recordSystemLog(userId, "WMS edit stock audit");
                 FacesMessage msg = new FacesMessage("Stock Audit with ID = " + stockAudit.getStockAuditId() + " has sucessfully been edited");

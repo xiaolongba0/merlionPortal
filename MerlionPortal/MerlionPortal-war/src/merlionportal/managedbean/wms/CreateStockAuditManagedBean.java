@@ -72,7 +72,6 @@ public class CreateStockAuditManagedBean {
     private Date scheduledDate;
     private Date actualDate;
     private Integer stockAuditStatus;
-    private Integer stockAuditType;
     private Integer expectedQuantity;
     private Integer passQuantity;
     private Integer failQuantity;
@@ -105,12 +104,13 @@ public class CreateStockAuditManagedBean {
     public void addStockAudit() {
         System.out.println("[IN MANAGED BEAN -- Create STOCK AUDIT MB] ====================== add stock audit, productId: " + productId);
 
-        boolean result = sasb.addStockAudit(storageBinId, supervisorId, staffId, scheduledDate, actualDate, stockAuditStatus, stockAuditType, expectedQuantity, passQuantity, failQuantity, actualQuantity, remarks);
+        boolean result = sasb.addStockAudit(storageBinId, supervisorId, staffId, scheduledDate, actualDate, stockAuditStatus,expectedQuantity, passQuantity, failQuantity, actualQuantity, remarks);
         if (result) {
             clearAllFields();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success! Stock Audit Schedule Added!", ""));
             systemLogSB.recordSystemLog(userId, "WMS add stock audit");
         } else {
+            clearAllFields();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error! Please check if storage bin is empty!", ""));
         }
     }
@@ -126,7 +126,6 @@ public class CreateStockAuditManagedBean {
         scheduledDate = null;
         actualDate = null;
         stockAuditStatus = null;
-        stockAuditType = null;
         expectedQuantity = null;
         passQuantity = null;
         failQuantity = null;
@@ -218,14 +217,6 @@ public class CreateStockAuditManagedBean {
 
     public void setStockAuditStatus(Integer stockAuditStatus) {
         this.stockAuditStatus = stockAuditStatus;
-    }
-
-    public Integer getStockAuditType() {
-        return stockAuditType;
-    }
-
-    public void setStockAuditType(Integer stockAuditType) {
-        this.stockAuditType = stockAuditType;
     }
 
     public Integer getExpectedQuantity() {
