@@ -100,6 +100,9 @@ public class ServiceQuotation implements Serializable {
     @JoinColumn(name = "serviceCatalog", referencedColumnName = "serviceCatalogId")
     @ManyToOne(optional = false)
     private ServiceCatalog serviceCatalog;
+    @JoinColumn(name = "customerAccount", referencedColumnName = "customerAccountId")
+    @ManyToOne(optional = false)
+    private CustomerAccount customerAccount;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "serviceQuotation")
     private List<Contract> contractList;
 
@@ -244,6 +247,14 @@ public class ServiceQuotation implements Serializable {
 
     public void setServiceCatalog(ServiceCatalog serviceCatalog) {
         this.serviceCatalog = serviceCatalog;
+    }
+
+    public CustomerAccount getCustomerAccount() {
+        return customerAccount;
+    }
+
+    public void setCustomerAccount(CustomerAccount customerAccount) {
+        this.customerAccount = customerAccount;
     }
 
     @XmlTransient
