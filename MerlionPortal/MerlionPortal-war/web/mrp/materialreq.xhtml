@@ -195,6 +195,151 @@
 
 
 
+                <p:panel>
+                    <p:dataGrid id="mrps" var="mrp" value="#{materialReqManagedBean.mrps}" style="margin-bottom:20px"
+                                columns="1" 
+                                rows="5" paginator="true" 
+                                paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                rowsPerPageTemplate="6,12,16" >
+
+                        <p:panel>
+                            <p:panelGrid style="margin-top:20px">
+                                <f:facet name="header">
+                                    <p:row>
+                                        <p:column colspan="7">Material Requirement Planning</p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" >Lead Time = 
+                                            <h:outputText value="#{mrp.leadTime}" /> Week
+                                        </p:column>
+                                        <p:column colspan="1">Week 1</p:column>
+                                        <p:column colspan="1">Week 2</p:column>
+                                        <p:column colspan="1">Week 3</p:column>
+                                        <p:column colspan="1">Week 4</p:column>
+                                        <p:column colspan="1">Week 5</p:column>
+                                    </p:row>
+                                </f:facet>
+                                <p:row>
+                                    <p:column style="font-weight: bold;" colspan="2">MPS</p:column>
+                                    <p:column>
+                                        <h:outputText value="#{materialReqManagedBean.wk1Demand}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{materialReqManagedBean.wk2Demand}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{materialReqManagedBean.wk3Demand}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{materialReqManagedBean.wk4Demand}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{materialReqManagedBean.wk5Demand}" />
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column style="font-weight: bold;" colspan="2">Gross Requirement (Pieces)</p:column>
+                                    <p:column>
+                                        <h:outputText value="#{materialReqManagedBean.grossReq1}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{materialReqManagedBean.grossReq2}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{materialReqManagedBean.grossReq3}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{materialReqManagedBean.grossReq4}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{materialReqManagedBean.grossReq5}" />
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column style="font-weight: bold;" colspan="2">Scheduled Receipts (Pieces)</p:column>
+                                    <p:column>
+                                        <h:outputText value="#{mrp.scheduledRec1}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{mrp.scheduledRec2}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{mrp.scheduledRec3}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{mrp.scheduledRec4}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{mrp.scheduledRec5}" />
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column style="font-weight: bold;" colspan="2">Planned Receipts (Pieces)</p:column>
+                                    <p:column>
+                                        <h:outputText value="#{mrp.plannedRec1}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{mrp.plannedRec2}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{mrp.plannedRec3}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{mrp.plannedRec4}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{mrp.plannedRec5}" />
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column style="font-weight: bold;" colspan="2">On Hands (Pieces)</p:column>
+                                    <p:column>
+                                        <h:outputText value="#{mrp.onHand1}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{mrp.onHand2}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{mrp.onHand3}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{mrp.onHand4}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{mrp.onHand5}" />
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column style="font-weight: bold;" colspan="2">Planned Orders (Pieces)</p:column>
+                                    <p:column>
+                                        <h:outputText value="#{mrp.plannedOrder1}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{mrp.plannedOrder2}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{mrp.plannedOrder3}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{mrp.plannedOrder4}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{mrp.plannedOrder5}" />
+                                    </p:column>
+                                </p:row>
+
+                            </p:panelGrid>
+                        </p:panel>
+                    </p:dataGrid>
+                </p:panel>
+
+
+
             </h:form>
         </ui:define>
     </ui:composition>
