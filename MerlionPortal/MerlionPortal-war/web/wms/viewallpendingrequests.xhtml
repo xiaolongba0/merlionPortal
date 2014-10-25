@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="WMS home" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <p:panelMenu>
+                <p:submenu label =" WMS HOME" styleClass="display:block">
+                    <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
+                </p:submenu>
+                <p:submenu label =" Warehouse" styleClass="display:block">
+                    <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
+                    <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
+                </p:submenu>
+                <p:submenu label="Warehouse Zone" styleClass="display:block" >
+                    <p:menuitem value="Add Warehouse Zone" url="addwarehousezone.xhtml" />
+                    <p:menuitem value="View Warehouse Zones" url="viewwarehousezone.xhtml" />
+                </p:submenu>
+                <p:submenu label="Storage Bin" styleClass="display:block" >
+                    <p:menuitem value="Add Storage Bin" url="addstoragebin.xhtml" />
+                    <p:menuitem value="View Storage Bin" url="viewstoragebin.xhtml" />
+                </p:submenu>
+                <p:submenu label="Stock" styleClass="display:block" >
+                    <p:menuitem value="Add Stock" url="addstock.xhtml"/>
+                    <p:menuitem value="View Stock" url="viewstock.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Stock Audit" styleClass="display:block" >
+                    <p:menuitem value="Create Stock Audit" url="createstockaudit.xhtml"/>
+                    <p:menuitem value="View Stock Audit Schedule" url="viewstockauditschedule.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Warehourse Orders" styleClass="display:block" >
+                    <p:menuitem value="All Pending Orders" url="viewallpendingrequests"/>
+                    <p:menuitem value="View Stock Audit Schedule" url="viewstockauditschedule.xhtml"/>
+                </p:submenu>
+            </p:panelMenu>
+        </ui:define>
+
+        <ui:define name="right">
+
+            <h:form>  
+                <p:dataTable id="allRequest" var="newRequest" value="#{warehouseReqeustManagedBean.pendingOrders}" selectionMode="single" selection="#{quotationManagedBean.selectedRequest}" rowKey="#{newRequest.servicePOId}">
+                    <p:column  
+                        filterBy="#{newRequest.servicePOId}" 
+                        filterMatchMode="exact" headerText="Service Order Number" >
+                        <h:outputText value="#{newRequest.servicePOId}" />
+                    </p:column>
+                    <p:column  
+                        filterBy="#{warehouseReqeustManagedBean.viewCompanyName(newRequest.senderCompanyId)}" 
+                        filterMatchMode="exact" headerText="Customer" >
+                        <h:outputText value="#{warehouseReqeustManagedBean.viewCompanyName(newRequest.senderCompanyId)}" />
+                    </p:column>
+                    <p:column headerText="Order Date">
+                        <h:outputText value="#{newRequest.createdDate}" />
+                    </p:column>
+                    <p:column headerText="Order Value">
+                        <h:outputText value="#{newRequest.price}" />
+                    </p:column>
+                    <p:column headerText="Order Volume">
+                        <h:outputText value="#{newRequest.volume}" />
+                    </p:column>
+                </p:dataTable>
+                <br></br>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <p:commandButton action="#{warehouseReqeustManagedBean.showRequest()}" value="View Order Detail">
+                </p:commandButton>   
+                <br></br>
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+</html>
