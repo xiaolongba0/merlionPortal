@@ -108,9 +108,9 @@ public class QuotationManagedBean implements Serializable {
 
         if (selectedRequest == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please select one request ."));
-            return "viewallrequests.xhtml";
+            return "viewallrequests.xhtml?faces-redirect=true";
         }
-        return "displayrequestinfor.xhtml";
+        return "displayrequestinfor.xhtml?faces-redirect=true";
     }
 
     public String editQuotation() {
@@ -121,14 +121,14 @@ public class QuotationManagedBean implements Serializable {
         }
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "View", "Action Accepted"));
 
-        return "generatequotation.xhtml";
+        return "generatequotation.xhtml?faces-redirect=true";
 
     }
 
     public String deletRequest() {
         System.out.println("Deleted quotation Id " + selectedRequest.getQuotationId());
         quotationMB.deleteRequest(selectedRequest.getQuotationId());
-        return "viewallrequests.xhtml";
+        return "viewallrequests.xhtml?faces-redirect=true";
 
     }
 
@@ -283,12 +283,7 @@ public class QuotationManagedBean implements Serializable {
     }
 
     public String viewQuotation() {
-        if (selectedQuotation == null) {
-            System.out.println("OMG IT IS NULLLLLLLLLL");
-        } else {
-            System.out.println("It is valued " + selectedQuotation.getQuotationId());
-        }
-        return "viewquotationinfor.xhtml";
+        return "viewquotationinfor.xhtml?faces-redirect=true";
     }
 
     public Boolean checkAcceptable() {
@@ -321,11 +316,11 @@ public class QuotationManagedBean implements Serializable {
 
     public String goBackToall() {
         selectedQuotation = null;
-        return "displayallquotations.xhtml";
+        return "displayallquotations.xhtml?faces-redirect=true";
     }
 
     public String goBackToAll() {
-        return "viewallrequests.xhtml";
+        return "viewallrequests.xhtml?faces-redirect=true";
     }
 
     public Boolean canGenerateRequest() {
