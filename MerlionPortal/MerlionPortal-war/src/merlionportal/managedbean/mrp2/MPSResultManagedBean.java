@@ -76,7 +76,7 @@ public class MPSResultManagedBean {
     int wk4Demand;
     int wk5Demand;
     Integer fResultId;
-    Integer mrpListId;
+    Integer mpsId;
     int tempNum;
 
     @PostConstruct
@@ -235,8 +235,9 @@ public class MPSResultManagedBean {
         }
 
         fResultId = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("forecastResultID");
-        mrpListId = mpsSessionBean.storeMPS(buffer, requiredDemand, fResultId);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mrpListId",  mrpListId);
+        mpsId = mpsSessionBean.storeMPS(buffer, requiredDemand, fResultId);
+        System.out.println("RRRRRRRRRRRRR: mps id: " + mpsId);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mpsId",  mpsId);
         
     }
 
