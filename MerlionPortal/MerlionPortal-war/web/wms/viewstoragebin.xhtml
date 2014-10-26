@@ -123,12 +123,7 @@
                         <p:column  headerText="Bin Type" filterBy="#{storagebin.binType}" filterMatchMode="contains">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{storagebin.binType}" /></f:facet>
-                                <f:facet name="input">                            
-                                    <p:selectOneMenu id="storageBinType" value="#{storagebin.binType}"  style="width:210px">
-                                        <f:selectItem itemLabel="Select Storage Bin Type" itemValue="" noSelectionOption="true" />
-                                        <f:selectItems value="#{createStorageBinManagedBean.listStorageBinType}" var="storageBinType" itemLabel="#{listStorageBinType}" />
-                                    </p:selectOneMenu>
-                                </f:facet>
+                                <f:facet name="input"><p:inputText value="#{storagebin.binType}" style="width:100%" label="Storage Bin Type"/></f:facet>
                             </p:cellEditor>
                         </p:column>
 
