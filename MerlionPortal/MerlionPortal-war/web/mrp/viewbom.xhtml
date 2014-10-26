@@ -131,6 +131,13 @@
                         </p:cellEditor>
                     </p:column>
 
+                    <p:column headerText="Order Quantity">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{component1.orderQuantity}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{component1.orderQuantity}" style="width:100%" label="Component orderQuantity"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
                     <p:column headerText="Supplier Company ID">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{component1.supplierCompanyId}" /></f:facet>

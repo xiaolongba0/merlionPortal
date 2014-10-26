@@ -48,171 +48,33 @@
 
         <ui:define name="right">
             <h:form>
-
-                <p:panel header="View Material Requirement Planning" style="margin-bottom:10px;">
-                    <p:panelGrid style="margin-top:20px">
-                        <f:facet name="header">
-                            <p:row>
-                                <p:column colspan="7">Material Requirement Planning</p:column>
-                            </p:row>
-                            <p:row>
-                                <p:column colspan="2" >MPS</p:column>
-                                <p:column colspan="1">Week 1</p:column>
-                                <p:column colspan="1">Week 2</p:column>
-                                <p:column colspan="1">Week 3</p:column>
-                                <p:column colspan="1">Week 4</p:column>
-                                <p:column colspan="1">Week 5</p:column>
-                            </p:row>
-                        </f:facet>
-
-                        <p:row>
-                            <p:column style="font-weight: bold;" colspan="2">Monthly Demand</p:column>
-                            <p:column>
-                                <h:outputText value="#{materialReqManagedBean.wk1Demand}" />
-                            </p:column>
-                            <p:column>
-                                <h:outputText value="#{materialReqManagedBean.wk2Demand}" />
-                            </p:column>
-                            <p:column>
-                                <h:outputText value="#{materialReqManagedBean.wk3Demand}" />
-                            </p:column>
-                            <p:column>
-                                <h:outputText value="#{materialReqManagedBean.wk4Demand}" />
-                            </p:column>
-                            <p:column>
-                                <h:outputText value="#{materialReqManagedBean.wk5Demand}" />
-                            </p:column>
-                        </p:row>
-
-                        <p:row>
-                            <p:column style="font-weight: bold;" colspan="2">Gross Requirement</p:column>
-                            <p:column>
-                                <h:outputText value="#{materialReqManagedBean.grossReq1}" />
-                            </p:column>
-                            <p:column>
-                                <h:outputText value="#{materialReqManagedBean.grossReq2}" />
-                            </p:column>
-                            <p:column>
-                                <h:outputText value="#{materialReqManagedBean.grossReq3}" />
-                            </p:column>
-                            <p:column>
-                                <h:outputText value="#{materialReqManagedBean.grossReq4}" />
-                            </p:column>
-                            <p:column>
-                                <h:outputText value="#{materialReqManagedBean.grossReq5}" />
-                            </p:column>
-                        </p:row>
-
-                    </p:panelGrid>
-                    <p:commandButton value="Go Back"  action="#{materialReqManagedBean.backToMPSResult}" />
-                </p:panel>
-
-
-
-                <p:panel>
-                    <p:dataGrid id="products" var="product" value="#{productViewEditManagedBean.myCompanyProducts}" style="margin-bottom:20px"
-                                columns="1" 
-                                rows="5" paginator="true" 
-                                paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                rowsPerPageTemplate="6,12,16" >
-
-                        <p:panel>
-                            <p:panelGrid style="margin-top:20px">
-                                <f:facet name="header">
-                                    <p:row>
-                                        <p:column colspan="7">Material Requirement Planning</p:column>
-                                    </p:row>
-                                    <p:row>
-                                        <p:column colspan="2" >LeadTime</p:column>
-                                        <p:column colspan="1">Week 1</p:column>
-                                        <p:column colspan="1">Week 2</p:column>
-                                        <p:column colspan="1">Week 3</p:column>
-                                        <p:column colspan="1">Week 4</p:column>
-                                        <p:column colspan="1">Week 5</p:column>
-                                    </p:row>
-                                </f:facet>
-                                <p:row>
-                                    <p:column style="font-weight: bold;" colspan="2">Monthly Demand</p:column>
-                                    <p:column>
-                                        <h:outputText value="#{materialReqManagedBean.wk1Demand}" />
-                                    </p:column>
-                                    <p:column>
-                                        <h:outputText value="#{materialReqManagedBean.wk2Demand}" />
-                                    </p:column>
-                                    <p:column>
-                                        <h:outputText value="#{materialReqManagedBean.wk3Demand}" />
-                                    </p:column>
-                                    <p:column>
-                                        <h:outputText value="#{materialReqManagedBean.wk4Demand}" />
-                                    </p:column>
-                                    <p:column>
-                                        <h:outputText value="#{materialReqManagedBean.wk5Demand}" />
-                                    </p:column>
-                                </p:row>
-
-                                <p:row>
-                                    <p:column style="font-weight: bold;" colspan="2">Monthly Demand</p:column>
-                                    <p:column>
-                                        <h:outputText value="#{product.productId}" />
-                                    </p:column>
-                                    <p:column>
-                                        <h:outputText value="#{product.productName}" />
-                                    </p:column>
-                                    <p:column>
-                                        <h:outputText value="#{product.productName}" />
-                                    </p:column>
-                                    <p:column>
-                                        <h:outputText value="#{product.description}" />
-                                    </p:column>
-                                    <p:column>
-                                        <h:outputText value="#{product.description}" />
-                                    </p:column>
-                                </p:row>
-
-                                <p:row>
-                                    <p:column style="font-weight: bold;" colspan="2">Gross Requirement</p:column>
-                                    <p:column>
-                                        <h:outputText value="#{product.productName}" />
-                                    </p:column>
-                                    <p:column>
-                                        <h:outputText value="#{product.productName}" />
-                                    </p:column>
-                                    <p:column>
-                                        <h:outputText value="#{product.productName}" />
-                                    </p:column>
-                                    <p:column>
-                                        <h:outputText value="#{product.productName}" />
-                                    </p:column>
-                                    <p:column>
-                                        <h:outputText value="#{product.productName}" />
-                                    </p:column>
-                                </p:row>
-
-                            </p:panelGrid>
-                        </p:panel>
-                    </p:dataGrid>
-                </p:panel>
-
-
-
                 <p:panel>
                     <p:dataGrid id="mrps" var="mrp" value="#{materialReqManagedBean.mrps}" style="margin-bottom:20px"
                                 columns="1" 
                                 rows="5" paginator="true" 
                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                rowsPerPageTemplate="6,12,16" >
-
+                                rowsPerPageTemplate="2,6,16" >
+                        <f:facet name="header">
+                            Material Requirement Planning for Product ID: <h:outputText value="#{mrp.mrpList.productId}" /> 
+                        </f:facet>
                         <p:panel>
                             <p:panelGrid style="margin-top:20px">
                                 <f:facet name="header">
                                     <p:row>
                                         <p:column colspan="7"> 
-                                            MRP for component : add in later
+
+                                            <h:outputText value="&lt;br/&gt;" escape="false" />
+                                            Component ID: <h:outputText value="#{mrp.componentId}" /> 
+                                            <h:outputText value="&lt;br/&gt;" escape="false" />
+                                            Component Name: <h:outputText value="#{mrp.componentName}" /> 
                                         </p:column>
                                     </p:row>
                                     <p:row>
                                         <p:column colspan="2" >Lead Time = 
-                                            <h:outputText value="#{mrp.leadTime}" /> Week
+                                            <h:outputText value="#{mrp.leadTime}" /> Weeks
+                                            <h:outputText value="&lt;br/&gt;" escape="false" />
+                                            Order Quantity = 
+                                            <h:outputText value="#{mrp.orderQuantity}" /> Pieces
                                         </p:column>
                                         <p:column colspan="1">Week 1</p:column>
                                         <p:column colspan="1">Week 2</p:column>

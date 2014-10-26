@@ -157,6 +157,21 @@
                                 </p:inputText>
                             </p:column>
                         </p:row>
+                        
+                        
+                         <p:row>
+                            <p:column>
+                                <p:outputLabel for="componentOrderQuantity" style="font-weight: bold" value="Order Quantity: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="Component OrderQuantity" requiredMessage="Order Quantity is required." id="componentOrderQuantity" value="#{productManagedBean.componentOrderQuantity}">
+                                    <f:validateLength minimum="1" maximum="19"/>
+                                </p:inputText>
+                            </p:column>
+                        </p:row>
+                        
+                        
+                        
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="supplierCompanyId" style="font-weight: bold" value="Supplier Company ID: " />
