@@ -65,8 +65,8 @@ public class MpsSessionBean {
 
        entityManager.merge(mps);
        entityManager.flush();
- 
-       return 1;
+
+       return mps.getMpsId();
     }
     
 
