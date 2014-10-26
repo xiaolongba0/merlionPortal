@@ -60,8 +60,9 @@ public class MpsSessionBean {
        mps.setBuffer(buffer);
        mps.setDemand(demand);
 
-       MRPList mrplist = new MRPList();
-       mps.setMRPList(mrplist);
+      MRPList mrplist = new MRPList();
+      mps.setMRPList(mrplist);
+      
 
        entityManager.merge(mps);
        entityManager.flush();

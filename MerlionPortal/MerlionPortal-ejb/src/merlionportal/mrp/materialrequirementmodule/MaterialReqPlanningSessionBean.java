@@ -34,14 +34,27 @@ public class MaterialReqPlanningSessionBean {
     ArrayList<Mrp> mrps;
 
     public List<Mrp> addNewMrpList(Integer productId, Integer mpsId, int wk1Demand, int wk2Demand, int wk3Demand, int wk4Demand, int wk5Demand, int minOnHand) {
-        Mps mps = entityManager.find(Mps.class, mpsId);
-        productMRP = mps.getMRPList();
+         Mps mps = entityManager.find(Mps.class, mpsId);
+         productMRP = mps.getMRPList();
+         productMRP.setMrpDate(new Date());
+         productMRP.setProductId(productId);
+         mrps = new ArrayList<Mrp>();
+         productMRP.setMrpList(mrps);
+         entityManager.merge(productMRP);
+         entityManager.merge(mps);
+         entityManager.flush();
+
+  /*      Mps mps = entityManager.find(Mps.class, mpsId);
+        productMRP = new MRPList();
         productMRP.setMrpDate(new Date());
         productMRP.setProductId(productId);
+        productMRP.setMps(mps);
         mrps = new ArrayList<Mrp>();
         productMRP.setMrpList(mrps);
-        entityManager.merge(productMRP);
-        entityManager.flush();
+        entityManager.persist(productMRP);
+        mps.setMRPList(productMRP);
+        entityManager.merge(mps);
+        entityManager.flush();*/
 
         //draw out lead time
         product = entityManager.find(Product.class, productId);
@@ -217,6 +230,11 @@ public class MaterialReqPlanningSessionBean {
                 plannedOrder4 = 0;
                 plannedOrder5 = 0;
             }
+
+            mrp.setComponentId(product.getComponentList().get(i).getComponentId());
+            mrp.setComponentName(product.getComponentList().get(i).getComponentName());
+            mrp.setOrderQuantity(product.getComponentList().get(i).getOrderQuantity());
+            mrp.setOnHand0(initialOnHand);
 
             mrp.setGrossReq1(GrossReq1);
             mrp.setGrossReq2(GrossReq2);

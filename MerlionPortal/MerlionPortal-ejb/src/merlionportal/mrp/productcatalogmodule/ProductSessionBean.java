@@ -145,7 +145,7 @@ public class ProductSessionBean {
 
     }
 
-    public Integer addNewComponent(String componentName, String description, Integer quantity, String currency, Double cost, Integer leadTime, int supplierCompanyId, String contactPerson, String contactNumber, String contactEmail, Integer companyId, Integer productId) {
+    public Integer addNewComponent(String componentName, String description, Integer quantity, String currency, Double cost, Integer leadTime, Integer orderQuantity, int supplierCompanyId, String contactPerson, String contactNumber, String contactEmail, Integer companyId, Integer productId) {
 
         Query query = entityManager.createQuery("SELECT p FROM Product p WHERE p.companyId = :inCompanyId");
 
@@ -164,6 +164,7 @@ public class ProductSessionBean {
         component.setCurrency(currency);
         component.setCost(cost);
         component.setLeadTime(leadTime);
+        component.setOrderQuantity(orderQuantity);
 
         component.setSupplierCompanyId(supplierCompanyId);
         component.setSupplierContactPerson(contactPerson);
@@ -209,7 +210,7 @@ public class ProductSessionBean {
     }
 
     //Edit a component
-    public Integer editComponent(String componentName, String description, Double cost, String currency, Integer quantity, Integer leadTime, int supplierCompanyId, String contactPerson, String contactNumber, String contactEmail, Integer companyID, Integer productID, Integer componentID) {
+    public Integer editComponent(String componentName, String description, Double cost, String currency, Integer quantity, Integer leadTime, Integer orderQuantity, int supplierCompanyId, String contactPerson, String contactNumber, String contactEmail, Integer companyID, Integer productID, Integer componentID) {
 
         Query query = entityManager.createQuery("SELECT p FROM Product p WHERE p.companyId = :inCompanyId");
         query.setParameter("inCompanyId", companyID);
@@ -229,6 +230,7 @@ public class ProductSessionBean {
         component.setCurrency(currency);
         component.setQuantity(quantity);
         component.setLeadTime(leadTime);
+        component.setOrderQuantity(orderQuantity);
 
         component.setSupplierCompanyId(supplierCompanyId);
 
