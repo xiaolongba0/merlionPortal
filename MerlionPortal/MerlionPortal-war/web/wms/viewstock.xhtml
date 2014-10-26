@@ -107,7 +107,7 @@
                             <h:outputText value="ID: #{stock.storageBin.warehouseZone.warehouseZoneId} Name:#{stock.storageBin.warehouseZone.warehouseZoneId} " />
                         </p:column>
                         <p:column filterBy="#{stock.storageBin.storageBinId}" filterMatchMode="contains" headerText="Storage Bin ID" >
-                            <h:outputText value="ID: #{stock.storageBin.storageBinId} Name:#{stock.storageBin.binName} " />
+                            <h:outputText value="#{stock.storageBin.storageBinId}"/>
                         </p:column>
                         <p:column filterBy="#{stock.stockId}" filterMatchMode="contains" headerText="Stock ID" >
                             <h:outputText value="#{stock.stockId}" />

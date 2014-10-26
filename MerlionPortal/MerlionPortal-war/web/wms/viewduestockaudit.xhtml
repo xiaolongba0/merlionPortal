@@ -85,10 +85,6 @@
                             <h:outputText value="#{stockaudit.stockAuditId}" />
                         </p:column>
 
-                        <p:column style="width:80px" filterBy="#{stockaudit.supervisorId}" filterMatchMode="contains" headerText="Supervisor ID: " >
-                            <h:outputText value="#{stockaudit.supervisorId}" />
-                        </p:column>
-
                         <p:column style="width:80px" filterBy="#{stockaudit.staffId}" filterMatchMode="contains" headerText="Staff ID: " >
                             <h:outputText value="#{stockaudit.staffId}" />
                         </p:column>
@@ -101,12 +97,9 @@
                             <h:outputText value="#{stockAuditViewEditManagedBean.getAuditStatus(stockaudit.stockAuditStatus)}" />
                         </p:column>
 
-                        <p:column filterBy="#{stockaudit.remarks}" filterMatchMode="contains" headerText="Remarks: " >
-                            <h:outputText value="#{stockaudit.remarks}" />
-                        </p:column>
-
                         <p:column headerText="">
-                            <p:commandButton action="stockauditprocess?faces-redirect=true" value="Proceed">
+                            <p:commandButton action="stockauditprocess?faces-redirect=true" value="Proceed" rendered="#{stockaudit.stockAuditStatus != 1}">
+                                <f:actionListener binding="#{stockAuditProcessManagedBean.getStockAuditInfo(stockaudit.stockAuditId)}" />
                                 <p:confirm header="Confirmation" message="Do you want to start the stock audit process?" icon="ui-icon-alert" />
                             </p:commandButton> 
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

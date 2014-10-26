@@ -100,17 +100,6 @@
 
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="supervisorId" style="font-weight: bold" value="Supervisor ID: " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="supervisorId" requiredMessage="Supervisor ID is required." id="supervisorId" value="#{stockAuditManagedBean.supervisorId}">
-                                    <f:validateLength minimum="0" maximum="40" />
-                                </p:inputText>
-                            </p:column>                       
-                        </p:row>
-
-                        <p:row>
-                            <p:column>
                                 <p:outputLabel for="staffId" style="font-weight: bold" value="Staff ID: " />
                             </p:column>
                             <p:column>
@@ -129,16 +118,6 @@
                             </p:column>
                         </p:row>
                         
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="remarks" style="font-weight: bold" value="Remarks:   *" />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="remarks" requiredMessage="Remarks is required." id="remarks" value="#{stockAuditManagedBean.remarks}">
-                                    <f:validateLength minimum="1" maximum="300" />
-                                </p:inputText>
-                            </p:column>
-                        </p:row>
                         
                         <br></br>
                     </p:panelGrid>

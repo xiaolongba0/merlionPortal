@@ -88,13 +88,6 @@
                             <h:outputText value="#{stockaudit.stockAuditId}" />
                         </p:column>
 
-                        <p:column filterBy="#{stockaudit.supervisorId}" filterMatchMode="contains" headerText="Supervisor ID: " >
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{stockaudit.supervisorId}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{stockaudit.supervisorId}" style="width:100%" label="supervisorId"/></f:facet>
-                            </p:cellEditor>
-                        </p:column>
-
                         <p:column filterBy="#{stockaudit.staffId}" filterMatchMode="contains" headerText="Staff ID: " >
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{stockaudit.staffId}" /></f:facet>
@@ -109,6 +102,36 @@
                             </p:cellEditor>
                         </p:column>
 
+                        <p:column filterBy="#{stockaudit.staffId}" filterMatchMode="contains" headerText="Staff ID: " >
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{stockaudit.staffId}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{stockaudit.staffId}" style="width:100%" label="staffId"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column filterBy="#{stockaudit.remarks}" filterMatchMode="contains" headerText="Remarks: " >
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{stockaudit.remarks}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{stockaudit.remarks}" style="width:100%" label="remarks"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column filterBy="#{stockaudit.passQuantity}" filterMatchMode="contains" headerText="Pass Quantity: " >
+                            <h:outputText value="#{stockaudit.passQuantity}" />
+                        </p:column>
+
+                        <p:column filterBy="#{stockaudit.failQuantity}" filterMatchMode="contains" headerText="Fail Quantity: " >
+                            <h:outputText value="#{stockaudit.failQuantity}" />
+                        </p:column>
+
+                        <p:column filterBy="#{stockaudit.actualQuantity}" filterMatchMode="contains" headerText="Actual Quantity: " >
+                            <h:outputText value="#{stockaudit.actualQuantity}" />
+                        </p:column>
+
+                        <p:column filterBy="#{stockaudit.actualDate}" filterMatchMode="contains" headerText="Actual Date: " >
+                            <h:outputText value="#{stockaudit.actualDate}" />
+                        </p:column>
+
                         <p:column filterBy="#{stockAuditViewEditManagedBean.getAuditStatus(stockaudit.stockAuditStatus)}" filterMatchMode="contains" headerText="Stock Audit Status" >
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{stockAuditViewEditManagedBean.getAuditStatus(stockaudit.stockAuditStatus)}" /></f:facet>
@@ -119,13 +142,6 @@
                                         <f:selectItem itemLabel="On Hold" itemValue="2" />
                                     </h:selectOneMenu>
                                 </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-
-                        <p:column filterBy="#{stockaudit.remarks}" filterMatchMode="contains" headerText="Remarks: " >
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{stockaudit.remarks}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{stockaudit.remarks}" style="width:100%" label="remarks"/></f:facet>
                             </p:cellEditor>
                         </p:column>
 
