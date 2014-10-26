@@ -46,7 +46,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ServicePO.findByVolume", query = "SELECT s FROM ServicePO s WHERE s.volume = :volume"),
     @NamedQuery(name = "ServicePO.findByServiceDeliveryDate", query = "SELECT s FROM ServicePO s WHERE s.serviceDeliveryDate = :serviceDeliveryDate"),
     @NamedQuery(name = "ServicePO.findByServiceStartDate", query = "SELECT s FROM ServicePO s WHERE s.serviceStartDate = :serviceStartDate"),
-    @NamedQuery(name = "ServicePO.findByServiceEndDate", query = "SELECT s FROM ServicePO s WHERE s.serviceEndDate = :serviceEndDate")})
+    @NamedQuery(name = "ServicePO.findByServiceEndDate", query = "SELECT s FROM ServicePO s WHERE s.serviceEndDate = :serviceEndDate"),
+    @NamedQuery(name = "ServicePO.findByProductId", query = "SELECT s FROM ServicePO s WHERE s.productId = :productId"),
+    @NamedQuery(name = "ServicePO.findByProductQuantityPerTEU", query = "SELECT s FROM ServicePO s WHERE s.productQuantityPerTEU = :productQuantityPerTEU")})
 public class ServicePO implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -82,6 +84,10 @@ public class ServicePO implements Serializable {
     @Column(name = "serviceEndDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date serviceEndDate;
+    @Column(name = "productId")
+    private Integer productId;
+    @Column(name = "productQuantityPerTEU")
+    private Integer productQuantityPerTEU;
     @JoinColumn(name = "contract", referencedColumnName = "contractId")
     @ManyToOne(optional = false)
     private Contract contract;
@@ -189,6 +195,22 @@ public class ServicePO implements Serializable {
 
     public void setServiceEndDate(Date serviceEndDate) {
         this.serviceEndDate = serviceEndDate;
+    }
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
+
+    public Integer getProductQuantityPerTEU() {
+        return productQuantityPerTEU;
+    }
+
+    public void setProductQuantityPerTEU(Integer productQuantityPerTEU) {
+        this.productQuantityPerTEU = productQuantityPerTEU;
     }
 
     public Contract getContract() {
