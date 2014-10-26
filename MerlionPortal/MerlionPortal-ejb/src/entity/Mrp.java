@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -45,6 +46,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Mrp.findByPlannedRec3", query = "SELECT m FROM Mrp m WHERE m.plannedRec3 = :plannedRec3"),
     @NamedQuery(name = "Mrp.findByPlannedRec4", query = "SELECT m FROM Mrp m WHERE m.plannedRec4 = :plannedRec4"),
     @NamedQuery(name = "Mrp.findByPlannedRec5", query = "SELECT m FROM Mrp m WHERE m.plannedRec5 = :plannedRec5"),
+    @NamedQuery(name = "Mrp.findByOnHand0", query = "SELECT m FROM Mrp m WHERE m.onHand0 = :onHand0"),
     @NamedQuery(name = "Mrp.findByOnHand1", query = "SELECT m FROM Mrp m WHERE m.onHand1 = :onHand1"),
     @NamedQuery(name = "Mrp.findByOnHand2", query = "SELECT m FROM Mrp m WHERE m.onHand2 = :onHand2"),
     @NamedQuery(name = "Mrp.findByOnHand3", query = "SELECT m FROM Mrp m WHERE m.onHand3 = :onHand3"),
@@ -55,7 +57,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Mrp.findByPlannedOrder3", query = "SELECT m FROM Mrp m WHERE m.plannedOrder3 = :plannedOrder3"),
     @NamedQuery(name = "Mrp.findByPlannedOrder4", query = "SELECT m FROM Mrp m WHERE m.plannedOrder4 = :plannedOrder4"),
     @NamedQuery(name = "Mrp.findByPlannedOrder5", query = "SELECT m FROM Mrp m WHERE m.plannedOrder5 = :plannedOrder5"),
-    @NamedQuery(name = "Mrp.findByLeadTime", query = "SELECT m FROM Mrp m WHERE m.leadTime = :leadTime")})
+    @NamedQuery(name = "Mrp.findByLeadTime", query = "SELECT m FROM Mrp m WHERE m.leadTime = :leadTime"),
+    @NamedQuery(name = "Mrp.findByComponentId", query = "SELECT m FROM Mrp m WHERE m.componentId = :componentId"),
+    @NamedQuery(name = "Mrp.findByComponentName", query = "SELECT m FROM Mrp m WHERE m.componentName = :componentName"),
+    @NamedQuery(name = "Mrp.findByOrderQuantity", query = "SELECT m FROM Mrp m WHERE m.orderQuantity = :orderQuantity")})
 public class Mrp implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -93,6 +98,8 @@ public class Mrp implements Serializable {
     private Integer plannedRec4;
     @Column(name = "plannedRec5")
     private Integer plannedRec5;
+    @Column(name = "onHand0")
+    private Integer onHand0;
     @Column(name = "onHand1")
     private Integer onHand1;
     @Column(name = "onHand2")
@@ -115,6 +122,13 @@ public class Mrp implements Serializable {
     private Integer plannedOrder5;
     @Column(name = "leadTime")
     private Integer leadTime;
+    @Column(name = "componentId")
+    private Integer componentId;
+    @Size(max = 100)
+    @Column(name = "componentName")
+    private String componentName;
+    @Column(name = "orderQuantity")
+    private Integer orderQuantity;
     @JoinColumn(name = "mrpList", referencedColumnName = "mrpListId")
     @ManyToOne(optional = false)
     private MRPList mrpList;
@@ -254,6 +268,14 @@ public class Mrp implements Serializable {
         this.plannedRec5 = plannedRec5;
     }
 
+    public Integer getOnHand0() {
+        return onHand0;
+    }
+
+    public void setOnHand0(Integer onHand0) {
+        this.onHand0 = onHand0;
+    }
+
     public Integer getOnHand1() {
         return onHand1;
     }
@@ -340,6 +362,30 @@ public class Mrp implements Serializable {
 
     public void setLeadTime(Integer leadTime) {
         this.leadTime = leadTime;
+    }
+
+    public Integer getComponentId() {
+        return componentId;
+    }
+
+    public void setComponentId(Integer componentId) {
+        this.componentId = componentId;
+    }
+
+    public String getComponentName() {
+        return componentName;
+    }
+
+    public void setComponentName(String componentName) {
+        this.componentName = componentName;
+    }
+
+    public Integer getOrderQuantity() {
+        return orderQuantity;
+    }
+
+    public void setOrderQuantity(Integer orderQuantity) {
+        this.orderQuantity = orderQuantity;
     }
 
     public MRPList getMrpList() {

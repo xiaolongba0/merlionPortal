@@ -41,7 +41,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Component.findBySupplierCompanyId", query = "SELECT c FROM Component c WHERE c.supplierCompanyId = :supplierCompanyId"),
     @NamedQuery(name = "Component.findBySupplierContactEmail", query = "SELECT c FROM Component c WHERE c.supplierContactEmail = :supplierContactEmail"),
     @NamedQuery(name = "Component.findBySupplierContactPerson", query = "SELECT c FROM Component c WHERE c.supplierContactPerson = :supplierContactPerson"),
-    @NamedQuery(name = "Component.findBySupplierContactNumber", query = "SELECT c FROM Component c WHERE c.supplierContactNumber = :supplierContactNumber")})
+    @NamedQuery(name = "Component.findBySupplierContactNumber", query = "SELECT c FROM Component c WHERE c.supplierContactNumber = :supplierContactNumber"),
+    @NamedQuery(name = "Component.findByOrderQuantity", query = "SELECT c FROM Component c WHERE c.orderQuantity = :orderQuantity")})
 public class Component implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -78,6 +79,8 @@ public class Component implements Serializable {
     @Size(max = 45)
     @Column(name = "supplierContactNumber")
     private String supplierContactNumber;
+    @Column(name = "orderQuantity")
+    private Integer orderQuantity;
     @JoinColumn(name = "Product_productId", referencedColumnName = "productId")
     @ManyToOne(optional = false)
     private Product productproductId;
@@ -180,6 +183,14 @@ public class Component implements Serializable {
 
     public void setSupplierContactNumber(String supplierContactNumber) {
         this.supplierContactNumber = supplierContactNumber;
+    }
+
+    public Integer getOrderQuantity() {
+        return orderQuantity;
+    }
+
+    public void setOrderQuantity(Integer orderQuantity) {
+        this.orderQuantity = orderQuantity;
     }
 
     public Product getProductproductId() {

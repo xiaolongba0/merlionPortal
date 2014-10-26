@@ -8,7 +8,9 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,11 +20,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -62,6 +66,8 @@ public class Stock implements Serializable {
     @JoinColumn(name = "storageBin", referencedColumnName = "storageBinId")
     @ManyToOne(optional = false)
     private StorageBin storageBin;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "stock")
+    private List<MovingStock> movingStockList;
 
     public Stock() {
     }
@@ -124,6 +130,15 @@ public class Stock implements Serializable {
 
     public void setStorageBin(StorageBin storageBin) {
         this.storageBin = storageBin;
+    }
+
+    @XmlTransient
+    public List<MovingStock> getMovingStockList() {
+        return movingStockList;
+    }
+
+    public void setMovingStockList(List<MovingStock> movingStockList) {
+        this.movingStockList = movingStockList;
     }
 
     @Override
