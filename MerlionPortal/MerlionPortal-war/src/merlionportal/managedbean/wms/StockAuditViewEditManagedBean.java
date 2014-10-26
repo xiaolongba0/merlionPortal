@@ -85,12 +85,25 @@ public class StockAuditViewEditManagedBean {
         warehouses = amsb.viewMyWarehouses(companyId);
     }
 
-    public void viewStockAudits() {
-        System.out.println("[In Managed Bean - viewstockAudits] =============================== Warehouse ID : " + warehouseId);
+    public void viewAllStockAudits() {
+        System.out.println("[In Managed Bean - viewAllStockAudits] =============================== Warehouse ID : " + warehouseId);
 
         if (warehouseId != null) {
             stockAudits = sasb.viewStockAuditsForAWarehouse(warehouseId);
-            systemLogSB.recordSystemLog(userId, "WMS view stock audit");
+            systemLogSB.recordSystemLog(userId, "WMS view all stock audit");
+            if (warehouseId == null) {
+                System.out.println("============== FAILED TO VIEW STOCK Audits ===============");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Stock Audit", ""));
+            }
+        }
+    }
+    
+        public void viewDueStockAudits() {
+        System.out.println("[In Managed Bean - viewDueStockAudits] =============================== Warehouse ID : " + warehouseId);
+
+        if (warehouseId != null) {
+            stockAudits = sasb.viewDueStockAuditsForAWarehouse(warehouseId);
+            systemLogSB.recordSystemLog(userId, "WMS view due stock audit");
             if (warehouseId == null) {
                 System.out.println("============== FAILED TO VIEW STOCK Audits ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Stock Audit", ""));
@@ -121,8 +134,8 @@ public class StockAuditViewEditManagedBean {
         }
         return auditType;
     }
-    
-        public void deleteStockAudit(StockAudit stockAudit) {
+
+    public void deleteStockAudit(StockAudit stockAudit) {
         try {
             System.out.println("In StockAuditViewEditManagedBean, delete stock ======================");
             boolean result = sasb.deleteStockAudit(stockAudit.getStockAuditId());
@@ -139,20 +152,21 @@ public class StockAuditViewEditManagedBean {
             ex.printStackTrace();
         }
     }
-        public void onRowEdit(RowEditEvent event) {
+
+    public void onRowEdit(RowEditEvent event) {
         StockAudit stockAudit = new StockAudit();
         stockAudit = (StockAudit) event.getObject();
-            System.out.println("[In Managed Bean - STOCK AUDIT ON ROW EDIT]=============================== " );
-            boolean result = sasb.editStockAudit(stockAudit.getStockAuditId(), stockAudit.getSupervisorId(), stockAudit.getStaffId(), stockAudit.getCreatedDate(),
-                    stockAudit.getStockAuditStatus(), stockAudit.getRemarks());
-            if (result) {
-                systemLogSB.recordSystemLog(userId, "WMS edit stock audit");
-                FacesMessage msg = new FacesMessage("Stock Audit with ID = " + stockAudit.getStockAuditId() + " has sucessfully been edited");
-                FacesContext.getCurrentInstance().addMessage(null, msg);
-            } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong"));
+        System.out.println("[In Managed Bean - STOCK AUDIT ON ROW EDIT]=============================== ");
+        boolean result = sasb.editStockAudit(stockAudit.getStockAuditId(), stockAudit.getSupervisorId(), stockAudit.getStaffId(), stockAudit.getCreatedDate(),
+                stockAudit.getStockAuditStatus(), stockAudit.getRemarks());
+        if (result) {
+            systemLogSB.recordSystemLog(userId, "WMS edit stock audit");
+            FacesMessage msg = new FacesMessage("Stock Audit with ID = " + stockAudit.getStockAuditId() + " has sucessfully been edited");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong"));
 
-            }
+        }
     }
 
     public void onRowCancel(RowEditEvent event) {

@@ -125,11 +125,11 @@ public class StorageBinViewEditManagedBean {
         }
     }
 
-    public List<String> getStorageBinType() {
-        storageBinType = assetManagementSessionBean.listStorageBinTypes();
-        System.out.println("[In WAR FILE - get storage bin type]" + storageBinType);
-        return storageBinType;
-    }
+//    public List<String> getStorageBinType() {
+//        storageBinType = assetManagementSessionBean.listStorageBinTypes();
+//        System.out.println("[In WAR FILE - get storage bin type]" + storageBinType);
+//        return storageBinType;
+//    }
 
     public List<Warehouse> getWarehouses() {
         return warehouses;

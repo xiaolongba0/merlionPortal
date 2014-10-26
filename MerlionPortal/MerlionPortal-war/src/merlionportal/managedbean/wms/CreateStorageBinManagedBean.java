@@ -109,11 +109,11 @@ public class CreateStorageBinManagedBean {
         maxWeight = null;
     }
 
-    public List<String> getListStorageBinType() {
-        listStorageBinType = amsb.listStorageBinTypes();
-        System.out.println("[In WAR FILE - get storage bin type]" + listStorageBinType);
-        return listStorageBinType;
-    }
+//    public List<String> getListStorageBinType() {
+//        listStorageBinType = amsb.listStorageBinTypes();
+//        System.out.println("[In WAR FILE - get storage bin type]" + listStorageBinType);
+//        return listStorageBinType;
+//    }
 
     public void setListStorageBinType(List<String> listStorageBinType) {
         this.listStorageBinType = listStorageBinType;
