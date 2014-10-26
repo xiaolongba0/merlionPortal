@@ -10,6 +10,8 @@ import entity.StockAudit;
 import entity.StorageBin;
 import entity.Warehouse;
 import entity.WarehouseZone;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,9 +46,6 @@ public class StockAuditSessionBean {
     public boolean addStockAudit(Integer storageBinId, Integer supervisorId, Integer staffId, Date scheduledDate, Date actualDate,
             Integer stockAuditStatus, Integer expectedQuantity, Integer passQuantity, Integer failQuantity, Integer actualQuantity, String remarks) {
 
-        // stockAuditType:
-        // 1: Random Sampling (In this case, expected quantity and actual quantity is the same, usually used to check quality only)
-        // 2: Count All
         // stockAuditStatus:
         // 0: Not done
         // 1: Done, completed
@@ -179,9 +178,7 @@ public class StockAuditSessionBean {
 
         List<StockAudit> allMyStockAudits = new ArrayList<>();
         System.out.println("In viewDUEStockAudits=============================");
-        Date todayDate = new Date();
-        System.out.println("Today's Date: " + todayDate);
-        
+
         List<WarehouseZone> allWarehouseZones = new ArrayList<>();
         allWarehouseZones = amsb.viewWarehouseZoneForAWarehouse(warehouseId);
 
@@ -202,12 +199,27 @@ public class StockAuditSessionBean {
 
             for (Object o : query.getResultList()) {
                 stockAudit = (StockAudit) o;
-                if (stockAudit.getCreatedDate() == todayDate) {
+                if (compareDate(stockAudit.getCreatedDate())) {
                     allMyStockAudits.add(stockAudit);
                 }
             }
             i++;
         }
         return allMyStockAudits;
+    }
+
+    public Boolean compareDate(Date scheduledDate) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date todayDate = new Date();
+
+        System.out.println(sdf.format(todayDate));
+        System.out.println(sdf.format(scheduledDate));
+        System.out.println("Compare Dates===================" + todayDate.compareTo(scheduledDate));
+        
+        if (todayDate.compareTo(scheduledDate) == 1) {
+            return true;
+        }
+        return false;
     }
 }

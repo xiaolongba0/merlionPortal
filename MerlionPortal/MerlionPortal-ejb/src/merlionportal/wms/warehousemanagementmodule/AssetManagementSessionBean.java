@@ -316,17 +316,17 @@ public class AssetManagementSessionBean {
 
     }
 
-    public List<String> listStorageBinTypes() {
-        List<String> allStorageBinTypes = new ArrayList<>();
-        System.out.println("In ASSET MANAGEMENT SESSION BEAN ================ LIST STORAGE BIN TYPES");
-
-        allStorageBinTypes.add("Stacking Bins");
-        allStorageBinTypes.add("Shelf Bins");
-        allStorageBinTypes.add("Containers");
-        allStorageBinTypes.add("Styrofoam Containers");
-        allStorageBinTypes.add("Others");
-
-        return allStorageBinTypes;
-    }
+//    public List<String> listStorageBinTypes() {
+//        List<String> allStorageBinTypes = new ArrayList<>();
+//        System.out.println("In ASSET MANAGEMENT SESSION BEAN ================ LIST STORAGE BIN TYPES");
+//
+//        allStorageBinTypes.add("Stacking Bins");
+//        allStorageBinTypes.add("Shelf Bins");
+//        allStorageBinTypes.add("Containers");
+//        allStorageBinTypes.add("Styrofoam Containers");
+//        allStorageBinTypes.add("Others");
+//
+//        return allStorageBinTypes;
+//    }
 
 }
