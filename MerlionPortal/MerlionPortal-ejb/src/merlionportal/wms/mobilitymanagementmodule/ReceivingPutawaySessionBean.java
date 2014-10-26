@@ -15,6 +15,7 @@ import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
  *
  * @author YunWei
@@ -46,16 +47,10 @@ public class ReceivingPutawaySessionBean {
 
         // check if bin is empty, or bin already has stocks
         if (!stockTemp.isEmpty()) {
-            System.out.println("[INSIDE AMSB EJB, Add Stock] ================== BIN IS NOT EMPTY");
-            for (Object o : stockTemp) {
-                stock = (Stock) o;
-                currentQuantity = currentQuantity + stock.getQuantity();
-                System.out.println("CURRENT QUANTITY IN BIN: " + currentQuantity);
-            }
+            currentQuantity = countStockInBin(stockTemp, currentQuantity, quantity);
         }
         Integer maxQuantity = bin.getMaxQuantity();
-        currentQuantity = currentQuantity + quantity;
-        System.out.println("NEW CURRENT QUANTITY : " + currentQuantity);
+        System.out.println("RETURNED QUANTITY IN BIN: " + currentQuantity);
         System.out.println("EXPIRY DATE: " + expiryDate);
 
         if (bin != null && currentQuantity <= maxQuantity) {
@@ -80,16 +75,21 @@ public class ReceivingPutawaySessionBean {
 
     }
 
-//    TO BE EDITED AND INTEGRATED WTTH MRP
-//    public List<String> listProductId(Integer companyId) {
-//        List<String> listProductId = new ArrayList<>();
-//        System.out.println("In ASSET MANAGEMENT SESSION BEAN ================ LIST PRODUCT IDs");
-//
-//        List<Warehouse> allMyWarehouses = new ArrayList<>();
-//        allMyWarehouses = viewMyWarehouses(companyId);
-//
-//        return listProductId;
-//    }
+    public Integer countStockInBin(List<Stock> stockTemp, Integer currentQuantity, Integer quantity) {
+
+        System.out.println("[INSIDE AMSB EJB, count stock in BIN] ================== BIN IS NOT EMPTY");
+        for (Object o : stockTemp) {
+            stock = (Stock) o;
+            currentQuantity = currentQuantity + stock.getQuantity();
+            System.out.println("CURRENT QUANTITY IN BIN: " + currentQuantity);
+
+
+        }            
+        currentQuantity = currentQuantity + quantity;
+            System.out.println("NEW CURRENT QUANTITY : " + currentQuantity);
+        return currentQuantity;
+    }
+
     public List<Stock> viewStock(Integer productId) {
 
         System.out.println("In viewStock, Product ID ============================= : " + productId);
@@ -128,17 +128,16 @@ public class ReceivingPutawaySessionBean {
         Stock stock = (Stock) query.getSingleResult();
         System.out.println("[IN EJB AMSB, deleteStock] ======================================");
 
-        if (stock != null){
-                 StorageBin bin = stock.getStorageBin();
-        bin.getStockList().remove(stock);
-        em.merge(bin);
-        em.remove(stock);
-        em.flush();
+        if (stock != null) {
+            StorageBin bin = stock.getStorageBin();
+            bin.getStockList().remove(stock);
+            em.merge(bin);
+            em.remove(stock);
+            em.flush();
 
-        System.out.println("END OF DELETE STOCK FUNCTION IN SESSION BEAN");
-        return true;   
-        }
-        else {
+            System.out.println("END OF DELETE STOCK FUNCTION IN SESSION BEAN");
+            return true;
+        } else {
             return false;
         }
     }
@@ -153,7 +152,6 @@ public class ReceivingPutawaySessionBean {
         System.out.println("Quantity  = " + quantity);
 
         if (stock != null) {
-
             // check if max quantity of bin has exceeded
             StorageBin bin = new StorageBin();
             bin = stock.getStorageBin();
@@ -162,17 +160,12 @@ public class ReceivingPutawaySessionBean {
             stockTemp = bin.getStockList();
 
             // check if bin is empty, or bin already has stocks
-            if (!stockTemp.isEmpty()) {
-                System.out.println("[INSIDE AMSB EJB, EDIT Stock] ================== BIN IS NOT EMPTY");
-                for (Object o : stockTemp) {
-                    stock = (Stock) o;
-                    currentQuantity = currentQuantity + stock.getQuantity();
-                    System.out.println("CURRENT QUANTITY IN BIN: " + currentQuantity);
-                }
-            }
+        if (!stockTemp.isEmpty()) {
+            currentQuantity = countStockInBin(stockTemp, currentQuantity, quantity);
+        }
             Integer maxQuantity = bin.getMaxQuantity();
             currentQuantity = currentQuantity + quantity - stock.getQuantity();
-            System.out.println("NEW CURRENT QUANTITY : " + currentQuantity);
+            System.out.println("Returned CURRENT QUANTITY : " + currentQuantity);
 
             if (currentQuantity <= maxQuantity) {
                 stock.setName(stockName);
