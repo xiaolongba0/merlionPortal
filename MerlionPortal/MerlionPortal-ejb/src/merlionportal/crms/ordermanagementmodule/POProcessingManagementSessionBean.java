@@ -114,9 +114,9 @@ public class POProcessingManagementSessionBean {
 
             ServicePO po = (ServicePO) o;
             //This contract, but not this po
-            if (po.getContract().getContractId() == (int) contractId) {
+            if (po.getContract().getContractId() == (int) contractId && po.getServicePOId() != (int) servicePOId) {
                 //not paid
-                if (po.getStatus() != 7) {
+                if (po.getStatus() != 8) {
                     System.out.println("Enter EJB Order not paid" + po.getServicePOId());
                     result = false;
                 }

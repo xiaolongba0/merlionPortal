@@ -26,6 +26,8 @@ public class ViewOrderStatisticsManagedBean {
     private Date startDate;
     private Date endDate;
 
+    private Date today;
+    
     private Integer userId;
     private Integer companyId;
 
@@ -50,9 +52,12 @@ public class ViewOrderStatisticsManagedBean {
             }
         }
 
+        today = new Date();
     }
 
     public String viewResult() {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("orderStatisticStartDate");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("orderStatisticEndDate");
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("orderStatisticStartDate", startDate);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("orderStatisticEndDate", endDate);
         return "showstatisticresult.xhtml?faces-redirect=true";
@@ -88,6 +93,14 @@ public class ViewOrderStatisticsManagedBean {
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
+    }
+
+    public Date getToday() {
+        return today;
+    }
+
+    public void setToday(Date today) {
+        this.today = today;
     }
 
 }

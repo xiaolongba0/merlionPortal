@@ -55,7 +55,25 @@
         </ui:define>
 
         <ui:define name="right">
-            <p:commandButton value="Proceed" action="#{viewOrderStatisticsManagedBean.viewResult()}" />
+            <h:form id="main">
+                <p:outputLabel for="start" value="Start Date" />
+                <p:calendar id="start" value="#{viewOrderStatisticsManagedBean.startDate}" required="true" requiredMessage="Start Date is required" />
+                <p:outputLabel for="end" value="End Date" />
+                <p:calendar id="end" value="#{viewOrderStatisticsManagedBean.endDate}" required="true" requiredMessage="End Date is required" />
+                <p:commandButton value="Proceed" action="#{viewOrderStatisticsManagedBean.viewResult()}" />
+                <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold">
+                    <p:panelGrid id="display" columns="2" columnClasses="label,value">
+                        <h:outputText value="Start Date:" />
+                        <h:outputText value="#{viewOrderStatisticsManagedBean.startDate}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="End Date:" />
+                        <h:outputText value="#{viewOrderStatisticsManagedBean.endDate}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
         </ui:define>
     </ui:composition>
 </html>

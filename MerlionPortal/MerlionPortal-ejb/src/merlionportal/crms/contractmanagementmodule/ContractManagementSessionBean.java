@@ -52,7 +52,7 @@ public class ContractManagementSessionBean {
         if (quotation != null) {
             contract.setStartDate(quotation.getStartDate());
             contract.setEndDate(quotation.getEndDate());
-            contract.setPrice(quotation.getPrice());
+            contract.setPrice(quotation.getPrice() - quotation.getDiscountRate() * quotation.getPrice() / 100);
             contract.setOrigin(quotation.getOrigin());
             contract.setDestination(quotation.getDestination());
             contract.setServiceType(quotation.getServiceType());

@@ -55,7 +55,11 @@
         </ui:define>
 
         <ui:define name="right">
-            <p:chart type="bar" model="#{viewStatisticResultManagedBean.horizontalBarModel}" style="height:300px"/>
+            <c:if test="#{(viewStatisticResultManagedBean.amounts ne null) and (viewStatisticResultManagedBean.companys ne null)}" >
+                <p:chart type="bar" model="#{viewStatisticResultManagedBean.horizontalBarModel}" style="height:300px"/>
+            </c:if>
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
             <p:commandButton value="Go Back" action="vieworderstatistics.xhtml?faces-redirect=true" />
         </ui:define>
     </ui:composition>

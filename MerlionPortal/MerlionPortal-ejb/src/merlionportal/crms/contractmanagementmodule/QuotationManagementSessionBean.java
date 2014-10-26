@@ -6,6 +6,7 @@
 package merlionportal.crms.contractmanagementmodule;
 
 import entity.Contract;
+import entity.CustomerAccount;
 import entity.ServiceCatalog;
 import entity.ServiceQuotation;
 import java.util.ArrayList;
@@ -43,6 +44,9 @@ public class QuotationManagementSessionBean {
 //    
     public int createRequestForQuotation(Integer serviceCatalogId, String serviceType, Date startDate, Date endDate, Integer senderCompanyId, Integer receiverCompanyId,
             String origin, String destination, Integer quantityPerMonth) {
+
+        int customerAccountId = this.createNewCustomerAccount(senderCompanyId, receiverCompanyId);
+        
         ServiceQuotation serviceQuotation = new ServiceQuotation();
         serviceQuotation.setServiceType(serviceType);
         serviceQuotation.setCreatedDate(new Date());
@@ -66,12 +70,46 @@ public class QuotationManagementSessionBean {
 
         serviceQuotation.setServiceCatalog(serviceCatalog);
 
+        
+        CustomerAccount customerAcc = em.find(CustomerAccount.class, customerAccountId);
+        customerAcc.getServiceQuotationList().add(serviceQuotation);
+        serviceQuotation.setCustomerAccount(customerAcc);
         em.persist(serviceQuotation);
+        em.merge(customerAcc);
+
         em.merge(serviceCatalog);
+
         em.flush();
 
         System.out.println("QuotationId is " + serviceQuotation.getQuotationId());
         return serviceQuotation.getQuotationId();
+
+    }
+
+    private int createNewCustomerAccount(Integer senderCompanyId, Integer receiverCompanyId) {
+        //Find if customer is an exsiting customer
+        Query q = em.createQuery("SELECT c FROM CustomerAccount c WHERE c.customerCompanyId = :customerCompanyId AND c.myCompanyId = :myCompanyId");
+        q.setParameter("customerCompanyId", senderCompanyId);
+        q.setParameter("myCompanyId", receiverCompanyId);
+
+        if (q.getResultList().isEmpty()) {
+            System.out.println("Here");
+            CustomerAccount newCustomer = new CustomerAccount();
+            newCustomer.setCustomerCompanyId(senderCompanyId);
+            newCustomer.setMyCompanyId(receiverCompanyId);
+            newCustomer.setKeyAccount(false);
+            List<ServiceQuotation> quotations = new ArrayList<>();
+            newCustomer.setServiceQuotationList(quotations);
+
+            em.persist(newCustomer);
+            em.flush();
+            System.out.println("Flush here");
+            return newCustomer.getCustomerAccountId();
+        }
+        else{
+            CustomerAccount existAcc = (CustomerAccount)q.getSingleResult();
+            return existAcc.getCustomerAccountId();
+        }
 
     }
 
@@ -141,12 +179,13 @@ public class QuotationManagementSessionBean {
 
         return serviceQuotation.getQuotationId();
     }
-    
-    public List<ServiceQuotation> viewAllQuotationsSent(Integer myCompanyId){
+
+    public List<ServiceQuotation> viewAllQuotationsSent(Integer myCompanyId) {
         Query q = em.createQuery("SELECT s FROM ServiceQuotation s WHERE s.receiverCompanyId = :receiverCompanyId AND (s.status =2 OR s.status =3 OR s.status =4 OR s.status =5)").setParameter("receiverCompanyId", myCompanyId);
         return (List<ServiceQuotation>) q.getResultList();
     }
-    public List<ServiceQuotation> viewAllQuotationsReceived(Integer myCompanyId){
+
+    public List<ServiceQuotation> viewAllQuotationsReceived(Integer myCompanyId) {
         Query q = em.createQuery("SELECT s FROM ServiceQuotation s WHERE s.senderCompanyId = :senderCompanyId AND (s.status =2 OR s.status =3 OR s.status =4 OR s.status =5)").setParameter("senderCompanyId", myCompanyId);
         return (List<ServiceQuotation>) q.getResultList();
     }
