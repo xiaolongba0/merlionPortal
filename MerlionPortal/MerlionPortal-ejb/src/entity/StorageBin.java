@@ -39,7 +39,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "StorageBin.findByBinName", query = "SELECT s FROM StorageBin s WHERE s.binName = :binName"),
     @NamedQuery(name = "StorageBin.findByBinType", query = "SELECT s FROM StorageBin s WHERE s.binType = :binType"),
     @NamedQuery(name = "StorageBin.findByMaxQuantity", query = "SELECT s FROM StorageBin s WHERE s.maxQuantity = :maxQuantity"),
-    @NamedQuery(name = "StorageBin.findByMaxWeight", query = "SELECT s FROM StorageBin s WHERE s.maxWeight = :maxWeight")})
+    @NamedQuery(name = "StorageBin.findByMaxWeight", query = "SELECT s FROM StorageBin s WHERE s.maxWeight = :maxWeight"),
+    @NamedQuery(name = "StorageBin.findByInuseSpace", query = "SELECT s FROM StorageBin s WHERE s.inuseSpace = :inuseSpace"),
+    @NamedQuery(name = "StorageBin.findByReservedSpace", query = "SELECT s FROM StorageBin s WHERE s.reservedSpace = :reservedSpace"),
+    @NamedQuery(name = "StorageBin.findByAvailableSpace", query = "SELECT s FROM StorageBin s WHERE s.availableSpace = :availableSpace")})
 public class StorageBin implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -61,6 +64,12 @@ public class StorageBin implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "maxWeight")
     private Double maxWeight;
+    @Column(name = "inuseSpace")
+    private Integer inuseSpace;
+    @Column(name = "reservedSpace")
+    private Integer reservedSpace;
+    @Column(name = "availableSpace")
+    private Integer availableSpace;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "storageBin")
     private List<Stock> stockList;
     @JoinColumn(name = "warehouseZone", referencedColumnName = "warehouseZoneId")
@@ -120,6 +129,30 @@ public class StorageBin implements Serializable {
 
     public void setMaxWeight(Double maxWeight) {
         this.maxWeight = maxWeight;
+    }
+
+    public Integer getInuseSpace() {
+        return inuseSpace;
+    }
+
+    public void setInuseSpace(Integer inuseSpace) {
+        this.inuseSpace = inuseSpace;
+    }
+
+    public Integer getReservedSpace() {
+        return reservedSpace;
+    }
+
+    public void setReservedSpace(Integer reservedSpace) {
+        this.reservedSpace = reservedSpace;
+    }
+
+    public Integer getAvailableSpace() {
+        return availableSpace;
+    }
+
+    public void setAvailableSpace(Integer availableSpace) {
+        this.availableSpace = availableSpace;
     }
 
     @XmlTransient
