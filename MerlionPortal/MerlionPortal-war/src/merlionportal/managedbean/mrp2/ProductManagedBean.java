@@ -52,6 +52,7 @@ private Product product;
     private String componentCurrency;
     private Double componentCost;
     private Integer componentLeadTime;
+    private Integer componentOrderQuantity;
 
     private Integer supplierCompanyId;
     private String supplierContactPerson;
@@ -196,6 +197,14 @@ private Product product;
     public void setComponentLeadTime(Integer componentLeadTime) {
         this.componentLeadTime = componentLeadTime;
     }
+    
+    public Integer getComponentOrderQuantity() {
+        return componentOrderQuantity;
+    }
+
+    public void setComponentOrderQuantity(Integer componentOrderQuantity) {
+        this.componentOrderQuantity = componentOrderQuantity;
+    }
 
     public Integer getSupplierCompanyId() {
         return supplierCompanyId;
@@ -290,7 +299,7 @@ private Product product;
 
         try {
             int pdtTempId = productId.intValue();
-            newComponentId = productSessionBean.addNewComponent(componentName, componentDescription, componentQuantity, componentCurrency, componentCost, componentLeadTime, supplierCompanyId, supplierContactPerson, supplierContactNumber, supplierContactEmail, companyId, pdtTempId);
+            newComponentId = productSessionBean.addNewComponent(componentName, componentDescription, componentQuantity, componentCurrency, componentCost, componentLeadTime, componentOrderQuantity, supplierCompanyId, supplierContactPerson, supplierContactNumber, supplierContactEmail, companyId, pdtTempId);
              FacesMessage msg = new FacesMessage("Component added successfully");
              FacesContext.getCurrentInstance().addMessage(null, msg);
             this.clearAllComponentFields();
@@ -316,6 +325,7 @@ private Product product;
         componentCurrency = null;
         componentCost = null;
         componentLeadTime = null;
+        componentOrderQuantity = null;
         supplierCompanyId = null;
         supplierContactPerson = null;
         supplierContactNumber = null;

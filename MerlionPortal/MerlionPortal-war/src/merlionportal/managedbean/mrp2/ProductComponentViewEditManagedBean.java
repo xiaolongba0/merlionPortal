@@ -46,6 +46,7 @@ public class ProductComponentViewEditManagedBean {
     private String currency;
     private Double cost;
     private Integer leadTime;
+    private Integer orderQuantity;
     private int supplierCompanyId;
     private String supplierContactPerson;
     private String supplierContactNumber;
@@ -189,6 +190,15 @@ public class ProductComponentViewEditManagedBean {
         int leadTimeTemp = leadTime.intValue();
         this.leadTime = leadTimeTemp;
     }
+    
+        public Integer getOrderQuantity() {
+        return orderQuantity;
+    }
+
+     public void setOrderQuantity(Integer orderQuantity) {
+        this.orderQuantity = orderQuantity;
+    }
+    
 
     public int getSupplierCompanyId() {
         return supplierCompanyId;
@@ -246,7 +256,7 @@ public class ProductComponentViewEditManagedBean {
         
         Component component = new Component();
         component = (Component) event.getObject();
-        productSessionBean.editComponent(component.getComponentName(), component.getDescription(), component.getCost(), component.getCurrency(), component.getQuantity(), component.getLeadTime(), component.getSupplierCompanyId(), component.getSupplierContactPerson(), component.getSupplierContactNumber(), component.getSupplierContactEmail(), companyId, productId, component.getComponentId());
+        productSessionBean.editComponent(component.getComponentName(), component.getDescription(), component.getCost(), component.getCurrency(), component.getQuantity(), component.getLeadTime(), component.getOrderQuantity(), component.getSupplierCompanyId(), component.getSupplierContactPerson(), component.getSupplierContactNumber(), component.getSupplierContactEmail(), companyId, productId, component.getComponentId());
        FacesMessage msg = new FacesMessage("Component Edited", String.valueOf(component.getComponentId()));
        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
