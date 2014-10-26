@@ -71,7 +71,6 @@ public class RegisterCompanyManagedBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email exist", "This is a registered Email, please use another email to register!"));
 
         }
-        systemLogSB.recordSystemLog(userId, "CI user registered new company");
     }
 
     private void clearAllFields() {
