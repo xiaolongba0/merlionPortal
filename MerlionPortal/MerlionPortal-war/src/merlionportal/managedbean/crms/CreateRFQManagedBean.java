@@ -46,6 +46,7 @@ public class CreateRFQManagedBean {
     private String destination;
     private Date today;
     private Integer quantityPerMonth;
+    private String storageType;
 
     private ServiceCatalog selectedService;
 
@@ -80,7 +81,7 @@ public class CreateRFQManagedBean {
     }
 
     public void createRequestForQuotation() {
-        int result = quotationManagementSB.createRequestForQuotation(selectedService.getServiceCatalogId(), selectedService.getServiceType(), startDate, endDate, companyId, selectedService.getCompanyId(), origin, destination, quantityPerMonth);
+        int result = quotationManagementSB.createRequestForQuotation(selectedService.getServiceCatalogId(), selectedService.getServiceType(), startDate, endDate, companyId, selectedService.getCompanyId(), origin, destination, quantityPerMonth, storageType);
         if (result > 0) {
             this.clearAllField();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Request for quotation is sent"));
@@ -96,6 +97,7 @@ public class CreateRFQManagedBean {
         origin = null;
         destination = null;
         quantityPerMonth = null;
+        storageType = null;
     }
 
     public Integer getUserId() {
@@ -184,6 +186,14 @@ public class CreateRFQManagedBean {
 
     public void setQuantityPerMonth(Integer quantityPerMonth) {
         this.quantityPerMonth = quantityPerMonth;
+    }
+
+    public String getStorageType() {
+        return storageType;
+    }
+
+    public void setStorageType(String storageType) {
+        this.storageType = storageType;
     }
 
 }

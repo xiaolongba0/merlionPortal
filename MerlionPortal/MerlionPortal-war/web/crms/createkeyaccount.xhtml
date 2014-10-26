@@ -55,18 +55,52 @@
         </ui:define>
 
         <ui:define name="right">
-            <div class="system-banner mrp-system-banner"></div>
-            <h2 class="system-welcome">Welcome to CRMS system!</h2>
+             <p:panel id="basic" header="Create Service Contract" style="margin-bottom:20px">
+                <h:form id="form">
+                    <p:ajaxStatus style="width:16px;height:16px;">
+                        <f:facet name="start">
+                            <h:graphicImage value="/img/load.gif" />
+                        </f:facet>
+                        <f:facet name="complete">
+                            <h:outputText value="" />
+                        </f:facet>
+                    </p:ajaxStatus>
+                    <h:panelGrid columns="3">
 
-            <div class="system-description">CRMS empowers your organization to:
-                <ol>
-                    <li>Close more deals by strengthening your customer relations with the most comprehensive suite of Customer Relationship Management Applications.</li>
-                    <li>Facilitates the information exchange among different companies</li>
-                    <li>Efficiently manage service contracts and service orders</li>
-                    <li>Have a bird eye’s view of  all customer interactions and transactions</li>
-                    <li>Perform key account management to identify your best customers</li>
-                </ol>
-            </div>
+                        <p:outputLabel for="customer" style="font-weight: bold" value="Search a Customer "/>
+
+                        <p:inputText id="customer" required="true" styleClass="form-control" requiredMessage="A valid customer is required." value="#{createKeyAccountManagedBean.customerId}" />
+
+                        <p:commandButton icon="ui-icon-search" value="Search" actionListener="#{createKeyAccountManagedBean.searchAValidCustomer()}" ajax="ture" update=":form2" />
+
+                    </h:panelGrid>
+                </h:form>
+                <h:form id="form2">
+                    <h:panelGrid id="create" columns="3">
+                        <c:if test="#{createKeyAccountManagedBean.companyName ne null}" >
+
+                            <h:outputLabel style="font-weight: bold" value="Customer Company ID "/><p:spacer width="40" height="20" />
+                            <h:outputLabel value="#{createKeyAccountManagedBean.customerId}"/>
+                            <h:outputLabel style="font-weight: bold" value="Customer Company Name "/><p:spacer width="40" height="20" />
+                            <h:outputLabel value="#{createKeyAccountManagedBean.companyName}"/>
+
+
+                            <h:outputLabel for="conditionText" style="font-weight: bold" value="Remarks * "/><p:spacer width="20" height="20" />
+                            <p:inputTextarea id="conditionText" styleClass="form-control" required="true" requiredMessage="Remarks is required." rows="10" cols="60" counter="display" maxlength="1999" counterTemplate="{0} characters remaining." autoResize="true" value="#{createKeyAccountManagedBean.remarks}" />
+
+
+                            <p:spacer width="20" height="20" /><p:spacer width="20" height="20" /><h:outputText id="display" />
+
+                            <p:commandButton value="Create Key Account" icon="ui-icon-check" actionListener="#{createKeyAccountManagedBean.createKeyAccount()}" ajax="true" update="form2" />
+                        </c:if>
+
+                    </h:panelGrid>
+
+                    <p:messages id="messages" autoUpdate="true" showDetail="true" closable="true" />
+
+                </h:form>
+
+            </p:panel>
         </ui:define>
     </ui:composition>
 </html>

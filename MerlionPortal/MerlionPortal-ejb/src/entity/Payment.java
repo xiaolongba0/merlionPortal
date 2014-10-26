@@ -7,6 +7,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -60,16 +61,15 @@ public class Payment implements Serializable {
     @Size(max = 255)
     @Column(name = "accountInfo")
     private String accountInfo;
-    @Size(max = 45)
     @Column(name = "creditCardNo")
-    private String creditCardNo;
+    private BigInteger creditCardNo;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "amount")
     private Double amount;
     @Column(name = "swiftCode")
     private Integer swiftCode;
     @Column(name = "checkNumber")
-    private Integer checkNumber;
+    private BigInteger checkNumber;
     @JoinColumn(name = "paymentId", referencedColumnName = "invoiceId", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private ServiceInvoice serviceInvoice;
@@ -121,11 +121,11 @@ public class Payment implements Serializable {
         this.accountInfo = accountInfo;
     }
 
-    public String getCreditCardNo() {
+    public BigInteger getCreditCardNo() {
         return creditCardNo;
     }
 
-    public void setCreditCardNo(String creditCardNo) {
+    public void setCreditCardNo(BigInteger creditCardNo) {
         this.creditCardNo = creditCardNo;
     }
 
@@ -145,11 +145,11 @@ public class Payment implements Serializable {
         this.swiftCode = swiftCode;
     }
 
-    public Integer getCheckNumber() {
+    public BigInteger getCheckNumber() {
         return checkNumber;
     }
 
-    public void setCheckNumber(Integer checkNumber) {
+    public void setCheckNumber(BigInteger checkNumber) {
         this.checkNumber = checkNumber;
     }
 

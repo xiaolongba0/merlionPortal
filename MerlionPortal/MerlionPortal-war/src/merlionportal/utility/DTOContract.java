@@ -32,13 +32,11 @@ public class DTOContract implements Serializable{
     private Double price;
     private String origin;
     private String destination;
-    private String warehouseId;
-    private String storageZoneId;
     private Integer contactPersonId;
     private String contactPersonName;
     private String contactPersonNumber;
     private String reasonModification;
-    private String storageBinId;
+    private String storageType;
     private String agreedQuantity;
 
     public Integer getContractId() {
@@ -153,21 +151,6 @@ public class DTOContract implements Serializable{
         this.destination = destination;
     }
 
-    public String getWarehouseId() {
-        return warehouseId;
-    }
-
-    public void setWarehouseId(String warehouseId) {
-        this.warehouseId = warehouseId;
-    }
-
-    public String getStorageZoneId() {
-        return storageZoneId;
-    }
-
-    public void setStorageZoneId(String storageZoneId) {
-        this.storageZoneId = storageZoneId;
-    }
 
     public Integer getContactPersonId() {
         return contactPersonId;
@@ -201,20 +184,20 @@ public class DTOContract implements Serializable{
         this.reasonModification = reasonModification;
     }
 
-    public String getStorageBinId() {
-        return storageBinId;
-    }
-
-    public void setStorageBinId(String storageBinId) {
-        this.storageBinId = storageBinId;
-    }
-
     public String getAgreedQuantity() {
         return agreedQuantity;
     }
 
     public void setAgreedQuantity(String agreedQuantity) {
         this.agreedQuantity = agreedQuantity;
+    }
+
+    public String getStorageType() {
+        return storageType;
+    }
+
+    public void setStorageType(String storageType) {
+        this.storageType = storageType;
     }
   
 }

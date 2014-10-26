@@ -7,6 +7,7 @@ package merlionportal.managedbean.crms;
 
 import entity.ServiceInvoice;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -45,10 +46,12 @@ public class ViewInvoiceDetailManagedBean {
     private int method;
     private Date receivedDate;
     private String accountInfo;
-    private String creditCardNo;
+    private BigInteger creditCardNo;
     private Double amount;
     private Integer swiftcode;
-    private Integer checkNumber;
+    private BigInteger checkNumber;
+
+    private String methodText;
 
     public ViewInvoiceDetailManagedBean() {
     }
@@ -100,8 +103,9 @@ public class ViewInvoiceDetailManagedBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
         }
     }
-    public void onMethodChange(){
-        System.out.println("Method: "+method);
+
+    public void onMethodChange() {
+        System.out.println("Method: " + method);
     }
 
     private void getStatusText(int statusNumber) {
@@ -228,14 +232,6 @@ public class ViewInvoiceDetailManagedBean {
         this.accountInfo = accountInfo;
     }
 
-    public String getCreditCardNo() {
-        return creditCardNo;
-    }
-
-    public void setCreditCardNo(String creditCardNo) {
-        this.creditCardNo = creditCardNo;
-    }
-
     public Double getAmount() {
         return amount;
     }
@@ -252,12 +248,38 @@ public class ViewInvoiceDetailManagedBean {
         this.swiftcode = swiftcode;
     }
 
-    public Integer getCheckNumber() {
+    public BigInteger getCreditCardNo() {
+        return creditCardNo;
+    }
+
+    public void setCreditCardNo(BigInteger creditCardNo) {
+        this.creditCardNo = creditCardNo;
+    }
+
+    public BigInteger getCheckNumber() {
         return checkNumber;
     }
 
-    public void setCheckNumber(Integer checkNumber) {
+    public void setCheckNumber(BigInteger checkNumber) {
         this.checkNumber = checkNumber;
+    }
+
+    public String getMethodText() {
+        if (selectedInvoice.getPayment().getMethod() == 1) {
+            methodText = "Telegraphic Transfer";
+        }
+        if (selectedInvoice.getPayment().getMethod() == 2) {
+            methodText = "Credit Card";
+        }
+        if (selectedInvoice.getPayment().getMethod() == 3) {
+            methodText = "Paper Check";
+        }
+
+        return methodText;
+    }
+
+    public void setMethodText(String methodText) {
+        this.methodText = methodText;
     }
 
 }

@@ -98,12 +98,9 @@
                             <h:outputText value="#{viewContractManagedBean.selectedContract.destination}" />
                         </c:if>
                         <c:if test="#{viewContractManagedBean.selectedContract.serviceType eq 'Warehouse'}" >
-                            <p:outputLabel value="Warehouse ID:" /><p:spacer width="20" height="20" />
-                            <h:outputText value="#{viewContractManagedBean.selectedContract.warehouseId}" />
-                            <p:outputLabel value="Storage Zone ID:" /><p:spacer width="20" height="20" />
-                            <h:outputText value="#{viewContractManagedBean.selectedContract.storageZoneId}" />
-                            <p:outputLabel value="Storage Bin ID:" /><p:spacer width="20" height="20" />
-                            <h:outputText value="#{viewContractManagedBean.selectedContract.storageBinId}" />
+                            <p:outputLabel value="Storage Type:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewContractManagedBean.selectedContract.storageType}" />
+                            
                         </c:if>
 
 

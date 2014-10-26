@@ -193,7 +193,32 @@
 
             <h:form>
                 <p:dialog header="View Payment Information" widgetVar="dlg3" minHeight="40">
-                    <h:outputText value="Resistance to PrimeFaces is futile!" />
+                    <p:outputLabel value="Payment method:" /><p:spacer width="20" height="20" />
+                    <h:outputText value="#{viewInvoiceDetailManagedBean.methodText}" />
+
+                    <c:if test="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.method eq 1}" >
+                        <p:outputLabel value="Swift Code:" /> <p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.swiftCode}" />
+                        <p:outputLabel value="Account Info:" /> <p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.accountInfo}" />
+                    </c:if>
+                    
+                    <c:if test="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.method eq 2}" >
+                        <p:outputLabel value="Check Number:" /> <p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.checkNumber}" />
+                    </c:if>
+
+                    <c:if test="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.method eq 3}" >
+                        <p:outputLabel value="Credit Card Number:" /> <p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.creditCardNo}" />
+                    </c:if>
+
+
+                    <p:outputLabel value="Amount:" /> <p:spacer width="20" height="20" />
+                    <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.amount}" />
+                    <p:outputLabel value="Expected Receive Date:" /> <p:spacer width="20" height="20" />
+                    <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.receiveDate}" />
+
                 </p:dialog>
             </h:form>
 

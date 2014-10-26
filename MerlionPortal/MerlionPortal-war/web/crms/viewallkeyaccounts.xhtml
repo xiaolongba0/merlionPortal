@@ -1,0 +1,164 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="View All Key Accounts" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <h:form id="formMain">
+                <p:menu>
+                    <p:submenu label="CRMS HOME" styleClass="display:block">
+                        <p:menuitem value="CRMS Home" url="crmsindex.xhtml"/>     
+                        <p:menuitem value="Service Yellow Pages" url="serviceyellowpages.xhtml"/>
+                    </p:submenu>
+                    <p:submenu label="Service Catalog Management" styleClass="display:block">
+                        <p:menuitem value="Create New Service" url="createservice.xhtml" />
+                        <p:menuitem value="View All Services" url="viewcompanyservices.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Quotation Management" styleClass="display:block">
+                        <p:menuitem value="View All Requests" url="viewallrequests.xhtml" />
+                        <p:menuitem value="View All Quotations" url="viewallquotations.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Contract Management" styleClass="display:block">
+                        <p:menuitem value="Create Service Contract" url="createservicecontract.xhtml" />
+                        <p:menuitem value="View All Contracts" url="viewallcontracts.xhtml" />
+                        <p:menuitem value="Renew Contracts" url="renewservicecontract.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Order Management" styleClass="display:block">
+                        <p:menuitem value="Create Service PO" url="createservicepo.xhtml" />
+                        <p:menuitem value="View All Orders" url="viewallservicepos.xhtml" />
+                        <p:menuitem value="View All Invoices" url="viewallinvoices.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Key Account Management" styleClass="display:block">
+                        <p:menuitem value="View Order Statistics" url="vieworderstatistics.xhtml" />
+                        <p:menuitem value="Create Key Account" url="createkeyaccount.xhtml" />
+                        <p:menuitem value="View All Key Accounts" url="viewallkeyaccounts.xhtml" />
+                    </p:submenu>
+                </p:menu>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">
+            <h:form id="form">
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start">
+                        <h:graphicImage value="/img/load.gif" />
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:panel  header="Key Accounts"  style="margin-bottom:20px">
+                    <p:dataTable var="account" value="#{viewAllKeyAccountsManagedBean.keyAccounts}" widgetVar="keyAccount" rowKey="#{account.customerAccountId}"
+                                 emptyMessage="No key accounts found with given criteria" 
+                                 filteredValue="#{viewAllKeyAccountsManagedBean.filteredAccount}" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="20,50,100">
+
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Search all fields:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('keyAccount').filter()" style="width:150px" placeholder="Enter keyword"/>
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:column filterBy="#{account.customerCompanyId}" headerText="Customer Company ID" filterMatchMode="contains">
+                            <h:outputText value="#{account.customerCompanyId}" />
+                        </p:column>
+                        <p:column  headerText="View" width="150" >
+                            <p:commandButton action="#{viewAllKeyAccountsManagedBean.viewAKeyAccount(account)}" update=":form:viewDetail" oncomplete="toggleViewModal();" icon="ui-icon-search"/>
+                        </p:column>
+
+                        <p:column  headerText="Update" width="150" >
+                            <p:commandButton action="#{viewAllKeyAccountsManagedBean.updateAKeyAccount(account)}" update=":form2:updateDetail" oncomplete="toggleUpdateModal();" icon="ui-icon-pencil" />
+                        </p:column>
+
+
+                        <p:column  headerText="Delete" width="150" >
+                            <p:commandButton action="#{viewAllKeyAccountsManagedBean.deleteAKeyAccount(account)}" update=":form"  icon="ui-icon-trash">
+                                <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this key account?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                </p:panel>
+
+                <div id="viewAccount" class="modal fade">
+                    <div class="modal-dialog">
+
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 class="modal-title">Key Account Detail</h2>
+                            </div>
+                            <div id="body" class="modal-body">
+                                <h:panelGrid id="viewDetail" columns="3">
+                                    <h:outputText value="Customer Company ID :"/><p:spacer width="20" height="20" />
+                                    <h:outputText value="#{viewAllKeyAccountsManagedBean.seletedAccount.customerCompanyId}"/>
+                                    <h:outputText value="Remarks :" /><p:spacer width="20" height="20" />
+                                    <h:outputText value="#{viewAllKeyAccountsManagedBean.seletedAccount.remarks}" /> 
+                                </h:panelGrid>
+                            </div>
+                            <div class="modal-footer">
+                                <h:commandButton value="Close" styleClass="btn btn-warning" pt:data-dismiss="modal"></h:commandButton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+            <h:form id="form2" >
+                <div id="updateAccount" class="modal fade">
+                    <div class="modal-dialog">
+
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 class="modal-title">Key Account Detail</h2>
+                            </div>
+                            <div id="body" class="modal-body">
+                                <h:panelGrid id="updateDetail" columns="3">
+                                    <h:outputText value="Customer Company ID :"/><p:spacer width="20" height="20" />
+                                    <h:outputText value="#{viewAllKeyAccountsManagedBean.seletedAccount.customerCompanyId}"/>
+                                    <h:outputText value="Remarks :" /><p:spacer width="20" height="20" />
+                                    <h:outputText value="#{viewAllKeyAccountsManagedBean.seletedAccount.remarks}" /> 
+                                    <h:outputText value="Revised Remarks :" /><p:spacer width="20" height="20" />
+                                    <p:inputTextarea value="#{viewAllKeyAccountsManagedBean.newRemarks}" rows="5" cols="50" /> 
+                                </h:panelGrid>
+                            </div>
+                            <div class="modal-footer">
+                                <p:commandButton value="Update" styleClass="btn btn-success"  action="#{viewAllKeyAccountsManagedBean.updateKeyAccountDetail()}" ajax="ture" update="form2 form" />
+                                <p:commandButton value="Close" styleClass="btn btn-warning" pt:data-dismiss="modal"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+            <script type="text/javascript">
+                function toggleUpdateModal() {
+                    $("#updateAccount").modal('show');
+                }
+                function toggleViewModal() {
+                    $("#viewAccount").modal('show');
+                }
+            </script>
+        </ui:define>
+    </ui:composition>
+</html>

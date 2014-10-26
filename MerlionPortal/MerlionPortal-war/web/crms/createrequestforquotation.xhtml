@@ -98,10 +98,13 @@
                             <p:outputLabel value="Destination *" /><p:spacer width="20" height="20" />
                             <p:inputText value="#{createRFQManagedBean.destination}" required="true" requiredMessage="Destination is required" />
                         </c:if>
+                        <c:if test="#{createRFQManagedBean.selectedService.serviceType eq 'Warehouse'}" >
+                            <p:outputLabel value="Storage Type *" style="width: 150px"  /><p:spacer width="20" height="20" />
+                            <p:inputText value="#{createRFQManagedBean.storageType}" required="true" requiredMessage="Storage Type is required" />
+                        </c:if>
+
                         <p:outputLabel value="Total Expected Quantity (TEU) *" style="width: 150px"  /><p:spacer width="20" height="20" />
                         <p:inputText value="#{createRFQManagedBean.quantityPerMonth}" required="true" requiredMessage="Expected Quantity is required" />
-
-
 
                     </h:panelGrid>
 

@@ -8,6 +8,7 @@ package merlionportal.crms.ordermanagementmodule;
 import entity.Payment;
 import entity.ServiceInvoice;
 import entity.ServicePO;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -140,7 +141,7 @@ public class POProcessingManagementSessionBean {
     //1. Telegrapgic Transfer
     //2. Credit Card
     //3. Paper Check
-    public boolean recordPaymentInfo(Integer invoiceId, Integer method, Date receivedDate, String accountInfo, String creditCardNo, Double amount, Integer swiftcode, Integer checkNumber) {
+    public boolean recordPaymentInfo(Integer invoiceId, Integer method, Date receivedDate, String accountInfo, BigInteger creditCardNo, Double amount, Integer swiftcode, BigInteger checkNumber) {
         Payment payment = new Payment();
         payment.setMethod(method);
         if (method == 1) {

@@ -100,6 +100,7 @@ public class ContractManagementSessionBean {
             contract.setContactPersonNumber(user.getContactNumber());
             contract.setServiceQuotation(quotation);
             contract.setConditionText(condition);
+            contract.setStorageType(quotation.getStorageType());
 
             List<ServicePO> servicePOList = new ArrayList<>();
             contract.setServicePOList(servicePOList);
@@ -198,9 +199,7 @@ public class ContractManagementSessionBean {
             renewContract.setPrice(contract.getPrice());
             renewContract.setServiceQuotation(contract.getServiceQuotation());
             renewContract.setServiceType(contract.getServiceType());
-            renewContract.setWarehouseId(contract.getWarehouseId());
-            renewContract.setStorageZoneId(contract.getStorageZoneId());
-            renewContract.setStorageBinId(contract.getStorageBinId());
+            renewContract.setStorageType(contract.getStorageType());
 
             renewContract.setCreatedDate(new Date());
             renewContract.setStartDate(startDate);

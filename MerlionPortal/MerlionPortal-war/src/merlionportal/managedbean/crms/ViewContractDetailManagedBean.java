@@ -126,20 +126,11 @@ public class ViewContractDetailManagedBean {
             dtoContract.setDestination(selectedContract.getDestination());
         }
 
-        dtoContract.setWarehouseId("N.A.");
-        if (selectedContract.getWarehouseId() != null) {
-            dtoContract.setWarehouseId(selectedContract.getWarehouseId().toString());
+        dtoContract.setStorageType("N.A.");
+        if (selectedContract.getStorageType()!= null) {
+            dtoContract.setStorageType(selectedContract.getStorageType());
         }
 
-        dtoContract.setStorageZoneId("N.A.");
-        if (selectedContract.getStorageZoneId() != null) {
-            dtoContract.setStorageZoneId(selectedContract.getStorageZoneId().toString());
-        }
-
-        dtoContract.setStorageBinId("N.A.");
-        if (selectedContract.getStorageBinId() != null) {
-            dtoContract.setStorageBinId(selectedContract.getStorageBinId().toString());
-        }
         dtoContract.setContactPersonName(selectedContract.getContactPersonName());
         dtoContract.setContactPersonNumber(selectedContract.getContactPersonNumber());
         dtoContract.setServiceType(selectedContract.getServiceType());

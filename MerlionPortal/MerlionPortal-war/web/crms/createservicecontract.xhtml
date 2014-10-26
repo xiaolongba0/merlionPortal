@@ -79,14 +79,14 @@
                     <h:panelGrid id="create" columns="3">
                         <c:if test="#{createServiceContractManagedBean.quotation ne null}" >
 
-                            <h:outputLabel style="font-weight: bold" value="Quotation ID* "/><p:spacer width="40" height="20" />
+                            <h:outputLabel style="font-weight: bold" value="Quotation ID "/><p:spacer width="40" height="20" />
                             <h:outputLabel value="#{createServiceContractManagedBean.quotation.quotationId}"/>
 
-                            <h:outputLabel style="font-weight: bold;color: red" value="Quotation Status* " /><p:spacer width="40" height="20" />
-                            <h:outputLabel value="#{createServiceContractManagedBean.quotation.status}" style="color: red"/>
+                            <h:outputLabel style="font-weight: bold;color: red" value="Quotation Status " /><p:spacer width="40" height="20" />
+                            <h:outputLabel value="Valid" style="color: red"/>
 
 
-                            <h:outputLabel style="font-weight: bold;color: red" value="Created Date* " /><p:spacer width="40" height="20" />
+                            <h:outputLabel style="font-weight: bold;color: red" value="Created Date " /><p:spacer width="40" height="20" />
                             <h:outputLabel value="#{createServiceContractManagedBean.quotation.createdDate}" style="color: red"/>
 
 
@@ -106,20 +106,20 @@
                             <h:outputLabel  value="#{createServiceContractManagedBean.partyBName}" />
 
 
-                            <h:outputLabel  style="font-weight: bold" value="Service Type * "/><p:spacer width="40" height="20" />
+                            <h:outputLabel  style="font-weight: bold" value="Service Type  "/><p:spacer width="40" height="20" />
                             <h:outputLabel  value="#{createServiceContractManagedBean.quotation.serviceType}" />
 
-                            <h:outputLabel  style="font-weight: bold" value="Start Date * "/><p:spacer width="40" height="20" />
+                            <h:outputLabel  style="font-weight: bold" value="Start Date  "/><p:spacer width="40" height="20" />
                             <h:outputLabel  value="#{createServiceContractManagedBean.quotation.startDate}" />
 
-                            <h:outputLabel  style="font-weight: bold" value="End Date * "/><p:spacer width="40" height="20" />
+                            <h:outputLabel  style="font-weight: bold" value="End Date  "/><p:spacer width="40" height="20" />
                             <h:outputLabel  value="#{createServiceContractManagedBean.quotation.endDate}" />
 
-                            <h:outputLabel  style="font-weight: bold" value="Price Per TEU * "/><p:spacer width="20" height="20" />
+                            <h:outputLabel  style="font-weight: bold" value="Price Per TEU  "/><p:spacer width="20" height="20" />
                             <h:outputLabel  value="#{createServiceContractManagedBean.quotation.price}" />
 
 
-                            <h:outputLabel  style="font-weight: bold" value="Discount Rate in % * "/><p:spacer width="20" height="20" />
+                            <h:outputLabel  style="font-weight: bold" value="Discount Rate in %  "/><p:spacer width="20" height="20" />
                             <h:outputLabel  value="#{createServiceContractManagedBean.quotation.discountRate}" />
 
 
@@ -128,22 +128,19 @@
 
 
                             <c:if test="#{createServiceContractManagedBean.quotation.serviceType eq 'Transportation'}" >
-                                <h:outputLabel  style="font-weight: bold" value="Origin * "/><p:spacer width="20" height="20" />
+                                <h:outputLabel  style="font-weight: bold" value="Origin "/><p:spacer width="20" height="20" />
                                 <h:outputLabel  value="#{createServiceContractManagedBean.quotation.origin}" />
 
 
-                                <h:outputLabel  style="font-weight: bold" value="Destination * "/><p:spacer width="20" height="20" />
+                                <h:outputLabel  style="font-weight: bold" value="Destination  "/><p:spacer width="20" height="20" />
                                 <h:outputLabel  value="#{createServiceContractManagedBean.quotation.destination}" />
 
                             </c:if>
 
                             <c:if test="#{createServiceContractManagedBean.quotation.serviceType eq 'Warehouse'}" >
-                                <h:outputLabel  style="font-weight: bold" value="Warehoue ID *" /><p:spacer width="20" height="20" />
-                                <h:outputLabel value="#{createServiceContractManagedBean.quotation.warehoueId}" />
-                                <h:outputLabel  style="font-weight: bold" value="Storage Zone ID *" /><p:spacer width="20" height="20" />
-                                <h:outputLabel value="#{createServiceContractManagedBean.quotation.storageZoneId}" />
-                                <h:outputLabel  style="font-weight: bold" value="Storage Bin ID *" /><p:spacer width="20" height="20" />
-                                <h:outputLabel value="#{createServiceContractManagedBean.quotation.storageBinId}" />
+                                <h:outputLabel  style="font-weight: bold" value="Storage Type " /><p:spacer width="20" height="20" />
+                                <h:outputLabel value="#{createServiceContractManagedBean.quotation.storageType}" />
+                                
                             </c:if>
 
                             <h:outputLabel for="conditionText" style="font-weight: bold" value="Terms &amp; Conditions * "/><p:spacer width="20" height="20" />
