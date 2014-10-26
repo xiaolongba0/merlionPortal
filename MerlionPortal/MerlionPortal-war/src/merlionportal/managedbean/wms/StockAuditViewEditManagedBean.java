@@ -41,9 +41,6 @@ public class StockAuditViewEditManagedBean {
     private StockAuditSessionBean sasb;
 
     @EJB
-    private ProductSessionBean psb;
-
-    @EJB
     private SystemLogSessionBean systemLogSB;
 
     @EJB
@@ -57,7 +54,13 @@ public class StockAuditViewEditManagedBean {
     private List<StockAudit> stockAudits;
     private String auditStatus;
     private Date scheduledDate;
-    private String auditType;
+    private StockAudit audit;
+
+    private Integer auditStockAuditId;
+    private Integer auditStorageBinId;
+    private Integer auditStaffId;
+    private Date auditScheduledDate;
+    private Integer auditExpectedQuantity;
 
     private List<Product> productList;
     private List<Warehouse> warehouses;
@@ -85,6 +88,16 @@ public class StockAuditViewEditManagedBean {
         warehouses = amsb.viewMyWarehouses(companyId);
     }
 
+    public void getStockAuditInfo(Integer stockAuditId) {
+        System.out.println("[In Managed Bean - getStockAuditInfo] ===============================: " + stockAuditId);
+        audit = sasb.getStockAudit(stockAuditId);
+        auditStockAuditId = audit.getStockAuditId();
+        auditStorageBinId = audit.getStorageBinId();
+        auditStaffId = audit.getStaffId();
+        auditScheduledDate = audit.getCreatedDate();
+        auditExpectedQuantity = audit.getExpectedQuantity();
+            
+}
     public void viewAllStockAudits() {
         System.out.println("[In Managed Bean - viewAllStockAudits] =============================== Warehouse ID : " + warehouseId);
 
@@ -125,15 +138,6 @@ public class StockAuditViewEditManagedBean {
         return auditStatus;
     }
 
-    public String getAuditType(int stockAuditType) {
-        if (stockAuditType == 1) {
-            auditType = "Count All";
-        }
-        if (stockAuditType == 2) {
-            auditType = "Random Sampling";
-        }
-        return auditType;
-    }
 
     public void deleteStockAudit(StockAudit stockAudit) {
         try {
@@ -157,7 +161,7 @@ public class StockAuditViewEditManagedBean {
         StockAudit stockAudit = new StockAudit();
         stockAudit = (StockAudit) event.getObject();
         System.out.println("[In Managed Bean - STOCK AUDIT ON ROW EDIT]=============================== ");
-        boolean result = sasb.editStockAudit(stockAudit.getStockAuditId(), stockAudit.getSupervisorId(), stockAudit.getStaffId(), stockAudit.getCreatedDate(),
+        boolean result = sasb.editStockAudit(stockAudit.getStockAuditId(),stockAudit.getStaffId(), stockAudit.getCreatedDate(),
                 stockAudit.getStockAuditStatus(), stockAudit.getRemarks());
         if (result) {
             systemLogSB.recordSystemLog(userId, "WMS edit stock audit");
@@ -177,14 +181,6 @@ public class StockAuditViewEditManagedBean {
      * Creates a new instance of StockAuditViewEditManagedBean
      */
     public StockAuditViewEditManagedBean() {
-    }
-
-    public ProductSessionBean getPsb() {
-        return psb;
-    }
-
-    public void setPsb(ProductSessionBean psb) {
-        this.psb = psb;
     }
 
     public Integer getCompanyId() {
@@ -273,6 +269,54 @@ public class StockAuditViewEditManagedBean {
 
     public void setWarehouseId(Integer warehouseId) {
         this.warehouseId = warehouseId;
+    }
+
+    public StockAudit getAudit() {
+        return audit;
+    }
+
+    public void setAudit(StockAudit audit) {
+        this.audit = audit;
+    }
+
+    public Integer getAuditStockAuditId() {
+        return auditStockAuditId;
+    }
+
+    public void setAuditStockAuditId(Integer auditStockAuditId) {
+        this.auditStockAuditId = auditStockAuditId;
+    }
+
+    public Integer getAuditStorageBinId() {
+        return auditStorageBinId;
+    }
+
+    public void setAuditStorageBinId(Integer auditStorageBinId) {
+        this.auditStorageBinId = auditStorageBinId;
+    }
+
+    public Integer getAuditStaffId() {
+        return auditStaffId;
+    }
+
+    public void setAuditStaffId(Integer auditStaffId) {
+        this.auditStaffId = auditStaffId;
+    }
+
+    public Date getAuditScheduledDate() {
+        return auditScheduledDate;
+    }
+
+    public void setAuditScheduledDate(Date auditScheduledDate) {
+        this.auditScheduledDate = auditScheduledDate;
+    }
+
+    public Integer getAuditExpectedQuantity() {
+        return auditExpectedQuantity;
+    }
+
+    public void setAuditExpectedQuantity(Integer auditExpectedQuantity) {
+        this.auditExpectedQuantity = auditExpectedQuantity;
     }
 
 }

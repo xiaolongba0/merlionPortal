@@ -67,7 +67,6 @@ public class CreateStockAuditManagedBean {
     private List<String> listStorageBinType;
     private List<StorageBin> storageBins;
 
-    private Integer supervisorId;
     private Integer staffId;
     private Date scheduledDate;
     private Date actualDate;
@@ -104,7 +103,7 @@ public class CreateStockAuditManagedBean {
     public void addStockAudit() {
         System.out.println("[IN MANAGED BEAN -- Create STOCK AUDIT MB] ====================== add stock audit, productId: " + productId);
 
-        boolean result = sasb.addStockAudit(storageBinId, supervisorId, staffId, scheduledDate, actualDate, stockAuditStatus,expectedQuantity, passQuantity, failQuantity, actualQuantity, remarks);
+        boolean result = sasb.addStockAudit(storageBinId, staffId, scheduledDate, actualDate, stockAuditStatus,expectedQuantity, passQuantity, failQuantity, actualQuantity, remarks);
         if (result) {
             clearAllFields();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success! Stock Audit Schedule Added!", ""));
@@ -120,7 +119,6 @@ public class CreateStockAuditManagedBean {
         warehouseZoneId = null;
         storageBinId = null;
         productId = null;
-        supervisorId = null;
         staffId = null;
         staffId = null;
         scheduledDate = null;
@@ -177,14 +175,6 @@ public class CreateStockAuditManagedBean {
 
     public void setProductList(List<Product> productList) {
         this.productList = productList;
-    }
-
-    public Integer getSupervisorId() {
-        return supervisorId;
-    }
-
-    public void setSupervisorId(Integer supervisorId) {
-        this.supervisorId = supervisorId;
     }
 
     public Integer getStaffId() {
