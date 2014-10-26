@@ -143,7 +143,7 @@ public class ProductViewEditManagedBean {
         this.productId = productId;
     }
 
-   public String getProductName() {
+    public String getProductName() {
         System.out.println("SEE if get productName");
         return productName;
     }

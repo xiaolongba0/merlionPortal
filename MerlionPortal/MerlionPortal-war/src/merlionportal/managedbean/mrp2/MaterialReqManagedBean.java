@@ -74,6 +74,7 @@ public class MaterialReqManagedBean {
     List<Mrp> mrps;
     Mrp mrp;
     List<String> testing;
+    Integer minOnHand;
 
     @PostConstruct
     public void init() {
@@ -114,8 +115,9 @@ public class MaterialReqManagedBean {
         grossReq5 = wk5Demand * quantity;
 
         mpsId = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mpsId");
-        mrps = materialReqPlanningSessionBean.addNewMrpList(productId, mpsId, wk1Demand, wk2Demand, wk3Demand, wk4Demand, wk5Demand);
-System.out.println("NOW!!!!!!!!!!!!! mrps.get1.getgrossReq: " + mrps.get(0).getScheduledRec1());
+        minOnHand = 100;
+        mrps = materialReqPlanningSessionBean.addNewMrpList(productId, mpsId, wk1Demand, wk2Demand, wk3Demand, wk4Demand, wk5Demand, minOnHand);
+
     }
 
     public MaterialReqManagedBean() {

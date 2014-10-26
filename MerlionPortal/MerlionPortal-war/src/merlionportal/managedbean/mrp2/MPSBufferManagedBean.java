@@ -51,7 +51,6 @@ public class MPSBufferManagedBean {
     int currentInv;
     int requiredDemand;
     int requiredAmt1;
-
     
     Integer productId;
 
@@ -110,6 +109,7 @@ public class MPSBufferManagedBean {
     public int getThisMonthDemand() {
         return thisMonthDemand;
     }
+
 
     public int getRequiredAmt1() {
         return requiredAmt1;

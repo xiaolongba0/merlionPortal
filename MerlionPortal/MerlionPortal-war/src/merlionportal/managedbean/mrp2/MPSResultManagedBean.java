@@ -77,7 +77,9 @@ public class MPSResultManagedBean {
     int wk5Demand;
     Integer fResultId;
     Integer mpsId;
-    int tempNum;
+    int tempNum;    
+ 
+
 
     @PostConstruct
     public void init() {
@@ -354,6 +356,7 @@ public class MPSResultManagedBean {
     }
 
     public String proceedToMaterialReq() {
+
         return ("materialreq");
     }
 
