@@ -43,7 +43,7 @@ public class StockAuditSessionBean {
     private StockAudit stockAuditTemp;
     private StockAudit stockAudit;
 
-    public boolean addStockAudit(Integer storageBinId, Integer supervisorId, Integer staffId, Date scheduledDate, Date actualDate,
+    public boolean addStockAudit(Integer storageBinId, Integer staffId, Date scheduledDate, Date actualDate,
             Integer stockAuditStatus, Integer expectedQuantity, Integer passQuantity, Integer failQuantity, Integer actualQuantity, String remarks) {
 
         // stockAuditStatus:
@@ -58,6 +58,7 @@ public class StockAuditSessionBean {
         actualQuantity = 0;
         stockAuditStatus = 0;
         expectedQuantity = 0;
+        remarks = "-";
         // expected quantity will be counted on the day stock audit is being carried out
         actualDate = null;
 
@@ -76,7 +77,6 @@ public class StockAuditSessionBean {
             stockAuditTemp = new StockAudit();
 
             stockAuditTemp.setStorageBinId(storageBinId);
-            stockAuditTemp.setSupervisorId(supervisorId);
             stockAuditTemp.setStaffId(staffId);
 
             stockAuditTemp.setStockAuditStatus(stockAuditStatus);
@@ -117,7 +117,7 @@ public class StockAuditSessionBean {
             StorageBin bin = new StorageBin();
             bin = allBins.get(i);
             Integer storageBinId = bin.getStorageBinId();
-            System.out.println(i + " In viewStockAudits, ALL BINS =============================" + storageBinId);
+//            System.out.println(i + " In viewStockAudits, ALL BINS =============================" + storageBinId);
             Query query = em.createNamedQuery("StockAudit.findByStorageBinId").setParameter("storageBinId", storageBinId);
 
             for (Object o : query.getResultList()) {
@@ -146,7 +146,7 @@ public class StockAuditSessionBean {
         }
     }
 
-    public boolean editStockAudit(Integer stockAuditId, Integer supervisorId, Integer staffId, Date scheduledDate,
+    public boolean editStockAudit(Integer stockAuditId, Integer staffId, Date scheduledDate,
             Integer stockAuditStatus, String remarks) {
 
         Query query = em.createNamedQuery("StockAudit.findByStockAuditId").setParameter("stockAuditId", stockAuditId);
@@ -156,10 +156,8 @@ public class StockAuditSessionBean {
 
         if (stockAudit != null) {
 
-            System.out.println("[IN EJB SASB, editStockAudit] ====================================== Supervisor ID: " + supervisorId);
-            stockAudit.setSupervisorId(supervisorId);
+            System.out.println("[IN EJB SASB, editStockAudit] ======================================");
             stockAudit.setStaffId(staffId);
-
             stockAudit.setStockAuditStatus(stockAuditStatus);
 
             stockAudit.setCreatedDate(scheduledDate);
@@ -208,6 +206,36 @@ public class StockAuditSessionBean {
         return allMyStockAudits;
     }
 
+    public boolean carryOutStockAudit(Integer stockAuditId, Integer stockAuditStatus, Integer passQuantity, Integer failQuantity, Integer actualQuantity, String remarks) {
+
+        Query query = em.createNamedQuery("StockAudit.findByStockAuditId").setParameter("stockAuditId", stockAuditId);
+        StockAudit stockAudit = (StockAudit) query.getSingleResult();
+
+        System.out.println("[IN EJB SASB, carryOutStockAudit] Stock Audit Status======================================" + stockAuditStatus);
+
+        if (stockAudit != null) {
+            
+            Date actualDate = new Date();
+            System.out.println("[IN EJB SASB, carryOutStockAudit] ======================================"+ actualDate);
+
+            //Stock Audit is completed
+            
+            stockAudit.setFailQuantity(failQuantity);
+            stockAudit.setPassQuantity(passQuantity);
+            stockAudit.setActualQuantity(actualQuantity);
+            stockAudit.setActualDate(actualDate);
+            stockAudit.setStockAuditStatus(stockAuditStatus);
+            
+            em.merge(stockAudit);
+            em.flush();
+            return true;
+
+        } else {
+            return false;
+        }
+
+    }
+
     public Boolean compareDate(Date scheduledDate) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -216,10 +244,31 @@ public class StockAuditSessionBean {
         System.out.println(sdf.format(todayDate));
         System.out.println(sdf.format(scheduledDate));
         System.out.println("Compare Dates===================" + todayDate.compareTo(scheduledDate));
-        
+
         if (todayDate.compareTo(scheduledDate) == 1) {
             return true;
         }
         return false;
+    }
+
+    public StockAudit getStockAudit(int stockAuditId) {
+        StockAudit audit = em.find(StockAudit.class, stockAuditId);
+
+        StorageBin bin = em.find(StorageBin.class, audit.getStorageBinId());
+        List<Stock> stockTemp = new ArrayList();
+        stockTemp = bin.getStockList();
+
+        Integer expectedQuantity;
+        if (!stockTemp.isEmpty()) {
+            expectedQuantity = rpsb.countStockInBin(stockTemp, 0, 0);
+            System.out.println("[IN EJB SASB, getStockAudit] ======================================: " + expectedQuantity);
+
+            audit.setExpectedQuantity(expectedQuantity);
+            em.merge(audit);
+            em.flush();
+
+        }
+
+        return audit;
     }
 }
