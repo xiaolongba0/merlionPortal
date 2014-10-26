@@ -33,10 +33,9 @@ public class MaterialReqPlanningSessionBean {
     Mrp mrp;
     ArrayList<Mrp> mrps;
 
-    public List<Mrp> addNewMrpList(Integer productId, Integer mpsId, int wk1Demand, int wk2Demand, int wk3Demand, int wk4Demand, int wk5Demand) {
+    public List<Mrp> addNewMrpList(Integer productId, Integer mpsId, int wk1Demand, int wk2Demand, int wk3Demand, int wk4Demand, int wk5Demand, int minOnHand) {
         Mps mps = entityManager.find(Mps.class, mpsId);
         productMRP = mps.getMRPList();
-        System.out.println("DDDDDDDDDDDDDDDDDDDDD: mrplistID : " + productMRP.getMrpListId());
         productMRP.setMrpDate(new Date());
         productMRP.setProductId(productId);
         mrps = new ArrayList<Mrp>();
@@ -78,7 +77,10 @@ public class MaterialReqPlanningSessionBean {
             int plannedOrder5;
             int leadTime;
             int initialOnHand;
+            int minOnHandtemp;
+            int orderQuantity = 1000;
 
+            minOnHandtemp = minOnHand * product.getComponentList().get(i).getQuantity();
             GrossReq1 = product.getComponentList().get(i).getQuantity() * wk1Demand;
             GrossReq2 = product.getComponentList().get(i).getQuantity() * wk2Demand;
             GrossReq3 = product.getComponentList().get(i).getQuantity() * wk3Demand;
@@ -117,40 +119,65 @@ public class MaterialReqPlanningSessionBean {
                 plannedRec1 = 0;
                 onHand1 = scheduledRec1 + initialOnHand - GrossReq1;
             } else {
-                plannedRec1 = 2000;
-                onHand1 = plannedRec1 + initialOnHand - GrossReq1;
+                plannedRec1 = 0;
+                onHand1 = initialOnHand - GrossReq1;
+                while (onHand1 < minOnHandtemp) {
+                    plannedRec1 = plannedRec1 + orderQuantity;
+                    onHand1 = onHand1 + orderQuantity;
+                }
+
             }
 
             if (leadTime > 1) {
                 plannedRec2 = 0;
                 onHand2 = scheduledRec2 + onHand1 - GrossReq2;
             } else {
-                plannedRec2 = 2000;
-                onHand2 = plannedRec2 + onHand1 - GrossReq2;
+
+                plannedRec2 = 0;
+                onHand2 = onHand1 - GrossReq2;
+                while (onHand2 < minOnHandtemp) {
+                    plannedRec2 = plannedRec2 + orderQuantity;
+                    onHand2 = onHand2 + orderQuantity;
+                }
             }
 
             if (leadTime > 2) {
                 plannedRec3 = 0;
                 onHand3 = scheduledRec3 + onHand2 - GrossReq3;
             } else {
-                plannedRec3 = 2000;
-                onHand3 = plannedRec3 + onHand2 - GrossReq3;
+
+                plannedRec3 = 0;
+                onHand3 = onHand2 - GrossReq3;
+                while (onHand3 < minOnHandtemp) {
+                    plannedRec3 = plannedRec3 + orderQuantity;
+                    onHand3 = onHand3 + orderQuantity;
+                }
             }
 
             if (leadTime > 3) {
                 plannedRec4 = 0;
                 onHand4 = scheduledRec4 + onHand3 - GrossReq4;
             } else {
-                plannedRec4 = 2000;
-                onHand4 = plannedRec4 + onHand3 - GrossReq4;
+                plannedRec4 = 0;
+                onHand4 = onHand3 - GrossReq4;
+                while (onHand4 < minOnHandtemp) {
+                    plannedRec4 = plannedRec4 + orderQuantity;
+                    onHand4 = onHand4 + orderQuantity;
+                }
+
             }
 
             if (leadTime > 4) {
                 plannedRec5 = 0;
                 onHand5 = scheduledRec5 + onHand4 - GrossReq5;
             } else {
-                plannedRec5 = 2000;
-                onHand5 = plannedRec5 + onHand4 - GrossReq5;
+                plannedRec5 = 0;
+                onHand5 = onHand4 - GrossReq5;
+                while (onHand5 < minOnHandtemp) {
+                    plannedRec5 = plannedRec5 + orderQuantity;
+                    onHand5 = onHand5 + orderQuantity;
+                }
+
             }
 
             if (leadTime == 0) {
@@ -159,32 +186,32 @@ public class MaterialReqPlanningSessionBean {
                 plannedOrder3 = plannedRec3;
                 plannedOrder4 = plannedRec4;
                 plannedOrder5 = plannedRec5;
-            } else if(leadTime == 1){
+            } else if (leadTime == 1) {
                 plannedOrder1 = plannedRec2;
                 plannedOrder2 = plannedRec3;
                 plannedOrder3 = plannedRec4;
                 plannedOrder4 = plannedRec5;
                 plannedOrder5 = 0;
-            }else if(leadTime == 2){
-                 plannedOrder1 = plannedRec3;
+            } else if (leadTime == 2) {
+                plannedOrder1 = plannedRec3;
                 plannedOrder2 = plannedRec4;
                 plannedOrder3 = plannedRec5;
                 plannedOrder4 = 0;
                 plannedOrder5 = 0;
-            }else if(leadTime == 3){
+            } else if (leadTime == 3) {
                 plannedOrder1 = plannedRec4;
                 plannedOrder2 = plannedRec5;
                 plannedOrder3 = 0;
                 plannedOrder4 = 0;
                 plannedOrder5 = 0;
-            }else if(leadTime == 4){
-                 plannedOrder1 = plannedRec5;
+            } else if (leadTime == 4) {
+                plannedOrder1 = plannedRec5;
                 plannedOrder2 = 0;
                 plannedOrder3 = 0;
                 plannedOrder4 = 0;
                 plannedOrder5 = 0;
-            }else{
-                 plannedOrder1 = 0;
+            } else {
+                plannedOrder1 = 0;
                 plannedOrder2 = 0;
                 plannedOrder3 = 0;
                 plannedOrder4 = 0;
@@ -221,14 +248,12 @@ public class MaterialReqPlanningSessionBean {
             entityManager.persist(mrp);
             entityManager.flush();
             mrps.add(mrp);
-            
-            System.out.println("GGGGGGGGGGGGGGGGgg:quantity " + product.getComponentList().get(i).getLeadTime());
+
         }
-        
+
         productMRP.setMrpList(mrps);
         entityManager.merge(productMRP);
         entityManager.flush();
-        System.out.println("NOWSession!!!!!!!!!!!!! mrps.get1.getgrossReq: " + mrps.get(0).getScheduledRec1());
         return mrps;
     }
 
