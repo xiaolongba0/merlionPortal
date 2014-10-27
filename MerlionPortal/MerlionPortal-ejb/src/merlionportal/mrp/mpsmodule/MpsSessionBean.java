@@ -59,9 +59,10 @@ public class MpsSessionBean {
        Mps mps = fResult.getMps();
        mps.setBuffer(buffer);
        mps.setDemand(demand);
-
+/*
       MRPList mrplist = new MRPList();
-      mps.setMRPList(mrplist);
+      mrplist.setMrpListId(mps.getMpsId());
+      mps.setMRPList(mrplist);*/
       
 
        entityManager.merge(mps);

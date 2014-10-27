@@ -34,7 +34,7 @@ public class MaterialReqPlanningSessionBean {
     ArrayList<Mrp> mrps;
 
     public List<Mrp> addNewMrpList(Integer productId, Integer mpsId, int wk1Demand, int wk2Demand, int wk3Demand, int wk4Demand, int wk5Demand, int minOnHand) {
-         Mps mps = entityManager.find(Mps.class, mpsId);
+        /*    Mps mps = entityManager.find(Mps.class, mpsId);
          productMRP = mps.getMRPList();
          productMRP.setMrpDate(new Date());
          productMRP.setProductId(productId);
@@ -42,10 +42,12 @@ public class MaterialReqPlanningSessionBean {
          productMRP.setMrpList(mrps);
          entityManager.merge(productMRP);
          entityManager.merge(mps);
-         entityManager.flush();
+         entityManager.flush();*/
 
-  /*      Mps mps = entityManager.find(Mps.class, mpsId);
+        Mps mps = entityManager.find(Mps.class, mpsId);
         productMRP = new MRPList();
+        productMRP.setMrpListId(mps.getMpsId());
+
         productMRP.setMrpDate(new Date());
         productMRP.setProductId(productId);
         productMRP.setMps(mps);
@@ -54,7 +56,7 @@ public class MaterialReqPlanningSessionBean {
         entityManager.persist(productMRP);
         mps.setMRPList(productMRP);
         entityManager.merge(mps);
-        entityManager.flush();*/
+        entityManager.flush();
 
         //draw out lead time
         product = entityManager.find(Product.class, productId);
