@@ -77,9 +77,8 @@ public class MPSResultManagedBean {
     int wk5Demand;
     Integer fResultId;
     Integer mpsId;
-    int tempNum;    
- 
-
+    int tempNum;
+    Integer minOnHand;
 
     @PostConstruct
     public void init() {
@@ -239,8 +238,16 @@ public class MPSResultManagedBean {
         fResultId = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("forecastResultID");
         mpsId = mpsSessionBean.storeMPS(buffer, requiredDemand, fResultId);
         System.out.println("RRRRRRRRRRRRR: mps id: " + mpsId);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mpsId",  mpsId);
-        
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mpsId", mpsId);
+
+    }
+
+    public void setMinOnHand(Integer minOnHand) {
+        this.minOnHand = minOnHand;
+    }
+
+    public Integer getMinOnHand() {
+        return minOnHand;
     }
 
     //intake string to display
@@ -356,7 +363,7 @@ public class MPSResultManagedBean {
     }
 
     public String proceedToMaterialReq() {
-
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("minOnHand", minOnHand);
         return ("materialreq");
     }
 

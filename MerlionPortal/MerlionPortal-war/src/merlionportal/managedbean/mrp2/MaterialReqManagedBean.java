@@ -115,13 +115,17 @@ public class MaterialReqManagedBean {
         grossReq5 = wk5Demand * quantity;
 
         mpsId = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mpsId");
-        minOnHand = 100;
+        minOnHand = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("minOnHand");
         mrps = materialReqPlanningSessionBean.addNewMrpList(productId, mpsId, wk1Demand, wk2Demand, wk3Demand, wk4Demand, wk5Demand, minOnHand);
 
     }
 
     public MaterialReqManagedBean() {
 
+    }
+    
+      public String backToMPSResult() {
+        return ("mpsresult");
     }
 
     //For testing passing a list only
@@ -139,9 +143,6 @@ public class MaterialReqManagedBean {
         return testing;
     }
 
-    public String backToMPSResult() {
-        return ("mpsresult");
-    }
 
     public int getWk1Demand() {
         return wk1Demand;
