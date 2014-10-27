@@ -127,6 +127,7 @@ public class WarehouseRequestManagerSessionBean {
                 Map<String, Integer> map1 = new HashMap<String, Integer>();
                 for (Object c : binList) {
                     StorageBin myBin = (StorageBin) c;
+                    map1.put(myBin.getBinName(), myBin.getStorageBinId());
 //                    if (this.checkStorageBinAvailability(quantity, volume, productId, storageType, myBin)) {
 //                        map1.put(myBin.getBinName(), myBin.getStorageBinId());
 //                    }
