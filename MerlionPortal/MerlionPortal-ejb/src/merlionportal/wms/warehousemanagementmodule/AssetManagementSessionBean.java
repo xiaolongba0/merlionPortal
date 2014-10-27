@@ -244,6 +244,15 @@ public class AssetManagementSessionBean {
             bin.setMaxQuantity(maxQuantity);
             bin.setMaxWeight(maxWeight);
             bin.setWarehouseZone(warehouseZone);
+
+            Integer inuseSpace = 0;
+            Integer availableSpace = maxQuantity;
+            Integer reservedSpace = 0;
+
+            bin.setInuseSpace(inuseSpace);
+            bin.setAvailableSpace(availableSpace);
+            bin.setReservedSpace(reservedSpace);
+
             warehouseZone.getStorageBinList().add(bin);
 
             stockList = new ArrayList<Stock>();
@@ -316,6 +325,28 @@ public class AssetManagementSessionBean {
 
     }
 
+    public boolean calculateBinSpace(StorageBin bin, Integer newQuantity, Integer reservedQuantity) {
+        Integer binAvailableSpace;
+        Integer binInUseSpace;
+        Integer binReservedSpace;
+
+        binInUseSpace = bin.getInuseSpace();
+        binAvailableSpace = bin.getAvailableSpace();
+        binReservedSpace = bin.getReservedSpace();
+
+        binInUseSpace = binInUseSpace + newQuantity;
+        binReservedSpace = binReservedSpace + reservedQuantity;
+        binAvailableSpace = binAvailableSpace - binInUseSpace - binReservedSpace;
+
+        if (binAvailableSpace >= 0) {
+            bin.setReservedSpace(binReservedSpace);
+            bin.setInuseSpace(binInUseSpace);
+            bin.setAvailableSpace(binAvailableSpace);
+            
+            return true;
+        }
+        return false;
+    }
 //    public List<String> listStorageBinTypes() {
 //        List<String> allStorageBinTypes = new ArrayList<>();
 //        System.out.println("In ASSET MANAGEMENT SESSION BEAN ================ LIST STORAGE BIN TYPES");
