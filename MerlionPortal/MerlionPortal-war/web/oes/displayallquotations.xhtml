@@ -82,9 +82,9 @@
                         <h:outputText value="#{quotation.quotationId}" />
                     </p:column>
                     <p:column  
-                        filterBy="#{quotation.customerId}" 
+                        filterBy="#{quotationManagedBean.viewCustomerName(quotation.customerId)}" 
                         filterMatchMode="exact" headerText="Customer" >
-                        <h:outputText value="#{quotation.customerId}" />
+                        <h:outputText value="#{quotationManagedBean.viewCustomerName(quotation.customerId)}" />
                     </p:column>
                     <p:column filterBy="#{quotationManagedBean.getqStatus(quotation.status)}" filterMatchMode="in" headerText="Status">
                         <f:facet name="filter">

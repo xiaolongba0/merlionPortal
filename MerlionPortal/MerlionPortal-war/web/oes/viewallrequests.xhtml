@@ -77,9 +77,9 @@
                         <h:outputText value="#{newRequest.quotationId}" />
                     </p:column>
                     <p:column  
-                        filterBy="#{newRequest.customerId}" 
+                        filterBy="#{quotationManagedBean.viewCustomerName(newRequest.customerId)}" 
                         filterMatchMode="exact" headerText="Customer" >
-                        <h:outputText value="#{newRequest.customerId}" />
+                        <h:outputText value="#{quotationManagedBean.viewCustomerName(newRequest.customerId)}" />
                     </p:column>
                     <p:column headerText="Create Date">
                         <h:outputText value="#{newRequest.createDate}" />
