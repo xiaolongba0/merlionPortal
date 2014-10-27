@@ -15,6 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.crms.ordermanagementmodule.POProcessingManagementSessionBean;
 import merlionportal.crms.ordermanagementmodule.ServicePOManagementSessionBean;
 
@@ -35,6 +36,8 @@ public class ViewServicePODetailManagedBean {
     UserAccountManagementSessionBean userAccountSB;
     @EJB
     POProcessingManagementSessionBean poProcessingSB;
+    @EJB
+    SystemLogSessionBean logSB;
 
     private Integer companyId;
     private Integer userId;
@@ -92,7 +95,7 @@ public class ViewServicePODetailManagedBean {
             price = selectedServicePO.getPrice();
             senderCompanyName = userAccountSB.getCompany(selectedServicePO.getSenderCompanyId()).getName();
             receiverCompanyName = userAccountSB.getCompany(selectedServicePO.getReceiverCompanyId()).getName();
-            
+
         }
 
     }
@@ -133,6 +136,8 @@ public class ViewServicePODetailManagedBean {
                     price = (volume2 * selectedServicePO.getContract().getPrice());
 
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PO is updated", ""));
+                    logSB.recordSystemLog(userId, "updated service po detail");
+
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
                 }
@@ -149,6 +154,8 @@ public class ViewServicePODetailManagedBean {
                     status = "PO Deleted";
                     compareStatus = 2;
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PO is marked as deleted", ""));
+                    logSB.recordSystemLog(userId, "deleted a service po");
+
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
                 }
@@ -167,6 +174,8 @@ public class ViewServicePODetailManagedBean {
                 compareStatus = 5;
                 status = "SO Waiting for fulfillment";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PO Hold is released", ""));
+                logSB.recordSystemLog(userId, "released a service po hold");
+
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
             }
@@ -182,6 +191,8 @@ public class ViewServicePODetailManagedBean {
                 compareStatus = 4;
                 status = "PO Rejected";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PO is rejected", ""));
+                logSB.recordSystemLog(userId, "rejected a service po");
+
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
             }
@@ -205,6 +216,8 @@ public class ViewServicePODetailManagedBean {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong, please go back to previous page"));
         }
+        logSB.recordSystemLog(userId, "peformed credit check");
+
     }
 
     public String generateInvoice() {

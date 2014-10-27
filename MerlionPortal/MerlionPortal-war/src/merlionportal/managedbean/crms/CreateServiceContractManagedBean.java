@@ -13,6 +13,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.crms.contractmanagementmodule.ContractManagementSessionBean;
 
 /**
@@ -28,6 +29,8 @@ public class CreateServiceContractManagedBean {
      */
     @EJB
     ContractManagementSessionBean contractManagementSB;
+    @EJB
+    SystemLogSessionBean logSB;
 
     private Integer companyId;
     private Integer userId;
@@ -71,6 +74,8 @@ public class CreateServiceContractManagedBean {
 
             int result = contractManagementSB.createTransportationServiceContract(quotationId, conditionText, userId);
             if (result > 0) {
+                logSB.recordSystemLog(userId, "created a transportation service contract");
+
                 this.clearAllFields();
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Transportation Service Contract created!", ""));
 
@@ -82,6 +87,7 @@ public class CreateServiceContractManagedBean {
             int result = contractManagementSB.createWarehouseServiceContract(quotationId, conditionText, userId);
             if (result > 0) {
                 this.clearAllFields();
+                logSB.recordSystemLog(userId, "created a warehouse service contract");
 
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Warehouse Service Contract created!", ""));
 

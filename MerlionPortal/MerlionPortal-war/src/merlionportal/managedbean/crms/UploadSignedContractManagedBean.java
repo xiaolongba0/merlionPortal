@@ -15,6 +15,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.crms.contractmanagementmodule.ContractManagementSessionBean;
 import org.primefaces.event.FileUploadEvent;
 
@@ -31,6 +32,8 @@ public class UploadSignedContractManagedBean {
      */
     @EJB
     ContractManagementSessionBean contractManagementSB;
+    @EJB
+    SystemLogSessionBean logSB;
 
     private Integer contractId;
 
@@ -67,11 +70,13 @@ public class UploadSignedContractManagedBean {
             InputStream inputStream = null;
             try {
                 inputStream = event.getFile().getInputstream();
-                byte[] bFile = new byte[inputStream. available()];
+                byte[] bFile = new byte[inputStream.available()];
                 inputStream.read(bFile);
                 int result = contractManagementSB.saveSignedContract(contractId, bFile);
                 if (result == 1) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded."));
+                    logSB.recordSystemLog(userId, "uploaded a signed contract");
+
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Snap!", "Something went very wrong"));
                 }

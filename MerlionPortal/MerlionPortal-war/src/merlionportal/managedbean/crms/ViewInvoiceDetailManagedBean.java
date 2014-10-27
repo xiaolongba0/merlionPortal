@@ -16,6 +16,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.crms.ordermanagementmodule.POProcessingManagementSessionBean;
 
 /**
@@ -36,6 +37,8 @@ public class ViewInvoiceDetailManagedBean {
     UserAccountManagementSessionBean userAccountSB;
     @EJB
     POProcessingManagementSessionBean poProcessingSB;
+    @EJB
+    SystemLogSessionBean logSB;
 
     private ServiceInvoice selectedInvoice;
     private String status;
@@ -92,6 +95,8 @@ public class ViewInvoiceDetailManagedBean {
             this.getStatusText(3);
             this.getOrderStatusText(8);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Payment Status updated", ""));
+            logSB.recordSystemLog(userId, "updated payment status");
+
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
         }
@@ -103,6 +108,8 @@ public class ViewInvoiceDetailManagedBean {
             compareStatus = 2;
             this.getStatusText(2);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Payment Information Recorded", ""));
+            logSB.recordSystemLog(userId, "recorded payment information");
+
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
         }

@@ -14,6 +14,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.crms.accountmanagementmodule.KeyAccountManagementSessionBean;
 
 /**
@@ -39,6 +40,8 @@ public class CreateKeyAccountManagedBean {
     KeyAccountManagementSessionBean keyAccountMSB;
     @EJB
     UserAccountManagementSessionBean uamsb;
+    @EJB
+    SystemLogSessionBean logSB;
 
     public CreateKeyAccountManagedBean() {
     }
@@ -83,6 +86,7 @@ public class CreateKeyAccountManagedBean {
         int result = keyAccountMSB.createKeyAccount(companyId, customerId, remarks);
         if (result == 1) {
             this.clearAllFields();
+            logSB.recordSystemLog(userId, "created a key account");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Key Account created!", "This customer is marked as key account"));
         } else if (result == 0) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "This Customer is already a key account holder!", ""));

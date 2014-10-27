@@ -14,6 +14,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.crms.accountmanagementmodule.KeyAccountManagementSessionBean;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
@@ -42,6 +43,9 @@ public class ViewStatisticResultManagedBean {
 
     @EJB
     KeyAccountManagementSessionBean keyAccountMSB;
+    @EJB
+    SystemLogSessionBean logSB;
+
     private HorizontalBarChartModel horizontalBarModel;
 
     public ViewStatisticResultManagedBean() {
@@ -75,6 +79,7 @@ public class ViewStatisticResultManagedBean {
         } else {
             createBarModels();
         }
+        logSB.recordSystemLog(userId, "viewed statistic result of order amount");
 
     }
 

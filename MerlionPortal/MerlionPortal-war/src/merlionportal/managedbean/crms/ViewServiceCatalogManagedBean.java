@@ -15,6 +15,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.crms.accountmanagementmodule.ServiceCatalogSessionBean;
 
 /**
@@ -30,6 +31,8 @@ public class ViewServiceCatalogManagedBean {
      */
     @EJB
     ServiceCatalogSessionBean serviceCatalogSB;
+    @EJB
+    SystemLogSessionBean logSB;
 
     private Integer companyId;
     private Integer userId;
@@ -65,6 +68,8 @@ public class ViewServiceCatalogManagedBean {
         int result = serviceCatalogSB.updateServiceCatalog(selectedService.getServiceCatalogId(), selectedService.getServiceName(), selectedService.getServiceDescription(), selectedService.getPublicView(), selectedService.getServiceType(), selectedService.getPricePerTEU());
         if (result > 0) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Service is updated"));
+            logSB.recordSystemLog(userId, "updated service catatlog");
+
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!", "Something went wrong"));
 
@@ -77,10 +82,13 @@ public class ViewServiceCatalogManagedBean {
         if (result == 1) {
             services.remove(passedInService);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Service is deleted"));
+            logSB.recordSystemLog(userId, "deleted service catalog");
+
         } else if (result == 2) {
             services.remove(passedInService);
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Service is marked as voided!", "There are quotations associated with this service, thus it cannot be deleted but is now marked as voided. You will not see it in the service list anymore"));
+            logSB.recordSystemLog(userId, "marked a service catalog as deleted");
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!", "Something went wrong"));
@@ -100,7 +108,6 @@ public class ViewServiceCatalogManagedBean {
 
         return ((Comparable) value).compareTo(Double.valueOf(filterText)) < 0;
     }
-
 
     public void selectARow(ServiceCatalog service) {
         selectedService = service;

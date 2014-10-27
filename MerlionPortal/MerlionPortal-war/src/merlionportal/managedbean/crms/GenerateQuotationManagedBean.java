@@ -15,6 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.crms.contractmanagementmodule.QuotationManagementSessionBean;
 
 /**
@@ -32,6 +33,8 @@ public class GenerateQuotationManagedBean {
     QuotationManagementSessionBean quotationManagementSB;
     @EJB
     UserAccountManagementSessionBean userAccountSB;
+    @EJB
+    SystemLogSessionBean logSB;
 
     private Integer companyId;
     private Integer userId;
@@ -85,6 +88,7 @@ public class GenerateQuotationManagedBean {
                 status = 2;
                 statusText = "waiting for acception";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Quotation Created", "Both sender and receiver will be able to view this quotation"));
+                logSB.recordSystemLog(userId, "created a service quotation");
 
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Something went wrong."));
@@ -100,6 +104,8 @@ public class GenerateQuotationManagedBean {
                 status = 4;
                 statusText = "rejected request";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Quotation is successfully rejected"));
+                logSB.recordSystemLog(userId, "rejected a request for quotation");
+
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Something went wrong."));
 
@@ -114,6 +120,8 @@ public class GenerateQuotationManagedBean {
                 status = 6;
                 statusText = "pending fulfillment check";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Please wait for fulfullment check result"));
+                logSB.recordSystemLog(userId, "performed service fulfillment check");
+
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Something went wrong."));
 

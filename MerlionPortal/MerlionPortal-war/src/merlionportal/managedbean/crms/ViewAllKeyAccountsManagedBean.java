@@ -14,6 +14,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.crms.accountmanagementmodule.KeyAccountManagementSessionBean;
 
 /**
@@ -36,6 +37,8 @@ public class ViewAllKeyAccountsManagedBean {
     private CustomerAccount filteredAccount;
 
     private String newRemarks;
+    @EJB
+    SystemLogSessionBean logSB;
 
     public ViewAllKeyAccountsManagedBean() {
     }
@@ -69,6 +72,7 @@ public class ViewAllKeyAccountsManagedBean {
         if (result) {
             keyAccounts.remove(account);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Key Account deleted!", "This customer is no longer a key account"));
+            logSB.recordSystemLog(userId, "deleted a key account");
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Something went wrong", ""));
@@ -86,6 +90,8 @@ public class ViewAllKeyAccountsManagedBean {
             keyAccounts = keyAccountMSB.viewAllKeyAccounts(companyId);
             newRemarks = null;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Key Account updated!", "Remarks is updated"));
+            logSB.recordSystemLog(userId, "updated key account detail");
+
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Something went wrong", ""));
         }

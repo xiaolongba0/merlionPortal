@@ -30,7 +30,7 @@ public class ServiceYellowPageManagedBean {
      */
     @EJB
     ServiceCatalogSessionBean serviceCatalogSB;
-
+  
     private Integer companyId;
     private Integer userId;
 

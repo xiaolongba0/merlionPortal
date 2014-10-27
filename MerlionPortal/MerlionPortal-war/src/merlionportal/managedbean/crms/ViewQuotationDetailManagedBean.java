@@ -15,6 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.crms.contractmanagementmodule.QuotationManagementSessionBean;
 
 /**
@@ -29,6 +30,8 @@ public class ViewQuotationDetailManagedBean {
     QuotationManagementSessionBean quotationManagementSB;
     @EJB
     UserAccountManagementSessionBean userAccountSB;
+    @EJB
+    SystemLogSessionBean logSB;
     private Integer companyId;
     private Integer userId;
 
@@ -91,6 +94,7 @@ public class ViewQuotationDetailManagedBean {
             compareStatus = 5;
             this.StatusText(compareStatus);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Quotation is rejected"));
+            logSB.recordSystemLog(userId, "rejected a service quotation");
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Oops", "Something went wrong!"));
@@ -104,6 +108,7 @@ public class ViewQuotationDetailManagedBean {
             compareStatus = 3;
             this.StatusText(compareStatus);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Quotation is accepted"));
+            logSB.recordSystemLog(userId, "accepted a service quotation");
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Oops", "Something went wrong!"));

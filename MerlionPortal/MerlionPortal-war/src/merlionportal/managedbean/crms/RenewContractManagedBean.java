@@ -15,6 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.crms.contractmanagementmodule.ContractManagementSessionBean;
 
 /**
@@ -32,6 +33,8 @@ public class RenewContractManagedBean {
     ContractManagementSessionBean contractManagementSB;
     @EJB
     UserAccountManagementSessionBean uamsb;
+    @EJB
+    SystemLogSessionBean logSB;
 
     private Integer companyId;
     private Integer userId;
@@ -84,6 +87,8 @@ public class RenewContractManagedBean {
         if (result == 1) {
             this.clearAllFields();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Contract is renewed!", "please wait for the other party to review"));
+            logSB.recordSystemLog(userId, "renewed a service contract");
+
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Oops!", "Something went wrong!"));
 

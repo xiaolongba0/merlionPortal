@@ -12,6 +12,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.crms.accountmanagementmodule.ServiceCatalogSessionBean;
 
 /**
@@ -27,6 +28,8 @@ public class CreateServiceCatalogManagedBean {
      */
     @EJB
     ServiceCatalogSessionBean serviceCatalogSB;
+    @EJB
+    SystemLogSessionBean logSB;
 
     private Integer companyId;
     private Integer userId;
@@ -65,13 +68,15 @@ public class CreateServiceCatalogManagedBean {
 
     public void createServiceCatalog() {
         int serviceId = -1;
-        System.out.println("Price is "+ price);
+        System.out.println("Price is " + price);
         if (price != 0) {
             serviceId = serviceCatalogSB.createServiceCatalog(companyId, serviceName, description, view, type, price);
         } else {
             serviceId = serviceCatalogSB.createServiceCatalog(companyId, serviceName, description, view, type, 0);
         }
         if (serviceId > 0) {
+            logSB.recordSystemLog(userId, "created a service catalog");
+
             this.clearAllFields();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Service created!", ""));
 

@@ -30,7 +30,7 @@ public class ViewAllContractsManagedBean {
      */
     @EJB
     ContractManagementSessionBean contractManagementSB;
-
+ 
     private Integer companyId;
     private Integer userId;
 

@@ -15,6 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.crms.ordermanagementmodule.ServicePOManagementSessionBean;
 
 /**
@@ -32,6 +33,8 @@ public class CreateServicePOManagedBean {
     ServicePOManagementSessionBean servicePOSB;
     @EJB
     UserAccountManagementSessionBean uamsb;
+    @EJB
+    SystemLogSessionBean logSB;
 
     private Integer companyId;
     private Integer userId;
@@ -102,10 +105,15 @@ public class CreateServicePOManagedBean {
             boolean result = servicePOSB.createServicePO(contractId, userId, volume, serviceStartDate, serviceEndDate, serviceDeliveryDate, productQuantityPerTEU, productId);
             if (result) {
                 this.clearAllFields();
+
                 if (serviceType.equals("Transportation")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Transportation Service PO created!", ""));
+                    logSB.recordSystemLog(userId, "created a  transportation service po");
+
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Warehouse Service PO created!", ""));
+                    logSB.recordSystemLog(userId, "created a  warehouse service po");
+
                 }
 
             } else {

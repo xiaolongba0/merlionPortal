@@ -14,6 +14,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.crms.ordermanagementmodule.POProcessingManagementSessionBean;
 
 /**
@@ -31,6 +32,8 @@ public class GenerateServiceInvoiceManagedBean {
     UserAccountManagementSessionBean userAccountSB;
     @EJB
     POProcessingManagementSessionBean poProcessSB;
+    @EJB
+    SystemLogSessionBean logSB;
 
     private Integer companyId;
     private Integer userId;
@@ -77,6 +80,8 @@ public class GenerateServiceInvoiceManagedBean {
             this.getStatusText(7);
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Invoice is generated", ""));
+            logSB.recordSystemLog(userId, "created a  service invoice");
+
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
         }
