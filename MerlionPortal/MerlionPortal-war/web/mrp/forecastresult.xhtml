@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">  
 
@@ -47,9 +48,28 @@
 
         <ui:define name="right">
             <h:form>
-                <p:panel header="View Forecast Result" style="margin-bottom:10px;">
+                <p:panel header="View Forecast Result in Line Chart" style="margin-bottom:10px;">
                     <p:chart type="line" model="#{forecastResultManagedBean.forecastSales}" style="height:300px" />
                 </p:panel>
+
+                <p:dataTable var="monthForecastResult" value="#{forecastResultManagedBean.monthForecastResults}">
+                    <f:facet name="header">
+                        <p:outputPanel  style="float: left">
+                            <h:outputText value="Forecast Sales in Tabular Data" />
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:column headerText="Year-Month">
+                        <h:outputText value="#{monthForecastResult.monthName}" />
+                    </p:column>
+
+                    <p:column headerText="Forecasted Sales">
+                        <h:outputText value="#{monthForecastResult.forecastedQuantity}" />
+                    </p:column>
+                </p:dataTable>
+
+
+
+
                 <p:panel header="Satisfied with the result?" style="margin-bottom:10px;"> 
 
                     <p:commandButton value="Go Back"  action="#{forecastManagedBean.goBackForecastParameter}" />
