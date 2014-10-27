@@ -43,7 +43,6 @@ public class MaterialReqPlanningSessionBean {
          entityManager.merge(productMRP);
          entityManager.merge(mps);
          entityManager.flush();*/
-
         Mps mps = entityManager.find(Mps.class, mpsId);
         productMRP = new MRPList();
         productMRP.setMrpListId(mps.getMpsId());

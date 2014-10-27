@@ -73,6 +73,13 @@ public class ForecastSessionBean {
         return monthlyDate;
     }
 
+    public List<MonthForecastResult> retrieveMonthForecastResult(Integer forecastResultID) {
+        ForecastResult forecastRes = entityManager.find(ForecastResult.class, forecastResultID);
+        List<MonthForecastResult> monthForecastResults = forecastRes.getMonthForecastResultList();
+        System.out.println("FY monthForecastResult 1 : " + monthForecastResults.get(0).getMonthName());
+        return monthForecastResults;
+    }
+
     public Vector<Integer> createPurchaseData(List<Integer> quantityList) {
         //produce a list of date correspond to sales
         //size need to be retreved/computed later
@@ -374,7 +381,14 @@ public class ForecastSessionBean {
 
         List<MonthForecastResult> monthForecastResults = new ArrayList<MonthForecastResult>();
 
-        Vector<String> dateName = this.yaxisDate();
+        Vector<String> dateNameTemp = this.yaxisDate();
+        Vector<String> dateName = new Vector<String>();
+        dateName.add("0");
+        
+        for (int i = 1; i < dateNameTemp.size(); i++) {
+            dateName.add(dateNameTemp.get(i).substring(0, 7));
+        }
+
         Vector<Integer> quantity = this.computeResult(periodicity, expectedGrowth, dateList, quantityList);
 
         for (int i = 1; i <= periodicity; i++) {
