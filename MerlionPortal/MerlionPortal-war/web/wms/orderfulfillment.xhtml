@@ -4,7 +4,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <c:set var="import" value="templateuser.xhtml"/>
     <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
@@ -56,34 +57,48 @@
             <h:form>  
                 <p:fieldset legend="Customer Information " style="margin-bottom:20px">
                     <h:panelGrid id="detail" columns="2" cellpadding="5">
-                        <p>Customer Name: </p><h:outputText value="#{warehouseReqeustManagedBean.viewCompanyName(warehouseReqeustManagedBean.selectedOrder.senderCompanyId)}"/>
-                        <p>Contact Person: </p><h:outputText value="#{warehouseReqeustManagedBean.viewCompanyContactPersonName(warehouseReqeustManagedBean.selectedOrder.senderCompanyId)}"/>
-                        <p>Contact Number : </p><h:outputText value="#{warehouseReqeustManagedBean.viewCompanyContact(warehouseReqeustManagedBean.selectedOrder.senderCompanyId)}"/>                     
+                        <p>Customer Name: </p><h:outputText value="#{orderFulfillManagedBean.viewCompanyName(orderFulfillManagedBean.selectedOrder.senderCompanyId)}"/>
+                        <p>Contact Person: </p><h:outputText value="#{orderFulfillManagedBean.viewCompanyContactPersonName(orderFulfillManagedBean.selectedOrder.senderCompanyId)}"/>
+                        <p>Contact Number : </p><h:outputText value="#{orderFulfillManagedBean.viewCompanyContact(orderFulfillManagedBean.selectedOrder.senderCompanyId)}"/>   
+                        <p>Reference Contract Id: </p><h:outputText value="#{orderFulfillManagedBean.contractInf.get(0)}"/>
+                        <p>Condition: </p><h:outputText value="#{orderFulfillManagedBean.contractInf.get(1)}"/>
                     </h:panelGrid>
                 </p:fieldset>               
-                <br></br>
-                <p:fieldset legend="Contract Detail" style="margin-bottom:20px">
+                <br></br> 
+                <p:fieldset legend="Storage Requirement" style="margin-bottom:20px">
                     <h:panelGrid id="detail" columns="2" cellpadding="5">
-                        <p>Reference Contract Id: </p><h:outputText value="#{warehouseReqeustManagedBean.contractInf.get(0)}"/>
-                        <p>Condition: </p><h:outputText value="#{warehouseReqeustManagedBean.contractInf.get(1)}"/>
-                    </h:panelGrid>
-                </p:fieldset>   
-                <br></br>
-                <p:fieldset legend="Warehouse Information" style="margin-bottom:20px">
-                    <h:panelGrid id="detail" columns="2" cellpadding="5">
-                        <p>Warehouse Address: </p><h:outputText value="#{warehouseReqeustManagedBean.contractInf.get(2)}"/>
+                        <p>Warehouse Address: </p><h:outputText value="#{orderFulfillManagedBean.contractInf.get(2)}"/>
+                        <p>Storage Bin Type </p><h:outputText value="#{orderFulfillManagedBean.contractInf.get(3)}"/>
                     </h:panelGrid>
                 </p:fieldset> 
-                <br></br>         
-                <p:fieldset legend="Storage Bin Information" style="margin-bottom:20px">
-                    <h:panelGrid id="detail" columns="2" cellpadding="5">                       
-                        <p>Storage Bin Type </p><h:outputText value="#{warehouseReqeustManagedBean.contractInf.get(3)}"/>                       
+                <br></br>      
+
+                <p:panel header="Reserve a Storage Location" style="margin-bottom:10px;">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel value="Warehouse: " />
+                        <p:selectOneMenu value="#{orderFulfillManagedBean.warehouse}" style="width:150px">
+                            <p:ajax listener="#{orderFulfillManagedBean.onWarehouseChange()}" update="warehouseZone" />
+                            <f:selectItem itemLabel="Select Warehouse" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{orderFulfillManagedBean.data}" />
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Warehouse Zone " />
+                        <p:selectOneMenu id="warehouseZone"value="#{orderFulfillManagedBean.warehouseZone}" style="width:150px">
+                            <p:ajax listener="#{orderFulfillManagedBean.onWarehouseZoneChange()}" update="storageBin" />
+                            <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{orderFulfillManagedBean.data2}" />
+                        </p:selectOneMenu>
+                        <p:outputLabel  value="Storage Bin " />
+                        <p:selectOneMenu id="storageBin" value="#{orderFulfillManagedBean.storageBin}" style="width:150px">
+                            <f:selectItem itemLabel="Select City" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{orderFulfillManagedBean.storageBins}" />
+                        </p:selectOneMenu>
                     </h:panelGrid>
-                </p:fieldset> 
+                    <p:separator />
+                    <p:commandButton value="Submit" action="#{orderFulfillManagedBean.reserveSpace()}" />
+                </p:panel>
+                <br></br>      
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />               
                 <p:commandButton value="Go Back" action="viewallpendingrequests.xhtml?faces-redirect=true" icon="ui-icon-circle-arrow-w"/>
-                <p:commandButton value="Fulfill this order" action="orderfulfillment.xhtml?faces-redirect=true" icon="ui-icon-circle-arrow-w"/>
-
                 <br></br>
             </h:form>
         </ui:define>
