@@ -74,6 +74,7 @@ public class PurchaseOrderManagerSessionBean {
         pLine.setProductOrderproductPOId(mypo);
         em.persist(pLine);
         mypo.getProductOrderLineItemList().add(pLine);
+        mypo.setPrice(mypo.getPrice()+pLine.getQuantity()*pLine.getPrice());
         em.merge(mypo);
         em.flush();
     }
@@ -92,18 +93,11 @@ public class PurchaseOrderManagerSessionBean {
 
     public void generateSo(int operator, ProductOrder mpo) {
         List<ProductOrderLineItem> myList = new ArrayList();
-        Double totalPrice = 0.0;
         mpo.setStatus(2);
-        mpo.setSalesPersonId(operator);
-        myList = mpo.getProductOrderLineItemList();
-        for (Object o : myList) {
-            ProductOrderLineItem myLine = (ProductOrderLineItem) o;
-            totalPrice += myLine.getPrice();
-        }
-        mpo.setPrice(totalPrice);
-        int cId= mpo.getCreatorId();
-        SystemUser myCustomer= em.find(SystemUser.class, cId);
-        int credit = myCustomer.getCreditLimit()-totalPrice.intValue();
+        mpo.setSalesPersonId(operator);        
+        int cId = mpo.getCreatorId();
+        SystemUser myCustomer = em.find(SystemUser.class, cId);
+        int credit = myCustomer.getCreditLimit() - mpo.getPrice().intValue();
         myCustomer.setCreditLimit(credit);
         em.merge(myCustomer);
         em.merge(mpo);
@@ -111,17 +105,10 @@ public class PurchaseOrderManagerSessionBean {
     }
 
     public Boolean checkCredit(int cutomerId, ProductOrder mpo) {
-        Double totalValue=0.0;
-        List<ProductOrderLineItem> myList = new ArrayList();
-        myList = mpo.getProductOrderLineItemList();
-        for (Object o : myList) {
-            ProductOrderLineItem myLine = (ProductOrderLineItem) o;
-            totalValue += myLine.getPrice();
-        }
         Boolean result = true;
         SystemUser customer = em.find(SystemUser.class, cutomerId);
         int credit = customer.getCreditLimit();
-        if (totalValue > credit) {
+        if (mpo.getPrice() > credit) {
             result = false;
         }
         return result;
