@@ -5,6 +5,7 @@
  */
 package merlionportal.managedbean.mrp2;
 
+import entity.MonthForecastResult;
 import entity.SystemUser;
 import java.io.IOException;
 import java.io.Serializable;
@@ -64,7 +65,10 @@ public class ForecastResultManagedBean implements Serializable {
     List<Integer> quantityList;
     private SystemUser loginedUser;
     Integer forecastResultID;
+List<MonthForecastResult> monthForecastResults;
+MonthForecastResult monthForecastResult;
 
+ 
     //variables for forecasting
     @PostConstruct
     public void init() {
@@ -99,6 +103,23 @@ public class ForecastResultManagedBean implements Serializable {
     public void setForecastSales(LineChartModel forecastSales) {
         this.forecastSales = forecastSales;
     }
+    
+       public void setMonthForecastResults(List<MonthForecastResult> monthForecastResults) {
+        this.monthForecastResults = monthForecastResults;
+    }
+
+    public List<MonthForecastResult> getMonthForecastResults() {
+        monthForecastResults = fsb.retrieveMonthForecastResult(forecastResultID);
+        return monthForecastResults;
+    }
+        public void setMonthForecastResult(MonthForecastResult monthForecastResult) {
+        this.monthForecastResult = monthForecastResult;
+    }
+
+    public MonthForecastResult getMonthForecastResult() {
+        return monthForecastResult;
+    }
+    
 
     public void computeForecastResult() {
 
