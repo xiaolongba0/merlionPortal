@@ -73,6 +73,7 @@ public class POProcessingManagementSessionBean {
             po.setStatus(7);
 
             ServiceInvoice invoice = new ServiceInvoice();
+            invoice.setInvoiceId(servicePOId);
             invoice.setPrice(po.getPrice());
             invoice.setCreatorId(userId);
             invoice.setSenderCompanId(po.getReceiverCompanyId());
@@ -110,12 +111,14 @@ public class POProcessingManagementSessionBean {
         boolean result = true;
         System.out.println("Enter EJB passCreditCheck");
         Query q = em.createNamedQuery("ServicePO.findBySenderCompanyId").setParameter("senderCompanyId", companyId);
+        
+        ServicePO thisPO = em.find(ServicePO.class, servicePOId);
         for (Object o : q.getResultList()) {
             System.out.println("Enter EJB Loop passCreditCheck");
 
             ServicePO po = (ServicePO) o;
             //This contract, but not this po
-            if (po.getContract().getContractId() == (int) contractId && po.getServicePOId() != (int) servicePOId) {
+            if (po.getContract().getContractId() == (int) contractId && po.getServicePOId() != (int) servicePOId && po.getCreatedDate().before(thisPO.getCreatedDate())) {
                 //not paid
                 if (po.getStatus() != 8) {
                     System.out.println("Enter EJB Order not paid" + po.getServicePOId());
@@ -124,7 +127,6 @@ public class POProcessingManagementSessionBean {
             }
         }
         if (result == false) {
-            ServicePO thisPO = em.find(ServicePO.class, servicePOId);
             thisPO.setStatus(3);
             em.merge(thisPO);
             em.flush();
@@ -169,6 +171,7 @@ public class POProcessingManagementSessionBean {
         invoice.setPayment(payment);
         invoice.setStatus(2);
         payment.setServiceInvoice(invoice);
+        payment.setPaymentId(invoice.getInvoiceId());
 
         em.persist(payment);
         em.merge(invoice);

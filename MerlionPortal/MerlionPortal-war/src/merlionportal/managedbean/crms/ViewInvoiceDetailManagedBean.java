@@ -42,6 +42,7 @@ public class ViewInvoiceDetailManagedBean {
     private String senderCompanyName;
     private String receiverCompanyName;
     private String orderstatus;
+    private Integer compareStatus;
 
     private int method;
     private Date receivedDate;
@@ -75,6 +76,7 @@ public class ViewInvoiceDetailManagedBean {
         }
         selectedInvoice = (ServiceInvoice) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedInvoice");
         if (selectedInvoice != null) {
+            compareStatus = selectedInvoice.getStatus();
             this.getStatusText(selectedInvoice.getStatus());
             this.getOrderStatusText(selectedInvoice.getServicePO().getStatus());
             senderCompanyName = userAccountSB.getCompany(selectedInvoice.getSenderCompanId()).getName();
@@ -86,6 +88,7 @@ public class ViewInvoiceDetailManagedBean {
     public void updatePaymentStatus() {
         int result = poProcessingSB.updatePaymentStatus(selectedInvoice.getInvoiceId());
         if (result == 1) {
+            compareStatus = 3;
             this.getStatusText(3);
             this.getOrderStatusText(8);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Payment Status updated", ""));
@@ -97,6 +100,7 @@ public class ViewInvoiceDetailManagedBean {
     public void recordPaymentInfo() {
         boolean result = poProcessingSB.recordPaymentInfo(selectedInvoice.getInvoiceId(), method, receivedDate, accountInfo, creditCardNo, amount, swiftcode, checkNumber);
         if (result) {
+            compareStatus = 2;
             this.getStatusText(2);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Payment Information Recorded", ""));
         } else {
@@ -280,6 +284,14 @@ public class ViewInvoiceDetailManagedBean {
 
     public void setMethodText(String methodText) {
         this.methodText = methodText;
+    }
+
+    public Integer getCompareStatus() {
+        return compareStatus;
+    }
+
+    public void setCompareStatus(Integer compareStatus) {
+        this.compareStatus = compareStatus;
     }
 
 }

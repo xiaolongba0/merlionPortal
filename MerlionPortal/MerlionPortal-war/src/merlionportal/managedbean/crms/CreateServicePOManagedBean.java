@@ -14,6 +14,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.crms.ordermanagementmodule.ServicePOManagementSessionBean;
 
 /**
@@ -29,6 +30,8 @@ public class CreateServicePOManagedBean {
      */
     @EJB
     ServicePOManagementSessionBean servicePOSB;
+    @EJB
+    UserAccountManagementSessionBean uamsb;
 
     private Integer companyId;
     private Integer userId;
@@ -41,8 +44,13 @@ public class CreateServicePOManagedBean {
     private Date serviceEndDate;
     private Date serviceDeliveryDate;
     private String serviceType;
+    private Integer productQuantityPerTEU;
+    private Integer productId;
 
     private Date today;
+    private String partyAName;
+    private String partyBName;
+
     public CreateServicePOManagedBean() {
     }
 
@@ -73,30 +81,37 @@ public class CreateServicePOManagedBean {
             if (contract.getServiceType().equals("Transportation")) {
                 if (serviceDeliveryDate.after(contract.getStartDate()) && serviceDeliveryDate.before(contract.getEndDate())) {
 //                Valid delivery date
+                    canCreateServicePO = true;
                 } else {
                     //Your date must be within specified contract validity period
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Your date must be within specified contract validity period"));
 
                 }
             } else {
                 if (serviceStartDate.after(contract.getStartDate()) && serviceEndDate.after(contract.getStartDate()) && serviceStartDate.before(contract.getEndDate()) && serviceEndDate.before(contract.getEndDate())) {
+                    canCreateServicePO = true;
 
-                }else{
+                } else {
                     //Your date must be within specified contract validity period
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Your date must be within specified contract validity period"));
+
                 }
             }
         }
+        if (canCreateServicePO) {
+            boolean result = servicePOSB.createServicePO(contractId, userId, volume, serviceStartDate, serviceEndDate, serviceDeliveryDate, productQuantityPerTEU, productId);
+            if (result) {
+                this.clearAllFields();
+                if (serviceType.equals("Transportation")) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Transportation Service PO created!", ""));
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Warehouse Service PO created!", ""));
+                }
 
-        boolean result = servicePOSB.createServicePO(contractId, userId, volume, serviceStartDate, serviceEndDate, serviceDeliveryDate);
-        if (result) {
-            if (serviceType.equals("Transportation")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Transportation Service PO created!", ""));
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Warehouse Service PO created!", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong"));
+
             }
-
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong"));
-
         }
     }
 
@@ -106,7 +121,8 @@ public class CreateServicePOManagedBean {
             contract = null;
         } else {
             contract = servicePOSB.searchAValidContract(contractId, companyId);
-
+            partyAName = uamsb.getCompany(contract.getPartyA()).getName();
+            partyBName = uamsb.getCompany(contract.getPartyB()).getName();
             if (contract.getServiceType().equals("Transportation")) {
                 serviceType = "Transportation";
 //                fill in all fields necessary for transportation contract
@@ -119,7 +135,12 @@ public class CreateServicePOManagedBean {
     }
 
     private void clearAllFields() {
-
+        volume = null;
+        serviceStartDate = null;
+        serviceEndDate = null;
+        serviceDeliveryDate = null;
+        productQuantityPerTEU = null;
+        productId = null;
     }
 
     public Integer getCompanyId() {
@@ -200,6 +221,38 @@ public class CreateServicePOManagedBean {
 
     public void setToday(Date today) {
         this.today = today;
+    }
+
+    public Integer getProductQuantityPerTEU() {
+        return productQuantityPerTEU;
+    }
+
+    public void setProductQuantityPerTEU(Integer productQuantityPerTEU) {
+        this.productQuantityPerTEU = productQuantityPerTEU;
+    }
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
+
+    public String getPartyAName() {
+        return partyAName;
+    }
+
+    public void setPartyAName(String partyAName) {
+        this.partyAName = partyAName;
+    }
+
+    public String getPartyBName() {
+        return partyBName;
+    }
+
+    public void setPartyBName(String partyBName) {
+        this.partyBName = partyBName;
     }
 
 }

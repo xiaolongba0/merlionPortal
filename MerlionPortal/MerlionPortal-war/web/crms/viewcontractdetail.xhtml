@@ -117,7 +117,7 @@
 
                         <c:if test="#{(viewContractManagedBean.selectedContract.status eq 2 )and(viewContractManagedBean.selectedContract.partyA eq viewContractManagedBean.companyId)}" >
                             <p:outputLabel value="Modified Terms &amp; Conditions:" /><p:spacer width="20" height="20" />
-                            <p:inputTextarea value="#{viewContractManagedBean.conditionText}" rows="5" cols="80" counter="display" maxlength="999" counterTemplate="{0} characters remaining." autoResize="true" />
+                            <p:inputTextarea value="#{viewContractManagedBean.conditionText}" rows="5" cols="80" counter="display" maxlength="8888" counterTemplate="{0} characters remaining." autoResize="true" />
                             <p:spacer width="20" height="20" /><p:spacer width="20" height="20" /><h:outputText id="display" />
                         </c:if>
 
@@ -132,18 +132,18 @@
 
                 </p:fieldset>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <c:if test="#{((viewContractManagedBean.selectedContract.status eq 1) or (viewContractManagedBean.selectedContract.status eq 3 )) and viewContractManagedBean.selectedContract.partyB eq viewContractManagedBean.companyId}" >
+                <c:if test="#{((viewContractManagedBean.compareStatus eq 1) or (viewContractManagedBean.compareStatus eq 3 )) and viewContractManagedBean.selectedContract.partyB eq viewContractManagedBean.companyId}" >
                     <p:commandButton value="Request To Modify" oncomplete="toggleModal();" />
                     <p:commandButton value="Accept Contract"  action="#{viewContractManagedBean.acceptContract()}" update="form" ajax="true" />
                 </c:if>
-                <c:if test="#{(viewContractManagedBean.selectedContract.status eq 2) and (viewContractManagedBean.selectedContract.partyA eq viewContractManagedBean.companyId)}" >
+                <c:if test="#{(viewContractManagedBean.compareStatus eq 2) and (viewContractManagedBean.selectedContract.partyA eq viewContractManagedBean.companyId)}" >
                     <p:commandButton value="Confirm Modification" action="#{viewContractManagedBean.modifyContract}" update="form" ajax="true" />
                 </c:if>
-                <c:if test="#{viewContractManagedBean.selectedContract.status eq 4}">
+                <c:if test="#{viewContractManagedBean.compareStatus eq 4}">
                     <p:commandButton value="View PDF Contract"  action="#{viewContractManagedBean.previewPDFContract}" ajax="false" />
                     <p:commandButton value="Download PDF Contract"  action="#{viewContractManagedBean.downloadPDFContract}" ajax="false"/>
                 </c:if>
-                <c:if test="#{(viewContractManagedBean.selectedContract.status eq 4) and (viewContractManagedBean.selectedContract.partyA eq viewContractManagedBean.companyId)}">
+                <c:if test="#{(viewContractManagedBean.compareStatus eq 4) and (viewContractManagedBean.selectedContract.partyA eq viewContractManagedBean.companyId)}">
                     <p:commandButton value="Upload Signed Contract"  action="#{viewContractManagedBean.uploadContract}" />
                 </c:if>
 
@@ -168,10 +168,11 @@
 
                             </div>
                             <div class="modal-footer">
-                                <h:commandButton value="Confirm" styleClass="btn btn-success" action="#{viewContractManagedBean.requestToModifyContract()}" >
-                                    <f:ajax execute="@form" render=":form:reasonDetail"/>
+                                <h:commandButton value="Confirm" styleClass="btn btn-success" action="#{viewContractManagedBean.requestToModifyContract()}" pt:data-dismiss="modal" >
+                                    <f:ajax execute="@form" render=":form" />
                                 </h:commandButton>
-                                <h:commandButton value="Close" styleClass="btn btn-warning" pt:data-dismiss="modal"></h:commandButton>
+                                   
+                                <h:commandButton value="Close" styleClass="btn btn-warning" pt:data-dismiss="modal" />
                             </div>
                         </div>
                     </div>

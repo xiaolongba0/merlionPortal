@@ -79,7 +79,7 @@
                     <h:panelGrid id="create" columns="3">
                         <c:if test="#{renewContractManagedBean.contract ne null}" >
 
-                            <h:outputLabel style="font-weight: bold" value="Quotation ID* "/><p:spacer width="40" height="20" />
+                            <h:outputLabel style="font-weight: bold; width: 190px" value="Quotation ID* "/><p:spacer width="40" height="20" />
                             <h:outputLabel value="#{renewContractManagedBean.contract.serviceQuotation.quotationId}"/>
 
                             <h:outputLabel style="font-weight: bold" value="Original Contract ID* " /><p:spacer width="40" height="20" />
@@ -98,7 +98,7 @@
 
 
                             <h:outputLabel style="font-weight: bold" value="Party A Company Name"/><p:spacer width="40" height="20" />
-                            <h:outputLabel  value="#{createServiceContractManagedBean.partyAName}" />
+                            <h:outputLabel  value="#{renewContractManagedBean.partyAName}" />
 
 
                             <h:outputLabel style="font-weight: bold" value="Party B ID"/><p:spacer width="40" height="20" />
@@ -106,7 +106,7 @@
 
 
                             <h:outputLabel style="font-weight: bold" value="Party B Company Name"/><p:spacer width="40" height="20" />
-                            <h:outputLabel  value="#{createServiceContractManagedBean.partyBName}" />
+                            <h:outputLabel  value="#{renewContractManagedBean.partyBName}" />
 
 
                             <h:outputLabel  style="font-weight: bold" value="Service Type * "/><p:spacer width="40" height="20" />
@@ -122,7 +122,7 @@
                             <h:outputLabel  value="#{renewContractManagedBean.contract.price}" />
 
 
-                            <h:outputLabel  style="font-weight: bold" value="Expected Quantity Per Month (TEU)"/><p:spacer width="20" height="20" />
+                            <h:outputLabel  style="font-weight: bold" value="Expected Quantity (TEU)"/><p:spacer width="20" height="20" />
                             <h:outputLabel  value="#{renewContractManagedBean.contract.serviceQuotation.quantityPerMonth}" />
 
 
@@ -137,12 +137,9 @@
                             </c:if>
 
                             <c:if test="#{renewContractManagedBean.contract.serviceQuotation.serviceType eq 'Warehouse'}" >
-                                <h:outputLabel  style="font-weight: bold" value="Warehoue ID *" /><p:spacer width="20" height="20" />
-                                <h:outputLabel value="#{renewContractManagedBean.contract.serviceQuotation.warehoueId}" />
-                                <h:outputLabel  style="font-weight: bold" value="Storage Zone ID *" /><p:spacer width="20" height="20" />
-                                <h:outputLabel value="#{renewContractManagedBean.contract.serviceQuotation.storageZoneId}" />
-                                <h:outputLabel  style="font-weight: bold" value="Storage Bin ID *" /><p:spacer width="20" height="20" />
-                                <h:outputLabel value="#{renewContractManagedBean.contract.serviceQuotation.storageBinId}" />
+                                <h:outputLabel  style="font-weight: bold" value="Storage Type *" /><p:spacer width="20" height="20" />
+                                <h:outputLabel value="#{renewContractManagedBean.contract.serviceQuotation.storageType}" />
+                                
                             </c:if>
 
                             <h:outputLabel style="font-weight: bold" value="Terms &amp; Conditions * "/><p:spacer width="20" height="20" />

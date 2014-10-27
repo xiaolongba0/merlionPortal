@@ -73,6 +73,7 @@ public class GenerateServiceInvoiceManagedBean {
     public void createInvoice() {
         int result = poProcessSB.generateInvoice(selectedServicePO.getServicePOId(), userId, conditionText);
         if (result == 1) {
+            conditionText = null;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Invoice is generated", ""));
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));

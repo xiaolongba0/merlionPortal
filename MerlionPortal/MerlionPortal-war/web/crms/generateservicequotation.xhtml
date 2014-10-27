@@ -57,14 +57,34 @@
 
         <ui:define name="right">
             <h:form id="form" >
-                <h6 class="activatedStep">RFQ</h6><p:spacer width="160" height="20" />
-                <h6 class="greyStep">Fulfillment check</h6><p:spacer width="90" height="20" />
-                <h6 class="greyStep" >Waiting for fulfillment result</h6><p:spacer width="100" height="20" />
-                <h6 class="greyStep" >Accept/Reject RFQ</h6>
+                <c:if test="#{generateQuotationManagedBean.status eq 1}" >
+                    <h6 class="activatedStep">RFQ</h6><p:spacer width="160" height="20" />
+                    <h6 class="greyStep">Fulfillment check</h6><p:spacer width="90" height="20" />
+                    <h6 class="greyStep" >Waiting for fulfillment result</h6><p:spacer width="80" height="20" />
+                    <h6 class="greyStep" >Reject RFQ/Generate Quotation</h6>
+                </c:if>
+                <c:if test="#{generateQuotationManagedBean.status eq 6}" >
+                    <h6 class="greyStep">RFQ</h6><p:spacer width="160" height="20" />
+                    <h6 class="activatedStep">Fulfillment check</h6><p:spacer width="90" height="20" />
+                    <h6 class="greyStep" >Waiting for fulfillment result</h6><p:spacer width="80" height="20" />
+                    <h6 class="greyStep" >Reject RFQ/Generate Quotation</h6>
+                </c:if>
+                <c:if test="#{generateQuotationManagedBean.status eq 7 or generateQuotationManagedBean.status eq 8}" >
+                    <h6 class="greyStep">RFQ</h6><p:spacer width="160" height="20" />
+                    <h6 class="greyStep">Fulfillment check</h6><p:spacer width="90" height="20" />
+                    <h6 class="activatedStep" >Waiting for fulfillment result</h6><p:spacer width="80" height="20" />
+                    <h6 class="greyStep" >Reject RFQ/Generate Quotation</h6>
+                </c:if>
+                <c:if test="#{generateQuotationManagedBean.status eq 2 or generateQuotationManagedBean.status eq 4}" >
+                    <h6 class="greyStep">RFQ</h6><p:spacer width="160" height="20" />
+                    <h6 class="greyStep">Fulfillment check</h6><p:spacer width="90" height="20" />
+                    <h6 class="greyStep" >Waiting for fulfillment result</h6><p:spacer width="80" height="20" />
+                    <h6 class="activatedStep" >Reject RFQ/Generate Quotation</h6>
+                </c:if>
                 <div class="steps">
                     <img src="../img/4node.jpg"/>
                 </div>
-               
+
                 <p:fieldset legend="Contact Information" style="margin-bottom:20px">
                     <h:panelGrid columns="3" cellpadding="6">
                         <h:outputText value="Sender Company ID:" /><p:spacer width="20" height="20" />
@@ -87,6 +107,8 @@
                 </p:fieldset>
                 <p:fieldset legend="Request Information" style="margin-bottom:20px">
                     <h:panelGrid columns="3" cellpadding="6">
+                        <p:outputLabel value="Request Status:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{generateQuotationManagedBean.statusText}" style="color: red" />
                         <p:outputLabel value="Service ID:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{generateQuotationManagedBean.selectedRequest.serviceCatalog.serviceCatalogId}" />
                         <p:outputLabel value="Service Name:" /><p:spacer width="20" height="20" />
@@ -107,8 +129,12 @@
                             <h:outputText value="#{generateQuotationManagedBean.selectedRequest.origin}" />
                             <p:outputLabel value="Destination:" /><p:spacer width="20" height="20" />
                             <h:outputText value="#{generateQuotationManagedBean.selectedRequest.destination}" />
-
                         </c:if>
+                        <c:if test="#{generateQuotationManagedBean.selectedRequest.serviceType eq 'Warehouse'}" >
+                            <p:outputLabel value="Storage Type" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{generateQuotationManagedBean.selectedRequest.storageType}" />
+                        </c:if>
+
                         <p:outputLabel value="Total Expected Quantity (TEU) :" style="width: 150px" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{generateQuotationManagedBean.selectedRequest.quantityPerMonth}" />
                     </h:panelGrid>
@@ -124,8 +150,11 @@
 
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 <p:commandButton value="Generate Quotation" icon="ui-icon-check" action="#{generateQuotationManagedBean.createQuotation()}" update="form" ajax="true" />
-                <p:commandButton value="Fulfillment Check"  icon="ui-icon-star" action="#{generateQuotationManagedBean.fulfillmentCheck()}" update="form" ajax="true" />
-                <p:commandButton value="Reject this request" icon="ui-icon-closethick" action="#{generateQuotationManagedBean.rejectRequestForQuotation()}" update="form" ajax="true" />
+            </h:form>
+            <h:form >
+                <p:commandButton value="Fulfillment Check"  icon="ui-icon-star" action="#{generateQuotationManagedBean.fulfillmentCheck()}" update=":form" ajax="true" />
+                <p:commandButton value="Reject this request" icon="ui-icon-closethick" action="#{generateQuotationManagedBean.rejectRequestForQuotation()}" update=":form" ajax="true" />
+
             </h:form>
             <p:commandButton value="Go Back" action="viewallrequests.xhtml?faces-redirect=true"/>
 

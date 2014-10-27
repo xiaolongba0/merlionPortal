@@ -45,6 +45,10 @@ public class ViewServicePODetailManagedBean {
     private Integer volume;
     private Double price;
     private Integer volume2;
+    private Integer productId;
+    private Integer productQuantityPerTEU;
+    private Integer productId2;
+    private Integer productQuantityPerTEU2;
 
     private ServicePO selectedServicePO;
     private String status;
@@ -80,6 +84,8 @@ public class ViewServicePODetailManagedBean {
             serviceStartDate = selectedServicePO.getServiceStartDate();
             serviceEndDate = selectedServicePO.getServiceEndDate();
             volume = selectedServicePO.getVolume();
+            productId = selectedServicePO.getProductId();
+            productQuantityPerTEU = selectedServicePO.getProductQuantityPerTEU();
             price = selectedServicePO.getPrice();
             senderCompanyName = userAccountSB.getCompany(selectedServicePO.getSenderCompanyId()).getName();
             receiverCompanyName = userAccountSB.getCompany(selectedServicePO.getReceiverCompanyId()).getName();
@@ -91,18 +97,42 @@ public class ViewServicePODetailManagedBean {
         //Need to check status 
         if (selectedServicePO != null) {
 
-            int result = servicePOSB.updateServicePO(selectedServicePO.getServicePOId(), deliveryDate, serviceStartDate, serviceEndDate, volume2, userId);
-            if (result == 1) {
-                volume = volume2;
-                price = (volume2 * selectedServicePO.getContract().getPrice());
+            boolean canUpdateServicePO = false;
 
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PO is updated", ""));
+            if (selectedServicePO.getServiceType().equals("Transportation")) {
+                if (deliveryDate.after(selectedServicePO.getContract().getStartDate()) && deliveryDate.before(selectedServicePO.getContract().getEndDate())) {
+//                Valid delivery date
+                    canUpdateServicePO = true;
+                } else {
+                    //Your date must be within specified contract validity period
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Your date must be within specified contract validity period"));
+
+                }
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
+                if (serviceStartDate.after(selectedServicePO.getContract().getStartDate()) && serviceEndDate.after(selectedServicePO.getContract().getStartDate()) && serviceStartDate.before(selectedServicePO.getContract().getEndDate()) && serviceEndDate.before(selectedServicePO.getContract().getEndDate())) {
+                    canUpdateServicePO = true;
+
+                } else {
+                    //Your date must be within specified contract validity period
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Your date must be within specified contract validity period"));
+
+                }
             }
 
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong, please go back to previous page"));
+            if (canUpdateServicePO) {
+
+                int result = servicePOSB.updateServicePO(selectedServicePO.getServicePOId(), deliveryDate, serviceStartDate, serviceEndDate, volume2, userId, productId2, productQuantityPerTEU2);
+                if (result == 1) {
+                    volume = volume2;
+                    productId = productId2;
+                    productQuantityPerTEU = productQuantityPerTEU2;
+                    price = (volume2 * selectedServicePO.getContract().getPrice());
+
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PO is updated", ""));
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
+                }
+            }
         }
     }
 
@@ -154,7 +184,7 @@ public class ViewServicePODetailManagedBean {
 
     public void checkCredit() {
         if (selectedServicePO != null) {
-            boolean result = poProcessingSB.passCreditCheck(selectedServicePO.getSenderCompanyId() , selectedServicePO.getContract().getContractId(), selectedServicePO.getServicePOId());
+            boolean result = poProcessingSB.passCreditCheck(selectedServicePO.getSenderCompanyId(), selectedServicePO.getContract().getContractId(), selectedServicePO.getServicePOId());
             if (result) {
                 status = "SO Waiting for fulfillment";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Credit Check passed", "SO is generated"));
@@ -306,6 +336,38 @@ public class ViewServicePODetailManagedBean {
 
     public void setVolume2(Integer volume2) {
         this.volume2 = volume2;
+    }
+
+    public Integer getProductId2() {
+        return productId2;
+    }
+
+    public void setProductId2(Integer productId2) {
+        this.productId2 = productId2;
+    }
+
+    public Integer getProductQuantityPerTEU2() {
+        return productQuantityPerTEU2;
+    }
+
+    public void setProductQuantityPerTEU2(Integer productQuantityPerTEU2) {
+        this.productQuantityPerTEU2 = productQuantityPerTEU2;
+    }
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
+
+    public Integer getProductQuantityPerTEU() {
+        return productQuantityPerTEU;
+    }
+
+    public void setProductQuantityPerTEU(Integer productQuantityPerTEU) {
+        this.productQuantityPerTEU = productQuantityPerTEU;
     }
 
 }

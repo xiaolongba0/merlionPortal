@@ -59,6 +59,7 @@ public class ViewContractDetailManagedBean {
     private String reason;
     private String status;
     private List<DTOContract> contractToPrint;
+    private Integer compareStatus;
 
     private String conditionText;
 
@@ -92,6 +93,7 @@ public class ViewContractDetailManagedBean {
             contractToPrint = new ArrayList<>();
             contractToPrint.add(dtoContract);
         }
+        compareStatus = selectedContract.getStatus();
         this.statusText(selectedContract.getStatus());
 
     }
@@ -127,7 +129,7 @@ public class ViewContractDetailManagedBean {
         }
 
         dtoContract.setStorageType("N.A.");
-        if (selectedContract.getStorageType()!= null) {
+        if (selectedContract.getStorageType() != null) {
             dtoContract.setStorageType(selectedContract.getStorageType());
         }
 
@@ -143,6 +145,8 @@ public class ViewContractDetailManagedBean {
         } else {
             int result = contractManagementSB.requestToModify(selectedContract.getContractId(), reason);
             if (result == 1) {
+                compareStatus = 2;
+                status = "Request to modify";
                 this.clearAllFields();
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Request to modify contract is sent!", "Please wait for the other party to respond"));
 
@@ -160,6 +164,8 @@ public class ViewContractDetailManagedBean {
             int result = contractManagementSB.modifyContract(selectedContract.getContractId(), conditionText);
             if (result == 1) {
                 this.clearAllFields();
+                compareStatus = 3;
+                status = "Waiting for review";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Contract is modified!", "Please wait for the other party to review"));
 
             } else {
@@ -195,6 +201,8 @@ public class ViewContractDetailManagedBean {
     public void acceptContract() {
         int result = contractManagementSB.acceptContract(selectedContract.getContractId());
         if (result == 1) {
+            compareStatus = 4;
+            status = "Waiting to be signed";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Contract Accepted!", "Please download and sign contract, and send to service provider through email after signing contract"));
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Oops", "Something went wrong!"));
@@ -251,9 +259,9 @@ public class ViewContractDetailManagedBean {
             }
         }
     }
-    
-    public String uploadContract(){
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("contractId",selectedContract.getContractId());
+
+    public String uploadContract() {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("contractId", selectedContract.getContractId());
         return "uploadsignedcontract.xhtml?faces-redirect=true";
     }
 
@@ -335,6 +343,14 @@ public class ViewContractDetailManagedBean {
 
     public void setConditionText(String conditionText) {
         this.conditionText = conditionText;
+    }
+
+    public Integer getCompareStatus() {
+        return compareStatus;
+    }
+
+    public void setCompareStatus(Integer compareStatus) {
+        this.compareStatus = compareStatus;
     }
 
 }

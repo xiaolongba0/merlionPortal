@@ -39,7 +39,7 @@ public class ServicePOManagementSessionBean {
 //    7. SO Invoiced
 //    8. SO Closed
 //    9. Transportation SO in transit
-    public boolean createServicePO(Integer contractId, Integer creatorId, Integer volume, Date serviceStartDate, Date serviceEndDate, Date serviceDeliveryDate) {
+    public boolean createServicePO(Integer contractId, Integer creatorId, Integer volume, Date serviceStartDate, Date serviceEndDate, Date serviceDeliveryDate, int QuantityPerTEU, Integer productId) {
         ServicePO po = new ServicePO();
         Contract contract = em.find(Contract.class, contractId);
         if (contract.getStatus() == 5) {
@@ -54,6 +54,8 @@ public class ServicePOManagementSessionBean {
             po.setServiceDeliveryDate(serviceDeliveryDate);
             po.setServiceStartDate(serviceStartDate);
             po.setServiceEndDate(serviceEndDate);
+            po.setProductQuantityPerTEU(QuantityPerTEU);
+            po.setProductId(productId);
             po.setContract(contract);
 
             contract.getServicePOList().add(po);
@@ -113,12 +115,14 @@ public class ServicePOManagementSessionBean {
         return null;
     }
 
-    public int updateServicePO(Integer servicePOId, Date deliveryDate, Date serviceStartDate, Date serviceEndDate, Integer volume, Integer creatorId) {
+    public int updateServicePO(Integer servicePOId, Date deliveryDate, Date serviceStartDate, Date serviceEndDate, Integer volume, Integer creatorId, Integer productId, Integer productQuantityPerTEU) {
         ServicePO po = em.find(ServicePO.class, servicePOId);
         po.setServiceStartDate(serviceStartDate);
         po.setServiceEndDate(serviceEndDate);
         po.setServiceDeliveryDate(deliveryDate);
         po.setVolume(volume);
+        po.setProductId(productId);
+        po.setProductQuantityPerTEU(productQuantityPerTEU);
         System.out.println("volume is :" + volume);
         po.setPrice(volume*po.getContract().getPrice());
         

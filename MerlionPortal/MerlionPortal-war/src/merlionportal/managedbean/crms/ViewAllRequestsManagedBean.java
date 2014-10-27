@@ -36,7 +36,7 @@ public class ViewAllRequestsManagedBean {
 
     private ServiceQuotation selectedRequest;
     private ServiceQuotation requestToView;
-    
+
     private List<String> status;
     private String statusNumber;
 
@@ -75,10 +75,11 @@ public class ViewAllRequestsManagedBean {
         status.add("Fulfillment check fail");
         status.add("Fulfillment check success");
     }
-    
+
     public String generateQuotation() {
-        
+
         if (selectedRequest != null) {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedRequest");
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedRequest", selectedRequest);
             return "generateservicequotation.xhtml?faces-redirect=true";
         } else {
@@ -88,12 +89,11 @@ public class ViewAllRequestsManagedBean {
 
     }
 
-    public void viewARequest(ServiceQuotation viewRequest){
+    public void viewARequest(ServiceQuotation viewRequest) {
         requestToView = viewRequest;
     }
-    
-    
-    public String getStatusNumber(int passedStatus){
+
+    public String getStatusNumber(int passedStatus) {
         if (passedStatus == 1) {
             statusNumber = "Request for quotation";
         }
@@ -124,11 +124,7 @@ public class ViewAllRequestsManagedBean {
     public void setStatusNumber(String statusNumber) {
         this.statusNumber = statusNumber;
     }
-    
-    
-    
-    
-    
+
     public Integer getCompanyId() {
         return companyId;
     }
@@ -192,6 +188,5 @@ public class ViewAllRequestsManagedBean {
     public void setStatus(List<String> status) {
         this.status = status;
     }
-    
-    
+
 }

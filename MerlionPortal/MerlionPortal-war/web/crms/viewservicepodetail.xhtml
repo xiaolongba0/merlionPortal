@@ -88,7 +88,7 @@
                         <p:outputLabel value="End Date:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.endDate}" />
 
-                        <p:outputLabel value="Expected Quantity Per Month (TEU):" /><p:spacer width="20" height="20" />
+                        <p:outputLabel value="Expected Quantity (TEU):" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.serviceQuotation.quantityPerMonth}" />
 
                         <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Transportation'}" >
@@ -98,12 +98,9 @@
                             <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.destination}" />
                         </c:if>
                         <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Warehouse'}" >
-                            <p:outputLabel value="Warehouse ID:" /><p:spacer width="20" height="20" />
-                            <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.warehouseId}" />
-                            <p:outputLabel value="Storage Zone ID:" /><p:spacer width="20" height="20" />
-                            <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.storageZoneId}" />
-                            <p:outputLabel value="Storage Bin ID:" /><p:spacer width="20" height="20" />
-                            <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.storageBinId}" />
+                            <p:outputLabel value="Storage Type:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.storageType}" />
+                         
                         </c:if>
                         <p:outputLabel value="Final Contract Price Per TEU:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.price}" />
@@ -120,7 +117,11 @@
                         
                         <p:outputLabel value="PO Quantity in TEU:"/><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewServicePODetailManagedBean.volume}"/>
-                        
+                        <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewServicePODetailManagedBean.productId}" />
+                        <p:outputLabel value="Product Quantity Per TEU:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewServicePODetailManagedBean.productQuantityPerTEU}" />
+
 
                         <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Transportation'}" >
                             <p:outputLabel value="Delivery Date:"/><p:spacer width="20" height="20" />
@@ -172,6 +173,11 @@
 
                         <h:outputLabel  style="font-weight: bold" value="Quantity in TEU * "/><p:spacer width="20" height="20" />
                         <p:inputText  value="#{viewServicePODetailManagedBean.volume2}" required="true" requiredMessage="Quantity in TEU is required!" />
+                        <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
+                        <h:inputText value="#{viewServicePODetailManagedBean.productId2}" required="true" requiredMessage="Product ID in TEU is required!" />
+                        <p:outputLabel value="Product Quantity Per TEU:" /><p:spacer width="20" height="20" />
+                        <h:inputText value="#{viewServicePODetailManagedBean.productQuantityPerTEU2}" required="true" requiredMessage="Product Quantity per TEU is required!" />
+                        
                     </h:panelGrid>
                     <p:messages id="modalMsg" showDetail="true" autoUpdate="true" closable="true" />
                     <p:commandButton value="Confirm" action="#{viewServicePODetailManagedBean.updatePO()}" ajax="true" update="form" />

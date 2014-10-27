@@ -108,10 +108,10 @@
                     </h:panelGrid>
                     <p:messages id="msg" showDetail="true" autoUpdate="true" closable="true" />
                 </p:fieldset>
-                <p:commandButton value="Confirm Invoice" action="#{generateServiceInvoiceManagedBean.createInvoice()}" />
+                <p:commandButton value="Confirm Invoice" action="#{generateServiceInvoiceManagedBean.createInvoice()}" ajax="true" update="form" />
 
             </h:form>
-            <p:commandButton value="Go Back" action="viewservicepodetail.xhtml?faces-redirect=true"/>
+            <p:commandButton value="Go Back" action="viewallservicepos.xhtml?faces-redirect=true"/>
 
         </ui:define>
     </ui:composition>

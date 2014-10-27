@@ -14,6 +14,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.crms.contractmanagementmodule.ContractManagementSessionBean;
 
 /**
@@ -29,6 +30,8 @@ public class RenewContractManagedBean {
      */
     @EJB
     ContractManagementSessionBean contractManagementSB;
+    @EJB
+    UserAccountManagementSessionBean uamsb;
 
     private Integer companyId;
     private Integer userId;
@@ -39,8 +42,8 @@ public class RenewContractManagedBean {
     private Date endDate;
 
     private Contract contract;
-
-
+    private String partyAName;
+    private String partyBName;
 
     public RenewContractManagedBean() {
     }
@@ -71,6 +74,8 @@ public class RenewContractManagedBean {
             contract = null;
         } else {
             contract = contractManagementSB.searchAValidContractToRenew(contractId, companyId);
+            partyAName = uamsb.getCompany(contract.getPartyA()).getName();
+            partyBName = uamsb.getCompany(contract.getPartyB()).getName();
         }
     }
 
@@ -136,6 +141,22 @@ public class RenewContractManagedBean {
 
     public void setContract(Contract contract) {
         this.contract = contract;
+    }
+
+    public String getPartyAName() {
+        return partyAName;
+    }
+
+    public void setPartyAName(String partyAName) {
+        this.partyAName = partyAName;
+    }
+
+    public String getPartyBName() {
+        return partyBName;
+    }
+
+    public void setPartyBName(String partyBName) {
+        this.partyBName = partyBName;
     }
 
 }

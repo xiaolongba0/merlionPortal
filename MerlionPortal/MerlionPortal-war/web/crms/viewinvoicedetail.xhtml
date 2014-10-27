@@ -126,10 +126,10 @@
                     </h:panelGrid>
                 </p:fieldset>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <c:if test="#{(viewInvoiceDetailManagedBean.selectedInvoice.receiverCompanyId eq viewInvoiceDetailManagedBean.companyId)and(viewInvoiceDetailManagedBean.selectedInvoice.status eq 1)}" >
+                <c:if test="#{(viewInvoiceDetailManagedBean.selectedInvoice.receiverCompanyId eq viewInvoiceDetailManagedBean.companyId)and(viewInvoiceDetailManagedBean.compareStatus eq 1)}" >
                     <p:commandButton value="Record Payment Info" type="button" onclick="PF('dlg1').show();" />
                 </c:if>
-                <c:if test="#{(viewInvoiceDetailManagedBean.selectedInvoice.senderCompanId eq viewInvoiceDetailManagedBean.companyId)and(viewInvoiceDetailManagedBean.selectedInvoice.status eq 2)}" >
+                <c:if test="#{(viewInvoiceDetailManagedBean.selectedInvoice.senderCompanId eq viewInvoiceDetailManagedBean.companyId)and(viewInvoiceDetailManagedBean.compareStatus eq 2)}" >
                     <p:commandButton value="Update payment status" action="#{viewInvoiceDetailManagedBean.updatePaymentStatus()}" update=":form" >
                         <p:confirm header="Confirmation" message="Payment information has been verified and payment is received. 
                                    Please click on yes button to update payment status." icon="ui-icon-alert" />
@@ -139,7 +139,7 @@
                         <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                     </p:confirmDialog>
                 </c:if>
-                <c:if test="#{viewInvoiceDetailManagedBean.selectedInvoice.status eq 2}" >
+                <c:if test="#{viewInvoiceDetailManagedBean.compareStatus eq 2 or viewInvoiceDetailManagedBean.compareStatus eq 3}" >
                     <p:commandButton value="View Payment info" type="button" onclick="PF('dlg3').show();" />
                 </c:if>
 
@@ -179,7 +179,7 @@
                         </h:panelGrid>
                         <h:panelGrid id="pc" rendered="#{viewInvoiceDetailManagedBean.method eq 3}" columns="3">
                             <p:outputLabel value="Check Number:" /> <p:spacer width="20" height="20" />
-                            <h:inputText value="#{viewInvoiceDetailManagedBean.swiftcode}"  styleClass="form-control" />
+                            <h:inputText value="#{viewInvoiceDetailManagedBean.checkNumber}"  styleClass="form-control" />
                             <p:outputLabel value="Amount:" /> <p:spacer width="20" height="20" />
                             <h:inputText value="#{viewInvoiceDetailManagedBean.amount}"  styleClass="form-control" />
                             <p:outputLabel value="Expected Receive Date:" /> <p:spacer width="20" height="20" />
@@ -192,34 +192,38 @@
             </h:form>
 
             <h:form>
-                <p:dialog header="View Payment Information" widgetVar="dlg3" minHeight="40">
-                    <p:outputLabel value="Payment method:" /><p:spacer width="20" height="20" />
-                    <h:outputText value="#{viewInvoiceDetailManagedBean.methodText}" />
+                <c:if test="#{viewInvoiceDetailManagedBean.compareStatus eq 2 or viewInvoiceDetailManagedBean.compareStatus eq 3}" >
+                    <p:dialog header="View Payment Information" widgetVar="dlg3" minHeight="40">
+                        <h:panelGrid columns="3">
 
-                    <c:if test="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.method eq 1}" >
-                        <p:outputLabel value="Swift Code:" /> <p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.swiftCode}" />
-                        <p:outputLabel value="Account Info:" /> <p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.accountInfo}" />
-                    </c:if>
-                    
-                    <c:if test="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.method eq 2}" >
-                        <p:outputLabel value="Check Number:" /> <p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.checkNumber}" />
-                    </c:if>
+                            <p:outputLabel value="Payment method:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewInvoiceDetailManagedBean.methodText}" />
 
-                    <c:if test="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.method eq 3}" >
-                        <p:outputLabel value="Credit Card Number:" /> <p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.creditCardNo}" />
-                    </c:if>
+                            <c:if test="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.method eq 1}" >
+                                <p:outputLabel value="Swift Code:" /> <p:spacer width="20" height="20" />
+                                <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.swiftCode}" />
+                                <p:outputLabel value="Account Info:" /> <p:spacer width="20" height="20" />
+                                <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.accountInfo}" />
+                            </c:if>
+
+                            <c:if test="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.method eq 3}" >
+                                <p:outputLabel value="Check Number:" /> <p:spacer width="20" height="20" />
+                                <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.checkNumber}" />
+                            </c:if>
+
+                            <c:if test="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.method eq 2}" >
+                                <p:outputLabel value="Credit Card Number:" /> <p:spacer width="20" height="20" />
+                                <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.creditCardNo}" />
+                            </c:if>
 
 
-                    <p:outputLabel value="Amount:" /> <p:spacer width="20" height="20" />
-                    <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.amount}" />
-                    <p:outputLabel value="Expected Receive Date:" /> <p:spacer width="20" height="20" />
-                    <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.receiveDate}" />
-
-                </p:dialog>
+                            <p:outputLabel value="Amount:" /> <p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.amount}" />
+                            <p:outputLabel value="Expected Receive Date:" /> <p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.payment.receiveDate}" />
+                        </h:panelGrid>
+                    </p:dialog>
+                </c:if>
             </h:form>
 
             <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold">

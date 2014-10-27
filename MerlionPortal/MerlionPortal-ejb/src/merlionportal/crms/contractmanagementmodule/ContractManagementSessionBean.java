@@ -118,7 +118,7 @@ public class ContractManagementSessionBean {
 
     public Contract searchAValidContractToRenew(Integer contractId, Integer myCompanyId) {
         Contract contract = em.find(Contract.class, contractId);
-        if (contractId != null) {
+        if (contract != null) {
             if (contract.getStatus() == 5 && (int) contract.getPartyA() == myCompanyId) {
                 return contract;
             }
@@ -204,6 +204,7 @@ public class ContractManagementSessionBean {
             renewContract.setCreatedDate(new Date());
             renewContract.setStartDate(startDate);
             renewContract.setEndDate(endDate);
+            renewContract.setStatus(1);
 
             renewContract.setContactPersonId(creatorId);
             renewContract.setContactPersonName(name);

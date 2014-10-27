@@ -8,7 +8,6 @@ package merlionportal.managedbean.crms;
 import entity.ServiceQuotation;
 import entity.SystemUser;
 import java.io.IOException;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -40,8 +39,9 @@ public class ViewQuotationDetailManagedBean {
     private String receiverCompanyName;
     private Double discountedPrice;
     private Double finalPrice;
-    
+
     private String status;
+    private Integer compareStatus;
 
     /**
      * Creates a new instance of ViewQuotationManagedBean
@@ -75,11 +75,12 @@ public class ViewQuotationDetailManagedBean {
             if (selectedQuotation.getDiscountRate() != null) {
                 discountedPrice = selectedQuotation.getDiscountRate() * selectedQuotation.getPrice() / 100;
                 finalPrice = selectedQuotation.getPrice() - discountedPrice;
-            }else{
+            } else {
                 discountedPrice = 0.0;
                 finalPrice = selectedQuotation.getPrice();
             }
         }
+        compareStatus = selectedQuotation.getStatus();
         this.StatusText(selectedQuotation.getStatus());
 
     }
@@ -87,6 +88,8 @@ public class ViewQuotationDetailManagedBean {
     public void rejectQuotation() {
         int result = quotationManagementSB.rejectQuotation(selectedQuotation.getQuotationId());
         if (result > 0) {
+            compareStatus = 5;
+            this.StatusText(compareStatus);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Quotation is rejected"));
 
         } else {
@@ -98,6 +101,8 @@ public class ViewQuotationDetailManagedBean {
     public void acceptQuotation() {
         int result = quotationManagementSB.acceptQuotation(selectedQuotation.getQuotationId());
         if (result > 0) {
+            compareStatus = 3;
+            this.StatusText(compareStatus);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Quotation is accepted"));
 
         } else {
@@ -106,8 +111,7 @@ public class ViewQuotationDetailManagedBean {
         }
     }
 
-    
-    private String StatusText(int passedStatus){
+    private String StatusText(int passedStatus) {
         if (passedStatus == 1) {
             status = "Request for quotation";
         }
@@ -134,6 +138,7 @@ public class ViewQuotationDetailManagedBean {
         }
         return status;
     }
+
     public Integer getCompanyId() {
         return companyId;
     }
@@ -204,6 +209,14 @@ public class ViewQuotationDetailManagedBean {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Integer getCompareStatus() {
+        return compareStatus;
+    }
+
+    public void setCompareStatus(Integer compareStatus) {
+        this.compareStatus = compareStatus;
     }
 
 }

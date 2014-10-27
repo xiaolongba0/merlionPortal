@@ -125,7 +125,7 @@
 
                 </p:fieldset>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <c:if test="#{viewQuotationManagedBean.companyId eq viewQuotationManagedBean.selectedQuotation.senderCompanyId}" >
+                <c:if test="#{viewQuotationManagedBean.companyId eq viewQuotationManagedBean.selectedQuotation.senderCompanyId and viewQuotationManagedBean.compareStatus eq 2}"  >
                     <p:commandButton value="Reject Quotation" icon="ui-icon-circle-close" action="#{viewQuotationManagedBean.rejectQuotation()}" update="form" ajax="true" />
                     <p:commandButton value="Accept Quotation"  icon="ui-icon-circle-check" action="#{viewQuotationManagedBean.acceptQuotation()}" update="form" ajax="true" />
                 </c:if>
