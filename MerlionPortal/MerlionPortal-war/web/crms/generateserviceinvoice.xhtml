@@ -56,12 +56,12 @@
 
         <ui:define name="right">
             <h:form id="form">
-                <p:fieldset legend="Contact Information" style="margin-bottom:20px">
+                <p:fieldset legend="Invoice Information" style="margin-bottom:20px">
                     <h:panelGrid columns="3" cellpadding="6">
                         <h:outputText value="Sender Company ID:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{generateServiceInvoiceManagedBean.selectedServicePO.receiverCompanyId}" />
                         <h:outputText value="Sender Company Name:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{generateServiceInvoiceManagedBean.receiverCompanyName}" />
+                        <h:outputText value="#{generateServiceInvoiceManagedBean.senderCompanyName}" />
                     </h:panelGrid>
                     <p:separator />
                     <h:panelGrid columns="3" cellpadding="6">
@@ -73,6 +73,8 @@
                 </p:fieldset>
                 <p:fieldset legend="Purchase Order Information" style="margin-bottom:20px">
                     <h:panelGrid id="po" columns="3" cellpadding="6" >
+                        <p:outputLabel value="Purchase Order ID"/><p:spacer width="20" height="20" />
+                        <h:outputText value="#{generateServiceInvoiceManagedBean.selectedServicePO.servicePOId}"/>
                         <p:outputLabel value="Contract Price Per TEU:"/><p:spacer width="20" height="20" />
                         <h:outputText value="#{generateServiceInvoiceManagedBean.selectedServicePO.contract.price}"/>
                         <p:outputLabel value="PO Quantity in TEU:"/><p:spacer width="20" height="20" />

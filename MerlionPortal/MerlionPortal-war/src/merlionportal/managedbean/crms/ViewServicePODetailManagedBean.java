@@ -56,6 +56,8 @@ public class ViewServicePODetailManagedBean {
     private String senderCompanyName;
     private String receiverCompanyName;
 
+    private Integer compareStatus;
+
     public ViewServicePODetailManagedBean() {
     }
 
@@ -79,6 +81,7 @@ public class ViewServicePODetailManagedBean {
         selectedServicePO = (ServicePO) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedServicePO");
         today = new Date();
         if (selectedServicePO != null) {
+            compareStatus = selectedServicePO.getStatus();
             this.getStatusText(selectedServicePO.getStatus());
             deliveryDate = selectedServicePO.getServiceDeliveryDate();
             serviceStartDate = selectedServicePO.getServiceStartDate();
@@ -89,6 +92,7 @@ public class ViewServicePODetailManagedBean {
             price = selectedServicePO.getPrice();
             senderCompanyName = userAccountSB.getCompany(selectedServicePO.getSenderCompanyId()).getName();
             receiverCompanyName = userAccountSB.getCompany(selectedServicePO.getReceiverCompanyId()).getName();
+            
         }
 
     }
@@ -142,6 +146,8 @@ public class ViewServicePODetailManagedBean {
             if (selectedServicePO.getStatus() == 1) {
                 int result = servicePOSB.deleteServicePO(selectedServicePO.getServicePOId(), companyId);
                 if (result == 1) {
+                    status = "PO Deleted";
+                    compareStatus = 2;
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PO is marked as deleted", ""));
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
@@ -158,6 +164,7 @@ public class ViewServicePODetailManagedBean {
         if (selectedServicePO != null) {
             int result = poProcessingSB.releasePOHold(selectedServicePO.getServicePOId());
             if (result == 1) {
+                compareStatus = 5;
                 status = "SO Waiting for fulfillment";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PO Hold is released", ""));
             } else {
@@ -172,6 +179,7 @@ public class ViewServicePODetailManagedBean {
         if (selectedServicePO != null) {
             int result = poProcessingSB.rejectPO(selectedServicePO.getServicePOId());
             if (result == 1) {
+                compareStatus = 4;
                 status = "PO Rejected";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PO is rejected", ""));
             } else {
@@ -186,9 +194,11 @@ public class ViewServicePODetailManagedBean {
         if (selectedServicePO != null) {
             boolean result = poProcessingSB.passCreditCheck(selectedServicePO.getSenderCompanyId(), selectedServicePO.getContract().getContractId(), selectedServicePO.getServicePOId());
             if (result) {
+                compareStatus = 5;
                 status = "SO Waiting for fulfillment";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Credit Check passed", "SO is generated"));
             } else {
+                compareStatus = 3;
                 status = "PO Hold";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Credit Check failed!", "Previous order payment under this contract is not settled. PO is on Hold"));
             }
@@ -368,6 +378,14 @@ public class ViewServicePODetailManagedBean {
 
     public void setProductQuantityPerTEU(Integer productQuantityPerTEU) {
         this.productQuantityPerTEU = productQuantityPerTEU;
+    }
+
+    public Integer getCompareStatus() {
+        return compareStatus;
+    }
+
+    public void setCompareStatus(Integer compareStatus) {
+        this.compareStatus = compareStatus;
     }
 
 }

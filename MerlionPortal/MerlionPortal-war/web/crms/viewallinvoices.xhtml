@@ -81,6 +81,9 @@
                         <p:column filterBy="#{invoice.invoiceId}" headerText="Invoice ID" filterMatchMode="contains">
                             <h:outputText value="#{invoice.invoiceId}" />
                         </p:column>
+                        <p:column filterBy="#{invoice.servicePO.servicePOId}" headerText="Order ID" filterMatchMode="contains">
+                            <h:outputText value="#{invoice.servicePO.servicePOId}" />
+                        </p:column>
                         <p:column headerText="Receiver Company ID" filterBy="#{invoice.receiverCompanyId}" filterMatchMode="contains">
                             <h:outputText value="#{invoice.receiverCompanyId}" />
                         </p:column>
@@ -113,8 +116,11 @@
                             </p:outputPanel>
                         </f:facet>
 
-                        <p:column filterBy="#{reinvoice.invoiceId}" headerText="Contract ID" filterMatchMode="contains">
+                        <p:column filterBy="#{reinvoice.invoiceId}" headerText="Invoice ID" filterMatchMode="contains">
                             <h:outputText value="#{reinvoice.invoiceId}" />
+                        </p:column>
+                        <p:column filterBy="#{reinvoice.invoiceId}" headerText="Order ID" filterMatchMode="contains">
+                            <h:outputText value="#{reinvoice.servicePO.servicePOId}" />
                         </p:column>
                         <p:column filterBy="#{reinvoice.senderCompanId}" headerText="Sender Company ID" filterMatchMode="contains">
                             <h:outputText value="#{reinvoice.senderCompanId}" />

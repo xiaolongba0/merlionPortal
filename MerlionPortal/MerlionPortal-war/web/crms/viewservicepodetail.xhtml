@@ -18,6 +18,7 @@
 
         <ui:define name="more-imports">
             <ui:insert>
+                <link rel="stylesheet" href="${request.contextPath}/css/crms.css" type="text/css" />
             </ui:insert>
         </ui:define>
 
@@ -57,6 +58,58 @@
 
         <ui:define name="right">
             <h:form id="form">
+                <c:if test="#{viewServicePODetailManagedBean.compareStatus eq 1}" >
+                    <h6 class="activatedStep">PO waiting to be processed</h6><p:spacer width="30" height="20" />
+                    <h6 class="greyStep">PO Hold</h6><p:spacer width="70" height="20" />
+                    <h6 class="greyStep" >PO Rejected</h6><p:spacer width="30" height="20" />
+                    <h6 class="greyStep" >SO waiting for fulfillment</h6><p:spacer width="30" height="20" />
+                    <h6 class="greyStep" >SO invoiced</h6><p:spacer width="60" height="20" />
+                    <h6 class="greyStep" >SO closed</h6>
+                </c:if>
+                <c:if test="#{viewServicePODetailManagedBean.compareStatus eq 4}" >
+                    <h6 class="greyStep">PO waiting to be processed</h6><p:spacer width="30" height="20" />
+                    <h6 class="greyStep">PO Hold</h6><p:spacer width="70" height="20" />
+                    <h6 class="activatedStep" >PO Rejected</h6><p:spacer width="30" height="20" />
+                    <h6 class="greyStep" >SO waiting for fulfillment</h6><p:spacer width="30" height="20" />
+                    <h6 class="greyStep" >SO invoiced</h6><p:spacer width="60" height="20" />
+                    <h6 class="greyStep" >SO closed</h6>
+                </c:if>
+                <c:if test="#{viewServicePODetailManagedBean.compareStatus eq 3}" >
+                    <h6 class="greyStep">PO waiting to be processed</h6><p:spacer width="30" height="20" />
+                    <h6 class="activatedStep">PO Hold</h6><p:spacer width="70" height="20" />
+                    <h6 class="greyStep" >PO Rejected</h6><p:spacer width="30" height="20" />
+                    <h6 class="greyStep" >SO waiting for fulfillment</h6><p:spacer width="30" height="20" />
+                    <h6 class="greyStep" >SO invoiced</h6><p:spacer width="60" height="20" />
+                    <h6 class="greyStep" >SO closed</h6>
+                </c:if>
+                <c:if test="#{viewServicePODetailManagedBean.compareStatus eq 5}" >
+                    <h6 class="greyStep">PO waiting to be processed</h6><p:spacer width="30" height="20" />
+                    <h6 class="greyStep">PO Hold</h6><p:spacer width="70" height="20" />
+                    <h6 class="greyStep" >PO Rejected</h6><p:spacer width="30" height="20" />
+                    <h6 class="activatedStep" >SO waiting for fulfillment</h6><p:spacer width="30" height="20" />
+                    <h6 class="greyStep" >SO invoiced</h6><p:spacer width="60" height="20" />
+                    <h6 class="greyStep" >SO closed</h6>
+                </c:if>
+                <c:if test="#{viewServicePODetailManagedBean.compareStatus eq 7}" >
+                    <h6 class="greyStep">PO waiting to be processed</h6><p:spacer width="30" height="20" />
+                    <h6 class="greyStep">PO Hold</h6><p:spacer width="70" height="20" />
+                    <h6 class="greyStep" >PO Rejected</h6><p:spacer width="30" height="20" />
+                    <h6 class="greyStep" >SO waiting for fulfillment</h6><p:spacer width="30" height="20" />
+                    <h6 class="activatedStep" >SO invoiced</h6><p:spacer width="60" height="20" />
+                    <h6 class="greyStep" >SO closed</h6>
+                </c:if>
+                <c:if test="#{viewServicePODetailManagedBean.compareStatus eq 8}" >
+                    <h6 class="greyStep">PO waiting to be processed</h6><p:spacer width="30" height="20" />
+                    <h6 class="greyStep">PO Hold</h6><p:spacer width="70" height="20" />
+                    <h6 class="greyStep" >PO Rejected</h6><p:spacer width="30" height="20" />
+                    <h6 class="greyStep" >SO waiting for fulfillment</h6><p:spacer width="30" height="20" />
+                    <h6 class="greyStep" >SO invoiced</h6><p:spacer width="60" height="20" />
+                    <h6 class="activatedStep" >SO closed</h6>
+                </c:if>
+                 
+                <div class="contractsteps">
+                    <img src="../img/6nodes.jpg"/>
+                </div>
                 <p:fieldset legend="Service Contact Information" style="margin-bottom:20px">
                     <h:panelGrid columns="3" cellpadding="6">
                         <h:outputText value="Sender Company ID:" /><p:spacer width="20" height="20" />
@@ -100,7 +153,7 @@
                         <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Warehouse'}" >
                             <p:outputLabel value="Storage Type:" /><p:spacer width="20" height="20" />
                             <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.storageType}" />
-                         
+
                         </c:if>
                         <p:outputLabel value="Final Contract Price Per TEU:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.price}" />
@@ -114,7 +167,7 @@
                     <h:panelGrid id="po" columns="3" cellpadding="6" >
                         <p:outputLabel value="PO ID:"/><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.servicePOId}"/>
-                        
+
                         <p:outputLabel value="PO Quantity in TEU:"/><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewServicePODetailManagedBean.volume}"/>
                         <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
@@ -148,7 +201,7 @@
                 </p:fieldset>
 
                 <!--PO not processed yet, I am the sender-->
-                <c:if test="#{(viewServicePODetailManagedBean.selectedServicePO.status eq 1)and (viewServicePODetailManagedBean.selectedServicePO.senderCompanyId eq viewServicePODetailManagedBean.companyId)}" >
+                <c:if test="#{(viewServicePODetailManagedBean.compareStatus eq 1)and (viewServicePODetailManagedBean.selectedServicePO.senderCompanyId eq viewServicePODetailManagedBean.companyId)}" >
                     <p:commandButton value="Modify PO" type="button" onclick="PF('dlg1').show();" />
                     <p:commandButton value="Deleted PO"  action="#{viewServicePODetailManagedBean.deletePO()}" update="form" ajax="true" />
                 </c:if>
@@ -177,30 +230,30 @@
                         <h:inputText value="#{viewServicePODetailManagedBean.productId2}" required="true" requiredMessage="Product ID in TEU is required!" />
                         <p:outputLabel value="Product Quantity Per TEU:" /><p:spacer width="20" height="20" />
                         <h:inputText value="#{viewServicePODetailManagedBean.productQuantityPerTEU2}" required="true" requiredMessage="Product Quantity per TEU is required!" />
-                        
+
                     </h:panelGrid>
                     <p:messages id="modalMsg" showDetail="true" autoUpdate="true" closable="true" />
-                    <p:commandButton value="Confirm" action="#{viewServicePODetailManagedBean.updatePO()}" ajax="true" update="form" />
+                    <p:commandButton value="Confirm" action="#{viewServicePODetailManagedBean.updatePO()}" ajax="true" update=":form :form3" />
                 </p:dialog>
             </h:form>
 
 
-            <h:form>
+            <h:form id="form3">
                 <!--PO not processed yet, I am service provider-->
-                <c:if test="#{(viewServicePODetailManagedBean.selectedServicePO.status eq 1)and (viewServicePODetailManagedBean.selectedServicePO.receiverCompanyId eq viewServicePODetailManagedBean.companyId)}" >
-                    <p:commandButton value="Credit Check" action="#{viewServicePODetailManagedBean.checkCredit()}" update=":form" ajax="true" />
-                    <p:commandButton value="Reject PO" action="#{viewServicePODetailManagedBean.rejectPO()}" update=":form" ajax="true" />
+                <c:if test="#{(viewServicePODetailManagedBean.compareStatus eq 1)and (viewServicePODetailManagedBean.selectedServicePO.receiverCompanyId eq viewServicePODetailManagedBean.companyId)}" >
+                    <p:commandButton value="Credit Check" action="#{viewServicePODetailManagedBean.checkCredit()}" update=":form :form3" ajax="true" />
+                    <p:commandButton value="Reject PO" action="#{viewServicePODetailManagedBean.rejectPO()}" update=":form :form3" ajax="true" />
                 </c:if>
 
                 <!--PO is on hold and I am the Service Provider-->
-                <c:if test="#{(viewServicePODetailManagedBean.selectedServicePO.status eq 3)and (viewServicePODetailManagedBean.selectedServicePO.receiverCompanyId eq viewServicePODetailManagedBean.companyId)}" >
-                    <p:commandButton value="Credit Check" action="#{viewServicePODetailManagedBean.checkCredit()}" update=":form" ajax="true" />
-                    <p:commandButton value="Release PO Hold" action="#{viewServicePODetailManagedBean.releasePOHold()}" update=":form" ajax="true" />
-                    <p:commandButton value="Reject PO" action="#{viewServicePODetailManagedBean.rejectPO()}" update=":form" ajax="true" />
+                <c:if test="#{(viewServicePODetailManagedBean.compareStatus eq 3)and (viewServicePODetailManagedBean.selectedServicePO.receiverCompanyId eq viewServicePODetailManagedBean.companyId)}" >
+                    <p:commandButton value="Credit Check" action="#{viewServicePODetailManagedBean.checkCredit()}" update=":form :form3" ajax="true" />
+                    <p:commandButton value="Release PO Hold" action="#{viewServicePODetailManagedBean.releasePOHold()}" update=":form :form3" ajax="true" />
+                    <p:commandButton value="Reject PO" action="#{viewServicePODetailManagedBean.rejectPO()}" update=":form :form3" ajax="true" />
                 </c:if>
 
                 <!--SO waiting for fulfillment, I am service provider-->
-                <c:if test="#{(viewServicePODetailManagedBean.selectedServicePO.status eq 5)and (viewServicePODetailManagedBean.selectedServicePO.receiverCompanyId eq viewServicePODetailManagedBean.companyId)}" >
+                <c:if test="#{(viewServicePODetailManagedBean.compareStatus eq 5)and (viewServicePODetailManagedBean.selectedServicePO.receiverCompanyId eq viewServicePODetailManagedBean.companyId)}" >
                     <p:commandButton value="Generate Invoice" action="#{viewServicePODetailManagedBean.generateInvoice()}" />
                 </c:if>
 
