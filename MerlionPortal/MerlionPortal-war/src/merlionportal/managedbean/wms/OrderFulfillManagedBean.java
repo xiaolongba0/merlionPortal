@@ -6,16 +6,20 @@
 package merlionportal.managedbean.wms;
 
 import entity.ServicePO;
+import entity.StorageBin;
+import entity.Warehouse;
+import entity.WarehouseZone;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import merlionportal.wms.mobilitymanagementmodule.WarehouseRequestManagerSessionBean;
+import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
 
 /**
  *
@@ -27,17 +31,22 @@ public class OrderFulfillManagedBean {
 
     @EJB
     private WarehouseRequestManagerSessionBean warehouseRMB;
+    @EJB
+    private AssetManagementSessionBean amsb;
 
     private Integer companyId;
     private Integer userId;
     private ServicePO selectedOrder;
     private List<String> contractInf;
-    private String warehouse; 
-    private String warehouseZone;
-    private String storageBin;
-    private Map<String, Map<String, Map<String, Integer>>> data = new HashMap<String, Map<String, Map<String, Integer>>>();
-    private Map<String, Map<String, Integer>> data2 = new HashMap<String, Map<String, Integer>>();
-    private Map<String, Integer> storageBins = new HashMap<String, Integer>();
+    private Integer warehouse;
+    private List<Warehouse> warehouses;
+
+    private Integer warehouseZone;
+    private List<WarehouseZone> warehouseZones;
+
+    private List<Integer> selectedStorageBins;
+    private List<String> listStorageBinType;
+    private List<StorageBin> storageBins;
 
     @PostConstruct
     public void init() {
@@ -57,10 +66,10 @@ public class OrderFulfillManagedBean {
                 ex.printStackTrace();
             }
         }
-
+        warehouses = amsb.viewMyWarehouses(companyId);
         selectedOrder = (ServicePO) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedOrder");
         contractInf = warehouseRMB.viewContractInformation(selectedOrder.getServicePOId());
-        data = warehouseRMB.selectionSetUp(selectedOrder, companyId);
+
     }
 
     public OrderFulfillManagedBean() {
@@ -114,71 +123,109 @@ public class OrderFulfillManagedBean {
     }
 
     public void onWarehouseChange() {
-        if (warehouse != null && !warehouse.equals("")) {
-            data2 = data.get(warehouse);
-        } else {
-            data2 = new HashMap<String, Map<String,Integer>>();
+        if (warehouse != null) {
+            warehouseZones = amsb.viewWarehouseZoneForAWarehouse(warehouse);
         }
-    }
-    public void onWarehouseZoneChange(){
-        if (warehouseZone != null && !warehouseZone.equals("")) {
-            storageBins = data2.get(warehouseZone);
-        } else {
-            storageBins = new HashMap<String, Integer>();
-        }
-    }
-    
-    public void reserveSpace(){
-        int myBinId=storageBins.get(storageBin);
-        warehouseRMB.reserveSpace(myBinId, selectedOrder);
     }
 
-    public String getWarehouse() {
+    public void onWarehouseZoneChange() {
+        storageBins = new ArrayList();
+        if (warehouse != null & warehouseZone != null) {
+            for (Object o : amsb.viewStorageBinForWarehouseZone(warehouseZone)) {
+                StorageBin myBin = (StorageBin) o;
+                if (warehouseRMB.checkStorageBinAvailability(selectedOrder, myBin)) {
+                    storageBins.add(myBin);
+                }
+            }
+        }
+    }
+
+    public void reserveSpace() {
+        int totalAvailable = 0;
+        int reserveSpace = 0;
+        int requiredSpace = selectedOrder.getVolume() * selectedOrder.getProductQuantityPerTEU();
+        for (Object o : selectedStorageBins) {
+            StorageBin mybin = (StorageBin) o;
+            totalAvailable += mybin.getAvailableSpace();
+        }
+        if(totalAvailable< requiredSpace){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Not enough space", "Please select more storage bin"));
+        }
+        else{
+            for (Object o : selectedStorageBins) {
+                StorageBin mybin = (StorageBin) o;
+                reserveSpace =mybin.getAvailableSpace();
+                if (requiredSpace > mybin.getAvailableSpace()) {
+                    warehouseRMB.reserveSpace(mybin, selectedOrder,reserveSpace);
+                    requiredSpace =requiredSpace-reserveSpace;
+                }
+                else{
+                    warehouseRMB.reserveSpace(mybin, selectedOrder,requiredSpace);
+                }
+            }
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Success", "Space Reserved"));
+        }
+    }
+
+    public Integer getWarehouse() {
         return warehouse;
     }
 
-    public void setWarehouse(String warehouse) {
+    public void setWarehouse(Integer warehouse) {
         this.warehouse = warehouse;
     }
 
-    public String getWarehouseZone() {
+    public List<Warehouse> getWarehouses() {
+        return warehouses;
+    }
+
+    public void setWarehouses(List<Warehouse> warehouses) {
+        this.warehouses = warehouses;
+    }
+
+    public Integer getWarehouseZone() {
         return warehouseZone;
     }
 
-    public void setWarehouseZone(String warehouseZone) {
+    public void setWarehouseZone(Integer warehouseZone) {
         this.warehouseZone = warehouseZone;
     }
 
-    public String getStorageBin() {
-        return storageBin;
+    public List<WarehouseZone> getWarehouseZones() {
+        return warehouseZones;
     }
 
-    public void setStorageBin(String storageBin) {
-        this.storageBin = storageBin;
+    public void setWarehouseZones(List<WarehouseZone> warehouseZones) {
+        this.warehouseZones = warehouseZones;
     }
 
-    public Map<String, Map<String, Map<String, Integer>>> getData() {
-        return data;
+    public List<String> getListStorageBinType() {
+        return listStorageBinType;
     }
 
-    public void setData(Map<String, Map<String, Map<String, Integer>>> data) {
-        this.data = data;
+    public void setListStorageBinType(List<String> listStorageBinType) {
+        this.listStorageBinType = listStorageBinType;
     }
 
-    public Map<String, Map<String, Integer>> getData2() {
-        return data2;
-    }
-
-    public void setData2(Map<String, Map<String, Integer>> data2) {
-        this.data2 = data2;
-    }
-
-    public Map<String, Integer> getStorageBins() {
+    public List<StorageBin> getStorageBins() {
         return storageBins;
     }
 
-    public void setStorageBins(Map<String, Integer> storageBins) {
+    public void setStorageBins(List<StorageBin> storageBins) {
         this.storageBins = storageBins;
     }
-   
+
+    public List<Integer> getSelectedStorageBins() {
+        return selectedStorageBins;
+    }
+
+    public void setSelectedStorageBins(List<Integer> selectedStorageBins) {
+        this.selectedStorageBins = selectedStorageBins;
+    }
+//    <p:outputLabel  value="Storage Bin " />
+//                        <p:selectOneMenu id="storageBin" value="#{orderFulfillManagedBean.storageBin}" style="width:150px">
+//                            <f:selectItem itemLabel="Select City" itemValue="" noSelectionOption="true" />
+//                            <f:selectItems value="#{orderFulfillManagedBean.selectedStorageBins}"var="storageBin" itemLabel="ID:#{storageBin.storageBinId}   Name:#{storageBin.binName} Bin Type: Name:#{storageBin.binType}"  itemValue="#{storageBin.storageBinId}" />
+//                        </p:selectOneMenu>
+
 }

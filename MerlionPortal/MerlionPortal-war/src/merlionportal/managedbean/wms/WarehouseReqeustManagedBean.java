@@ -53,7 +53,6 @@ public class WarehouseReqeustManagedBean {
                 ex.printStackTrace();
             }
         }
-
         selectedOrder = (ServicePO) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedOrder");
     }
 
@@ -105,21 +104,30 @@ public class WarehouseReqeustManagedBean {
         this.selectedOrder = selectedOrder;
     }
 
-    public String viewCompanyName(int cId) {
-        String result = warehouseRMB.viewCompanyName(cId);
+    public String viewCompanyName(Integer cId) {
+        String result = "";
+        if (cId != null) {
+            result = warehouseRMB.viewCompanyName(cId);
+        }
         return result;
     }
 
-    public String viewCompanyContactPersonName(int cId) {
-        String result = warehouseRMB.viewCompanyContactPersonName(cId);
+    public String viewCompanyContactPersonName(Integer cId) {
+        String result = "";
+        if (cId != null) {
+            result = warehouseRMB.viewCompanyContactPersonName(cId);
+        }
         return result;
     }
 
-    public String viewCompanyContact(int cId) {
-        String result = warehouseRMB.viewCompanyContact(cId);
+    public String viewCompanyContact(Integer cId) {
+        String result = "";
+        if (cId != null) {
+            result = warehouseRMB.viewCompanyContact(cId);
+        }
         return result;
     }
-    
+
     public List<String> getContractInf() {
         contractInf = warehouseRMB.viewContractInformation(selectedOrder.getServicePOId());
         return contractInf;
