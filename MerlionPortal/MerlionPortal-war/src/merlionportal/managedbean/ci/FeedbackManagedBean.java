@@ -63,11 +63,22 @@ public class FeedbackManagedBean {
     }
 
     public void postFeedback() {
-        if (fsb.createFeedback(userId, feedBackTitle, feedBackContent) > -1) {
-            RequestContext.getCurrentInstance().execute("postCreateFeedback()");
-            onLoad();
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Feedback Not Posted!", "Please fill in the required fields."));
+        boolean cont = true;
+        if (feedBackTitle.equals("")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please enter title!", "Title cannot be empty."));
+            cont = false;
+        }
+        if (feedBackContent.equals("")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please enter content!", "Content cannot be empty."));
+            cont = false;
+        }
+        if (cont == true) {
+            if (fsb.createFeedback(userId, feedBackTitle, feedBackContent) > -1) {
+                RequestContext.getCurrentInstance().execute("postCreateFeedback()");
+                onLoad();
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Feedback Not Posted!", "Something is wrong."));
+            }
         }
     }
 
@@ -77,11 +88,13 @@ public class FeedbackManagedBean {
             RequestContext.getCurrentInstance().execute("noUserFound()");
         } else {
             String commentMsg = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("commentInput-" + Integer.toString(id));
-            if (fsb.createComment(userId, commentMsg, id) > -1) {
-                RequestContext.getCurrentInstance().execute("commentCreated()");
-                onLoad();
+            if (commentMsg.equals("")) {
+                RequestContext.getCurrentInstance().execute("noCommentEntered()");
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Feedback Not Posted!", "Please fill in the required fields."));
+                if (fsb.createComment(userId, commentMsg, id) > -1) {
+                    RequestContext.getCurrentInstance().execute("commentCreated()");
+                    onLoad();
+                }
             }
         }
     }

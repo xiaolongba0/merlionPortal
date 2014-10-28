@@ -35,6 +35,10 @@
                     $.notify("Please login first!", "error");
                 }
 
+                function noCommentEntered() {
+                    $.notify("Please enter comment!", "error");
+                }
+
                 function feedbackLiked(title) {
                     $.notify("You have liked " + title, "success");
                 }
@@ -58,14 +62,15 @@
                                     Hello #{feedbackBean.loginedUser.firstName},
                                     <div>
                                         <h3>Post Feedback</h3>
-                                        <p:inputText styleClass="form-control" required="true" requiredMessage="Topic is required." id="titleInput" value="#{feedbackBean.feedBackTitle}" style="width:100%;">
+                                        <p:inputText styleClass="form-control" id="titleInput" value="#{feedbackBean.feedBackTitle}" style="width:100%;">
                                             <p:watermark for="titleInput" value="Feedback Title" id="titleWatermark" />
                                         </p:inputText>
                                         <br/><br/>
-                                        <p:inputTextarea styleClass="form-control" required="true" requiredMessage="Content is required." style="width:100%;height:150px;" counter="remainingText" maxlength="200" counterTemplate="{0} characters remaining." value="#{feedbackBean.feedBackContent}" autoResize="false" /><br/>
+                                        <p:inputTextarea style="width:100%;height:150px;" counter="remainingText" maxlength="200" counterTemplate="{0} characters remaining." value="#{feedbackBean.feedBackContent}" autoResize="false" /><br/>
                                         <h:outputText id="remainingText" /><br/>
                                         <p:commandButton value="Post Feedback" actionListener="#{feedbackBean.postFeedback()}" update="feedbackForm" />
                                     </div>
+                                    <p:growl id="growl" showDetail="true" sticky="true" />
                                 </c:otherwise>
                             </c:choose>
                         </div>
