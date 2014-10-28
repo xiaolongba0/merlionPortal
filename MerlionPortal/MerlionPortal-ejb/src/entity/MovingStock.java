@@ -30,8 +30,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "MovingStock.findAll", query = "SELECT m FROM MovingStock m"),
     @NamedQuery(name = "MovingStock.findByMovingStockId", query = "SELECT m FROM MovingStock m WHERE m.movingStockId = :movingStockId"),
-    @NamedQuery(name = "MovingStock.findByMovingStock", query = "SELECT m FROM MovingStock m WHERE m.movingStock = :movingStock"),
-    @NamedQuery(name = "MovingStock.findBySourceStorageBinId", query = "SELECT m FROM MovingStock m WHERE m.sourceStorageBinId = :sourceStorageBinId")})
+    @NamedQuery(name = "MovingStock.findByMovingQuantity", query = "SELECT m FROM MovingStock m WHERE m.movingQuantity = :movingQuantity"),
+    @NamedQuery(name = "MovingStock.findBySourceStorageBinId", query = "SELECT m FROM MovingStock m WHERE m.sourceStorageBinId = :sourceStorageBinId"),
+    @NamedQuery(name = "MovingStock.findByDestStorageBinId", query = "SELECT m FROM MovingStock m WHERE m.destStorageBinId = :destStorageBinId")})
 public class MovingStock implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,10 +40,12 @@ public class MovingStock implements Serializable {
     @Basic(optional = false)
     @Column(name = "movingStockId")
     private Integer movingStockId;
-    @Column(name = "movingStock")
-    private Integer movingStock;
+    @Column(name = "movingQuantity")
+    private Integer movingQuantity;
     @Column(name = "sourceStorageBinId")
     private Integer sourceStorageBinId;
+    @Column(name = "destStorageBinId")
+    private Integer destStorageBinId;
     @JoinColumn(name = "transportOrder", referencedColumnName = "transportOrderId")
     @ManyToOne(optional = false)
     private TransportOrder transportOrder;
@@ -65,12 +68,12 @@ public class MovingStock implements Serializable {
         this.movingStockId = movingStockId;
     }
 
-    public Integer getMovingStock() {
-        return movingStock;
+    public Integer getMovingQuantity() {
+        return movingQuantity;
     }
 
-    public void setMovingStock(Integer movingStock) {
-        this.movingStock = movingStock;
+    public void setMovingQuantity(Integer movingQuantity) {
+        this.movingQuantity = movingQuantity;
     }
 
     public Integer getSourceStorageBinId() {
@@ -79,6 +82,14 @@ public class MovingStock implements Serializable {
 
     public void setSourceStorageBinId(Integer sourceStorageBinId) {
         this.sourceStorageBinId = sourceStorageBinId;
+    }
+
+    public Integer getDestStorageBinId() {
+        return destStorageBinId;
+    }
+
+    public void setDestStorageBinId(Integer destStorageBinId) {
+        this.destStorageBinId = destStorageBinId;
     }
 
     public TransportOrder getTransportOrder() {
