@@ -174,18 +174,16 @@
 
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="supplierCompanyId" style="font-weight: bold" value="Supplier Company ID: " />
+                                <p:outputLabel for="company" style="font-weight: bold" value="Supplier Company ID: " />
                             </p:column>
                             <p:column>
-                                <h:selectOneMenu id="supplierCompanyId" value="#{productManagedBean.supplierCompanyId}" required="true" label="Supplier Company ID">
+                                <h:selectOneMenu id="company" value="#{productManagedBean.supplierCompanyId}" required="true" label="Supplier Company ID">
                                     <f:selectItem itemLabel="Select Supplier Company" itemValue="" noSelectionOption="true" />
-                                    <f:selectItem itemLabel="RedBicycle Pte. Ltd." itemValue="2" />
-                                    <f:selectItem itemLabel="SteelAcc International" itemValue="3" />
-                                    <f:selectItem itemLabel="Popular Pte. Ltd." itemValue="4" />
+                                    <f:selectItems value="#{productManagedBean.companies}"  var="company" itemLabel="ID:#{company.companyId} Name:#{company.name}"  itemValue="#{company.companyId}"/>
                                 </h:selectOneMenu>
                             </p:column>
                         </p:row>
-                        <p:row>
+                         <p:row>
                             <p:column>
                                 <p:outputLabel for="supplierContactPerson" style="font-weight: bold" value="Supplier Contact Person: " />
                             </p:column>
