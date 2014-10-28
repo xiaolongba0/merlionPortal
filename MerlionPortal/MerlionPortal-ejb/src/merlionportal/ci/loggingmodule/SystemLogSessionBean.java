@@ -100,14 +100,30 @@ public class SystemLogSessionBean {
         return allLog;
     }
 
-    public List<SystemLog> getAllLog() {
+    public List<SystemLog> getAllLog(int userId) {
         List<SystemLog> allLog = new ArrayList();
+        List<SystemLog> result = new ArrayList();
+
+        SystemUser myUser = em.find(SystemUser.class, userId);
         Query q = em.createQuery("SELECT s FROM SystemLog s");
         for (Object o : q.getResultList()) {
-            SystemLog sysLog = (SystemLog)o;
+            SystemLog sysLog = (SystemLog) o;
             allLog.add(sysLog);
         }
-        return allLog;
+        if (myUser.getUserType() != null) {
+            if (myUser.getUserType().equals("superuser")) {
+                result = allLog;
+            }
+
+        } else {
+            for (Object o : allLog) {
+                SystemLog mylog = (SystemLog) o;
+                if (mylog.getSystemUsersystemUserId().getSystemUserId() == userId) {
+                    result.add(mylog);
+                }
+            }
+        }
+        return result;
     }
 
     private List<Company> searchForCompanyByName(String companyName) {
@@ -178,6 +194,5 @@ public class SystemLogSessionBean {
         result = myUser.getCompanycompanyId().getName();
         return result;
     }
-    
 
 }
