@@ -1,15 +1,16 @@
 package merlionportal.mrp.productcatalogmodule;
 
+import entity.Company;
 import entity.Component;
 import entity.Product;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
-import javax.persistence.Query;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 @Stateless
 @LocalBean
@@ -65,6 +66,11 @@ public class ProductSessionBean {
     public List<Product> getMyProducts(Integer companyId) {
         Query query = entityManager.createQuery("SELECT p FROM Product p WHERE p.companyId = :inCompanyId");
         query.setParameter("inCompanyId", companyId);
+        return query.getResultList();
+    }
+    
+    public List<Company> getAllCompanies(){
+        Query query = entityManager.createQuery("SELECT c FROM Company c");
         return query.getResultList();
     }
 
