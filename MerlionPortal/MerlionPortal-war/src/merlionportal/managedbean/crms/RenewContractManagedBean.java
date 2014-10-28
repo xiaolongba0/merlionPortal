@@ -87,7 +87,7 @@ public class RenewContractManagedBean {
         if (result == 1) {
             this.clearAllFields();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Contract is renewed!", "please wait for the other party to review"));
-            logSB.recordSystemLog(userId, "renewed a service contract");
+            logSB.recordSystemLog(userId, "CRMS renewed a service contract");
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Oops!", "Something went wrong!"));

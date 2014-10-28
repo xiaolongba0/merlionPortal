@@ -152,7 +152,7 @@ public class ViewContractDetailManagedBean {
                 status = "Request to modify";
                 this.clearAllFields();
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Request to modify contract is sent!", "Please wait for the other party to respond"));
-                logSB.recordSystemLog(userId, "requested to modify contract");
+                logSB.recordSystemLog(userId, "CRMS requested to modify contract");
 
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Oops", "Something went wrong!"));
@@ -171,7 +171,7 @@ public class ViewContractDetailManagedBean {
                 compareStatus = 3;
                 status = "Waiting for review";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Contract is modified!", "Please wait for the other party to review"));
-                logSB.recordSystemLog(userId, "modified a service contract");
+                logSB.recordSystemLog(userId, "CRMS modified a service contract");
 
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Oops", "Something went wrong!"));

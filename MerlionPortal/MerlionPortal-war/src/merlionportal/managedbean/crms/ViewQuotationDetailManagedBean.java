@@ -94,7 +94,7 @@ public class ViewQuotationDetailManagedBean {
             compareStatus = 5;
             this.StatusText(compareStatus);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Quotation is rejected"));
-            logSB.recordSystemLog(userId, "rejected a service quotation");
+            logSB.recordSystemLog(userId, "CRMS rejected a service quotation");
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Oops", "Something went wrong!"));
@@ -108,7 +108,7 @@ public class ViewQuotationDetailManagedBean {
             compareStatus = 3;
             this.StatusText(compareStatus);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Quotation is accepted"));
-            logSB.recordSystemLog(userId, "accepted a service quotation");
+            logSB.recordSystemLog(userId, "CRMS accepted a service quotation");
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Oops", "Something went wrong!"));

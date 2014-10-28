@@ -80,7 +80,7 @@ public class GenerateServiceInvoiceManagedBean {
             this.getStatusText(7);
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Invoice is generated", ""));
-            logSB.recordSystemLog(userId, "created a  service invoice");
+            logSB.recordSystemLog(userId, "CRMS created a  service invoice");
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));

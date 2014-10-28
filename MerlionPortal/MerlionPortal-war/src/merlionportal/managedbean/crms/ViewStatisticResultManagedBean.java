@@ -79,7 +79,7 @@ public class ViewStatisticResultManagedBean {
         } else {
             createBarModels();
         }
-        logSB.recordSystemLog(userId, "viewed statistic result of order amount");
+        logSB.recordSystemLog(userId, "CRMS viewed statistic result of order amount");
 
     }
 

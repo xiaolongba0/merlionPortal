@@ -108,11 +108,11 @@ public class CreateServicePOManagedBean {
 
                 if (serviceType.equals("Transportation")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Transportation Service PO created!", ""));
-                    logSB.recordSystemLog(userId, "created a  transportation service po");
+                    logSB.recordSystemLog(userId, "CRMS created a  transportation service po");
 
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Warehouse Service PO created!", ""));
-                    logSB.recordSystemLog(userId, "created a  warehouse service po");
+                    logSB.recordSystemLog(userId, "CRMS created a  warehouse service po");
 
                 }
 

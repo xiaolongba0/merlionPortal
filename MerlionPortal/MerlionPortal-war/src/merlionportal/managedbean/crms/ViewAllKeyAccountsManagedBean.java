@@ -72,7 +72,7 @@ public class ViewAllKeyAccountsManagedBean {
         if (result) {
             keyAccounts.remove(account);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Key Account deleted!", "This customer is no longer a key account"));
-            logSB.recordSystemLog(userId, "deleted a key account");
+            logSB.recordSystemLog(userId, "CRMS deleted a key account");
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Something went wrong", ""));

@@ -74,7 +74,7 @@ public class CreateServiceContractManagedBean {
 
             int result = contractManagementSB.createTransportationServiceContract(quotationId, conditionText, userId);
             if (result > 0) {
-                logSB.recordSystemLog(userId, "created a transportation service contract");
+                logSB.recordSystemLog(userId, "CRMS created a transportation service contract");
 
                 this.clearAllFields();
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Transportation Service Contract created!", ""));
@@ -87,7 +87,7 @@ public class CreateServiceContractManagedBean {
             int result = contractManagementSB.createWarehouseServiceContract(quotationId, conditionText, userId);
             if (result > 0) {
                 this.clearAllFields();
-                logSB.recordSystemLog(userId, "created a warehouse service contract");
+                logSB.recordSystemLog(userId, "CRMS created a warehouse service contract");
 
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Warehouse Service Contract created!", ""));
 

@@ -75,7 +75,7 @@ public class CreateServiceCatalogManagedBean {
             serviceId = serviceCatalogSB.createServiceCatalog(companyId, serviceName, description, view, type, 0);
         }
         if (serviceId > 0) {
-            logSB.recordSystemLog(userId, "created a service catalog");
+            logSB.recordSystemLog(userId, "CRMS created a service catalog");
 
             this.clearAllFields();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Service created!", ""));

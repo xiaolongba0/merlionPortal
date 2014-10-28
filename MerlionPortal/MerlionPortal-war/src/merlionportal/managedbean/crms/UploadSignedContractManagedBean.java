@@ -75,7 +75,7 @@ public class UploadSignedContractManagedBean {
                 int result = contractManagementSB.saveSignedContract(contractId, bFile);
                 if (result == 1) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded."));
-                    logSB.recordSystemLog(userId, "uploaded a signed contract");
+                    logSB.recordSystemLog(userId, "CRMS uploaded a signed contract");
 
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Snap!", "Something went very wrong"));

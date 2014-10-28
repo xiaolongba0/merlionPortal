@@ -86,7 +86,7 @@ public class CreateKeyAccountManagedBean {
         int result = keyAccountMSB.createKeyAccount(companyId, customerId, remarks);
         if (result == 1) {
             this.clearAllFields();
-            logSB.recordSystemLog(userId, "created a key account");
+            logSB.recordSystemLog(userId, "CRMS created a key account");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Key Account created!", "This customer is marked as key account"));
         } else if (result == 0) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "This Customer is already a key account holder!", ""));

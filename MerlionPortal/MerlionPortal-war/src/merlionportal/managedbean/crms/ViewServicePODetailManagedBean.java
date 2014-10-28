@@ -136,7 +136,7 @@ public class ViewServicePODetailManagedBean {
                     price = (volume2 * selectedServicePO.getContract().getPrice());
 
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PO is updated", ""));
-                    logSB.recordSystemLog(userId, "updated service po detail");
+                    logSB.recordSystemLog(userId, "CRMS updated service po detail");
 
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
@@ -154,7 +154,7 @@ public class ViewServicePODetailManagedBean {
                     status = "PO Deleted";
                     compareStatus = 2;
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PO is marked as deleted", ""));
-                    logSB.recordSystemLog(userId, "deleted a service po");
+                    logSB.recordSystemLog(userId, "CRMS deleted a service po");
 
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
@@ -174,7 +174,7 @@ public class ViewServicePODetailManagedBean {
                 compareStatus = 5;
                 status = "SO Waiting for fulfillment";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PO Hold is released", ""));
-                logSB.recordSystemLog(userId, "released a service po hold");
+                logSB.recordSystemLog(userId, "CRMS released a service po hold");
 
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
@@ -191,7 +191,7 @@ public class ViewServicePODetailManagedBean {
                 compareStatus = 4;
                 status = "PO Rejected";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PO is rejected", ""));
-                logSB.recordSystemLog(userId, "rejected a service po");
+                logSB.recordSystemLog(userId, "CRMS rejected a service po");
 
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
@@ -216,7 +216,7 @@ public class ViewServicePODetailManagedBean {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong, please go back to previous page"));
         }
-        logSB.recordSystemLog(userId, "peformed credit check");
+        logSB.recordSystemLog(userId, "CRMS peformed credit check");
 
     }
 

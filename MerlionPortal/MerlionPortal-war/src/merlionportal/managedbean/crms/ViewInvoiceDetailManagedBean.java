@@ -95,7 +95,7 @@ public class ViewInvoiceDetailManagedBean {
             this.getStatusText(3);
             this.getOrderStatusText(8);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Payment Status updated", ""));
-            logSB.recordSystemLog(userId, "updated payment status");
+            logSB.recordSystemLog(userId, "CRMS updated payment status");
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
@@ -108,7 +108,7 @@ public class ViewInvoiceDetailManagedBean {
             compareStatus = 2;
             this.getStatusText(2);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Payment Information Recorded", ""));
-            logSB.recordSystemLog(userId, "recorded payment information");
+            logSB.recordSystemLog(userId, "CRMS recorded payment information");
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));

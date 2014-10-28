@@ -87,7 +87,7 @@ public class CreateRFQManagedBean {
         int result = quotationManagementSB.createRequestForQuotation(selectedService.getServiceCatalogId(), selectedService.getServiceType(), startDate, endDate, companyId, selectedService.getCompanyId(), origin, destination, quantityPerMonth, storageType);
         if (result > 0) {
             this.clearAllField();
-            logSB.recordSystemLog(userId, "created a request for quotation");
+            logSB.recordSystemLog(userId, "CRMS created a request for quotation");
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Request for quotation is sent"));
         } else {
