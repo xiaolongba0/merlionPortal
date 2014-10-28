@@ -21,6 +21,7 @@ import org.primefaces.context.RequestContext;
 public class MessageManagedBean {
 
     private List<Message> inbox;
+    private List<Message> outbox;
     private String receipentEmail;
     private SystemUser loginedUser;
     private String subject;
@@ -53,7 +54,7 @@ public class MessageManagedBean {
 
                 //Set Inbox
                 inbox = msb.getInbox(userId);
-
+                outbox = msb.getOutbox(userId);
             }
         }
         if (redirect) {
