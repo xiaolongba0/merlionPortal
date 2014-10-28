@@ -76,22 +76,19 @@
                 <p:panel header="Reserve a Storage Location" style="margin-bottom:10px;">
                     <h:panelGrid columns="2" cellpadding="5">
                         <p:outputLabel value="Warehouse: " />
-                        <p:selectOneMenu value="#{orderFulfillManagedBean.warehouse}" style="width:150px">
+                        <p:selectOneMenu id="warehouse" value="#{orderFulfillManagedBean.warehouse}" style="width:150px" rendered="true" requiredMessage="Please select a warehouse">
                             <p:ajax listener="#{orderFulfillManagedBean.onWarehouseChange()}" update="warehouseZone" />
                             <f:selectItem itemLabel="Select Warehouse" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{orderFulfillManagedBean.data}" />
+                            <f:selectItems value="#{orderFulfillManagedBean.warehouse}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId}   Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"//>
                         </p:selectOneMenu>
+
                         <p:outputLabel value="Warehouse Zone " />
-                        <p:selectOneMenu id="warehouseZone"value="#{orderFulfillManagedBean.warehouseZone}" style="width:150px">
+                        <p:selectOneMenu id="warehouseZone"value="#{orderFulfillManagedBean.warehouseZone}" style="width:150px" rendered="true" requiredMessage="Please select a warehouse">
                             <p:ajax listener="#{orderFulfillManagedBean.onWarehouseZoneChange()}" update="storageBin" />
-                            <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{orderFulfillManagedBean.data2}" />
+                            <f:selectItem itemLabel="Select WarehouseZone" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{orderFulfillManagedBean.warehouseZones}" var="storageType" itemLabel="ID:#{storageType.warehouseZoneId}   Name:#{storageType.name}"  itemValue="#{storageType.name}" />
                         </p:selectOneMenu>
-                        <p:outputLabel  value="Storage Bin " />
-                        <p:selectOneMenu id="storageBin" value="#{orderFulfillManagedBean.storageBin}" style="width:150px">
-                            <f:selectItem itemLabel="Select City" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{orderFulfillManagedBean.storageBins}" />
-                        </p:selectOneMenu>
+                        
                     </h:panelGrid>
                     <p:separator />
                     <p:commandButton value="Submit" action="#{orderFulfillManagedBean.reserveSpace()}" />
