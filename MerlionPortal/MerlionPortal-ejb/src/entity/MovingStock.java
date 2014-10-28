@@ -49,9 +49,6 @@ public class MovingStock implements Serializable {
     @JoinColumn(name = "transportOrder", referencedColumnName = "transportOrderId")
     @ManyToOne(optional = false)
     private TransportOrder transportOrder;
-    @JoinColumn(name = "stock", referencedColumnName = "stockId")
-    @ManyToOne(optional = false)
-    private Stock stock;
 
     public MovingStock() {
     }
@@ -98,14 +95,6 @@ public class MovingStock implements Serializable {
 
     public void setTransportOrder(TransportOrder transportOrder) {
         this.transportOrder = transportOrder;
-    }
-
-    public Stock getStock() {
-        return stock;
-    }
-
-    public void setStock(Stock stock) {
-        this.stock = stock;
     }
 
     @Override
