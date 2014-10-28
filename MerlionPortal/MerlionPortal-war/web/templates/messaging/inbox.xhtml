@@ -148,7 +148,7 @@
                     <c:choose> 
                         <c:when test="${empty messagerBean.inbox}">
                             <div class="col-md-6">
-                                No messages found. Start sending a <span class="message-link text-primary" onclick="openEditor();">message</span> today!
+                                No inbox message found. Start sending a <span class="message-link text-primary" onclick="openEditor();">message</span> today!
                             </div>
                         </c:when>
                         <c:otherwise>
@@ -172,7 +172,7 @@
                     <c:choose> 
                         <c:when test="${empty messagerBean.outbox}">
                             <div class="col-md-6">
-                                No messages found. Start sending a <span class="message-link text-primary" onclick="openEditor();">message</span> today!
+                                No outbox found. Start sending a <span class="message-link text-primary" onclick="openEditor();">message</span> today!
                             </div>
                         </c:when>
                         <c:otherwise>
