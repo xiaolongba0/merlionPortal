@@ -43,7 +43,7 @@ public class WarehouseRequestManagerSessionBean {
         q.setParameter("receiverCompanyId", companyId);
         for (Object o : q.getResultList()) {
             ServicePO wOrder = (ServicePO) o;
-            if (wOrder.getStatus() == 5) {
+            if (wOrder.getStatus() == 5||wOrder.getStatus() == 6||wOrder.getStatus() == 7) {
                 searchResult.add(wOrder);
             }
         }
