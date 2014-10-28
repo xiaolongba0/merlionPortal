@@ -88,13 +88,15 @@ public class WarehouseRequestManagerSessionBean {
         return results;
     }
 
-    public Boolean checkStorageBinAvailability(int quantity, int volume, int productId, String storageType, StorageBin myStorage) {
-
+    public Boolean checkStorageBinAvailability(ServicePO myPO, StorageBin myStorage) {
+        int totalQuantity = myPO.getVolume() * myPO.getProductQuantityPerTEU();
+        int productId = myPO.getProductId();
+        String storageType = myPO.getContract().getStorageType();
         if (myStorage.getBinType().equals(storageType)) {
             if (myStorage.getMaxQuantity() == myStorage.getAvailableSpace()) {
                 return true;
             } else {
-                if (myStorage.getStockList().get(0).getProductId() == productId && myStorage.getAvailableSpace() >= volume * quantity) {
+                if (myStorage.getStockList().get(0).getProductId() == productId && myStorage.getAvailableSpace() >= totalQuantity) {
                     return true;
                 }
             }
@@ -103,47 +105,9 @@ public class WarehouseRequestManagerSessionBean {
         return false;
     }
 
-    public Map<String, Map<String, Map<String, Integer>>> selectionSetUp(ServicePO servicePo, int compId) {
-        int volume = servicePo.getVolume();
-        int quantity = servicePo.getProductQuantityPerTEU();
-        int productId = servicePo.getProductId();
-        String storageType = servicePo.getContract().getStorageType();
-
-        Map<String, Map<String, Map<String, Integer>>> data = new HashMap<String, Map<String, Map<String, Integer>>>();
-        Map<String, Map<String, Integer>> data2 = new HashMap<String, Map<String, Integer>>();
-        Map<String, Integer> warehouses = new HashMap<String, Integer>();
-        Map<String, Integer> warehouseZones = new HashMap<String, Integer>();
-        Map<String, Integer> storageBins = new HashMap<String, Integer>();
-
-        Query q = em.createQuery("SELECT w FROM Warehouse w WHERE w.companyId = :companyId");
-        q.setParameter("companyId", compId);
-        for (Object o : q.getResultList()) {
-            Warehouse w = (Warehouse) o;
-            List<WarehouseZone> zones = w.getWarehouseZoneList();
-            Map<String, Integer> map2 = new HashMap<String, Integer>();
-            for (Object p : zones) {
-                WarehouseZone myZone = (WarehouseZone) p;
-                List<StorageBin> binList = myZone.getStorageBinList();
-                Map<String, Integer> map1 = new HashMap<String, Integer>();
-                for (Object c : binList) {
-                    StorageBin myBin = (StorageBin) c;
-                    map1.put(myBin.getBinName(), myBin.getStorageBinId());
-//                    if (this.checkStorageBinAvailability(quantity, volume, productId, storageType, myBin)) {
-//                        map1.put(myBin.getBinName(), myBin.getStorageBinId());
-//                    }
-                }
-                data2.put(myZone.getName(), map1);
-            }
-            data.put(w.getName(), data2);
-        }
-        return data;
-    }
-    
-    public void reserveSpace(int storageBinId,ServicePO mypo){
-        StorageBin myBin = em.find(StorageBin.class, storageBinId);
-        int reSpace=mypo.getVolume()*mypo.getProductQuantityPerTEU();
-        myBin.setReservedSpace(reSpace);
-        int avail = myBin.getMaxQuantity()-reSpace;
+    public void reserveSpace(StorageBin myBin, ServicePO mypo,int reserveSpace) {       
+        myBin.setReservedSpace(reserveSpace);
+        int avail = myBin.getMaxQuantity() - reserveSpace;
         myBin.setAvailableSpace(avail);
         Stock newStock = new Stock();
         newStock.setProductId(mypo.getProductId());
@@ -151,7 +115,7 @@ public class WarehouseRequestManagerSessionBean {
         mypo.setStatus(10);
         em.persist(newStock);
         em.merge(myBin);
-        
+
     }
 
 }
