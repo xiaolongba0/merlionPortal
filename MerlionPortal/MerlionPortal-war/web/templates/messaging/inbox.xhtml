@@ -48,12 +48,12 @@
                     $("#replyBtn").click({
                         "senderEmail": senderEmail,
                         "title": title
-                    }, function (e) {
+                    }, function(e) {
                         reply(e.data.senderEmail, e.data.title);
                     });
 
                     $("#deleteBtn").unbind("click");
-                    $("#deleteBtn").click(function (e) {
+                    $("#deleteBtn").click(function(e) {
                         deleteMail();
                     });
 
@@ -103,28 +103,34 @@
                     }
                 }
 
-                $(document).ready(function () {
-                    $("#editorDialog").on('hide.bs.modal', function (e) {
+                $(document).ready(function() {
+                    $("#editorDialog").on('hide.bs.modal', function(e) {
                         $("#emailAddress").val("");
                         $("#subject").val("");
                         $("#content").val("");
                         $("#sendemailBtn").attr("disabled", "disabled");
                     });
-                    $("#emailAddress").keypress(function (e) {
+                    $("#emailAddress").keypress(function(e) {
                         if (e.keyCode === 13) {
                             document.getElementById('messagingForm:verifyEmail').click();
                             return false;
                         }
                     });
-                    $("#emailAddress").on("focusout", function (e) {
+                    $("#emailAddress").on("focusout", function(e) {
                         document.getElementById('messagingForm:verifyEmail').click();
                         return false;
                     });
                 });</script>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-12">
-                        <h2>Inbox 
+                    <div class="col-md-6">
+                        <h2>
+                            Inbox 
+                            <i class="glyphicon glyphicon-briefcase"></i>
+                        </h2>
+                    </div>
+                    <div class="col-md-6">
+                        <h2>Outbox
                             <button class="btn btn-primary" onclick="openEditor();">Write Message <i class="glyphicon glyphicon-pencil"></i></button>
                         </h2>
                     </div>
