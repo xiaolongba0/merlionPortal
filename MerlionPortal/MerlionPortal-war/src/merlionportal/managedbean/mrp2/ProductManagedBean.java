@@ -5,6 +5,7 @@
  */
 package merlionportal.managedbean.mrp2;
 
+import entity.Company;
 import entity.Product;
 import entity.SystemUser;
 import java.io.IOException;
@@ -66,6 +67,9 @@ private Product product;
  //   private Integer newComponentId;
      private SystemUser loginedUser;
      
+     List<Company> companies;
+
+ 
      
      @PostConstruct
     public void init() {
@@ -86,6 +90,7 @@ private Product product;
         }
         
         products = productSessionBean.getMyProducts(companyId);
+        companies = productSessionBean.getAllCompanies();
 }
     
 
@@ -237,6 +242,15 @@ private Product product;
     public void setSupplierContactNumber(String supplierContactNumber) {
         this.supplierContactNumber = supplierContactNumber;
     }
+    
+       public List<Company> getCompanies() {
+        return companies;
+    }
+
+    public void setCompanies(List<Company> companies) {
+        this.companies = companies;
+    }
+     
 
    
 
