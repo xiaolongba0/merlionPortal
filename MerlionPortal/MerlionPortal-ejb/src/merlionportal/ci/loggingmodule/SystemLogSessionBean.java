@@ -8,6 +8,7 @@ package merlionportal.ci.loggingmodule;
 import entity.Company;
 import entity.SystemLog;
 import entity.SystemUser;
+import entity.UserRole;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,10 +49,23 @@ public class SystemLogSessionBean {
     }
 
     public List<SystemLog> searchForAll() {
-        List<SystemLog> allLog = new ArrayList();
         Query q = em.createQuery("SELECT s FROM SystemLog s");
         return q.getResultList();
 
+    }
+    
+    public List<SystemLog> searchForIndividual(int userId){
+        Query q = em.createQuery("SELECT s FROM SystemLog s WHERE s.systemUsersystemUserId.systemUserId =:userId");
+        q.setParameter("userId", userId);
+        return q.getResultList();
+    }
+    
+    public Boolean checkSuperUser(int userId){
+        SystemUser myuser=em.find(SystemUser.class, userId);
+        if(myuser.getUserType()=="superuser"){
+            return true;
+        }
+        return false;
     }
 
     public List<SystemLog> searchForLogByUserId(List<SystemLog> myList, Integer userId) {
@@ -160,7 +174,7 @@ public class SystemLogSessionBean {
         uName = uName.toUpperCase();
         for (Object c : q.getResultList()) {
             SystemUser myUser = (SystemUser) c;
-            String myName = myUser.getFirstName();
+            String myName = myUser.getFirstName().toUpperCase();
             if (myName.contains(uName)) {
                 result.add(myUser);
             }
