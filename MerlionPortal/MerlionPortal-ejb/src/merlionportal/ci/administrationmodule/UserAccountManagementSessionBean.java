@@ -279,7 +279,6 @@ public class UserAccountManagementSessionBean {
                     user.setFirstName(updatedUser.getFirstName());
                     user.setLastName(updatedUser.getLastName());
                     user.setEmailAddress(updatedUser.getEmailAddress());
-                    user.setPassword(updatedUser.getPassword());
                     user.setPostalAddress(updatedUser.getPostalAddress());
                     user.setContactNumber(updatedUser.getContactNumber());
                     user.setSalution(updatedUser.getSalution());

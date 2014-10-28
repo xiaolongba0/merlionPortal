@@ -118,8 +118,6 @@ public class ViewUserManagedBean {
 
         int result = 0;
         if (selectedUser != null) {
-            String pass = selectedUser.getPassword();
-            selectedUser.setPassword(MD5Generator.hash(pass));
             result = uamb.updateUserInfo(loginedUser.getSystemUserId(), selectedUser);
         }
         if (result == 1) {
