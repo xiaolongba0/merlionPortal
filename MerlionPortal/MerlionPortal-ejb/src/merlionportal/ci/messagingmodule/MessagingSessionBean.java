@@ -70,6 +70,17 @@ public class MessagingSessionBean {
         }
         return inbox;
     }
+     public List<Message> getOutbox(int customerId) {
+        List<Message> inbox;
+        q = em.createQuery("SELECT m FROM Message m WHERE m.sender = :sender AND m.status != :status ORDER BY m.sentTime DESC").setParameter("sender", customerId).setParameter("status", 9992);
+        if (q.getResultList().isEmpty()) {
+            inbox = new ArrayList<Message>();
+        } else {
+            inbox = q.getResultList();
+        }
+        return inbox;
+    }
+
 
     public Message getMail(int mailid) {
         return em.find(Message.class, mailid);
