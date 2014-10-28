@@ -55,7 +55,7 @@ public class SystemLogManagedBean {
             }
         }
         allLogList = systemLogSB.getAllLog(userId);
-        if(allLogList == null){
+        if (allLogList == null) {
             System.out.print("null pointer exc=ep============================");
         }
 
@@ -149,7 +149,8 @@ public class SystemLogManagedBean {
         if (actionerId != null) {
             System.out.println("navigation search 1" + actionerId);
             allLogList = systemLogSB.searchForLogByUserId(allLogList, userId);
-        } else if (actionerName != null) {
+        }
+        if (actionerName != null) {
             System.out.println("navigation search 1" + actionerId);
             allLogList = systemLogSB.searchForLogByListOfUser(allLogList, actionerName);
         }
