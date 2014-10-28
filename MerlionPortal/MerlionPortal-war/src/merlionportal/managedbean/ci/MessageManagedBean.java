@@ -155,6 +155,13 @@ public class MessageManagedBean {
     public void setInbox(List<Message> inbox) {
         this.inbox = inbox;
     }
+     public List<Message> getOutbox() {
+        return outbox;
+    }
+
+    public void setOutbox(List<Message> outbox) {
+        this.outbox = outbox;
+    }
 
     public String getReceipentEmail() {
         return receipentEmail;
