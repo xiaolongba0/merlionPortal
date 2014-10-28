@@ -54,8 +54,7 @@ public class SystemLogManagedBean {
                 ex.printStackTrace();
             }
         }
-
-        allLogList = systemLogSB.getAllLog();
+        allLogList = systemLogSB.getAllLog(userId);
         if(allLogList == null){
             System.out.print("null pointer exc=ep============================");
         }
@@ -164,6 +163,6 @@ public class SystemLogManagedBean {
     }
 
     public void revertSearch() {
-        allLogList = systemLogSB.getAllLog();
+        allLogList = systemLogSB.getAllLog(userId);
     }
 }
