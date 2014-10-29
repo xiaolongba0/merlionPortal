@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "AssetSchedule.findAll", query = "SELECT a FROM AssetSchedule a"),
     @NamedQuery(name = "AssetSchedule.findByScheduleId", query = "SELECT a FROM AssetSchedule a WHERE a.scheduleId = :scheduleId"),
     @NamedQuery(name = "AssetSchedule.findByStartDate", query = "SELECT a FROM AssetSchedule a WHERE a.startDate = :startDate"),
-    @NamedQuery(name = "AssetSchedule.findByEndDate", query = "SELECT a FROM AssetSchedule a WHERE a.endDate = :endDate")})
+    @NamedQuery(name = "AssetSchedule.findByEndDate", query = "SELECT a FROM AssetSchedule a WHERE a.endDate = :endDate"),
+    @NamedQuery(name = "AssetSchedule.findByOperatorId", query = "SELECT a FROM AssetSchedule a WHERE a.operatorId = :operatorId")})
 public class AssetSchedule implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -48,9 +49,8 @@ public class AssetSchedule implements Serializable {
     @Column(name = "endDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
-    @JoinColumn(name = "TransportationOperator", referencedColumnName = "operatorId")
-    @ManyToOne(optional = false)
-    private TransportationOperator transportationOperator;
+    @Column(name = "operatorId")
+    private Integer operatorId;
     @JoinColumn(name = "TransporationAsset_assetId", referencedColumnName = "assetId")
     @ManyToOne(optional = false)
     private TransportationAsset transporationAssetassetId;
@@ -86,12 +86,12 @@ public class AssetSchedule implements Serializable {
         this.endDate = endDate;
     }
 
-    public TransportationOperator getTransportationOperator() {
-        return transportationOperator;
+    public Integer getOperatorId() {
+        return operatorId;
     }
 
-    public void setTransportationOperator(TransportationOperator transportationOperator) {
-        this.transportationOperator = transportationOperator;
+    public void setOperatorId(Integer operatorId) {
+        this.operatorId = operatorId;
     }
 
     public TransportationAsset getTransporationAssetassetId() {

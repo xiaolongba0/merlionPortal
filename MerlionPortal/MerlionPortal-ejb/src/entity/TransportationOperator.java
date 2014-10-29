@@ -69,8 +69,6 @@ public class TransportationOperator implements Serializable {
     private Date birthday;
     @Column(name = "companyId")
     private Integer companyId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "transportationOperator")
-    private List<AssetSchedule> assetScheduleList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "transportationOperatoroperatorId")
     private List<OperatorSchedule> operatorScheduleList;
 
@@ -143,15 +141,6 @@ public class TransportationOperator implements Serializable {
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
-    }
-
-    @XmlTransient
-    public List<AssetSchedule> getAssetScheduleList() {
-        return assetScheduleList;
-    }
-
-    public void setAssetScheduleList(List<AssetSchedule> assetScheduleList) {
-        this.assetScheduleList = assetScheduleList;
     }
 
     @XmlTransient
