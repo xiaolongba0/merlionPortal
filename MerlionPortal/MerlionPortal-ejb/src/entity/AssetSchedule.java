@@ -8,9 +8,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,12 +18,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -52,11 +48,12 @@ public class AssetSchedule implements Serializable {
     @Column(name = "endDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
+    @JoinColumn(name = "TransportationOperator", referencedColumnName = "operatorId")
+    @ManyToOne(optional = false)
+    private TransportationOperator transportationOperator;
     @JoinColumn(name = "TransporationAsset_assetId", referencedColumnName = "assetId")
     @ManyToOne(optional = false)
     private TransportationAsset transporationAssetassetId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "assetSchedulescheduleId")
-    private List<TransportationOperator> transportationOperatorList;
 
     public AssetSchedule() {
     }
@@ -89,21 +86,20 @@ public class AssetSchedule implements Serializable {
         this.endDate = endDate;
     }
 
+    public TransportationOperator getTransportationOperator() {
+        return transportationOperator;
+    }
+
+    public void setTransportationOperator(TransportationOperator transportationOperator) {
+        this.transportationOperator = transportationOperator;
+    }
+
     public TransportationAsset getTransporationAssetassetId() {
         return transporationAssetassetId;
     }
 
     public void setTransporationAssetassetId(TransportationAsset transporationAssetassetId) {
         this.transporationAssetassetId = transporationAssetassetId;
-    }
-
-    @XmlTransient
-    public List<TransportationOperator> getTransportationOperatorList() {
-        return transportationOperatorList;
-    }
-
-    public void setTransportationOperatorList(List<TransportationOperator> transportationOperatorList) {
-        this.transportationOperatorList = transportationOperatorList;
     }
 
     @Override

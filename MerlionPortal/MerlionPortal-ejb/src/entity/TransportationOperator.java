@@ -16,8 +16,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -71,9 +69,8 @@ public class TransportationOperator implements Serializable {
     private Date birthday;
     @Column(name = "companyId")
     private Integer companyId;
-    @JoinColumn(name = "AssetSchedule_scheduleId", referencedColumnName = "scheduleId")
-    @ManyToOne(optional = false)
-    private AssetSchedule assetSchedulescheduleId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "transportationOperator")
+    private List<AssetSchedule> assetScheduleList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "transportationOperatoroperatorId")
     private List<OperatorSchedule> operatorScheduleList;
 
@@ -148,12 +145,13 @@ public class TransportationOperator implements Serializable {
         this.companyId = companyId;
     }
 
-    public AssetSchedule getAssetSchedulescheduleId() {
-        return assetSchedulescheduleId;
+    @XmlTransient
+    public List<AssetSchedule> getAssetScheduleList() {
+        return assetScheduleList;
     }
 
-    public void setAssetSchedulescheduleId(AssetSchedule assetSchedulescheduleId) {
-        this.assetSchedulescheduleId = assetSchedulescheduleId;
+    public void setAssetScheduleList(List<AssetSchedule> assetScheduleList) {
+        this.assetScheduleList = assetScheduleList;
     }
 
     @XmlTransient
