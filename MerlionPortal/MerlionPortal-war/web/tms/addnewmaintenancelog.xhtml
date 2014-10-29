@@ -135,14 +135,15 @@
                         </p:row>  
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="operatorId" style="font-weight: bold" value="Operator Id : " />
+                                <p:outputLabel for="toperator" value="Operator Id: " />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="operatorId" requiredMessage="Operator Id is required." id="operatorId" value="#{tAssetMaintenanceManagerBean.operatorId}">
-                                    <f:validateLength minimum="1" maximum="25" />
-                                </p:inputText>
+                                <p:selectOneMenu id="toperator" value="#{tAssetMaintenanceManagerBean.operatorId}"  style="width:300px" required="true" requiredMessage="Please select a Transportation Asset">
+                                    <f:selectItem itemLabel="Select Transportation Operator" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{tAssetMaintenanceManagerBean.operators}" var="toperator" itemLabel="ID:#{toperator.operatorId} Name:#{toperator.operatorName}"  itemValue="#{toperator.operatorId}"/>
+                                </p:selectOneMenu>
                             </p:column>
-                        </p:row>  
+                        </p:row>
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="startDate" value="Start Date " /><p:spacer width="20" height="20" /></p:column>

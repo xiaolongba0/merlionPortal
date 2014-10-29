@@ -75,3 +75,55 @@
 
             </p:menu>
         </ui:define>
+        <ui:define name="right">       
+            <h:form id="formMain">
+
+                <br/>
+                <p:panel id="panel" header="Add Schedule">
+                    <p:ajaxStatus style="width:16px;height:16px;">
+                        <f:facet name="start">
+                            <h:graphicImage value="/img/load.gif" />
+                        </f:facet>
+                        <f:facet name="complete">
+                            <h:outputText value="" />
+                        </f:facet>
+                    </p:ajaxStatus>
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="operator" value="Operator Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="operator" value="#{tOperatorScheduleManagerBean.operatorId}"  style="width:300px" required="true" requiredMessage="Please select a operator">
+                                    <f:selectItem itemLabel="Select a Operator" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{tOperatorScheduleManagerBean.operators}" var="operator" itemLabel="ID:#{operator.operatorId} Name:#{operator.operatorName}"  itemValue="#{operator.operatorId}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="startDate" value="Start Date " /><p:spacer width="20" height="20" /></p:column>
+                            <p:column>
+                                <p:calendar id="startDate" required="true" requiredMessage="Start Date is required" value="#{tOperatorScheduleManagerBean.startDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{tOperatorScheduleManagerBean.today}" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+
+                            <p:column> 
+                                <p:outputLabel for="endDate" value="End Date " /><p:spacer width="20" height="20" /></p:column>
+                            <p:column>
+                                <p:calendar id="endDate" required="true" requiredMessage="End Date is required" value="#{tOperatorScheduleManagerBean.endDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{tOperatorScheduleManagerBean.startDate}" />                                   
+
+                            </p:column>
+                        </p:row>  
+                    </p:panelGrid>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:commandButton id="btn" value="Create New Opeartor Schedule" update="panel" action="#{tOperatorScheduleManagerBean.createOperatirSchedule()}" ajax="true" />
+                </p:panel>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>                        

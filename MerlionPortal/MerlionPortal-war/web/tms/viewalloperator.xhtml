@@ -20,7 +20,7 @@
             </ui:insert>
         </ui:define>
 
-       <ui:define name="left">
+        <ui:define name="left">
             <p:menu>
                 <p:submenu label ="Map">
                     <p:submenu label="Node" >
@@ -74,3 +74,66 @@
 
             </p:menu>
         </ui:define>
+
+        <ui:define name="right">       
+            <h:form id="formMain">
+                <p:dataTable id="operator" var="operator" sortMode="multiple" editable="true" value="#{tOperatorViewEditManagedBean.operators}" 
+                             widgetVar="operatorsTable"
+                             emptyMessage="No operator found"
+                             rowKey="#{operator.operatorId}">
+
+                    <f:facet name="header">                    
+                        <p:outputPanel>
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('operatorsTable').filter()" />
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:ajax event="rowEdit" listener="#{tOperatorViewEditManagedBean.onRowEdit}" update=":formMain:msgs"/>
+                    <p:ajax event="rowEditCancel" listener="#{tOperatorViewEditManagedBean.onRowCancel}" update=":formMain:msgs"/>
+
+                    <p:column filterBy="#{operator.operatorId}" filterMatchMode="exact" headerText="ID" >
+                        <h:outputText value="#{operator.operatorId}" />
+                    </p:column>
+                    <p:column filterBy="#{operator.operatorName}" filterMatchMode="exact" headerText="Name" >
+                        <h:outputText value="#{operator.operatorName}" />
+                    </p:column>
+
+                    <p:column  filterBy="#{operator.isAvailable}" filterMatchMode="contains" headerText="Available?">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{operator.isAvailable}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{operator.isAvailable}" style="width:100%" label="Available"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column  filterBy="#{operator.operatorType}" filterMatchMode="contains" headerText="Opeartor Type">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{operator.operatorType}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{operator.operatorType}" style="width:100%" label="Opeartor Type"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+
+                    <p:column headerText = "Delete Operator">
+                        <p:commandButton action="#{tOperatorViewEditManagedBean.deleteTOperator(operator)}" update="operator" value="Delete">
+                            <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this operator?" icon="ui-icon-alert" />
+                        </p:commandButton> 
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </p:column>
+
+                    <p:column style="width:32px">
+                        <p:rowEditor />
+                    </p:column>
+
+                </p:dataTable>
+                <br></br>
+                <p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>                        
+
+
