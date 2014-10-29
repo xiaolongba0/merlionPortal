@@ -127,6 +127,11 @@ public class MaterialReqManagedBean {
       public String backToMPSResult() {
         return ("mpsresult");
     }
+      
+      public String proceedToPO(){
+           FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mrps", mrps);
+          return ("allpo");
+      }
 
     //For testing passing a list only
     public List<String> testingList() {
