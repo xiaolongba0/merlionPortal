@@ -21,7 +21,7 @@
         </ui:define>
 
 
-       <ui:define name="left">
+        <ui:define name="left">
             <p:menu>
                 <p:submenu label ="Map">
                     <p:submenu label="Node" >
@@ -37,7 +37,7 @@
                     <p:menuitem value="TMS Home" url="tmsindex.xhtml" />
                 </p:submenu>
                 <p:submenu label="Location" >
-                    <p:menuitem value="Add A Location" url="addnewlocation.xhtml" style="background-color: lavender"/>
+                    <p:menuitem value="Add A Location" url="addnewlocation.xhtml"/>
                     <p:menuitem value="View All Locations" url="viewalllocation.xhtml"/>
                 </p:submenu>
                 <p:submenu label="Transportation Asset" >
@@ -75,3 +75,105 @@
 
             </p:menu>
         </ui:define>
+        <ui:define name="right">
+            <p:panel id="basic" header="Create Transportation Request" style="margin-bottom:20px">
+                <h:form id="form">
+                    <p:ajaxStatus style="width:16px;height:16px;">
+                        <f:facet name="start">
+                            <h:graphicImage value="/img/load.gif" />
+                        </f:facet>
+                        <f:facet name="complete">
+                            <h:outputText value="" />
+                        </f:facet>
+                    </p:ajaxStatus>
+                    <h:panelGrid columns="3">
+
+                        <p:outputLabel for="contract" style="font-weight: bold" value="Search a Contract "/>
+
+                        <p:inputText id="contract" required="true" styleClass="form-control" requiredMessage="A valid contract is required." value="#{createTransportationRequestMB.contractId}" />
+
+                        <p:commandButton icon="ui-icon-search" value="Search" actionListener="#{createTransportationRequestMB.searchAValidContract}" ajax="ture" update=":form2" />
+
+                    </h:panelGrid>
+                </h:form>
+                <h:form id="form2">
+                    <h:panelGrid id="create" columns="3">
+                        <c:if test="#{createTransportationRequestMB.contract ne null}" >
+
+                            <h:outputLabel style="font-weight: bold" value="Contract ID* "/><p:spacer width="40" height="20" />
+                            <h:outputLabel value="#{createTransportationRequestMB.contract.contractId}"/>
+
+                            <h:outputLabel style="font-weight: bold;color: red" value="Contract Status* " /><p:spacer width="40" height="20" />
+                            <h:outputLabel value="#{createTransportationRequestMB.contract.status}" style="color: red"/>
+
+
+                            <h:outputLabel style="font-weight: bold" value="Created Date* " /><p:spacer width="40" height="20" />
+                            <h:outputLabel value="#{createTransportationRequestMB.contract.createdDate}"/>
+
+
+                            <h:outputLabel style="font-weight: bold" value="Party A ID"/><p:spacer width="40" height="20" />
+                            <h:outputLabel  value="#{createTransportationRequestMB.contract.partyA}" />
+
+
+                            <h:outputLabel style="font-weight: bold" value="Party A Company Name"/><p:spacer width="40" height="20" />
+                            <h:outputLabel  value="#{createTransportationRequestMB.partyAName}" />
+
+
+                            <h:outputLabel style="font-weight: bold" value="Party B ID"/><p:spacer width="40" height="20" />
+                            <h:outputLabel  value="#{createTransportationRequestMB.contract.partyB}" />
+
+
+                            <h:outputLabel style="font-weight: bold" value="Party B Company Name"/><p:spacer width="40" height="20" />
+                            <h:outputLabel  value="#{createTransportationRequestMB.partyBName}" />
+
+
+                            <h:outputLabel  style="font-weight: bold" value="Service Type  "/><p:spacer width="40" height="20" />
+                            <h:outputLabel  value="#{createTransportationRequestMB.contract.serviceType}" />
+
+                            <h:outputLabel  style="font-weight: bold" value="Start Date  "/><p:spacer width="40" height="20" />
+                            <h:outputLabel  value="#{createTransportationRequestMB.contract.startDate}" />
+
+                            <h:outputLabel  style="font-weight: bold" value="End Date  "/><p:spacer width="40" height="20" />
+                            <h:outputLabel  value="#{createTransportationRequestMB.contract.endDate}" />
+
+                            <h:outputLabel  style="font-weight: bold" value="Final Price Per TEU  "/><p:spacer width="20" height="20" />
+                            <h:outputLabel  value="#{createTransportationRequestMB.contract.price}" />
+
+                            <h:outputLabel  style="font-weight: bold" value="Origin  "/><p:spacer width="20" height="20" />
+                            <h:outputLabel  value="#{createTransportationRequestMB.contract.origin}" />
+
+                            <h:outputLabel  style="font-weight: bold" value="Destination  "/><p:spacer width="20" height="20" />
+                            <h:outputLabel  value="#{createTransportationRequestMB.contract.destination}" />
+
+                            <p:outputLabel for="deliveryDate" value="Service Delivery Date " /><p:spacer width="20" height="20" />
+                            <p:calendar id="deliveryDate" required="true" requiredMessage="Service Delivery Date is required" value="#{createTransportationRequestMB.serviceDeliveryDate}" pattern="dd-MM-yyyy" mask="true" />
+
+
+                            <h:outputLabel  style="font-weight: bold" value="Quantity in TEU * "/><p:spacer width="20" height="20" />
+                            <p:inputText  value="#{createTransportationRequestMB.volume}" required="true"  requiredMessage="Quantity is required"/>
+                            <h:outputLabel  style="font-weight: bold" value="Product ID * "/><p:spacer width="20" height="20" />
+                            <p:inputText  value="#{createTransportationRequestMB.productId}" required="true"  requiredMessage="Product ID is required"/>
+
+                            <h:outputLabel  style="font-weight: bold" value="Product Quantity per TEU * "/><p:spacer width="20" height="20" />
+                            <p:inputText  value="#{createTransportationRequestMB.productQuantityPerTEU}" required="true"  requiredMessage="Product Quantity per TEU  is required"/>
+                            <p:commandButton value="Generate Transportation Service Request" icon="ui-icon-check" actionListener="#{createTransportationRequestMB.createTransportationServicePO()}" ajax="true" update="form2" />
+                        </c:if>
+
+                    </h:panelGrid>
+                    <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold">
+                        <p:panelGrid id="display" columns="2" columnClasses="label,value">
+                            <h:outputText value="Service Delivery Date:" />
+                            <h:outputText value="#{createTransportationRequestMB.serviceDeliveryDate}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:panelGrid>
+                    </p:dialog>
+
+                    <p:messages id="messages" autoUpdate="true" showDetail="true" closable="true" />
+
+                </h:form>
+
+            </p:panel>
+        </ui:define>
+    </ui:composition>
+</html>

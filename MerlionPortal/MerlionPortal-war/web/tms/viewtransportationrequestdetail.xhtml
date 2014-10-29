@@ -1,0 +1,224 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="View Transportation Request Detail" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <link rel="stylesheet" href="${request.contextPath}/css/crms.css" type="text/css" />
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <p:menu>
+                <p:submenu label ="Map">
+                    <p:submenu label="Node" >
+                        <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
+                        <p:menuitem value="View All Nodes" url="viewallnode.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Route" >
+                        <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
+                        <p:menuitem value="View All Routes" url="viewallroute.xhtml"/>
+                    </p:submenu>
+                </p:submenu>
+                <p:submenu label =" Manage Your Transportation">
+                    <p:menuitem value="TMS Home" url="tmsindex.xhtml" />
+                </p:submenu>
+                <p:submenu label="Location" >
+                    <p:menuitem value="Add A Location" url="addnewlocation.xhtml"/>
+                    <p:menuitem value="View All Locations" url="viewalllocation.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Transportation Asset" >
+                    <p:menuitem value="Add Transportation Assets" url="addnewtasset.xhtml" />
+                    <p:menuitem value="View Transportation Assets" url="viewalltasset.xhtml" />
+                </p:submenu>
+                <p:submenu label="Asset Schedule" >
+                    <p:menuitem value="Add A Asset Schedule" url="addnewtassetschedule.xhtml" />
+                    <p:menuitem value="View All Schedule" url="viewalltassetschedule.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Maintenance" >
+                    <p:menuitem value="Create Maintenance" url="addnewmaintenancelog.xhtml"  />
+                    <p:menuitem value="View All Maintenance" url="viewallmaintenancelog.xhtml" />
+                </p:submenu>
+                <p:submenu label="Operator" >
+                    <p:menuitem value="Add A Operator" url="addnewoperator.xhtml"  />
+                    <p:menuitem value="View All Operator" url="viewalloperator.xhtml" />
+                </p:submenu>
+                <p:submenu label="Operator Schedule" >
+                    <p:menuitem value="Add A Operator Schedule" url="addnewoperatorschedule.xhtml" />
+                    <p:menuitem value="View All Operator Schedule" url="viewalloperatorschedule.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Transportation Order" >
+                    <p:menuitem value="Create Transportation Order" url="addnewtorder.xhtml" />
+                    <p:menuitem value="View All Orders" url="viewalltorder.xhtml" />
+                    <p:menuitem value="View Order Details" url="viewalltorder.xhtml"/>
+                </p:submenu>
+
+                <p:submenu label="Transportation Request" >
+                    <p:menuitem value="Create A Transportation Request" url="addnewrequest.xhtml" />
+                    <p:menuitem value="View All Request" url="viewallrequest.xhtml" />
+                </p:submenu>
+
+            </p:menu>
+        </ui:define>
+
+        <ui:define name="right">
+            <h:form id="form">
+                <p:fieldset legend="Service Contact Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <h:outputText value="Sender Company ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewTransportationRequestDetailMB.selectedTServicePO.senderCompanyId}" />
+                        <h:outputText value="Sender Company Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewTransportationRequestDetailMB.senderCompanyName}" />
+                    </h:panelGrid>
+                    <p:separator />
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <h:outputText value="Receiver Company ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewTransportationRequestDetailMB.selectedTServicePO.receiverCompanyId}" />
+                        <h:outputText value="Receiver Company Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewTransportationRequestDetailMB.receiverCompanyName}" />
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:fieldset legend="Contract Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <p:outputLabel value="Service ID:" style="width: 150px"/><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewTransportationRequestDetailMB.selectedTServicePO.contract.serviceQuotation.serviceCatalog.serviceCatalogId}" />
+                        <p:outputLabel value="Service Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewTransportationRequestDetailMB.selectedTServicePO.contract.serviceQuotation.serviceCatalog.serviceName}" />
+                        <p:outputLabel value="Service Description:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewTransportationRequestDetailMB.selectedTServicePO.contract.serviceQuotation.serviceCatalog.serviceDescription}" />
+                        <p:outputLabel value="Service Type:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewTransportationRequestDetailMB.selectedTServicePO.contract.serviceType}" />
+
+                        <p:outputLabel value="Start Date:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewTransportationRequestDetailMB.selectedTServicePO.contract.startDate}" />
+                        <p:outputLabel value="End Date:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewTransportationRequestDetailMB.selectedTServicePO.contract.endDate}" />
+
+                        <p:outputLabel value="Expected Quantity (TEU):" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewTransportationRequestDetailMB.selectedTServicePO.contract.serviceQuotation.quantityPerMonth}" />
+
+                        <c:if test="#{viewTransportationRequestDetailMB.selectedTServicePO.serviceType eq 'Transportation'}" >
+                            <p:outputLabel value="Origin:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewTransportationRequestDetailMB.selectedTServicePO.contract.origin}" />
+                            <p:outputLabel value="Destination:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewTransportationRequestDetailMB.selectedTServicePO.contract.destination}" />
+                        </c:if>
+                        <c:if test="#{viewTransportationRequestDetailMB.selectedTServicePO.serviceType eq 'Warehouse'}" >
+                            <p:outputLabel value="Storage Type:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewTransportationRequestDetailMB.selectedTServicePO.contract.storageType}" />
+
+                        </c:if>
+                        <p:outputLabel value="Final Contract Price Per TEU:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewTransportationRequestDetailMB.selectedTServicePO.contract.price}" />
+                        <p:outputLabel value="Terms &amp; Conditions:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewTransportationRequestDetailMB.selectedTServicePO.contract.conditionText}" />
+
+                    </h:panelGrid>
+                </p:fieldset>
+
+                <p:fieldset legend="Purchase Order Information" style="margin-bottom:20px">
+                    <h:panelGrid id="po" columns="3" cellpadding="6" >
+                        <p:outputLabel value="PO ID:"/><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewTransportationRequestDetailMB.selectedTServicePO.servicePOId}"/>
+
+                        <p:outputLabel value="PO Quantity in TEU:"/><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewTransportationRequestDetailMB.volume}"/>
+                        <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewTransportationRequestDetailMB.productId}" />
+                        <p:outputLabel value="Product Quantity Per TEU:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewTransportationRequestDetailMB.productQuantityPerTEU}" />
+
+
+                        <c:if test="#{viewTransportationRequestDetailMB.selectedTServicePO.serviceType eq 'Transportation'}" >
+                            <p:outputLabel value="Delivery Date:"/><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewTransportationRequestDetailMB.deliveryDate}"/>
+                        </c:if>
+
+                        <c:if test="#{viewTransportationRequestDetailMB.selectedTServicePO.serviceType eq 'Warehouse'}" >
+                            <p:outputLabel value="Service Start Date:"/><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewTransportationRequestDetailMB.serviceStartDate}"/>
+                            <p:outputLabel value="Service End Date:"/><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewTransportationRequestDetailMB.serviceEndDate}"/>
+                        </c:if>
+
+                        <p:outputLabel value="Price:" style="color: red" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewTransportationRequestDetailMB.price}" style="color: red" />
+
+
+                        <p:outputLabel value="PO Status:" style="color: red" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewTransportationRequestDetailMB.status}"  style="color: red" />
+                    </h:panelGrid>
+                    <p:messages id="msg" showDetail="true" autoUpdate="true" closable="true" />
+
+
+                </p:fieldset>
+
+                <!--PO not processed yet, I am the sender-->
+                <c:if test="#{(viewTransportationRequestDetailMB.compareStatus eq 1)and (viewTransportationRequestDetailMB.selectedTServicePO.senderCompanyId eq viewTransportationRequestDetailMB.companyId)}" >
+                    <p:commandButton value="Modify Request" type="button" onclick="PF('dlg1').show();" />
+                    <p:commandButton value="Deleted Request"  action="#{viewTransportationRequestDetailMB.deletePO()}" update="form" ajax="true" />
+                </c:if>
+
+
+                <p:dialog header="Update PO Information" widgetVar="dlg1" minHeight="40">
+                    <h:panelGrid id="detail" columns="3">
+                        <c:if test="#{viewTransportationRequestDetailMB.selectedTServicePO.serviceType eq 'Transportation'}" >
+                            <p:outputLabel for="deliveryDate" value="Service Delivery Date " /><p:spacer width="20" height="20" />
+                            <p:calendar id="deliveryDate" required="true" requiredMessage="Delivery Date is required" value="#{viewTransportationRequestDetailMB.deliveryDate}" pattern="dd-MM-yyyy" mindate="#{viewTransportationRequestDetailMB.today}" />
+                        </c:if>
+
+                        <c:if test="#{viewTransportationRequestDetailMB.selectedTServicePO.serviceType eq 'Warehouse'}" >
+                            <p:outputLabel for="startDate" value="Service Start Date "  /><p:spacer width="20" height="20" />
+                            <p:calendar id="startDate" required="true" requiredMessage="Service Start Date is required" value="#{viewTransportationRequestDetailMB.serviceStartDate}" pattern="dd-MM-yyyy" mindate="#{viewTransportationRequestDetailMB.today}" >
+                                <p:ajax update="endDate" />
+                            </p:calendar>
+                            <p:outputLabel for="endDate"  value="Service End Date " /><p:spacer width="20" height="20" />
+                            <p:calendar id="endDate"  required="true" requiredMessage="Service End Date is required" value="#{viewServicePODetailManagedBean.serviceEndDate}" pattern="dd-MM-yyyy" mindate="#{viewServicePODetailManagedBean.serviceStartDate}" />
+                        </c:if>
+
+
+                        <h:outputLabel  style="font-weight: bold" value="Quantity in TEU * "/><p:spacer width="20" height="20" />
+                        <p:inputText  value="#{viewTransportationRequestDetailMB.volume2}" required="true" requiredMessage="Quantity in TEU is required!" />
+                        <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
+                        <h:inputText value="#{viewTransportationRequestDetailMB.productId2}" required="true" requiredMessage="Product ID in TEU is required!" />
+                        <p:outputLabel value="Product Quantity Per TEU:" /><p:spacer width="20" height="20" />
+                        <h:inputText value="#{viewTransportationRequestDetailMB.productQuantityPerTEU2}" required="true" requiredMessage="Product Quantity per TEU is required!" />
+
+                    </h:panelGrid>
+                    <p:messages id="modalMsg" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:commandButton value="Confirm" action="#{viewTransportationRequestDetailMB.updatePO()}" ajax="true" update=":form :form3" />
+                </p:dialog>
+            </h:form>
+
+
+            <h:form id="form3">
+                <!--PO not processed yet, I am service provider-->
+                <c:if test="#{(viewTransportationRequestDetailMB.compareStatus eq 1)and (viewTransportationRequestDetailMB.selectedTServicePO.receiverCompanyId eq viewTransportationRequestDetailMB.companyId)}" >
+                    <p:commandButton value="Credit Check" action="#{viewServicePODetailManagedBean.checkCredit()}" update=":form :form3" ajax="true" />
+                    <p:commandButton value="Reject PO" action="#{viewServicePODetailManagedBean.rejectPO()}" update=":form :form3" ajax="true" />
+                </c:if>
+
+                <!--PO is on hold and I am the Service Provider-->
+       
+            </h:form>
+            <p:commandButton value="Go Back" icon="ui-icon-circle-arrow-w" action="viewallrequest.xhtml?faces-redirect=true"/>
+
+        </ui:define>
+    </ui:composition>
+</html>

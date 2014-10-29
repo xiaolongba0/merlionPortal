@@ -8,6 +8,7 @@ package merlionportal.crms.ordermanagementmodule;
 import entity.Contract;
 import entity.ServiceInvoice;
 import entity.ServicePO;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -132,4 +133,24 @@ public class ServicePOManagementSessionBean {
         return 1;
     }
 
+    public List<ServicePO> retrieveSentTransportationRequests(Integer myCompanyId){
+        Query q = em.createQuery("SELECT s FROM ServicePO s WHERE s.senderCompanyId = :senderCompanyId AND s.serviceType = :serviceType");
+        q.setParameter("senderCompanyId", myCompanyId);
+        q.setParameter("serviceType", "Transportation");
+       
+        return (List<ServicePO>)q.getResultList();
+    }
+    public List<ServicePO> retrieveReceivedTransportationRequests(Integer myCompanyId){
+        Query q = em.createQuery("SELECT s FROM ServicePO s WHERE s.receiverCompanyId = :receiverCompanyId AND s.serviceType = :serviceType");
+        q.setParameter("receiverCompanyId", myCompanyId);
+        q.setParameter("serviceType", "Transportation");
+        List<ServicePO> returnedList = new ArrayList<>();
+        for(Object o : q.getResultList()){
+            ServicePO po = (ServicePO) o;
+            if(po.getStatus()==5 || po.getStatus()==6 || po.getStatus()==7 ||po.getStatus()==8 || po.getStatus()==9 ){
+                returnedList.add(po);
+            }
+        }
+        return returnedList;
+    }
 }
