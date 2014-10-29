@@ -174,7 +174,7 @@
                     <p:column headerText="Price">
                         <h:outputText value="#{lineItem.price}" />
                     </p:column>
-                    <p:column headerText="Availability">
+                    <p:column id="availability" headerText="Availability">
                         <h:outputText value="#{purchaseOrderManagedBean.checkAvailability(lineItem)}" />
                     </p:column>
 
