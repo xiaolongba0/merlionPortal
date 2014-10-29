@@ -3,15 +3,16 @@ package merlionportal.managedbean.mrp2;
 import entity.Product;
 import entity.SystemUser;
 import java.io.IOException;
-import java.util.List;
-
 import java.io.Serializable;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
+import merlionportal.mrp.backordermodule.BackorderSessionBean;
 import merlionportal.mrp.forecastingmodule.ForecastSessionBean;
 
 /**
@@ -26,6 +27,8 @@ public class ForecastManagedBean implements Serializable {
     ForecastSessionBean forecastSessionBean;
     @EJB
     UserAccountManagementSessionBean uamb;
+
+    
 
     Integer companyId;
     Integer productId;
@@ -51,6 +54,7 @@ public class ForecastManagedBean implements Serializable {
                 ex.printStackTrace();
             }
         }
+        
     }
 
     public Integer getProductId() {

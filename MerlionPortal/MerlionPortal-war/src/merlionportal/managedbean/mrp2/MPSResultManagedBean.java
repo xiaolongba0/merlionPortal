@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.mrp.materialrequirementmodule.MaterialReqPlanningSessionBean;
 import merlionportal.mrp.mpsmodule.MpsSessionBean;
 
@@ -35,7 +36,10 @@ public class MPSResultManagedBean {
 
     @EJB
     MaterialReqPlanningSessionBean materialReqPlanningSessionBean;
-
+  
+    @EJB
+    private SystemLogSessionBean systemLogSB;
+  
     @EJB
     MpsSessionBean mpsSessionBean;
     @EJB
@@ -107,6 +111,7 @@ public class MPSResultManagedBean {
     }
 
     public void computeDemand() {
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP compute demand. ");
         forecastData = (Vector<Integer>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("forecastR");
         forecastDate = (Vector<String>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("monthlyDateR");
         buffer = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("buffer");

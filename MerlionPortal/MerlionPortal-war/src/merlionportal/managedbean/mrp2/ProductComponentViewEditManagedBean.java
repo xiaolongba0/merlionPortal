@@ -14,6 +14,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.mrp.forecastingmodule.ForecastSessionBean;
 import merlionportal.mrp.productcatalogmodule.ProductSessionBean;
 import org.primefaces.event.CellEditEvent;
@@ -36,7 +37,8 @@ public class ProductComponentViewEditManagedBean {
     UserAccountManagementSessionBean uamb;
     @EJB
     ForecastSessionBean forecastSessionBean;
-
+   @EJB
+    private SystemLogSessionBean systemLogSB;
     private List<Component> components;
     private Double componentId;
     private Integer companyId;
@@ -237,6 +239,7 @@ public class ProductComponentViewEditManagedBean {
     }
 
       public void deleteComponent(Component component1) {
+           systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP delete a component. ");
         try {
             boolean result = productSessionBean.deleteComponents(component1.getComponentId());
             if (result) {
@@ -253,7 +256,7 @@ public class ProductComponentViewEditManagedBean {
     
     
     public void onRowEdit(RowEditEvent event) {
-        
+         systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP edit a component. ");
         Component component = new Component();
         component = (Component) event.getObject();
         productSessionBean.editComponent(component.getComponentName(), component.getDescription(), component.getCost(), component.getCurrency(), component.getQuantity(), component.getLeadTime(), component.getOrderQuantity(), component.getSupplierCompanyId(), component.getSupplierContactPerson(), component.getSupplierContactNumber(), component.getSupplierContactEmail(), companyId, productId, component.getComponentId());

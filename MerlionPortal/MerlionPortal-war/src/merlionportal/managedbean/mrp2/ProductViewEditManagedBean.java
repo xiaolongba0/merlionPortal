@@ -17,6 +17,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.mrp.productcatalogmodule.ProductSessionBean;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
@@ -36,6 +37,9 @@ public class ProductViewEditManagedBean {
     private ProductSessionBean productSessionBean;
     @EJB
     UserAccountManagementSessionBean uamb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
+    
     private Integer companyId;
 
     private List<Product> products;
@@ -203,6 +207,7 @@ public class ProductViewEditManagedBean {
 
     //ok. But see if user input (in xhtml) can be in Integer type directly.
     public void deleteProduct(Product product) {
+         systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP delete product. ");
         try {
             productId = product.getProductId();
             productSessionBean.deleteProducts(companyId, productId);
@@ -213,7 +218,7 @@ public class ProductViewEditManagedBean {
     }
 
     public void onRowEdit(RowEditEvent event) {
-
+ systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP edit product. ");
         product = new Product();
         product = (Product) event.getObject();
         System.err.println("product.getProductName(): " + product.getProductName());

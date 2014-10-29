@@ -17,6 +17,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.mrp.forecastingmodule.ForecastSessionBean;
 import merlionportal.mrp.forecastingmodule.RetrieveSalesDataSessionBean;
 import org.primefaces.model.chart.Axis;
@@ -35,6 +36,8 @@ public class ForecastResultManagedBean implements Serializable {
     ForecastSessionBean fsb;
     @EJB
     RetrieveSalesDataSessionBean rsdsb;
+      @EJB
+    private SystemLogSessionBean systemLogSB;
 
     Integer companyId;
 
@@ -122,7 +125,7 @@ MonthForecastResult monthForecastResult;
     
 
     public void computeForecastResult() {
-
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP compute forecast result. ");
         //produce a list of date correspond to sales
         //size need to be retrieved/computed later
         productId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("productId");

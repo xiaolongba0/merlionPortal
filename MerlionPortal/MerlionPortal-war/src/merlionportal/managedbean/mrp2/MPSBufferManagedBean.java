@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.mrp.materialrequirementmodule.MaterialReqPlanningSessionBean;
 import merlionportal.mrp.mpsmodule.MpsSessionBean;
 
@@ -38,6 +39,8 @@ public class MPSBufferManagedBean {
     MpsSessionBean mpsSessionBean;
     @EJB
     UserAccountManagementSessionBean uamb;
+      @EJB
+    private SystemLogSessionBean systemLogSB;
     private SystemUser loginedUser;
     Integer companyId;
 

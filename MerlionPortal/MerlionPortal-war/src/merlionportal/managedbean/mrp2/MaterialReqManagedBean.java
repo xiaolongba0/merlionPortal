@@ -15,6 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.mrp.materialrequirementmodule.MaterialReqPlanningSessionBean;
 
 /**
@@ -27,7 +28,9 @@ public class MaterialReqManagedBean {
 
     @EJB
     MaterialReqPlanningSessionBean materialReqPlanningSessionBean;
-
+   @EJB
+    private SystemLogSessionBean systemLogSB;
+    
     @EJB
     UserAccountManagementSessionBean uamb;
     private SystemUser loginedUser;
@@ -116,6 +119,7 @@ public class MaterialReqManagedBean {
 
         mpsId = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mpsId");
         minOnHand = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("minOnHand");
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP compute material requirement planning. ");
         mrps = materialReqPlanningSessionBean.addNewMrpList(productId, mpsId, wk1Demand, wk2Demand, wk3Demand, wk4Demand, wk5Demand, minOnHand);
 
     }

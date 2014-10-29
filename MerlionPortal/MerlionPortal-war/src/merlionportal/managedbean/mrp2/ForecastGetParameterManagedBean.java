@@ -15,6 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 
 @Named(value = "forecastGetParameterManagedBean")
 @ViewScoped
@@ -22,6 +23,8 @@ public class ForecastGetParameterManagedBean implements Serializable {
 
     @EJB
     UserAccountManagementSessionBean uamb;
+      @EJB
+    private SystemLogSessionBean systemLogSB;
 
     Integer companyId;
 
@@ -52,6 +55,7 @@ public class ForecastGetParameterManagedBean implements Serializable {
     }
 
     public String onParameterChange() {
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP gets forecasting parameters from system user. ");
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("expectedGrowth", expectedGrowth);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("periodicity", periodicity);
 

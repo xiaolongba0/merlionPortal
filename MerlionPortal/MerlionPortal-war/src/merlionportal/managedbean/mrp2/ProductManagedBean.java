@@ -20,6 +20,8 @@ import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
+import merlionportal.mrp.materialrequirementmodule.MaterialReqPlanningSessionBean;
 import merlionportal.mrp.productcatalogmodule.ProductSessionBean;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
@@ -30,10 +32,12 @@ public class ProductManagedBean {
 
     @EJB
     private ProductSessionBean productSessionBean;
-    
+   @EJB
+    private MaterialReqPlanningSessionBean mrpsb;
     @EJB
     UserAccountManagementSessionBean uamb;
-    
+       @EJB
+    private SystemLogSessionBean systemLogSB;
     private String productName;
     private String description;
     private String category;
@@ -91,6 +95,8 @@ private Product product;
         
         products = productSessionBean.getMyProducts(companyId);
         companies = productSessionBean.getAllCompanies();
+    //    mrpsb.addNewMrpListBackorder(1, 100);
+        
 }
     
 
@@ -295,6 +301,7 @@ private Product product;
     }
 
     public void saveNewProduct(ActionEvent product) {
+         systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP save new product. ");
         try {
             Date d= new Date();
             System.out.println("DATE!!!!!!!!!!!!!!!!!!!!!!!!!" + d);
@@ -310,6 +317,7 @@ private Product product;
     }
     
      public void saveNewComponent(ActionEvent component) {
+          systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP save new component for a product. ");
 
         try {
             int pdtTempId = productId.intValue();

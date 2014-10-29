@@ -7,6 +7,7 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.mrp.forecastingmodule.ForecastSessionBean;
 
 /**
@@ -19,7 +20,6 @@ public class ProductComponentGetBOM implements Serializable {
 
     @EJB
     ForecastSessionBean forecastSessionBean;
-
     Integer companyId = 12345;
     Integer productId;
     Product product;

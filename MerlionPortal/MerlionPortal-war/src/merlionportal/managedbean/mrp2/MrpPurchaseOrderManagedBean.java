@@ -17,6 +17,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.mrp.pomodule.PurchaseOrderSessionBean;
 
 /**
@@ -31,7 +32,8 @@ public class MrpPurchaseOrderManagedBean {
     UserAccountManagementSessionBean uamb;
     @EJB
     PurchaseOrderSessionBean productOrderSessionBean;
-
+   @EJB
+    private SystemLogSessionBean systemLogSB;
     private SystemUser loginedUser;
     Integer companyId;
     Integer productId;
@@ -69,6 +71,7 @@ public class MrpPurchaseOrderManagedBean {
     }
     
     public void createPO(){
+         systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP create PO. ");
         
         pos = productOrderSessionBean.createPO(productId, companyId, loginedUser, mrps);
         
