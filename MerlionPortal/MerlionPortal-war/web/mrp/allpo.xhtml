@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="MRP II Add New Product" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <link rel="stylesheet" href="${request.contextPath}/css/mrp.css" type="text/css" />
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+
+            <p:menu>
+                <p:submenu label="MRP HOME" styleClass="display:block">
+                    <p:menuitem value="MRP II Home" url="mrp.xhtml" style="background-color: lavender"/>
+                </p:submenu>
+                <c:if test="#{dashboardBean.checkMRPCanManageProductComponent() || dashboardBean.loginedUser.userType == 'superuser'}">
+                    <p:submenu label="Product Catalog Management">
+                        <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
+                        <p:menuitem value="View, Edit and Delete" url="viewallproducts.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="BOM Management">
+                        <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
+                        <p:menuitem value="View, Edit and Delete BOM" url="viewbom.xhtml" />
+                    </p:submenu>
+                </c:if>
+                <c:if test="#{dashboardBean.checkMRPCanManageUseForecast() || dashboardBean.loginedUser.userType == 'superuser'}">
+                    <p:submenu label="MRP">
+                        <p:menuitem value="Material Requirement Planning" url="forecast.xhtml" />
+                    </p:submenu>
+                </c:if>
+
+            </p:menu>
+        </ui:define>
+
+        <ui:define name="right">
+            <h:form>
+                <p:panel>
+                    <p:dataGrid id="lineItem" var="po" value="#{mrpPurchaseOrderManagedBean.pos}" style="margin-bottom:20px"
+                                columns="1" 
+                                rows="1" paginator="true" 
+                                paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                rowsPerPageTemplate="1,2,5" >
+                        <f:facet name="header">
+                            Purchase Order
+                        </f:facet>
+                        <p:panel>
+                            <p:panelGrid style="margin-top:20px">
+
+                                <p:row>
+                                    <p:column style="font-weight: bold;">Purchase Order Reference Number: </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{po.productPOId}" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">Supplier Company ID: </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{po.companyId}" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">PO Created Date: </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{po.createdDate}" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">Sales Person ID</p:column>
+                                    <p:column>
+                                        <h:outputText value="#{po.salesPersonId}" />
+                                    </p:column>
+                                </p:row>
+                                <p:row></p:row>
+
+                                <p:row>
+                                    <p:column style="font-weight: bold;">Ship To: </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{po.shipTo}" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">Bill To: </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{po.billTo}" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">Contact Person Phone Number: </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{po.contactPersonPhoneNumber}" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">Contact Person Name</p:column>
+                                    <p:column>
+                                        <h:outputText value="#{po.contactPersonName}" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">Creator ID: </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{po.creatorId}" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">Status: </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{po.status}" />
+                                    </p:column>
+                                </p:row>
+
+
+                                <p:row>
+                                    <p:column style="font-weight: bold;">Order Items</p:column>
+                                    <p:column>
+
+                                        <p:dataGrid id="lineItem" var="lineItem" value="#{po.productOrderLineItemList}" style="margin-bottom:20px"
+                                                    >
+                                            <f:facet name="header">
+                                                Line Item
+                                            </f:facet>
+                                            <p:panel>
+                                                <p:panelGrid style="margin-top:20px">
+                                                    <f:facet name="header">
+                                                        <p:row>
+                                                            <p:column colspan="7"> 
+                                                                Order Item Name: <h:outputText value="#{lineItem.productproductId.productName}" /> 
+                                                            </p:column>
+                                                        </p:row>
+                                                    </f:facet>
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">Item Line Id</p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{lineItem.line}" />
+                                                        </p:column>
+                                                    </p:row>
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">Item status: </p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{lineItem.status}" />
+                                                        </p:column>
+                                                    </p:row>
+                                                    <p:row>
+                                                        <p:column style="font-weight: bold;">Ordered Quantity: </p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{lineItem.quantity}" />
+                                                        </p:column>
+                                                    </p:row>
+                                                </p:panelGrid>
+                                            </p:panel>
+                                        </p:dataGrid>
+
+
+
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="font-weight: bold;">Total Price: </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{po.price}" />
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+
+
+                        </p:panel>
+                    </p:dataGrid>
+                   <p:commandButton value="Send PO and Complete MRP"  action="#{mrpPurchaseOrderManagedBean.backToMrpHome}" />
+                   <p:commandButton value="Cancel"  action="#{mrpPurchaseOrderManagedBean.cancelPO}" />
+                </p:panel>
+
+
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
+
+
+
+
+
+
+
