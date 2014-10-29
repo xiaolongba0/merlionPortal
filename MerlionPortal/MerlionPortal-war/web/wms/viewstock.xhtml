@@ -20,7 +20,7 @@
         </ui:define>
 
         <ui:define name="left">
-                       <p:panelMenu>
+            <p:panelMenu>
                 <p:submenu label =" WMS HOME" styleClass="display:block">
                     <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
                 </p:submenu>
@@ -57,8 +57,9 @@
         </ui:define>
 
         <ui:define name="right">
-            <h:form id="formMain">
-                <p:panel id="panel" header=" View Stocks">
+            <p:panel id="panel" header=" View Stocks">
+                <h:form id="formMain">
+
                     <p:ajaxStatus style="width:16px;height:16px;">
                         <f:facet name="start">
                             <h:graphicImage value="/img/load.gif" />
@@ -81,18 +82,18 @@
                         <p:selectOneMenu id="product" value="#{stockViewEditManagedBean.productId}"  style="width:200px" disabled="#{stockViewEditManagedBean.radioValue != '1'}">
                             <f:selectItem itemLabel="Select Product ID" itemValue="" noSelectionOption="true" />
                             <f:selectItems value="#{stockViewEditManagedBean.productList}" var="product" itemLabel="ID:#{product.productId}   Name:#{product.productName}" itemValue="#{product.productId}"/>
-                            <p:ajax listener="#{stockViewEditManagedBean.viewStocks()}" update="stockData" />
-                            <p:ajax update="totalQuantity" />
+                            <p:ajax listener="#{stockViewEditManagedBean.viewStocks()}" update=":datafield" />
                         </p:selectOneMenu>
 
                         <p:radioButton id="id01" for="myRadioID" itemIndex="1"/>
                         <h:outputLabel for="id01" value="Enter Product ID "/>
                         <p:inputText id="input01" value="#{stockViewEditManagedBean.productId}" disabled="#{stockViewEditManagedBean.radioValue != '2'}">
-                            <p:ajax listener="#{stockViewEditManagedBean.viewStocks()}" update="stockData" />
-                            <p:ajax update="totalQuantity" />
+                            <p:ajax listener="#{stockViewEditManagedBean.viewStocks()}" update=":datafield" />
+<!--                            <p:ajax update="totalQuantity" />-->
                         </p:inputText>
                     </h:panelGrid>
-
+                </h:form>
+                <h:form id="datafield" >
                     <p:dataTable id="stockData" var="stock" sortMode="multiple" editable="true" value="#{stockViewEditManagedBean.stocks}" 
                                  widgetVar="stockTable"
                                  emptyMessage="No such stock found"
@@ -148,9 +149,9 @@
                                 <f:facet name="input"><p:calendar id="expiryDate" value="#{stock.expiryDate}" /></f:facet>
                             </p:cellEditor>
                         </p:column>
-                        
+
                         <p:column style="width:48px">
-                            <p:commandButton action="#{stockViewEditManagedBean.deleteStock(stock)}" update="stockData" oncomplete="updateQuantity()" icon = "ui-icon-trash"  >
+                            <p:commandButton actionListener="#{stockViewEditManagedBean.deleteStock(stock)}" ajax="true" update=":datafield:totalQuantity :datafield:stockData" icon="ui-icon-trash"  >
                                 <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this stock?" icon="ui-icon-alert" />
                             </p:commandButton> 
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
@@ -166,9 +167,9 @@
 
                     <p:messages id="messages" autoUpdate="true" closable="true" />
                     <br></br>
-                    <h:outputLabel id="totalQuantity" value="Total Quantity: #{stockViewEditManagedBean.totalQuantity}" />
-                </p:panel>
-            </h:form>
+                    <p:outputLabel id="totalQuantity" value="Total Quantity: #{stockViewEditManagedBean.totalQuantity}" />
+                </h:form>
+            </p:panel>
         </ui:define>
     </ui:composition>
 </html>                 

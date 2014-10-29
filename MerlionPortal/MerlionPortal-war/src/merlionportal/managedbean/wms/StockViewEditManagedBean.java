@@ -123,6 +123,7 @@ public class StockViewEditManagedBean {
                 systemLogSB.recordSystemLog(userId, "WMS delete stock");
                 FacesMessage msg = new FacesMessage("Stock with ID = " + stock.getStockId() + " has sucessfully been deleted");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
+                totalQuantity = totalQuantity - stock.getQuantity();
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", ""));
 
