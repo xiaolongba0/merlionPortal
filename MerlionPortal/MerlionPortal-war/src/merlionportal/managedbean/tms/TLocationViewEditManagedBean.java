@@ -19,6 +19,7 @@ import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionBean;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
+
 /**
  *
  * @author Yuanbo
@@ -27,19 +28,16 @@ import org.primefaces.event.RowEditEvent;
 @ViewScoped
 public class TLocationViewEditManagedBean {
 
-
     @EJB
     private TAssetmanagementSessionBean tassetmanagementSessionBean;
     @EJB
     private UserAccountManagementSessionBean uamb;
-    
+
     private List<Location> locations;
     private Integer locationId;
     private String locationName;
     private Integer companyId;
     private Location location;
-
-    private static String[] country;
 
     private SystemUser loginedUser;
 
@@ -47,7 +45,7 @@ public class TLocationViewEditManagedBean {
     public void init() {
         boolean redirect = true;
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
-            setLoginedUser(getUamb().getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")));
+            setLoginedUser(uamb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")));
             setCompanyId((Integer) (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId"));
             if (getLoginedUser() != null) {
                 redirect = false;
@@ -65,7 +63,7 @@ public class TLocationViewEditManagedBean {
 
     public List<Location> getLocations() {
         System.out.println("===============================[In Managed Bean - getLocation!]");
-        locations = getTassetmanagementSessionBean().viewMyLocations(getCompanyId());
+        locations = tassetmanagementSessionBean.viewMyLocations(companyId);
 
         // for checking
         for (Object obj : locations) {
@@ -73,18 +71,18 @@ public class TLocationViewEditManagedBean {
         }
         return locations;
     }
-    
+
     public void deleteLocation(Location location) {
         try {
-            setLocationId(location.getLocationId());
+            locationId = location.getLocationId();
             System.out.println("[In WAR FILE - Delete Warehouse Function] Location ID========== :" + locationId);
             tassetmanagementSessionBean.deleteLocation(companyId, locationId);
-            
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-                                                   
+
     /**
      * @return the tassetmanagementSessionBean
      */
@@ -215,6 +213,5 @@ public class TLocationViewEditManagedBean {
     /**
      * Creates a new instance of AssetViewEditManagedBean
      */
-   
-    
+
 }

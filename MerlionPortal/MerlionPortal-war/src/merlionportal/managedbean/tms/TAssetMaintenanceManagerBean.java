@@ -5,44 +5,53 @@
  */
 package merlionportal.managedbean.tms;
 
+import javax.inject.Named;
 import entity.SystemUser;
 import entity.Location;
 import entity.TransportationAsset;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.view.ViewScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionBean;
+import merlionportal.tms.transportationassetmaintenancemanagementmodule.TransportationAssetMaintenanceManagementSessionBean;
+import java.util.List;
 
 /**
  *
  * @author Yuanbo
  */
-@Named(value = "tAssetScheduleManagerBean")
+@Named(value = "tAssetMaintenanceManagerBean")
 @ViewScoped
-public class TAssetScheduleManagerBean {
+public class TAssetMaintenanceManagerBean {
 
     @EJB
-    private TAssetmanagementSessionBean tamsb;
+    private TAssetmanagementSessionBean tassetManagementSessionBean;
     @EJB
     private UserAccountManagementSessionBean uamb;
-
+    @EJB
+    private TransportationAssetMaintenanceManagementSessionBean tammsb;
+    
+    private Integer companyId;
+    private Integer tassssssetId;
+    private Integer logId;
     private Integer locationId;
-    private List<Location> locations;
-    private Integer tassetId;
-    private List<TransportationAsset> transassetss;
+    private Date today;
     private Date startDate;
     private Date endDate;
+    private Integer operatorId;
+    private String cost;
+    private String description;
+    
+
     private SystemUser loginedUser;
-    private Integer companyId;
-    private Date today;
+    private List<Location> locations;
+    private List<TransportationAsset> transassetss;
 
     @PostConstruct
     public void init() {
@@ -62,16 +71,17 @@ public class TAssetScheduleManagerBean {
                 ex.printStackTrace();
             }
         }
-        locations = tamsb.viewMyLocations(companyId);
+        locations = tassetManagementSessionBean.viewMyLocations(companyId);
         today = Calendar.getInstance().getTime();
+
     }
 
-    public void createTassetSchedule() {
-        System.out.println("tAsset Id: " + tassetId);
-        boolean result = tamsb.addTAssetSchedule(startDate, endDate, tassetId);
-        if (result) {
+    public void createMaintenanceLog() {
+        System.out.println("tAsset Id: " + tassssssetId);
+        Integer result = tammsb.addNewMaintenanceLog(cost, description, operatorId, startDate, endDate, tassssssetId);
+        if (result> -1) {
             clearAllFields();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "New Schedule created!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "New Maintenance created!"));
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
         }
@@ -79,15 +89,43 @@ public class TAssetScheduleManagerBean {
 
     public void onChangeLocation() {
         if (locationId != null) {
-            transassetss = tamsb.viewtAssetForALocation(locationId);
+            transassetss = tassetManagementSessionBean.viewtAssetForALocation(locationId);
         }
     }
 
     private void clearAllFields() {
         locationId = null;
-        tassetId = null;
+        tassssssetId = null;
+        cost = null;
+        description = null;
+        operatorId = null;
         startDate = null;
         endDate = null;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
+    public Integer getTassssssetId() {
+        return tassssssetId;
+    }
+
+    public void setTassssssetId(Integer tassssssetId) {
+        this.tassssssetId = tassssssetId;
+    }
+
+
+    public Integer getLogId() {
+        return logId;
+    }
+
+    public void setLogId(Integer logId) {
+        this.logId = logId;
     }
 
     public Integer getLocationId() {
@@ -96,22 +134,6 @@ public class TAssetScheduleManagerBean {
 
     public void setLocationId(Integer locationId) {
         this.locationId = locationId;
-    }
-
-    public List<Location> getLocations() {
-        return locations;
-    }
-
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
-    }
-
-    public Integer getTassetId() {
-        return tassetId;
-    }
-
-    public void setTassetId(Integer tassetId) {
-        this.tassetId = tassetId;
     }
 
     public Date getToday() {
@@ -138,6 +160,30 @@ public class TAssetScheduleManagerBean {
         this.endDate = endDate;
     }
 
+    public Integer getOperatorId() {
+        return operatorId;
+    }
+
+    public void setOperatorId(Integer operatorId) {
+        this.operatorId = operatorId;
+    }
+
+    public String getCost() {
+        return cost;
+    }
+
+    public void setCost(String cost) {
+        this.cost = cost;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public SystemUser getLoginedUser() {
         return loginedUser;
     }
@@ -146,12 +192,12 @@ public class TAssetScheduleManagerBean {
         this.loginedUser = loginedUser;
     }
 
-    public Integer getCompanyId() {
-        return companyId;
+    public List<Location> getLocations() {
+        return locations;
     }
 
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
     }
 
     public List<TransportationAsset> getTransassetss() {
@@ -162,4 +208,5 @@ public class TAssetScheduleManagerBean {
         this.transassetss = transassetss;
     }
 
+     
 }

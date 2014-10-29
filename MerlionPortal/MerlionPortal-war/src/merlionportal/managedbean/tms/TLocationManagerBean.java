@@ -12,6 +12,8 @@ import entity.TransportationAsset;
 import java.io.IOException;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import entity.Node;
+import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -42,6 +44,8 @@ public class TLocationManagerBean {
     private Integer companyId;
     private Location location; 
     private SystemUser loginedUser;
+    private Integer nodeId;
+    private List<Node> nodes;
        /**
      * Creates a new instance of TLocationManagerBean
      */
@@ -52,7 +56,7 @@ public class TLocationManagerBean {
     public void init() {
         boolean redirect = true;
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
-            setLoginedUser(getUamb().getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")));
+            setLoginedUser(uamb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")));
             setCompanyId((Integer) (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId"));
             if (getLoginedUser() != null) {
                 redirect = false;
@@ -65,49 +69,42 @@ public class TLocationManagerBean {
                 ex.printStackTrace();
             }
         }
-
+        nodes = tassetManagementSessionBean.viewTheNodes();
     }
     
-        public void createNewLocation(ActionEvent location) {
+    public void createNewLocation(ActionEvent location) {
 
         try {
             System.out.println("[INSIDE WAR FILE]===========================Create New location");
-            newLocationId = tassetManagementSessionBean.addNewLocation(locationName, locationType, companyId);
-            if(newLocationId > -1){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Location Added!", ""));
-            clearAllFields();
-            System.out.println("[WAR FILE]===========================Create New Location");
+            System.out.println("LocationName :" + locationName);
+            System.out.println("Location Type :" + locationType);
+            System.out.println("companyId :" + companyId);
+            System.out.println("NodeId :" + nodeId);
+            newLocationId = tassetManagementSessionBean.addNewLocation(locationName, locationType, companyId, nodeId);
+            if (newLocationId > -1) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Location Added!", ""));
+                clearAllFields();
+                System.out.println("[WAR FILE]===========================Create New Location");
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Something went wrong!", ""));
             }
-            else{
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage (FacesMessage.SEVERITY_ERROR, "Something went wrong!",""));
-            }
-            
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-        
-    private void clearAllFields(){
-        
+
+    private void clearAllFields() {
+
         locationName = null;
         locationType = null;
-  
+
     }
    
 
     /**
      * @return the uamb
-     */
-    public UserAccountManagementSessionBean getUamb() {
-        return uamb;
-    }
 
-    /**
-     * @param uamb the uamb to set
-     */
-    public void setUamb(UserAccountManagementSessionBean uamb) {
-        this.uamb = uamb;
-    }
 
     /**
      * @return the newLocationId
@@ -205,6 +202,22 @@ public class TLocationManagerBean {
      */
     public void setLoginedUser(SystemUser loginedUser) {
         this.loginedUser = loginedUser;
+    }
+
+    public Integer getNodeId() {
+        return nodeId;
+    }
+
+    public void setNodeId(Integer nodeId) {
+        this.nodeId = nodeId;
+    }
+
+    public List<Node> getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(List<Node> nodes) {
+        this.nodes = nodes;
     }
 
  

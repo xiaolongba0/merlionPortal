@@ -27,7 +27,7 @@ import entity.SystemUser;
  */
 @Named(value = "TTassetViewEditManagedBean")
 @ViewScoped
-public class TransAssetViewEditManagedBean {
+public class TAssetViewEditManagedBean {
 
     @EJB
     private TAssetmanagementSessionBean tassetManagementSessionBean;
@@ -52,7 +52,7 @@ public class TransAssetViewEditManagedBean {
 
     private SystemUser loginedUser;
 
-    public TransAssetViewEditManagedBean() {
+    public TAssetViewEditManagedBean() {
     }
 
     @PostConstruct

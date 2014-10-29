@@ -49,8 +49,7 @@ public class TAssetScheduleViewEditManagedBean {
     /**
      * Creates a new instance of TAssetScheduleViewEditManagedBean
      */
-    public TAssetScheduleViewEditManagedBean() {
-    }
+
     @PostConstruct
     public void init() {
 
@@ -116,33 +115,7 @@ public class TAssetScheduleViewEditManagedBean {
         }
     }
 
-    /**
-     * @return the tamsb
-     */
-    public TAssetmanagementSessionBean getTamsb() {
-        return tamsb;
-    }
 
-    /**
-     * @param tamsb the tamsb to set
-     */
-    public void setTamsb(TAssetmanagementSessionBean tamsb) {
-        this.tamsb = tamsb;
-    }
-
-    /**
-     * @return the uamb
-     */
-    public UserAccountManagementSessionBean getUamb() {
-        return uamb;
-    }
-
-    /**
-     * @param uamb the uamb to set
-     */
-    public void setUamb(UserAccountManagementSessionBean uamb) {
-        this.uamb = uamb;
-    }
 
     /**
      * @return the locations

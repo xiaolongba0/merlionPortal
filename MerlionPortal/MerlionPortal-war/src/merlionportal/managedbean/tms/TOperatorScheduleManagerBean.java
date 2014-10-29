@@ -1,0 +1,127 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package merlionportal.managedbean.tms;
+
+
+import entity.TransportationOperator;
+import entity.SystemUser;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
+import javax.inject.Named;
+import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.tms.transportationhumanresourcemanagementmodule.TOperatormanagementSessionBean;
+
+/**
+ *
+ * @author Yuanbo
+ */
+@Named(value = "tOperatorScheduleManagerBean")
+@RequestScoped
+public class TOperatorScheduleManagerBean {
+    @EJB
+    private TOperatormanagementSessionBean tomsb;
+    @EJB
+    private UserAccountManagementSessionBean uamb;
+
+    private List<TransportationOperator> operators;
+    private SystemUser loginedUser;
+    private Integer companyId;
+    private Date startDate;
+    private Date endDate;
+
+    /**
+     * Creates a new instance of TOperatorScheduleManagerBean
+     */
+    public TOperatorScheduleManagerBean() {
+    }
+     @PostConstruct
+    public void init() {
+
+        boolean redirect = true;
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
+            loginedUser = uamb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"));
+            companyId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyId");
+            if (loginedUser != null) {
+                redirect = false;
+            }
+        }
+        if (redirect) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        operators = tomsb.viewMyOperator(companyId);
+    }
+    
+        public void createOperatirSchedule() {
+        boolean result = tomsb.addOschedule(startDate, endDate, companyId);
+        if (result) {
+            clearAllFields();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "New Operator Schedule created!"));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
+        }
+    }
+
+    public void onChangeCompany() {
+        if (companyId != null) {
+            operators = tomsb.viewMyOperator(companyId);
+        }
+    }
+    private void clearAllFields() {
+        startDate = null;
+        endDate = null;
+    }
+
+    public List<TransportationOperator> getOperators() {
+        return operators;
+    }
+
+    public void setOperators(List<TransportationOperator> operators) {
+        this.operators = operators;
+    }
+
+    public SystemUser getLoginedUser() {
+        return loginedUser;
+    }
+
+    public void setLoginedUser(SystemUser loginedUser) {
+        this.loginedUser = loginedUser;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+}
