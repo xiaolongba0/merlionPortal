@@ -196,6 +196,10 @@ public class QuotationManagementSessionBean {
         Query q = em.createQuery("SELECT s FROM ServiceQuotation s WHERE s.receiverCompanyId = :receiverCompanyId AND s.status=6 AND s.serviceType='Transportation'").setParameter("receiverCompanyId", myCompanyId);
         return (List<ServiceQuotation>) q.getResultList();
     }
+    public List<ServiceQuotation> retrieveAllWarehouseFulfillmentcheckList (Integer myCompanyId){
+        Query q = em.createQuery("SELECT s FROM ServiceQuotation s WHERE s.receiverCompanyId = :receiverCompanyId AND s.status=6 AND s.serviceType='Warehouse'").setParameter("receiverCompanyId", myCompanyId);
+        return (List<ServiceQuotation>) q.getResultList();
+    }
 
     public void passFulfillmentCheck(Integer quotationId){
         ServiceQuotation quotation = em.find(ServiceQuotation.class, quotationId);
