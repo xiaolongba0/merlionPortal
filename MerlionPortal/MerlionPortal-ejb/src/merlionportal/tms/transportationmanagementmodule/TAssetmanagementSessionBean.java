@@ -138,20 +138,22 @@ public class TAssetmanagementSessionBean {
                 tempnode = l;
             }
         }
-        List<Route> allMyRoute = new ArrayList();
+        System.out.println("tempnode Id"+ nodeId);
+        List<Route> allMyRoute = new ArrayList();   
         allMyRoute = tempnode.getRouteList();
 
         return allMyRoute;
     }
 
     public Boolean deleteRoute(Integer routeId) {
-        Query query = em.createNamedQuery("Route");
+        Query query = em.createNamedQuery("Route.findByRouteId").setParameter("routeId", routeId);
         List<Route> allMyRoute = query.getResultList();
 
         for (Route r : allMyRoute) {
             if (Objects.equals(r.getRouteId(), routeId)) {
                 em.remove(r);
                 em.flush();
+                System.out.println("successfully deleted:" + routeId);
                 return true;
             }
         }
@@ -316,7 +318,7 @@ public class TAssetmanagementSessionBean {
 
         scheduleList = new ArrayList<AssetSchedule>();
         tAsset.setAssetScheduleList(scheduleList);
-        
+
         orderList = new ArrayList<TransportationOrder>();
         tAsset.setTransportationOrderList(orderList);
 
@@ -395,7 +397,7 @@ public class TAssetmanagementSessionBean {
 
     }
 
-    public boolean addTAssetSchedule(Date startDate, Date endDate, Integer tAssetId) {
+    public boolean addTAssetSchedule(Date startDate, Date endDate, Integer tAssetId, Integer operatorId) {
 
         System.out.println("[INSIDE EJB]================================Add Transportation Asset Schedule");
         Query query = em.createNamedQuery("TransportationAsset.findByAssetId").setParameter("assetId", tAssetId);
@@ -407,9 +409,9 @@ public class TAssetmanagementSessionBean {
             schedule.setEndDate(endDate);
             schedule.setTransporationAssetassetId(tAsset);
 
-            operatorList = new ArrayList<TransportationOperator>();
-            schedule.setTransportationOperator(null);
+            schedule.setOperatorId(operatorId);
             tAsset.getAssetScheduleList().add(schedule);
+            
             em.persist(schedule);
             em.merge(tAsset);
 

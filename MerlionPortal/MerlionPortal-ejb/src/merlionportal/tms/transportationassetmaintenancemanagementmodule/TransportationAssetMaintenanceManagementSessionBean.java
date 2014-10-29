@@ -71,7 +71,7 @@ public class TransportationAssetMaintenanceManagementSessionBean {
     }
 
     public Integer addNewMaintenanceLog(String cost, String description, Integer operatorId, Date startDate, Date endDate, Integer tAssetId) {
-        System.out.println("[INSIDE EJB]================================Add New Operator");
+        System.out.println("[INSIDE EJB]================================Add New MaintenanceLog");
 
         Query query = em.createNamedQuery("TransportationAsset.findByAssetId").setParameter("assetId", tAssetId);
 
@@ -82,12 +82,19 @@ public class TransportationAssetMaintenanceManagementSessionBean {
             maintain.setDescription(description);
             maintain.setOperatorId(operatorId);
             maintain.setTransporationAssetassetId(tAsset);
+            maintain.setStartDate(startDate);
+            maintain.setEndDate(endDate);
 
             AssetSchedule maintainSchedule = new AssetSchedule();
-
+            if(operatorId != null){
+            
+                Query query2 = em.createNamedQuery("TransportationOperator.findByOperatorId").setParameter("operatorId", operatorId);
+                TransportationOperator operator = (TransportationOperator) query2.getSingleResult();
+           
             maintainSchedule.setStartDate(startDate);
             maintainSchedule.setEndDate(endDate);
             maintainSchedule.setTransporationAssetassetId(tAsset);
+            maintainSchedule.setOperatorId(operatorId);
 
             System.out.println("==========Maintenance Cost========== :" + cost);
             System.out.println("==========Maintenance Description=== :" + description);
@@ -96,10 +103,15 @@ public class TransportationAssetMaintenanceManagementSessionBean {
             em.persist(maintain);
             em.persist(maintainSchedule);
             em.flush();
-
+            
             System.out.println("[EJB]================================Successfully Added a New Location");
             return maintain.getMaintenanceLogId();
-        } else {
+             }
+            else{
+                return -1;
+            }
+        }
+         else {
             return -1;
         }
     }

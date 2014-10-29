@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import entity.TransportationOperator;
 import entity.OperatorSchedule;
 import entity.SystemUser;
+import entity.AssetSchedule;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +34,7 @@ public class TOperatormanagementSessionBean {
     private TransportationOperator operator;
     private Integer operatorId;
     private ArrayList<OperatorSchedule> operatorScheduleList;
+    private ArrayList<AssetSchedule> assetScheduleList;
 
 // Operator Schedule
     private OperatorSchedule operatorSchedule;
@@ -72,34 +74,34 @@ public class TOperatormanagementSessionBean {
 
     public Integer addNewOperator(String operatorName, String operatorGender, Date birthday, String operatorType, String operatorStatus, Integer companyId) {
         System.out.println("[INSIDE EJB]================================Add New Operator");
+      
+        TransportationOperator operatorr = new TransportationOperator();
 
-        operator = new TransportationOperator();
-
-        operator.setOperatorType(operatorType);
-        operator.setOperatorStatus(operatorStatus);
-        operator.setIsAvailable(Boolean.TRUE);
-        operator.setBirthday(birthday);
-        operator.setGender(operatorGender);
-        operator.setOperatorName(operatorName);
-//        operator.setAssetSchedulescheduleId();
+        operatorr.setOperatorType(operatorType);
+        operatorr.setOperatorStatus(operatorStatus);
+        operatorr.setIsAvailable(Boolean.TRUE);
+        operatorr.setBirthday(birthday);
+        operatorr.setGender(operatorGender);
+        operatorr.setOperatorName(operatorName);
+        operatorr.setCompanyId(companyId);
 
         operatorScheduleList = new ArrayList<OperatorSchedule>();
-        operator.setOperatorScheduleList(operatorScheduleList);
+        operatorr.setOperatorScheduleList(operatorScheduleList);
 
         System.out.println("==========Operator Type=========== :" + operatorType);
         System.out.println("==========Operator Status========= :" + operatorStatus);
         System.out.println("==========Operator Birthday======= :" + birthday);
         System.out.println("==========Operator Gender========= :" + operatorGender);
         System.out.println("==========Operator Name=========== :" + operatorName);
+        System.out.println("==========Operator Company======== :" + companyId);
         System.out.println("==========Operator is Availble==== :" + "yes");
-        System.out.println("==========Operator Id============= :" + operator.getOperatorId());
-
-        em.persist(operator);
+        
+        em.persist(operatorr);
         em.flush();
+        System.out.println("==========Operator Id============= :" + operatorr.getOperatorId());
+        System.out.println("[EJB]================================Successfully Added a New Operator");
 
-        System.out.println("[EJB]================================Successfully Added a New Location");
-
-        return operator.getOperatorId();
+        return operatorr.getOperatorId();
 
     }
 
@@ -130,9 +132,8 @@ public class TOperatormanagementSessionBean {
     public boolean addOschedule(Date startDate, Date endDate, Integer operatorId) {
 
         System.out.println("[INSIDE EJB]================================Add OperatorSchedule");
-        Query query = em.createNamedQuery("TransportationOperator.findByoperatorId").setParameter("operatorId", operatorId);
-
-        List<TransportationOperator> allMyOperatorss = query.getResultList();
+        System.out.println("Print out the operatorId before query: " + operatorId);
+        Query query = em.createNamedQuery("TransportationOperator.findByOperatorId").setParameter("operatorId", operatorId);
 
         TransportationOperator tOperator = (TransportationOperator) query.getSingleResult();
         if (tOperator != null) {
@@ -140,8 +141,8 @@ public class TOperatormanagementSessionBean {
             schedule.setStartDate(startDate);
             schedule.setEndDate(endDate);
             schedule.setTransportationOperatoroperatorId(tOperator);
+            
 
-            em.merge(tOperator);
             em.persist(schedule);
             em.flush();
 
