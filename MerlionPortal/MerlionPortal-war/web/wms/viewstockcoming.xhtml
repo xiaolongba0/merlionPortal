@@ -21,7 +21,7 @@
         </ui:define>
 
         <ui:define name="left">
-                     <p:panelMenu>
+            <p:panelMenu>
                 <p:submenu label =" WMS HOME" styleClass="display:block">
                     <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
                 </p:submenu>
@@ -54,47 +54,50 @@
                 <p:submenu label="Warehouse Space Request Orders" styleClass="display:block" >
                     <p:menuitem value="All Pending Request" url="viewallpendingrequests.xhtml"/>
                 </p:submenu>
+                <p:submenu label="Warehouse Service Fulfillment Check" >
+                    <p:menuitem value="Fulfillment Check" url="warehouseservicefulfillmentcheck.xhtml" />
+                </p:submenu>
             </p:panelMenu>
         </ui:define>
 
         <ui:define name="right">
             <h:form id="formMain">
 
-                    <p:dataTable id="movingStockData" var="movingStock" sortMode="multiple" editable="true" value="#{movingStockViewManagedBean.destMovingStocks}" 
-                                 widgetVar="movingStockTable"
-                                 emptyMessage="No records found"
-                                 rowKey="#{movingStock.movingStockId}">
+                <p:dataTable id="movingStockData" var="movingStock" sortMode="multiple" editable="true" value="#{movingStockViewManagedBean.destMovingStocks}" 
+                             widgetVar="movingStockTable"
+                             emptyMessage="No records found"
+                             rowKey="#{movingStock.movingStockId}">
 
-                        <f:facet name="header">                    
-                            <p:outputPanel>
-                                <h:outputText value="Search Moving Stocks:" />
-                                <p:inputText id="globalFilter" onkeyup="PF('sourceWarehouseTable').filter()" />
-                            </p:outputPanel>
-                        </f:facet>   
+                    <f:facet name="header">                    
+                        <p:outputPanel>
+                            <h:outputText value="Search Moving Stocks:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('sourceWarehouseTable').filter()" />
+                        </p:outputPanel>
+                    </f:facet>   
 
-                        <p:column style="width:120px" filterBy="#{movingStock.movingStockId}" filterMatchMode="contains" headerText="Moving Stock ID">
-                            <h:outputText value="#{movingStock.movingStockId}" />
-                        </p:column>
+                    <p:column style="width:120px" filterBy="#{movingStock.movingStockId}" filterMatchMode="contains" headerText="Moving Stock ID">
+                        <h:outputText value="#{movingStock.movingStockId}" />
+                    </p:column>
 
-                        <p:column style="width:120px" filterBy="#{movingStock.destStorageBinId}" filterMatchMode="contains" headerText="Dest Storage Bin Stock ID " >
-                            <h:outputText value="#{movingStock.destStorageBinId}" />
-                        </p:column>
+                    <p:column style="width:120px" filterBy="#{movingStock.destStorageBinId}" filterMatchMode="contains" headerText="Dest Storage Bin Stock ID " >
+                        <h:outputText value="#{movingStock.destStorageBinId}" />
+                    </p:column>
 
-                        <p:column style="width:120px" filterBy="#{movingStock.movingQuantity}" filterMatchMode="contains" headerText="Moving Quantity">
-                            <h:outputText value="#{movingStock.movingQuantity}" />
-                        </p:column>
+                    <p:column style="width:120px" filterBy="#{movingStock.movingQuantity}" filterMatchMode="contains" headerText="Moving Quantity">
+                        <h:outputText value="#{movingStock.movingQuantity}" />
+                    </p:column>
 
-                    </p:dataTable>
-                    <br></br>
-                    <p:messages id="msgs" autoUpdate="true" closable="true" />
+                </p:dataTable>
+                <br></br>
+                <p:messages id="msgs" autoUpdate="true" closable="true" />
 
-                    <p:commandButton action="#{movingStockViewManagedBean.receiveOrder(movingStockViewManagedBean.selectedOrder)}" value="Process Order">
-                        <p:confirm header="Send Stock" message="Please confirm if you would like to process this order" icon="ui-icon-alert" />
-                    </p:commandButton>
-                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                    </p:confirmDialog>
+                <p:commandButton action="#{movingStockViewManagedBean.receiveOrder(movingStockViewManagedBean.selectedOrder)}" value="Process Order">
+                    <p:confirm header="Send Stock" message="Please confirm if you would like to process this order" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
 
             </h:form>
         </ui:define>

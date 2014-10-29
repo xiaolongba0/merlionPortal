@@ -21,7 +21,7 @@
         </ui:define>
 
         <ui:define name="left">
-                       <p:panelMenu>
+            <p:panelMenu>
                 <p:submenu label =" WMS HOME" styleClass="display:block">
                     <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
                 </p:submenu>
@@ -54,6 +54,9 @@
                 <p:submenu label="Warehouse Space Request Orders" styleClass="display:block" >
                     <p:menuitem value="All Pending Request" url="viewallpendingrequests.xhtml"/>
                 </p:submenu>
+                <p:submenu label="Warehouse Service Fulfillment Check" >
+                    <p:menuitem value="Fulfillment Check" url="warehouseservicefulfillmentcheck.xhtml" />
+                </p:submenu>
             </p:panelMenu>
         </ui:define>
 
@@ -85,16 +88,16 @@
                             <p:ajax listener="#{orderFulfillManagedBean.onWarehouseChange()}" update="warehouseZone" />
                             <f:selectItem itemLabel="Select Warehouse" itemValue="" noSelectionOption="true" />
                             <f:selectItems value="#{orderFulfillManagedBean.warehouse}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId}   Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"//>
-                        </p:selectOneMenu>
+                    </p:selectOneMenu>
 
-                        <p:outputLabel value="Warehouse Zone " />
-                        <p:selectOneMenu id="warehouseZone"value="#{orderFulfillManagedBean.warehouseZone}" style="width:150px" rendered="true" requiredMessage="Please select a warehouse">
-                            <p:ajax listener="#{orderFulfillManagedBean.onWarehouseZoneChange()}" update="storageBin" />
-                            <f:selectItem itemLabel="Select WarehouseZone" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{orderFulfillManagedBean.warehouseZones}" var="storageType" itemLabel="ID:#{storageType.warehouseZoneId}   Name:#{storageType.name}"  itemValue="#{storageType.name}" />
-                        </p:selectOneMenu>                        
-                    </h:panelGrid>
-                    <p:dataTable id="storageBin" var="storageBin" sortMode="multiple" value="#{orderFulfillManagedBean.storageBins}" 
+                    <p:outputLabel value="Warehouse Zone " />
+                    <p:selectOneMenu id="warehouseZone"value="#{orderFulfillManagedBean.warehouseZone}" style="width:150px" rendered="true" requiredMessage="Please select a warehouse">
+                        <p:ajax listener="#{orderFulfillManagedBean.onWarehouseZoneChange()}" update="storageBin" />
+                        <f:selectItem itemLabel="Select WarehouseZone" itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{orderFulfillManagedBean.warehouseZones}" var="storageType" itemLabel="ID:#{storageType.warehouseZoneId}   Name:#{storageType.name}"  itemValue="#{storageType.name}" />
+                    </p:selectOneMenu>                        
+                </h:panelGrid>
+                <p:dataTable id="storageBin" var="storageBin" sortMode="multiple" value="#{orderFulfillManagedBean.storageBins}" 
                              widgetVar="productsTable"
                              selection="#{displayProductManagedBean.selectedProducts}"
                              filteredValue="#{displayProductManagedBean.filteredProducts}"
@@ -141,15 +144,15 @@
                         <h:outputText value="#{product.price}" />
                     </p:column>
                 </p:dataTable>
-                    <p:separator />
-                    <p:commandButton value="Submit" action="#{orderFulfillManagedBean.reserveSpace()}" />
-                </p:panel>
-                <br></br>      
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />               
-                <p:commandButton value="Go Back" action="viewallpendingrequests.xhtml?faces-redirect=true" icon="ui-icon-circle-arrow-w"/>
-                <br></br>
-            </h:form>
-        </ui:define>
+                <p:separator />
+                <p:commandButton value="Submit" action="#{orderFulfillManagedBean.reserveSpace()}" />
+            </p:panel>
+            <br></br>      
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />               
+            <p:commandButton value="Go Back" action="viewallpendingrequests.xhtml?faces-redirect=true" icon="ui-icon-circle-arrow-w"/>
+            <br></br>
+        </h:form>
+    </ui:define>
 
-    </ui:composition>
+</ui:composition>
 </html>

@@ -20,7 +20,7 @@
         </ui:define>
 
         <ui:define name="left">
-                      <p:panelMenu>
+            <p:panelMenu>
                 <p:submenu label =" WMS HOME" styleClass="display:block">
                     <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
                 </p:submenu>
@@ -52,6 +52,9 @@
                 </p:submenu>
                 <p:submenu label="Warehouse Space Request Orders" styleClass="display:block" >
                     <p:menuitem value="All Pending Request" url="viewallpendingrequests.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Warehouse Service Fulfillment Check" >
+                    <p:menuitem value="Fulfillment Check" url="warehouseservicefulfillmentcheck.xhtml" />
                 </p:submenu>
             </p:panelMenu>
         </ui:define>
@@ -134,35 +137,35 @@
 
                         <p:column  headerText="Max Quantity" filterBy="#{storagebin.maxQuantity}" filterMatchMode="contains">
                             <h:outputText value="#{storagebin.maxQuantity}" />
-                    </p:column>
+                        </p:column>
 
-                    <p:column  headerText="Max Weight" filterBy="#{storagebin.maxWeight}" filterMatchMode="contains">
-                        <h:outputText value="#{storagebin.maxWeight}" />
-                    </p:column>
+                        <p:column  headerText="Max Weight" filterBy="#{storagebin.maxWeight}" filterMatchMode="contains">
+                            <h:outputText value="#{storagebin.maxWeight}" />
+                        </p:column>
 
-                    <p:column  headerText="Available Space" filterBy="#{storagebin.availableSpace}" filterMatchMode="contains">
-                        <h:outputText value="#{storagebin.availableSpace}" />
-                    </p:column>
+                        <p:column  headerText="Available Space" filterBy="#{storagebin.availableSpace}" filterMatchMode="contains">
+                            <h:outputText value="#{storagebin.availableSpace}" />
+                        </p:column>
 
-                    <p:column style="width:48px">
-                        <p:commandButton action="#{storageBinViewEditManagedBean.deleteStorageBin(storagebin)}" update="storagebinData" icon = "ui-icon-trash"  >
-                            <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this storage bin?" icon="ui-icon-alert" />
-                        </p:commandButton> 
-                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                        </p:confirmDialog>
-                    </p:column>
+                        <p:column style="width:48px">
+                            <p:commandButton action="#{storageBinViewEditManagedBean.deleteStorageBin(storagebin)}" update="storagebinData" icon = "ui-icon-trash"  >
+                                <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this storage bin?" icon="ui-icon-alert" />
+                            </p:commandButton> 
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </p:column>
 
-                    <p:column style="width:42px">
-                        <p:rowEditor />
-                    </p:column>
+                        <p:column style="width:42px">
+                            <p:rowEditor />
+                        </p:column>
 
-                </p:dataTable>
-                <p:messages id="messages" autoUpdate="true" closable="true" />
-            </p:panel>
-        </h:form>
-    </ui:define>
-</ui:composition>
+                    </p:dataTable>
+                    <p:messages id="messages" autoUpdate="true" closable="true" />
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
 </html>                 
 

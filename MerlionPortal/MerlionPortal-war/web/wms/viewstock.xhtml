@@ -53,6 +53,9 @@
                 <p:submenu label="Warehouse Space Request Orders" styleClass="display:block" >
                     <p:menuitem value="All Pending Request" url="viewallpendingrequests.xhtml"/>
                 </p:submenu>
+                <p:submenu label="Warehouse Service Fulfillment Check" >
+                    <p:menuitem value="Fulfillment Check" url="warehouseservicefulfillmentcheck.xhtml" />
+                </p:submenu>
             </p:panelMenu>
         </ui:define>
 
@@ -89,7 +92,7 @@
                         <h:outputLabel for="id01" value="Enter Product ID "/>
                         <p:inputText id="input01" value="#{stockViewEditManagedBean.productId}" disabled="#{stockViewEditManagedBean.radioValue != '2'}">
                             <p:ajax listener="#{stockViewEditManagedBean.viewStocks()}" update=":datafield" />
-<!--                            <p:ajax update="totalQuantity" />-->
+                            <!--                            <p:ajax update="totalQuantity" />-->
                         </p:inputText>
                     </h:panelGrid>
                 </h:form>
@@ -143,12 +146,12 @@
                             </p:cellEditor>
                         </p:column>
 
-                        <p:column  headerText="Expiry Date" filterBy="#{stock.expiryDate}" filterMatchMode="contains">
+<!--                        <p:column  headerText="Expiry Date" filterBy="#{stock.expiryDate}" filterMatchMode="contains">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{stock.expiryDate}" /></f:facet>
                                 <f:facet name="input"><p:calendar id="expiryDate" value="#{stock.expiryDate}" /></f:facet>
                             </p:cellEditor>
-                        </p:column>
+                        </p:column>-->
 
                         <p:column style="width:48px">
                             <p:commandButton actionListener="#{stockViewEditManagedBean.deleteStock(stock)}" ajax="true" update=":datafield:totalQuantity :datafield:stockData" icon="ui-icon-trash"  >
