@@ -10,11 +10,13 @@ import entity.StorageBin;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
 
 /**
  *
@@ -30,10 +32,14 @@ public class ReceivingPutawaySessionBean {
     EntityManager em;
     private Stock stock;
 
+    @EJB
+    private AssetManagementSessionBean amsb;
+
     // Methods related to stock
     public boolean addStock(String stockName, String comments, Integer quantity, Integer productId,
             Integer storageBinId, Date expiryDate) {
 
+        // need to check to product ID
         System.out.println("[INSIDE AMSB EJB]================================Add Stock");
         System.out.println("[INSIDE AMSB EJB, Add Stock]===== StorageBinId: " + storageBinId);
         Query query = em.createNamedQuery("StorageBin.findByStorageBinId").setParameter("storageBinId", storageBinId);
@@ -51,24 +57,28 @@ public class ReceivingPutawaySessionBean {
         }
         Integer maxQuantity = bin.getMaxQuantity();
         System.out.println("RETURNED QUANTITY IN BIN: " + currentQuantity);
-        System.out.println("EXPIRY DATE: " + expiryDate);
 
         if (bin != null && currentQuantity <= maxQuantity) {
-            Stock stock = new Stock();
+            boolean result = amsb.calculateBinSpace(bin, quantity, 0);
+            if (result) {
+                Stock stock = new Stock();
 
-            stock.setName(stockName);
-            stock.setComments(comments);
-            stock.setQuantity(quantity);
-            stock.setProductId(productId);
-            stock.setStorageBin(bin);
-            stock.setExpiryDate(expiryDate);
+                stock.setName(stockName);
+                stock.setComments(comments);
+                stock.setQuantity(quantity);
+                stock.setProductId(productId);
+                stock.setStorageBin(bin);
+                stock.setExpiryDate(expiryDate);
+                bin.getStockList().add(stock);
 
-            bin.getStockList().add(stock);
+                em.merge(bin);
+                em.persist(stock);
+                em.flush();
+                return true;
+            } else {
+                return false;
+            }
 
-            em.merge(bin);
-            em.persist(stock);
-            em.flush();
-            return true;
         } else {
             return false;
         }
@@ -83,14 +93,14 @@ public class ReceivingPutawaySessionBean {
             currentQuantity = currentQuantity + stock.getQuantity();
             System.out.println("CURRENT QUANTITY IN BIN: " + currentQuantity);
 
-
-        }            
+        }
         currentQuantity = currentQuantity + quantity;
-            System.out.println("NEW CURRENT QUANTITY : " + currentQuantity);
+        System.out.println("NEW CURRENT QUANTITY : " + currentQuantity);
         return currentQuantity;
     }
 
-    public List<Stock> viewStock(Integer productId) {
+    // consider Company
+    public List<Stock> viewStock(Integer companyId, Integer productId) {
 
         System.out.println("In viewStock, Product ID ============================= : " + productId);
 
@@ -100,23 +110,49 @@ public class ReceivingPutawaySessionBean {
 
         for (Object o : query.getResultList()) {
             stock = (Stock) o;
-            allStocks.add(stock);
-            System.out.println("Stock: " + stock);
+            if (stock.getStorageBin().getWarehouseZone().getWarehouse().getCompanyId() == companyId) {
+                allStocks.add(stock);
+                System.out.println("Stock: " + stock);
+            }
         }
         return allStocks;
     }
 
-    public Integer countTotalStock(Integer productId) {
+    public Integer countTotalStock(Integer companyId, Integer productId) {
         Stock tempStock = null;
         Integer totalQuantity = 0;
 
         List<Stock> stocks = new ArrayList<>();
-        stocks = viewStock(productId);
+        stocks = viewStock(companyId, productId);
 
         for (Object o : stocks) {
             tempStock = (Stock) o;
             totalQuantity = totalQuantity + tempStock.getQuantity();
             System.out.println("[AMSB] =============== Stock: " + tempStock + "Quantity: " + tempStock.getQuantity());
+        }
+
+        return totalQuantity;
+    }
+
+    public Integer countStockInWarehouse(Integer warehouseId, Integer productId) {
+        Stock tempStock = null;
+        Integer totalQuantity = 0;
+
+        List<Stock> allStocks = new ArrayList<>();
+        Query query = em.createNamedQuery("Stock.findByProductId").setParameter("productId", productId);
+
+        for (Object o : query.getResultList()) {
+            stock = (Stock) o;
+            if (stock.getStorageBin().getWarehouseZone().getWarehouse().getWarehouseId() == warehouseId) {
+                allStocks.add(stock);
+                System.out.println("Stock: " + stock);
+            }
+        }
+
+        for (Object o : allStocks) {
+            tempStock = (Stock) o;
+            totalQuantity = totalQuantity + tempStock.getQuantity();
+            System.out.println("[AMSB] =============== countStockInWarehouse " + tempStock + "Quantity: " + tempStock.getQuantity());
         }
 
         return totalQuantity;
@@ -160,9 +196,9 @@ public class ReceivingPutawaySessionBean {
             stockTemp = bin.getStockList();
 
             // check if bin is empty, or bin already has stocks
-        if (!stockTemp.isEmpty()) {
-            currentQuantity = countStockInBin(stockTemp, currentQuantity, quantity);
-        }
+            if (!stockTemp.isEmpty()) {
+                currentQuantity = countStockInBin(stockTemp, currentQuantity, quantity);
+            }
             Integer maxQuantity = bin.getMaxQuantity();
             currentQuantity = currentQuantity + quantity - stock.getQuantity();
             System.out.println("Returned CURRENT QUANTITY : " + currentQuantity);
@@ -186,4 +222,38 @@ public class ReceivingPutawaySessionBean {
         }
 
     }
+
+    public boolean addTOStock(String stockName, String comments, Integer quantity, Integer productId,
+            Integer storageBinId, Date expiryDate) {
+
+        // need to check to product ID
+        System.out.println("[INSIDE AMSB EJB]================================Add  TO Stock");
+        System.out.println("[INSIDE AMSB EJB, Add Stock]===== StorageBinId: " + storageBinId);
+        Query query = em.createNamedQuery("StorageBin.findByStorageBinId").setParameter("storageBinId", storageBinId);
+
+        StorageBin bin = (StorageBin) query.getSingleResult();
+        System.out.println("StorageBin ================ " + bin);
+
+        List<Stock> stockTemp = new ArrayList();
+        stockTemp = bin.getStockList();
+
+        if (bin != null) {
+            Stock stock = new Stock();
+
+            stock.setName(stockName);
+            stock.setComments(comments);
+            stock.setQuantity(quantity);
+            stock.setProductId(productId);
+            stock.setStorageBin(bin);
+            stock.setExpiryDate(expiryDate);
+            bin.getStockList().add(stock);
+
+            em.merge(bin);
+            em.persist(stock);
+            em.flush();
+            return true;
+        }
+        return false;
+    }
+
 }
