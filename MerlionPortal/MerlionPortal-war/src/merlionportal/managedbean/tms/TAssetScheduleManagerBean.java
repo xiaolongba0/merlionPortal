@@ -8,6 +8,7 @@ package merlionportal.managedbean.tms;
 import entity.SystemUser;
 import entity.Location;
 import entity.TransportationAsset;
+import entity.TransportationOperator;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.tms.transportationhumanresourcemanagementmodule.TOperatormanagementSessionBean;
 import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionBean;
 
 /**
@@ -33,6 +35,8 @@ public class TAssetScheduleManagerBean {
     private TAssetmanagementSessionBean tamsb;
     @EJB
     private UserAccountManagementSessionBean uamb;
+    @EJB
+    private TOperatormanagementSessionBean tomsb;
 
     private Integer locationId;
     private List<Location> locations;
@@ -43,6 +47,8 @@ public class TAssetScheduleManagerBean {
     private SystemUser loginedUser;
     private Integer companyId;
     private Date today;
+    private Integer operatorId;
+    private List<TransportationOperator> operators;
 
     @PostConstruct
     public void init() {
@@ -63,12 +69,13 @@ public class TAssetScheduleManagerBean {
             }
         }
         locations = tamsb.viewMyLocations(companyId);
+        operators = tomsb.viewMyOperator(companyId);
         today = Calendar.getInstance().getTime();
     }
 
     public void createTassetSchedule() {
         System.out.println("tAsset Id: " + tassetId);
-        boolean result = tamsb.addTAssetSchedule(startDate, endDate, tassetId);
+        boolean result = tamsb.addTAssetSchedule(startDate, endDate, tassetId, operatorId);
         if (result) {
             clearAllFields();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "New Schedule created!"));
@@ -160,6 +167,22 @@ public class TAssetScheduleManagerBean {
 
     public void setTransassetss(List<TransportationAsset> transassetss) {
         this.transassetss = transassetss;
+    }
+
+    public Integer getOperatorId() {
+        return operatorId;
+    }
+
+    public void setOperatorId(Integer operatorId) {
+        this.operatorId = operatorId;
+    }
+
+    public List<TransportationOperator> getOperators() {
+        return operators;
+    }
+
+    public void setOperators(List<TransportationOperator> operators) {
+        this.operators = operators;
     }
 
 }

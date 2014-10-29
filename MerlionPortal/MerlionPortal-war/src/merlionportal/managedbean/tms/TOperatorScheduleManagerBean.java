@@ -5,10 +5,10 @@
  */
 package merlionportal.managedbean.tms;
 
-
 import entity.TransportationOperator;
 import entity.SystemUser;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -16,6 +16,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.tms.transportationhumanresourcemanagementmodule.TOperatormanagementSessionBean;
@@ -25,25 +26,29 @@ import merlionportal.tms.transportationhumanresourcemanagementmodule.TOperatorma
  * @author Yuanbo
  */
 @Named(value = "tOperatorScheduleManagerBean")
-@RequestScoped
+@ViewScoped
 public class TOperatorScheduleManagerBean {
+
     @EJB
     private TOperatormanagementSessionBean tomsb;
     @EJB
     private UserAccountManagementSessionBean uamb;
 
     private List<TransportationOperator> operators;
+    private Integer operatorId;
     private SystemUser loginedUser;
     private Integer companyId;
     private Date startDate;
     private Date endDate;
+    private Date today;
 
     /**
      * Creates a new instance of TOperatorScheduleManagerBean
      */
     public TOperatorScheduleManagerBean() {
     }
-     @PostConstruct
+
+    @PostConstruct
     public void init() {
 
         boolean redirect = true;
@@ -62,10 +67,12 @@ public class TOperatorScheduleManagerBean {
             }
         }
         operators = tomsb.viewMyOperator(companyId);
+        System.out.println("View Operators for company Id: " + companyId);
+        today = Calendar.getInstance().getTime();
     }
-    
-        public void createOperatirSchedule() {
-        boolean result = tomsb.addOschedule(startDate, endDate, companyId);
+
+    public void createOperatirSchedule() {
+        boolean result = tomsb.addOschedule(startDate, endDate, operatorId);
         if (result) {
             clearAllFields();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "New Operator Schedule created!"));
@@ -79,6 +86,7 @@ public class TOperatorScheduleManagerBean {
             operators = tomsb.viewMyOperator(companyId);
         }
     }
+
     private void clearAllFields() {
         startDate = null;
         endDate = null;
@@ -122,6 +130,22 @@ public class TOperatorScheduleManagerBean {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public Integer getOperatorId() {
+        return operatorId;
+    }
+
+    public void setOperatorId(Integer operatorId) {
+        this.operatorId = operatorId;
+    }
+
+    public Date getToday() {
+        return today;
+    }
+
+    public void setToday(Date today) {
+        this.today = today;
     }
 
 }

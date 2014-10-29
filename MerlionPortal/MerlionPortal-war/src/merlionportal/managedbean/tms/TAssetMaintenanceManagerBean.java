@@ -9,6 +9,7 @@ import javax.inject.Named;
 import entity.SystemUser;
 import entity.Location;
 import entity.TransportationAsset;
+import entity.TransportationOperator;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,6 +21,7 @@ import javax.faces.context.FacesContext;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionBean;
 import merlionportal.tms.transportationassetmaintenancemanagementmodule.TransportationAssetMaintenanceManagementSessionBean;
+import merlionportal.tms.transportationhumanresourcemanagementmodule.TOperatormanagementSessionBean;
 import java.util.List;
 
 /**
@@ -36,6 +38,8 @@ public class TAssetMaintenanceManagerBean {
     private UserAccountManagementSessionBean uamb;
     @EJB
     private TransportationAssetMaintenanceManagementSessionBean tammsb;
+    @EJB
+    private TOperatormanagementSessionBean tomsb;
     
     private Integer companyId;
     private Integer tassssssetId;
@@ -47,6 +51,7 @@ public class TAssetMaintenanceManagerBean {
     private Integer operatorId;
     private String cost;
     private String description;
+    private List<TransportationOperator> operators;
     
 
     private SystemUser loginedUser;
@@ -72,6 +77,7 @@ public class TAssetMaintenanceManagerBean {
             }
         }
         locations = tassetManagementSessionBean.viewMyLocations(companyId);
+        operators = tomsb.viewMyOperator(companyId);
         today = Calendar.getInstance().getTime();
 
     }
@@ -206,6 +212,14 @@ public class TAssetMaintenanceManagerBean {
 
     public void setTransassetss(List<TransportationAsset> transassetss) {
         this.transassetss = transassetss;
+    }
+
+    public List<TransportationOperator> getOperators() {
+        return operators;
+    }
+
+    public void setOperators(List<TransportationOperator> operators) {
+        this.operators = operators;
     }
 
      

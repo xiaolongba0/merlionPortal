@@ -51,6 +51,7 @@ public class TOperatorScheduleViewEditManagedBean {
     public TOperatorScheduleViewEditManagedBean() {
     }
 
+    @PostConstruct
     public void init() {
 
         boolean redirect = true;
@@ -69,12 +70,6 @@ public class TOperatorScheduleViewEditManagedBean {
             }
         }
         operators = tomsb.viewMyOperator(companyId);
-    }
-
-    public void onChangeCompany() {
-        if (companyId != null) {
-            operators = tomsb.viewMyOperator(companyId);
-        }
     }
 
     public void onOperatorChange() {

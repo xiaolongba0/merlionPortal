@@ -44,8 +44,6 @@ public class RouteViewEditManagedBean {
     /**
      * Creates a new instance of RouteViewEditManagedBean
      */
-    public RouteViewEditManagedBean() {
-    }
     @PostConstruct
     public void init() {
         boolean redirect = true;
@@ -83,13 +81,12 @@ public class RouteViewEditManagedBean {
             routeId = route.getRouteId();
             System.out.println("[In WAR FILE - Delete Route Function] Route ID========== :" + routeId);
             tassetmanagementSessionBean.deleteRoute(routeId);
-
+            System.out.println("successfully deleted Route" +routeId);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    
-    
+
     public void onNodeChange() {
         System.out.println("===============================[In Managed Bean - get Node]");
         System.out.println("[In Managed Bean - getLocation] location ID : " + nodeId);

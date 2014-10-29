@@ -141,6 +141,86 @@ public class TOperatorViewEditManagedBean {
         }
     }
 
+    public List<TransportationOperator> getOperators() {
+        return operators;
+    }
+
+    public void setOperators(List<TransportationOperator> operators) {
+        this.operators = operators;
+    }
+
+    public TransportationOperator getOperator() {
+        return operator;
+    }
+
+    public void setOperator(TransportationOperator operator) {
+        this.operator = operator;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getOperatorName() {
+        return operatorName;
+    }
+
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
+    }
+
+    public String getOperatorStatus() {
+        return operatorStatus;
+    }
+
+    public void setOperatorStatus(String operatorStatus) {
+        this.operatorStatus = operatorStatus;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getOperatorGender() {
+        return operatorGender;
+    }
+
+    public void setOperatorGender(String operatorGender) {
+        this.operatorGender = operatorGender;
+    }
+
+    public String getOperatorType() {
+        return operatorType;
+    }
+
+    public void setOperatorType(String operatorType) {
+        this.operatorType = operatorType;
+    }
+
+    public Integer getNewOperatorId() {
+        return newOperatorId;
+    }
+
+    public void setNewOperatorId(Integer newOperatorId) {
+        this.newOperatorId = newOperatorId;
+    }
+
+    public SystemUser getLoginedUser() {
+        return loginedUser;
+    }
+
+    public void setLoginedUser(SystemUser loginedUser) {
+        this.loginedUser = loginedUser;
+    }
+
 
 
 }

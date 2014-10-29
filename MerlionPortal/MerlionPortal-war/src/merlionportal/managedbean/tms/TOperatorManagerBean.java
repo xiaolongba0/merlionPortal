@@ -92,6 +92,7 @@ public class TOperatorManagerBean {
 
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to Add Transportation Operator. Please check Company Id! ", ""));
             } else {
+                 clearAllFields();
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Transportation Operator Added!", ""));
             }
             
