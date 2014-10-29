@@ -21,7 +21,7 @@
         </ui:define>
 
         <ui:define name="left">
-                       <p:panelMenu>
+                        <p:panelMenu>
                 <p:submenu label =" WMS HOME" styleClass="display:block">
                     <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
                 </p:submenu>
@@ -59,61 +59,58 @@
 
         <ui:define name="right">
             <h:form id="formMain">
-                <p:panel id="panel" header=" View Today's Stock Audit for a Warehouse">
+                <p:panel id="panel" header=" View Transport Orders to be received">
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="warehouse" value="Warehouse Name: " />
+                            <p:outputLabel for="destWarehouse" value="Warehouse Name: " />
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="warehouse" value="#{stockAuditViewEditManagedBean.warehouseId}"  style="width:210px" required="true" requiredMessage="Please select a warehouse">
+                            <p:selectOneMenu id="destWarehouse" value="#{transportOrderManagedBean.destWarehouseId}"  style="width:210px" required="true" requiredMessage="Please select a warehouse">
                                 <f:selectItem itemLabel="Select Warehouse" itemValue="" noSelectionOption="true" />
-                                <f:selectItems value="#{stockAuditViewEditManagedBean.warehouses}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId}   Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"/>
-                                <p:ajax listener="#{stockAuditViewEditManagedBean.viewDueStockAudits()}" update="stockAuditData" />
+                                <f:selectItems value="#{transportOrderManagedBean.warehouses}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId}   Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"/>
+                                <p:ajax listener="#{transportOrderManagedBean.viewDestWarehouses()}" update="destWarehouseData" />
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
-
-                    <p:dataTable id="stockAuditData" var="stockaudit" sortMode="multiple" editable="true" value="#{stockAuditViewEditManagedBean.stockAudits}" 
-                                 widgetVar="stockAuditTable"
-                                 emptyMessage="No stock audit records found for today"
-                                 rowKey="#{stockaudit.stockAuditId}">
+                    <p:dataTable id="destWarehouseData" var="transportOrder" sortMode="multiple" editable="true" value="#{transportOrderManagedBean.transportOrders}" 
+                                 widgetVar="destWarehouseTable"
+                                 emptyMessage="No records found"
+                                 rowKey="#{transportOrder.transportOrderId}">
 
                         <f:facet name="header">                    
                             <p:outputPanel>
-                                <h:outputText value="Search Stock Audit fields:" />
-                                <p:inputText id="globalFilter" onkeyup="PF('stockAuditTable').filter()" />
+                                <h:outputText value="Search Transport Orders:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('destWarehouseTable').filter()" />
                             </p:outputPanel>
                         </f:facet>   
 
-                        <p:column style="width:80px" filterBy="#{stockaudit.storageBinId}" filterMatchMode="contains" headerText="Storage Bin ID">
-                            <h:outputText value="#{stockaudit.storageBinId}" />
+                        <p:column style="width:80px" filterBy="#{transportOrder.transportOrderId}" filterMatchMode="contains" headerText="Transport Order ID">
+                            <h:outputText value="#{transportOrder.transportOrderId}" />
                         </p:column>
 
-                        <p:column style="width:80px" filterBy="#{stockaudit.stockAuditId}" filterMatchMode="contains" headerText="Stock Audit ID">
-                            <h:outputText value="#{stockaudit.stockAuditId}" />
+                        <p:column filterBy="#{transportOrder.sourceWarehouseId}" filterMatchMode="contains" headerText="Source Warehouse ID " >
+                            <h:outputText value="#{transportOrder.sourceWarehouseId}" />
                         </p:column>
 
-                        <p:column style="width:80px" filterBy="#{stockaudit.staffId}" filterMatchMode="contains" headerText="Staff ID: " >
-                            <h:outputText value="#{stockaudit.staffId}" />
+                        <p:column style="width:80px" filterBy="#{transportOrder.transportDate}" filterMatchMode="contains" headerText="Transport Date">
+                            <h:outputText value="#{transportOrder.transportDate}" />
                         </p:column>
 
-                        <p:column filterBy="#{stockaudit.createdDate}" filterMatchMode="contains" headerText="Scheduled Date: " >
-                            <h:outputText value="#{stockaudit.createdDate}" />
+                        <p:column style="width:80px" filterBy="#{transportOrder.totalQuantity}" filterMatchMode="contains" headerText="Total Quantity " >
+                            <h:outputText value="#{transportOrder.totalQuantity}" />
                         </p:column>
 
-                        <p:column filterBy="#{stockAuditViewEditManagedBean.getAuditStatus(stockaudit.stockAuditStatus)}" filterMatchMode="contains" headerText="Stock Audit Status" >
-                            <h:outputText value="#{stockAuditViewEditManagedBean.getAuditStatus(stockaudit.stockAuditStatus)}" />
+                        <p:column filterBy="#{transportOrder.destWarehouseId}" filterMatchMode="contains" headerText="Destination Warehouse ID " >
+                            <h:outputText value="#{transportOrder.destWarehouseId}" />
+                        </p:column>
+
+                        <p:column filterBy="#{transportOrderManagedBean.getTransportOrderStatus(transportOrder.status)}" filterMatchMode="contains" headerText="Transport Order Status" >
+                            <h:outputText value="#{transportOrderManagedBean.getTransportOrderStatus(transportOrder.status)}" />
                         </p:column>
 
                         <p:column headerText="">
-                            <p:commandButton action="stockauditprocess?faces-redirect=true" value="Proceed" rendered="#{stockaudit.stockAuditStatus != 1}">
-                                <f:actionListener binding="#{stockAuditProcessManagedBean.getStockAuditInfo(stockaudit.stockAuditId)}" />
-                                <p:confirm header="Confirmation" message="Do you want to start the stock audit process?" icon="ui-icon-alert" />
+                            <p:commandButton action="#{transportOrderManagedBean.getDestOrder(transportOrder)}" value="Process Order" rendered="#{transportOrder.status == 2}">
                             </p:commandButton> 
-                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                            </p:confirmDialog>
                         </p:column>
 
                     </p:dataTable>

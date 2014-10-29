@@ -4,13 +4,14 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <c:set var="import" value="templateuser.xhtml"/>
     <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
         <c:set var="import" value="templateadmin.xhtml"/>
     </c:if>
-    <ui:composition template="${root}/templates/${import}">        
+    <ui:composition template="${root}/templates/${import}">
         <ui:param name="pageName" value="WMS home" />
 
         <ui:define name="more-imports">
@@ -20,7 +21,7 @@
         </ui:define>
 
         <ui:define name="left">
-            <p:panelMenu>
+                       <p:panelMenu>
                 <p:submenu label =" WMS HOME" styleClass="display:block">
                     <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
                 </p:submenu>
@@ -57,27 +58,47 @@
         </ui:define>
 
         <ui:define name="right">
+            <h:form id="formMain">
 
-            <div class="system-banner wms-system-banner"></div>
+                <p:dataTable id="movingStockData" var="movingStock" sortMode="multiple" editable="true" value="#{movingStockViewManagedBean.sourceMovingStocks}" 
+                             widgetVar="movingStockTable"
+                             emptyMessage="No records found"
+                             rowKey="#{movingStock.movingStockId}">
 
-            <!--            <div class="system-breadcrumb">
-                            <a href="wmsindex.xhtml">WMS home</a>
-                        </div>-->
+                    <f:facet name="header">                    
+                        <p:outputPanel>
+                            <h:outputText value="Search Moving Stocks:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('sourceWarehouseTable').filter()" />
+                        </p:outputPanel>
+                    </f:facet>   
 
-            <h2 class="system-welcome"> Welcome to WMS System! </h2>
-            <div class="system-description">
-                <p>With WMS, you can manage your organization’s warehousing processes with ease.</p>
+                    <p:column style="width:120px" filterBy="#{movingStock.movingStockId}" filterMatchMode="contains" headerText="Moving Stock ID">
+                        <h:outputText value="#{movingStock.movingStockId}" />
+                    </p:column>
 
-                <p>WMS System empowers your organization to:</p>
+                    <p:column style="width:120px" filterBy="#{movingStock.sourceStorageBinId}" filterMatchMode="contains" headerText="Source Storage Bin ID " >
+                        <h:outputText value="#{movingStock.sourceStorageBinId}" />
+                    </p:column>
 
-                <ol>
-                    <li>Manage your warehouse</li>
-                    <li>Perform receiving and putaway</li>
-                    <li>Perform fulfillment of orders</li>
-                    <li>Manage goods flow within your warehouse and between your warehouses</li> 
-                </ol>
-            </div>
+                    <p:column style="width:120px" filterBy="#{movingStock.movingQuantity}" filterMatchMode="contains" headerText="Moving Quantity">
+                        <h:outputText value="#{movingStock.movingQuantity}" />
+                    </p:column>
+                    
+                </p:dataTable>
+                <br></br>
+                <p:messages id="msgs" autoUpdate="true" closable="true" />
+                
+                <p:commandButton action="#{movingStockViewManagedBean.sendOrder(movingStockViewManagedBean.selectedOrder)}" value="Process Order">
+                    <p:confirm header="Send Stock" message="Please confirm if you would like to process this order" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
+
+            </h:form>
         </ui:define>
-
     </ui:composition>
 </html>
+

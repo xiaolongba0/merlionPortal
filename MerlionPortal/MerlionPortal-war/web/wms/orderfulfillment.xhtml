@@ -21,7 +21,7 @@
         </ui:define>
 
         <ui:define name="left">
-            <p:panelMenu>
+                       <p:panelMenu>
                 <p:submenu label =" WMS HOME" styleClass="display:block">
                     <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
                 </p:submenu>
@@ -43,11 +43,16 @@
                 </p:submenu>
                 <p:submenu label="Stock Audit" styleClass="display:block" >
                     <p:menuitem value="Create Stock Audit" url="createstockaudit.xhtml"/>
-                    <p:menuitem value="View Stock Audit Schedule" url="viewstockauditschedule.xhtml"/>
+                    <p:menuitem value="View All Stock Audits" url="viewallstockaudit.xhtml"/>
+                    <p:menuitem value="View Today's Stock Audits" url="viewduestockaudit.xhtml"/>
                 </p:submenu>
-                <p:submenu label="Warehourse Orders" styleClass="display:block" >
-                    <p:menuitem value="All Pending Orders" url="viewallpendingrequests"/>
-                    <p:menuitem value="View Stock Audit Schedule" url="viewstockauditschedule.xhtml"/>
+                <p:submenu label="Stock Transport Order" styleClass="display:block" >
+                    <p:menuitem value="Create Transport Order" url="createtransportorder.xhtml"/>
+                    <p:menuitem value="View Transport Order To Be Procssed" url="viewsourcetransportorder.xhtml"/>
+                    <p:menuitem value="All IncomingTransport Orders" url="viewdesttransportorder.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Warehouse Space Request Orders" styleClass="display:block" >
+                    <p:menuitem value="All Pending Request" url="viewallpendingrequests.xhtml"/>
                 </p:submenu>
             </p:panelMenu>
         </ui:define>

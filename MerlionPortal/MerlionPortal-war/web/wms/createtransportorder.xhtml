@@ -21,7 +21,7 @@
         </ui:define>
 
         <ui:define name="left">
-                      <p:panelMenu>
+                        <p:panelMenu>
                 <p:submenu label =" WMS HOME" styleClass="display:block">
                     <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
                 </p:submenu>
@@ -59,7 +59,7 @@
 
         <ui:define name="right">
             <h:form id="formMain">
-                <p:panel id="panel" header="Stock Audit">
+                <p:panel id="panel" header="Create Transport Order">
                     <p:ajaxStatus style="width:16px;height:16px;">
                         <f:facet name="start">
                             <h:graphicImage value="/img/load.gif" />
@@ -69,89 +69,89 @@
                         </f:facet>
                     </p:ajaxStatus>
 
-                    <h:panelGrid>
+                    <p:row>
+                        <p:selectOneRadio id="myRadioID" value="#{transportOrderManagedBean.radioValue}" layout="custom">
+                            <f:selectItem itemLabel="Choose ID" itemValue="1"/>
+                            <f:selectItem itemLabel="Enter " itemValue="2"/>
+                            <p:ajax process="@this" update="formMain" />
+                        </p:selectOneRadio>
+
+                        <p:radioButton id="id00" for="myRadioID" itemIndex="0"/>
+                        <h:outputLabel for="id00" value="Choose Product ID "/>
+
+                        <p:selectOneMenu id="product" value="#{transportOrderManagedBean.productId}"  style="width:200px" required="true" requiredMessage="Product ID is required." disabled="#{transportOrderManagedBean.radioValue != '1'}">
+                            <f:selectItem itemLabel="Select Product ID" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{transportOrderManagedBean.productList}" var="product" itemLabel="ID:#{product.productId}   Name:#{product.productName}" itemValue="#{product.productId}"/>
+                        </p:selectOneMenu>
+
+                        <p:radioButton id="id01" for="myRadioID" itemIndex="1"/>
+                        <h:outputLabel for="id01" value="Enter Product ID "/>
+                        <p:inputText id="input01" value="#{transportOrderManagedBean.productId}" disabled="#{transportOrderManagedBean.radioValue != '2'}" required="true" requiredMessage="Product ID is required.">
+                        </p:inputText>
+                    </p:row>
+
+                    <p:panelGrid>
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="stockAuditId" style="font-weight: bold" value="Stock Audit ID:  " />
+                                <p:outputLabel for="sourceWarehouse" value="Source Warehouse Name: " />
                             </p:column>
                             <p:column>
-                                <h:outputText id="stockAuditId" value="#{stockAuditProcessManagedBean.audit.stockAuditId}"/>
-                            </p:column>                       
+                                <p:selectOneMenu id="sourceWarehouse" value="#{transportOrderManagedBean.sourceWarehouseId}"  style="width:210px" required="true" requiredMessage="Please select a source warehouse">
+                                    <f:selectItem itemLabel="Select Source Warehouse" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{transportOrderManagedBean.warehouses}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId}   Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="destWarehouse" value="Destination Warehouse Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="destWarehouse" value="#{transportOrderManagedBean.destWarehouseId}"  style="width:210px" required="true" requiredMessage="Please select a destination warehouse">
+                                    <f:selectItem itemLabel="Select Destination Warehouse" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{transportOrderManagedBean.warehouses}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId}   Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"/>
+                                </p:selectOneMenu>
+                            </p:column>
                         </p:row>
 
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="storageBinId" style="font-weight: bold" value="Storage Bin ID:  " />
+                                <h:outputLabel for="transportDate" style="font-weight: bold" value="Transport Date: *"  />
                             </p:column>
                             <p:column>
-                                <h:outputText id="storageBinId" value="#{stockAuditProcessManagedBean.audit.storageBinId}"/>
-                            </p:column>                       
+                                <p:calendar id="transportDate" value="#{transportOrderManagedBean.transportDate}" required="true" label="transportDate" requiredMessage="Transport Date is required." />
+                            </p:column>
                         </p:row>
 
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="staffId" style="font-weight: bold" value="Staff ID:  " />
+                                <p:outputLabel for="staffId" style="font-weight: bold" value="Staff ID: " />
                             </p:column>
                             <p:column>
-                                <h:outputText id="staffId" value="#{stockAuditProcessManagedBean.audit.staffId}"/>
-                            </p:column>                       
-                        </p:row>
-
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="scheduledDate" style="font-weight: bold" value="Scheduled Date:  " />
-                            </p:column>
-                            <p:column>
-                                <h:outputText id="scheduledDate" value="#{stockAuditProcessManagedBean.audit.createdDate}"/>
-                            </p:column>                       
-                        </p:row>
-
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="expectedQuantity" style="font-weight: bold" value="Expected Quantity:  " />
-                            </p:column>
-                            <p:column>
-                                <h:outputText id="expectedQuantity" value="#{stockAuditProcessManagedBean.audit.expectedQuantity}"/>
-                            </p:column>                       
-                        </p:row>
-
-                           <p:row>
-                            <p:column>
-                                <h:outputLabel for="passQuantity" style="font-weight: bold" value="Pass Quantity: *"  />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="passQuantity" requiredMessage="Pass Quantity is required." id="passQuantity" value="#{stockAuditProcessManagedBean.audit.passQuantity}">
+                                <p:inputText required="true" label="staffId" requiredMessage="Staff ID is required." id="staffId" value="#{transportOrderManagedBean.staffId}">
                                     <f:validateLength minimum="0" maximum="40" />
                                 </p:inputText>
-                            </p:column>
+                            </p:column>                       
                         </p:row>
 
                         <p:row>
                             <p:column>
-                                <h:outputLabel for="failQuantity" style="font-weight: bold" value="Fail Quantity: *"  />
+                                <p:outputLabel for="totalQuantity" style="font-weight: bold" value="Totaly Quantity: " />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="failQuantity" requiredMessage="Fail Quantity is required." id="failQuantity" value="#{stockAuditProcessManagedBean.audit.failQuantity}">
+                                <p:inputText required="true" label="totalQuantity" requiredMessage="Total Quantity is required." id="totalQuantity" value="#{transportOrderManagedBean.totalQuantity}">
                                     <f:validateLength minimum="0" maximum="40" />
                                 </p:inputText>
-                            </p:column>
+                            </p:column>                       
                         </p:row>
 
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="remarks" style="font-weight: bold" value="Remarks:   *" />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="remarks" requiredMessage="Remarks is required." id="remarks" value="#{stockAuditProcessManagedBean.audit.remarks}">
-                                    <f:validateLength minimum="1" maximum="300" />
-                                </p:inputText>
-                            </p:column>
-                        </p:row>
 
-                    </h:panelGrid>
+                        <br></br>
+                    </p:panelGrid>
                     <p:messages id="messages" autoUpdate="true" closable="true" />
-                    <p:commandButton id="btn" value="Complete Stock Audit" update="formMain" action="viewduestockaudit?faces-redirect=true" actionListener="#{stockAuditProcessManagedBean.carryOutStockAudit()}" ajax="true" >
+                    <p:commandButton id="btn" value="Create Transport Order" update="formMain" action="#{transportOrderManagedBean.createTransportOrder()}" ajax="true" >
                     </p:commandButton>
+
                 </p:panel>
             </h:form>
         </ui:define>

@@ -20,7 +20,7 @@
         </ui:define>
 
         <ui:define name="left">
-            <p:panelMenu>
+                       <p:panelMenu>
                 <p:submenu label =" WMS HOME" styleClass="display:block">
                     <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
                 </p:submenu>
@@ -45,13 +45,21 @@
                     <p:menuitem value="View All Stock Audits" url="viewallstockaudit.xhtml"/>
                     <p:menuitem value="View Today's Stock Audits" url="viewduestockaudit.xhtml"/>
                 </p:submenu>
+                <p:submenu label="Stock Transport Order" styleClass="display:block" >
+                    <p:menuitem value="Create Transport Order" url="createtransportorder.xhtml"/>
+                    <p:menuitem value="View Transport Order To Be Procssed" url="viewsourcetransportorder.xhtml"/>
+                    <p:menuitem value="All IncomingTransport Orders" url="viewdesttransportorder.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Warehouse Space Request Orders" styleClass="display:block" >
+                    <p:menuitem value="All Pending Request" url="viewallpendingrequests.xhtml"/>
+                </p:submenu>
             </p:panelMenu>
         </ui:define>
 
 
         <ui:define name="right">
             <h:form id="formMain">
-                <p:panel id="panel" header="Add Storage Bin">
+                <p:panel id="panel" header="Add Stock">
                     <p:ajaxStatus style="width:16px;height:16px;">
                         <f:facet name="start">
                             <h:graphicImage value="/img/load.gif" />
@@ -61,30 +69,28 @@
                         </f:facet>
                     </p:ajaxStatus>
                     <p:panelGrid columns="1" >
-                                               
-                                                <p:row>
 
-                            <p:selectOneRadio id="myRadioID" value="#{createStockManagedBean.radioValue}" layout="custom">
+                        <p:row>
+                            <p:selectOneRadio id="myRadioID" value="#{transportOrderManagedBean.radioValue}" layout="custom">
                                 <f:selectItem itemLabel="Choose ID" itemValue="1"/>
                                 <f:selectItem itemLabel="Enter " itemValue="2"/>
                                 <p:ajax process="@this" update="formMain" />
                             </p:selectOneRadio>
 
-                            <!--                            <h:panelGrid columns="7" id="area">-->
                             <p:radioButton id="id00" for="myRadioID" itemIndex="0"/>
                             <h:outputLabel for="id00" value="Choose Product ID "/>
 
-                            <p:selectOneMenu id="product" value="#{createStockManagedBean.productId}"  style="width:200px" required="true" requiredMessage="Product ID is required." disabled="#{createStockManagedBean.radioValue != '1'}">
+                            <p:selectOneMenu id="product" value="#{transportOrderManagedBean.productId}"  style="width:200px" required="true" requiredMessage="Product ID is required." disabled="#{transportOrderManagedBean.radioValue != '1'}">
                                 <f:selectItem itemLabel="Select Product ID" itemValue="" noSelectionOption="true" />
-                                <f:selectItems value="#{createStockManagedBean.productList}" var="product" itemLabel="ID:#{product.productId}   Name:#{product.productName}" itemValue="#{product.productId}"/>
+                                <f:selectItems value="#{transportOrderManagedBean.productList}" var="product" itemLabel="ID:#{product.productId}   Name:#{product.productName}" itemValue="#{product.productId}"/>
                             </p:selectOneMenu>
 
                             <p:radioButton id="id01" for="myRadioID" itemIndex="1"/>
                             <h:outputLabel for="id01" value="Enter Product ID "/>
-                            <p:inputText id="input01" value="#{createStockManagedBean.productId}" disabled="#{createStockManagedBean.radioValue != '2'}" required="true" requiredMessage="Product ID is required.">
+                            <p:inputText id="input01" value="#{transportOrderManagedBean.productId}" disabled="#{transportOrderManagedBean.radioValue != '2'}" required="true" requiredMessage="Product ID is required.">
                             </p:inputText>
-                            <!--                            </h:panelGrid>-->
                         </p:row>
+                        
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="warehouse" value="Warehouse Name: " />
@@ -151,12 +157,12 @@
                                 </p:inputText>
                             </p:column>
                         </p:row>
-                        <p:row>
+<!--                        <p:row>
                             <p:column>
                                 <h:outputLabel for="expiryDate" style="font-weight: bold" value="Expiry Date: (Please leave blank if Not Applicable)" />
                                 <p:calendar id="expiryDate" value="#{createStockManagedBean.expiryDate}" />
                             </p:column>
-                        </p:row>
+                        </p:row>-->
                     </p:panelGrid>
                     <p:messages id="messages" autoUpdate="true" closable="true" />
                     <p:commandButton id="btn" value="Create Stock" update="panel" actionListener="#{createStockManagedBean.addStock()}" ajax="true" />

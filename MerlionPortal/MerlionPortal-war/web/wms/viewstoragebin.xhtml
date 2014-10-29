@@ -20,7 +20,7 @@
         </ui:define>
 
         <ui:define name="left">
-            <p:panelMenu>
+                      <p:panelMenu>
                 <p:submenu label =" WMS HOME" styleClass="display:block">
                     <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
                 </p:submenu>
@@ -44,6 +44,14 @@
                     <p:menuitem value="Create Stock Audit" url="createstockaudit.xhtml"/>
                     <p:menuitem value="View All Stock Audits" url="viewallstockaudit.xhtml"/>
                     <p:menuitem value="View Today's Stock Audits" url="viewduestockaudit.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Stock Transport Order" styleClass="display:block" >
+                    <p:menuitem value="Create Transport Order" url="createtransportorder.xhtml"/>
+                    <p:menuitem value="View Transport Order To Be Procssed" url="viewsourcetransportorder.xhtml"/>
+                    <p:menuitem value="All IncomingTransport Orders" url="viewdesttransportorder.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Warehouse Space Request Orders" styleClass="display:block" >
+                    <p:menuitem value="All Pending Request" url="viewallpendingrequests.xhtml"/>
                 </p:submenu>
             </p:panelMenu>
         </ui:define>
@@ -121,45 +129,40 @@
                         </p:column>
 
                         <p:column  headerText="Bin Type" filterBy="#{storagebin.binType}" filterMatchMode="contains">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{storagebin.binType}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{storagebin.binType}" style="width:100%" label="Storage Bin Type"/></f:facet>
-                            </p:cellEditor>
+                            <h:outputText value="#{storagebin.binType}" />
                         </p:column>
 
                         <p:column  headerText="Max Quantity" filterBy="#{storagebin.maxQuantity}" filterMatchMode="contains">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{storagebin.maxQuantity}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{storagebin.maxQuantity}" style="width:100%" label="Max Quantity"/></f:facet>
-                            </p:cellEditor>
-                        </p:column>
+                            <h:outputText value="#{storagebin.maxQuantity}" />
+                    </p:column>
 
-                        <p:column  headerText="Max Weight" filterBy="#{storagebin.maxWeight}" filterMatchMode="contains">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{storagebin.maxWeight}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{storagebin.maxWeight}" style="width:100%" label="Max Weight"/></f:facet>
-                            </p:cellEditor>
-                        </p:column>
+                    <p:column  headerText="Max Weight" filterBy="#{storagebin.maxWeight}" filterMatchMode="contains">
+                        <h:outputText value="#{storagebin.maxWeight}" />
+                    </p:column>
 
-                        <p:column style="width:48px">
-                            <p:commandButton action="#{storageBinViewEditManagedBean.deleteStorageBin(storagebin)}" update="storagebinData" icon = "ui-icon-trash"  >
-                                <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this storage bin?" icon="ui-icon-alert" />
-                            </p:commandButton> 
-                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                            </p:confirmDialog>
-                        </p:column>
+                    <p:column  headerText="Available Space" filterBy="#{storagebin.availableSpace}" filterMatchMode="contains">
+                        <h:outputText value="#{storagebin.availableSpace}" />
+                    </p:column>
 
-                        <p:column style="width:42px">
-                            <p:rowEditor />
-                        </p:column>
+                    <p:column style="width:48px">
+                        <p:commandButton action="#{storageBinViewEditManagedBean.deleteStorageBin(storagebin)}" update="storagebinData" icon = "ui-icon-trash"  >
+                            <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this storage bin?" icon="ui-icon-alert" />
+                        </p:commandButton> 
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </p:column>
 
-                    </p:dataTable>
-                    <p:messages id="messages" autoUpdate="true" closable="true" />
-                </p:panel>
-            </h:form>
-        </ui:define>
-    </ui:composition>
+                    <p:column style="width:42px">
+                        <p:rowEditor />
+                    </p:column>
+
+                </p:dataTable>
+                <p:messages id="messages" autoUpdate="true" closable="true" />
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
 </html>                 
 
