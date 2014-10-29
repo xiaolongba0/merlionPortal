@@ -183,13 +183,30 @@ public class QuotationManagementSessionBean {
     }
 
     public List<ServiceQuotation> viewAllQuotationsSent(Integer myCompanyId) {
-        Query q = em.createQuery("SELECT s FROM ServiceQuotation s WHERE s.receiverCompanyId = :receiverCompanyId AND (s.status =2 OR s.status =3 OR s.status =4 OR s.status =5)").setParameter("receiverCompanyId", myCompanyId);
+        Query q = em.createQuery("SELECT s FROM ServiceQuotation s WHERE s.receiverCompanyId = :receiverCompanyId AND (s.status =2 OR s.status =3 OR s.status =4 OR s.status =5 OR s.status =6 OR s.status =7 OR s.status =8)").setParameter("receiverCompanyId", myCompanyId);
         return (List<ServiceQuotation>) q.getResultList();
     }
 
     public List<ServiceQuotation> viewAllQuotationsReceived(Integer myCompanyId) {
-        Query q = em.createQuery("SELECT s FROM ServiceQuotation s WHERE s.senderCompanyId = :senderCompanyId AND (s.status =2 OR s.status =3 OR s.status =4 OR s.status =5)").setParameter("senderCompanyId", myCompanyId);
+        Query q = em.createQuery("SELECT s FROM ServiceQuotation s WHERE s.senderCompanyId = :senderCompanyId AND (s.status =2 OR s.status =3 OR s.status =4 OR s.status =5 OR s.status =6 OR s.status =7 OR s.status =8)").setParameter("senderCompanyId", myCompanyId);
+        return (List<ServiceQuotation>) q.getResultList();
+    }
+    
+    public List<ServiceQuotation> retrieveAllTransportationFulfillmentcheckList (Integer myCompanyId){
+        Query q = em.createQuery("SELECT s FROM ServiceQuotation s WHERE s.receiverCompanyId = :receiverCompanyId AND s.status=6 AND s.serviceType='Transportation'").setParameter("receiverCompanyId", myCompanyId);
         return (List<ServiceQuotation>) q.getResultList();
     }
 
+    public void passFulfillmentCheck(Integer quotationId){
+        ServiceQuotation quotation = em.find(ServiceQuotation.class, quotationId);
+        quotation.setStatus(8);
+        em.merge(quotation);
+        em.flush();
+    }
+    public void failFulfillmentCheck(Integer quotationId){
+        ServiceQuotation quotation = em.find(ServiceQuotation.class, quotationId);
+        quotation.setStatus(7);
+        em.merge(quotation);
+        em.flush();
+    }
 }
