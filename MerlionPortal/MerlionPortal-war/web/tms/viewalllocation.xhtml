@@ -19,78 +19,115 @@
 
             </ui:insert>
         </ui:define>
-        
 
-        <ui:define name="left">
-                    <p:panelMenu>
-                        <p:submenu label =" Manage Your Transportation">
-                            <p:menuitem value="TMS Home" url="tmsindex.xhtml" />
-                            <p:submenu label="Location" >
-                                <p:menuitem value="Add A Location" url="addnewlocation.xhtml" />
-                                <p:menuitem value="View All Locations" url="viewalllocation.xhtml" style="background-color: lavender"/>
-                            </p:submenu>
-                            
-                            <p:submenu label="Transportation Asset" >
-                                <p:menuitem value="Add Transportation Assets" url="addnewtasset.xhtml" />
-                                <p:menuitem value="View Transportation Assets" url="viewalltasset.xhtml" />
-                            </p:submenu>
- 
-                        </p:submenu>
-                    </p:panelMenu>
+       <ui:define name="left">
+            <p:menu>
+                <p:submenu label ="Map">
+                    <p:submenu label="Node" >
+                        <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
+                        <p:menuitem value="View All Nodes" url="viewallnode.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Route" >
+                        <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
+                        <p:menuitem value="View All Routes" url="viewallroute.xhtml"/>
+                    </p:submenu>
+                </p:submenu>
+                <p:submenu label =" Manage Your Transportation">
+                    <p:menuitem value="TMS Home" url="tmsindex.xhtml" />
+                </p:submenu>
+                <p:submenu label="Location" >
+                    <p:menuitem value="Add A Location" url="addnewlocation.xhtml" style="background-color: lavender"/>
+                    <p:menuitem value="View All Locations" url="viewalllocation.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Transportation Asset" >
+                    <p:menuitem value="Add Transportation Assets" url="addnewtasset.xhtml" />
+                    <p:menuitem value="View Transportation Assets" url="viewalltasset.xhtml" />
+                </p:submenu>
+                <p:submenu label="Asset Schedule" >
+                    <p:menuitem value="Add A Asset Schedule" url="addnewtassetschedule.xhtml" />
+                    <p:menuitem value="View All Schedule" url="viewalltassetschedule.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Maintenance" >
+                    <p:menuitem value="Create Maintenance" url="addnewmaintenancelog.xhtml"  />
+                    <p:menuitem value="View All Maintenance" url="viewallmaintenancelog.xhtml" />
+                </p:submenu>
+                <p:submenu label="Operator" >
+                    <p:menuitem value="Add A Operator" url="addnewoperator.xhtml"  />
+                    <p:menuitem value="View All Operator" url="viewalloperator.xhtml" />
+                </p:submenu>
+                <p:submenu label="Operator Schedule" >
+                    <p:menuitem value="Add A Operator Schedule" url="addnewoperatorschedule.xhtml" />
+                    <p:menuitem value="View All Operator Schedule" url="viewalloperatorschedule.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Transportation Order" >
+                    <p:menuitem value="Create Transportation Order" url="addnewtorder.xhtml" />
+                    <p:menuitem value="View All Orders" url="viewalltorder.xhtml" />
+                    <p:menuitem value="View Order Details" url="viewalltorder.xhtml"/>
+                </p:submenu>
+
+                <p:submenu label="Transportation Request" >
+                    <p:menuitem value="Create A Transportation Request" url="addnewrequest.xhtml" />
+                    <p:menuitem value="View All Request" url="viewallrequest.xhtml" />
+                </p:submenu>
+
+            </p:menu>
         </ui:define>
-         <ui:define name="right">       
+
+        <ui:define name="right">       
             <h:form id="formMain">
-            <p:dataTable id="location" var="location" sortMode="multiple" editable="true" value="#{tLocationViewEditManagedBean.locations}" 
-                         widgetVar="locationsTable"
-                         emptyMessage="No location found"
-                         rowKey="#{location.locationId}">
+                <p:dataTable id="location" var="location" sortMode="multiple" editable="true" value="#{tLocationViewEditManagedBean.locations}" 
+                             widgetVar="locationsTable"
+                             emptyMessage="No location found"
+                             rowKey="#{location.locationId}">
 
-                <f:facet name="header">                    
-                    <p:outputPanel>
-                        <h:outputText value="Search all fields:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('locationsTable').filter()" />
-                    </p:outputPanel>
-                </f:facet>
+                    <f:facet name="header">                    
+                        <p:outputPanel>
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('locationsTable').filter()" />
+                        </p:outputPanel>
+                    </f:facet>
 
-                <p:ajax event="rowEdit" listener="#{tLocationViewEditManagedBean.onRowEdit}" update=":formMain:msgs"/>
-                <p:ajax event="rowEditCancel" listener="#{tLocationViewEditManagedBean.onRowCancel}" update=":formMain:msgs"/>
+                    <p:ajax event="rowEdit" listener="#{tLocationViewEditManagedBean.onRowEdit}" update=":formMain:msgs"/>
+                    <p:ajax event="rowEditCancel" listener="#{tLocationViewEditManagedBean.onRowCancel}" update=":formMain:msgs"/>
 
-                <p:column filterBy="#{location.locationId}" filterMatchMode="exact" headerText="Location ID" >
-                    <h:outputText value="#{location.locationId}" />
-                </p:column>
+                    <p:column filterBy="#{location.locationId}" filterMatchMode="exact" headerText="Location ID" >
+                        <h:outputText value="#{location.locationId}" />
+                    </p:column>
 
-                <p:column  filterBy="#{location.locationName}" filterMatchMode="contains" headerText="Name Of Location">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{location.locationName}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{location.locationName}" style="width:100%" label="Name Of Location"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
+                    <p:column  filterBy="#{location.locationName}" filterMatchMode="contains" headerText="Name Of Location">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{location.locationName}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{location.locationName}" style="width:100%" label="Name Of Location"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
 
-                <p:column  filterBy="#{location.locationType}" filterMatchMode="contains" headerText="Location Type">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{location.locationType}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{location.locationType}" style="width:100%" label="Location Type"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
+                    <p:column  filterBy="#{location.locationType}" filterMatchMode="contains" headerText="Location Type">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{location.locationType}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{location.locationType}" style="width:100%" label="Location Type"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
 
-               
-                <p:column headerText = "Delete Location">
-                    <p:commandButton action="#{tLocationViewEditManagedBean.deleteLocation(location)}" update="location" value="Delete">
-                        <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this location?" icon="ui-icon-alert" />
-                    </p:commandButton> 
-                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                    </p:confirmDialog>
-                </p:column>
 
-                <p:column style="width:32px">
-                    <p:rowEditor />
-                </p:column>
+                    <p:column headerText = "Delete Location">
+                        <p:commandButton action="#{tLocationViewEditManagedBean.deleteLocation(location)}" update="location" value="Delete">
+                            <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this location?" icon="ui-icon-alert" />
+                        </p:commandButton> 
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </p:column>
 
-            </p:dataTable>
-            <br></br>
-            <p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:column style="width:32px">
+                        <p:rowEditor />
+                    </p:column>
+
+                </p:dataTable>
+                <br></br>
+                <p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
             </h:form>
         </ui:define>
     </ui:composition>

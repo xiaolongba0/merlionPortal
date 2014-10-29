@@ -1,17 +1,17 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <c:set var="import" value="templateuser.xhtml"/>
     <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
         <c:set var="import" value="templateadmin.xhtml"/>
     </c:if>
     <ui:composition template="${root}/templates/${import}">
-        <ui:param name="pageName" value="WMS home" />
+        <ui:param name="pageName" value="TMS home" />
 
         <ui:define name="more-imports">
             <ui:insert>
@@ -29,7 +29,7 @@
                         <p:menuitem value="View All Nodes" url="viewallnode.xhtml" />
                     </p:submenu>
                     <p:submenu label="Route" >
-                        <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
+                        <p:menuitem value="Add A Route" url="addnewroute.xhtml" style="background-color: lavender"/>
                         <p:menuitem value="View All Routes" url="viewallroute.xhtml"/>
                     </p:submenu>
                 </p:submenu>
@@ -37,7 +37,7 @@
                     <p:menuitem value="TMS Home" url="tmsindex.xhtml" />
                 </p:submenu>
                 <p:submenu label="Location" >
-                    <p:menuitem value="Add A Location" url="addnewlocation.xhtml" style="background-color: lavender"/>
+                    <p:menuitem value="Add A Location" url="addnewlocation.xhtml"/>
                     <p:menuitem value="View All Locations" url="viewalllocation.xhtml"/>
                 </p:submenu>
                 <p:submenu label="Transportation Asset" >
@@ -79,7 +79,7 @@
             <h:form id="formMain">
 
                 <br/>
-                <p:panel id="panel" header="Add Schedule">
+                <p:panel id="panel" header="Add New Route">
                     <p:ajaxStatus style="width:16px;height:16px;">
                         <f:facet name="start">
                             <h:graphicImage value="/img/load.gif" />
@@ -89,49 +89,57 @@
                         </f:facet>
                     </p:ajaxStatus>
                     <p:panelGrid>
-
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="location" value="location Name: " />
+                                <p:outputLabel for="startNodeId" value="Origin: " />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="location" value="#{tAssetScheduleManagerBean.locationId}"  style="width:300px" required="true" requiredMessage="Please select a Location">
-                                    <p:ajax listener="#{tAssetScheduleManagerBean.onChangeLocation()}" update="tasset" />
-                                    <f:selectItem itemLabel="Select location" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tAssetScheduleManagerBean.locations}" var="location" itemLabel="ID:#{location.locationId} Name:#{location.locationName}"  itemValue="#{location.locationId}"/>
+                                <p:selectOneMenu id="startNodeId" value="#{routeManagerBean.startNodeId}"  style="width:210px" required="true" requiredMessage="Please select a Node">
+                              
+                                    <f:selectItem itemLabel="Select Origin" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{routeManagerBean.startNodes}" var="node" itemLabel="ID:#{node.nodeId}   Name:#{node.locationName}"  itemValue="#{node.nodeId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="tasset" value="Transportation Asset Id: " />
+                                <p:outputLabel for="endNodeId" value="Destination: " />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="tasset" value="#{tAssetScheduleManagerBean.tassetId}"  style="width:300px" required="true" requiredMessage="Please select a Transportation Asset">
-                                    <f:selectItem itemLabel="Select Transportation Asset" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tAssetScheduleManagerBean.transassetss}" var="tasset" itemLabel="ID:#{tasset.assetId} Type:#{tasset.assetType}"  itemValue="#{tasset.assetId}"/>
+                                <p:selectOneMenu id="endNodeId" value="#{routeManagerBean.endNodeId}"  style="width:210px" required="true" requiredMessage="Please select a Node">
+                                    <f:selectItem itemLabel="Select Destination" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{routeManagerBean.endNodes}" var="node" itemLabel="ID:#{node.nodeId}   Name:#{node.locationName}"  itemValue="#{node.nodeId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
+                        
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="startDate" value="Start Date " /><p:spacer width="20" height="20" /></p:column>
-                            <p:column>
-                                <p:calendar id="startDate" required="true" requiredMessage="Start Date is required" value="#{tAssetScheduleManagerBean.startDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{tAssetScheduleManagerBean.today}" />
+                                <p:outputLabel for="routeType" style="font-weight: bold" value="Route Type: " />
                             </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="routeType" requiredMessage="Route Type is required." id="routeType" value="#{routeManagerBean.routeType}">
+                                    <f:validateLength minimum="4" maximum="40" />
+                                </p:inputText>
+                            </p:column>                       
                         </p:row>
+
                         <p:row>
-
-                            <p:column> 
-                                <p:outputLabel for="endDate" value="End Date " /><p:spacer width="20" height="20" /></p:column>
                             <p:column>
-                                <p:calendar id="endDate" required="true" requiredMessage="End Date is required" value="#{tAssetScheduleManagerBean.endDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{tAssetScheduleManagerBean.startDate}" />                                   
-
+                                <h:outputLabel for="distance" style="font-weight: bold" value="Distance (Km):  " />
                             </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="distance" requiredMessage="Distance is required." id="distance" value="#{routeManagerBean.distance}">
+                                    <f:validateLength minimum="1" maximum="19" />
+                                </p:inputText>
+                            </p:column>                             
                         </p:row>  
+                        
                     </p:panelGrid>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                    <p:commandButton id="btn" value="Create New Transportation Schedule" update="panel" action="#{tAssetScheduleManagerBean.createTassetSchedule}" ajax="true" />
+                    <p:commandButton id="btn" value="Create New Route" update="formMain" actionListener="#{routeManagerBean.createNewRoute(route)}" ajax="true" >
+                    </p:commandButton>
+
                 </p:panel>
 
             </h:form>

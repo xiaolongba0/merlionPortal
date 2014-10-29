@@ -11,7 +11,7 @@
         <c:set var="import" value="templateadmin.xhtml"/>
     </c:if>
     <ui:composition template="${root}/templates/${import}">
-        <ui:param name="pageName" value="WMS home" />
+        <ui:param name="pageName" value="Add new operator" />
 
         <ui:define name="more-imports">
             <ui:insert>
@@ -19,9 +19,7 @@
 
             </ui:insert>
         </ui:define>
-
-
-        <ui:define name="left">
+       <ui:define name="left">
             <p:menu>
                 <p:submenu label ="Map">
                     <p:submenu label="Node" >
@@ -75,11 +73,12 @@
 
             </p:menu>
         </ui:define>
+
         <ui:define name="right">       
             <h:form id="formMain">
 
                 <br/>
-                <p:panel id="panel" header="Add Schedule">
+                <p:panel id="panel" header="Add New Operator">
                     <p:ajaxStatus style="width:16px;height:16px;">
                         <f:facet name="start">
                             <h:graphicImage value="/img/load.gif" />
@@ -89,49 +88,63 @@
                         </f:facet>
                     </p:ajaxStatus>
                     <p:panelGrid>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="operatorName" style="font-weight: bold" value="Operator Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="Operator Name: " requiredMessage="Operator Name is required." id="operatorName" value="#{tOperatorManagerBean.operatorName}">
+                                    <f:validateLength minimum="4" maximum="40" />
+                                </p:inputText>
+                            </p:column>                       
+                        </p:row>
 
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="location" value="location Name: " />
+                                <h:outputLabel for="operatorGender" style="font-weight: bold" value="Gender:  " />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="location" value="#{tAssetScheduleManagerBean.locationId}"  style="width:300px" required="true" requiredMessage="Please select a Location">
-                                    <p:ajax listener="#{tAssetScheduleManagerBean.onChangeLocation()}" update="tasset" />
-                                    <f:selectItem itemLabel="Select location" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tAssetScheduleManagerBean.locations}" var="location" itemLabel="ID:#{location.locationId} Name:#{location.locationName}"  itemValue="#{location.locationId}"/>
-                                </p:selectOneMenu>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="tasset" value="Transportation Asset Id: " />
-                            </p:column>
-                            <p:column>
-                                <p:selectOneMenu id="tasset" value="#{tAssetScheduleManagerBean.tassetId}"  style="width:300px" required="true" requiredMessage="Please select a Transportation Asset">
-                                    <f:selectItem itemLabel="Select Transportation Asset" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tAssetScheduleManagerBean.transassetss}" var="tasset" itemLabel="ID:#{tasset.assetId} Type:#{tasset.assetType}"  itemValue="#{tasset.assetId}"/>
-                                </p:selectOneMenu>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="startDate" value="Start Date " /><p:spacer width="20" height="20" /></p:column>
-                            <p:column>
-                                <p:calendar id="startDate" required="true" requiredMessage="Start Date is required" value="#{tAssetScheduleManagerBean.startDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{tAssetScheduleManagerBean.today}" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-
-                            <p:column> 
-                                <p:outputLabel for="endDate" value="End Date " /><p:spacer width="20" height="20" /></p:column>
-                            <p:column>
-                                <p:calendar id="endDate" required="true" requiredMessage="End Date is required" value="#{tAssetScheduleManagerBean.endDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{tAssetScheduleManagerBean.startDate}" />                                   
-
-                            </p:column>
+                                <p:inputText required="true" label="Gender:" requiredMessage="Gender is required." id="opertorGender" value="#{tOperatorManagerBean.operatorGender}">
+                                    <f:validateLength minimum="1" maximum="19" />
+                                </p:inputText>
+                            </p:column>                             
                         </p:row>  
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="birthday" value="Birthday" /><p:spacer width="20" height="20" /></p:column>
+                            <p:column>
+                                <p:calendar id="birthday" required="true" requiredMessage="Birthday is required" value="#{tOperatorManagerBean.birthday}" pattern="dd-MM-yyyy" mask="true" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="operatorType" style="font-weight: bold" value="Operator Type:  " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="Operator Type:" requiredMessage="Operator Type is required." id="operatorType" value="#{tOperatorManagerBean.operatorType}">
+                                    <f:validateLength minimum="1" maximum="19" />
+                                </p:inputText>
+                            </p:column>                             
+                        </p:row>  
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="operatorStatus" style="font-weight: bold" value="Operator Status: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="Operator Status: " requiredMessage="Operator Status: is required." id="operatorStatus" value="#{tOperatorManagerBean.operatorStatus}">
+                                    <f:validateLength minimum="1" maximum="19" />
+                                </p:inputText>
+                            </p:column>                             
+                        </p:row>  
+
                     </p:panelGrid>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                    <p:commandButton id="btn" value="Create New Transportation Schedule" update="panel" action="#{tAssetScheduleManagerBean.createTassetSchedule}" ajax="true" />
+                    <p:commandButton id="btn" value="Create New Operator" update="formMain" actionListener="#{tOperatorManagerBean.createNewOperator(company)}" ajax="true" >
+                    </p:commandButton>
+
                 </p:panel>
 
             </h:form>

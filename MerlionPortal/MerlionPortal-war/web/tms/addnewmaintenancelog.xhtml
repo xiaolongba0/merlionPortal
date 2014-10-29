@@ -79,7 +79,7 @@
             <h:form id="formMain">
 
                 <br/>
-                <p:panel id="panel" header="Add Schedule">
+                <p:panel id="panel" header="Add MaintenanceLog">
                     <p:ajaxStatus style="width:16px;height:16px;">
                         <f:facet name="start">
                             <h:graphicImage value="/img/load.gif" />
@@ -95,10 +95,10 @@
                                 <p:outputLabel for="location" value="location Name: " />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="location" value="#{tAssetScheduleManagerBean.locationId}"  style="width:300px" required="true" requiredMessage="Please select a Location">
-                                    <p:ajax listener="#{tAssetScheduleManagerBean.onChangeLocation()}" update="tasset" />
+                                <p:selectOneMenu id="location" value="#{tAssetMaintenanceManagerBean.locationId}"  style="width:300px" required="true" requiredMessage="Please select a Location">
+                                    <p:ajax listener="#{tAssetMaintenanceManagerBean.onChangeLocation()}" update="tasset" />
                                     <f:selectItem itemLabel="Select location" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tAssetScheduleManagerBean.locations}" var="location" itemLabel="ID:#{location.locationId} Name:#{location.locationName}"  itemValue="#{location.locationId}"/>
+                                    <f:selectItems value="#{tAssetMaintenanceManagerBean.locations}" var="location" itemLabel="ID:#{location.locationId} Name:#{location.locationName}"  itemValue="#{location.locationId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
@@ -107,17 +107,47 @@
                                 <p:outputLabel for="tasset" value="Transportation Asset Id: " />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="tasset" value="#{tAssetScheduleManagerBean.tassetId}"  style="width:300px" required="true" requiredMessage="Please select a Transportation Asset">
+                                <p:selectOneMenu id="tasset" value="#{tAssetMaintenanceManagerBean.tassssssetId}"  style="width:300px" required="true" requiredMessage="Please select a Transportation Asset">
                                     <f:selectItem itemLabel="Select Transportation Asset" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tAssetScheduleManagerBean.transassetss}" var="tasset" itemLabel="ID:#{tasset.assetId} Type:#{tasset.assetType}"  itemValue="#{tasset.assetId}"/>
+                                    <f:selectItems value="#{tAssetMaintenanceManagerBean.transassetss}" var="tasset" itemLabel="ID:#{tasset.assetId} Type:#{tasset.assetType}"  itemValue="#{tasset.assetId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column>
+                                <p:outputLabel for="cost" style="font-weight: bold" value="Maintenance Cost $: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="cost" requiredMessage="Cost is required." id="cost" value="#{tAssetMaintenanceManagerBean.cost}">
+                                    <f:validateLength minimum="1" maximum="25" />
+                                </p:inputText>
+                            </p:column>
+                        </p:row>  
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="description" style="font-weight: bold" value="Description : " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="description" requiredMessage="Description is required." id="description" value="#{tAssetMaintenanceManagerBean.description}">
+                                    <f:validateLength minimum="1" maximum="200" />
+                                </p:inputText>
+                            </p:column>
+                        </p:row>  
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="operatorId" style="font-weight: bold" value="Operator Id : " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="operatorId" requiredMessage="Operator Id is required." id="operatorId" value="#{tAssetMaintenanceManagerBean.operatorId}">
+                                    <f:validateLength minimum="1" maximum="25" />
+                                </p:inputText>
+                            </p:column>
+                        </p:row>  
+                        <p:row>
+                            <p:column>
                                 <p:outputLabel for="startDate" value="Start Date " /><p:spacer width="20" height="20" /></p:column>
                             <p:column>
-                                <p:calendar id="startDate" required="true" requiredMessage="Start Date is required" value="#{tAssetScheduleManagerBean.startDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{tAssetScheduleManagerBean.today}" />
+                                <p:calendar id="startDate" required="true" requiredMessage="Start Date is required" value="#{tAssetMaintenanceManagerBean.startDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{tAssetScheduleManagerBean.today}" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -125,13 +155,13 @@
                             <p:column> 
                                 <p:outputLabel for="endDate" value="End Date " /><p:spacer width="20" height="20" /></p:column>
                             <p:column>
-                                <p:calendar id="endDate" required="true" requiredMessage="End Date is required" value="#{tAssetScheduleManagerBean.endDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{tAssetScheduleManagerBean.startDate}" />                                   
+                                <p:calendar id="endDate" required="true" requiredMessage="End Date is required" value="#{tAssetMaintenanceManagerBean.endDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{tAssetScheduleManagerBean.startDate}" />                                   
 
                             </p:column>
                         </p:row>  
                     </p:panelGrid>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                    <p:commandButton id="btn" value="Create New Transportation Schedule" update="panel" action="#{tAssetScheduleManagerBean.createTassetSchedule}" ajax="true" />
+                    <p:commandButton id="btn" value="Create New Transportation Schedule" update="panel" actionListener="#{tAssetMaintenanceManagerBean.createMaintenanceLog()}" ajax="true" />
                 </p:panel>
 
             </h:form>

@@ -20,7 +20,6 @@
             </ui:insert>
         </ui:define>
 
-
         <ui:define name="left">
             <p:menu>
                 <p:submenu label ="Map">
@@ -77,9 +76,8 @@
         </ui:define>
         <ui:define name="right">       
             <h:form id="formMain">
-
                 <br/>
-                <p:panel id="panel" header="Add Schedule">
+                <p:panel id="panel" header=" View Maintenance Log for Transportation Asset">
                     <p:ajaxStatus style="width:16px;height:16px;">
                         <f:facet name="start">
                             <h:graphicImage value="/img/load.gif" />
@@ -89,52 +87,90 @@
                         </f:facet>
                     </p:ajaxStatus>
                     <p:panelGrid>
-
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="location" value="location Name: " />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="location" value="#{tAssetScheduleManagerBean.locationId}"  style="width:300px" required="true" requiredMessage="Please select a Location">
-                                    <p:ajax listener="#{tAssetScheduleManagerBean.onChangeLocation()}" update="tasset" />
+                                <p:selectOneMenu id="location" value="#{tAssetMaintenanceViewEditManagedBean.locationId}"  style="width:300px" required="true" requiredMessage="Please select a Location">
+                                    <p:ajax listener="#{tAssetMaintenanceViewEditManagedBean.onLocationChange()}" update="tAsset" />
                                     <f:selectItem itemLabel="Select location" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tAssetScheduleManagerBean.locations}" var="location" itemLabel="ID:#{location.locationId} Name:#{location.locationName}"  itemValue="#{location.locationId}"/>
+                                    <f:selectItems value="#{tAssetMaintenanceViewEditManagedBean.locations}" var="location" itemLabel="ID:#{location.locationId} Name:#{location.locationName}"  itemValue="#{location.locationId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="tasset" value="Transportation Asset Id: " />
+                                <p:outputLabel for="tAsset" value="Transportation Asset Type: " />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="tasset" value="#{tAssetScheduleManagerBean.tassetId}"  style="width:300px" required="true" requiredMessage="Please select a Transportation Asset">
+                                <p:selectOneMenu id="tAsset" value="#{tAssetMaintenanceViewEditManagedBean.tAssssssssetId}"  style="width:300px" required="true" requiredMessage="Please select a Transportation Asset">
+                                    <p:ajax listener="#{tAssetMaintenanceViewEditManagedBean.onTAssetChange()}" update="scheduleData" />
                                     <f:selectItem itemLabel="Select Transportation Asset" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tAssetScheduleManagerBean.transassetss}" var="tasset" itemLabel="ID:#{tasset.assetId} Type:#{tasset.assetType}"  itemValue="#{tasset.assetId}"/>
+                                    <f:selectItems value="#{tAssetMaintenanceViewEditManagedBean.tassetss}" var="tAsset" itemLabel="ID:#{tAsset.assetId} Name:#{tAsset.assetType}"  itemValue="#{tAsset.assetId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="startDate" value="Start Date " /><p:spacer width="20" height="20" /></p:column>
-                            <p:column>
-                                <p:calendar id="startDate" required="true" requiredMessage="Start Date is required" value="#{tAssetScheduleManagerBean.startDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{tAssetScheduleManagerBean.today}" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-
-                            <p:column> 
-                                <p:outputLabel for="endDate" value="End Date " /><p:spacer width="20" height="20" /></p:column>
-                            <p:column>
-                                <p:calendar id="endDate" required="true" requiredMessage="End Date is required" value="#{tAssetScheduleManagerBean.endDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{tAssetScheduleManagerBean.startDate}" />                                   
-
-                            </p:column>
-                        </p:row>  
                     </p:panelGrid>
+
+                    <p:dataTable id="scheduleData" var="schedule" sortMode="multiple" editable="true" value="#{tAssetMaintenanceViewEditManagedBean.logs}" 
+                                 widgetVar="scheduleTable"
+                                 emptyMessage="No Maintenance Log found"
+                                 rowKey="#{schedule.maintenanceLogId}">
+
+                        <f:facet name="header">                    
+                            <p:outputPanel>
+                                <h:outputText value="Search Schedule fields:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('scheduleTable').filter()" />
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:ajax event="rowEdit" listener="#{tAssetMaintenanceViewEditManagedBean.onRowEdit}"/>
+                        <p:ajax event="rowEditCancel" listener="#{tAssetMaintenanceViewEditManagedBean.onRowCancel}"/>                
+
+                        <p:column filterBy="#{schedule.maintenanceLogId}" filterMatchMode="exact" headerText="Schedule ID" >
+                            <h:outputText value="#{schedule.maintenanceLogId}" />
+                        </p:column>
+                    <p:column  headerText="cost">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{schedule.cost}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{schedule.cost}" style="width:100%" label="Capacity"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+
+                    <p:column  headerText="description">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{schedule.description}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{schedule.description}" style="width:100%" label="Price"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                        <p:column  headerText="startDate" filterBy="#{schedule.startDate}" filterMatchMode="contains">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{schedule.startDate}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{sschedule.startDate}" style="width:100%" label="StartDate"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column  headerText="endDate" filterBy="#{schedule.endDate}" filterMatchMode="contains">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{schedule.endDate}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{schedule.endDate}" style="width:100%" label="EndDate"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+
+                        <p:column style="width:32px">
+                            <p:rowEditor />
+                        </p:column>
+
+                    </p:dataTable>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                    <p:commandButton id="btn" value="Create New Transportation Schedule" update="panel" action="#{tAssetScheduleManagerBean.createTassetSchedule}" ajax="true" />
                 </p:panel>
 
             </h:form>
         </ui:define>
     </ui:composition>
 </html>                        
+
+

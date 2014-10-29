@@ -11,7 +11,7 @@
         <c:set var="import" value="templateadmin.xhtml"/>
     </c:if>
     <ui:composition template="${root}/templates/${import}">
-        <ui:param name="pageName" value="WMS home" />
+        <ui:param name="pageName" value="TMS home" />
 
         <ui:define name="more-imports">
             <ui:insert>
@@ -20,8 +20,7 @@
             </ui:insert>
         </ui:define>
 
-
-        <ui:define name="left">
+       <ui:define name="left">
             <p:menu>
                 <p:submenu label ="Map">
                     <p:submenu label="Node" >
@@ -75,66 +74,55 @@
 
             </p:menu>
         </ui:define>
+
         <ui:define name="right">       
             <h:form id="formMain">
+                <p:dataTable id="node" var="node" sortMode="multiple" editable="true" value="#{nodeViewEditManagedBean.nodes}" 
+                             widgetVar="nodesTable"
+                             emptyMessage="No Node found"
+                             rowKey="#{node.nodeId}">
+                    <f:facet name="header">                    
+                        <p:outputPanel>
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('nodeTable').filter()" />
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:column filterBy="#{node.nodeId}" filterMatchMode="exact" headerText="Node ID" >
+                        <h:outputText value="#{node.nodeId}" />
+                    </p:column>
 
-                <br/>
-                <p:panel id="panel" header="Add Schedule">
-                    <p:ajaxStatus style="width:16px;height:16px;">
-                        <f:facet name="start">
-                            <h:graphicImage value="/img/load.gif" />
-                        </f:facet>
-                        <f:facet name="complete">
-                            <h:outputText value="" />
-                        </f:facet>
-                    </p:ajaxStatus>
-                    <p:panelGrid>
+                    <p:column  filterBy="#{node.locationName}" filterMatchMode="contains" headerText="Name Of Node">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{node.locationName}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{node.locationName}" style="width:100%" label="Name Of Node"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
 
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="location" value="location Name: " />
-                            </p:column>
-                            <p:column>
-                                <p:selectOneMenu id="location" value="#{tAssetScheduleManagerBean.locationId}"  style="width:300px" required="true" requiredMessage="Please select a Location">
-                                    <p:ajax listener="#{tAssetScheduleManagerBean.onChangeLocation()}" update="tasset" />
-                                    <f:selectItem itemLabel="Select location" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tAssetScheduleManagerBean.locations}" var="location" itemLabel="ID:#{location.locationId} Name:#{location.locationName}"  itemValue="#{location.locationId}"/>
-                                </p:selectOneMenu>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="tasset" value="Transportation Asset Id: " />
-                            </p:column>
-                            <p:column>
-                                <p:selectOneMenu id="tasset" value="#{tAssetScheduleManagerBean.tassetId}"  style="width:300px" required="true" requiredMessage="Please select a Transportation Asset">
-                                    <f:selectItem itemLabel="Select Transportation Asset" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tAssetScheduleManagerBean.transassetss}" var="tasset" itemLabel="ID:#{tasset.assetId} Type:#{tasset.assetType}"  itemValue="#{tasset.assetId}"/>
-                                </p:selectOneMenu>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="startDate" value="Start Date " /><p:spacer width="20" height="20" /></p:column>
-                            <p:column>
-                                <p:calendar id="startDate" required="true" requiredMessage="Start Date is required" value="#{tAssetScheduleManagerBean.startDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{tAssetScheduleManagerBean.today}" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
+                    <p:column  filterBy="#{node.locationType}" filterMatchMode="contains" headerText="Node Type">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{node.locationType}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{node.locationType}" style="width:100%" label="Node Type"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
 
-                            <p:column> 
-                                <p:outputLabel for="endDate" value="End Date " /><p:spacer width="20" height="20" /></p:column>
-                            <p:column>
-                                <p:calendar id="endDate" required="true" requiredMessage="End Date is required" value="#{tAssetScheduleManagerBean.endDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{tAssetScheduleManagerBean.startDate}" />                                   
 
-                            </p:column>
-                        </p:row>  
-                    </p:panelGrid>
-                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                    <p:commandButton id="btn" value="Create New Transportation Schedule" update="panel" action="#{tAssetScheduleManagerBean.createTassetSchedule}" ajax="true" />
-                </p:panel>
+                    <p:column headerText = "Delete Location">
+                        <p:commandButton action="#{nodeViewEditManagedBean.deleteNode(node)}" update="node" value="Delete">
+                            <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this Node?" icon="ui-icon-alert" />
+                        </p:commandButton> 
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </p:column>
 
+
+                </p:dataTable>
+                <br></br>
+                <p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
             </h:form>
         </ui:define>
     </ui:composition>
 </html>                        
+
+
