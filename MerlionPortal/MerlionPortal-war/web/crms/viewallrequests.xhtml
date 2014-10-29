@@ -179,7 +179,7 @@
                                     <h:outputText value="Service Type"/>
                                     <h:outputText value="#{viewAllRequestsManagedBean.requestToView.serviceType}" />
                                     <h:outputText value="Status"/>
-                                    <h:outputText value="#{viewAllRequestsManagedBean.requestToView.status}" />
+                                    <h:outputText value="#{viewAllRequestsManagedBean.getStatusNumber(viewAllRequestsManagedBean.requestToView.status)}" />
                                     <h:outputText value="Created Date"/>
                                     <h:outputText value="#{viewAllRequestsManagedBean.requestToView.createdDate}" />
                                     <h:outputText value="Price Per TEU" />
@@ -197,6 +197,10 @@
                                         <h:outputText value="#{viewAllRequestsManagedBean.requestToView.origin}" />
                                         <h:outputText value="Destination"/>
                                         <h:outputText value="#{viewAllRequestsManagedBean.requestToView.destination}" />
+                                    </c:if>
+                                    <c:if test="#{viewAllRequestsManagedBean.requestToView.serviceType eq 'Warehouse'}" >
+                                        <h:outputText value="Storage Type"/>
+                                        <h:outputText value="#{viewAllRequestsManagedBean.requestToView.storageType}" />
                                     </c:if>
                                     <h:outputText value="Total Expected Quantity (TEU)"/>
                                     <h:outputText value="#{viewAllRequestsManagedBean.requestToView.quantityPerMonth}" />
