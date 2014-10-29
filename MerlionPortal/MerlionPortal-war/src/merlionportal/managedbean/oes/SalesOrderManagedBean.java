@@ -24,7 +24,8 @@ import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
 @Named(value = "salesOrderManagedBean")
 @ViewScoped
 public class SalesOrderManagedBean {
- @EJB
+
+    @EJB
     private SystemLogSessionBean systemLogSB;
     @EJB
     private PurchaseOrderManagerSessionBean purchaseOrderMB;
@@ -59,17 +60,16 @@ public class SalesOrderManagedBean {
             }
         }
         myOrder = (ProductOrder) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedOrder");
-        credit = purchaseOrderMB.checkCredit(myOrder.getCreatorId(),myOrder);
+        credit = purchaseOrderMB.checkCredit(myOrder.getCreatorId(), myOrder);
 
     }
-
- 
 
     public void generateSo() {
         if (myOrder.getStatus() == 1 && credit) {
             purchaseOrderMB.generateSo(userId, myOrder);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Sales order has benn created."));
-            systemLogSB.recordSystemLog(userId, "OES Generate Sales Order Success SO# "+myOrder.getProductPOId()+" .");
+            systemLogSB.recordSystemLog(userId, "OES Generate Sales Order Success SO# " + myOrder.getProductPOId() + " .");
+            
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR!", "Unable to generate sales order."));
@@ -94,7 +94,7 @@ public class SalesOrderManagedBean {
         System.out.println("=======================" + s);
         purchaseOrderMB.rejectPo(userId, myOrder, s);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "This order has benn rejected."));
-        systemLogSB.recordSystemLog(userId, "OES Reject Purchase Order PO#"+myOrder.getProductPOId()+" .");
+        systemLogSB.recordSystemLog(userId, "OES Reject Purchase Order PO#" + myOrder.getProductPOId() + " .");
 
     }
 
@@ -131,7 +131,6 @@ public class SalesOrderManagedBean {
         this.userId = userId;
     }
 
-
     public void setRejectReasons(List<String> rejectReasons) {
         this.rejectReasons = rejectReasons;
     }
@@ -143,7 +142,5 @@ public class SalesOrderManagedBean {
     public void setRejectReason(String rejectReason) {
         this.rejectReason = rejectReason;
     }
-
-  
 
 }

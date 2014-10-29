@@ -18,6 +18,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.SystemAccessRightSessionBean;
 import merlionportal.ci.loggingmodule.SystemLogSessionBean;
+import merlionportal.mrp.backordermodule.BackorderSessionBean;
 import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
 import org.primefaces.event.RowEditEvent;
 
@@ -28,6 +29,9 @@ import org.primefaces.event.RowEditEvent;
 @Named(value = "purchaseOrderManagedBean")
 @ViewScoped
 public class PurchaseOrderManagedBean {
+
+    @EJB
+    private BackorderSessionBean backorderSB;
 
     @EJB
     private SystemLogSessionBean systemLogSB;
@@ -100,7 +104,14 @@ public class PurchaseOrderManagedBean {
     }
 
     public String checkAvailability(ProductOrderLineItem line) {
-        return "Available";
+        String result = "Available";
+        if (line != null) {
+            Boolean productAvailable = false;
+            if (!productAvailable && line.getQuantity() != null) {
+                result = backorderSB.getWaitingTime(line.getProductproductId().getProductId(), line.getQuantity());
+            }
+        }
+        return result;
 
     }
 

@@ -98,10 +98,10 @@ public class GenerateInvoiceManagedBean {
     }
 
     public String generateInvoice() {
-        systemLogSB.recordSystemLog(userId, "OES Generate Invoice. ");
         if (inputText == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR!", "Terms and conditions cannot be empty"));
         }
+        systemLogSB.recordSystemLog(userId, "OES Generate Invoice. ");
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info!", "Invoice Generated"));
         int orderId = unInvoiced.getProductPOId();
         int creator = unInvoiced.getCreatorId();

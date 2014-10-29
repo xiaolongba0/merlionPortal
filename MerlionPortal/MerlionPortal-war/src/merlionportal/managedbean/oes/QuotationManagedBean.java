@@ -20,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import merlionportal.ci.administrationmodule.SystemAccessRightSessionBean;
 import merlionportal.ci.loggingmodule.SystemLogSessionBean;
+import merlionportal.oes.ordermanagement.CommonFunctionSessionBean;
 import merlionportal.oes.quotationmanagementmodule.QuotationManagerSessionBean;
 import org.primefaces.event.RowEditEvent;
 
@@ -30,6 +31,8 @@ import org.primefaces.event.RowEditEvent;
 @Named(value = "quotationManagedBean")
 @SessionScoped
 public class QuotationManagedBean implements Serializable {
+    @EJB
+    private CommonFunctionSessionBean commonSB;
 
     @EJB
     private SystemLogSessionBean systemLogSB;
@@ -53,6 +56,7 @@ public class QuotationManagedBean implements Serializable {
     private Quotation filteredQuotation;
     private Quotation selectedQuotation;
     private SystemUser mycustomer;
+    private String currency;
 
     /**
      * Creates a new instance of QuotationManagedBean
@@ -243,6 +247,10 @@ public class QuotationManagedBean implements Serializable {
 
         return qStatus;
     }
+    
+    public String viewCustomerName(int mycusId){
+        return commonSB.viewCustomerName(mycusId);
+    }
 
     public void setqStatus(String qStatus) {
         this.qStatus = qStatus;
@@ -347,6 +355,14 @@ public class QuotationManagedBean implements Serializable {
 
     public void setMycustomer(SystemUser mycustomer) {
         this.mycustomer = mycustomer;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
 }
