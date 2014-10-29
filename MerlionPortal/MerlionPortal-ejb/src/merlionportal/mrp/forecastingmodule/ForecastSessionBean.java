@@ -376,8 +376,8 @@ public class ForecastSessionBean {
         forecastResult.setFluctuation(expectedGrowth);
         forecastResult.setProductId(1);
 
-        Mps mps = new Mps();
-        forecastResult.setMps(mps);
+    //    Mps mps = new Mps();
+     //   forecastResult.setMps(mps);
 
         List<MonthForecastResult> monthForecastResults = new ArrayList<MonthForecastResult>();
 

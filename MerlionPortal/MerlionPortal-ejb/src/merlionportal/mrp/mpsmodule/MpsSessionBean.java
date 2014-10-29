@@ -8,6 +8,7 @@ package merlionportal.mrp.mpsmodule;
 import entity.ForecastResult;
 import entity.MRPList;
 import entity.Mps;
+import entity.Product;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.LocalBean;
@@ -54,22 +55,43 @@ public class MpsSessionBean {
     }
     
     public Integer storeMPS(Integer buffer, Integer demand, Integer forecastResultID){
-       ForecastResult fResult = entityManager.find(ForecastResult.class, forecastResultID);
+ /*      ForecastResult fResult = entityManager.find(ForecastResult.class, forecastResultID);
        System.out.println("TESTINGGGG:1 " + fResult.getForecastResultId());
        Mps mps = fResult.getMps();
        mps.setBuffer(buffer);
        mps.setDemand(demand);
+
+      MRPList mrplist = new MRPList();
+      mrplist.setMrpListId(mps.getMpsId());
+      mps.setMRPList(mrplist);
+      
+
+       entityManager.merge(mps);
+       entityManager.flush();
+
+       return mps.getMpsId();*/
+        
+       ForecastResult fResult = entityManager.find(ForecastResult.class, forecastResultID);
+       System.out.println("TESTINGGGG:1 " + fResult.getForecastResultId());
+       Mps mps = new Mps();
+       mps.setMpsId(forecastResultID);
+       mps.setBuffer(buffer);
+       mps.setDemand(demand);
+       mps.setForecastResult(fResult);
 /*
       MRPList mrplist = new MRPList();
       mrplist.setMrpListId(mps.getMpsId());
       mps.setMRPList(mrplist);*/
       
 
-       entityManager.merge(mps);
+       entityManager.persist(mps);
        entityManager.flush();
-
-       return mps.getMpsId();
+       fResult.setMps(mps);
+         entityManager.persist(fResult);
+       entityManager.flush();
+       return mps.getMpsId();  
+       
     }
     
-
+   
 }

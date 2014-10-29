@@ -276,48 +276,109 @@ public class MaterialReqPlanningSessionBean {
         return mrps;
     }
 
-    /*      public void addNewMrpList(Integer productId) {
-     productMRP = new MRPList();
-     productMRP.setMrpDate(new Date());
-     productMRP.setProductId(productId);
+   public List<Mrp> addNewMrpListBackorder(Integer productId, Integer demand) {
 
-     mrp = new Mrp();
-     mrp.setGrossReq1(55);
-     mrp.setGrossReq2(55);
-     mrp.setGrossReq3(55);
-     mrp.setGrossReq4(55);
-     mrp.setGrossReq5(55);
-     mrp.setScheduledRec1(55);
-     mrp.setScheduledRec2(55);
-     mrp.setScheduledRec3(55);
-     mrp.setScheduledRec4(55);
-     mrp.setScheduledRec5(55);
-     mrp.setPlannedRec1(55);
-     mrp.setPlannedRec2(55);
-     mrp.setPlannedRec3(55);
-     mrp.setPlannedRec4(55);
-     mrp.setPlannedRec5(55);
-     mrp.setOnHand1(55);
-     mrp.setOnHand2(55);
-     mrp.setOnHand3(55);
-     mrp.setOnHand4(55);
-     mrp.setOnHand5(55);
-     mrp.setPlannedOrder1(55);
-     mrp.setPlannedOrder2(55);
-     mrp.setPlannedOrder3(55);
-     mrp.setPlannedOrder4(55);
-     mrp.setPlannedOrder5(55);
-     mrp.setLeadTime(5);
-     mrp.setMrpList(productMRP);
-     System.out.println("!!!!!!!!!!!!!!CAN");
-     entityManager.persist(mrp);
-     entityManager.flush();
-     System.out.println("!!!!!!!!!!!!!!CAN");
+        MRPList mrpList = new MRPList();
+        mrpList.setMrpDate(new Date());
+        mrpList.setProductId(productId);
+       //test if can dun add
+        //   Mps mps = new Mps();
+        //   productMRP.setMps(mps);
 
-     mrps.add(mrp);
-     productMRP.setMrpList(mrps);
-     entityManager.persist(productMRP);
-     entityManager.flush();
+        mrps = new ArrayList<Mrp>();
+        productMRP.setMrpList(mrps);
+        entityManager.persist(productMRP);
+    //    mps.setMRPList(productMRP);
+        //  entityManager.merge(mps);
+        //   entityManager.flush();
 
-     }  */
+        int waitingTime = 0;
+        for (int i = 0; i < product.getComponentList().size(); i++) {
+            if (waitingTime <= product.getComponentList().get(i).getLeadTime()) {
+                waitingTime = product.getComponentList().get(i).getLeadTime();
+            }
+        }
+
+        //draw out lead time
+        product = entityManager.find(Product.class, productId);
+        int size = product.getComponentList().size();
+        for (int i = 0; i < size; i++) {
+            mrp = new Mrp();
+
+            //attribute
+            int GrossReq1 = demand * product.getComponentList().get(i).getQuantity();
+            int GrossReq2 = 0;
+            int GrossReq3 = 0;
+            int GrossReq4 = 0;
+            int GrossReq5 = 0;
+            int scheduledRec1 = 0;
+            int scheduledRec2 = 0;
+            int scheduledRec3 = 0;
+            int scheduledRec4 = 0;
+            int scheduledRec5 = 0;
+            int plannedRec1 = 0;
+            int plannedRec2 = 0;
+            int plannedRec3 = 0;
+            int plannedRec4 = 0;
+            int plannedRec5 = 0;
+            int onHand1 = 0;
+            int onHand2 = 0;
+            int onHand3 = 0;
+            int onHand4 = 0;
+            int onHand5 = 0;
+            int plannedOrder1 = 0;
+            int plannedOrder2 = 0;
+            int plannedOrder3 = 0;
+            int plannedOrder4 = 0;
+            int plannedOrder5 = 0;
+            while (product.getComponentList().get(i).getOrderQuantity() >= GrossReq1) {
+                plannedOrder1 = plannedOrder1 + product.getComponentList().get(i).getOrderQuantity();
+            }
+
+            int leadTime = product.getComponentList().get(i).getLeadTime();
+
+            mrp.setComponentId(product.getComponentList().get(i).getComponentId());
+            mrp.setComponentName(product.getComponentList().get(i).getComponentName());
+            mrp.setOrderQuantity(product.getComponentList().get(i).getOrderQuantity());
+            mrp.setOnHand0(0);
+
+            mrp.setGrossReq1(GrossReq1);
+            mrp.setGrossReq2(GrossReq2);
+            mrp.setGrossReq3(GrossReq3);
+            mrp.setGrossReq4(GrossReq4);
+            mrp.setGrossReq5(GrossReq5);
+            mrp.setScheduledRec1(scheduledRec1); //draw from database
+            mrp.setScheduledRec2(scheduledRec2);
+            mrp.setScheduledRec3(scheduledRec3);
+            mrp.setScheduledRec4(scheduledRec4);
+            mrp.setScheduledRec5(scheduledRec5);
+            mrp.setPlannedRec1(plannedRec1);
+            mrp.setPlannedRec2(plannedRec2);
+            mrp.setPlannedRec3(plannedRec3);
+            mrp.setPlannedRec4(plannedRec4);
+            mrp.setPlannedRec5(plannedRec5);
+            mrp.setOnHand1(onHand1);
+            mrp.setOnHand2(onHand2);
+            mrp.setOnHand3(onHand3);
+            mrp.setOnHand4(onHand4);
+            mrp.setOnHand5(onHand5);
+            mrp.setPlannedOrder1(plannedOrder1);
+            mrp.setPlannedOrder2(plannedOrder2);
+            mrp.setPlannedOrder3(plannedOrder3);
+            mrp.setPlannedOrder4(plannedOrder4);
+            mrp.setPlannedOrder5(plannedOrder5);
+            mrp.setLeadTime(leadTime);
+            mrp.setMrpList(productMRP);
+            entityManager.persist(mrp);
+            entityManager.flush();
+            mrps.add(mrp);
+
+        }
+
+        productMRP.setMrpList(mrps);
+        entityManager.merge(productMRP);
+        entityManager.flush();
+        return mrps;
+    }
+
 }
