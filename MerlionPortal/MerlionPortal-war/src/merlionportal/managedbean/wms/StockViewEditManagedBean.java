@@ -104,8 +104,8 @@ public class StockViewEditManagedBean {
         System.out.println("[In Managed Bean - getStocks] Product ID : " + productId);
         totalQuantity = 0;
         if (productId != null) {
-            stocks = rpsb.viewStock(productId);
-            totalQuantity = rpsb.countTotalStock(productId);
+            stocks = rpsb.viewStock(companyId, productId);
+            totalQuantity = rpsb.countTotalStock(companyId, productId);
             systemLogSB.recordSystemLog(userId, "WMS view stocks");
             if (stocks == null) {
                 System.out.println("============== FAILED TO VIEW STOCK ===============");

@@ -94,7 +94,7 @@ public class StorageBinViewEditManagedBean {
     public void onRowEdit(RowEditEvent event) {
         bin = new StorageBin();
         bin = (StorageBin) event.getObject();
-        boolean result = assetManagementSessionBean.editStorageBin(bin.getBinName(), bin.getDescription(), bin.getBinType(), bin.getMaxQuantity(), bin.getMaxWeight(), bin.getStorageBinId());
+        boolean result = assetManagementSessionBean.editStorageBin(bin.getBinName(), bin.getDescription(),bin.getStorageBinId());
         if (result) {
             systemLogSB.recordSystemLog(userId, "WMS edit storage bin");
             FacesMessage msg = new FacesMessage("Bin with Storage Bin ID = " + bin.getStorageBinId() + " has sucessfully been edited");

@@ -48,8 +48,8 @@ public class StockAuditViewEditManagedBean {
 
     private Integer companyId;
     private SystemUser loginedUser;
-    private Integer radioValue;
     private Integer userId;
+    private Integer radioValue;
 
     private List<StockAudit> stockAudits;
     private String auditStatus;
@@ -96,8 +96,9 @@ public class StockAuditViewEditManagedBean {
         auditStaffId = audit.getStaffId();
         auditScheduledDate = audit.getCreatedDate();
         auditExpectedQuantity = audit.getExpectedQuantity();
-            
-}
+
+    }
+
     public void viewAllStockAudits() {
         System.out.println("[In Managed Bean - viewAllStockAudits] =============================== Warehouse ID : " + warehouseId);
 
@@ -110,8 +111,8 @@ public class StockAuditViewEditManagedBean {
             }
         }
     }
-    
-        public void viewDueStockAudits() {
+
+    public void viewDueStockAudits() {
         System.out.println("[In Managed Bean - viewDueStockAudits] =============================== Warehouse ID : " + warehouseId);
 
         if (warehouseId != null) {
@@ -138,7 +139,6 @@ public class StockAuditViewEditManagedBean {
         return auditStatus;
     }
 
-
     public void deleteStockAudit(StockAudit stockAudit) {
         try {
             System.out.println("In StockAuditViewEditManagedBean, delete stock ======================");
@@ -161,7 +161,7 @@ public class StockAuditViewEditManagedBean {
         StockAudit stockAudit = new StockAudit();
         stockAudit = (StockAudit) event.getObject();
         System.out.println("[In Managed Bean - STOCK AUDIT ON ROW EDIT]=============================== ");
-        boolean result = sasb.editStockAudit(stockAudit.getStockAuditId(),stockAudit.getStaffId(), stockAudit.getCreatedDate(),
+        boolean result = sasb.editStockAudit(stockAudit.getStockAuditId(), stockAudit.getStaffId(), stockAudit.getCreatedDate(),
                 stockAudit.getStockAuditStatus(), stockAudit.getRemarks());
         if (result) {
             systemLogSB.recordSystemLog(userId, "WMS edit stock audit");
