@@ -47,9 +47,8 @@ public class MaintenanceLog implements Serializable {
     @Basic(optional = false)
     @Column(name = "maintenanceLogId")
     private Integer maintenanceLogId;
-    @Size(max = 45)
     @Column(name = "operatorId")
-    private String operatorId;
+    private Integer operatorId;
     @Size(max = 45)
     @Column(name = "cost")
     private String cost;
@@ -83,11 +82,11 @@ public class MaintenanceLog implements Serializable {
         this.maintenanceLogId = maintenanceLogId;
     }
 
-    public String getOperatorId() {
+    public Integer getOperatorId() {
         return operatorId;
     }
 
-    public void setOperatorId(String operatorId) {
+    public void setOperatorId(Integer operatorId) {
         this.operatorId = operatorId;
     }
 
