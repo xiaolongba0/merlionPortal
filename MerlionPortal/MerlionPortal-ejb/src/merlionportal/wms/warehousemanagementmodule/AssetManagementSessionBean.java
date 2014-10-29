@@ -303,17 +303,14 @@ public class AssetManagementSessionBean {
         return true;
     }
 
-    public boolean editStorageBin(String binName, String description, String type, Integer maxQuantity, Double maxWeight, Integer storageBinId) {
+    public boolean editStorageBin(String binName, String description, Integer storageBinId) {
 
         StorageBin bin = new StorageBin();
         Query query = em.createNamedQuery("StorageBin.findByStorageBinId").setParameter("storageBinId", storageBinId);
         bin = (StorageBin) query.getSingleResult();
         if (bin != null) {
             bin.setBinName(binName);
-            bin.setBinType(type);
             bin.setDescription(description);
-            bin.setMaxQuantity(maxQuantity);
-            bin.setMaxWeight(maxWeight);
 
             em.merge(bin);
             em.flush();
@@ -326,6 +323,7 @@ public class AssetManagementSessionBean {
     }
 
     public boolean calculateBinSpace(StorageBin bin, Integer newQuantity, Integer reservedQuantity) {
+        System.out.println("[AMSB] Calculate Bin Space =======================");
         Integer binAvailableSpace;
         Integer binInUseSpace;
         Integer binReservedSpace;
@@ -336,17 +334,50 @@ public class AssetManagementSessionBean {
 
         binInUseSpace = binInUseSpace + newQuantity;
         binReservedSpace = binReservedSpace + reservedQuantity;
-        binAvailableSpace = binAvailableSpace - binInUseSpace - binReservedSpace;
+        binAvailableSpace = bin.getMaxQuantity() - binInUseSpace - binReservedSpace;
+        System.out.println("Bin max quantity = " + bin.getMaxQuantity());
+        System.out.println("Bin available space 2 = " + binAvailableSpace);
 
         if (binAvailableSpace >= 0) {
             bin.setReservedSpace(binReservedSpace);
             bin.setInuseSpace(binInUseSpace);
             bin.setAvailableSpace(binAvailableSpace);
-            
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean calculateTOBinSpace(StorageBin bin, Integer newQuantity, Integer reservedQuantity) {
+        System.out.println("[AMSB] Calculate Bin Space =======================");
+        Integer binAvailableSpace;
+        Integer binInUseSpace;
+        Integer binReservedSpace;
+
+        binInUseSpace = bin.getInuseSpace();
+        binAvailableSpace = bin.getAvailableSpace();
+        binReservedSpace = bin.getReservedSpace();
+
+        binInUseSpace = binInUseSpace + newQuantity;
+        binReservedSpace = binReservedSpace + reservedQuantity;
+        binAvailableSpace = bin.getMaxQuantity() - binInUseSpace - binReservedSpace;
+        System.out.println("Bin max quantity = " + bin.getMaxQuantity());
+        System.out.println("Bin available space 2 = " + binAvailableSpace);
+
+        if (binAvailableSpace >= 0) {
+            bin.setReservedSpace(binReservedSpace);
+            bin.setInuseSpace(binInUseSpace);
+            bin.setAvailableSpace(binAvailableSpace);
+            return true;
+        } else {
+            binReservedSpace = binAvailableSpace;
+            bin.setReservedSpace(binReservedSpace);
+            bin.setInuseSpace(binInUseSpace);
+            bin.setAvailableSpace(0);
             return true;
         }
-        return false;
     }
+
 //    public List<String> listStorageBinTypes() {
 //        List<String> allStorageBinTypes = new ArrayList<>();
 //        System.out.println("In ASSET MANAGEMENT SESSION BEAN ================ LIST STORAGE BIN TYPES");
@@ -359,5 +390,4 @@ public class AssetManagementSessionBean {
 //
 //        return allStorageBinTypes;
 //    }
-
 }
