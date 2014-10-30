@@ -97,17 +97,25 @@ public class TOrderManagementSessionBean {
 //    
 
 //    If asset Is available ==>
-    public Integer AddNewTransportationOrder(String cargoType, Integer cargoWeight, Integer companyId, Integer creatorId, String destination, String origin, Integer referenceId, Integer referenceType, Date endDate) {
+    public Integer AddNewTransportationOrder(String cargoType, Integer cargoWeight, Integer companyId, Integer creatorId, Integer destination, Integer origin, Integer referenceId, Integer referenceType, Date endDate) {
         System.out.println("[INSIDE EJB]================================Add New Transportation Order");
-
+        if(origin>-1){
+            
+        Location ll = new Location();
+        ll = em.find(Location.class, origin);
+      
         TransportationOrder order = new TransportationOrder();
 
         order.setCargoType(cargoType);
         order.setCargoWeight(cargoWeight);
         order.setCompanyId(companyId);
         order.setCreatorId(creatorId);
-        order.setDestination(destination);
-        order.setOrigin(origin);
+        Location l = new Location();
+        l = em.find(Location.class, destination);
+        String des = l.getLocationName();
+        order.setDestination(des);
+        String ori = ll.getLocationName();
+        order.setOrigin(ori);
         order.setReferenceId(referenceId);
         order.setReferenceType(referenceId);
         order.setTimeEnd(endDate);
@@ -122,6 +130,7 @@ public class TOrderManagementSessionBean {
         List<TransportationAsset> assetList = new ArrayList();
         order.setTransportationAssetList(assetList);
 
+        
         List<TransportationLog> logList = new ArrayList();
         order.setTransportationLogList(logList);
 
@@ -137,16 +146,17 @@ public class TOrderManagementSessionBean {
         System.out.println("[EJB]================================Successfully Added a New order");
 
         return order.getTransportationOrderId();
-
+        }
+        return null;
     }
 
     public List<TransportationLog> viewLogforOrder(Integer orderId) {
 
         List<TransportationLog> allMyLog = new ArrayList();
         System.out.println("Viewing shipping record for Order Id: " + orderId);
-        Query query = em.createNamedQuery("TransportationOrder.findByTransportationOrderId").setParameter("transportationOrderId", orderId);
+  
 
-        TransportationOrder o = (TransportationOrder) query.getSingleResult();
+        TransportationOrder o = em.find(TransportationOrder.class, orderId);
         System.out.println("Successfully find Order Id: " + orderId);
         allMyLog = o.getTransportationLogList();
 
@@ -171,15 +181,17 @@ public class TOrderManagementSessionBean {
 
     public Integer addNewLog(Integer orderId, Integer operatorId, String action, String actionMessage, Date timeStamp) {
         TransportationOrder order = new TransportationOrder();
-        Query query = em.createNamedQuery("TransportationOrder.findByTransportationOrderId").setParameter("transportationOrderId", orderId);
-
-        order = (TransportationOrder) query.getSingleResult();
+        
+        order = em.find(TransportationOrder.class, orderId);
 
         TransportationLog log = new TransportationLog();
+        
         log.setAction(action);
         log.setActionMessage(actionMessage);
         log.setOperatorId(operatorId);
         log.setTimeStamp(timeStamp);
+        log.setTransportationOrdertransportationOrderId(order);
+        
 
         order.getTransportationLogList().add(log);
 

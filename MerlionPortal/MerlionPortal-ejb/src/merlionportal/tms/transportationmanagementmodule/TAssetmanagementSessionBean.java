@@ -338,8 +338,8 @@ public class TAssetmanagementSessionBean {
             em.persist(tAsset);
             em.flush();
 
-            location.getTransportationAssetList().add(tAsset);
-            em.merge(location);
+            locationn.getTransportationAssetList().add(tAsset);
+            em.merge(locationn);
             em.flush();
             return tAsset.getAssetId();
         }
