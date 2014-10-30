@@ -75,89 +75,49 @@
                         </f:facet>
                     </p:ajaxStatus>
 
-                    <h:panelGrid>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="stockAuditId" style="font-weight: bold" value="Stock Audit ID:  " />
-                            </p:column>
-                            <p:column>
-                                <h:outputText id="stockAuditId" value="#{stockAuditProcessManagedBean.audit.stockAuditId}"/>
-                            </p:column>                       
-                        </p:row>
+                    <h:panelGrid columns="3">
 
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="storageBinId" style="font-weight: bold" value="Storage Bin ID:  " />
-                            </p:column>
-                            <p:column>
-                                <h:outputText id="storageBinId" value="#{stockAuditProcessManagedBean.audit.storageBinId}"/>
-                            </p:column>                       
-                        </p:row>
+                        <p:outputLabel for="stockAuditId" style="font-weight: bold" value="Stock Audit ID:  " /><p:spacer width="40" height="20" />
+                        <h:outputText id="stockAuditId" value="#{stockAuditProcessManagedBean.audit.stockAuditId}"/>
 
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="staffId" style="font-weight: bold" value="Staff ID:  " />
-                            </p:column>
-                            <p:column>
-                                <h:outputText id="staffId" value="#{stockAuditProcessManagedBean.audit.staffId}"/>
-                            </p:column>                       
-                        </p:row>
+                        <p:outputLabel for="storageBinId" style="font-weight: bold" value="Storage Bin ID:  " /><p:spacer width="40" height="20" />
+                        <h:outputText id="storageBinId" value="#{stockAuditProcessManagedBean.audit.storageBinId}"/>
 
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="scheduledDate" style="font-weight: bold" value="Scheduled Date:  " />
-                            </p:column>
-                            <p:column>
-                                <h:outputText id="scheduledDate" value="#{stockAuditProcessManagedBean.audit.createdDate}"/>
-                            </p:column>                       
-                        </p:row>
 
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="expectedQuantity" style="font-weight: bold" value="Expected Quantity:  " />
-                            </p:column>
-                            <p:column>
-                                <h:outputText id="expectedQuantity" value="#{stockAuditProcessManagedBean.audit.expectedQuantity}"/>
-                            </p:column>                       
-                        </p:row>
+                        <p:outputLabel for="staffId" style="font-weight: bold" value="Staff ID:  " /><p:spacer width="40" height="20" />
+                        <h:outputText id="staffId" value="#{stockAuditProcessManagedBean.audit.staffId}"/>
 
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="passQuantity" style="font-weight: bold" value="Pass Quantity: *"  />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="passQuantity" requiredMessage="Pass Quantity is required." id="passQuantity" value="#{stockAuditProcessManagedBean.audit.passQuantity}">
-                                    <f:validateLength minimum="0" maximum="40" />
-                                </p:inputText>
-                            </p:column>
-                        </p:row>
+                        <p:outputLabel for="scheduledDate" style="font-weight: bold" value="Scheduled Date:  " /><p:spacer width="40" height="20" />
+                        <h:outputText id="scheduledDate" value="#{stockAuditProcessManagedBean.audit.createdDate}"/>
 
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="failQuantity" style="font-weight: bold" value="Fail Quantity: *"  />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="failQuantity" requiredMessage="Fail Quantity is required." id="failQuantity" value="#{stockAuditProcessManagedBean.audit.failQuantity}">
-                                    <f:validateLength minimum="0" maximum="40" />
-                                </p:inputText>
-                            </p:column>
-                        </p:row>
+                        <p:outputLabel for="expectedQuantity" style="font-weight: bold" value="Expected Quantity:  " /><p:spacer width="40" height="20" />
+                        <h:outputText id="expectedQuantity" value="#{stockAuditProcessManagedBean.audit.expectedQuantity}"/>
 
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="remarks" style="font-weight: bold" value="Remarks:   *" />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="remarks" requiredMessage="Remarks is required." id="remarks" value="#{stockAuditProcessManagedBean.audit.remarks}">
-                                    <f:validateLength minimum="1" maximum="300" />
-                                </p:inputText>
-                            </p:column>
-                        </p:row>
+                        <h:outputLabel for="passQuantity" style="font-weight: bold" value="Pass Quantity: *"  /><p:spacer width="40" height="20" />
+                        <p:inputText required="true" label="passQuantity" requiredMessage="Pass Quantity is required." id="passQuantity" value="#{stockAuditProcessManagedBean.audit.passQuantity}">
+                            <f:validateLength minimum="0" maximum="40" />
+                        </p:inputText>
+
+                        <h:outputLabel for="failQuantity" style="font-weight: bold" value="Fail Quantity: *"  /><p:spacer width="40" height="20" />
+                        <p:inputText required="true" label="failQuantity" requiredMessage="Fail Quantity is required." id="failQuantity" value="#{stockAuditProcessManagedBean.audit.failQuantity}">
+                            <f:validateLength minimum="0" maximum="40" />
+                        </p:inputText>
+
+                        <h:outputLabel for="remarks" style="font-weight: bold" value="Remarks:   *" /><p:spacer width="40" height="20" />
+                        <p:inputText required="true" label="remarks" requiredMessage="Remarks is required." id="remarks" value="#{stockAuditProcessManagedBean.audit.remarks}">
+                            <f:validateLength minimum="1" maximum="300" />
+                        </p:inputText>
+
 
                     </h:panelGrid>
-                    <p:messages id="messages" autoUpdate="true" closable="true" />
-                    <p:commandButton id="btn" value="Complete Stock Audit" update="formMain" action="viewduestockaudit?faces-redirect=true" actionListener="#{stockAuditProcessManagedBean.carryOutStockAudit()}" ajax="true" >
-                    </p:commandButton>
+                    <h:panelGrid columns="1">
+                        <p:messages id="messages" autoUpdate="true" closable="true" /><p:spacer width="40" height="20" />
+
+                        <p:commandButton id="btn" value="Complete Stock Audit" update="formMain" action="viewduestockaudit?faces-redirect=true" actionListener="#{stockAuditProcessManagedBean.carryOutStockAudit()}" ajax="true" >
+                        </p:commandButton>
+                        <p:spacer width="40" height="20" />
+                        <p:commandButton value="Go Back" action="viewduestockaudit.xhtml?faces-redirect=true" icon="ui-icon-circle-arrow-w"/>
+                    </h:panelGrid>
                 </p:panel>
             </h:form>
         </ui:define>

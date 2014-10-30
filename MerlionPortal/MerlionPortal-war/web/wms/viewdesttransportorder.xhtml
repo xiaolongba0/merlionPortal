@@ -98,16 +98,16 @@
                             <h:outputText value="#{transportOrder.sourceWarehouseId}" />
                         </p:column>
 
+                        <p:column filterBy="#{transportOrder.destWarehouseId}" filterMatchMode="contains" headerText="Destination Warehouse ID " >
+                            <h:outputText value="#{transportOrder.destWarehouseId}" />
+                        </p:column>
+
                         <p:column style="width:80px" filterBy="#{transportOrder.transportDate}" filterMatchMode="contains" headerText="Transport Date">
                             <h:outputText value="#{transportOrder.transportDate}" />
                         </p:column>
 
                         <p:column style="width:80px" filterBy="#{transportOrder.totalQuantity}" filterMatchMode="contains" headerText="Total Quantity " >
                             <h:outputText value="#{transportOrder.totalQuantity}" />
-                        </p:column>
-
-                        <p:column filterBy="#{transportOrder.destWarehouseId}" filterMatchMode="contains" headerText="Destination Warehouse ID " >
-                            <h:outputText value="#{transportOrder.destWarehouseId}" />
                         </p:column>
 
                         <p:column filterBy="#{transportOrderManagedBean.getTransportOrderStatus(transportOrder.status)}" filterMatchMode="contains" headerText="Transport Order Status" >

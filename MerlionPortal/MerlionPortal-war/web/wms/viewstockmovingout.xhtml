@@ -92,16 +92,19 @@
 
                 </p:dataTable>
                 <br></br>
-                <p:messages id="msgs" autoUpdate="true" closable="true" />
+                <h:panelGrid columns="1">
+                    <p:messages id="messages" autoUpdate="true" closable="true" /><p:spacer width="40" height="20" />
 
-                <p:commandButton action="#{movingStockViewManagedBean.sendOrder(movingStockViewManagedBean.selectedOrder)}" value="Process Order">
-                    <p:confirm header="Send Stock" message="Please confirm if you would like to process this order" icon="ui-icon-alert" />
-                </p:commandButton>
-                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                </p:confirmDialog>
-
+                    <p:commandButton action="#{movingStockViewManagedBean.sendOrder(movingStockViewManagedBean.selectedOrder)}" value="Process Order">
+                        <p:confirm header="Send Stock" message="Please confirm if you would like to process this order" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                    <p:spacer width="40" height="20" />
+                    <p:commandButton value="Go Back" action="viewsourcetransportorder.xhtml?faces-redirect=true" icon="ui-icon-circle-arrow-w"/>
+                </h:panelGrid>
 
             </h:form>
         </ui:define>

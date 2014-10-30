@@ -131,14 +131,12 @@
                                 <p:calendar id="scheduledDate" value="#{stockAuditManagedBean.scheduledDate}" required="true" label="scheduledDate" requiredMessage="Scheduled Date is required." />
                             </p:column>
                         </p:row>
-
-
-                        <br></br>
                     </p:panelGrid>
-                    <p:messages id="messages" autoUpdate="true" closable="true" />
-                    <p:commandButton id="btn" value="Create New Stock Audit" update="formMain" actionListener="#{stockAuditManagedBean.addStockAudit()}" ajax="true" >
-                    </p:commandButton>
-
+                    <h:panelGrid columns="1">
+                        <p:messages id="messages" autoUpdate="true" closable="true" /><p:spacer width="40" height="20" />
+                        <p:commandButton id="btn" value="Create New Stock Audit" update="formMain" actionListener="#{stockAuditManagedBean.addStockAudit()}" ajax="true" >
+                        </p:commandButton>
+                    </h:panelGrid>
                 </p:panel>
             </h:form>
         </ui:define>
