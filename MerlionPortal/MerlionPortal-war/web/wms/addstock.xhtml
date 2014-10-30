@@ -76,7 +76,7 @@
                     </p:ajaxStatus>
                     <h:panelGrid columns="7">
 
-                        <p:selectOneRadio id="myRadioID" value="#{transportOrderManagedBean.radioValue}" layout="custom">
+                        <p:selectOneRadio id="myRadioID" value="#{createStockManagedBean.radioValue}" layout="custom">
                             <f:selectItem itemLabel="Choose ID" itemValue="1"/>
                             <f:selectItem itemLabel="Enter " itemValue="2"/>
                             <p:ajax process="@this" update="formMain" />
@@ -85,14 +85,14 @@
                         <p:radioButton id="id00" for="myRadioID" itemIndex="0"/>
                         <h:outputLabel for="id00" value="Choose Product ID "/>
 
-                        <p:selectOneMenu id="product" value="#{transportOrderManagedBean.productId}"  style="width:200px" required="true" requiredMessage="Product ID is required." disabled="#{transportOrderManagedBean.radioValue != '1'}">
+                        <p:selectOneMenu id="product" value="#{createStockManagedBean.productId}"  style="width:200px" required="true" requiredMessage="Product ID is required." disabled="#{createStockManagedBean.radioValue != '1'}">
                             <f:selectItem itemLabel="Select Product ID" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{transportOrderManagedBean.productList}" var="product" itemLabel="ID:#{product.productId}   Name:#{product.productName}" itemValue="#{product.productId}"/>
+                            <f:selectItems value="#{createStockManagedBean.productList}" var="product" itemLabel="ID:#{product.productId}   Name:#{product.productName}" itemValue="#{product.productId}"/>
                         </p:selectOneMenu>
 
                         <p:radioButton id="id01" for="myRadioID" itemIndex="1"/>
                         <h:outputLabel for="id01" value="Enter Product ID "/>
-                        <p:inputText id="input01" value="#{transportOrderManagedBean.productId}" disabled="#{transportOrderManagedBean.radioValue != '2'}" required="true" requiredMessage="Product ID is required.">
+                        <p:inputText id="input01" value="#{createStockManagedBean.productId}" disabled="#{createStockManagedBean.radioValue != '2'}" required="true" requiredMessage="Product ID is required.">
                         </p:inputText>
                     </h:panelGrid>
                     <h:panelGrid columns="3" >

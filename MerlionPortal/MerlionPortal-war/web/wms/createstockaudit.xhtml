@@ -107,7 +107,7 @@
                             <p:column>
                                 <p:selectOneMenu id="storageBin" value="#{stockAuditManagedBean.storageBinId}"  style="width:210px" required="true" requiredMessage="Please select a storage type">
                                     <f:selectItem itemLabel="Select Storage Bin" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{stockAuditManagedBean.storageBins}" var="storageBin" itemLabel="ID:#{storageBin.storageBinId}   Name:#{storageBin.binName} Bin Type: Name:#{storageBin.binType}"  itemValue="#{storageBin.storageBinId}"/>
+                                    <f:selectItems value="#{stockAuditManagedBean.storageBins}" var="storageBin" itemLabel="ID:#{storageBin.storageBinId}   Name:#{storageBin.binName} Type:#{storageBin.binType}"  itemValue="#{storageBin.storageBinId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
