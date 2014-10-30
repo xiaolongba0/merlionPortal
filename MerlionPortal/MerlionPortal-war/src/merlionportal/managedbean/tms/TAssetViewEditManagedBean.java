@@ -20,6 +20,9 @@ import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionB
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 import entity.SystemUser;
+import java.io.Serializable;
+import javax.faces.bean.ManagedBean;
+import org.primefaces.model.chart.PieChartModel;
 
 /**
  *
@@ -49,8 +52,12 @@ public class TAssetViewEditManagedBean {
     private Integer newAssetId;
     private Integer quantity;
     private Integer companyId;
+    private Integer available;
+    private Integer maintenance;
+    private Integer total;
 
     private SystemUser loginedUser;
+    private PieChartModel pieModel1;
 
     public TAssetViewEditManagedBean() {
     }
@@ -74,20 +81,43 @@ public class TAssetViewEditManagedBean {
             }
         }
         locations = tassetManagementSessionBean.viewMyLocations(companyId);
-
+//        createPieModel1();
     }
+
 
     public void onLocationChange() {
         System.out.println("===============================[In Managed Bean - get Locations]");
         System.out.println("[In Managed Bean - getLocation] location ID : " + locationId);
         if (locationId != null) {
             tassets = tassetManagementSessionBean.viewtAssetForALocation(locationId);
+            available = tassetManagementSessionBean.countAvailableAssetForALocation(locationId);
+            maintenance = tassetManagementSessionBean.countMaintAssetForALocation(locationId);
+            total = tassetManagementSessionBean.counttAssetForALocation(locationId);
             if (tassets == null) {
                 System.out.println("============== FAILED TO VIEW STORAGE TYPE ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Storage Type. Please check if warehouse ID exists! ", ""));
             }
 
         }
+
+    }
+
+    private void createPieModel1() {
+        pieModel1 = new PieChartModel();
+
+        Integer a = available;
+        Integer m = maintenance;
+        Integer t = total;
+        Integer u = t - 1 - m;
+
+        pieModel1.set("Available", a);
+        pieModel1.set("On task", u);
+        pieModel1.set("Under Maintenance", m);
+
+        pieModel1.setTitle("Transportation Asset Summary");
+        pieModel1.setLegendPosition("w");
+        pieModel1.setShowDataLabels(true);
+        pieModel1.setDiameter(t);
 
     }
 
@@ -247,6 +277,38 @@ public class TAssetViewEditManagedBean {
 
     public void setLoginedUser(SystemUser loginedUser) {
         this.loginedUser = loginedUser;
+    }
+
+    public Integer getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Integer available) {
+        this.available = available;
+    }
+
+    public Integer getMaintenance() {
+        return maintenance;
+    }
+
+    public void setMaintenance(Integer maintenance) {
+        this.maintenance = maintenance;
+    }
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
+
+    public PieChartModel getPieModel1() {
+        return pieModel1;
+    }
+
+    public void setPieModel1(PieChartModel pieModel1) {
+        this.pieModel1 = pieModel1;
     }
 
 }

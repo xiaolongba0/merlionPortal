@@ -95,7 +95,7 @@ public class TAssetMaintenanceManagerBean {
 
     public void onChangeLocation() {
         if (locationId != null) {
-            transassetss = tassetManagementSessionBean.viewtAssetForALocation(locationId);
+            transassetss = tassetManagementSessionBean.viewtAvailableAssetForALocation(locationId);
         }
     }
 

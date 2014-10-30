@@ -86,7 +86,7 @@ public class TAssetScheduleManagerBean {
 
     public void onChangeLocation() {
         if (locationId != null) {
-            transassetss = tamsb.viewtAssetForALocation(locationId);
+            transassetss = tamsb.viewtAvailableAssetForALocation(locationId);
         }
     }
 
