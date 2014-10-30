@@ -41,8 +41,9 @@ public class TOLogViewEditManagedBean {
     private SystemUser loginedUser;
     private Integer companyId;
     private List<TransportationOrder> orders;
-    private List<TransportationLog> logs;
     private Integer logId;
+    private List<TransportationLog> logs;
+
     private TransportationLog logg;
 
     private String action;
@@ -77,17 +78,6 @@ public class TOLogViewEditManagedBean {
         timeStamp = Calendar.getInstance().getTime();
     }
 
-    public List<TransportationLog> getLogs() {
-        System.out.println("===============================[In Managed Bean - view Orders for company Id!]" + companyId);
-        logs = tomsb.viewLogforOrder(orderId);
-
-        // for checking
-        for (Object obj : logs) {
-            System.out.println(obj);
-        }
-        return logs;
-    }
-
     public void onOrderChange() {
         System.out.println("===============================[In Managed Bean - get Locations]");
         System.out.println("[In Managed Bean - getLocation] location ID : " + orderId);
@@ -95,12 +85,13 @@ public class TOLogViewEditManagedBean {
             logs = tomsb.viewLogforOrder(orderId);
             if (orderId == null) {
                 System.out.println("============== FAILED TO VIEW STORAGE TYPE ===============");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Storage Type. Please check if warehouse ID exists! ", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Log. Please check if warehouse ID exists! ", ""));
             }
 
         }
 
     }
+
     public void deleteLog(TransportationLog log) {
         try {
             logId = log.getLogId();
@@ -209,6 +200,14 @@ public class TOLogViewEditManagedBean {
 
     public void setTimeStamp(Date timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    public List<TransportationLog> getLogs() {
+        return logs;
+    }
+
+    public void setLogs(List<TransportationLog> logs) {
+        this.logs = logs;
     }
 
 }

@@ -41,7 +41,7 @@ public class TAssetMaintenanceViewEditManagedBean {
     private TransportationAssetMaintenanceManagementSessionBean tammsb;
 
     private Integer companyId;
-    private Integer tAssssssssetId;
+    private Integer gtAssssssssetId;
     private Integer logId;
     private Integer locationId;
 
@@ -86,8 +86,8 @@ public class TAssetMaintenanceViewEditManagedBean {
     }
 
     public void onTAssetChange() {
-        if (tAssssssssetId != null) {
-            logs = tammsb.viewMyMaintenanceLog(tAssssssssetId);
+        if (gtAssssssssetId != null) {
+            logs = tammsb.viewMyMaintenanceLog(gtAssssssssetId);
         }
     }
 
@@ -140,12 +140,12 @@ public class TAssetMaintenanceViewEditManagedBean {
         this.companyId = companyId;
     }
 
-    public Integer gettAssssssssetId() {
-        return tAssssssssetId;
+    public Integer getGtAssssssssetId() {
+        return gtAssssssssetId;
     }
 
-    public void settAssssssssetId(Integer tAssssssssetId) {
-        this.tAssssssssetId = tAssssssssetId;
+    public void setGtAssssssssetId(Integer gtAssssssssetId) {
+        this.gtAssssssssetId = gtAssssssssetId;
     }
 
     public Integer getLogId() {

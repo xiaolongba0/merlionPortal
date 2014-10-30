@@ -43,8 +43,8 @@ public class TOrderManagerBean {
     private String cargoType;
     private Integer cargoWeight;
     private Integer creatorId;
-    private String destination;
-    private String origin;
+    private Integer destination;
+    private Integer origin;
     private Integer referenceId;
     private Integer referenceType;
     private Date timeEnd;
@@ -83,12 +83,14 @@ public class TOrderManagerBean {
     public void createNewOrder(ActionEvent order) {
 
         try {
-            System.out.println("[INSIDE WAR FILE]===========================Create New Node");
+            System.out.println("[INSIDE WAR FILE]===========================Create New Order");
             newOrderId = tomsb.AddNewTransportationOrder(cargoType, cargoWeight, companyId, creatorId, destination, origin, referenceId, referenceType, timeEnd);
+            
+            
             if (newOrderId > -1) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Node Order!", ""));
                 clearAllFields();
-                System.out.println("[WAR FILE]===========================Create New Node");
+                System.out.println("[WAR FILE]===========================Create New Order");
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Something went wrong!", ""));
             }
@@ -151,21 +153,22 @@ public class TOrderManagerBean {
         this.creatorId = creatorId;
     }
 
-    public String getDestination() {
+    public Integer getDestination() {
         return destination;
     }
 
-    public void setDestination(String destination) {
+    public void setDestination(Integer destination) {
         this.destination = destination;
     }
 
-    public String getOrigin() {
+    public Integer getOrigin() {
         return origin;
     }
 
-    public void setOrigin(String origin) {
+    public void setOrigin(Integer origin) {
         this.origin = origin;
     }
+
 
     public Integer getReferenceId() {
         return referenceId;
