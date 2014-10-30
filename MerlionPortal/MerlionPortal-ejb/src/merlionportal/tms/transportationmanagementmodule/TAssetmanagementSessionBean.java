@@ -90,6 +90,9 @@ public class TAssetmanagementSessionBean {
         locationList = new ArrayList<Location>();
         node.setLocationList(locationList);
 
+        List<Route> RouteList = new ArrayList<Route>();
+        node.setRouteList(RouteList);
+
         System.out.println("==========Node Name========== :" + nodeName);
         System.out.println("==========Node Type========== :" + nodeType);
 
@@ -138,8 +141,8 @@ public class TAssetmanagementSessionBean {
                 tempnode = l;
             }
         }
-        System.out.println("tempnode Id"+ nodeId);
-        List<Route> allMyRoute = new ArrayList();   
+        System.out.println("tempnode Id" + nodeId);
+        List<Route> allMyRoute = new ArrayList();
         allMyRoute = tempnode.getRouteList();
 
         return allMyRoute;
@@ -199,7 +202,10 @@ public class TAssetmanagementSessionBean {
         System.out.println("==========Route Distance======= :" + distance);
         System.out.println("==========Route Type=========== :" + routeType);
 
+        nodee.getRouteList().add(route);
+
         em.persist(route);
+        em.merge(nodee);
         em.flush();
         System.out.println("[EJB]====Successfully created Route");
 
@@ -411,7 +417,7 @@ public class TAssetmanagementSessionBean {
 
             schedule.setOperatorId(operatorId);
             tAsset.getAssetScheduleList().add(schedule);
-            
+
             em.persist(schedule);
             em.merge(tAsset);
 
