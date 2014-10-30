@@ -21,51 +21,48 @@
         </ui:define>
 
         <ui:define name="left">
+            <p:menu styleClass="menu-width">
+                <p:submenu label="Home" styleClass="display:block">
+                    <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
+                </p:submenu>
+                <p:submenu label="Product" styleClass="display:block">
+                    <p:menuitem value="Products" url="displayallproducts.xhtml" />
+                </p:submenu>
 
-            <h:form id="formMain">
-                <p:panelMenu>
-                    <p:submenu label="Home" styleClass="display:block">
-                        <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
-                    </p:submenu>
-                    <p:submenu label="Product" styleClass="display:block">
-                        <p:menuitem value="Products" url="displayallproducts.xhtml" />
-                    </p:submenu>
-
-                    <p:submenu label="Quotation" styleClass="display:block">
-                        <p:menuitem value="View All Request" url="viewallrequests.xhtml" />
-                        <p:menuitem value="View Quotation" url="displayallquotations.xhtml" />
-                    </p:submenu>
-                    <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
-                        <p:submenu label="Orders" styleClass="display:block">
-                            <c:if test="#{dashboardBean.checkOESCanGeneratePO()|| dashboardBean.loginedUser.userType == 'superuser'}">
-                                <p:menuitem value="Create Order" url="pogeneration.xhtml" />
-                                <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
-                            </c:if>
-                            <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
-                                <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" /> 
-                                <p:menuitem value="Order Status" url="displayallso.xhtml" />
-                            </c:if>
-                            <c:if test="#{dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
-                                <p:menuitem value="Reject Order" url="returnorder.xhtml" />
-                                <p:menuitem value="Generate Invoice" url="orderswaitingforinvoice.xhtml" />
-
-                            </c:if>
-                        </p:submenu>
-                    </c:if>
-                    <p:submenu label="Payment" styleClass="display:block">
-                        <p:menuitem value="All invoice" url="allinvoice.xhtml" />
-                        <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.loginedUser.userType == 'superuser'}">
-                            <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />                           
+                <p:submenu label="Quotation" styleClass="display:block">
+                    <p:menuitem value="View All Request" url="viewallrequests.xhtml" />
+                    <p:menuitem value="View Quotation" url="displayallquotations.xhtml" />
+                </p:submenu>
+                <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                    <p:submenu label="Orders" styleClass="display:block">
+                        <c:if test="#{dashboardBean.checkOESCanGeneratePO()|| dashboardBean.loginedUser.userType == 'superuser'}">
+                            <p:menuitem value="Create Order" url="pogeneration.xhtml" />
+                            <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
                         </c:if>
+                        <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                            <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" /> 
+                            <p:menuitem value="Order Status" url="displayallso.xhtml" />
+                        </c:if>
+                        <c:if test="#{dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                            <p:menuitem value="Reject Order" url="returnorder.xhtml" />
+                            <p:menuitem value="Generate Invoice" url="orderswaitingforinvoice.xhtml" />
 
+                        </c:if>
                     </p:submenu>
-                    <c:if test="#{dashboardBean.checkOESCanGenerateSalesReport()||dashboardBean.loginedUser.userType == 'superuser'}">
-                        <p:submenu label="Reports" styleClass="display:block">
-                            <p:menuitem value="Sales Reports" url="reportdashboard.xhtml" />
-                        </p:submenu>
+                </c:if>
+                <p:submenu label="Payment" styleClass="display:block">
+                    <p:menuitem value="All invoice" url="allinvoice.xhtml" />
+                    <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />                           
                     </c:if>
-                </p:panelMenu>
-            </h:form>
+
+                </p:submenu>
+                <c:if test="#{dashboardBean.checkOESCanGenerateSalesReport()||dashboardBean.loginedUser.userType == 'superuser'}">
+                    <p:submenu label="Reports" styleClass="display:block">
+                        <p:menuitem value="Sales Reports" url="reportdashboard.xhtml" />
+                    </p:submenu>
+                </c:if>
+            </p:menu>
         </ui:define>
 
         <ui:define name="right">
@@ -77,24 +74,24 @@
                 <h3 style="margin-top:0">Customer Analysis</h3>
                 <p:tabView>
                     <p:tab title="Most profitable customer of this month">
-                            <p:dataTable var="cust" value="#{monthlyReportManagedBean.topThreeOfCurrent()}">
-                                <p:column headerText="Cusotmer ">
-                                    <h:outputText value="#{monthlyReportManagedBean.viewCustomerName(cust.customerId)}" />
-                                </p:column>
-                                <p:column headerText="Total Value Of current Month">
-                                    <h:outputText value="#{cust.customerCurrentValue}" />
-                                </p:column>                               
-                            </p:dataTable>
+                        <p:dataTable var="cust" value="#{monthlyReportManagedBean.topThreeOfCurrent()}">
+                            <p:column headerText="Cusotmer ">
+                                <h:outputText value="#{monthlyReportManagedBean.viewCustomerName(cust.customerId)}" />
+                            </p:column>
+                            <p:column headerText="Total Value Of current Month">
+                                <h:outputText value="#{cust.customerCurrentValue}" />
+                            </p:column>                               
+                        </p:dataTable>
                     </p:tab>
                     <p:tab title="Most profitable customer">
                         <p:dataTable var="cust" value="#{monthlyReportManagedBean.topThreeOfYear()}">
-                                <p:column headerText="Customer">
-                                    <h:outputText value="#{monthlyReportManagedBean.viewCustomerName(cust.customerId)}" />
-                                </p:column>
-                                <p:column headerText="Total Value">
-                                    <h:outputText value="#{cust.customerCurrentValue}" />
-                                </p:column>                               
-                            </p:dataTable>
+                            <p:column headerText="Customer">
+                                <h:outputText value="#{monthlyReportManagedBean.viewCustomerName(cust.customerId)}" />
+                            </p:column>
+                            <p:column headerText="Total Value">
+                                <h:outputText value="#{cust.customerCurrentValue}" />
+                            </p:column>                               
+                        </p:dataTable>
                     </p:tab>                   
                 </p:tabView>                        
                 <br></br>

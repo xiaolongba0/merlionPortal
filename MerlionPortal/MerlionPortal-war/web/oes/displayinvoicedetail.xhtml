@@ -21,9 +21,7 @@
         </ui:define>
 
         <ui:define name="left">
-
-            <h:form id="formMain">
-                <p:panelMenu>
+                <p:menu styleClass="menu-width">
                     <p:submenu label="Home" styleClass="display:block">
                         <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
                     </p:submenu>
@@ -64,58 +62,57 @@
                             <p:menuitem value="Sales Reports" url="reportdashboard.xhtml" />
                         </p:submenu>
                     </c:if>
-                </p:panelMenu>
-            </h:form>
+                </p:menu>
         </ui:define>
 
         <ui:define name="right">
             <h:form>
-            <br></br>
-            <p:fieldset legend="Invoice" style="margin-bottom:20px">
-                <h:panelGrid id="inVodetail" columns="2" cellpadding="5">
-                    <p>Invoice #: </p><h:outputText value="#{displayInvoiceManagedBean.myInvoice.invoiceId}"/>
-                    <p>Total Price</p><h:outputText value="#{displayInvoiceManagedBean.myInvoice.totalPrice}"/>
-                    <p>Terms and Condition</p><h:outputText value="#{displayInvoiceManagedBean.myInvoice.conditionText}"/>
-                </h:panelGrid>
-            </p:fieldset>
-            <br></br>
-            <p:fieldset legend="Ship To " style="margin-bottom:20px">
-                <h:panelGrid id="detail" columns="2" cellpadding="5">
-                    <p>Contact Person: </p><h:outputText value="#{displayInvoiceManagedBean.myOrder.contactPersonName}"/>
-                    <p>Phone Number: </p><h:outputText value="#{displayInvoiceManagedBean.myOrder.contactPersonPhoneNumber}"/>
-                    <p>Address : </p><h:outputText value="#{displayInvoiceManagedBean.myOrder.shipTo}"/>
-                    <p>Quotation : </p><h:outputText value="#{displayInvoiceManagedBean.myOrder.quotationId}"/>
+                <br></br>
+                <p:fieldset legend="Invoice" style="margin-bottom:20px">
+                    <h:panelGrid id="inVodetail" columns="2" cellpadding="5">
+                        <p>Invoice #: </p><h:outputText value="#{displayInvoiceManagedBean.myInvoice.invoiceId}"/>
+                        <p>Total Price</p><h:outputText value="#{displayInvoiceManagedBean.myInvoice.totalPrice}"/>
+                        <p>Terms and Condition</p><h:outputText value="#{displayInvoiceManagedBean.myInvoice.conditionText}"/>
+                    </h:panelGrid>
+                </p:fieldset>
+                <br></br>
+                <p:fieldset legend="Ship To " style="margin-bottom:20px">
+                    <h:panelGrid id="detail" columns="2" cellpadding="5">
+                        <p>Contact Person: </p><h:outputText value="#{displayInvoiceManagedBean.myOrder.contactPersonName}"/>
+                        <p>Phone Number: </p><h:outputText value="#{displayInvoiceManagedBean.myOrder.contactPersonPhoneNumber}"/>
+                        <p>Address : </p><h:outputText value="#{displayInvoiceManagedBean.myOrder.shipTo}"/>
+                        <p>Quotation : </p><h:outputText value="#{displayInvoiceManagedBean.myOrder.quotationId}"/>
 
-                </h:panelGrid>
-            </p:fieldset>
-            <br></br>
-            <br></br>
-            <p:dataTable var="lineItem" value="#{displayInvoiceManagedBean.myOrder.productOrderLineItemList}">
-                <p:column headerText="Product">
-                    <h:outputText value="#{lineItem.productproductId.productName}" />
-                </p:column>
+                    </h:panelGrid>
+                </p:fieldset>
+                <br></br>
+                <br></br>
+                <p:dataTable var="lineItem" value="#{displayInvoiceManagedBean.myOrder.productOrderLineItemList}">
+                    <p:column headerText="Product">
+                        <h:outputText value="#{lineItem.productproductId.productName}" />
+                    </p:column>
 
-                <p:column headerText="Description">
-                    <h:outputText value="#{lineItem.productproductId.description}" />
-                </p:column>
+                    <p:column headerText="Description">
+                        <h:outputText value="#{lineItem.productproductId.description}" />
+                    </p:column>
 
-                <p:column headerText="Category">
-                    <h:outputText value="#{lineItem.productproductId.category}" />
-                </p:column>
-                <p:column headerText="Unit Price">
-                    <h:outputText value="#{lineItem.price}" />
-                </p:column>
-                <p:column headerText="Quantity">
-                    <h:outputText value="#{lineItem.quantity}" />
-                </p:column>
-                <p:column headerText="Value">
-                    <h:outputText value="#{lineItem.quantity*lineItem.price}" />
-                </p:column>
-            </p:dataTable>
-            <br></br>
-            <br></br>
-            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-            <p:commandButton value="Go Back" action="allinvoice.xhtml?faces-redirct=true" icon="ui-icon-circle-arrow-w"/>
+                    <p:column headerText="Category">
+                        <h:outputText value="#{lineItem.productproductId.category}" />
+                    </p:column>
+                    <p:column headerText="Unit Price">
+                        <h:outputText value="#{lineItem.price}" />
+                    </p:column>
+                    <p:column headerText="Quantity">
+                        <h:outputText value="#{lineItem.quantity}" />
+                    </p:column>
+                    <p:column headerText="Value">
+                        <h:outputText value="#{lineItem.quantity*lineItem.price}" />
+                    </p:column>
+                </p:dataTable>
+                <br></br>
+                <br></br>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <p:commandButton value="Go Back" action="allinvoice.xhtml?faces-redirct=true" icon="ui-icon-circle-arrow-w"/>
             </h:form>
         </ui:define>
     </ui:composition>

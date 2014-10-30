@@ -21,9 +21,7 @@
         </ui:define>
 
         <ui:define name="left">
-
-            <h:form id="formMain">
-                <p:panelMenu>
+                <p:menu styleClass="menu-width">
                     <p:submenu label="Home" styleClass="display:block">
                         <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
                     </p:submenu>
@@ -64,8 +62,7 @@
                             <p:menuitem value="Sales Reports" url="reportdashboard.xhtml" />
                         </p:submenu>
                     </c:if>
-                </p:panelMenu>
-            </h:form>
+                </p:menu>
         </ui:define>
 
         <ui:define name="right">
