@@ -39,7 +39,7 @@
                     return false;
                 }
 
-                function postReadMail(title, content, senderEmail) {
+                function postReadMail(title, content, senderEmail,isSender) {
                     var mailReader = $("#messageReader");
                     $("#readMsgTitle").html(title);
                     $("#readMsgContent").html(content);
@@ -51,6 +51,12 @@
                     }, function(e) {
                         reply(e.data.senderEmail, e.data.title);
                     });
+
+                    if(isSender === "1"){
+                        $("#replyBtn").addClass("hide");
+                    }else{
+                        $("#replyBtn").removeClass("hide");
+                    }
 
                     $("#deleteBtn").unbind("click");
                     $("#deleteBtn").click(function(e) {

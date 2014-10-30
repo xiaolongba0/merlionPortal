@@ -102,8 +102,12 @@ public class MessageManagedBean {
             //Change mail status
             msb.changeMailStatus(mailid, MessagingStatus.MAIL_READ);
             if (m != null) {
+                String isSender = "0";
+                if(m.getSender().equals(loginedUser.getSystemUserId())){
+                    isSender = "1";
+                }
                 String s = m.getMessageBody().replace("\n", " ");
-                String functionCall = "postReadMail('" + m.getMessageTitle() + "','" + s + "','" + msb.findEmail(m.getSender()) + "')";
+                String functionCall = "postReadMail('" + m.getMessageTitle() + "','" + s + "','" + msb.findEmail(m.getSender()) + "','"+isSender+"')";
                 RequestContext.getCurrentInstance().execute(functionCall);
             }
         }
