@@ -74,10 +74,10 @@ public class ViewStatisticResultManagedBean {
         amounts = keyAccountMSB.calculateOrderAmountForAllCompanyies(startDate, endDate, companyId);
         companys = keyAccountMSB.produceCompanyList(startDate, endDate, companyId);
 
-        if (amounts == null || companys == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "There is no data available for analysis", "!"));
-        } else {
+        if (amounts != null || companys != null) {
             createBarModels();
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "There is no data available for analysis", "!"));
         }
         logSB.recordSystemLog(userId, "CRMS viewed statistic result of order amount");
 

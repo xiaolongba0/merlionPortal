@@ -111,7 +111,7 @@ public class POProcessingManagementSessionBean {
         boolean result = true;
         System.out.println("Enter EJB passCreditCheck");
         Query q = em.createNamedQuery("ServicePO.findBySenderCompanyId").setParameter("senderCompanyId", companyId);
-        
+
         ServicePO thisPO = em.find(ServicePO.class, servicePOId);
         for (Object o : q.getResultList()) {
             System.out.println("Enter EJB Loop passCreditCheck");
@@ -120,9 +120,10 @@ public class POProcessingManagementSessionBean {
             //This contract, but not this po
             if (po.getContract().getContractId() == (int) contractId && po.getServicePOId() != (int) servicePOId && po.getCreatedDate().before(thisPO.getCreatedDate())) {
                 //not paid
-                if (po.getStatus() != 8) {
+                if ((po.getServiceInvoice() != null && po.getServiceInvoice().getStatus() != 3) || po.getServiceInvoice()==null ) {
                     System.out.println("Enter EJB Order not paid" + po.getServicePOId());
                     result = false;
+
                 }
             }
         }
