@@ -112,7 +112,7 @@
                         </p:column>
 
                         <p:column headerText="">
-                            <p:commandButton action="stockauditprocess?faces-redirect=true" value="Proceed" rendered="#{stockaudit.stockAuditStatus != 1}">
+                            <p:commandButton action="stockauditprocess?faces-redirect=true" value="Proceed" rendered="#{stockaudit.stockAuditStatus == 0}">
                                 <f:actionListener binding="#{stockAuditProcessManagedBean.getStockAuditInfo(stockaudit.stockAuditId)}" />
                                 <p:confirm header="Confirmation" message="Do you want to start the stock audit process?" icon="ui-icon-alert" />
                             </p:commandButton> 
