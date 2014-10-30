@@ -130,15 +130,15 @@ public class TransportOrderSessionBean {
                 // same bin type
                 System.out.println("SOURCE BIN TYPE: " + sourceBinType);
                 System.out.println("Destination BIN TYPE: " + destBin.getBinType());
+                System.out.println("Destnation BIN ID: " + destBin.getStorageBinId());
                 if (sourceBinType.equalsIgnoreCase(destBin.getBinType()) & tempTotalQuantity != 0);
                 {
                     System.out.println("[INSIDE TOSB EJB, add TO]================================ bins have the same bin type");
-                    System.out.println("[INSIDE TOSB EJB, add TO]================================ bins available space" + destBin.getAvailableSpace());
+                    System.out.println("[INSIDE TOSB EJB, add TO]================================ bins available space " + destBin.getAvailableSpace());
                     // check for space in BIN quantity
                     if (destBin.getAvailableSpace() == 0) {
                         i++;
-
-                    } else if (tempTotalQuantity < destBin.getAvailableSpace() & tempTotalQuantity != 0) {
+                    } else if (tempTotalQuantity <= destBin.getAvailableSpace() & tempTotalQuantity != 0) {
                         Integer reservedQuantity = 0;
                         reservedQuantity = tempTotalQuantity;
                         tempTotalQuantity = 0;
@@ -146,9 +146,9 @@ public class TransportOrderSessionBean {
                         destBinIds.add(destBin.getStorageBinId());
                         destReservedQuantity.add(reservedQuantity);
                         i++;
-                    } else if ((tempTotalQuantity >= destBin.getAvailableSpace()) & tempTotalQuantity != 0) {
+                    } else if ((tempTotalQuantity > destBin.getAvailableSpace()) & tempTotalQuantity != 0) {
                         Integer reservedQuantity = 0;
-                        reservedQuantity = tempTotalQuantity - destBin.getAvailableSpace();
+                        reservedQuantity = destBin.getAvailableSpace();
                         System.out.println("[INSIDE TOSB EJB]================================Add Transport Order, Reserved Quantity2: " + reservedQuantity);
                         tempTotalQuantity = tempTotalQuantity - reservedQuantity;
                         destBinIds.add(destBin.getStorageBinId());
