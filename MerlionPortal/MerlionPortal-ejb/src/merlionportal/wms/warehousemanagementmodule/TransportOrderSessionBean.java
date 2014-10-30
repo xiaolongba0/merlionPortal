@@ -157,11 +157,10 @@ public class TransportOrderSessionBean {
                     } else {
                         return false;
                     }
-                    if (tempTotalQuantity!= 0){
-                        return false;
-                    }
                 }
-
+            }
+            if (tempTotalQuantity != 0) {
+                return false;
             }
 
             // create transport order
