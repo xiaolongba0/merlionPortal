@@ -170,6 +170,7 @@ public class TransportOrderManagedBean {
 
         boolean result = tosb.cancelTransportOrder(transportOrder.getTransportOrderId());
         if (result) {
+            transportOrder.setStatus(1);
             systemLogSB.recordSystemLog(userId, "WMS cancel transport order");
             FacesMessage msg = new FacesMessage("Transport Order with ID = " + transportOrder.getTransportOrderId() + " has sucessfully been cancelled");
             FacesContext.getCurrentInstance().addMessage(null, msg);
