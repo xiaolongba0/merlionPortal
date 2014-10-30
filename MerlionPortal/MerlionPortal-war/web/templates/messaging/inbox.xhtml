@@ -80,6 +80,7 @@
 
                 function readMail(menuitem, id) {
                     $("#inboxMessages").find("li").removeClass("active");
+                    $("#outboxMessages").find("li").removeClass("active");
                     $(menuitem).addClass("active");
                     $("#selectmsgid").val(id);
                     document.getElementById('messagingForm:readEmail').click();
@@ -186,7 +187,7 @@
                         <c:otherwise>
                             <div class="col-md-2">
                                 <h4>Outbox Messages</h4>
-                                <ul id="inboxMessages" class="list-group">
+                                <ul id="outboxMessages" class="list-group">
                                     <c:forEach items="#{messagerBean.outbox}" var="message">
                                         <c:choose>
                                             <c:when test="#{message.status == 9990}">
