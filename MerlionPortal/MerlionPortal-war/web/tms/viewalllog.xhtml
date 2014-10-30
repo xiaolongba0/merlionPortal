@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">
+        <ui:param name="pageName" value="WMS home" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <p:menu>
+                <p:submenu label ="Map">
+                    <p:submenu label="Node" >
+                        <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
+                        <p:menuitem value="View All Nodes" url="viewallnode.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Route" >
+                        <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
+                        <p:menuitem value="View All Routes" url="viewallroute.xhtml"/>
+                    </p:submenu>
+                </p:submenu>
+                <p:submenu label =" Manage Your Transportation">
+                    <p:menuitem value="TMS Home" url="tmsindex.xhtml" />
+                </p:submenu>
+                <p:submenu label="Location" >
+                    <p:menuitem value="Add A Location" url="addnewlocation.xhtml" style="background-color: lavender"/>
+                    <p:menuitem value="View All Locations" url="viewalllocation.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Transportation Asset" >
+                    <p:menuitem value="Add Transportation Assets" url="addnewtasset.xhtml" />
+                    <p:menuitem value="View Transportation Assets" url="viewalltasset.xhtml" />
+                </p:submenu>
+                <p:submenu label="Asset Schedule" >
+                    <p:menuitem value="Add A Asset Schedule" url="addnewtassetschedule.xhtml" />
+                    <p:menuitem value="View All Schedule" url="viewalltassetschedule.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Maintenance" >
+                    <p:menuitem value="Create Maintenance" url="addnewmaintenancelog.xhtml"  />
+                    <p:menuitem value="View All Maintenance" url="viewallmaintenancelog.xhtml" />
+                </p:submenu>
+                <p:submenu label="Operator" >
+                    <p:menuitem value="Add A Operator" url="addnewoperator.xhtml"  />
+                    <p:menuitem value="View All Operator" url="viewalloperator.xhtml" />
+                </p:submenu>
+                <p:submenu label="Operator Schedule" >
+                    <p:menuitem value="Add A Operator Schedule" url="addnewoperatorschedule.xhtml" />
+                    <p:menuitem value="View All Operator Schedule" url="viewalloperatorschedule.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Transportation Order" >
+                    <p:menuitem value="Create Transportation Order" url="addnewtorder.xhtml" />
+                    <p:menuitem value="View All Orders" url="viewalltorder.xhtml" />
+                    <p:menuitem value="View Order Details" url="viewalltorder.xhtml"/>
+                </p:submenu>
+
+                <p:submenu label="Transportation Request" >
+                    <p:menuitem value="Create A Transportation Request" url="addnewrequest.xhtml" />
+                    <p:menuitem value="View All Request" url="viewallrequest.xhtml" />
+                </p:submenu>
+
+            </p:menu>
+        </ui:define>
+        <ui:define name="right">       
+            <h:form id="formMain">
+
+                <p:panel id="panel" header=" Tracking Shippment Information">
+                    <p:ajaxStatus style="width:16px;height:16px;">
+                        <f:facet name="start">
+                            <h:graphicImage value="/img/load.gif" />
+                        </f:facet>
+                        <f:facet name="complete">
+                            <h:outputText value="" />
+                        </f:facet>
+                    </p:ajaxStatus>
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="order" value="orderId: " />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="order" value="#{tOLogViewEditManagedBean.orderId}"  style="width:300px" required="true" requiredMessage="Please select a order">
+                                    <p:ajax listener="#{tOLogViewEditManagedBean.onOrderChange()}" update="logData" />
+                                    <f:selectItem itemLabel="Select Order" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{tOLogViewEditManagedBean.orders}" var="order" itemLabel="Order Id:#{order.transportationOrderId}"  itemValue="#{order.transportationOrderId}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+
+                    <p:dataTable id="logData" var="log" sortMode="multiple" editable="true" value="#{tOLogViewEditManagedBean.logs}" 
+                                 widgetVar="logTable"
+                                 emptyMessage="No Log found"
+                                 rowKey="#{log.logId}">
+
+                        <f:facet name="header">                    
+                            <p:outputPanel>
+                                <h:outputText value="Search Log:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('transportationAssetTable').filter()" />
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:ajax event="rowEdit" listener="#{tOLogViewEditManagedBean.onRowEdit}"/>
+                        <p:ajax event="rowEditCancel" listener="#{tOLogViewEditManagedBean.onRowCancel}"/>                
+
+
+                        <p:column filterBy="#{log.logId}" filterMatchMode="exact" headerText="Log ID" >
+                            <h:outputText value="#{log.logId}" />
+                        </p:column>
+
+                        <p:column filterBy="#{log.operatorId}" filterMatchMode="exact" headerText="Operator Id" >
+                            <h:outputText value="#{log.operatorId}" />
+                        </p:column>
+
+                        <p:column filterBy="#{log.timeStamp}" filterMatchMode="exact" headerText="Time" >
+                            <h:outputText value="#{log.timeStamp}" />
+                        </p:column>
+
+                        <p:column  headerText="Action">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{log.action}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{log.action}" style="width:100%" label="Action"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+
+                        <p:column  headerText="Description">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{log.actionMessage}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{log.actionMessage}" style="width:100%" label="Description"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText = "Delete Transportation Asset">
+                            <p:commandButton action="#{tOLogViewEditManagedBean.deleteLog(log)}" update="tAssetData" value="Delete">
+                                <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this Log?" icon="ui-icon-alert" />
+                            </p:commandButton> 
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </p:column>
+
+                        <p:column style="width:32px">
+                            <p:rowEditor />
+                        </p:column>
+
+                    </p:dataTable>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>                        

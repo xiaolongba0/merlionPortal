@@ -79,7 +79,7 @@
             <h:form id="formMain">
 
                 <br/>
-                <p:panel id="panel" header="Add New Transportation Order">
+                <p:panel id="panel" header="Add New Transportation Log">
                     <p:ajaxStatus style="width:16px;height:16px;">
                         <f:facet name="start">
                             <h:graphicImage value="/img/load.gif" />
@@ -91,92 +91,49 @@
                     <p:panelGrid>
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="cargoType" style="font-weight: bold" value="Shippment Type: " />
+                                <h:outputLabel for="order" style="font-weight: bold" value="orderId:  " />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="nodeName" requiredMessage="Node Name is required." id="cargoType" value="#{tOrderManagerBean.cargoType}">
-                                    <f:validateLength minimum="4" maximum="40" />
+                                <p:selectOneMenu id="order" value="#{tOLogManagerBean.orderId}"  style="width:210px" required="true" requiredMessage="Please select a Order">
+                                    <f:selectItem itemLabel="Select Order" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{tOLogManagerBean.orders}" var="order" itemLabel="OrderNumber:#{order.transportationOrderId}"  itemValue="#{order.transportationOrderId}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="operator" style="font-weight: bold" value="orderId:  " />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="operator" value="#{tOLogManagerBean.operatorId}"  style="width:210px" required="true" requiredMessage="Please select a Operator">
+                                    <f:selectItem itemLabel="Select Operator" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{tOLogManagerBean.operators}" var="operator" itemLabel="Operator ID:#{operator.operatorId}"  itemValue="#{operator.operatorId}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="action" style="font-weight: bold" value="Action: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="nodeName" requiredMessage="Action is required." id="action" value="#{tOLogManagerBean.action}">
                                 </p:inputText>
                             </p:column>                       
                         </p:row>
                         <p:row>
                             <p:column>
-                                <h:outputLabel for="cargoWeight" style="font-weight: bold" value="Cargo Weight (TEU):  " />
+                                <h:outputLabel for="actionMessage" style="font-weight: bold" value="Description:  " />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="nodeType" requiredMessage="Node Type is required." id="cargoWeight" value="#{tOrderManagerBean.cargoWeight}">
-                                    <f:validateLength minimum="1" maximum="19" />
-                                </p:inputText>
-                            </p:column>                             
-                        </p:row>  
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="destination" style="font-weight: bold" value="Destination:  " />
-                            </p:column>
-                            <p:column>
-                                <p:selectOneMenu id="destination" value="#{tOrderManagerBean.destination}"  style="width:210px" required="true" requiredMessage="Please select a Destination">
-                                    <f:selectItem itemLabel="Select Destination" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tOrderManagerBean.destinations}" var="destination" itemLabel="Name:#{destination.locationName}"  itemValue="#{destination.locationName}"/>
-                                </p:selectOneMenu>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="origin" style="font-weight: bold" value="Origin:  " />
-                            </p:column>
-                            <p:column>
-                                <p:selectOneMenu id="origin" value="#{tOrderManagerBean.origin}"  style="width:210px" required="true" requiredMessage="Please select a Origin">
-                                    <f:selectItem itemLabel="Select Origin" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tOrderManagerBean.origins}" var="origin" itemLabel="Name:#{origin.locationName}"  itemValue="#{origin.locationName}"/>
-                                </p:selectOneMenu>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="referenceId" style="font-weight: bold" value="Document No.:  " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="nodeType" requiredMessage="Node Type is required." id="referenceId" value="#{tOrderManagerBean.referenceId}">
-                                    <f:validateLength minimum="1" maximum="19" />
-                                </p:inputText>
-                            </p:column>                             
-                        </p:row>  
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="referenceType" style="font-weight: bold" value="Document ID:  " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="nodeType" requiredMessage="Node Type is required." id="referenceType" value="#{tOrderManagerBean.referenceType}">
-                                    <f:validateLength minimum="1" maximum="19" />
-                                </p:inputText>
-                            </p:column>                             
-                        </p:row>  
-
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="timeEnd" style="font-weight: bold" value="Expected Delivery Date:  " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="nodeType" requiredMessage="Node Type is required." id="timeEnd" value="#{tOrderManagerBean.referenceType}">
-                                    <f:validateLength minimum="1" maximum="19" />
-                                </p:inputText>
-                            </p:column>                             
-                        </p:row>  
-
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="creatorId" style="font-weight: bold" value="Your User Id:  " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="nodeType" requiredMessage="Node Type is required." id="creatorId" value="#{tOrderManagerBean.creatorId}">
-                                    <f:validateLength minimum="1" maximum="19" />
+                                <p:inputText required="true" label="nodeType" requiredMessage="Descriptionis required." id="cargoWeight" value="#{tOLogManagerBean.actionMessage}">
+                                    <f:validateLength minimum="1" maximum="400" />
                                 </p:inputText>
                             </p:column>                             
                         </p:row>  
 
                     </p:panelGrid>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                    <p:commandButton id="btn" value="Create New Node" update="formMain" actionListener="#{tOrderManagerBean.createNewOrder(order)}" ajax="true" >
+                    <p:commandButton id="btn" value="Create New Log" update="formMain" actionListener="#{tOLogManagerBean.createNewLog(log)}" ajax="true" >
                     </p:commandButton>
 
                 </p:panel>

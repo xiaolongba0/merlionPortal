@@ -20,7 +20,7 @@
             </ui:insert>
         </ui:define>
 
-       <ui:define name="left">
+        <ui:define name="left">
             <p:menu>
                 <p:submenu label ="Map">
                     <p:submenu label="Node" >
@@ -74,3 +74,56 @@
 
             </p:menu>
         </ui:define>
+        <ui:define name="right">       
+            <h:form id="formMain">
+                <p:dataTable id="order" var="order" sortMode="multiple" editable="true" value="#{tOrderViewEditManagedBean.orders}" 
+                             widgetVar="ordersTable"
+                             emptyMessage="No order found"
+                             rowKey="#{order.transportationOrderId}">
+                    <f:facet name="header">                    
+                        <p:outputPanel>
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('nodeTable').filter()" />
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:column filterBy="#{order.transportationOrderId}" filterMatchMode="exact" headerText="TransportationOrder ID" >
+                        <h:outputText value="#{order.transportationOrderId}" />
+                    </p:column>
+                    <p:column filterBy="#{order.transportationOrderId}" filterMatchMode="exact" headerText="Cargo Type" >
+                        <h:outputText value="#{order.cargoType}" />
+                    </p:column>
+                    <p:column filterBy="#{order.transportationOrderId}" filterMatchMode="exact" headerText="Cargo Weight" >
+                        <h:outputText value="#{order.cargoWeight}"/>
+                    </p:column>
+                    <p:column filterBy="#{order.transportationOrderId}" filterMatchMode="exact" headerText="Origin" >
+                        <h:outputText value="#{order.origin}" />
+                    </p:column>
+                    <p:column filterBy="#{order.transportationOrderId}" filterMatchMode="exact" headerText="Destination" >
+                        <h:outputText value="#{order.destination}" />
+                    </p:column>
+                    <p:column filterBy="#{order.transportationOrderId}" filterMatchMode="exact" headerText="Shipping Date" >
+                        <h:outputText value="#{order.timeStart}" />
+                    </p:column>
+                    <p:column filterBy="#{order.transportationOrderId}" filterMatchMode="exact" headerText="Expected Delivery Date" >
+                        <h:outputText value="#{order.timeEnd}" />
+                    </p:column>
+                    <p:column filterBy="#{order.transportationOrderId}" filterMatchMode="exact" headerText="Creator" >
+                        <h:outputText value="#{order.creatorId}" />
+                    </p:column>
+                    <p:column filterBy="#{order.transportationOrderId}" filterMatchMode="exact" headerText="Document Type" >
+                        <h:outputText value="#{order.referenceType}" />
+                    </p:column>
+                    <p:column filterBy="#{order.transportationOrderId}" filterMatchMode="exact" headerText="Doucment No." >
+                        <h:outputText value="#{order.referenceId}" />
+                    </p:column>
+
+
+                </p:dataTable>
+                <br></br>
+                <p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>                        
+
+
