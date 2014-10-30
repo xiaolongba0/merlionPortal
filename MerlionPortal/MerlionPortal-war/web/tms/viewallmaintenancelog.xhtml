@@ -109,7 +109,7 @@
                                 <p:outputLabel for="tAsset" value="Transportation Asset Type: " />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="tAsset" value="#{tAssetMaintenanceViewEditManagedBean.tAssssssssetId}"  style="width:300px" required="true" requiredMessage="Please select a Transportation Asset">
+                                <p:selectOneMenu id="tAsset" value="#{tAssetMaintenanceViewEditManagedBean.gtAssssssssetId}"  style="width:300px" required="true" requiredMessage="Please select a Transportation Asset">
                                     <p:ajax listener="#{tAssetMaintenanceViewEditManagedBean.onTAssetChange()}" update="scheduleData" />
                                     <f:selectItem itemLabel="Select Transportation Asset" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{tAssetMaintenanceViewEditManagedBean.tassetss}" var="tAsset" itemLabel="ID:#{tAsset.assetId} Name:#{tAsset.assetType}"  itemValue="#{tAsset.assetId}"/>

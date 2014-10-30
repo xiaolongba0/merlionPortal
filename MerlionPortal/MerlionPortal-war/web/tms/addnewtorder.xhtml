@@ -121,7 +121,7 @@
                             <p:column>
                                 <p:selectOneMenu id="destination" value="#{tOrderManagerBean.destination}"  style="width:210px" required="true" requiredMessage="Please select a Destination">
                                     <f:selectItem itemLabel="Select Destination" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tOrderManagerBean.destinations}" var="destination" itemLabel="Name:#{destination.locationName}"  itemValue="#{destination.locationName}"/>
+                                    <f:selectItems value="#{tOrderManagerBean.destinations}" var="destination" itemLabel="Name:#{destination.locationName}"  itemValue="#{destination.locationId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
@@ -132,7 +132,7 @@
                             <p:column>
                                 <p:selectOneMenu id="origin" value="#{tOrderManagerBean.origin}"  style="width:210px" required="true" requiredMessage="Please select a Origin">
                                     <f:selectItem itemLabel="Select Origin" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tOrderManagerBean.origins}" var="origin" itemLabel="Name:#{origin.locationName}"  itemValue="#{origin.locationName}"/>
+                                    <f:selectItems value="#{tOrderManagerBean.origins}" var="origin" itemLabel="Name:#{origin.locationName}"  itemValue="#{origin.locationId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
@@ -141,17 +141,17 @@
                                 <h:outputLabel for="referenceId" style="font-weight: bold" value="Document No.:  " />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="nodeType" requiredMessage="Node Type is required." id="referenceId" value="#{tOrderManagerBean.referenceId}">
+                                <p:inputText required="true" label="nodeType" requiredMessage="Documenet No. is required." id="referenceId" value="#{tOrderManagerBean.referenceId}">
                                     <f:validateLength minimum="1" maximum="19" />
                                 </p:inputText>
                             </p:column>                             
                         </p:row>  
                         <p:row>
                             <p:column>
-                                <h:outputLabel for="referenceType" style="font-weight: bold" value="Document ID:  " />
+                                <h:outputLabel for="referenceType" style="font-weight: bold" value="Document Type:  " />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="nodeType" requiredMessage="Node Type is required." id="referenceType" value="#{tOrderManagerBean.referenceType}">
+                                <p:inputText required="true" label="nodeType" requiredMessage="Reference Type is required." id="referenceType" value="#{tOrderManagerBean.referenceType}">
                                     <f:validateLength minimum="1" maximum="19" />
                                 </p:inputText>
                             </p:column>                             
@@ -159,21 +159,18 @@
 
                         <p:row>
                             <p:column>
-                                <h:outputLabel for="timeEnd" style="font-weight: bold" value="Expected Delivery Date:  " />
-                            </p:column>
+                                <p:outputLabel for="startDate" value="Start Date " /><p:spacer width="20" height="20" /></p:column>
                             <p:column>
-                                <p:inputText required="true" label="nodeType" requiredMessage="Node Type is required." id="timeEnd" value="#{tOrderManagerBean.referenceType}">
-                                    <f:validateLength minimum="1" maximum="19" />
-                                </p:inputText>
-                            </p:column>                             
-                        </p:row>  
+                                <p:calendar id="startDate" required="true" requiredMessage="Start Date is required" value="#{tOrderManagerBean.timeEnd}" pattern="dd-MM-yyyy" mask="true" mindate="#{tAssetScheduleManagerBean.today}" />
+                            </p:column>
+                        </p:row> 
 
                         <p:row>
                             <p:column>
                                 <h:outputLabel for="creatorId" style="font-weight: bold" value="Your User Id:  " />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="nodeType" requiredMessage="Node Type is required." id="creatorId" value="#{tOrderManagerBean.creatorId}">
+                                <p:inputText required="true" label="nodeType" requiredMessage="Creator  is required." id="creatorId" value="#{tOrderManagerBean.creatorId}">
                                     <f:validateLength minimum="1" maximum="19" />
                                 </p:inputText>
                             </p:column>                             
@@ -181,7 +178,7 @@
 
                     </p:panelGrid>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                    <p:commandButton id="btn" value="Create New Node" update="formMain" actionListener="#{tOrderManagerBean.createNewOrder(order)}" ajax="true" >
+                    <p:commandButton id="btn" value="Create New Transportation Order" update="formMain" actionListener="#{tOrderManagerBean.createNewOrder(order)}" ajax="true" >
                     </p:commandButton>
 
                 </p:panel>

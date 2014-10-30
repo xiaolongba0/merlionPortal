@@ -107,12 +107,12 @@
                         </p:row>
                         <p:row>
                             <p:column>
-                                <h:outputLabel for="operator" style="font-weight: bold" value="orderId:  " />
+                                <h:outputLabel for="operator" style="font-weight: bold" value="OperatorID:  " />
                             </p:column>
                             <p:column>
                                 <p:selectOneMenu id="operator" value="#{tOLogManagerBean.operatorId}"  style="width:210px" required="true" requiredMessage="Please select a Operator">
                                     <f:selectItem itemLabel="Select Operator" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tOLogManagerBean.operators}" var="operator" itemLabel="Operator ID:#{operator.operatorId}"  itemValue="#{operator.operatorId}"/>
+                                    <f:selectItems value="#{tOLogManagerBean.operators}" var="operator" itemLabel="Operator ID:#{operator.operatorId} Name:#{operator.operatorName}"  itemValue="#{operator.operatorId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
