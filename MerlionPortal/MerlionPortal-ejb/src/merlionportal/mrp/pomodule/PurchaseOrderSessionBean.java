@@ -110,6 +110,16 @@ public class PurchaseOrderSessionBean {
 
     }
       
+      public List<ProductOrder> getAllMyPOs(Integer companyId){
+        Company company = entityManager.find(Company.class, companyId);
+        String addressTemp = company.getAddress();
+   
+        Query query = entityManager.createQuery("SELECT o FROM ProductOrder o WHERE o.billTo = :inBillTo");
+        query.setParameter("inBillTo", addressTemp);
+        return query.getResultList();
+        //***Handle date
+          
+      }
       
        public List<ProductOrder> createPOBackorder(Integer productId, Integer companyId, SystemUser loginedUser, List<Mrp> mrps) {
         System.out.println("+++++++++++++++++++GeneratePO Start====================1");
@@ -151,7 +161,7 @@ public class PurchaseOrderSessionBean {
         
         //set the other company's product
         int tempId = product.getComponentList().get(i).getSupplierCompanyId();
-     Query query = entityManager.createQuery("SELECT p FROM Product p WHERE p.companyId = :inCompanyId");
+        Query query = entityManager.createQuery("SELECT p FROM Product p WHERE p.companyId = :inCompanyId");
         query.setParameter("inCompanyId", tempId);
         List<Product> products = query.getResultList();
         
