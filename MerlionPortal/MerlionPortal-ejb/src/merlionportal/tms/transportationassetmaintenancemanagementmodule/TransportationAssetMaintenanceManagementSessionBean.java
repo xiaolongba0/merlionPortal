@@ -84,7 +84,11 @@ public class TransportationAssetMaintenanceManagementSessionBean {
             maintain.setTransporationAssetassetId(tAsset);
             maintain.setStartDate(startDate);
             maintain.setEndDate(endDate);
-
+            
+            tAsset.setIsAvailable(Boolean.FALSE);
+            tAsset.setIsMaintain(Boolean.TRUE);
+            
+            
             AssetSchedule maintainSchedule = new AssetSchedule();
             if(operatorId != null){
             

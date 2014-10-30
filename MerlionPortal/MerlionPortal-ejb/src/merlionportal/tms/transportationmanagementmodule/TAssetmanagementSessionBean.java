@@ -362,8 +362,122 @@ public class TAssetmanagementSessionBean {
             locationTemp = em.find(Location.class, locationId);
             System.out.println("In viewMyTransportationAssets, finding location" + locationTemp);
         }
+
         return locationTemp.getTransportationAssetList();
 
+    }
+
+    public Integer counttAssetForALocation(Integer locationId) {
+
+        System.out.println("In viewMyTransportationAsset at, Location ID ============================= : " + locationId);
+        System.out.println("viewAssetForALocation");
+        Location locationTemp = new Location();
+
+        if (locationId != null) {
+            locationTemp = em.find(Location.class, locationId);
+            System.out.println("In viewMyTransportationAssets, finding location" + locationTemp);
+        }
+        Integer count = 0;
+        List <TransportationAsset> temp = locationTemp.getTransportationAssetList();
+        for (TransportationAsset tAsset : temp) {
+            if (tAsset.getIsAvailable() == true) {
+                count++;
+            }
+        }
+        return count;
+
+
+    }
+
+    public List<TransportationAsset> viewtAvailableAssetForALocation(Integer locationId) {
+
+        System.out.println("In viewMyTransportationAsset at, Location ID ============================= : " + locationId);
+        System.out.println("viewAssetForALocation");
+        Location locationTemp = new Location();
+
+        if (locationId != null) {
+            locationTemp = em.find(Location.class, locationId);
+            System.out.println("In viewMyTransportationAssets, finding location" + locationTemp);
+        }
+
+        List<TransportationAsset> temp = new ArrayList();
+        List<TransportationAsset> available = new ArrayList();
+        temp = locationTemp.getTransportationAssetList();
+        for (TransportationAsset tAsset : temp) {
+            if (tAsset.getIsAvailable() == true) {
+                available.add(tAsset);
+            }
+        }
+        return available;
+    }
+
+    public Integer countAvailableAssetForALocation(Integer locationId) {
+
+        System.out.println("In viewMyTransportationAsset at, Location ID ============================= : " + locationId);
+        System.out.println("viewAssetForALocation");
+        Location locationTemp = new Location();
+
+        if (locationId != null) {
+            locationTemp = em.find(Location.class, locationId);
+            System.out.println("In viewMyTransportationAssets, finding location" + locationTemp);
+        }
+
+        List<TransportationAsset> temp = new ArrayList();
+        List<TransportationAsset> available = new ArrayList();
+        temp = locationTemp.getTransportationAssetList();
+        Integer count = 0;
+        for (TransportationAsset tAsset : temp) {
+            if (tAsset.getIsAvailable() == true) {
+                available.add(tAsset);
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public List<TransportationAsset> viewMaintAssetForALocation(Integer locationId) {
+
+        System.out.println("In viewMyTransportationAsset at, Location ID ============================= : " + locationId);
+        System.out.println("viewAssetForALocation");
+        Location locationTemp = new Location();
+
+        if (locationId != null) {
+            locationTemp = em.find(Location.class, locationId);
+            System.out.println("In viewMyTransportationAssets, finding location" + locationTemp);
+        }
+
+        List<TransportationAsset> temp = new ArrayList();
+        List<TransportationAsset> maint = new ArrayList();
+        temp = locationTemp.getTransportationAssetList();
+        for (TransportationAsset tAsset : temp) {
+            if (tAsset.getIsMaintain() == true) {
+                maint.add(tAsset);
+            }
+        }
+        return maint;
+    }
+        public Integer countMaintAssetForALocation(Integer locationId) {
+
+        System.out.println("In viewMyTransportationAsset at, Location ID ============================= : " + locationId);
+        System.out.println("viewAssetForALocation");
+        Location locationTemp = new Location();
+
+        if (locationId != null) {
+            locationTemp = em.find(Location.class, locationId);
+            System.out.println("In viewMyTransportationAssets, finding location" + locationTemp);
+        }
+
+        List<TransportationAsset> temp = new ArrayList();
+        List<TransportationAsset> maint = new ArrayList();
+        temp = locationTemp.getTransportationAssetList();
+        Integer count = 0;
+        for (TransportationAsset tAsset : temp) {
+            if (tAsset.getIsMaintain() == true) {
+                maint.add(tAsset);
+                count++;
+            }
+        }
+        return count;
     }
 
     public Boolean deletetAsset(Integer assetId) {
@@ -417,6 +531,7 @@ public class TAssetmanagementSessionBean {
 
             schedule.setOperatorId(operatorId);
             tAsset.getAssetScheduleList().add(schedule);
+            tAsset.setIsAvailable(Boolean.FALSE);
 
             em.persist(schedule);
             em.merge(tAsset);
