@@ -191,15 +191,19 @@ ul.rights-menu li{
 }*/
 
 .left-container{
-    width: 26%;
+    width: 28%;
     float:left;
     margin: 50px 0px;
 }
 
 .right-container{
-    width:74%;
+    width:72%;
     float:right;
     margin: 50px 0px;
+}
+
+.menu-width{
+    width:100%;
 }
 //*************************************************//
 //footer
