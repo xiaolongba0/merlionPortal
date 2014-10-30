@@ -7,6 +7,7 @@ package merlionportal.managedbean.mrp2;
 
 import entity.Company;
 import entity.Product;
+import entity.ProductOrder;
 import entity.SystemUser;
 import java.io.IOException;
 import java.util.Date;
@@ -22,6 +23,7 @@ import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.mrp.materialrequirementmodule.MaterialReqPlanningSessionBean;
+import merlionportal.mrp.pomodule.PurchaseOrderSessionBean;
 import merlionportal.mrp.productcatalogmodule.ProductSessionBean;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
