@@ -21,7 +21,7 @@
         </ui:define>
 
         <ui:define name="left">
-                       <p:panelMenu>
+            <p:menu styleClass="menu-width">
                 <p:submenu label =" WMS HOME" styleClass="display:block">
                     <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
                 </p:submenu>
@@ -54,49 +54,52 @@
                 <p:submenu label="Warehouse Space Request Orders" styleClass="display:block" >
                     <p:menuitem value="All Pending Request" url="viewallpendingrequests.xhtml"/>
                 </p:submenu>
+                <p:submenu label="Warehouse Service Fulfillment Check" >
+                    <p:menuitem value="Fulfillment Check" url="warehouseservicefulfillmentcheck.xhtml" />
+                </p:submenu>
                 <p:submenu label="View Notification" >
                     <p:menuitem value="View Notification" url="viewallnotification.xhtml" />
                 </p:submenu>
-            </p:panelMenu>
+            </p:menu>
         </ui:define>
-        
+
         <ui:define name="right">
             <h:form id="formMain">
-                   <p:dataTable id="productOrder" var="productOrder" value="#{retrieveSavedOrder.productOrderList}"  resizableColumns="true" selectionMode="single" selection="#{retrieveSavedOrder.selectedOrder}" rowKey="#{productOrder.productPOId}">
+                <p:dataTable id="productOrder" var="productOrder" value="#{retrieveSavedOrder.productOrderList}"  resizableColumns="true" selectionMode="single" selection="#{retrieveSavedOrder.selectedOrder}" rowKey="#{productOrder.productPOId}">
                     <p:column  
                         filterBy="#{productOrder.productPOId}" 
                         filterMatchMode="exact" headerText="Saved Id" >
                         <h:outputText value="#{productOrder.productPOId}" />
                     </p:column>
-                       <p:column headerText="Contact Person">
-                           <h:outputText value="#{productOrder.contactPersonName}" />
+                    <p:column headerText="Contact Person">
+                        <h:outputText value="#{productOrder.contactPersonName}" />
                     </p:column>
-                       <p:column headerText="Contact Number">
-                           <h:outputText value="#{productOrder.contactPersonPhoneNumber}" />
+                    <p:column headerText="Contact Number">
+                        <h:outputText value="#{productOrder.contactPersonPhoneNumber}" />
                     </p:column>
                     <p:column headerText="Create Date">
                         <h:outputText value="2014-10-30" />
                     </p:column>
-                       <p:column headerText="Receiving Date">
+                    <p:column headerText="Receiving Date">
                         <h:outputText value="2014-11-15" />
                     </p:column>
                     <p:column headerText="Items to be received">
-                       
-                    <p:dataTable id="item" var="item" value="#{productOrder.productOrderLineItemList}"  resizableColumns="true">
-                        <p:column headerText="Item ID">
-                           <h:outputText value="#{item.line}" />
-                    </p:column>
+
+                        <p:dataTable id="item" var="item" value="#{productOrder.productOrderLineItemList}"  resizableColumns="true">
+                            <p:column headerText="Item ID">
+                                <h:outputText value="#{item.line}" />
+                            </p:column>
                             <p:column headerText="Name">
-                           <h:outputText value="#{item.productproductId.productName}" />
-                    </p:column>
-                       <p:column headerText="Ordered Quantity">
-                           <h:outputText value="#{item.quantity}" />
+                                <h:outputText value="#{item.productproductId.productName}" />
+                            </p:column>
+                            <p:column headerText="Ordered Quantity">
+                                <h:outputText value="#{item.quantity}" />
+                            </p:column>
+                        </p:dataTable>
+
                     </p:column>
                 </p:dataTable>
-                        
-                    </p:column>
-                </p:dataTable>
-                
+
                 <br></br>
                 <p:messages id="msgs" autoUpdate="true" closable="true" />
             </h:form>
