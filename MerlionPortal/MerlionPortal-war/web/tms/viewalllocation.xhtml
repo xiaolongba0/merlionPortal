@@ -21,7 +21,7 @@
         </ui:define>
 
        <ui:define name="left">
-            <p:menu>
+ <p:menu>
                 <p:submenu label ="Map">
                     <p:submenu label="Node" >
                         <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
@@ -33,10 +33,10 @@
                     </p:submenu>
                 </p:submenu>
                 <p:submenu label =" Manage Your Transportation">
-                    <p:menuitem value="TMS Home" url="tmsindex.xhtml" />
+                    <p:menuitem value="TMS Home" url="tmsindex.xhtml"  style="background-color: lavender"/>
                 </p:submenu>
                 <p:submenu label="Location" >
-                    <p:menuitem value="Add A Location" url="addnewlocation.xhtml" style="background-color: lavender"/>
+                    <p:menuitem value="Add A Location" url="addnewlocation.xhtml"/>
                     <p:menuitem value="View All Locations" url="viewalllocation.xhtml"/>
                 </p:submenu>
                 <p:submenu label="Transportation Asset" >
@@ -64,12 +64,17 @@
                 <p:submenu label="Transportation Order" >
                     <p:menuitem value="Create Transportation Order" url="addnewtorder.xhtml" />
                     <p:menuitem value="View All Orders" url="viewalltorder.xhtml" />
-                    <p:menuitem value="View Order Details" url="viewalltorder.xhtml"/>
+                    <p:menuitem value="View Order Details" url="viewalllog.xhtml"/>
                 </p:submenu>
-
+                <p:submenu label="Transportation Order" >
+                    <p:menuitem value="Create Log For Order" url="addnewtlog.xhtml" />
+                </p:submenu>
                 <p:submenu label="Transportation Request" >
                     <p:menuitem value="Create A Transportation Request" url="addnewrequest.xhtml" />
                     <p:menuitem value="View All Request" url="viewallrequest.xhtml" />
+                </p:submenu>
+                <p:submenu label="Transportation Service Fulfillment Check" >
+                    <p:menuitem value="Fulfillment Check" url="transportationservicefulfillmentcheck.xhtml" />
                 </p:submenu>
 
             </p:menu>

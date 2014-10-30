@@ -23,7 +23,7 @@
 
 
         <ui:define name="left">
-            <p:menu>
+  <p:menu>
                 <p:submenu label ="Map">
                     <p:submenu label="Node" >
                         <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
@@ -66,9 +66,11 @@
                 <p:submenu label="Transportation Order" >
                     <p:menuitem value="Create Transportation Order" url="addnewtorder.xhtml" />
                     <p:menuitem value="View All Orders" url="viewalltorder.xhtml" />
-                    <p:menuitem value="View Order Details" url="viewalltorder.xhtml"/>
+                    <p:menuitem value="View Order Details" url="viewalllog.xhtml"/>
                 </p:submenu>
-
+                <p:submenu label="Transportation Order" >
+                    <p:menuitem value="Create Log For Order" url="addnewtlog.xhtml" />
+                </p:submenu>
                 <p:submenu label="Transportation Request" >
                     <p:menuitem value="Create A Transportation Request" url="addnewrequest.xhtml" />
                     <p:menuitem value="View All Request" url="viewallrequest.xhtml" />
