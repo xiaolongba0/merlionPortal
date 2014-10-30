@@ -113,7 +113,7 @@
                         <p:outputLabel for="storageBin" value="Storage Bin Name: " /><p:spacer width="40" height="20" />
                         <p:selectOneMenu id="storageBin" value="#{createStockManagedBean.storageBinId}"  style="width:210px" required="true" requiredMessage="Please select a storage type">
                             <f:selectItem itemLabel="Select Storage Bin" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{createStockManagedBean.storageBins}" var="storageBin" itemLabel="ID:#{storageBin.storageBinId}   Name:#{storageBin.binName} Bin Type: Name:#{storageBin.binType}"  itemValue="#{storageBin.storageBinId}"/>
+                            <f:selectItems value="#{createStockManagedBean.storageBins}" var="storageBin" itemLabel="ID:#{storageBin.storageBinId}   Name:#{storageBin.binName} Bin Type:#{storageBin.binType}"  itemValue="#{storageBin.storageBinId}"/>
                         </p:selectOneMenu>
 
                         <p:outputLabel for="stockName" style="font-weight: bold" value="Stock Name :   " /><p:spacer width="40" height="20" />

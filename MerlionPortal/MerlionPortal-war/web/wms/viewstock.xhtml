@@ -143,10 +143,12 @@
                         </p:column>
 
                         <p:column  headerText="Quantity" filterBy="#{stock.quantity}" filterMatchMode="contains">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{stock.quantity}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{stock.quantity}" style="width:100%" label="Quantity"/></f:facet>
-                            </p:cellEditor>
+<!--                            <p:cellEditor>-->
+<!--                                <f:facet name="output">-->
+                                    <h:outputText value="#{stock.quantity}" />
+<!--                                </f:facet>
+                                <f:facet name="input"><p:inputText value="#{stock.quantity}" style="width:100%" label="Quantity"/></f:facet>-->
+<!--                            </p:cellEditor>-->
                         </p:column>
 
 <!--                        <p:column  headerText="Expiry Date" filterBy="#{stock.expiryDate}" filterMatchMode="contains">
