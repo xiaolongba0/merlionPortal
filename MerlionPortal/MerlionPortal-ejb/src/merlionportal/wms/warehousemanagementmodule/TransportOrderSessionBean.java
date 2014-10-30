@@ -350,7 +350,9 @@ public class TransportOrderSessionBean {
                 System.out.println("Bin available quantity: " + bin.getAvailableSpace());
                 System.out.println("Bin moving quantity: " + allDestStocks.get(i).getMovingQuantity());
                 availableQuantity = bin.getAvailableSpace() + allDestStocks.get(i).getMovingQuantity();
-                bin.setReservedSpace(0);
+                
+                // problem here?
+                bin.setReservedSpace(bin.getReservedSpace() - allDestStocks.get(i).getMovingQuantity());
                 System.out.println("NEW BIN AVAILABLE QUANTITY" + availableQuantity);
                 bin.setAvailableSpace(availableQuantity);
                 em.merge(bin);

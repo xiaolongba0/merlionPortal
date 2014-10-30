@@ -357,14 +357,20 @@ public class AssetManagementSessionBean {
         binInUseSpace = bin.getInuseSpace();
         binAvailableSpace = bin.getAvailableSpace();
         binReservedSpace = bin.getReservedSpace();
+        System.out.println("Bin reserved space1 = " + binReservedSpace);
+        System.out.println("Bin new reserved quantity = " + reservedQuantity);
 
         binInUseSpace = binInUseSpace + newQuantity;
         binReservedSpace = binReservedSpace + reservedQuantity;
+        System.out.println("Bin reserved space2 = " + binReservedSpace);
+        System.out.println("Bin in use space = " + binInUseSpace);
         binAvailableSpace = bin.getMaxQuantity() - binInUseSpace - binReservedSpace;
         System.out.println("Bin max quantity = " + bin.getMaxQuantity());
         System.out.println("Bin available space 2 = " + binAvailableSpace);
 
-        if (binAvailableSpace >= 0) {
+        if (binAvailableSpace > bin.getMaxQuantity()) {
+            return false;
+        } else if (binAvailableSpace >= 0) {
             bin.setReservedSpace(binReservedSpace);
             bin.setInuseSpace(binInUseSpace);
             bin.setAvailableSpace(binAvailableSpace);
