@@ -16,24 +16,15 @@
     margin-left: 440px
 }
 
-.bg-img > .wrapper > .login-nav{
+/*.bg-img > .wrapper > .login-nav{
     background-color:rgba(20,0,0,0.2);
-}
+}*/
 
 .login-box > h2{
     color:#555;
 }
 
-.some-quote-box{
-    position:absolute;
-    bottom:60px;
-    left:6%;
-    position:fixed;
-}
-.some-quote-box h2{
-    font-family:Century Gothic;
-    font-size:15pt;
-    color:#000;
-    background:rgba(255,255,255,0.4);
-    padding:3px;
+.navbar > .container{
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
