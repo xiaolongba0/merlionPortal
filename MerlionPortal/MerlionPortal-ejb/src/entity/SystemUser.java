@@ -105,9 +105,13 @@ public class SystemUser implements Serializable {
         @JoinColumn(name = "userRoleId", referencedColumnName = "userRoleId")})
     @ManyToMany
     private List<UserRole> userRoleList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "systemUser")
+    private List<Bid> bidList;
     @JoinColumn(name = "Company_companyId", referencedColumnName = "companyId")
     @ManyToOne(optional = false)
     private Company companycompanyId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "systemUser")
+    private List<Post> postList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "systemUsersystemUserId")
     private List<SystemLog> systemLogList;
 
@@ -245,12 +249,30 @@ public class SystemUser implements Serializable {
         this.userRoleList = userRoleList;
     }
 
+    @XmlTransient
+    public List<Bid> getBidList() {
+        return bidList;
+    }
+
+    public void setBidList(List<Bid> bidList) {
+        this.bidList = bidList;
+    }
+
     public Company getCompanycompanyId() {
         return companycompanyId;
     }
 
     public void setCompanycompanyId(Company companycompanyId) {
         this.companycompanyId = companycompanyId;
+    }
+
+    @XmlTransient
+    public List<Post> getPostList() {
+        return postList;
+    }
+
+    public void setPostList(List<Post> postList) {
+        this.postList = postList;
     }
 
     @XmlTransient
