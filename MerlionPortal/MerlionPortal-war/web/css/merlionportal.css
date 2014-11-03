@@ -13,6 +13,10 @@
     font-weight: 500;
 }
 
+.wrapper{
+    background-color: #efefef;
+}
+
 .top-nav{
     background-color: #1c1c1d;
     height:25px;
@@ -29,7 +33,7 @@
     color: #d96f70 !important;
 }
 .navbar-nav{
-    margin: 4px;
+    margin: 5px;
 }
 
 .form-control-spacing{

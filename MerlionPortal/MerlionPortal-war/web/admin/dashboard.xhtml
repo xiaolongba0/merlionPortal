@@ -17,12 +17,67 @@
 
         <!-- Override Content -->
         <ui:define name="content">
-            <c:set var="root" value="${request.contextPath}" />
+            <div class="tile-area">
+                <div class="row">
+                    <!--CRMS-->
+                    <c:set var="disablecrms" value="true" />
+                    <c:if test ="#{dashboardBean.canUseCRMS() || dashboardBean.loginedUser.userType == 'superuser'}">
+                        <c:set var="disablecrms" value="false" />
+                    </c:if>
+                    <div>
+                        <p:commandLink action="/crms/crmsindex.xhtml?faces-redirect=true" disabled="${disablecrms}" styleClass="col-md-4 dashboard-box crmstile">   
+                        </p:commandLink>
+                    </div>
+
+                    <!--WMS-->
+                    <c:set var="disablewms" value="true" />
+                    <c:if test ="#{dashboardBean.canUseWMS() || dashboardBean.loginedUser.userType == 'superuser'}">
+                        <c:set var="disablewms" value="false" />
+                    </c:if>
+                    <p:commandLink action="/wms/wmsindex.xhtml?faces-redirect=true" disabled="${disablewms}" styleClass="col-md-4 dashboard-box wmstile">
+                    </p:commandLink>
+
+                    <!--OES-->
+                    <c:set var="disableoes" value="true" />
+                    <c:if test ="#{dashboardBean.canUseOES() || dashboardBean.loginedUser.userType == 'superuser'}">
+                        <c:set var="disableoes" value="false" />
+                    </c:if>
+                    <p:commandLink action="/oes/oesindexpage.xhtml?faces-redirect=true" disabled="${disableoes}" styleClass="col-md-4 dashboard-box oestile">
+                    </p:commandLink>
+                </div>
+
+                <div class="row">
+                    <c:set var="disablemrp" value="true" />
+                    <c:if test ="#{dashboardBean.canUseMRP() || dashboardBean.loginedUser.userType == 'superuser'}">
+                        <c:set var="disablemrp" value="false" />
+                    </c:if>
+                    <p:commandLink action="/mrp/mrp.xhtml?faces-redirect=true" disabled="${disablemrp}" styleClass="col-md-4 dashboard-box mrptile">
+                    </p:commandLink>  
+
+                    <!--TMS-->
+                    <c:set var="disabletms" value="true" />
+                    <c:if test ="#{dashboardBean.canUseTMS() || dashboardBean.loginedUser.userType == 'superuser'}">
+                        <c:set var="disabletms" value="false" />
+                    </c:if>
+                    <p:commandLink action="/tms/tmsindex.xhtml?faces-redirect=true" disabled="${disabletms}" styleClass="col-md-4 dashboard-box tmstile">
+                    </p:commandLink> 
+
+                    <!--GRNS-->
+                    <c:set var="disablegrns" value="true" />
+                    <c:if test ="#{dashboardBean.canUseGRNS() || dashboardBean.loginedUser.userType == 'superuser'}">
+                        <c:set var="disablegrns" value="false" />
+                    </c:if>
+                    <p:commandLink action="#" disabled="${disablegrns}" styleClass="col-md-4 dashboard-box grnstile" >
+                    </p:commandLink>
+                </div>
+            </div>
+            
+<!--            <c:set var="root" value="${request.contextPath}" />
             <div class="dashboard-content">
                 <div class="row">
-                    <div>Please select the relevant services.</div>
+                    <div>Welcome! Please select a service to proceed</div>
                     <div class="dashboard-box">
-                        <!--OES-->
+                        OES
                         <c:set var="disableoes" value="true" />
                         <c:if test ="#{dashboardBean.canUseOES() || dashboardBean.loginedUser.userType == 'superuser'}">
                             <c:set var="disableoes" value="false" />
@@ -32,7 +87,7 @@
                         </p:commandLink>
                     </div>
                     <div class="dashboard-box">
-                        <!--MRP-->
+                        MRP
                         <c:set var="disablemrp" value="true" />
                         <c:if test ="#{dashboardBean.canUseMRP() || dashboardBean.loginedUser.userType == 'superuser'}">
                             <c:set var="disablemrp" value="false" />
@@ -42,7 +97,7 @@
                         </p:commandLink>  
                     </div>
                     <div class="dashboard-box">
-                        <!--WMS-->
+                        WMS
                         <c:set var="disablewms" value="true" />
                         <c:if test ="#{dashboardBean.canUseWMS() || dashboardBean.loginedUser.userType == 'superuser'}">
                             <c:set var="disablewms" value="false" />
@@ -54,7 +109,7 @@
                 </div>
                 <div class="row">
                     <div class="dashboard-box">
-                        <!--CRMS-->
+                        CRMS
                         <c:set var="disablecrms" value="true" />
                         <c:if test ="#{dashboardBean.canUseCRMS() || dashboardBean.loginedUser.userType == 'superuser'}">
                             <c:set var="disablecrms" value="false" />
@@ -64,7 +119,7 @@
                         </p:commandLink> 
                     </div>
                     <div class="dashboard-box">
-                        <!--TMS-->
+                        TMS
                         <c:set var="disabletms" value="true" />
                         <c:if test ="#{dashboardBean.canUseTMS() || dashboardBean.loginedUser.userType == 'superuser'}">
                             <c:set var="disabletms" value="false" />
@@ -74,7 +129,7 @@
                         </p:commandLink> 
                     </div>
                     <div class="dashboard-box">
-                        <!--GRNS-->
+                        GRNS
                         <c:set var="disablegrns" value="true" />
                         <c:if test ="#{dashboardBean.canUseGRNS() || dashboardBean.loginedUser.userType == 'superuser'}">
                             <c:set var="disablegrns" value="false" />
@@ -84,7 +139,8 @@
                         </p:commandLink>
                     </div>
                 </div>
-            </div>
+            </div>-->
+
         </ui:define>
     </ui:composition>
 </html>
