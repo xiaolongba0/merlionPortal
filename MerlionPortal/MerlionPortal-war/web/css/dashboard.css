@@ -56,6 +56,10 @@
     cursor:pointer;
 }
 
+.user-info>.row{
+    margin-right:0;
+    margin-left:0;
+}
 .user-info{
     background-color: #ddd;
     border-radius: 8px;
@@ -65,8 +69,24 @@
 }
 .avatar{
     background: url('../img/avatar.png') no-repeat;
-    display:block;
-    height:90px;
-    width:65px;
+    display:inline-block;
+    height:75px;
+    width:63px;
 }
-
+.user-info-right{
+    display:inline-block;
+}
+.user-name{
+    text-align: left;
+    font-size:19px;
+    color: #732829;
+}
+.user-company{
+    font-size:13px;
+    margin-top:-4px;
+}
+.inbox, .viewlog{
+    font-size:14px;
+    margin-right: 8px;
+    text-decoration: underline;
+}
