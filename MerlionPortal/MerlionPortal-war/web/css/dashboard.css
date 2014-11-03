@@ -1,14 +1,15 @@
 .dashboard-box{
     margin:5px;
     display:inline-block;
-    border-radius: 10px;
+    border-radius: 5px;
     height:200px;
     max-width:200px;
 }
+/*
 .dashboard-content{
     text-align: center;
     margin:50px 0px 80px 0px;
-}
+}*/
 ///////////////////////
 /*.dashboard-tile{
     position:absolute;
@@ -55,4 +56,17 @@
     cursor:pointer;
 }
 
+.user-info{
+    background-color: #ddd;
+    border-radius: 8px;
+    width:200px;
+    height:200px;
+    padding:10px;
+}
+.avatar{
+    background: url('../img/avatar.png') no-repeat;
+    display:block;
+    height:90px;
+    width:65px;
+}
 

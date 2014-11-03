@@ -14,7 +14,7 @@
 }
 
 .wrapper{
-    background-color: #efefef;
+    background-color: #F7F7F7;
 }
 
 .top-nav{
@@ -225,17 +225,31 @@ body{
     min-height: 652px;
 /*    height: auto !important;  IE6 support 
     height: 100%;*/
-    margin: 0 auto -100px; /* the bottom margin is the negative value of the footer's height */
+    margin: 0 auto -80px; /* the bottom margin is the negative value of the footer's height */
 }
 .footer{
-    background-color:rgba(20,0,0,0.4);
+    background-color:#732829;
     color:#fff;
     padding:25px;
     overflow: hidden;
+   
 }
 .footer, .push {
-    height: 100px; /* .push must be the same height as .footer */
+    height: 80px; /* .push must be the same height as .footer */
 }
+.footer>.container>ul>li>a:hover, .nav>li>a:focus{
+    color:white !important;
+}
+.footer>.container>ul>li{
+    vertical-align: middle;
+    margin: 0px;
+}
+.footer>.container>ul>li>a{
+    padding-right:15px;
+    padding-top:0;
+    padding-bottom:0;
+}
+
 //************************************************//
 
 
