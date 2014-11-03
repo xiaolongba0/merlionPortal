@@ -21,6 +21,14 @@
     background-color: #1c1c1d;
     height:25px;
 }
+.top-nav-content{
+    margin-right:60px;
+}
+.top-nav-content>span{
+    color:white;
+    margin-right:15px;
+    font-size:10px;
+}
 .navbar-default{
     background-color: rgba(0,0,0,0.6);
     border-color: transparent;
