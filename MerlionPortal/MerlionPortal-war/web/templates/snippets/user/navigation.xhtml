@@ -19,25 +19,12 @@
                         <div class="navbar-collapse collapse">
                             <ul class="nav navbar-nav title-font" style="padding-left:25px">
                                 <li><a href="${root}/user/dashboard.xhtml">Dashboard</a></li>
-                                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Logs<span class="caret"></span></a>
-                                    <ul class="dropdown-menu content-font" role="menu">
-                                        <li><a href="${root}/viewsystemlog.xhtml">View My Logs</a></li>
-                                    </ul>
-                                </li>
                             </ul>
 
                             <h:form>       
                                 <ul class="nav navbar-nav pull-right">
                                     <li><a href="${root}/feedback.xhtml">Feedback</a></li>
-                                    <li class="dropdown">
-                                        <a href="#"  class="dropdown-toggle" data-toggle="dropdown">
-                                            <h:outputText value="${dashboardBean.loginedUser.firstName}"/>
-                                            <span class="caret"></span></a>
-                                        <ul class="dropdown-menu content-font" role="menu">
-                                            <li><a href="${root}/user/message.xhtml"><i class="glyphicon glyphicon-envelope"></i>Messages</a></li>
-                                            <li><h:commandLink actionListener="#{logoutManagerBean.logout}">Logout</h:commandLink></li>
-                                        </ul>
-                                    </li>
+                                    <li><h:commandLink actionListener="#{logoutManagerBean.logout}">Logout</h:commandLink></li>
                                 </ul>
 
                             </h:form>

@@ -21,19 +21,23 @@
                 <div class="row">
                     <div class="avatar"></div>
                     <div class="user-info-right">
-                        <div class="user-name title-font">Angela</div>
-                        <div class="user-company">Apple company</div>
+                        <div class="user-name title-font">${dashboardBean.loginedUser.firstName}</div>
+                        <div class="user-company">${dashboardBean.loginedUser.companycompanyId.name}</div>
                         <br/>
-                        <span class="inbox"><a href="#">Inbox</a></span>
-                        <span class="viewlog"><a href="#">View log</a></span>
+                        <span class="inbox"><a href="${request.contextPath}/admin/message.xhtml">Inbox</a></span>
+                        <span class="viewlog"><a href="${request.contextPath}/viewsystemlog.xhtml">View log</a></span>
                     </div>
-                    
-                    
+
+
                 </div>
                 <hr />
                 <ul class="role-list">
-                    <li></li>
-                    <li></li>
+                    <c:if test="#{dashboardBean.loginedUser.userType == 'superuser'}">
+                        <li>Merlion Portal Superuser</li>
+                    </c:if>
+                    <c:forEach items="#{dashboardBean.loginedUser.userRoleList}" var="role" rendered="#{dashboardBean.loginedUser.userRoleList ne null}" >
+                        <li>#{role.roleName}</li>
+                    </c:forEach>
                 </ul>
 
             </div>
