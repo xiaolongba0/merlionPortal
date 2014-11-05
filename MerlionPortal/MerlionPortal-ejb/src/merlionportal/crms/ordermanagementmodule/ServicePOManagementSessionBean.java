@@ -40,7 +40,7 @@ public class ServicePOManagementSessionBean {
 //    7. SO Invoiced
 //    8. SO Closed
 //    9. Transportation SO in transit
-    public boolean createServicePO(Integer contractId, Integer creatorId, Integer volume, Date serviceStartDate, Date serviceEndDate, Date serviceDeliveryDate, int QuantityPerTEU, Integer productId) {
+    public boolean createServicePO(Integer contractId, Integer creatorId, Integer volume, Date fulfillmentDate, Date receiveDate, Date serviceDeliveryDate, int QuantityPerTEU, Integer productId, String warehouseOrderType) {
         ServicePO po = new ServicePO();
         Contract contract = em.find(Contract.class, contractId);
         if (contract.getStatus() == 5) {
@@ -53,8 +53,9 @@ public class ServicePOManagementSessionBean {
             po.setSenderCompanyId(contract.getPartyB());
             po.setCreatorId(creatorId);
             po.setServiceDeliveryDate(serviceDeliveryDate);
-            po.setServiceStartDate(serviceStartDate);
-            po.setServiceEndDate(serviceEndDate);
+            po.setWarehousePOtype(warehouseOrderType);
+            po.setServiceFulfilmentDate(fulfillmentDate);
+            po.setServiceReceiveDate(receiveDate);
             po.setProductQuantityPerTEU(QuantityPerTEU);
             po.setProductId(productId);
             po.setContract(contract);
@@ -116,10 +117,11 @@ public class ServicePOManagementSessionBean {
         return null;
     }
 
-    public int updateServicePO(Integer servicePOId, Date deliveryDate, Date serviceStartDate, Date serviceEndDate, Integer volume, Integer creatorId, Integer productId, Integer productQuantityPerTEU) {
+    public int updateServicePO(Integer servicePOId, Date deliveryDate, Date fulfillDate, Date receiveDate, Integer volume, Integer creatorId, Integer productId, Integer productQuantityPerTEU, String warehousePOType) {
         ServicePO po = em.find(ServicePO.class, servicePOId);
-        po.setServiceStartDate(serviceStartDate);
-        po.setServiceEndDate(serviceEndDate);
+        po.setWarehousePOtype(warehousePOType);
+        po.setServiceFulfilmentDate(fulfillDate);
+        po.setServiceReceiveDate(receiveDate);
         po.setServiceDeliveryDate(deliveryDate);
         po.setVolume(volume);
         po.setProductId(productId);
