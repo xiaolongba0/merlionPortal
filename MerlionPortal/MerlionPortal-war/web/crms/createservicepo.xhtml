@@ -132,24 +132,32 @@
                                 <p:outputLabel for="deliveryDate" value="Service Delivery Date " /><p:spacer width="20" height="20" />
                                 <p:calendar id="deliveryDate" required="true" requiredMessage="Service Delivery Date is required" value="#{createServicePOManagedBean.serviceDeliveryDate}" pattern="dd-MM-yyyy" mask="true" />
 
-
                             </c:if>
 
                             <c:if test="#{createServicePOManagedBean.contract.serviceType eq 'Warehouse'}" >
                                 <h:outputLabel  style="font-weight: bold" value="Storage Type " /><p:spacer width="20" height="20" />
                                 <h:outputLabel value="#{createServicePOManagedBean.contract.serviceQuotation.storageType}" />
 
+                                <p:outputLabel for="wotype" value="Warehouse Order Type " /><p:spacer width="20" height="20" />
+                                <p:selectOneMenu id="wotype" value="#{createServicePOManagedBean.warehouseOrderType}" style="width:200px">
+                                    <p:ajax update=":form2" />
+                                    <f:selectItem itemLabel="Select Warehouse Order Type" itemValue="" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="Fulfillment Order" itemValue="Fulfillment Order" />
+                                    <f:selectItem itemLabel="Receiving Order" itemValue="Receiving Order" />
+                                </p:selectOneMenu>
 
-                                <p:outputLabel for="startDate" value="Service Start Date " /><p:spacer width="20" height="20" />
-                                <p:calendar id="startDate" required="true" requiredMessage="Start Date is required" value="#{createServicePOManagedBean.serviceStartDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{createServicePOManagedBean.today}" >
-                                    <f:ajax render="@this endDate" />
-                                </p:calendar>
-                                <p:outputLabel for="endDate" value="Service End Date " /><p:spacer width="20" height="20" />
-                                <p:calendar id="endDate" required="true" requiredMessage="End Date is required" value="#{createServicePOManagedBean.serviceEndDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{createServicePOManagedBean.serviceStartDate}" />
-
+                                <c:if test="#{createServicePOManagedBean.warehouseOrderType eq 'Fulfillment Order'}" >
+                                    <p:outputLabel for="startDate" value="Fulfillment Date " /><p:spacer width="20" height="20" />
+                                    <p:calendar id="startDate" required="true" requiredMessage="Fulfillment Date is required" value="#{createServicePOManagedBean.serviceFulfillmentDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{createServicePOManagedBean.today}" />
+                                </c:if>
+                                <c:if test="#{createServicePOManagedBean.warehouseOrderType eq 'Receiving Order'}" >
+                                    <p:outputLabel for="endDate" value="Receiving Date " /><p:spacer width="20" height="20" />
+                                    <p:calendar id="endDate" required="true" requiredMessage="Receiving Date is required" value="#{createServicePOManagedBean.serviceReceiveDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{createServicePOManagedBean.today}" />
+                                </c:if>
                             </c:if>
                             <h:outputLabel  style="font-weight: bold" value="Quantity in TEU * "/><p:spacer width="20" height="20" />
                             <p:inputText  value="#{createServicePOManagedBean.volume}" required="true"  requiredMessage="Quantity is required"/>
+
                             <h:outputLabel  style="font-weight: bold" value="Product ID * "/><p:spacer width="20" height="20" />
                             <p:inputText  value="#{createServicePOManagedBean.productId}" required="true"  requiredMessage="Product ID is required"/>
 
@@ -162,11 +170,11 @@
                     <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold">
                         <p:panelGrid id="display" columns="2" columnClasses="label,value">
                             <h:outputText value="Service Start Date:" />
-                            <h:outputText value="#{createServicePOManagedBean.serviceStartDate}">
+                            <h:outputText value="#{createServicePOManagedBean.serviceFulfillmentDate}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                             <h:outputText value="Service End Date:" />
-                            <h:outputText value="#{createServicePOManagedBean.serviceEndDate}">
+                            <h:outputText value="#{createServicePOManagedBean.serviceReceiveDate}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                             <h:outputText value="Service Delivery Date:" />

@@ -67,7 +67,7 @@
                     <h6 class="activatedStep">PO waiting to be processed</h6><p:spacer width="30" height="20" />
                     <h6 class="greyStep">PO Hold</h6><p:spacer width="70" height="20" />
                     <h6 class="greyStep" >PO Rejected</h6><p:spacer width="30" height="20" />
-                    <h6 class="greyStep" >SO waiting for fulfillment</h6><p:spacer width="30" height="20" />
+                    <h6 class="greyStep" >SO waiting for fulfillment</h6><p:spacer width="40" height="20" />
                     <h6 class="greyStep" >SO invoiced</h6><p:spacer width="60" height="20" />
                     <h6 class="greyStep" >SO closed</h6>
                 </c:if>
@@ -75,7 +75,7 @@
                     <h6 class="greyStep">PO waiting to be processed</h6><p:spacer width="30" height="20" />
                     <h6 class="greyStep">PO Hold</h6><p:spacer width="70" height="20" />
                     <h6 class="activatedStep" >PO Rejected</h6><p:spacer width="30" height="20" />
-                    <h6 class="greyStep" >SO waiting for fulfillment</h6><p:spacer width="30" height="20" />
+                    <h6 class="greyStep" >SO waiting for fulfillment</h6><p:spacer width="40" height="20" />
                     <h6 class="greyStep" >SO invoiced</h6><p:spacer width="60" height="20" />
                     <h6 class="greyStep" >SO closed</h6>
                 </c:if>
@@ -83,7 +83,7 @@
                     <h6 class="greyStep">PO waiting to be processed</h6><p:spacer width="30" height="20" />
                     <h6 class="activatedStep">PO Hold</h6><p:spacer width="70" height="20" />
                     <h6 class="greyStep" >PO Rejected</h6><p:spacer width="30" height="20" />
-                    <h6 class="greyStep" >SO waiting for fulfillment</h6><p:spacer width="30" height="20" />
+                    <h6 class="greyStep" >SO waiting for fulfillment</h6><p:spacer width="40" height="20" />
                     <h6 class="greyStep" >SO invoiced</h6><p:spacer width="60" height="20" />
                     <h6 class="greyStep" >SO closed</h6>
                 </c:if>
@@ -91,7 +91,7 @@
                     <h6 class="greyStep">PO waiting to be processed</h6><p:spacer width="30" height="20" />
                     <h6 class="greyStep">PO Hold</h6><p:spacer width="70" height="20" />
                     <h6 class="greyStep" >PO Rejected</h6><p:spacer width="30" height="20" />
-                    <h6 class="activatedStep" >SO waiting for fulfillment</h6><p:spacer width="30" height="20" />
+                    <h6 class="activatedStep" >SO waiting for fulfillment</h6><p:spacer width="40" height="20" />
                     <h6 class="greyStep" >SO invoiced</h6><p:spacer width="60" height="20" />
                     <h6 class="greyStep" >SO closed</h6>
                 </c:if>
@@ -99,7 +99,7 @@
                     <h6 class="greyStep">PO waiting to be processed</h6><p:spacer width="30" height="20" />
                     <h6 class="greyStep">PO Hold</h6><p:spacer width="70" height="20" />
                     <h6 class="greyStep" >PO Rejected</h6><p:spacer width="30" height="20" />
-                    <h6 class="greyStep" >SO waiting for fulfillment</h6><p:spacer width="30" height="20" />
+                    <h6 class="greyStep" >SO waiting for fulfillment</h6><p:spacer width="40" height="20" />
                     <h6 class="activatedStep" >SO invoiced</h6><p:spacer width="60" height="20" />
                     <h6 class="greyStep" >SO closed</h6>
                 </c:if>
@@ -107,7 +107,7 @@
                     <h6 class="greyStep">PO waiting to be processed</h6><p:spacer width="30" height="20" />
                     <h6 class="greyStep">PO Hold</h6><p:spacer width="70" height="20" />
                     <h6 class="greyStep" >PO Rejected</h6><p:spacer width="30" height="20" />
-                    <h6 class="greyStep" >SO waiting for fulfillment</h6><p:spacer width="30" height="20" />
+                    <h6 class="greyStep" >SO waiting for fulfillment</h6><p:spacer width="40" height="20" />
                     <h6 class="greyStep" >SO invoiced</h6><p:spacer width="60" height="20" />
                     <h6 class="activatedStep" >SO closed</h6>
                 </c:if>
@@ -187,10 +187,17 @@
                         </c:if>
 
                         <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Warehouse'}" >
-                            <p:outputLabel value="Service Start Date:"/><p:spacer width="20" height="20" />
-                            <h:outputText value="#{viewServicePODetailManagedBean.serviceStartDate}"/>
-                            <p:outputLabel value="Service End Date:"/><p:spacer width="20" height="20" />
-                            <h:outputText value="#{viewServicePODetailManagedBean.serviceEndDate}"/>
+                            <p:outputLabel value="Warehouse Order Type:"/><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.warehouseOrderType}"/>
+
+                            <c:if test="#{viewServicePODetailManagedBean.warehouseOrderType eq 'Fulfillment Order'}" >
+                                <p:outputLabel value="Fulfillment Date:"/><p:spacer width="20" height="20" />
+                                <h:outputText value="#{viewServicePODetailManagedBean.serviceFulfillmentDate}"/>
+                            </c:if>
+                            <c:if test="#{viewServicePODetailManagedBean.warehouseOrderType eq 'Receiving Order'}" >
+                                <p:outputLabel value="Receiving Date:"/><p:spacer width="20" height="20" />
+                                <h:outputText value="#{viewServicePODetailManagedBean.serviceReceiveDate}"/>
+                            </c:if>
                         </c:if>
 
                         <p:outputLabel value="Price:" style="color: red" /><p:spacer width="20" height="20" />
@@ -213,29 +220,39 @@
 
 
                 <p:dialog header="Update PO Information" widgetVar="dlg1" minHeight="40">
-                    <h:panelGrid id="detail" columns="3">
-                        <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Transportation'}" >
-                            <p:outputLabel for="deliveryDate" value="Service Delivery Date " /><p:spacer width="20" height="20" />
-                            <p:calendar id="deliveryDate" required="true" requiredMessage="Delivery Date is required" value="#{viewServicePODetailManagedBean.deliveryDate}" pattern="dd-MM-yyyy" mindate="#{viewServicePODetailManagedBean.today}" />
-                        </c:if>
+                    <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Transportation'}" >
+                        <p:outputLabel for="deliveryDate" value="Service Delivery Date " />
+                        <p:calendar id="deliveryDate" required="true" requiredMessage="Delivery Date is required" value="#{viewServicePODetailManagedBean.deliveryDate}" pattern="dd-MM-yyyy" mindate="#{viewServicePODetailManagedBean.today}" />
+                    </c:if>
 
-                        <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Warehouse'}" >
-                            <p:outputLabel for="startDate" value="Service Start Date "  /><p:spacer width="20" height="20" />
-                            <p:calendar id="startDate" required="true" requiredMessage="Service Start Date is required" value="#{viewServicePODetailManagedBean.serviceStartDate}" pattern="dd-MM-yyyy" mindate="#{viewServicePODetailManagedBean.today}" >
-                                <p:ajax update="endDate" />
-                            </p:calendar>
-                            <p:outputLabel for="endDate"  value="Service End Date " /><p:spacer width="20" height="20" />
-                            <p:calendar id="endDate"  required="true" requiredMessage="Service End Date is required" value="#{viewServicePODetailManagedBean.serviceEndDate}" pattern="dd-MM-yyyy" mindate="#{viewServicePODetailManagedBean.serviceStartDate}" />
-                        </c:if>
+                    <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Warehouse'}" >
+                        <p:outputLabel value="Warehouse Order Type " />
+                        <p:selectOneMenu value="#{viewServicePODetailManagedBean.warehouseOrderType}" style="width:200px" >
+                            <p:ajax update="dynamic" />
+                            <f:selectItem itemLabel="Select Warehouse Order Type" itemValue="" noSelectionOption="true" />
+                            <f:selectItem itemLabel="Fulfillment Order" itemValue="Fulfillment Order" />
+                            <f:selectItem itemLabel="Receiving Order" itemValue="Receiving Order" />
+                        </p:selectOneMenu>
+                        <h:panelGroup id="dynamic" >
+                            <h:panelGrid rendered="#{viewServicePODetailManagedBean.warehouseOrderType eq 'Fulfillment Order'}" columns="3" >
+                                <p:outputLabel value="Fulfillment Date " /><p:spacer width="90" height="20" />
+                                <p:calendar required="true" requiredMessage="Fulfillment Date is required" value="#{viewServicePODetailManagedBean.serviceFulfillmentDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{viewServicePODetailManagedBean.today}" />
+                            </h:panelGrid>
 
+                            <h:panelGrid rendered="#{viewServicePODetailManagedBean.warehouseOrderType eq 'Receiving Order'}" columns="3" >
+                                <p:outputLabel  value="Receiving Date " /><p:spacer width="94" height="20" />
+                                <p:calendar required="true" requiredMessage="Receiving Date is required" value="#{viewServicePODetailManagedBean.serviceReceiveDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{viewServicePODetailManagedBean.today}" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </c:if>
 
-                        <h:outputLabel  style="font-weight: bold" value="Quantity in TEU * "/><p:spacer width="20" height="20" />
+                    <h:panelGrid columns="3" >
+                        <p:outputLabel value="Quantity in TEU * "/><p:spacer width="20" height="20" />
                         <p:inputText  value="#{viewServicePODetailManagedBean.volume2}" required="true" requiredMessage="Quantity in TEU is required!" />
                         <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
-                        <h:inputText value="#{viewServicePODetailManagedBean.productId2}" required="true" requiredMessage="Product ID in TEU is required!" />
+                        <p:inputText value="#{viewServicePODetailManagedBean.productId2}" required="true" requiredMessage="Product ID in TEU is required!" />
                         <p:outputLabel value="Product Quantity Per TEU:" /><p:spacer width="20" height="20" />
-                        <h:inputText value="#{viewServicePODetailManagedBean.productQuantityPerTEU2}" required="true" requiredMessage="Product Quantity per TEU is required!" />
-
+                        <p:inputText value="#{viewServicePODetailManagedBean.productQuantityPerTEU2}" required="true" requiredMessage="Product Quantity per TEU is required!" />
                     </h:panelGrid>
                     <p:messages id="modalMsg" showDetail="true" autoUpdate="true" closable="true" />
                     <p:commandButton value="Confirm" action="#{viewServicePODetailManagedBean.updatePO()}" ajax="true" update=":form :form3" />

@@ -91,7 +91,7 @@ public class ViewServicePODetailManagedBean {
             warehouseOrderType = selectedServicePO.getWarehousePOtype();
             serviceFulfillmentDate = selectedServicePO.getServiceFulfilmentDate();
             serviceReceiveDate = selectedServicePO.getServiceReceiveDate();
-            
+
             volume = selectedServicePO.getVolume();
             productId = selectedServicePO.getProductId();
             productQuantityPerTEU = selectedServicePO.getProductQuantityPerTEU();
@@ -123,7 +123,7 @@ public class ViewServicePODetailManagedBean {
                 if (warehouseOrderType.equals("Fulfillment Order")) {
 
                     if (serviceFulfillmentDate.after(selectedServicePO.getContract().getStartDate()) && serviceFulfillmentDate.before(selectedServicePO.getContract().getEndDate())) {
-                    canUpdateServicePO = true;
+                        canUpdateServicePO = true;
                     } else {
                         //Your date must be within specified contract validity period
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Your date must be within specified contract validity period"));
@@ -131,14 +131,13 @@ public class ViewServicePODetailManagedBean {
                 }
                 if (warehouseOrderType.equals("Receiving Order")) {
                     if (serviceReceiveDate.after(selectedServicePO.getContract().getStartDate()) && serviceReceiveDate.before(selectedServicePO.getContract().getEndDate())) {
-                    canUpdateServicePO = true;
+                        canUpdateServicePO = true;
                     } else {
                         //Your date must be within specified contract validity period
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Your date must be within specified contract validity period"));
                     }
                 }
             }
-           
 
             if (canUpdateServicePO) {
 
@@ -326,8 +325,6 @@ public class ViewServicePODetailManagedBean {
     public void setWarehouseOrderType(String warehouseOrderType) {
         this.warehouseOrderType = warehouseOrderType;
     }
-
-
 
     public Integer getVolume() {
         return volume;

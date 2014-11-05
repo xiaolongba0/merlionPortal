@@ -65,25 +65,25 @@
                 <c:if test="#{generateQuotationManagedBean.status eq 1}" >
                     <h6 class="activatedStep">RFQ</h6><p:spacer width="160" height="20" />
                     <h6 class="greyStep">Fulfillment check</h6><p:spacer width="90" height="20" />
-                    <h6 class="greyStep" >Waiting for fulfillment result</h6><p:spacer width="80" height="20" />
+                    <h6 class="greyStep" >Waiting for fulfillment result</h6><p:spacer width="60" height="20" />
                     <h6 class="greyStep" >Reject RFQ/Generate Quotation</h6>
                 </c:if>
                 <c:if test="#{generateQuotationManagedBean.status eq 6}" >
                     <h6 class="greyStep">RFQ</h6><p:spacer width="160" height="20" />
                     <h6 class="activatedStep">Fulfillment check</h6><p:spacer width="90" height="20" />
-                    <h6 class="greyStep" >Waiting for fulfillment result</h6><p:spacer width="80" height="20" />
+                    <h6 class="greyStep" >Waiting for fulfillment result</h6><p:spacer width="60" height="20" />
                     <h6 class="greyStep" >Reject RFQ/Generate Quotation</h6>
                 </c:if>
                 <c:if test="#{generateQuotationManagedBean.status eq 7 or generateQuotationManagedBean.status eq 8}" >
                     <h6 class="greyStep">RFQ</h6><p:spacer width="160" height="20" />
                     <h6 class="greyStep">Fulfillment check</h6><p:spacer width="90" height="20" />
-                    <h6 class="activatedStep" >Waiting for fulfillment result</h6><p:spacer width="80" height="20" />
+                    <h6 class="activatedStep" >Waiting for fulfillment result</h6><p:spacer width="60" height="20" />
                     <h6 class="greyStep" >Reject RFQ/Generate Quotation</h6>
                 </c:if>
                 <c:if test="#{generateQuotationManagedBean.status eq 2 or generateQuotationManagedBean.status eq 4}" >
                     <h6 class="greyStep">RFQ</h6><p:spacer width="160" height="20" />
                     <h6 class="greyStep">Fulfillment check</h6><p:spacer width="90" height="20" />
-                    <h6 class="greyStep" >Waiting for fulfillment result</h6><p:spacer width="80" height="20" />
+                    <h6 class="greyStep" >Waiting for fulfillment result</h6><p:spacer width="60" height="20" />
                     <h6 class="activatedStep" >Reject RFQ/Generate Quotation</h6>
                 </c:if>
                 <div class="steps">
