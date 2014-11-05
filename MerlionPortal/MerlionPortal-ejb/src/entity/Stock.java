@@ -38,7 +38,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Stock.findByComments", query = "SELECT s FROM Stock s WHERE s.comments = :comments"),
     @NamedQuery(name = "Stock.findByQuantity", query = "SELECT s FROM Stock s WHERE s.quantity = :quantity"),
     @NamedQuery(name = "Stock.findByProductId", query = "SELECT s FROM Stock s WHERE s.productId = :productId"),
-    @NamedQuery(name = "Stock.findByExpiryDate", query = "SELECT s FROM Stock s WHERE s.expiryDate = :expiryDate")})
+    @NamedQuery(name = "Stock.findByExpiryDate", query = "SELECT s FROM Stock s WHERE s.expiryDate = :expiryDate"),
+    @NamedQuery(name = "Stock.findByReservedStock", query = "SELECT s FROM Stock s WHERE s.reservedStock = :reservedStock"),
+    @NamedQuery(name = "Stock.findByAvailableStock", query = "SELECT s FROM Stock s WHERE s.availableStock = :availableStock")})
 public class Stock implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -59,6 +61,10 @@ public class Stock implements Serializable {
     @Column(name = "expiryDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date expiryDate;
+    @Column(name = "reservedStock")
+    private Integer reservedStock;
+    @Column(name = "availableStock")
+    private Integer availableStock;
     @JoinColumn(name = "storageBin", referencedColumnName = "storageBinId")
     @ManyToOne(optional = false)
     private StorageBin storageBin;
@@ -116,6 +122,22 @@ public class Stock implements Serializable {
 
     public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
+    }
+
+    public Integer getReservedStock() {
+        return reservedStock;
+    }
+
+    public void setReservedStock(Integer reservedStock) {
+        this.reservedStock = reservedStock;
+    }
+
+    public Integer getAvailableStock() {
+        return availableStock;
+    }
+
+    public void setAvailableStock(Integer availableStock) {
+        this.availableStock = availableStock;
     }
 
     public StorageBin getStorageBin() {

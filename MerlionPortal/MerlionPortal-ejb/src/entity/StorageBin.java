@@ -42,7 +42,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "StorageBin.findByMaxWeight", query = "SELECT s FROM StorageBin s WHERE s.maxWeight = :maxWeight"),
     @NamedQuery(name = "StorageBin.findByInuseSpace", query = "SELECT s FROM StorageBin s WHERE s.inuseSpace = :inuseSpace"),
     @NamedQuery(name = "StorageBin.findByReservedSpace", query = "SELECT s FROM StorageBin s WHERE s.reservedSpace = :reservedSpace"),
-    @NamedQuery(name = "StorageBin.findByAvailableSpace", query = "SELECT s FROM StorageBin s WHERE s.availableSpace = :availableSpace")})
+    @NamedQuery(name = "StorageBin.findByAvailableSpace", query = "SELECT s FROM StorageBin s WHERE s.availableSpace = :availableSpace"),
+    @NamedQuery(name = "StorageBin.findByRentedCompanyId", query = "SELECT s FROM StorageBin s WHERE s.rentedCompanyId = :rentedCompanyId"),
+    @NamedQuery(name = "StorageBin.findByRented", query = "SELECT s FROM StorageBin s WHERE s.rented = :rented")})
 public class StorageBin implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -70,6 +72,10 @@ public class StorageBin implements Serializable {
     private Integer reservedSpace;
     @Column(name = "availableSpace")
     private Integer availableSpace;
+    @Column(name = "rentedCompanyId")
+    private Integer rentedCompanyId;
+    @Column(name = "rented")
+    private Boolean rented;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "storageBin")
     private List<Stock> stockList;
     @JoinColumn(name = "warehouseZone", referencedColumnName = "warehouseZoneId")
@@ -153,6 +159,22 @@ public class StorageBin implements Serializable {
 
     public void setAvailableSpace(Integer availableSpace) {
         this.availableSpace = availableSpace;
+    }
+
+    public Integer getRentedCompanyId() {
+        return rentedCompanyId;
+    }
+
+    public void setRentedCompanyId(Integer rentedCompanyId) {
+        this.rentedCompanyId = rentedCompanyId;
+    }
+
+    public Boolean getRented() {
+        return rented;
+    }
+
+    public void setRented(Boolean rented) {
+        this.rented = rented;
     }
 
     @XmlTransient
