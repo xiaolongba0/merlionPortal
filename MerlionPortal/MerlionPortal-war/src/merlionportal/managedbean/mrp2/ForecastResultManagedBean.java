@@ -9,8 +9,15 @@ import entity.MonthForecastResult;
 import entity.SystemUser;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -146,8 +153,49 @@ MonthForecastResult monthForecastResult;
         LineChartSeries series1 = new LineChartSeries();
         series1.setLabel("Sales Figure");
 
+          int k = 0;
         for (int i = 1; i <= periodicity; i++) {
             series1.set(monthlyDateR.get(i), forecastR.get(i));
+            //Assign largest sales data to k
+            if (forecastR.get(i) >= k) {
+                k = forecastR.get(i);
+            }
+        }
+        
+         //Compute Maximum Y axis value
+        int length = String.valueOf(k).length();
+        int first = this.getFirstDigit(k);
+        first++;
+        for (int i = 0; i < (length - 1); i++) {
+            first = first * 10;
+        }
+
+        //Compute beginning date to be shown on x-axis
+        String firstDateOnAxis = "2014-05-01";
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = df.parse(monthlyDateR.get(1));
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.MONTH, -4);
+            firstDateOnAxis  = df.format(calendar.getTime());
+            System.out.println("FY test new first date: " + firstDateOnAxis);
+        } catch (ParseException ex) {
+            Logger.getLogger(ForecastShowHistoryManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        //Compute ending date to be shown on x-axis
+        String lastDateOnAxis = "2016-05-01";
+        try {
+            Date date = df.parse(monthlyDateR.get(periodicity));
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(Calendar.MONTH, +4);
+            lastDateOnAxis  = df.format(calendar.getTime());
+            System.out.println("FY test lastdate: " + lastDateOnAxis);
+        } catch (ParseException ex) {
+            Logger.getLogger(ForecastShowHistoryManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         forecastSales.addSeries(series1);
@@ -159,14 +207,21 @@ MonthForecastResult monthForecastResult;
         Axis yAxis = forecastSales.getAxis(AxisType.Y);
         yAxis.setLabel("Sales Volume (in pieces)");
         yAxis.setMin(0);
-        yAxis.setMax(35000);
+        yAxis.setMax(first);
 
         DateAxis axis = new DateAxis("Dates");
         forecastSales.getAxes().put(AxisType.X, axis);
-        axis.setMin("2014-07-01");
-        axis.setMax("2016-03-01");
+        axis.setMin(firstDateOnAxis);
+        axis.setMax(lastDateOnAxis);
         axis.setTickFormat("%b, %y");
 
+    }
+    
+        public int getFirstDigit(int num) {
+        while (num < -9 || 9 < num) {
+            num /= 10;
+        }
+        return Math.abs(num);
     }
 
 }
