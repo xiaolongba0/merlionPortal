@@ -55,6 +55,11 @@
         </ui:define>
 
         <ui:define name="right">
+            <p:breadCrumb>
+                <p:menuitem value="CRMS Home" url="crmsindex.xhtml" />
+                <p:menuitem value="View Order Statistics" url="vieworderstatistics.xhtml" />
+                <p:menuitem value="View Statistics Result" url="showstatisticresult.xhtml" />
+            </p:breadCrumb>
             <c:if test="#{(viewStatisticResultManagedBean.amounts ne null) and (viewStatisticResultManagedBean.companys ne null)}" >
                 <p:chart type="bar" model="#{viewStatisticResultManagedBean.horizontalBarModel}" style="height:300px"/>
             </c:if>

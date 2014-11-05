@@ -57,6 +57,11 @@
         </ui:define>
 
         <ui:define name="right">
+            <p:breadCrumb>
+                <p:menuitem value="CRMS Home" url="crmsindex.xhtml" />
+                <p:menuitem value="View All Orders" url="viewallservicepos.xhtml" />
+                <p:menuitem value="View Order Detail" url="viewservicepodetail.xhtml" />
+            </p:breadCrumb>
             <h:form id="form">
                 <c:if test="#{viewServicePODetailManagedBean.compareStatus eq 1}" >
                     <h6 class="activatedStep">PO waiting to be processed</h6><p:spacer width="30" height="20" />
@@ -106,9 +111,9 @@
                     <h6 class="greyStep" >SO invoiced</h6><p:spacer width="60" height="20" />
                     <h6 class="activatedStep" >SO closed</h6>
                 </c:if>
-                 
+
                 <div class="contractsteps">
-                    <img src="../img/6nodes.jpg"/>
+                    <img src="../img/6nodes.png"/>
                 </div>
                 <p:fieldset legend="Service Contact Information" style="margin-bottom:20px">
                     <h:panelGrid columns="3" cellpadding="6">

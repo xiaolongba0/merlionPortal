@@ -56,6 +56,11 @@
         </ui:define>
 
         <ui:define name="right">
+            <p:breadCrumb>
+                <p:menuitem value="CRMS Home" url="crmsindex.xhtml" />
+                <p:menuitem value="View All Contracts" url="viewallcontracts.xhtml" />
+                <p:menuitem value="View Contract Detail" url="viewcontractdetail.xhtml" />
+            </p:breadCrumb>
             <h:form id="form">
                 <p:fieldset legend="Contact Information" style="margin-bottom:20px">
                     <h:panelGrid columns="3" cellpadding="6">
@@ -100,7 +105,7 @@
                         <c:if test="#{viewContractManagedBean.selectedContract.serviceType eq 'Warehouse'}" >
                             <p:outputLabel value="Storage Type:" /><p:spacer width="20" height="20" />
                             <h:outputText value="#{viewContractManagedBean.selectedContract.storageType}" />
-                            
+
                         </c:if>
 
 
@@ -171,7 +176,7 @@
                                 <h:commandButton value="Confirm" styleClass="btn btn-success" action="#{viewContractManagedBean.requestToModifyContract()}" pt:data-dismiss="modal" >
                                     <f:ajax execute="@form" render=":form" />
                                 </h:commandButton>
-                                   
+
                                 <h:commandButton value="Close" styleClass="btn btn-warning" pt:data-dismiss="modal" />
                             </div>
                         </div>

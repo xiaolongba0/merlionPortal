@@ -55,6 +55,10 @@
         </ui:define>
 
         <ui:define name="right">
+            <p:breadCrumb>
+                <p:menuitem value="CRMS Home" url="crmsindex.xhtml" />
+                <p:menuitem value="Renew Contracts" url="renewservicecontract.xhtml" />
+            </p:breadCrumb>
             <p:panel id="basic" header="Renew Service Contract" style="margin-bottom:20px">
                 <h:form id="form">
                     <p:ajaxStatus style="width:16px;height:16px;">
@@ -139,7 +143,7 @@
                             <c:if test="#{renewContractManagedBean.contract.serviceQuotation.serviceType eq 'Warehouse'}" >
                                 <h:outputLabel  style="font-weight: bold" value="Storage Type *" /><p:spacer width="20" height="20" />
                                 <h:outputLabel value="#{renewContractManagedBean.contract.serviceQuotation.storageType}" />
-                                
+
                             </c:if>
 
                             <h:outputLabel style="font-weight: bold" value="Terms &amp; Conditions * "/><p:spacer width="20" height="20" />

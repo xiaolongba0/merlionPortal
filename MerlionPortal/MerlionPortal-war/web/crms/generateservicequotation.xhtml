@@ -56,6 +56,11 @@
         </ui:define>
 
         <ui:define name="right">
+            <p:breadCrumb>
+                <p:menuitem value="CRMS Home" url="crmsindex.xhtml" />
+                <p:menuitem value="View All Requests" url="viewallrequests.xhtml" />
+                <p:menuitem value="Generate Service Quotation" url="generateservicequotation.xhtml" />
+            </p:breadCrumb>
             <h:form id="form" >
                 <c:if test="#{generateQuotationManagedBean.status eq 1}" >
                     <h6 class="activatedStep">RFQ</h6><p:spacer width="160" height="20" />
@@ -82,7 +87,7 @@
                     <h6 class="activatedStep" >Reject RFQ/Generate Quotation</h6>
                 </c:if>
                 <div class="steps">
-                    <img src="../img/4node.jpg"/>
+                    <img src="../img/4nodes.png"/>
                 </div>
 
                 <p:fieldset legend="Contact Information" style="margin-bottom:20px">

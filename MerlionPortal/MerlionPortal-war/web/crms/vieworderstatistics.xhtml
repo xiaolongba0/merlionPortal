@@ -55,6 +55,10 @@
         </ui:define>
 
         <ui:define name="right">
+            <p:breadCrumb>
+                <p:menuitem value="CRMS Home" url="crmsindex.xhtml" />
+                <p:menuitem value="View Order Statistics" url="vieworderstatistics.xhtml" />
+            </p:breadCrumb>
             <h:form id="main">
                 <p:outputLabel for="start" value="Start Date" />
                 <p:calendar id="start" value="#{viewOrderStatisticsManagedBean.startDate}" required="true" requiredMessage="Start Date is required" />

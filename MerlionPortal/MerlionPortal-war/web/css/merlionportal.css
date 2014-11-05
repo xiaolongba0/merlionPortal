@@ -290,6 +290,9 @@ h2.system-welcome{
 .mrp-system-banner{
     background: url('../img/MRP.jpg') -0px -0px no-repeat;
 }
+.crms-system-banner{
+    background: url('../img/CRMS.jpg') -0px -0px no-repeat;
+}
 
 .pad-it{
     padding-left: 10px;
