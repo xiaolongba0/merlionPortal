@@ -105,7 +105,7 @@ public class StockViewEditManagedBean {
         totalQuantity = 0;
         if (productId != null) {
             stocks = rpsb.viewStock(companyId, productId);
-            totalQuantity = rpsb.countTotalStock(companyId, productId);
+            totalQuantity = rpsb.countTotalAvailbleStock(companyId, productId);
             systemLogSB.recordSystemLog(userId, "WMS view stocks");
             if (stocks == null) {
                 System.out.println("============== FAILED TO VIEW STOCK ===============");
@@ -137,7 +137,7 @@ public class StockViewEditManagedBean {
         stock = new Stock();
         stock = (Stock) event.getObject();
         System.out.println("[In Managed Bean - STOCK ON ROW EDIT]===============================: " + stock.getQuantity());
-        boolean result = rpsb.editStock(stock.getName(), stock.getComments(), stock.getQuantity(), stock.getProductId(), stock.getStockId(), stock.getExpiryDate());
+        boolean result = rpsb.editStock(stock.getName(), stock.getComments(), stock.getStockId(), stock.getExpiryDate());
         if (result) {
             systemLogSB.recordSystemLog(userId, "WMS edit stock");
             FacesMessage msg = new FacesMessage("Stock with ID = " + stock.getStockId() + " has sucessfully been edited");

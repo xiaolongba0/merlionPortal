@@ -79,6 +79,7 @@ public class MovingStockViewManagedBean {
         System.out.println("[In Managed Bean - getSourceMovingStocks] ===============================: " + transportOrderId);
         if (transportOrderId != null) {
             sourceMovingStocks = tosb.viewSourceMovingStock(transportOrderId);
+            System.out.println("SourceMovingStocks = " + sourceMovingStocks);
             systemLogSB.recordSystemLog(userId, "WMS view moving stock from source warehouse");
             if (transportOrderId == null) {
                 System.out.println("============== FAILED TO VIEW MOVING STOCKS ===============");
