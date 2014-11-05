@@ -142,21 +142,20 @@
                             </p:cellEditor>
                         </p:column>
 
-                        <p:column  headerText="Quantity" filterBy="#{stock.quantity}" filterMatchMode="contains">
-<!--                            <p:cellEditor>-->
-<!--                                <f:facet name="output">-->
-                                    <h:outputText value="#{stock.quantity}" />
-<!--                                </f:facet>
-                                <f:facet name="input"><p:inputText value="#{stock.quantity}" style="width:100%" label="Quantity"/></f:facet>-->
-<!--                            </p:cellEditor>-->
+                        <p:column  headerText="Available Quantity" filterBy="#{stock.availableStock}" filterMatchMode="contains">
+                            <h:outputText value="#{stock.availableStock}" />
+                        </p:column> 
+
+                        <p:column  headerText="Reserve Quantity" filterBy="#{stock.reservedStock}" filterMatchMode="contains">
+                            <h:outputText value="#{stock.reservedStock}" />
                         </p:column>
 
-<!--                        <p:column  headerText="Expiry Date" filterBy="#{stock.expiryDate}" filterMatchMode="contains">
+                        <p:column  headerText="Expiry Date" filterBy="#{stock.expiryDate}" filterMatchMode="contains">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{stock.expiryDate}" /></f:facet>
                                 <f:facet name="input"><p:calendar id="expiryDate" value="#{stock.expiryDate}" /></f:facet>
                             </p:cellEditor>
-                        </p:column>-->
+                        </p:column>
 
                         <p:column style="width:48px">
                             <p:commandButton actionListener="#{stockViewEditManagedBean.deleteStock(stock)}" ajax="true" update=":datafield:totalQuantity :datafield:stockData" icon="ui-icon-trash"  >
@@ -175,7 +174,7 @@
 
                     <p:messages id="messages" autoUpdate="true" closable="true" />
                     <br></br>
-                    <p:outputLabel id="totalQuantity" value="Total Quantity: #{stockViewEditManagedBean.totalQuantity}" />
+                    <p:outputLabel id="totalQuantity" value="Total Available Quantity: #{stockViewEditManagedBean.totalQuantity}" />
                 </h:form>
             </p:panel>
         </ui:define>

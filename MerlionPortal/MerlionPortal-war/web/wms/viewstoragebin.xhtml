@@ -150,6 +150,14 @@
                             <h:outputText value="#{storagebin.availableSpace}" />
                         </p:column>
 
+                        <p:column  headerText="Rented Status" filterBy="#{storagebin.rented}" filterMatchMode="contains">
+                            <h:outputText value="#{storagebin.rented}" />
+                        </p:column>
+
+                        <p:column  headerText="Rented Company ID" filterBy="#{storagebin.rentedCompanyId}" filterMatchMode="contains">
+                            <h:outputText value="#{storagebin.rentedCompanyId}" />
+                        </p:column>
+
                         <p:column style="width:48px">
                             <p:commandButton action="#{storageBinViewEditManagedBean.deleteStorageBin(storagebin)}" update="storagebinData" icon = "ui-icon-trash"  >
                                 <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this storage bin?" icon="ui-icon-alert" />
