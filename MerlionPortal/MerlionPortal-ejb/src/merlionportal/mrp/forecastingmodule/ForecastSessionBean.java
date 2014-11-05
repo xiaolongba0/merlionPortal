@@ -9,7 +9,10 @@ import entity.ForecastResult;
 import entity.MonthForecastResult;
 import entity.Mps;
 import entity.Product;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
@@ -412,31 +415,21 @@ public class ForecastSessionBean {
     public Vector<String> yaxisDate() {
         monthlyDateR = new Vector<String>();
         monthlyDateR.add("0");
+//to start from today
+     //   Date today = new Date();
+ 
+   //     c.setTime(today);
+     //   c.add(Calendar.MONTH, 1);
+        
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    Calendar c = Calendar.getInstance();   // this takes current date
+    c.set(Calendar.DAY_OF_MONTH, 1);
+    
+    for(int i=0; i<24; i++){
+        monthlyDateR.add(df.format(c.getTime()));
 
-        monthlyDateR.add("2014-10-01");
-        monthlyDateR.add("2014-11-01");
-        monthlyDateR.add("2014-12-01");
-        monthlyDateR.add("2015-01-01");
-        monthlyDateR.add("2015-02-01");
-        monthlyDateR.add("2015-03-01");
-        monthlyDateR.add("2015-04-01");
-        monthlyDateR.add("2015-05-01");
-        monthlyDateR.add("2015-06-01");
-        monthlyDateR.add("2015-07-01");
-        monthlyDateR.add("2015-08-01");
-        monthlyDateR.add("2015-09-01");
-        monthlyDateR.add("2015-10-01");
-        monthlyDateR.add("2015-11-01");
-        monthlyDateR.add("2015-12-01");
-        monthlyDateR.add("2016-01-01");
-        monthlyDateR.add("2016-02-01");
-        monthlyDateR.add("2016-03-01");
-        monthlyDateR.add("2016-04-01");
-        monthlyDateR.add("2016-05-01");
-        monthlyDateR.add("2016-06-01");
-        monthlyDateR.add("2016-07-01");
-        monthlyDateR.add("2016-08-01");
-        monthlyDateR.add("2016-10-01");
+        c.add(Calendar.MONTH, 1);
+    }
 
         return monthlyDateR;
     }
