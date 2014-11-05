@@ -244,6 +244,8 @@ public class AssetManagementSessionBean {
             bin.setMaxQuantity(maxQuantity);
             bin.setMaxWeight(maxWeight);
             bin.setWarehouseZone(warehouseZone);
+            bin.setRented(Boolean.FALSE);
+            bin.setReservedSpace(null);
 
             Integer inuseSpace = 0;
             Integer availableSpace = maxQuantity;

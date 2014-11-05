@@ -14,6 +14,8 @@ import entity.TransportOrder;
 import entity.Warehouse;
 import entity.WarehouseZone;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -63,41 +65,76 @@ public class TransportOrderSessionBean {
         if (eQuantity >= totalQuantity & totalQuantity != 0) {
             // check for space in destination warehouse
             // check storage type
-            // handle the case with more than 1 source bin T_T
             Warehouse sourceWarehouse = em.find(Warehouse.class, sourceWarehouseId);
             Warehouse destWarehouse = em.find(Warehouse.class, destWarehouseId);
             // retrive bin storage type
-            Query query = em.createNamedQuery("Stock.findByProductId").setParameter("productId", productId);
-            Stock stock = (Stock) query.getResultList().get(0);
+
+            List<Stock> allStocks = new ArrayList<>();
+            // get stocks that belong to that warehouse only
+            allStocks = rpsb.getWarehouseStock(sourceWarehouseId, productId);
+            Stock stock = allStocks.get(0);
+            // get the type of the source bin, to compare to the type of the destination bin later
             String sourceBinType = stock.getStorageBin().getBinType();
+
+            System.out.println("[UNSORTED] AllStocks = " + allStocks);
+            // sort by created date
+            if (stock.getExpiryDate() == null) {
+//                Collections.sort(allStocks, new Comparator<Stock>() {
+//                    @Override
+//                    public int compare(Stock o1, Stock o2) {
+//                        return o1..compareTo(o2.getExpiryDate());
+//                    }
+//                });
+            } // sort the list of stocks according to expiry date
+            else {
+                Collections.sort(allStocks, new Comparator<Stock>() {
+                    @Override
+                    public int compare(Stock o1, Stock o2) {
+                        return o1.getExpiryDate().compareTo(o2.getExpiryDate());
+                    }
+                });
+            }
+
+            System.out.println("[SORTED] AllStocks = " + allStocks);
 
             // get list of source bins
             List<Integer> sourceBinIds = new ArrayList<>();
             List<Integer> sourceQuantity = new ArrayList<>();
-            List<Stock> allStocks = new ArrayList<>();
+            List<Date> createdDates = new ArrayList<>();
+            List<Date> expiryDates = new ArrayList<>();
+            List<String> stockNames = new ArrayList<>();
             Integer newTotalQ = totalQuantity;
             Integer tempTotalQuantity = totalQuantity;
 
             Integer count = 0;
-            while (count < query.getResultList().size() & newTotalQ != 0) {
+            while (count < allStocks.size() & newTotalQ != 0) {
                 Stock tempStock = new Stock();
-                tempStock = (Stock) query.getResultList().get(count);
-                if (tempStock.getStorageBin().getWarehouseZone().getWarehouse().getWarehouseId() == sourceWarehouseId) {
-                    if (newTotalQ >= stock.getQuantity()) {
-                        newTotalQ = newTotalQ - stock.getQuantity();
-                        allStocks.add(stock);
-                        sourceBinIds.add(tempStock.getStorageBin().getStorageBinId());
-                        sourceQuantity.add(stock.getQuantity());
-                        System.out.println(count + " SourceBinId1: " + tempStock.getStorageBin().getStorageBinId());
-                    } else {
-                        allStocks.add(stock);
-                        sourceQuantity.add(newTotalQ);
-                        newTotalQ = 0;
-                        sourceBinIds.add(tempStock.getStorageBin().getStorageBinId());
-                        System.out.println(count + " SourceBinId2: " + tempStock.getStorageBin().getStorageBinId());
-                    }
+                tempStock = allStocks.get(count);
+//                if (tempStock.getStorageBin().getWarehouseZone().getWarehouse().getWarehouseId() == sourceWarehouseId) {
+                if (newTotalQ >= tempStock.getQuantity()) {
+                    newTotalQ = newTotalQ - tempStock.getQuantity();
+                    sourceBinIds.add(tempStock.getStorageBin().getStorageBinId());
+                    sourceQuantity.add(tempStock.getQuantity());
+                    stockNames.add(tempStock.getName());
+                    expiryDates.add(tempStock.getExpiryDate());
+                    // reserve the stock
+                    rpsb.reserveStock(tempStock.getStockId(), tempStock.getQuantity());
+                    // created
+                    System.out.println(count + " SourceBinId1: " + tempStock.getStorageBin().getStorageBinId());
+                } else {
+                    rpsb.reserveStock(tempStock.getStockId(), newTotalQ);
+                    sourceQuantity.add(newTotalQ);
+                    newTotalQ = 0;
+                    stockNames.add(tempStock.getName());
+                    expiryDates.add(tempStock.getExpiryDate());
+                    // created
+                    // reserve the stock
 
+                    sourceBinIds.add(tempStock.getStorageBin().getStorageBinId());
+                    System.out.println(count + " SourceBinId2: " + tempStock.getStorageBin().getStorageBinId());
                 }
+
+//                }
                 count++;
             }
             System.out.println("Exited while loop!");
@@ -183,7 +220,7 @@ public class TransportOrderSessionBean {
             System.out.println("Persisted Transport Order");
 
             // generate moving stock list
-            movingStockList = generateMovingStock(sourceBinIds, sourceQuantity, destBinIds, destReservedQuantity, transportOrder);
+            movingStockList = generateMovingStock(sourceBinIds, sourceQuantity, destBinIds, destReservedQuantity, transportOrder, createdDates, expiryDates, stockNames);
             transportOrder.setMovingStockList(movingStockList);
             em.merge(transportOrder);
             em.flush();
@@ -212,7 +249,9 @@ public class TransportOrderSessionBean {
 
     }
 
-    public List<MovingStock> generateMovingStock(List<Integer> sourceStorageBinId, List<Integer> sourceQuantity, List<Integer> destStorageBinId, List<Integer> destQuantity, TransportOrder transportOrder) {
+    public List<MovingStock> generateMovingStock(List<Integer> sourceStorageBinId, List<Integer> sourceQuantity,
+            List<Integer> destStorageBinId, List<Integer> destQuantity, TransportOrder transportOrder,
+            List<Date> createdDates, List<Date> expiryDates, List<String> stockNames) {
         List<MovingStock> tempStockList = new ArrayList();
 
         System.out.println("INSIDE GENERATE MOVING STOCK FUNCTION");
@@ -224,6 +263,10 @@ public class TransportOrderSessionBean {
             movingStock.setMovingQuantity(sourceQuantity.get(i));
             movingStock.setSourceStorageBinId(sourceStorageBinId.get(i));
             movingStock.setTransportOrder(transportOrder);
+            movingStock.setStockName(stockNames.get(i));
+            movingStock.setExpiryDate(expiryDates.get(i));
+            movingStock.setCreatedDate(null);
+            // movingStock.setCreatedDate(createdDates.get(i));
             tempStockList.add(movingStock);
 
             em.persist(movingStock);
@@ -239,6 +282,10 @@ public class TransportOrderSessionBean {
             movingStock2.setMovingQuantity(destQuantity.get(j));
             movingStock2.setSourceStorageBinId(null);
             movingStock2.setTransportOrder(transportOrder);
+            movingStock2.setStockName(stockNames.get(j));
+            movingStock2.setExpiryDate(expiryDates.get(j));
+            movingStock2.setCreatedDate(null);
+//            movingStock2.setCreatedDate(createdDates.get(j));
             tempStockList.add(movingStock2);
 
             em.persist(movingStock2);
@@ -285,18 +332,17 @@ public class TransportOrderSessionBean {
         return allOrders;
     }
 
-    public TransportOrder viewATransportOrder(Integer transportOrderId) {
-        System.out.println("In viewATransportOrder, TransportOrder ============================= : " + transportOrderId);
-        TransportOrder transportOrder = new TransportOrder();
-        transportOrder = em.find(TransportOrder.class, transportOrderId);
-
-        return transportOrder;
-    }
-
+//    public TransportOrder viewATransportOrder(Integer transportOrderId) {
+//        System.out.println("In viewATransportOrder, TransportOrder ============================= : " + transportOrderId);
+//        TransportOrder transportOrder = new TransportOrder();
+//        transportOrder = em.find(TransportOrder.class, transportOrderId);
+//
+//        return transportOrder;
+//    }
     public List<MovingStock> viewSourceMovingStock(Integer transportOrderId) {
         TransportOrder transportOrder = new TransportOrder();
         transportOrder = em.find(TransportOrder.class, transportOrderId);
-        System.out.println("[INSIDE TOSB EJB]================================View Source Moving Stock");
+        System.out.println("[INSIDE TOSB EJB]================================View Source Moving Stock" + transportOrder);
 
         List<MovingStock> allStocks = new ArrayList();
         List<MovingStock> allSourceStocks = new ArrayList();
@@ -350,7 +396,7 @@ public class TransportOrderSessionBean {
                 System.out.println("Bin available quantity: " + bin.getAvailableSpace());
                 System.out.println("Bin moving quantity: " + allDestStocks.get(i).getMovingQuantity());
                 availableQuantity = bin.getAvailableSpace() + allDestStocks.get(i).getMovingQuantity();
-                
+
                 // problem here?
                 bin.setReservedSpace(bin.getReservedSpace() - allDestStocks.get(i).getMovingQuantity());
                 System.out.println("NEW BIN AVAILABLE QUANTITY" + availableQuantity);
@@ -369,50 +415,6 @@ public class TransportOrderSessionBean {
         return false;
     }
 
-    public boolean receiveTransportOrder(Integer transportOrderId) {
-        System.out.println("In receiveTransportOrder, TransportOrder ============================= : " + transportOrderId);
-        TransportOrder transportOrder = new TransportOrder();
-        transportOrder = em.find(TransportOrder.class, transportOrderId);
-
-        // get product name
-        String stockName = "";
-        Product product = new Product();
-        product = em.find(Product.class, transportOrder.getProductId());
-        stockName = product.getProductName();
-
-        if (transportOrder != null) {
-
-            // receive stock into the warehouse        
-            List<MovingStock> allDestStocks = new ArrayList();
-            allDestStocks = viewDestMovingStock(transportOrderId);
-
-            Integer destBinId;
-            Integer availableQuantity;
-            int i = 0;
-            while (i < allDestStocks.size()) {
-                destBinId = allDestStocks.get(i).getDestStorageBinId();
-                StorageBin bin = new StorageBin();
-                bin = em.find(StorageBin.class, destBinId);
-                bin.setReservedSpace(bin.getReservedSpace() - allDestStocks.get(i).getMovingQuantity());
-                System.out.println(bin.getReservedSpace() - allDestStocks.get(i).getMovingQuantity());
-
-                // add stocks
-                rpsb.addTOStock(stockName, "Transported Stock", allDestStocks.get(i).getMovingQuantity(), transportOrder.getProductId(), destBinId, null);
-                em.merge(bin);
-                em.flush();
-                i++;
-            }
-
-            // to complete, status = 3
-            transportOrder.setStatus(3);
-            em.merge(transportOrder);
-            em.flush();
-            return true;
-        }
-        return false;
-    }
-
-    // might need to edit later, to integrate with receiving and putaway submodule
     public boolean sendTransportOrder(Integer transportOrderId) {
         System.out.println("In sendTransportOrder, TransportOrder ============================= : " + transportOrderId);
         TransportOrder transportOrder = new TransportOrder();
@@ -428,12 +430,36 @@ public class TransportOrderSessionBean {
 
             Integer sourceBinId;
             int i = 0;
+            
+            // go through all the relevant storage bins to retrieve the stock
             while (i < allSourceStocks.size()) {
+                System.out.println("I = " + i);
                 sourceBinId = allSourceStocks.get(i).getSourceStorageBinId();
                 StorageBin bin = new StorageBin();
                 bin = em.find(StorageBin.class, sourceBinId);
+                System.out.println("BIN = " + bin);
                 List<Stock> stockList = new ArrayList();
                 stockList = bin.getStockList();
+
+                Stock tempStock = new Stock();
+                tempStock = stockList.get(0);
+                // sort by created date
+                if (tempStock.getExpiryDate() == null) {
+//                Collections.sort(stockList, new Comparator<Stock>() {
+//                    @Override
+//                    public int compare(Stock o1, Stock o2) {
+//                        return o1..compareTo(o2.getExpiryDate());
+//                    }
+//                });
+                } // sort the list of stocks according to expiry date
+                else {
+                    Collections.sort(stockList, new Comparator<Stock>() {
+                        @Override
+                        public int compare(Stock o1, Stock o2) {
+                            return o1.getExpiryDate().compareTo(o2.getExpiryDate());
+                        }
+                    });
+                }
 
                 int j = 0;
                 while (j < stockList.size() & transportQuantity != 0) {
@@ -447,7 +473,12 @@ public class TransportOrderSessionBean {
                     if (stockQuantity > transportQuantity) {
                         newStockQuantity = stockQuantity - transportQuantity;
                         System.out.println("NEW STOCK QUANTITY = " + newStockQuantity);
+                        
+                        // update the relevant stock related attributes
                         stock.setQuantity(newStockQuantity);
+                        Integer reservedStock = newStockQuantity - stock.getAvailableStock();
+                        stock.setReservedStock(reservedStock);
+                        System.out.println("NEW RESERVED STOCK = " + reservedStock);
                         transportQuantity = 0;
                         em.merge(stock);
                         em.flush();
@@ -472,28 +503,49 @@ public class TransportOrderSessionBean {
         return false;
     }
 
-    // check the status of the transport order, if the status is completed for cancelled, the transport order can be deleted
-    // function not completed
-//    public boolean deleteTransportOrder(Integer transportOrderId) {
-//
-//        System.out.println("[INSIDE TOSB EJB]================================Delete");
-//        TransportOrder transportOrder = em.find(TransportOrder.class, transportOrderId);
-//
-//        if (transportOrder == null) {
-//            return false;
-//        } else if (transportOrder.getStatus() == 1 || transportOrder.getStatus() == 2) {
-//            em.remove(transportOrder.getMovingStockList());
-//            em.remove(transportOrder);
-//            em.flush();
-//        }
-//
-////        WarehouseZone warehouseZone = bin.getWarehouseZone();
-////        warehouseZone.getStorageBinList().remove(bin);
-////        em.merge(warehouseZone);
-////        em.remove(bin);
-////        em.flush();
-////
-////        System.out.println("END OF DELETE STORAGE BIN FUNCTION IN SESSION BEAN");
-//        return true;
-//    }
+    public boolean receiveTransportOrder(Integer transportOrderId) {
+        System.out.println("In receiveTransportOrder, TransportOrder ============================= : " + transportOrderId);
+        TransportOrder transportOrder = new TransportOrder();
+        transportOrder = em.find(TransportOrder.class, transportOrderId);
+
+        // get stock name
+        // to be edited
+//        String stockName = "";
+//        Product product = new Product();
+//        product = em.find(Product.class, transportOrder.getProductId());
+//        stockName = product.getProductName();
+        if (transportOrder != null) {
+
+            // receive stock into the warehouse        
+            List<MovingStock> allDestStocks = new ArrayList();
+            allDestStocks = viewDestMovingStock(transportOrderId);
+
+            Integer destBinId;
+            Integer availableQuantity;
+            int i = 0;
+            while (i < allDestStocks.size()) {
+                destBinId = allDestStocks.get(i).getDestStorageBinId();
+                StorageBin bin = new StorageBin();
+                bin = em.find(StorageBin.class, destBinId);
+                bin.setReservedSpace(bin.getReservedSpace() - allDestStocks.get(i).getMovingQuantity());
+                System.out.println(bin.getReservedSpace() - allDestStocks.get(i).getMovingQuantity());
+
+                // add stocks
+                rpsb.addTOStock(allDestStocks.get(i).getStockName(), "Transported Stock", allDestStocks.get(i).getMovingQuantity(), transportOrder.getProductId(),
+                        destBinId, allDestStocks.get(i).getExpiryDate(), allDestStocks.get(i).getCreatedDate());
+                em.merge(bin);
+                em.flush();
+                i++;
+            }
+
+            // to complete, status = 3
+            transportOrder.setStatus(3);
+            em.merge(transportOrder);
+            em.flush();
+            return true;
+        }
+        return false;
+    }
+
+    // might need to edit later, to integrate with receiving and putaway submodule
 }
