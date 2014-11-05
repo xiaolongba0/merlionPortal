@@ -43,8 +43,9 @@ public class ViewServicePODetailManagedBean {
     private Integer userId;
 
     private Date deliveryDate;
-    private Date serviceStartDate;
-    private Date serviceEndDate;
+    private Date serviceFulfillmentDate;
+    private Date serviceReceiveDate;
+    private String warehouseOrderType;
     private Integer volume;
     private Double price;
     private Integer volume2;
@@ -87,8 +88,10 @@ public class ViewServicePODetailManagedBean {
             compareStatus = selectedServicePO.getStatus();
             this.getStatusText(selectedServicePO.getStatus());
             deliveryDate = selectedServicePO.getServiceDeliveryDate();
-            serviceStartDate = selectedServicePO.getServiceStartDate();
-            serviceEndDate = selectedServicePO.getServiceEndDate();
+            warehouseOrderType = selectedServicePO.getWarehousePOtype();
+            serviceFulfillmentDate = selectedServicePO.getServiceFulfilmentDate();
+            serviceReceiveDate = selectedServicePO.getServiceReceiveDate();
+            
             volume = selectedServicePO.getVolume();
             productId = selectedServicePO.getProductId();
             productQuantityPerTEU = selectedServicePO.getProductQuantityPerTEU();
@@ -116,19 +119,30 @@ public class ViewServicePODetailManagedBean {
 
                 }
             } else {
-                if (serviceStartDate.after(selectedServicePO.getContract().getStartDate()) && serviceEndDate.after(selectedServicePO.getContract().getStartDate()) && serviceStartDate.before(selectedServicePO.getContract().getEndDate()) && serviceEndDate.before(selectedServicePO.getContract().getEndDate())) {
+
+                if (warehouseOrderType.equals("Fulfillment Order")) {
+
+                    if (serviceFulfillmentDate.after(selectedServicePO.getContract().getStartDate()) && serviceFulfillmentDate.before(selectedServicePO.getContract().getEndDate())) {
                     canUpdateServicePO = true;
-
-                } else {
-                    //Your date must be within specified contract validity period
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Your date must be within specified contract validity period"));
-
+                    } else {
+                        //Your date must be within specified contract validity period
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Your date must be within specified contract validity period"));
+                    }
+                }
+                if (warehouseOrderType.equals("Receiving Order")) {
+                    if (serviceReceiveDate.after(selectedServicePO.getContract().getStartDate()) && serviceReceiveDate.before(selectedServicePO.getContract().getEndDate())) {
+                    canUpdateServicePO = true;
+                    } else {
+                        //Your date must be within specified contract validity period
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Your date must be within specified contract validity period"));
+                    }
                 }
             }
+           
 
             if (canUpdateServicePO) {
 
-                int result = servicePOSB.updateServicePO(selectedServicePO.getServicePOId(), deliveryDate, serviceStartDate, serviceEndDate, volume2, userId, productId2, productQuantityPerTEU2);
+                int result = servicePOSB.updateServicePO(selectedServicePO.getServicePOId(), deliveryDate, serviceFulfillmentDate, serviceReceiveDate, volume2, userId, productId2, productQuantityPerTEU2, warehouseOrderType);
                 if (result == 1) {
                     volume = volume2;
                     productId = productId2;
@@ -289,21 +303,31 @@ public class ViewServicePODetailManagedBean {
         this.deliveryDate = deliveryDate;
     }
 
-    public Date getServiceStartDate() {
-        return serviceStartDate;
+    public Date getServiceFulfillmentDate() {
+        return serviceFulfillmentDate;
     }
 
-    public void setServiceStartDate(Date serviceStartDate) {
-        this.serviceStartDate = serviceStartDate;
+    public void setServiceFulfillmentDate(Date serviceFulfillmentDate) {
+        this.serviceFulfillmentDate = serviceFulfillmentDate;
     }
 
-    public Date getServiceEndDate() {
-        return serviceEndDate;
+    public Date getServiceReceiveDate() {
+        return serviceReceiveDate;
     }
 
-    public void setServiceEndDate(Date serviceEndDate) {
-        this.serviceEndDate = serviceEndDate;
+    public void setServiceReceiveDate(Date serviceReceiveDate) {
+        this.serviceReceiveDate = serviceReceiveDate;
     }
+
+    public String getWarehouseOrderType() {
+        return warehouseOrderType;
+    }
+
+    public void setWarehouseOrderType(String warehouseOrderType) {
+        this.warehouseOrderType = warehouseOrderType;
+    }
+
+
 
     public Integer getVolume() {
         return volume;

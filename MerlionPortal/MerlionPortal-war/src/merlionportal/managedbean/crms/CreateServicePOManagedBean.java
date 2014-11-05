@@ -43,8 +43,9 @@ public class CreateServicePOManagedBean {
     //user input
     private Integer contractId;
     private Integer volume;
-    private Date serviceStartDate;
-    private Date serviceEndDate;
+    private Date serviceFulfillmentDate;
+    private Date serviceReceiveDate;
+    private String warehouseOrderType;
     private Date serviceDeliveryDate;
     private String serviceType;
     private Integer productQuantityPerTEU;
@@ -91,18 +92,28 @@ public class CreateServicePOManagedBean {
 
                 }
             } else {
-                if (serviceStartDate.after(contract.getStartDate()) && serviceEndDate.after(contract.getStartDate()) && serviceStartDate.before(contract.getEndDate()) && serviceEndDate.before(contract.getEndDate())) {
-                    canCreateServicePO = true;
 
-                } else {
-                    //Your date must be within specified contract validity period
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Your date must be within specified contract validity period"));
+                if (warehouseOrderType.equals("Fulfillment Order")) {
 
+                    if (serviceFulfillmentDate.after(contract.getStartDate()) && serviceFulfillmentDate.before(contract.getEndDate())) {
+                        canCreateServicePO = true;
+                    } else {
+                        //Your date must be within specified contract validity period
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Your date must be within specified contract validity period"));
+                    }
+                }
+                if (warehouseOrderType.equals("Receiving Order")) {
+                    if (serviceReceiveDate.after(contract.getStartDate()) && serviceReceiveDate.before(contract.getEndDate())) {
+                        canCreateServicePO = true;
+                    } else {
+                        //Your date must be within specified contract validity period
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Your date must be within specified contract validity period"));
+                    }
                 }
             }
         }
         if (canCreateServicePO) {
-            boolean result = servicePOSB.createServicePO(contractId, userId, volume, serviceStartDate, serviceEndDate, serviceDeliveryDate, productQuantityPerTEU, productId);
+            boolean result = servicePOSB.createServicePO(contractId, userId, volume, serviceFulfillmentDate, serviceReceiveDate, serviceDeliveryDate, productQuantityPerTEU, productId, warehouseOrderType);
             if (result) {
                 this.clearAllFields();
 
@@ -144,8 +155,9 @@ public class CreateServicePOManagedBean {
 
     private void clearAllFields() {
         volume = null;
-        serviceStartDate = null;
-        serviceEndDate = null;
+        serviceFulfillmentDate = null;
+        serviceReceiveDate = null;
+        warehouseOrderType = null;
         serviceDeliveryDate = null;
         productQuantityPerTEU = null;
         productId = null;
@@ -191,20 +203,28 @@ public class CreateServicePOManagedBean {
         this.volume = volume;
     }
 
-    public Date getServiceStartDate() {
-        return serviceStartDate;
+    public Date getServiceFulfillmentDate() {
+        return serviceFulfillmentDate;
     }
 
-    public void setServiceStartDate(Date serviceStartDate) {
-        this.serviceStartDate = serviceStartDate;
+    public void setServiceFulfillmentDate(Date serviceFulfillmentDate) {
+        this.serviceFulfillmentDate = serviceFulfillmentDate;
     }
 
-    public Date getServiceEndDate() {
-        return serviceEndDate;
+    public Date getServiceReceiveDate() {
+        return serviceReceiveDate;
     }
 
-    public void setServiceEndDate(Date serviceEndDate) {
-        this.serviceEndDate = serviceEndDate;
+    public void setServiceReceiveDate(Date serviceReceiveDate) {
+        this.serviceReceiveDate = serviceReceiveDate;
+    }
+
+    public String getWarehouseOrderType() {
+        return warehouseOrderType;
+    }
+
+    public void setWarehouseOrderType(String warehouseOrderType) {
+        this.warehouseOrderType = warehouseOrderType;
     }
 
     public Date getServiceDeliveryDate() {

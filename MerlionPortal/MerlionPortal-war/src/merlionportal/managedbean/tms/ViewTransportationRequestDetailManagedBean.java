@@ -87,8 +87,6 @@ public class ViewTransportationRequestDetailManagedBean {
             compareStatus = selectedTServicePO.getStatus();
             this.getStatusText(selectedTServicePO.getStatus());
             deliveryDate = selectedTServicePO.getServiceDeliveryDate();
-            serviceStartDate = selectedTServicePO.getServiceStartDate();
-            serviceEndDate = selectedTServicePO.getServiceEndDate();
             volume = selectedTServicePO.getVolume();
             productId = selectedTServicePO.getProductId();
             productQuantityPerTEU = selectedTServicePO.getProductQuantityPerTEU();
@@ -128,7 +126,7 @@ public class ViewTransportationRequestDetailManagedBean {
 
             if (canUpdateServicePO) {
 
-                int result = servicePOSB.updateServicePO(selectedTServicePO.getServicePOId(), deliveryDate, serviceStartDate, serviceEndDate, volume2, userId, productId2, productQuantityPerTEU2);
+                int result = servicePOSB.updateServicePO(selectedTServicePO.getServicePOId(), deliveryDate, serviceStartDate, serviceEndDate, volume2, userId, productId2, productQuantityPerTEU2, null);
                 if (result == 1) {
                     volume = volume2;
                     productId = productId2;

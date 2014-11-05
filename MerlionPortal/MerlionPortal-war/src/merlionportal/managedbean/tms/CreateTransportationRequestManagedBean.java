@@ -103,7 +103,7 @@ public class CreateTransportationRequestManagedBean {
             }
         }
         if (canCreateServicePO) {
-            boolean result = servicePOSB.createServicePO(contractId, userId, volume, serviceStartDate, serviceEndDate, serviceDeliveryDate, productQuantityPerTEU, productId);
+            boolean result = servicePOSB.createServicePO(contractId, userId, volume, serviceStartDate, serviceEndDate, serviceDeliveryDate, productQuantityPerTEU, productId, null);
             if (result) {
                 this.clearAllFields();
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Transportation Service Request created!", ""));
