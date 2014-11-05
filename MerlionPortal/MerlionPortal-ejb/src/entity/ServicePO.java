@@ -45,10 +45,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ServicePO.findByCreatorId", query = "SELECT s FROM ServicePO s WHERE s.creatorId = :creatorId"),
     @NamedQuery(name = "ServicePO.findByVolume", query = "SELECT s FROM ServicePO s WHERE s.volume = :volume"),
     @NamedQuery(name = "ServicePO.findByServiceDeliveryDate", query = "SELECT s FROM ServicePO s WHERE s.serviceDeliveryDate = :serviceDeliveryDate"),
-    @NamedQuery(name = "ServicePO.findByServiceStartDate", query = "SELECT s FROM ServicePO s WHERE s.serviceStartDate = :serviceStartDate"),
-    @NamedQuery(name = "ServicePO.findByServiceEndDate", query = "SELECT s FROM ServicePO s WHERE s.serviceEndDate = :serviceEndDate"),
     @NamedQuery(name = "ServicePO.findByProductId", query = "SELECT s FROM ServicePO s WHERE s.productId = :productId"),
-    @NamedQuery(name = "ServicePO.findByProductQuantityPerTEU", query = "SELECT s FROM ServicePO s WHERE s.productQuantityPerTEU = :productQuantityPerTEU")})
+    @NamedQuery(name = "ServicePO.findByProductQuantityPerTEU", query = "SELECT s FROM ServicePO s WHERE s.productQuantityPerTEU = :productQuantityPerTEU"),
+    @NamedQuery(name = "ServicePO.findByWarehousePOtype", query = "SELECT s FROM ServicePO s WHERE s.warehousePOtype = :warehousePOtype"),
+    @NamedQuery(name = "ServicePO.findByServiceReceiveDate", query = "SELECT s FROM ServicePO s WHERE s.serviceReceiveDate = :serviceReceiveDate"),
+    @NamedQuery(name = "ServicePO.findByServiceFulfilmentDate", query = "SELECT s FROM ServicePO s WHERE s.serviceFulfilmentDate = :serviceFulfilmentDate")})
 public class ServicePO implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -78,16 +79,19 @@ public class ServicePO implements Serializable {
     @Column(name = "serviceDeliveryDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date serviceDeliveryDate;
-    @Column(name = "serviceStartDate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date serviceStartDate;
-    @Column(name = "serviceEndDate")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date serviceEndDate;
     @Column(name = "productId")
     private Integer productId;
     @Column(name = "productQuantityPerTEU")
     private Integer productQuantityPerTEU;
+    @Size(max = 45)
+    @Column(name = "warehousePOtype")
+    private String warehousePOtype;
+    @Column(name = "serviceReceiveDate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date serviceReceiveDate;
+    @Column(name = "serviceFulfilmentDate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date serviceFulfilmentDate;
     @JoinColumn(name = "contract", referencedColumnName = "contractId")
     @ManyToOne(optional = false)
     private Contract contract;
@@ -181,22 +185,6 @@ public class ServicePO implements Serializable {
         this.serviceDeliveryDate = serviceDeliveryDate;
     }
 
-    public Date getServiceStartDate() {
-        return serviceStartDate;
-    }
-
-    public void setServiceStartDate(Date serviceStartDate) {
-        this.serviceStartDate = serviceStartDate;
-    }
-
-    public Date getServiceEndDate() {
-        return serviceEndDate;
-    }
-
-    public void setServiceEndDate(Date serviceEndDate) {
-        this.serviceEndDate = serviceEndDate;
-    }
-
     public Integer getProductId() {
         return productId;
     }
@@ -211,6 +199,30 @@ public class ServicePO implements Serializable {
 
     public void setProductQuantityPerTEU(Integer productQuantityPerTEU) {
         this.productQuantityPerTEU = productQuantityPerTEU;
+    }
+
+    public String getWarehousePOtype() {
+        return warehousePOtype;
+    }
+
+    public void setWarehousePOtype(String warehousePOtype) {
+        this.warehousePOtype = warehousePOtype;
+    }
+
+    public Date getServiceReceiveDate() {
+        return serviceReceiveDate;
+    }
+
+    public void setServiceReceiveDate(Date serviceReceiveDate) {
+        this.serviceReceiveDate = serviceReceiveDate;
+    }
+
+    public Date getServiceFulfilmentDate() {
+        return serviceFulfilmentDate;
+    }
+
+    public void setServiceFulfilmentDate(Date serviceFulfilmentDate) {
+        this.serviceFulfilmentDate = serviceFulfilmentDate;
     }
 
     public Contract getContract() {
