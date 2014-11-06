@@ -5,9 +5,12 @@
  */
 package merlionportal.wms.mobilitymanagementmodule;
 
+import entity.Product;
 import entity.ServicePO;
 import entity.Stock;
 import entity.StorageBin;
+import entity.Warehouse;
+import entity.WarehouseZone;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -295,48 +298,62 @@ public class ReceivingPutawaySessionBean {
         }
     }
 
-    // this method is called after goods have arrived at the warehouse 
-//    public boolean receivePutawayForRentedSpace(Integer servicePOId) {
-//        System.out.println("In receivePutawayActions ============================= : " + servicePOId);
-//        ServicePO servicePO = new ServicePO();
-//        servicePO = em.find(ServicePO.class, servicePOId);
-//
-//        if (servicePO != null) {
-//
-//            // receive stock into the warehouse    
-//
-//            Integer totalQuantity = servicePO.getProductQuantityPerTEU() * servicePO.getVolume();
-//            Integer destBinId;
-//            Integer availableQuantity;
-//                        
-//            
-//            int i = 0;
-//            while (i < allDestStocks.size()) {
-//                destBinId = allDestStocks.get(i).getDestStorageBinId();
-//                StorageBin bin = new StorageBin();
-//                bin = em.find(StorageBin.class, destBinId);
-//                bin.setReservedSpace(bin.getReservedSpace() - allDestStocks.get(i).getMovingQuantity());
-//                System.out.println(bin.getReservedSpace() - allDestStocks.get(i).getMovingQuantity());
-//
-//                // add stocks
-//                addTOStock(allDestStocks.get(i).getStockName(), "Transported Stock", allDestStocks.get(i).getMovingQuantity(), transportOrder.getProductId(),
-//                        destBinId, allDestStocks.get(i).getExpiryDate(), allDestStocks.get(i).getCreatedDate());
-//                em.merge(bin);
-//                em.flush();
-//                i++;
-//            }
-//
-//            // to complete, set service PO Fulfilled = 6
-//            servicePO.setStatus(6);
-//            em.merge(servicePO);
-//            em.flush();
-//            return true;
-//        }
-//        return false;
-//    }
+    //This method is called after goods have arrived at the warehouse 
+    public boolean receivePutawayForRentedSpace(Integer servicePOId) {
+        System.out.println("[IN EJB RPSB, receivePutawayForRentedSpace] ======================================");
+        ServicePO servicePO = new ServicePO();
+        servicePO = em.find(ServicePO.class, servicePOId);
 
+        Product product = new Product();
+        product = em.find(Product.class, servicePO.getProductId());
+
+        if (servicePO != null) {
+
+            // receive stock into the warehouse    
+            Integer totalQuantity = servicePO.getProductQuantityPerTEU() * servicePO.getVolume();
+
+            Integer rentedCompanyId;
+            // find bins which are reserved and unreserve 
+            rentedCompanyId = servicePO.getSenderCompanyId();
+            Query query = em.createNamedQuery("StorageBin.findByRentedCompanyId").setParameter("rentedCompanyId", rentedCompanyId);
+            List<StorageBin> allBins = new ArrayList<>();
+            allBins = query.getResultList();
+
+            int i = 0;
+            while (i < allBins.size() & totalQuantity != 0) {
+
+                StorageBin bin = new StorageBin();
+                bin = allBins.get(i);
+
+                if (totalQuantity <= bin.getReservedSpace()) {
+                    bin.setReservedSpace(bin.getReservedSpace() - totalQuantity);
+                    bin.setAvailableSpace(bin.getMaxQuantity() - bin.getReservedSpace());
+                    System.out.println(bin.getReservedSpace() - totalQuantity);
+                } //totalQuantity is more than reserved space
+                else {
+                    totalQuantity = totalQuantity - bin.getReservedSpace();
+                    bin.setReservedSpace(0);
+                    bin.setAvailableSpace(bin.getMaxQuantity() - bin.getReservedSpace());
+                }
+
+                em.merge(bin);
+                em.flush();
+                i++;
+            }
+
+            // to complete, set service PO Fulfilled = 6
+            servicePO.setStatus(6);
+            em.merge(servicePO);
+            em.flush();
+            return true;
+        }
+        return false;
+    }
+
+    // This method is called is after goods have arrived at warehouse then they are rejected
     public boolean rejectOrder(Integer servicePOId) {
 
+        System.out.println("[IN EJB RPSB, rejectedOrder] ======================================");
         ServicePO servicePO = new ServicePO();
         servicePO = em.find(ServicePO.class, servicePOId);
 
@@ -351,6 +368,51 @@ public class ReceivingPutawaySessionBean {
         }
     }
 
+    // FOR MRP TO RESERVE SPACE 
+    public boolean checkOwnBinSpace(Integer companyId, Integer totalQuantityReserved, String neededBinType) {
+
+        System.out.println("[IN EJB RPSB, checkOwnBinSpace ======================================");
+        List<Warehouse> myWarehouse = new ArrayList();
+        myWarehouse = amsb.viewMyWarehouses(companyId);
+
+        List<StorageBin> allBins = new ArrayList();
+
+        // get all storage bins
+        int i = 0;
+        while (i < myWarehouse.size()) {
+            List<WarehouseZone> allWarehouseZones = new ArrayList<>();
+            allWarehouseZones = amsb.viewWarehouseZoneForAWarehouse(myWarehouse.get(i).getWarehouseId());
+
+            int j = 0;
+            while (j < allWarehouseZones.size()) {
+
+                allBins.addAll(allWarehouseZones.get(j).getStorageBinList());
+                j++;
+            }
+            i++;
+        }
+
+        List<StorageBin> myBins = new ArrayList();
+        // Look for my bins and exclude those that are rented
+        int j = 0;
+        while (j < allBins.size()) {
+            StorageBin bin = new StorageBin();
+            bin = allBins.get(j);
+            if (!bin.getRented()) {
+                myBins.add(bin);
+            }
+            j++;
+        }
+
+        boolean result = reserveBinSpace(myBins, totalQuantityReserved, neededBinType);
+
+        if (result) {
+            return true;
+        }
+        return false;
+    }
+
+    // GENERAL reserve bin space method
     public boolean reserveBinSpace(List<StorageBin> allBins, Integer totalQuantityReserved, String neededBinType) {
         System.out.println("[IN EJB RPSB, checkBinSpace] ======================================");
 
@@ -421,6 +483,68 @@ public class ReceivingPutawaySessionBean {
             n++;
         }
         System.out.println("END OF RESERVE BIN SPACE FUNCTION");
+        return true;
+    }
+
+    // FOR Receving and Putaway to OWN Warehouse FROM MRP
+    public boolean receivePutawayOwn(Integer warehouseId, Integer totalQuantity) {
+        System.out.println("[IN EJB RPSB, receivePutawayForRentedSpace] ======================================");
+
+        Warehouse warehouse = new Warehouse();
+        warehouse = em.find(Warehouse.class, warehouseId);
+
+        // find bins which are reserved and unreserve 
+        List<WarehouseZone> allWarehouseZones = new ArrayList<>();
+        allWarehouseZones = amsb.viewWarehouseZoneForAWarehouse(warehouseId);
+
+        List<StorageBin> allBins = new ArrayList<>();
+
+        // get all storage bins
+        if (allWarehouseZones.isEmpty()) {
+            return false;
+        }
+        int j = 0;
+        while (j < allWarehouseZones.size()) {
+            allBins.addAll(allWarehouseZones.get(j).getStorageBinList());
+            j++;
+        }
+
+        if (allBins.isEmpty()) {
+            return false;
+        }
+        List<StorageBin> myBins = new ArrayList();
+
+// Look for my bins and exclude those that are rented
+        int k = 0;
+        while (k < allBins.size()) {
+            StorageBin bin = new StorageBin();
+            bin = allBins.get(k);
+            if (!bin.getRented()) {
+                myBins.add(bin);
+            }
+            k++;
+        }
+
+        int i = 0;
+        while (i < myBins.size() & totalQuantity != 0) {
+
+            StorageBin bin = new StorageBin();
+            bin = myBins.get(i);
+
+            if (totalQuantity <= bin.getReservedSpace()) {
+                bin.setReservedSpace(bin.getReservedSpace() - totalQuantity);
+                bin.setAvailableSpace(bin.getMaxQuantity() - bin.getReservedSpace());
+                System.out.println(bin.getReservedSpace() - totalQuantity);
+            } //totalQuantity is more than reserved space
+            else {
+                totalQuantity = totalQuantity - bin.getReservedSpace();
+                bin.setReservedSpace(0);
+                bin.setAvailableSpace(bin.getMaxQuantity() - bin.getReservedSpace());
+            }
+            em.merge(bin);
+            em.flush();
+            i++;
+        }
         return true;
     }
 
