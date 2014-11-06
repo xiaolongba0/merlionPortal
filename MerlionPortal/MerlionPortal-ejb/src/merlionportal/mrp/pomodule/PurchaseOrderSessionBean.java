@@ -10,6 +10,8 @@ import entity.Mrp;
 import entity.Product;
 import entity.ProductOrder;
 import entity.ProductOrderLineItem;
+import entity.Quotation;
+import entity.QuotationLineItem;
 import entity.SystemUser;
 import java.util.ArrayList;
 import java.util.Date;
@@ -191,7 +193,45 @@ public class PurchaseOrderSessionBean {
 
     }
 
-    public Integer checkValidAccessUser(String userIDTemp, String password) {
+    public Integer checkValidAccessUser(String userIDTemp, String password, Integer poReference) {
+        ProductOrder productOrder = new ProductOrder();
+        productOrder = entityManager.find(ProductOrder.class, poReference);
+        List<ProductOrderLineItem> productOrderLineItemList = productOrder.getProductOrderLineItemList();
+        int sizePOItems = productOrderLineItemList.size();
+
+
+        Query query = entityManager.createQuery("SELECT q FROM Quotation q");
+        List<Quotation> quotations = query.getResultList();
+        int size = quotations.size();
+        List<QuotationLineItem> quotationLineItems = new ArrayList<QuotationLineItem>();
+        int size1;
+        Quotation reqiredQuotation = new Quotation();
+
+        //for each quotation
+        for (int i = 0; i < size; i++) {
+            //for each quotation item
+            quotationLineItems = quotations.get(i).getQuotationLineItemList();
+            size1 = quotationLineItems.size();
+            //handle if two size are diff, just pass
+            int count = 0;
+            if (sizePOItems == size1) {
+                for (int j = 0; j < size1; j++) {
+                    for (int k = 0; k < size1; k++) {
+                        if (quotationLineItems.get(j).getProductproductId().getProductName().equals(productOrderLineItemList.get(k).getProductproductId().getProductName())) {
+                            count++;
+                        }
+                    }
+                }
+
+                if (count == size1) {
+                    reqiredQuotation = quotations.get(i);
+                    i = size;//end the loop
+                }
+            }
+         }
+        System.out.println("Quotation customer user id:" + reqiredQuotation.getCustomerId());
+
+     
         //  Query q = entityManager.createQuery("SELECT s FROM SystemUser s WHERE s.emailAddress = :InEmailAddress AND s.password = :InPassword").setParameter("InEmailAddress", userIDTemp); q.setParameter("InPassword", password);
         Query q = entityManager.createQuery("SELECT s FROM SystemUser s WHERE s.emailAddress = :InEmailAddress");
         q.setParameter("InEmailAddress", userIDTemp);
@@ -203,7 +243,13 @@ public class PurchaseOrderSessionBean {
         } else {
             sysUser = sysUsers.get(0);
         }
-        return sysUser.getSystemUserId();
+        System.out.println("sys user user id:" + sysUser.getSystemUserId());
+        if(reqiredQuotation.getCustomerId().equals(sysUser.getSystemUserId())){
+            return sysUser.getSystemUserId();
+        }
+        
+        
+        return null;
     }
 
     public List<ProductOrder> createPOBackorder(Integer productId, Integer companyId, SystemUser loginedUser, List<Mrp> mrps) {
