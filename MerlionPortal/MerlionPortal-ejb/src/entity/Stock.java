@@ -40,7 +40,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Stock.findByProductId", query = "SELECT s FROM Stock s WHERE s.productId = :productId"),
     @NamedQuery(name = "Stock.findByExpiryDate", query = "SELECT s FROM Stock s WHERE s.expiryDate = :expiryDate"),
     @NamedQuery(name = "Stock.findByReservedStock", query = "SELECT s FROM Stock s WHERE s.reservedStock = :reservedStock"),
-    @NamedQuery(name = "Stock.findByAvailableStock", query = "SELECT s FROM Stock s WHERE s.availableStock = :availableStock")})
+    @NamedQuery(name = "Stock.findByAvailableStock", query = "SELECT s FROM Stock s WHERE s.availableStock = :availableStock"),
+    @NamedQuery(name = "Stock.findByCreatedDate", query = "SELECT s FROM Stock s WHERE s.createdDate = :createdDate")})
 public class Stock implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -65,6 +66,9 @@ public class Stock implements Serializable {
     private Integer reservedStock;
     @Column(name = "availableStock")
     private Integer availableStock;
+    @Column(name = "createdDate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
     @JoinColumn(name = "storageBin", referencedColumnName = "storageBinId")
     @ManyToOne(optional = false)
     private StorageBin storageBin;
@@ -138,6 +142,14 @@ public class Stock implements Serializable {
 
     public void setAvailableStock(Integer availableStock) {
         this.availableStock = availableStock;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     public StorageBin getStorageBin() {
