@@ -7,16 +7,15 @@ package merlionportal.managedbean.wms;
 
 import entity.ServicePO;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import merlionportal.wms.mobilitymanagementmodule.WarehouseRequestManagerSessionBean;
+import merlionportal.crms.ordermanagementmodule.ServicePOManagementSessionBean;
 
 /**
  *
@@ -27,13 +26,23 @@ import merlionportal.wms.mobilitymanagementmodule.WarehouseRequestManagerSession
 public class WarehouseReqeustManagedBean {
 
     @EJB
-    private WarehouseRequestManagerSessionBean warehouseRMB;
+    ServicePOManagementSessionBean servicePOSB;
 
     private Integer companyId;
     private Integer userId;
-    private List<ServicePO> pendingOrders;
-    private ServicePO selectedOrder;
-    private List<String> contractInf;
+
+    private List<ServicePO> sentWServicePO;
+    private List<ServicePO> receivedWServicePO;
+    private List<ServicePO> filteredWServicePO;
+
+    private ServicePO selectedSentWServicePO;
+    private ServicePO selectedReceivedWServicePO;
+
+    private List<String> status;
+    private String statusNumber;
+
+    public WarehouseReqeustManagedBean() {
+    }
 
     @PostConstruct
     public void init() {
@@ -53,22 +62,78 @@ public class WarehouseReqeustManagedBean {
                 ex.printStackTrace();
             }
         }
-        selectedOrder = (ServicePO) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedOrder");
+        sentWServicePO = (List<ServicePO>) servicePOSB.retrieveSentWarehouseRequests(companyId);
+        receivedWServicePO = (List<ServicePO>) servicePOSB.retrieveReceivedWarehouseRequests(companyId);
+
+        status = new ArrayList<>();
+        status.add("PO Waiting to be processed");
+        status.add("PO Deleted");
+        status.add("PO Hold");
+        status.add("PO Rejected");
+        status.add("SO Waiting for fulfillment");
+        status.add("SO Fulfilled");
+        status.add("SO Invoiced");
+        status.add("SO Closed");
+        status.add("Transportation SO in transit");
     }
 
-    public WarehouseReqeustManagedBean() {
-    }
-
-    public String showRequest() {
-
-        if (selectedOrder == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please select one Order ."));
-            return "viewallpendingrequests.xhtml?faces-redirect=true";
+    public String viewSentWarehouseServicePO() {
+        if (selectedSentWServicePO != null) {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedWarehouseServicePO");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedWarehouseServicePO", selectedSentWServicePO);
+            return "viewserviceorderdetail.xhtml?faces-redirect=true";
+        } else {
+            FacesContext.getCurrentInstance().addMessage(":form:messages", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select a service Order to view!", ""));
+            return null;
         }
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        Map<String, Object> sessionMap = externalContext.getSessionMap();
-        sessionMap.put("selectedOrder", selectedOrder);
-        return "viewserviceorderdetial.xhtml?faces-redirect=true";
+    }
+
+    public String viewReceivedWarehouseServicePO() {
+        if (selectedReceivedWServicePO != null) {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedWarehouseServicePO");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedWarehouseServicePO", selectedReceivedWServicePO);
+            return "viewserviceorderdetail.xhtml?faces-redirect=true";
+        } else {
+            FacesContext.getCurrentInstance().addMessage(":form:msg", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select a service Order to view!", ""));
+            return null;
+        }
+    }
+
+    public String getStatusNumber(int passedStatus) {
+        if (passedStatus == 1) {
+            statusNumber = "PO Waiting to be processed";
+        }
+        if (passedStatus == 2) {
+            statusNumber = "PO Deleted";
+        }
+        if (passedStatus == 3) {
+            statusNumber = "PO Hold";
+        }
+        if (passedStatus == 4) {
+            statusNumber = "PO Rejected";
+        }
+        if (passedStatus == 5) {
+            statusNumber = "SO Waiting for fulfillment";
+        }
+        if (passedStatus == 6) {
+            statusNumber = "SO Fulfilled";
+        }
+        if (passedStatus == 7) {
+            statusNumber = "SO Invoiced";
+        }
+        if (passedStatus == 8) {
+            statusNumber = "SO Closed";
+        }
+        if (passedStatus == 9) {
+            statusNumber = "Transportation SO in transit";
+        }
+        if (passedStatus == 10) {
+            statusNumber = "Packing in progress";
+        }
+        if (passedStatus == 11) {
+            statusNumber = "Receiving order rejected";
+        }
+        return statusNumber;
     }
 
     public Integer getCompanyId() {
@@ -87,54 +152,60 @@ public class WarehouseReqeustManagedBean {
         this.userId = userId;
     }
 
-    public List<ServicePO> getPendingOrders() {
-        pendingOrders = warehouseRMB.viewPendingRequest(companyId);
-        return pendingOrders;
+    public List<ServicePO> getSentWServicePO() {
+        return sentWServicePO;
     }
 
-    public void setPendingOrders(List<ServicePO> pendingOrders) {
-        this.pendingOrders = pendingOrders;
+    public void setSentWServicePO(List<ServicePO> sentWServicePO) {
+        this.sentWServicePO = sentWServicePO;
     }
 
-    public ServicePO getSelectedOrder() {
-        return selectedOrder;
+    public List<ServicePO> getReceivedWServicePO() {
+        return receivedWServicePO;
     }
 
-    public void setSelectedOrder(ServicePO selectedOrder) {
-        this.selectedOrder = selectedOrder;
+    public void setReceivedWServicePO(List<ServicePO> receivedWServicePO) {
+        this.receivedWServicePO = receivedWServicePO;
     }
 
-    public String viewCompanyName(Integer cId) {
-        String result = "";
-        if (cId != null) {
-            result = warehouseRMB.viewCompanyName(cId);
-        }
-        return result;
+    public List<ServicePO> getFilteredWServicePO() {
+        return filteredWServicePO;
     }
 
-    public String viewCompanyContactPersonName(Integer cId) {
-        String result = "";
-        if (cId != null) {
-            result = warehouseRMB.viewCompanyContactPersonName(cId);
-        }
-        return result;
+    public void setFilteredWServicePO(List<ServicePO> filteredWServicePO) {
+        this.filteredWServicePO = filteredWServicePO;
     }
 
-    public String viewCompanyContact(Integer cId) {
-        String result = "";
-        if (cId != null) {
-            result = warehouseRMB.viewCompanyContact(cId);
-        }
-        return result;
+    public ServicePO getSelectedSentWServicePO() {
+        return selectedSentWServicePO;
     }
 
-    public List<String> getContractInf() {
-        contractInf = warehouseRMB.viewContractInformation(selectedOrder.getServicePOId());
-        return contractInf;
+    public void setSelectedSentWServicePO(ServicePO selectedSentWServicePO) {
+        this.selectedSentWServicePO = selectedSentWServicePO;
     }
 
-    public void setContractInf(List<String> contractInf) {
-        this.contractInf = contractInf;
+    public ServicePO getSelectedReceivedWServicePO() {
+        return selectedReceivedWServicePO;
+    }
+
+    public void setSelectedReceivedWServicePO(ServicePO selectedReceivedWServicePO) {
+        this.selectedReceivedWServicePO = selectedReceivedWServicePO;
+    }
+
+    public List<String> getStatus() {
+        return status;
+    }
+
+    public void setStatus(List<String> status) {
+        this.status = status;
+    }
+
+    public String getStatusNumber() {
+        return statusNumber;
+    }
+
+    public void setStatusNumber(String statusNumber) {
+        this.statusNumber = statusNumber;
     }
 
 }

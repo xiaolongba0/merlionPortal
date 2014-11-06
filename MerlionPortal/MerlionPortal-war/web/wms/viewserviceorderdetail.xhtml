@@ -3,19 +3,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <c:set var="import" value="templateuser.xhtml"/>
     <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
         <c:set var="import" value="templateadmin.xhtml"/>
     </c:if>
+
     <ui:composition template="${root}/templates/${import}">        
-        <ui:param name="pageName" value="WMS home" />
+        <ui:param name="pageName" value="View Transportation Request Detail" />
 
         <ui:define name="more-imports">
             <ui:insert>
-                <!--                import CSS style or Javascript here, if any-->
+                <link rel="stylesheet" href="${request.contextPath}/css/crms.css" type="text/css" />
             </ui:insert>
         </ui:define>
 
@@ -50,8 +53,9 @@
                     <p:menuitem value="View Transport Order To Be Procssed" url="viewsourcetransportorder.xhtml"/>
                     <p:menuitem value="All IncomingTransport Orders" url="viewdesttransportorder.xhtml"/>
                 </p:submenu>
-                <p:submenu label="Warehouse Space Request Orders" styleClass="display:block" >
-                    <p:menuitem value="All Pending Request" url="viewallpendingrequests.xhtml"/>
+                <p:submenu label="Warehouse Request Orders" styleClass="display:block" >
+                    <p:menuitem value="Create Warehouse Request" url="createwarehouserequest.xhtml"/>
+                    <p:menuitem value="View All Orders" url="viewallpendingrequests.xhtml"/>
                 </p:submenu>
                 <p:submenu label="Warehouse Service Fulfillment Check" >
                     <p:menuitem value="Fulfillment Check" url="warehouseservicefulfillmentcheck.xhtml" />
@@ -63,41 +67,138 @@
         </ui:define>
 
         <ui:define name="right">
+            <h:form id="form">
+                <p:fieldset legend="Service Contact Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <h:outputText value="Sender Company ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.selectedWServicePO.senderCompanyId}" />
+                        <h:outputText value="Sender Company Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.senderCompanyName}" />
+                    </h:panelGrid>
+                    <p:separator />
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <h:outputText value="Receiver Company ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.selectedWServicePO.receiverCompanyId}" />
+                        <h:outputText value="Receiver Company Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.receiverCompanyName}" />
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:fieldset legend="Contract Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <p:outputLabel value="Service ID:" style="width: 150px"/><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.selectedWServicePO.contract.serviceQuotation.serviceCatalog.serviceCatalogId}" />
+                        <p:outputLabel value="Service Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.selectedWServicePO.contract.serviceQuotation.serviceCatalog.serviceName}" />
+                        <p:outputLabel value="Service Description:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.selectedWServicePO.contract.serviceQuotation.serviceCatalog.serviceDescription}" />
+                        <p:outputLabel value="Service Type:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.selectedWServicePO.contract.serviceType}" />
 
-            <h:form>  
-                <p:fieldset legend="Customer Information " style="margin-bottom:20px">
-                    <h:panelGrid id="detail" columns="2" cellpadding="5">
-                        <p>Customer Name: </p><h:outputText value="#{warehouseReqeustManagedBean.viewCompanyName(warehouseReqeustManagedBean.selectedOrder.senderCompanyId)}"/>
-                        <p>Contact Person: </p><h:outputText value="#{warehouseReqeustManagedBean.viewCompanyContactPersonName(warehouseReqeustManagedBean.selectedOrder.senderCompanyId)}"/>
-                        <p>Contact Number : </p><h:outputText value="#{warehouseReqeustManagedBean.viewCompanyContact(warehouseReqeustManagedBean.selectedOrder.senderCompanyId)}"/>                     
-                    </h:panelGrid>
-                </p:fieldset>               
-                <br></br>
-                <p:fieldset legend="Contract Detail" style="margin-bottom:20px">
-                    <h:panelGrid id="detail" columns="2" cellpadding="5">
-                        <p>Reference Contract Id: </p><h:outputText value="#{warehouseReqeustManagedBean.contractInf.get(0)}"/>
-                        <p>Condition: </p><h:outputText value="#{warehouseReqeustManagedBean.contractInf.get(1)}"/>
-                    </h:panelGrid>
-                </p:fieldset>   
-                <br></br>
-                <p:fieldset legend="Warehouse Information" style="margin-bottom:20px">
-                    <h:panelGrid id="detail" columns="2" cellpadding="5">
-                        <p>Warehouse Address: </p><h:outputText value="#{warehouseReqeustManagedBean.contractInf.get(2)}"/>
-                    </h:panelGrid>
-                </p:fieldset> 
-                <br></br>         
-                <p:fieldset legend="Storage Bin Information" style="margin-bottom:20px">
-                    <h:panelGrid id="detail" columns="2" cellpadding="5">                       
-                        <p>Storage Bin Type </p><h:outputText value="#{warehouseReqeustManagedBean.contractInf.get(3)}"/>                       
-                    </h:panelGrid>
-                </p:fieldset> 
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />               
-                <p:commandButton value="Go Back" action="viewallpendingrequests.xhtml?faces-redirect=true" icon="ui-icon-circle-arrow-w"/>
-                <p:commandButton value="Fulfill this order" action="orderfulfillment.xhtml?faces-redirect=true" icon="ui-icon-circle-arrow-w"/>
+                        <p:outputLabel value="Start Date:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.selectedWServicePO.contract.startDate}" />
+                        <p:outputLabel value="End Date:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.selectedWServicePO.contract.endDate}" />
 
-                <br></br>
+                        <p:outputLabel value="Expected Quantity (TEU):" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.selectedWServicePO.contract.serviceQuotation.quantityPerMonth}" />
+
+
+                        <c:if test="#{viewWarehouseRequestDetailMB.selectedWServicePO.serviceType eq 'Warehouse'}" >
+                            <p:outputLabel value="Storage Type:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewWarehouseRequestDetailMB.selectedWServicePO.contract.storageType}" />
+
+                        </c:if>
+                        <p:outputLabel value="Final Contract Price Per TEU:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.selectedWServicePO.contract.price}" />
+                        <p:outputLabel value="Terms &amp; Conditions:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.selectedWServicePO.contract.conditionText}" />
+
+                    </h:panelGrid>
+                </p:fieldset>
+
+                <p:fieldset legend="Purchase Order Information" style="margin-bottom:20px">
+                    <h:panelGrid id="po" columns="3" cellpadding="6" >
+                        <p:outputLabel value="PO ID:"/><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.selectedWServicePO.servicePOId}"/>
+
+                        <p:outputLabel value="PO Quantity in TEU:"/><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.volume}"/>
+                        <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.productId}" />
+                        <p:outputLabel value="Product Quantity Per TEU:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.productQuantityPerTEU}" />
+
+
+
+                        <p:outputLabel value="Warehouse Order Type:"/><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.warehouseOrderType}"/>
+                        <c:if test="#{viewWarehouseRequestDetailMB.warehouseOrderType eq 'Fulfillment Order'}" >
+                            <p:outputLabel value="Fulfillment Date:"/><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewWarehouseRequestDetailMB.fulfillmentDate}"/>
+                        </c:if>
+
+                        <c:if test="#{viewWarehouseRequestDetailMB.warehouseOrderType eq 'Receiving Order'}" >
+                            <p:outputLabel value="Receiving Date:"/><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewWarehouseRequestDetailMB.receiveDate}"/>
+                        </c:if>
+
+                        <p:outputLabel value="Price:" style="color: red" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.price}" style="color: red" />
+
+
+                        <p:outputLabel value="Order Status:" style="color: red" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.status}"  style="color: red" />
+                    </h:panelGrid>
+                    <p:messages id="msg" showDetail="true" autoUpdate="true" closable="true" />
+
+
+                </p:fieldset>
+
+                <!--PO not processed yet, I am the sender-->
+                <c:if test="#{(viewWarehouseRequestDetailMB.compareStatus eq 1)and (viewWarehouseRequestDetailMB.selectedWServicePO.senderCompanyId eq viewServicePODetailManagedBean.companyId)}" >
+                    <p:commandButton value="Modify PO" type="button" onclick="PF('dlg1').show();" />
+                    <p:commandButton value="Deleted PO"  action="#{viewWarehouseRequestDetailMB.deletePO()}" update="form" ajax="true" />
+                </c:if>
+
+
+                <p:dialog header="Update PO Information" widgetVar="dlg1" minHeight="40">
+
+                    <c:if test="#{viewWarehouseRequestDetailMB.selectedWServicePO.serviceType eq 'Warehouse'}" >
+                        <p:outputLabel value="Warehouse Order Type " />
+                        <p:selectOneMenu value="#{viewWarehouseRequestDetailMB.warehouseOrderType}" style="width:200px" >
+                            <p:ajax update="dynamic" />
+                            <f:selectItem itemLabel="Select Warehouse Order Type" itemValue="" noSelectionOption="true" />
+                            <f:selectItem itemLabel="Fulfillment Order" itemValue="Fulfillment Order" />
+                            <f:selectItem itemLabel="Receiving Order" itemValue="Receiving Order" />
+                        </p:selectOneMenu>
+                        <h:panelGroup id="dynamic" >
+                            <h:panelGrid rendered="#{viewWarehouseRequestDetailMB.warehouseOrderType eq 'Fulfillment Order'}" columns="3" >
+                                <p:outputLabel value="Fulfillment Date " /><p:spacer width="90" height="20" />
+                                <p:calendar required="true" requiredMessage="Fulfillment Date is required" value="#{viewWarehouseRequestDetailMB.fulfillmentDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{viewServicePODetailManagedBean.today}" />
+                            </h:panelGrid>
+
+                            <h:panelGrid rendered="#{viewWarehouseRequestDetailMB.warehouseOrderType eq 'Receiving Order'}" columns="3" >
+                                <p:outputLabel  value="Receiving Date " /><p:spacer width="94" height="20" />
+                                <p:calendar required="true" requiredMessage="Receiving Date is required" value="#{viewWarehouseRequestDetailMB.receiveDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{viewWarehouseRequestDetailMB.today}" />
+                            </h:panelGrid>
+                        </h:panelGroup>
+                    </c:if>
+
+                    <h:panelGrid columns="3" >
+                        <p:outputLabel value="Quantity in TEU * "/><p:spacer width="20" height="20" />
+                        <p:inputText  value="#{viewWarehouseRequestDetailMB.volume2}" required="true" requiredMessage="Quantity in TEU is required!" />
+                        <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
+                        <p:inputText value="#{viewWarehouseRequestDetailMB.productId2}" required="true" requiredMessage="Product ID in TEU is required!" />
+                        <p:outputLabel value="Product Quantity Per TEU:" /><p:spacer width="20" height="20" />
+                        <p:inputText value="#{viewWarehouseRequestDetailMB.productQuantityPerTEU2}" required="true" requiredMessage="Product Quantity per TEU is required!" />
+                    </h:panelGrid>
+                    <p:messages id="modalMsg" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:commandButton value="Confirm" action="#{viewWarehouseRequestDetailMB.updatePO()}" ajax="true" update=":form" />
+                </p:dialog>
             </h:form>
-        </ui:define>
 
+            <p:commandButton value="Go Back" icon="ui-icon-circle-arrow-w" action="viewallpendingrequests.xhtml?faces-redirect=true"/>
+
+        </ui:define>
     </ui:composition>
 </html>

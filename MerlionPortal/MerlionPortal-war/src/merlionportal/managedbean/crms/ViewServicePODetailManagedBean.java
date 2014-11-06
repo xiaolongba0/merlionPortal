@@ -268,6 +268,13 @@ public class ViewServicePODetailManagedBean {
         if (statusNumber == 9) {
             status = "Transportation SO in transit";
         }
+        if (statusNumber == 10) {
+            status = "Packing in progress";
+        }
+        if (statusNumber == 11) {
+            status = "Receiving order rejected";
+        }
+     
     }
 
     public Integer getCompanyId() {

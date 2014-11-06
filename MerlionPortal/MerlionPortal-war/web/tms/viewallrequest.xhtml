@@ -11,7 +11,7 @@
         <c:set var="import" value="templateadmin.xhtml"/>
     </c:if>
     <ui:composition template="${root}/templates/${import}">
-        <ui:param name="pageName" value="WMS home" />
+        <ui:param name="pageName" value="TMS View All Requests" />
 
         <ui:define name="more-imports">
             <ui:insert>
@@ -21,7 +21,7 @@
         </ui:define>
 
         <ui:define name="left">
-  <p:menu>
+            <p:menu>
                 <p:submenu label ="Map">
                     <p:submenu label="Node" >
                         <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
@@ -33,7 +33,7 @@
                     </p:submenu>
                 </p:submenu>
                 <p:submenu label =" Manage Your Transportation">
-                    <p:menuitem value="TMS Home" url="tmsindex.xhtml"  style="background-color: lavender"/>
+                    <p:menuitem value="TMS Home" url="tmsindex.xhtml"/>
                 </p:submenu>
                 <p:submenu label="Location" >
                     <p:menuitem value="Add A Location" url="addnewlocation.xhtml"/>
@@ -80,7 +80,7 @@
             </p:menu>
         </ui:define>
         <ui:define name="right">
-           <h:form id="form">
+            <h:form id="form">
                 <p:ajaxStatus style="width:16px;height:16px;">
                     <f:facet name="start">
                         <h:graphicImage value="/img/load.gif" />
@@ -159,7 +159,7 @@
                     <p:commandButton value="View Transportation Service Requests" action="#{transportationRequestsMB.viewReceivedTransportationServicePO()}" />
                 </p:panel>
             </h:form>
-                
+
         </ui:define>
 
     </ui:composition>

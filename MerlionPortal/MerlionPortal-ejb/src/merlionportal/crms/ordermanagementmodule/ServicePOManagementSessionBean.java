@@ -36,10 +36,14 @@ public class ServicePOManagementSessionBean {
 //    3. PO Hold
 //    4. PO Rejected
 //    5. SO Waiting for fulfillment
-//    6. SO Fulfilled
+//    6. SO Fulfilled (Same to YunWei's order received)
 //    7. SO Invoiced
 //    8. SO Closed
 //    9. Transportation SO in transit
+//    10.Packing in progress
+//    11.Receiving order rejected
+
+
     public boolean createServicePO(Integer contractId, Integer creatorId, Integer volume, Date fulfillmentDate, Date receiveDate, Date serviceDeliveryDate, int QuantityPerTEU, Integer productId, String warehouseOrderType) {
         ServicePO po = new ServicePO();
         Contract contract = em.find(Contract.class, contractId);
@@ -127,29 +131,52 @@ public class ServicePOManagementSessionBean {
         po.setProductId(productId);
         po.setProductQuantityPerTEU(productQuantityPerTEU);
         System.out.println("volume is :" + volume);
-        po.setPrice(volume*po.getContract().getPrice());
-        
+        po.setPrice(volume * po.getContract().getPrice());
+
         em.merge(po);
         em.flush();
-        
+
         return 1;
     }
 
-    public List<ServicePO> retrieveSentTransportationRequests(Integer myCompanyId){
+    public List<ServicePO> retrieveSentTransportationRequests(Integer myCompanyId) {
         Query q = em.createQuery("SELECT s FROM ServicePO s WHERE s.senderCompanyId = :senderCompanyId AND s.serviceType = :serviceType");
         q.setParameter("senderCompanyId", myCompanyId);
         q.setParameter("serviceType", "Transportation");
-       
-        return (List<ServicePO>)q.getResultList();
+
+        return (List<ServicePO>) q.getResultList();
     }
-    public List<ServicePO> retrieveReceivedTransportationRequests(Integer myCompanyId){
+
+    public List<ServicePO> retrieveReceivedTransportationRequests(Integer myCompanyId) {
         Query q = em.createQuery("SELECT s FROM ServicePO s WHERE s.receiverCompanyId = :receiverCompanyId AND s.serviceType = :serviceType");
         q.setParameter("receiverCompanyId", myCompanyId);
         q.setParameter("serviceType", "Transportation");
         List<ServicePO> returnedList = new ArrayList<>();
-        for(Object o : q.getResultList()){
+        for (Object o : q.getResultList()) {
             ServicePO po = (ServicePO) o;
-            if(po.getStatus()==5 || po.getStatus()==6 || po.getStatus()==7 ||po.getStatus()==8 || po.getStatus()==9 ){
+            if (po.getStatus() == 5 || po.getStatus() == 6 || po.getStatus() == 7 || po.getStatus() == 8 || po.getStatus() == 9) {
+                returnedList.add(po);
+            }
+        }
+        return returnedList;
+    }
+
+    public List<ServicePO> retrieveSentWarehouseRequests(Integer myCompanyId) {
+        Query q = em.createQuery("SELECT s FROM ServicePO s WHERE s.senderCompanyId = :senderCompanyId AND s.serviceType = :serviceType");
+        q.setParameter("senderCompanyId", myCompanyId);
+        q.setParameter("serviceType", "Warehouse");
+
+        return (List<ServicePO>) q.getResultList();
+    }
+
+    public List<ServicePO> retrieveReceivedWarehouseRequests(Integer myCompanyId) {
+        Query q = em.createQuery("SELECT s FROM ServicePO s WHERE s.receiverCompanyId = :receiverCompanyId AND s.serviceType = :serviceType");
+        q.setParameter("receiverCompanyId", myCompanyId);
+        q.setParameter("serviceType", "Warehouse");
+        List<ServicePO> returnedList = new ArrayList<>();
+        for (Object o : q.getResultList()) {
+            ServicePO po = (ServicePO) o;
+            if (po.getStatus() == 5 || po.getStatus() == 6 || po.getStatus() == 7 || po.getStatus() == 8 || po.getStatus() == 10 ||po.getStatus() == 11) {
                 returnedList.add(po);
             }
         }

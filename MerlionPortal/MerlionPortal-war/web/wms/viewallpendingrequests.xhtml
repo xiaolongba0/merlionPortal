@@ -4,18 +4,19 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-
     <c:set var="import" value="templateuser.xhtml"/>
     <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
         <c:set var="import" value="templateadmin.xhtml"/>
     </c:if>
-    <ui:composition template="${root}/templates/${import}">        
-        <ui:param name="pageName" value="WMS home" />
+    <ui:composition template="${root}/templates/${import}">
+        <ui:param name="pageName" value="WMS View All Orders" />
 
         <ui:define name="more-imports">
             <ui:insert>
                 <!--                import CSS style or Javascript here, if any-->
+
             </ui:insert>
         </ui:define>
 
@@ -50,8 +51,9 @@
                     <p:menuitem value="View Transport Order To Be Procssed" url="viewsourcetransportorder.xhtml"/>
                     <p:menuitem value="All IncomingTransport Orders" url="viewdesttransportorder.xhtml"/>
                 </p:submenu>
-                <p:submenu label="Warehouse Space Request Orders" styleClass="display:block" >
-                    <p:menuitem value="All Pending Request" url="viewallpendingrequests.xhtml"/>
+                <p:submenu label="Warehouse Request Orders" styleClass="display:block" >
+                    <p:menuitem value="Create Warehouse Request" url="createwarehouserequest.xhtml"/>
+                    <p:menuitem value="View All Orders" url="viewallpendingrequests.xhtml"/>
                 </p:submenu>
                 <p:submenu label="Warehouse Service Fulfillment Check" >
                     <p:menuitem value="Fulfillment Check" url="warehouseservicefulfillmentcheck.xhtml" />
@@ -61,37 +63,91 @@
                 </p:submenu>
             </p:menu>
         </ui:define>
-
         <ui:define name="right">
+            <h:form id="form">
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start">
+                        <h:graphicImage value="/img/load.gif" />
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:panel  header="Sent Warehouse Service Requests"  style="margin-bottom:20px">
+                    <p:dataTable var="po" value="#{warehouseReqeustManagedBean.sentWServicePO}" widgetVar="poTable" rowKey="#{po.servicePOId}"
+                                 emptyMessage="No Order found with given criteria" selectionMode="single" selection="#{warehouseReqeustManagedBean.selectedSentWServicePO}"
+                                 filteredValue="#{warehouseReqeustManagedBean.filteredWServicePO}" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="20,50,100">
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Search all fields:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('poTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                            </p:outputPanel>
+                        </f:facet>
 
-            <h:form>  
-                <p:dataTable id="allRequest" var="newRequest" value="#{warehouseReqeustManagedBean.pendingOrders}" selectionMode="single" selection="#{quotationManagedBean.selectedRequest}" rowKey="#{newRequest.servicePOId}">
-                    <p:column  
-                        filterBy="#{newRequest.servicePOId}" 
-                        filterMatchMode="exact" headerText="Service Order Number" >
-                        <h:outputText value="#{newRequest.servicePOId}" />
-                    </p:column>
-                    <p:column  
-                        filterBy="#{warehouseReqeustManagedBean.viewCompanyName(newRequest.senderCompanyId)}" 
-                        filterMatchMode="exact" headerText="Customer" >
-                        <h:outputText value="#{warehouseReqeustManagedBean.viewCompanyName(newRequest.senderCompanyId)}" />
-                    </p:column>
-                    <p:column headerText="Order Date">
-                        <h:outputText value="#{newRequest.createdDate}" />
-                    </p:column>
-                    <p:column headerText="Order Value">
-                        <h:outputText value="#{newRequest.price}" />
-                    </p:column>
-                    <p:column headerText="Order Volume">
-                        <h:outputText value="#{newRequest.volume}" />
-                    </p:column>
-                </p:dataTable>
-                <br></br>
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <p:commandButton action="#{warehouseReqeustManagedBean.showRequest()}" value="View Order Detail">
-                </p:commandButton>   
-                <br></br>
+                        <p:column filterBy="#{po.servicePOId}" headerText="PO ID" filterMatchMode="contains">
+                            <h:outputText value="#{po.servicePOId}" />
+                        </p:column>
+                        <p:column headerText="Receiver ID" filterBy="#{po.receiverCompanyId}" filterMatchMode="contains">
+                            <h:outputText value="#{po.receiverCompanyId}" />
+                        </p:column>
+                        <p:column filterBy="#{po.createdDate}" headerText="Created Date" filterMatchMode="contains">
+                            <h:outputText value="#{po.createdDate}" />
+                        </p:column>
+
+                        <p:column filterBy="#{warehouseReqeustManagedBean.getStatusNumber(po.status)}" headerText="Status" filterMatchMode="in">
+                            <f:facet name="filter">
+                                <p:selectCheckboxMenu label="Status" onchange="PF('poTable').filter()" panelStyle="width:250px" scrollHeight="150">
+                                    <f:selectItems value="#{warehouseReqeustManagedBean.status}" />
+                                </p:selectCheckboxMenu>
+                            </f:facet>
+                            <h:outputText value="#{warehouseReqeustManagedBean.getStatusNumber(po.status)}" />
+                        </p:column>
+                    </p:dataTable>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:commandButton value="View Warehouse Service Requests" action="#{warehouseReqeustManagedBean.viewSentWarehouseServicePO()}" />
+                </p:panel>
+                
+                
+                <p:panel  header="Received Warehouse Service Orders"  style="margin-bottom:20px">
+                    <p:dataTable var="poR" value="#{warehouseReqeustManagedBean.receivedWServicePO}" widgetVar="poTable2" rowKey="#{poR.servicePOId}"
+                                 emptyMessage="No PO found with given criteria" selectionMode="single" selection="#{warehouseReqeustManagedBean.selectedReceivedWServicePO}" 
+                                 filteredValue="#{warehouseReqeustManagedBean.filteredWServicePO}" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="20,50,100">
+
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Search all fields:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('poTable2').filter()" style="width:150px" placeholder="Enter keyword"/>
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:column filterBy="#{poR.servicePOId}" headerText="PO ID" filterMatchMode="contains">
+                            <h:outputText value="#{poR.servicePOId}" />
+                        </p:column>
+                        <p:column filterBy="#{poR.senderCompanyId}" headerText="Sender ID" filterMatchMode="contains">
+                            <h:outputText value="#{poR.senderCompanyId}" />
+                        </p:column>
+                        <p:column filterBy="#{poR.createdDate}" headerText="Created Date" filterMatchMode="contains">
+                            <h:outputText value="#{poR.createdDate}" />
+                        </p:column>
+                        <p:column filterBy="#{poR.warehousePOtype}" headerText="Order Type" filterMatchMode="contains">
+                            <h:outputText value="#{poR.warehousePOtype}" />
+                        </p:column>
+                        <p:column filterBy="#{warehouseReqeustManagedBean.getStatusNumber(poR.status)}" headerText="Status" filterMatchMode="in">
+                            <f:facet name="filter">
+                                <p:selectCheckboxMenu label="Status" onchange="PF('poTable2').filter()" panelStyle="width:250px" scrollHeight="150">
+                                    <f:selectItems value="#{warehouseReqeustManagedBean.status}" />
+                                </p:selectCheckboxMenu>
+                            </f:facet>
+                            <h:outputText value="#{warehouseReqeustManagedBean.getStatusNumber(poR.status)}" />
+                        </p:column>
+                    </p:dataTable>
+                    <p:messages id="msg" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:commandButton value="View Warehouse Service Orders" action="#{warehouseReqeustManagedBean.viewReceivedWarehouseServicePO()}" />
+                </p:panel>
             </h:form>
+
         </ui:define>
 
     </ui:composition>

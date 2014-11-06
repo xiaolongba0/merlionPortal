@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="Create Warehouse Request" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+                <p:menu styleClass="menu-width">
+                <p:submenu label =" WMS HOME" styleClass="display:block">
+                    <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
+                </p:submenu>
+                <p:submenu label =" Warehouse" styleClass="display:block">
+                    <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
+                    <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
+                </p:submenu>
+                <p:submenu label="Warehouse Zone" styleClass="display:block" >
+                    <p:menuitem value="Add Warehouse Zone" url="addwarehousezone.xhtml" />
+                    <p:menuitem value="View Warehouse Zones" url="viewwarehousezone.xhtml" />
+                </p:submenu>
+                <p:submenu label="Storage Bin" styleClass="display:block" >
+                    <p:menuitem value="Add Storage Bin" url="addstoragebin.xhtml" />
+                    <p:menuitem value="View Storage Bin" url="viewstoragebin.xhtml" />
+                </p:submenu>
+                <p:submenu label="Stock" styleClass="display:block" >
+                    <p:menuitem value="Add Stock" url="addstock.xhtml"/>
+                    <p:menuitem value="View Stock" url="viewstock.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Stock Audit" styleClass="display:block" >
+                    <p:menuitem value="Create Stock Audit" url="createstockaudit.xhtml"/>
+                    <p:menuitem value="View All Stock Audits" url="viewallstockaudit.xhtml"/>
+                    <p:menuitem value="View Today's Stock Audits" url="viewduestockaudit.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Stock Transport Order" styleClass="display:block" >
+                    <p:menuitem value="Create Transport Order" url="createtransportorder.xhtml"/>
+                    <p:menuitem value="View Transport Order To Be Procssed" url="viewsourcetransportorder.xhtml"/>
+                    <p:menuitem value="All IncomingTransport Orders" url="viewdesttransportorder.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Warehouse Request Orders" styleClass="display:block" >
+                    <p:menuitem value="Create Warehouse Request" url="createwarehouserequest.xhtml"/>
+                    <p:menuitem value="View All Orders" url="viewallpendingrequests.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Warehouse Service Fulfillment Check" >
+                    <p:menuitem value="Fulfillment Check" url="warehouseservicefulfillmentcheck.xhtml" />
+                </p:submenu>
+                <p:submenu label="View Notification" >
+                    <p:menuitem value="View Notification" url="viewallnotification.xhtml" />
+                </p:submenu>
+            </p:menu>
+        </ui:define>
+
+        <ui:define name="right">
+            <p:panel id="basic" header="Create Service PO" style="margin-bottom:20px">
+                <h:form id="form">
+                    <p:ajaxStatus style="width:16px;height:16px;">
+                        <f:facet name="start">
+                            <h:graphicImage value="/img/load.gif" />
+                        </f:facet>
+                        <f:facet name="complete">
+                            <h:outputText value="" />
+                        </f:facet>
+                    </p:ajaxStatus>
+                    <h:panelGrid columns="3">
+
+                        <p:outputLabel for="contract" style="font-weight: bold" value="Search a Contract "/>
+
+                        <p:inputText id="contract" required="true" styleClass="form-control" requiredMessage="A valid contract is required." value="#{createWarehouseRequestMB.contractId}" />
+
+                        <p:commandButton icon="ui-icon-search" value="Search" actionListener="#{createWarehouseRequestMB.searchAValidContract}" ajax="ture" update=":form2" />
+
+                    </h:panelGrid>
+                </h:form>
+                <h:form id="form2">
+                    <h:panelGrid id="create" columns="3">
+                        <c:if test="#{createWarehouseRequestMB.contract ne null}" >
+
+                            <h:outputLabel style="font-weight: bold" value="Contract ID* "/><p:spacer width="40" height="20" />
+                            <h:outputLabel value="#{createWarehouseRequestMB.contract.contractId}"/>
+
+                            <h:outputLabel style="font-weight: bold;color: red" value="Contract Status* " /><p:spacer width="40" height="20" />
+                            <h:outputLabel value="#{createWarehouseRequestMB.contract.status}" style="color: red"/>
+
+
+                            <h:outputLabel style="font-weight: bold" value="Created Date* " /><p:spacer width="40" height="20" />
+                            <h:outputLabel value="#{createWarehouseRequestMB.contract.createdDate}"/>
+
+
+                            <h:outputLabel style="font-weight: bold" value="Party A ID"/><p:spacer width="40" height="20" />
+                            <h:outputLabel  value="#{createWarehouseRequestMB.contract.partyA}" />
+
+
+                            <h:outputLabel style="font-weight: bold" value="Party A Company Name"/><p:spacer width="40" height="20" />
+                            <h:outputLabel  value="#{createWarehouseRequestMB.partyAName}" />
+
+
+                            <h:outputLabel style="font-weight: bold" value="Party B ID"/><p:spacer width="40" height="20" />
+                            <h:outputLabel  value="#{createWarehouseRequestMB.contract.partyB}" />
+
+
+                            <h:outputLabel style="font-weight: bold" value="Party B Company Name"/><p:spacer width="40" height="20" />
+                            <h:outputLabel  value="#{createWarehouseRequestMB.partyBName}" />
+
+
+                            <h:outputLabel  style="font-weight: bold" value="Service Type  "/><p:spacer width="40" height="20" />
+                            <h:outputLabel  value="#{createWarehouseRequestMB.contract.serviceType}" />
+
+                            <h:outputLabel  style="font-weight: bold" value="Start Date  "/><p:spacer width="40" height="20" />
+                            <h:outputLabel  value="#{createWarehouseRequestMB.contract.startDate}" />
+
+                            <h:outputLabel  style="font-weight: bold" value="End Date  "/><p:spacer width="40" height="20" />
+                            <h:outputLabel  value="#{createWarehouseRequestMB.contract.endDate}" />
+
+                            <h:outputLabel  style="font-weight: bold" value="Final Price Per TEU  "/><p:spacer width="20" height="20" />
+                            <h:outputLabel  value="#{createWarehouseRequestMB.contract.price}" />
+
+
+                            <c:if test="#{createWarehouseRequestMB.contract.serviceType eq 'Warehouse'}" >
+                                <h:outputLabel  style="font-weight: bold" value="Storage Type " /><p:spacer width="20" height="20" />
+                                <h:outputLabel value="#{createWarehouseRequestMB.contract.serviceQuotation.storageType}" />
+
+                                <p:outputLabel for="wotype" value="Warehouse Order Type " /><p:spacer width="20" height="20" />
+                                <p:selectOneMenu id="wotype" value="#{createWarehouseRequestMB.warehouseOrderType}" style="width:200px">
+                                    <p:ajax update=":form2" />
+                                    <f:selectItem itemLabel="Select Warehouse Order Type" itemValue="" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="Fulfillment Order" itemValue="Fulfillment Order" />
+                                    <f:selectItem itemLabel="Receiving Order" itemValue="Receiving Order" />
+                                </p:selectOneMenu>
+
+                                <c:if test="#{createWarehouseRequestMB.warehouseOrderType eq 'Fulfillment Order'}" >
+                                    <p:outputLabel for="startDate" value="Fulfillment Date " /><p:spacer width="20" height="20" />
+                                    <p:calendar id="startDate" required="true" requiredMessage="Fulfillment Date is required" value="#{createWarehouseRequestMB.serviceFulfillmentDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{createWarehouseRequestMB.today}" />
+                                </c:if>
+                                <c:if test="#{createWarehouseRequestMB.warehouseOrderType eq 'Receiving Order'}" >
+                                    <p:outputLabel for="endDate" value="Receiving Date " /><p:spacer width="20" height="20" />
+                                    <p:calendar id="endDate" required="true" requiredMessage="Receiving Date is required" value="#{createWarehouseRequestMB.serviceReceiveDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{createWarehouseRequestMB.today}" />
+                                </c:if>
+                            </c:if>
+                            <h:outputLabel  style="font-weight: bold" value="Quantity in TEU * "/><p:spacer width="20" height="20" />
+                            <p:inputText  value="#{createWarehouseRequestMB.volume}" required="true"  requiredMessage="Quantity is required"/>
+
+                            <h:outputLabel  style="font-weight: bold" value="Product ID * "/><p:spacer width="20" height="20" />
+                            <p:inputText  value="#{createWarehouseRequestMB.productId}" required="true"  requiredMessage="Product ID is required"/>
+
+                            <h:outputLabel  style="font-weight: bold" value="Product Quantity per TEU * "/><p:spacer width="20" height="20" />
+                            <p:inputText  value="#{createWarehouseRequestMB.productQuantityPerTEU}" required="true"  requiredMessage="Product Quantity per TEU  is required"/>
+                            <p:commandButton value="Create Warehouse Service Request" icon="ui-icon-check" actionListener="#{createWarehouseRequestMB.createServicePO()}" ajax="true" update="form2" />
+                        </c:if>
+
+                    </h:panelGrid>
+                    <p:dialog modal="true" resizable="false" header="Values" widgetVar="dlg" showEffect="fold">
+                        <p:panelGrid id="display" columns="2" columnClasses="label,value">
+                            <h:outputText value="Service Start Date:" />
+                            <h:outputText value="#{createWarehouseRequestMB.serviceFulfillmentDate}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                            <h:outputText value="Service End Date:" />
+                            <h:outputText value="#{createWarehouseRequestMB.serviceReceiveDate}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                            <h:outputText value="Service Delivery Date:" />
+                            <h:outputText value="#{createWarehouseRequestMB.serviceDeliveryDate}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:panelGrid>
+                    </p:dialog>
+
+                    <p:messages id="messages" autoUpdate="true" showDetail="true" closable="true" />
+
+                </h:form>
+
+            </p:panel>
+        </ui:define>
+    </ui:composition>
+</html>
