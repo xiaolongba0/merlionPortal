@@ -68,6 +68,11 @@
         <ui:define name="right">
 
             <h:form id="formMain"> 
+                <p:breadCrumb>
+                    <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
+                    <p:menuitem value="All Requests" url="viewallrequests.xhtml" />
+                    <p:menuitem value="Generate Quotation" url="generatequotation.xhtml" />                    
+                </p:breadCrumb>
                 <p:fieldset legend="Customer Information" style="margin-bottom:20px">
                     <h:panelGrid columns="2" cellpadding="5">
                         <h:outputText value="Customer Id:"/>

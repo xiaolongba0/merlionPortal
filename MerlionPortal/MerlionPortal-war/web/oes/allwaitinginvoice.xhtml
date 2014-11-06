@@ -12,7 +12,7 @@
         <c:set var="import" value="templateadmin.xhtml"/>
     </c:if>
     <ui:composition template="${root}/templates/${import}">        
-        <ui:param name="pageName" value="Display Requests" />
+        <ui:param name="pageName" value="Display PO" />
 
         <ui:define name="more-imports">
             <ui:insert>
@@ -66,62 +66,31 @@
         </ui:define>
 
         <ui:define name="right">
-            <h:form>
-                <p:growl id="msgs" showDetail="true" />
-                <p:breadCrumb>
-                    <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
-                    <p:menuitem value="All Requests" url="viewallrequests.xhtml" />
-                    <p:menuitem value="Request Detail" url="displayrequestinfor.xhtml" />                    
-                </p:breadCrumb>
-
-                <p:fieldset legend="Customer Information" style="margin-bottom:20px">
-                    <h:panelGrid columns="2" cellpadding="5">
-                        <h:outputText value="Customer Id:"/>
-                        <h:outputText value="#{quotationManagedBean.selectedQuotation.customerId}"/>
-                        <h:outputText value="Contact Person First Name:"/>
-                        <h:outputText value="#{quotationManagedBean.mycustomer.firstName}"/>
-                        <h:outputText value="Contact Person First Name:"/>
-                        <h:outputText value="#{quotationManagedBean.mycustomer.lastName}"/>
-                        <h:outputText value="Contact Number"/>
-                        <h:outputText value="#{quotationManagedBean.mycustomer.contactNumber}"/>
-                        <br></br>
-                        <h:outputText
-                            value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding.
-                            His beloved son Michael has just come home from the war, but does not intend to become part of his father's business. T
-                            hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect,
-                            but given to ruthless violence whenever anything stands against the good of the family." />
-                    </h:panelGrid>
-                </p:fieldset>
-            </h:form>
-            <h:form>
-                <f:facet name="header">
-                    Quotation Items
-                </f:facet>
-                <p:dataTable var="lineItem" value="#{quotationManagedBean.listItem}">
-                    <p:column headerText="SKU">
-                        <h:outputText value="#{lineItem.productproductId.productId}" />
+            <h:form>  
+                <p:dataTable id="allUnpaid" var="productOrder" value="#{viewAllUncomfirm.unpaidOrderList}" selectionMode="single" selection="#{viewAllUncomfirm.selectedOrder}" rowKey="#{productOrder.invoiceId}">
+                    <p:column  
+                        filterBy="#{productOrder.invoiceId}" 
+                        filterMatchMode="exact" headerText="Saved Id" >
+                        <h:outputText value="#{productOrder.invoiceId}" />
                     </p:column>
-
-                    <p:column headerText="Name">
-                        <h:outputText value="#{lineItem.productproductId.productName}" />
+                    <p:column  
+                        filterBy="#{productOrder.customerId}" 
+                        filterMatchMode="exact" headerText="Creator" >
+                        <h:outputText value="#{productOrder.customerId}" />
                     </p:column>
-
-                    <p:column headerText="Description">
-                        <h:outputText value="#{lineItem.productproductId.description}" />
+                    <p:column headerText="Sales Order Number">
+                        <h:outputText value="#{productOrder.salesOrderId}" />
                     </p:column>
-
-                    <p:column headerText="Category">
-                        <h:outputText value="#{lineItem.productproductId.category}" />
+                    <p:column headerText="Total Amount">
+                        <h:outputText value="#{productOrder.totalPrice}"/>
                     </p:column>
                 </p:dataTable>
-                <br></br>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <p:commandButton action="viewallrequests.xhtml" value="Go Back" icon="ui-icon-circle-arrow-w">
+
+                <br></br>
+                <br></br>
+                <p:commandButton action="#{viewAllUncomfirm.processPayament()}" value="Process to Confirm payment">
                 </p:commandButton> 
-                <c:if test="#{quotationManagedBean.canGenerateRequest()}">
-                    <p:commandButton action="#{quotationManagedBean.deletRequest}" value="Cancel This Request">
-                    </p:commandButton>   
-                </c:if>
             </h:form>
 
         </ui:define>

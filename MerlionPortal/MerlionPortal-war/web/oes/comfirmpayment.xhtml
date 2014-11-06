@@ -70,24 +70,24 @@
                 <p:fieldset legend="Customer Information" style="margin-bottom:20px">
                     <h:panelGrid columns="3" cellpadding="6">
                         <h:outputText value="Customer ID:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{recordPayamentManagedBean.unpaidOrder.customerId}" />
+                        <h:outputText value="#{comfirmPayament.unpaidOrder.customerId}" />
                         <h:outputText value="Contact Person  Name:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{recordPayamentManagedBean.getCustomerName(recordPayamentManagedBean.unpaidOrder.customerId)}" />
+                        <h:outputText value="#{comfirmPayament.getCustomerName(recordPayamentManagedBean.unpaidOrder.customerId)}" />
                     </h:panelGrid>                   
                 </p:fieldset>
                 <p:fieldset legend="Order Information" style="margin-bottom:20px">
                     <h:panelGrid columns="3" cellpadding="6">
                         <p:outputLabel value="Order Number" style="width: 150px"/><p:spacer width="20" height="20" />
-                        <h:outputText value="#{recordPayamentManagedBean.unpaidOrder.salesOrderId}" />
+                        <h:outputText value="#{comfirmPayament.unpaidOrder.salesOrderId}" />
 
                         <p:outputLabel value="Contact Person:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{recordPayamentManagedBean.orderInfor.get(0)}" />
+                        <h:outputText value="#{comfirmPayament.orderInfor.get(0)}" />
 
                         <p:outputLabel value="Contact Number:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{recordPayamentManagedBean.orderInfor.get(1)}" />
+                        <h:outputText value="#{comfirmPayament.orderInfor.get(1)}" />
 
                         <p:outputLabel value="Ship To:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{recordPayamentManagedBean.orderInfor.get(2)}" />                      
+                        <h:outputText value="#{comfirmPayament.orderInfor.get(2)}" />                      
 
                     </h:panelGrid>
                     <p:separator />
@@ -97,68 +97,61 @@
                     <h:panelGrid columns="3" cellpadding="6">
 
                         <p:outputLabel value="Invoice ID:" style="width: 150px"/><p:spacer width="20" height="20" />
-                        <h:outputText value="#{recordPayamentManagedBean.unpaidOrder.invoiceId}" />
+                        <h:outputText value="#{comfirmPayament.unpaidOrder.invoiceId}" />
 
                         <p:outputLabel value="Creator Id:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{recordPayamentManagedBean.unpaidOrder.customerId}" />
+                        <h:outputText value="#{comfirmPayament.unpaidOrder.customerId}" />
 
                         <p:outputLabel value="Invoice Condition:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{recordPayamentManagedBean.unpaidOrder.conditionText}" />
+                        <h:outputText value="#{comfirmPayament.unpaidOrder.conditionText}" />
 
                         <p:outputLabel value="Invoice Status:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{recordPayamentManagedBean.unpaidOrder.status}" />
+                        <h:outputText value="#{comfirmPayament.unpaidOrder.status}" />
 
                         <p:outputLabel value="Invoice Price:" style="color: red"/><p:spacer width="20" height="20" />
-                        <h:outputText value="#{recordPayamentManagedBean.unpaidOrder.totalPrice}" style="color: red" />
+                        <h:outputText value="#{comfirmPayament.unpaidOrder.totalPrice}" style="color: red" />
 
                     </h:panelGrid>
                 </p:fieldset>
+                <p:fieldset legend="Payment Information" style="margin-bottom:20px">
+                    <c:if test="#{comfirmPayament.unpaidOrder.productPayment.method eq 1}" >
+                        <h:panelGrid columns="3" cellpadding="6">
+                            <p:outputLabel value="Swift Code:" style="width: 150px"/><p:spacer width="20" height="20" />
+                            <h:outputText value="#{comfirmPayament.unpaidOrder.productPayment.swiftCode}" />
+
+                            <p:outputLabel value="Account Info:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{comfirmPayament.unpaidOrder.productPayment.accountInfo}" />
+
+                            <p:outputLabel value="Amount:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{comfirmPayament.unpaidOrder.productPayment.amount}" />                 
+                        </h:panelGrid>
+                    </c:if>
+                    <c:if test="#{comfirmPayament.unpaidOrder.productPayment.method eq 2}" >
+                        <h:panelGrid columns="3" cellpadding="6">
+                            <p:outputLabel value="Card Holder Name:" style="width: 150px"/><p:spacer width="20" height="20" />
+                            <h:outputText value="#{comfirmPayament.unpaidOrder.productPayment.accountInfo}" />
+
+                            <p:outputLabel value="Credit Card Number:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{comfirmPayament.unpaidOrder.productPayment.creditCardNo}" />
+
+                            <p:outputLabel value="Amount:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{comfirmPayament.unpaidOrder.productPayment.amount}" />                 
+                        </h:panelGrid>
+                    </c:if>
+                    <c:if test="#{comfirmPayament.unpaidOrder.productPayment.method eq 3}" >
+                        <h:panelGrid columns="3" cellpadding="6">
+                            <p:outputLabel value="Check Number:" style="width: 150px"/><p:spacer width="20" height="20" />
+                            <h:outputText value="#{comfirmPayament.unpaidOrder.productPayment.creditCardNo}" />
+
+                            <p:outputLabel value="Amount:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{comfirmPayament.unpaidOrder.productPayment.amount}" />                 
+                        </h:panelGrid>
+                    </c:if>
+                </p:fieldset>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <c:if test="#{recordPayamentManagedBean.canGenerateRequest()}" >
-                    <p:commandButton value="Record Payment Info" type="button" onclick="PF('dlg1').show();" />
-                </c:if>
             </h:form>
             <h:form>
-                <p:dialog header="Record Payment Information" widgetVar="dlg1" minHeight="40">
-                    <p:outputLabel for="method" value="Payment Method: " />
-                    <p:selectOneMenu id="method" value="#{recordPayamentManagedBean.method}" style="width:250px">
-                        <p:ajax listener="#{recordPayamentManagedBean.onMethodChange}" update="change" />
-                        <f:selectItem itemLabel="Please select payment method" itemValue="" noSelectionOption="true"  />
-                        <f:selectItem itemLabel="Telegraphic Transfer" itemValue="1"  />
-                        <f:selectItem itemLabel="Credit Card" itemValue="2" />
-                        <f:selectItem itemLabel="Paper Check" itemValue="3"  />
-                    </p:selectOneMenu> 
-                    <h:panelGroup id="change" >
-                        <h:panelGrid id="tt" rendered="#{recordPayamentManagedBean.method eq 1}" columns="3">
-                            <p:outputLabel value="Swift Code:" /> <p:spacer width="20" height="20" />
-                            <h:inputText value="#{recordPayamentManagedBean.swiftcode}" styleClass="form-control" />
-                            <p:outputLabel value="Account Info:" /> <p:spacer width="20" height="20" />
-                            <h:inputText value="#{recordPayamentManagedBean.accountInfo}"  styleClass="form-control" />
-                            <p:outputLabel value="Amount:" /> <p:spacer width="20" height="20" />
-                            <h:inputText value="#{recordPayamentManagedBean.amount}"  styleClass="form-control" />
-                            <p:commandButton value="Confirm Payment Info" action="#{recordPayamentManagedBean.recordPayamentInfor()}" update=":form" />
-
-                        </h:panelGrid >
-                        <h:panelGrid id="cc" rendered="#{recordPayamentManagedBean.method eq 2}" columns="3">
-                            <p:outputLabel value="Card Holder Name:" /> <p:spacer width="20" height="20" />
-                            <h:inputText value="#{recordPayamentManagedBean.accountInfo}"  styleClass="form-control" />
-                            <p:outputLabel value="Credit Card Number:" /> <p:spacer width="20" height="20" />
-                            <h:inputText value="#{recordPayamentManagedBean.creditCardNo}"  styleClass="form-control" />
-                            <p:outputLabel value="Amount:" /> <p:spacer width="20" height="20" />
-                            <h:inputText value="#{recordPayamentManagedBean.amount}"  styleClass="form-control" />                          
-                            <p:commandButton value="Confirm Payment Info" action="#{recordPayamentManagedBean.recordPayamentInfor()}" update=":form" />
-
-                        </h:panelGrid>
-                        <h:panelGrid id="pc" rendered="#{recordPayamentManagedBean.method eq 3}" columns="3">
-                            <p:outputLabel value="Check Number:" /> <p:spacer width="20" height="20" />
-                            <h:inputText value="#{recordPayamentManagedBean.checkNumber}"  styleClass="form-control" />
-                            <p:outputLabel value="Amount:" /> <p:spacer width="20" height="20" />
-                            <h:inputText value="#{recordPayamentManagedBean.amount}"  styleClass="form-control" />                           
-                            <p:commandButton value="Confirm Payment Info" action="#{recordPayamentManagedBean.recordPayamentInfor()}" update=":form" />
-
-                        </h:panelGrid>
-                    </h:panelGroup>
-                </p:dialog>
+                <p:commandButton value="Confirm Payment" action="#{comfirmPayament.confirmPayment()}"/>
                 <p:commandButton value="Go Back" action="makepayment.xhtml?faces-redirect=ture" icon="ui-icon-circle-arrow-w"/>
             </h:form>
 

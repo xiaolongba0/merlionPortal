@@ -67,6 +67,10 @@
 
         <ui:define name="right">
             <h:form>  
+                <p:breadCrumb>
+                    <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
+                    <p:menuitem value="All Quotation" url="displayallquotations.xhtml" />                  
+                </p:breadCrumb>
                 <p:dataTable id="allQuotation" var="quotation" value="#{quotationManagedBean.allProcceQuotation}" 
                              filteredValue="#{displayProductManagedBean.filteredProducts}"
                              selectionMode="single" selection="#{quotationManagedBean.selectedQuotation}" 

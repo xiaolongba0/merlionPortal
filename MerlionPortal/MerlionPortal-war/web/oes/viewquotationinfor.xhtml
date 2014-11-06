@@ -66,8 +66,22 @@
         </ui:define>
 
         <ui:define name="right">
-
             <h:form>
+                 <p:breadCrumb>
+                    <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
+                    <p:menuitem value="All Quotation" url="displayallquotations.xhtml" /> 
+                    <p:menuitem value="Quotation Detail" url="viewquotationinfor.xhtml" />
+                </p:breadCrumb>
+                <p:breadCrumb>
+                    <p:menuitem value="Categories" url="#" />
+                    <p:menuitem value="Sports" url="#" />
+                    <p:menuitem value="Basketball" url="#" />
+                    <p:menuitem value="NBA" url="#" />
+                    <p:menuitem value="Teams" url="#" />
+                    <p:menuitem value="L.A. Lakers" url="#" />
+                    <p:menuitem value="Roster" url="#" />
+                    <p:menuitem value="Kobe Bryant" url="#" />
+                </p:breadCrumb>
                 <p:fieldset legend="Customer Information" style="margin-bottom:20px">
                     <h:panelGrid columns="2" cellpadding="5">
                         <h:outputText value="Customer Id:"/>

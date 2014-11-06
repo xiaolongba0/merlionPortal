@@ -67,19 +67,22 @@
 
         <ui:define name="right">
             <h:form>  
-                <p:dataTable id="allUnpaid" var="productOrder" value="#{makePayamentManagedBean.unpaidOrderList}" selectionMode="single" selection="#{makePayamentManagedBean.selectedOrder}" rowKey="#{productOrder.productPOId}">
+                <p:dataTable id="allUnpaid" var="productOrder" value="#{makePayamentManagedBean.unpaidOrderList}" selectionMode="single" selection="#{makePayamentManagedBean.selectedOrder}" rowKey="#{productOrder.invoiceId}">
                     <p:column  
-                        filterBy="#{productOrder.productPOId}" 
+                        filterBy="#{productOrder.invoiceId}" 
                         filterMatchMode="exact" headerText="Saved Id" >
-                        <h:outputText value="#{productOrder.productPOId}" />
+                        <h:outputText value="#{productOrder.invoiceId}" />
                     </p:column>
                     <p:column  
-                        filterBy="#{productOrder.creatorId}" 
+                        filterBy="#{productOrder.customerId}" 
                         filterMatchMode="exact" headerText="Creator" >
-                        <h:outputText value="#{productOrder.creatorId}" />
+                        <h:outputText value="#{productOrder.customerId}" />
                     </p:column>
-                    <p:column headerText="Create Date">
-                        <h:outputText value="#{productOrder.createdDate}" />
+                    <p:column headerText="Sales Order Number">
+                        <h:outputText value="#{productOrder.salesOrderId}" />
+                    </p:column>
+                    <p:column headerText="Total Amount">
+                        <h:outputText value="#{productOrder.totalPrice}"/>
                     </p:column>
                 </p:dataTable>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
