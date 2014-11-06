@@ -88,10 +88,11 @@ public class WarehouseRequestManagerSessionBean {
         return results;
     }
 
-    public Boolean checkStorageBinAvailability(ServicePO myPO, StorageBin myStorage) {
+    public boolean checkStorageBinAvailability(ServicePO myPO, StorageBin myStorage) {
         int totalQuantity = myPO.getVolume() * myPO.getProductQuantityPerTEU();
         int productId = myPO.getProductId();
         String storageType = myPO.getContract().getStorageType();
+        
         if (myStorage.getBinType().equals(storageType)) {
             if (myStorage.getMaxQuantity() == myStorage.getAvailableSpace()) {
                 return true;
