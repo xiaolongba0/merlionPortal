@@ -75,6 +75,10 @@ public class MrpPurchaseOrderManagedBean {
 
     private String password;
     private Boolean tempStatus;
+    private int temp;
+    private Integer poReference;
+
+
 
     @PostConstruct
     public void init() {
@@ -109,6 +113,25 @@ public class MrpPurchaseOrderManagedBean {
 
         pos = productOrderSessionBean.createPO(productId, companyId, loginedUser, mrps);
 
+    }
+
+    public void sendPO() {
+
+        //create a query to get user id
+        userIDID = productOrderSessionBean.checkValidAccessUser(userIDTemp, password, poReference);
+
+        if (userIDID == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "User ID is invalid!"));
+            tempStatus = false;
+        } else {
+            if (systemAccessRightSB.checkOESGeneratePO(userIDID)) {
+                tempStatus = true;
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Info", "User ID is correct!"));
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "User ID is invalid!"));
+                tempStatus = false;
+            }
+        }
     }
 
     public List<ProductOrderLineItem> getLineItemList() {
@@ -149,6 +172,14 @@ public class MrpPurchaseOrderManagedBean {
 
     public String getPassword() {
         return password;
+    }
+    
+        public void setPoReference(Integer poReference) {
+        this.poReference = poReference;
+    }
+
+    public Integer getPoReference() {
+        return poReference;
     }
 
     public void setShipto() {
@@ -199,25 +230,6 @@ public class MrpPurchaseOrderManagedBean {
         FacesMessage msg = new FacesMessage("Edit quantity cancelled");
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
-    }
-
-    public void sendPO() {
-
-        //create a query to get user id
-        userIDID = productOrderSessionBean.checkValidAccessUser(userIDTemp, password);
-
-        if (userIDID == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "User ID is invalid!"));
-            tempStatus = false;
-        } else {
-            if (systemAccessRightSB.checkOESGeneratePO(userIDID)) {
-                tempStatus = true;
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Info", "User ID is correct!"));
-            } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "User ID is invalid!"));
-                tempStatus = false;
-            }
-        }
     }
 
     public boolean checkUserIsCustomer() {
