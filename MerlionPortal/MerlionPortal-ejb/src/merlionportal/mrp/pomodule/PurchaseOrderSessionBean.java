@@ -36,19 +36,15 @@ public class PurchaseOrderSessionBean {
     public List<ProductOrder> createPO(Integer productId, Integer companyId, SystemUser loginedUser, List<Mrp> mrps) {
         System.out.println("+++++++++++++++++++GeneratePO Start====================1");
         Product product = entityManager.find(Product.class, productId);
-        System.out.println("FY 6NOV productid: " + product.getProductName());
         Company company = entityManager.find(Company.class, companyId);
-        System.out.println("FY 6NOV companyid: " + company.getName());
         List<ProductOrder> pos = new ArrayList<ProductOrder>();
 
         int size = product.getComponentList().size();
-        System.out.println("FY 6NOV size: " + size);
 
         for (int i = 0; i < size; i++) {
             if (mrps.get(i).getPlannedOrder1() == 0) {
 
             } else {
-                System.out.println("FY 6NOV loop how many times");
                 ProductOrder po = new ProductOrder();
                 Date date = new Date();
                 po.setCreatedDate(date);
@@ -245,11 +241,21 @@ public class PurchaseOrderSessionBean {
         }
         System.out.println("sys user user id:" + sysUser.getSystemUserId());
         if(reqiredQuotation.getCustomerId().equals(sysUser.getSystemUserId())){
+            productOrder.setQuotationId(reqiredQuotation.getQuotationId()); 
+            entityManager.merge(productOrder);
+            entityManager.flush();
+            
             return sysUser.getSystemUserId();
         }
         
         
         return null;
+    }
+    
+    public void cancelAPO(Integer poReference){
+        ProductOrder po = entityManager.find(ProductOrder.class, poReference);
+        entityManager.remove(po);
+        entityManager.flush();
     }
 
     public List<ProductOrder> createPOBackorder(Integer productId, Integer companyId, SystemUser loginedUser, List<Mrp> mrps) {
