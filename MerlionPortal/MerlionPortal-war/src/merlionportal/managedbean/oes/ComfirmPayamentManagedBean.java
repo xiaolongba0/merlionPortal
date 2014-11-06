@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.inject.Named;
+import javax.enterprise.context.Dependent;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
-import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.SystemAccessRightSessionBean;
 import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.oes.ordermanagement.CommonFunctionSessionBean;
@@ -25,9 +25,9 @@ import merlionportal.oes.ordermanagement.PaymentManagerSessionBean;
  *
  * @author mac
  */
-@Named(value = "recordPayamentManagedBean")
-@ViewScoped
-public class RecordPayamentManagedBean {
+@Named(value = "comfirmPayament")
+@Dependent
+public class ComfirmPayamentManagedBean {
 
     @EJB
     private CommonFunctionSessionBean commSB;
@@ -51,7 +51,7 @@ public class RecordPayamentManagedBean {
     private BigInteger checkNumber;
     private List<String> orderInfor = new ArrayList();
 
-    public RecordPayamentManagedBean() {
+    public ComfirmPayamentManagedBean() {
     }
 
     @PostConstruct
@@ -75,6 +75,21 @@ public class RecordPayamentManagedBean {
         unpaidOrder = (ProductInvoice) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("unpaidOrder");
         orderInfor = paymentMB.findServiceOrder(unpaidOrder.getSalesOrderId());
         maymentMethods = paymentMB.allPaymentMethods();
+    }
+
+    public void confirmPayment() {
+        int result = paymentMB.updatePaymentStatus(unpaidOrder);
+        if (result == 1) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Payment Status updated", ""));
+            systemLogSB.recordSystemLog(userId, "OES updated payment status");
+
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
+        }
+    }
+
+    public String getCustomerName(int cId) {
+        return commSB.viewCustomerName(cId);
     }
 
     public Integer getCompanyId() {
@@ -125,10 +140,6 @@ public class RecordPayamentManagedBean {
         this.method = method;
     }
 
-    public void onMethodChange() {
-        System.out.println("Method: " + method);
-    }
-
     public Integer getSwiftcode() {
         return swiftcode;
     }
@@ -169,10 +180,6 @@ public class RecordPayamentManagedBean {
         this.checkNumber = checkNumber;
     }
 
-    public String getCustomerName(int cId) {
-        return commSB.viewCustomerName(cId);
-    }
-
     public List<String> getOrderInfor() {
         return orderInfor;
     }
@@ -181,32 +188,4 @@ public class RecordPayamentManagedBean {
         this.orderInfor = orderInfor;
     }
 
-    public Boolean canGenerateRequest() {
-        return accessRight.checkOESGeneratePO(userId);
-
-    }
-
-    public void recordPayamentInfor() {
-        Boolean payable;
-        if (method == 1) {
-            payable = paymentMB.makePaymentT(method,amount, unpaidOrder, swiftcode, accountInfo);
-            if (!payable) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Amount is inccorect."));
-            }
-        }
-        if (method == 2) {
-            payable = paymentMB.makePaymentC(method,amount, unpaidOrder, creditCardNo.toString(), accountInfo);
-            if (!payable) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Amount is inccorect."));
-            }
-        }
-        if (method == 3) {
-            payable = paymentMB.makePaymentCheck(method,amount, unpaidOrder, checkNumber.toString());
-            if (!payable) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Amount is inccorect."));
-            }
-        }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Payment Infor Submited."));
-
-    }
 }

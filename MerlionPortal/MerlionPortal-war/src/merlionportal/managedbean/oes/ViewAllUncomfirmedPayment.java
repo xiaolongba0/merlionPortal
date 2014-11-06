@@ -23,21 +23,19 @@ import merlionportal.oes.ordermanagement.PaymentManagerSessionBean;
  *
  * @author mac
  */
-@Named(value = "makePayamentManagedBean")
+@Named(value = "viewAllUncomfirm")
 @ViewScoped
-public class MakePayamentManagedBean {
+public class ViewAllUncomfirmedPayment {
 
     @EJB
     private SystemLogSessionBean systemLogSB;
     @EJB
     private PaymentManagerSessionBean paymentMB;
+
     private Integer companyId;
     private Integer userId;
     private List<ProductInvoice> unpaidOrderList;
     private ProductInvoice selectedOrder;
-
-    public MakePayamentManagedBean() {
-    }
 
     @PostConstruct
     public void init() {
@@ -57,7 +55,10 @@ public class MakePayamentManagedBean {
                 ex.printStackTrace();
             }
         }
-        unpaidOrderList = paymentMB.getAllUnpaidInvoice(userId);
+        unpaidOrderList = paymentMB.getAllWaitingInvoice(companyId);
+    }
+
+    public ViewAllUncomfirmedPayment() {
     }
 
     public Integer getCompanyId() {
@@ -95,13 +96,12 @@ public class MakePayamentManagedBean {
     public String processPayament() {
         if (selectedOrder == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please select one invoice."));
-            return "makepayment.xhtml";
+            return "allwaitinginvoice.xhtml";
         }
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
         sessionMap.put("unpaidOrder", selectedOrder);
 
-        return "recordpayment.xhtml?faces-redirect=true;";
+        return "comfirmpayment.xhtml?faces-redirect=true;";
     }
-
 }
