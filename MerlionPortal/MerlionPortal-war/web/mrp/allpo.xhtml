@@ -5,13 +5,13 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:f="http://xmlns.jcp.org/jsf/core"> 
 
     <c:set var="import" value="templateuser.xhtml"/>
     <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
         <c:set var="import" value="templateadmin.xhtml"/>
     </c:if>
-
     <ui:composition template="${root}/templates/${import}">        
         <ui:param name="pageName" value="MRP II Add New Product" />
 
@@ -39,8 +39,8 @@
                 </c:if>
                 <c:if test="#{dashboardBean.checkMRPCanManageUseForecast() || dashboardBean.loginedUser.userType == 'superuser'}">
                     <p:submenu label="MRP">
-                                <p:menuitem value="MRP Process" url="forecast.xhtml" />
-                            </p:submenu>
+                        <p:menuitem value="MRP Process" url="forecast.xhtml" />
+                    </p:submenu>
                 </c:if>
 
             </p:menu>
@@ -57,6 +57,9 @@
                         <f:facet name="header">
                             Purchase Order
                         </f:facet>
+
+
+                        <p:growl id="growl" showDetail="true" sticky="true" /> 
                         <p:panel>
                             <p:panelGrid style="margin-top:20px">
 
@@ -163,9 +166,6 @@
                                                 </p:panelGrid>
                                             </p:panel>
                                         </p:dataGrid>
-
-
-
                                     </p:column>
                                 </p:row>
                                 <p:row>
@@ -175,12 +175,31 @@
                                     </p:column>
                                 </p:row>
                             </p:panelGrid>
-
-
                         </p:panel>
+
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="userIDTemp"  value="User ID to access to Supplier's OES: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="userIDTemp" value="#{mrpPurchaseOrderManagedBean.userIDTemp}"  label="userID"></p:inputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="password"  value="Password: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="password" value="#{mrpPurchaseOrderManagedBean.password}"  label="password"></p:inputText>
+                            </p:column>
+                        </p:row>
+                        <p:commandButton value="Submit ID to Send" actionListener="#{mrpPurchaseOrderManagedBean.sendPO}" update="growl"></p:commandButton>
+
+
                     </p:dataGrid>
-                   <p:commandButton value="Send PO and Complete MRP"  action="#{mrpPurchaseOrderManagedBean.backToMrpHome}" />
-                   <p:commandButton value="Cancel"  action="#{mrpPurchaseOrderManagedBean.cancelPO}" />
+                    <p:commandButton value="Send PO and Complete MRP"  action="#{mrpPurchaseOrderManagedBean.backToMrpHome}" />
+                    <p:commandButton value="Cancel"  action="#{mrpPurchaseOrderManagedBean.cancelPO}" />
                 </p:panel>
 
 
