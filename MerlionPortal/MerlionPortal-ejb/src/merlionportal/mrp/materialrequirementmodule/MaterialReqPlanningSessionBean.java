@@ -29,11 +29,14 @@ public class MaterialReqPlanningSessionBean {
     private EntityManager entityManager;
 
     private Product product;
-    MRPList productMRP;
+
     Mrp mrp;
-    ArrayList<Mrp> mrps;
+    
 
     public List<Mrp> addNewMrpList(Integer productId, Integer mpsId, int wk1Demand, int wk2Demand, int wk3Demand, int wk4Demand, int wk5Demand, int minOnHand) {
+        
+          System.out.println("FY 5NOV:MpsId in Mrp sesson bean: " + mpsId);
+          System.out.println("FY 5NOV:productId in Mrp sesson bean: " + productId);
         /*    Mps mps = entityManager.find(Mps.class, mpsId);
          productMRP = mps.getMRPList();
          productMRP.setMrpDate(new Date());
@@ -44,13 +47,13 @@ public class MaterialReqPlanningSessionBean {
          entityManager.merge(mps);
          entityManager.flush();*/
         Mps mps = entityManager.find(Mps.class, mpsId);
-        productMRP = new MRPList();
-        productMRP.setMrpListId(mps.getMpsId());
+        MRPList productMRP = new MRPList();
+        productMRP.setMrpListId(mpsId);
 
         productMRP.setMrpDate(new Date());
         productMRP.setProductId(productId);
         productMRP.setMps(mps);
-        mrps = new ArrayList<Mrp>();
+        ArrayList<Mrp> mrps = new ArrayList<Mrp>();
         productMRP.setMrpList(mrps);
         entityManager.persist(productMRP);
         mps.setMRPList(productMRP);
@@ -273,10 +276,12 @@ public class MaterialReqPlanningSessionBean {
         productMRP.setMrpList(mrps);
         entityManager.merge(productMRP);
         entityManager.flush();
+        
+        System.out.println("FY 5NOV:mrpListId in Mrp sesson bean: " + productMRP.getMrpListId());
         return mrps;
     }
 
-   public List<Mrp> addNewMrpListBackorder(Integer productId, Integer demand) {
+  /* public List<Mrp> addNewMrpListBackorder(Integer productId, Integer demand) {
 
         MRPList mrpList = new MRPList();
         mrpList.setMrpDate(new Date());
@@ -286,8 +291,9 @@ public class MaterialReqPlanningSessionBean {
         //   productMRP.setMps(mps);
 
         mrps = new ArrayList<Mrp>();
-        productMRP.setMrpList(mrps);
-        entityManager.persist(productMRP);
+        MRPList productMRP1 = new MRPList();
+        productMRP1.setMrpList(mrps);
+        entityManager.persist(productMRP1);
     //    mps.setMRPList(productMRP);
         //  entityManager.merge(mps);
         //   entityManager.flush();
@@ -368,17 +374,17 @@ public class MaterialReqPlanningSessionBean {
             mrp.setPlannedOrder4(plannedOrder4);
             mrp.setPlannedOrder5(plannedOrder5);
             mrp.setLeadTime(leadTime);
-            mrp.setMrpList(productMRP);
+            mrp.setMrpList(productMRP1);
             entityManager.persist(mrp);
             entityManager.flush();
             mrps.add(mrp);
 
         }
 
-        productMRP.setMrpList(mrps);
-        entityManager.merge(productMRP);
+        productMRP1.setMrpList(mrps);
+        entityManager.merge(productMRP1);
         entityManager.flush();
         return mrps;
-    }
+    }*/
 
 }

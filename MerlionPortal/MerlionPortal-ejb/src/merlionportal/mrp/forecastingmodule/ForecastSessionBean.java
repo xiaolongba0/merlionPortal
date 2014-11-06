@@ -372,12 +372,15 @@ public class ForecastSessionBean {
         return forecastR;
     }
 
-    public Integer storeForecast(int periodicity, double expectedGrowth, List<String> dateList, List<Integer> quantityList) {
+    public Integer storeForecast(int periodicity, double expectedGrowth, List<String> dateList, List<Integer> quantityList, int productId) {
         ForecastResult forecastResult = new ForecastResult();
         forecastResult.setForecastResultDate(new Date());
         forecastResult.setPeriodicity(periodicity);
         forecastResult.setFluctuation(expectedGrowth);
-        forecastResult.setProductId(1);
+        forecastResult.setProductId(productId);
+      
+        /////FY testing 5NOV
+        System.out.println("FY 5NOV:productID: " + productId);
 
     //    Mps mps = new Mps();
      //   forecastResult.setMps(mps);
@@ -408,7 +411,8 @@ public class ForecastSessionBean {
 
         entityManager.persist(forecastResult);
         entityManager.flush();
-
+ /////FY testing 5NOV
+        System.out.println("FY 5NOV:forecastRsultID: " + forecastResult.getForecastResultId());
         return forecastResult.getForecastResultId();
     }
 

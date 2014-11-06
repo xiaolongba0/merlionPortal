@@ -72,7 +72,7 @@ public class MpsSessionBean {
        return mps.getMpsId();*/
         
        ForecastResult fResult = entityManager.find(ForecastResult.class, forecastResultID);
-       System.out.println("TESTINGGGG:1 " + fResult.getForecastResultId());
+       System.out.println("FY 5NOV:forecastRsultID in Mps sesson bean: " + fResult.getForecastResultId());
        Mps mps = new Mps();
        mps.setMpsId(forecastResultID);
        mps.setBuffer(buffer);
@@ -87,8 +87,9 @@ public class MpsSessionBean {
        entityManager.persist(mps);
        entityManager.flush();
        fResult.setMps(mps);
-         entityManager.persist(fResult);
+       entityManager.merge(fResult);
        entityManager.flush();
+          System.out.println("FY 5NOV:MpsId in Mps sesson bean: " + mps.getMpsId());
        return mps.getMpsId();  
        
     }
