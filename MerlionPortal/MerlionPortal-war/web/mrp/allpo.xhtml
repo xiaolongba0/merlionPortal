@@ -193,6 +193,9 @@
                             <p:column>
                                 <p:inputText id="password" value="#{mrpPurchaseOrderManagedBean.password}"  label="password"></p:inputText>
                             </p:column>
+                            <p:column>
+                                <p:inputText id="poReference" value="#{mrpPurchaseOrderManagedBean.poReference}"  label="poReference"></p:inputText>
+                            </p:column>
                         </p:row>
                         <p:commandButton value="Submit ID to Send" actionListener="#{mrpPurchaseOrderManagedBean.sendPO}" update="growl"></p:commandButton>
 
