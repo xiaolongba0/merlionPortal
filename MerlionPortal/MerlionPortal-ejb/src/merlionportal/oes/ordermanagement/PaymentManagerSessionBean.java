@@ -5,9 +5,11 @@
  */
 package merlionportal.oes.ordermanagement;
 
+import entity.ProductInvoice;
 import entity.ProductOrder;
-import entity.SystemUser;
+import entity.ProductPayment;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -33,15 +35,27 @@ public class PaymentManagerSessionBean {
     public PaymentManagerSessionBean() {
     }
 
-    public List<ProductOrder> getAllUnpaidOrder(int customerId) {
-        List<ProductOrder> result = new ArrayList();
-        Query q = em.createQuery("SELECT p FROM ProductOrder p WHERE p.creatorId = :creatorId AND p.status =:status");
-        q.setParameter("creatorId", customerId);
-        q.setParameter("status", 5);
+    public List<ProductInvoice> getAllUnpaidInvoice(int customerId) {
+        List<ProductInvoice> result = new ArrayList();
+        Query q = em.createQuery("SELECT p FROM ProductInvoice p WHERE p.customerId = :customerId AND p.status= :status");
+        q.setParameter("customerId", customerId);
+        q.setParameter("status", "Invoiced");
         for (Object o : q.getResultList()) {
-            ProductOrder ordr = (ProductOrder) o;
+            ProductInvoice ordr = (ProductInvoice) o;
             result.add(ordr);
+        }
+        return result;
+    }
 
+    public List<ProductInvoice> getAllWaitingInvoice(int companyId) {
+        List<ProductInvoice> result = new ArrayList();
+        Query q = em.createQuery("SELECT p FROM ProductInvoice p");
+        for (Object o : q.getResultList()) {
+            ProductInvoice ordr = (ProductInvoice) o;
+            ProductOrder myOrder = em.find(ProductOrder.class, ordr.getSalesOrderId());
+            if (myOrder.getCompanyId() == companyId || ordr.getStatus().equals("Waiting For Confirmation")) {
+                result.add(ordr);
+            }
         }
         return result;
     }
@@ -54,22 +68,89 @@ public class PaymentManagerSessionBean {
 
         return paymentMethods;
     }
-    
-    public Boolean makePayement(ProductOrder myorder, String billto){
-        if(myorder.getStatus()!=5){
+
+    public List<String> findServiceOrder(int orderId) {
+        List<String> result = new ArrayList();
+        ProductOrder myOrder = em.find(ProductOrder.class, orderId);
+        result.add(myOrder.getContactPersonName());
+        result.add(myOrder.getContactPersonPhoneNumber());
+        result.add(myOrder.getShipTo());
+        return result;
+    }
+
+    public int updatePaymentStatus(ProductInvoice productInvoice) {
+        if (productInvoice != null) {
+            productInvoice.setStatus("Paid");
+            ProductOrder po = em.find(ProductOrder.class, productInvoice.getSalesOrderId());
+            po.setStatus(4);
+            em.merge(po);
+            em.merge(productInvoice);
+            em.flush();
+            return 1;
+        }
+        return 0;
+
+    }
+
+    public Boolean makePaymentT(Integer method, Double amount, ProductInvoice myInvoice, Integer swift, String accontInfo) {
+        if (!amount.equals(myInvoice.getTotalPrice())) {
             return false;
         }
-        myorder.setBillTo(billto);
-        Double totalPrice;
-        totalPrice = myorder.getPrice();
-        int cId= myorder.getCreatorId();
-        SystemUser myCustomer= em.find(SystemUser.class, cId);
-        int credit = myCustomer.getCreditLimit()+totalPrice.intValue();
-        myCustomer.setCreditLimit(credit);
-        em.merge(myCustomer);
-        myorder.setStatus(4);
-        em.merge(myorder);
+        ProductPayment myPayment = new ProductPayment();
+        myPayment.setMethod(method);
+        myPayment.setPaymentId(myInvoice.getInvoiceId());
+        myPayment.setAccountInfo(accontInfo);
+        myPayment.setAmount(amount);
+        myPayment.setSwiftCode(swift);
+        myPayment.setProductInvoice(myInvoice);
+        Date todayDate = new Date();
+        myPayment.setCreatedDate(todayDate);
+        em.persist(myPayment);
+        myInvoice.setProductPayment(myPayment);
+        myInvoice.setStatus("Waiting For Confirmation");
+        System.out.println("record PaymentInfor=================3" + myInvoice.getInvoiceId() + swift + accontInfo);
+        em.merge(myInvoice);
         return true;
     }
 
+    public Boolean makePaymentC(Integer method,Double amount, ProductInvoice myInvoice, String cardNumber, String accontInfo) {
+        if (!amount.equals(myInvoice.getTotalPrice())) {
+            return false;
+        }
+        ProductPayment myPayment = new ProductPayment();
+        myPayment.setMethod(method);
+        myPayment.setPaymentId(myInvoice.getInvoiceId());
+        myPayment.setAccountInfo(accontInfo);
+        myPayment.setAmount(amount);
+        myPayment.setCreditCardNo(cardNumber);
+        myPayment.setProductInvoice(myInvoice);
+        Date todayDate = new Date();
+        myPayment.setCreatedDate(todayDate);
+        em.persist(myPayment);
+        myInvoice.setProductPayment(myPayment);
+        myInvoice.setStatus("Waiting For Confirmation");
+        em.merge(myInvoice);
+        em.flush();
+        return true;
+    }
+
+    public Boolean makePaymentCheck(Integer method,Double amount, ProductInvoice myInvoice, String cardNumber) {
+        if (!amount.equals(myInvoice.getTotalPrice())) {
+            return false;
+        }
+        ProductPayment myPayment = new ProductPayment();
+        myPayment.setMethod(method);
+        myPayment.setPaymentId(myInvoice.getInvoiceId());
+        myPayment.setAmount(amount);
+        myPayment.setCreditCardNo(cardNumber);
+        myPayment.setProductInvoice(myInvoice);
+        Date todayDate = new Date();
+        myPayment.setCreatedDate(todayDate);
+        em.persist(myPayment);
+        myInvoice.setProductPayment(myPayment);
+        myInvoice.setStatus("Waiting For Confirmation");
+        em.merge(myInvoice);
+        em.flush();
+        return true;
+    }
 }
