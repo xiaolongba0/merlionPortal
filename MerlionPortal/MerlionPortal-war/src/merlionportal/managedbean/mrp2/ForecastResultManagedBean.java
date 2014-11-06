@@ -142,7 +142,7 @@ MonthForecastResult monthForecastResult;
         forecastR = fsb.computeResult(periodicity, expectedGrowth, dateList, quantityList);
         monthlyDateR = fsb.yaxisDate();
 
-        forecastResultID = fsb.storeForecast(periodicity, expectedGrowth, dateList, quantityList);
+        forecastResultID = fsb.storeForecast(periodicity, expectedGrowth, dateList, quantityList, productId);
 
         //put results into the session
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("forecastR", forecastR);

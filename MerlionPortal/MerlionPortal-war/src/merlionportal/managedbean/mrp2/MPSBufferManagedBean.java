@@ -92,9 +92,6 @@ public class MPSBufferManagedBean {
         
         currentInv = mpsSessionBean.getCurrentInventory(productId);
         requiredDemand = requiredAmt1 - currentInv;
-        System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFff");
-        System.out.println("currentInv  " + currentInv);
-        System.out.println("requiredDemand " + requiredDemand);
     }
 
     //intake string to display

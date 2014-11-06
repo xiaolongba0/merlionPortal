@@ -242,7 +242,7 @@ public class MPSResultManagedBean {
 
         fResultId = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("forecastResultID");
         mpsId = mpsSessionBean.storeMPS(buffer, requiredDemand, fResultId);
-        System.out.println("RRRRRRRRRRRRR: mps id: " + mpsId);
+        System.out.println("FY 5NOV:MpsId in Mps managed bean: " + mpsId);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mpsId", mpsId);
 
     }
@@ -263,7 +263,6 @@ public class MPSResultManagedBean {
     public void onBufferChange() {
         if (buffer != 0) {
             requiredDemand = requiredAmt1 - currentInv + buffer;
-            System.out.println("RRRRRRRRRRRRRRR");
         }
     }
 
