@@ -133,6 +133,12 @@ public class MrpPurchaseOrderManagedBean {
             }
         }
     }
+    
+     public void cancelPO() {
+
+        productOrderSessionBean.cancelAPO(poReference);
+
+    }
 
     public List<ProductOrderLineItem> getLineItemList() {
         return lineItemList;
@@ -154,9 +160,9 @@ public class MrpPurchaseOrderManagedBean {
         return ("mrp");
     }
 
-    public String cancelPO() {
-        return ("mrp");
-    }
+//    public String cancelPO() {
+  //      return ("mrp");
+    //}
 
     public void setUserIDTemp(String userIDTemp) {
         this.userIDTemp = userIDTemp;
