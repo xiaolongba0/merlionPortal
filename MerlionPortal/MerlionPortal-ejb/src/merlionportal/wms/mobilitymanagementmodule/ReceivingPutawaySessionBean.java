@@ -131,6 +131,7 @@ public class ReceivingPutawaySessionBean {
         return currentQuantity;
     }
 
+    // view my stock, excluding stock in rented bins
     public List<Stock> viewStock(Integer companyId, Integer productId) {
 
         System.out.println("In viewStock, Product ID ============================= : " + productId);
@@ -151,6 +152,7 @@ public class ReceivingPutawaySessionBean {
         return allStocks;
     }
 
+    // View stocks in rented bins
     public List<Stock> viewStockInRentedBin(Integer rentedCompanyId, Integer productId) {
 
         System.out.println("In viewStockInRentedBin, Product ID ============================= : " + productId);
@@ -169,6 +171,7 @@ public class ReceivingPutawaySessionBean {
         return allStocks;
     }
 
+    // View stocks in a warehouse only, for TO use
     public List<Stock> getWarehouseStock(Integer warehouseId, Integer productId) {
 
         System.out.println("In getWarehouseStock, Product ID ============================= : " + productId);
@@ -189,26 +192,10 @@ public class ReceivingPutawaySessionBean {
         return allStocks;
     }
 
-    public Integer countTotalAvailbleStock(Integer companyId, Integer productId) {
-        Stock tempStock = null;
+    // Count available stock in 1 of  my warehouse only
+    public Integer countAvailbleStockInWarehouse(Integer warehouseId, Integer productId) {
+        
         Integer totalQuantity = 0;
-
-        List<Stock> stocks = new ArrayList<>();
-        stocks = viewStock(companyId, productId);
-
-        for (Object o : stocks) {
-            tempStock = (Stock) o;
-            totalQuantity = totalQuantity + tempStock.getAvailableStock();
-            System.out.println("[AMSB] =============== Stock: " + tempStock + "Quantity: " + tempStock.getAvailableStock());
-        }
-
-        return totalQuantity;
-    }
-
-    public Integer countAvailableStockInWarehouse(Integer warehouseId, Integer productId) {
-        Stock tempStock = null;
-        Integer totalQuantity = 0;
-
         List<Stock> allStocks = new ArrayList<>();
         Query query = em.createNamedQuery("Stock.findByProductId").setParameter("productId", productId);
 
@@ -222,6 +209,35 @@ public class ReceivingPutawaySessionBean {
 
             }
         }
+
+        return totalQuantity;
+    }
+
+    // Including those stocks which are in rented bins
+    public Integer countTotalAvailableStock(Integer companyId, Integer productId) {
+        Stock tempStock = null;
+        Integer totalQuantity = 0;
+
+        List<Stock> allStocks = new ArrayList<>();
+        Query query = em.createNamedQuery("Stock.findByProductId").setParameter("productId", productId);
+
+        for (Object o : query.getResultList()) {
+            stock = (Stock) o;
+            if (stock.getStorageBin().getWarehouseZone().getWarehouse().getCompanyId() == companyId) {
+                if (!stock.getStorageBin().getRented()) {
+                    allStocks.add(stock);
+                    System.out.println("Stock: " + stock);
+                }
+
+            }
+        }
+        System.out.println("COMPANY ID = " + companyId);
+
+        // count the stocks in the rented bins
+        List<Stock> stocksInRentedBins = new ArrayList();
+        stocksInRentedBins = viewStockInRentedBin(companyId, productId);
+
+        allStocks.addAll(stocksInRentedBins);
 
         for (Object o : allStocks) {
             tempStock = (Stock) o;
@@ -344,12 +360,31 @@ public class ReceivingPutawaySessionBean {
     }
 
     // To Check Bin Space, also calls the reserveBinSpace method
+    // FOR FUYAO
     public boolean checkBinSpace(Integer companyId, Integer totalQuantityReserved, String neededBinType) {
 
         System.out.println("[IN EJB RPSB, checkBinSpace]===================");
         // add all the bins together
         List<StorageBin> myBins = new ArrayList();
         myBins = amsb.viewAllMyBinsIncludingRented(companyId);
+        System.out.println("ALL MY BINS INCLUDING RENTED" + myBins);
+        // reserve the bin space
+        boolean result = reserveBinSpace(myBins, totalQuantityReserved, neededBinType);
+
+        if (result) {
+            return true;
+        }
+        return false;
+    }
+
+    // FOR MANLI
+    // my company ID = person who created the bin
+    public boolean checkBinSpaceForRentedBins(Integer myCompanyId, Integer rentedCompanyId, Integer totalQuantityReserved, String neededBinType) {
+
+        System.out.println("[IN EJB RPSB, checkBinSpaceForRentedBins]===================");
+        // add all the bins together
+        List<StorageBin> myBins = new ArrayList();
+        myBins = amsb.viewRentedBins(myCompanyId, rentedCompanyId);
         System.out.println("ALL MY BINS INCLUDING RENTED" + myBins);
         // reserve the bin space
         boolean result = reserveBinSpace(myBins, totalQuantityReserved, neededBinType);
@@ -434,7 +469,8 @@ public class ReceivingPutawaySessionBean {
         return true;
     }
 
-    //This method is called after goods have arrived at the warehouse TO BE COMBINED
+    //This method is called after goods have arrived at the warehouse
+    // TO BE REWRITTEN HAVENT FINISH
     public boolean receivePutawayForRentedSpace(Integer servicePOId) {
         System.out.println("[IN EJB RPSB, receivePutawayForRentedSpace] ======================================");
         ServicePO servicePO = new ServicePO();
@@ -452,7 +488,7 @@ public class ReceivingPutawaySessionBean {
             // find bins which are reserved and unreserve 
             rentedCompanyId = servicePO.getSenderCompanyId();
             List<StorageBin> allBins = new ArrayList<>();
-            allBins = amsb.viewRentedBins(rentedCompanyId);
+//            allBins = amsb.viewRentedBins(myCompanyId, rentedCompanyId);
 
             int i = 0;
             while (i < allBins.size() & totalQuantity != 0) {
