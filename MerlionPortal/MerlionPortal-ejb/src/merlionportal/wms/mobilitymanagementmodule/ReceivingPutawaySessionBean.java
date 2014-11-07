@@ -441,7 +441,6 @@ public class ReceivingPutawaySessionBean {
                     destReservedQuantity.add(reservedQuantity);
                     i++;
                 } else {
-                    return false;
                 }
             }
         }

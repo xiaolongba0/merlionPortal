@@ -352,19 +352,18 @@ public class AssetManagementSessionBean {
         List<StorageBin> allBins = new ArrayList<>();
         List<StorageBin> myBins = new ArrayList<>();
         allBins = query.getResultList();
-        
+
         if (allBins.isEmpty()) {
             return null;
         } else {
             int i = 0;
             while (i < allBins.size()) {
-                if (allBins.get(i).getWarehouseZone().getWarehouse().getCompanyId() == myCompanyId) {
+                if (allBins.get(i).getWarehouseZone().getWarehouse().getCompanyId() == (int)myCompanyId) {
                     myBins.add(allBins.get(i));
-                    return myBins;
                 }
                 i++;
             }
-            return null;
+            return myBins;
         }
 
     }
