@@ -13,7 +13,11 @@
         <ui:define name="content">
             <h:form>
                 <div class="container" >
-
+                    <p:breadCrumb>
+                        <p:menuitem value="Categories" url="${root}/index.xhtml" />
+                        <p:menuitem value="User" url="${root}/admin/createuser.xhtml" />
+                        <p:menuitem value="Create User" url="${root}/admin/createuser.xhtml" />
+                    </p:breadCrumb>
                     <h2>Create New User</h2>
 
                     <p:panel id="createuser" header="Create User" style="margin-bottom:10px;" >
@@ -71,7 +75,7 @@
 
                             <p:outputLabel value="Credit Limit * :" style="font-weight: bold" styleClass="pad-it"/>
                             <h:inputText required="true" requiredMessage="Please select credit" id="credit" value="#{createUserManagerBean.credit}" styleClass="form-control" />
-                               
+
 
 
                             <p:outputLabel value="Select Roles * :" style="font-weight: bold" />
