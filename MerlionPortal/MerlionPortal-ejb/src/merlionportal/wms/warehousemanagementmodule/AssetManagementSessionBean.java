@@ -9,6 +9,7 @@ import entity.Stock;
 import entity.StorageBin;
 import entity.Warehouse;
 import entity.WarehouseZone;
+import entity.WmsOrder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,7 +31,6 @@ public class AssetManagementSessionBean {
     @PersistenceContext
     EntityManager em;
     private Warehouse warehouse;
-
     // Warehouse Zone is renamed to Warehouse Zone at the front end to minimize confusion
     private ArrayList<WarehouseZone> warehouseZoneList;
     private ArrayList<StorageBin> storageBinList;
@@ -65,7 +65,7 @@ public class AssetManagementSessionBean {
         em.persist(warehouse);
         em.flush();
 
-        System.out.println("[EJB]================================Successfully Added a New Warehouse");
+        System.out.println("[EJB]================================Successfully Added a New Warehouse" + warehouse.getWarehouseId());
 
         return warehouse.getWarehouseId();
     }
@@ -229,44 +229,47 @@ public class AssetManagementSessionBean {
     }
 
     // Methods related to storage Bin
-    public boolean addStorageBin(String binName, String binType, String description, Integer maxQuantity, Double maxWeight,
-            Integer warehouseZoneId) {
+    public Integer addStorageBin(String binName, String binType, String description, Integer maxQuantity, Double maxWeight,
+            Integer warehouseZoneId, Boolean rented, Integer rentedCompanyId) {
 
         System.out.println("[INSIDE EJB]================================Add Storage Bin");
         Query query = em.createNamedQuery("WarehouseZone.findByWarehouseZoneId").setParameter("warehouseZoneId", warehouseZoneId);
 
         WarehouseZone warehouseZone = (WarehouseZone) query.getSingleResult();
         if (warehouseZone != null) {
-            StorageBin bin = new StorageBin();
-            bin.setBinName(binName);
-            bin.setBinType(binType);
-            bin.setDescription(description);
-            bin.setMaxQuantity(maxQuantity);
-            bin.setMaxWeight(maxWeight);
-            bin.setWarehouseZone(warehouseZone);
-            bin.setRented(Boolean.FALSE);
-            bin.setReservedSpace(null);
+            StorageBin tempbin = new StorageBin();
+
+            tempbin.setBinName(binName);
+            tempbin.setBinType(binType);
+            tempbin.setDescription(description);
+            tempbin.setMaxQuantity(maxQuantity);
+            tempbin.setMaxWeight(maxWeight);
+            tempbin.setWarehouseZone(warehouseZone);
+            tempbin.setRented(rented);
+            tempbin.setRentedCompanyId(rentedCompanyId);
 
             Integer inuseSpace = 0;
             Integer availableSpace = maxQuantity;
             Integer reservedSpace = 0;
 
-            bin.setInuseSpace(inuseSpace);
-            bin.setAvailableSpace(availableSpace);
-            bin.setReservedSpace(reservedSpace);
+            tempbin.setInuseSpace(inuseSpace);
+            tempbin.setAvailableSpace(availableSpace);
+            tempbin.setReservedSpace(reservedSpace);
 
-            warehouseZone.getStorageBinList().add(bin);
+            warehouseZone.getStorageBinList().add(tempbin);
 
             stockList = new ArrayList<Stock>();
-            bin.setStockList(stockList);
+            tempbin.setStockList(stockList);
 
+            em.persist(tempbin);
             em.merge(warehouseZone);
-            em.persist(bin);
             em.flush();
 
-            return true;
+            System.out.println("storageBinID = " + tempbin.getStorageBinId());
+            System.out.println("BIN = " + tempbin);
+            return tempbin.getStorageBinId();
         } else {
-            return false;
+            return null;
         }
 
     }
@@ -281,6 +284,66 @@ public class AssetManagementSessionBean {
             System.out.println("In viewMyWarehouseZones, finding warehouse" + typeTemp);
         }
         return typeTemp.getStorageBinList();
+
+    }
+
+    public List<StorageBin> viewAllMyBinsIncludingRented(Integer companyId) {
+
+        System.out.println("[IN EJB AMSB, viewAllMyBinsIncludingRented]===================");
+
+        List<Warehouse> myWarehouse = new ArrayList();
+        myWarehouse = viewMyWarehouses(companyId);
+
+        List<StorageBin> allBins = new ArrayList();
+
+        // get all storage bins, check my own bin space
+        int i = 0;
+        while (i < myWarehouse.size()) {
+            List<WarehouseZone> allWarehouseZones = new ArrayList<>();
+            allWarehouseZones = viewWarehouseZoneForAWarehouse(myWarehouse.get(i).getWarehouseId());
+
+            int j = 0;
+            while (j < allWarehouseZones.size()) {
+                allBins.addAll(allWarehouseZones.get(j).getStorageBinList());
+                j++;
+            }
+            i++;
+        }
+
+        List<StorageBin> myBins = new ArrayList();
+        // Look for my bins and exclude those that are rented
+        int j = 0;
+        while (j < allBins.size()) {
+            StorageBin bin = new StorageBin();
+            bin = allBins.get(j);
+            if (!bin.getRented()) {
+                myBins.add(bin);
+            }
+            j++;
+        }
+        List<StorageBin> myRentedBins = new ArrayList<>();
+        myRentedBins = viewRentedBins(companyId);
+
+        if (myBins == null) {
+            return myBins;
+        } else {
+            myBins.addAll(myRentedBins);
+            return myBins;
+        }
+
+    }
+
+    public List<StorageBin> viewRentedBins(Integer rentedCompanyId) {
+
+        Query query = em.createNamedQuery("StorageBin.findByRentedCompanyId").setParameter("rentedCompanyId", rentedCompanyId);
+        List<StorageBin> allBins = new ArrayList<>();
+
+        if (allBins.isEmpty()) {
+            return null;
+        } else {
+            allBins = query.getResultList();
+            return allBins;
+        }
 
     }
 
@@ -386,16 +449,31 @@ public class AssetManagementSessionBean {
         }
     }
 
-//    public List<String> listStorageBinTypes() {
-//        List<String> allStorageBinTypes = new ArrayList<>();
-//        System.out.println("In ASSET MANAGEMENT SESSION BEAN ================ LIST STORAGE BIN TYPES");
-//
-//        allStorageBinTypes.add("Stacking Bins");
-//        allStorageBinTypes.add("Shelf Bins");
-//        allStorageBinTypes.add("Containers");
-//        allStorageBinTypes.add("Styrofoam Containers");
-//        allStorageBinTypes.add("Others");
-//
-//        return allStorageBinTypes;
-//    }
+    public Integer createWarehouseOrder(Integer myCompanyId, String orderType, Date fulfillmentDate, Date receiveDate, Integer quantity,
+            Integer productId, Boolean internalOrder, Integer servicePOId) {
+
+        System.out.println("[INSIDE EJB]================================Add Warehouse Order");
+
+        if (myCompanyId != null) {
+            WmsOrder order = new WmsOrder();
+
+            order.setMyCompanyId(myCompanyId);
+            order.setOrderType(orderType);
+            order.setFulfillmentDate(fulfillmentDate);
+            order.setReceiveDate(receiveDate);
+            order.setQuantity(quantity);
+            order.setProductId(productId);
+            order.setServicePOId(servicePOId);
+            order.setInternalOrder(internalOrder);
+
+            em.persist(order);
+            em.flush();
+
+            return order.getOrderId();
+        } else {
+            return null;
+        }
+
+    }
+
 }
