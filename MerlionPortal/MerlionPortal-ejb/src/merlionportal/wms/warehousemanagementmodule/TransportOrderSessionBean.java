@@ -369,6 +369,8 @@ public class TransportOrderSessionBean {
         System.out.println("In cancelTransportOrder, TransportOrder ============================= : " + transportOrderId);
         TransportOrder transportOrder = new TransportOrder();
         transportOrder = em.find(TransportOrder.class, transportOrderId);
+        Integer transportQuantity = transportOrder.getTotalQuantity();
+        Integer newStockQuantity = transportQuantity;
 
         if (transportOrder != null) {
 
@@ -386,13 +388,92 @@ public class TransportOrderSessionBean {
                 System.out.println("Bin moving quantity: " + allDestStocks.get(i).getMovingQuantity());
                 availableQuantity = bin.getAvailableSpace() + allDestStocks.get(i).getMovingQuantity();
 
-                // problem here?
                 bin.setReservedSpace(bin.getReservedSpace() - allDestStocks.get(i).getMovingQuantity());
                 System.out.println("NEW BIN AVAILABLE QUANTITY" + availableQuantity);
                 bin.setAvailableSpace(availableQuantity);
                 em.merge(bin);
                 em.flush();
                 i++;
+            }
+
+            //unreserve stock FUYAO PLEASE CHECK HERE :D THANKS <3 
+            List<MovingStock> allSourceStocks = new ArrayList();
+            allSourceStocks = viewDestMovingStock(transportOrderId);
+
+            int count = 0;
+
+            // go through all the relevant storage bins to retrieve the stock
+            while (count < allSourceStocks.size()) {
+                System.out.println("Count = " + count);
+                Integer sourceBinId = allSourceStocks.get(i).getSourceStorageBinId();
+                StorageBin bin = new StorageBin();
+
+                bin = em.find(StorageBin.class, sourceBinId);
+                System.out.println("BIN = " + bin);
+                List<Stock> stockList = new ArrayList();
+                stockList = bin.getStockList();
+
+                Stock tempStock = new Stock();
+                tempStock = stockList.get(0);
+                // sort by created date
+                if (tempStock.getExpiryDate() == null) {
+                    Collections.sort(stockList, new Comparator<Stock>() {
+                        @Override
+                        public int compare(Stock o1, Stock o2) {
+                            return o1.getCreatedDate().compareTo(o2.getCreatedDate());
+                        }
+                    });
+                } // sort the list of stocks according to expiry date
+                else {
+                    Collections.sort(stockList, new Comparator<Stock>() {
+                        @Override
+                        public int compare(Stock o1, Stock o2) {
+                            return o1.getExpiryDate().compareTo(o2.getExpiryDate());
+                        }
+                    });
+                }
+
+                int j = 0;
+                while (j < stockList.size() & newStockQuantity != 0) {
+                    Stock stock = new Stock();
+                    stock = stockList.get(j);
+                    Integer stockQuantity = stock.getQuantity();
+
+                    System.out.println("Stock Quantity = " + stockQuantity);
+                    System.out.println("Transport Quantity = " + transportQuantity);
+
+                    // the quantity to be added back after cancellation
+                    newStockQuantity = stockQuantity + newStockQuantity;
+
+                    // check if the bin is full
+                    // if the bin is full
+                    if (newStockQuantity > bin.getAvailableSpace()) {
+                        System.out.println("NEW STOCK QUANTITY = " + newStockQuantity);
+
+                        newStockQuantity = newStockQuantity - bin.getAvailableSpace();
+                        Integer reservedStock = stock.getReservedStock() - bin.getAvailableSpace();
+                        stock.setReservedStock(reservedStock);
+                        Integer availableStock = stock.getAvailableStock() + bin.getAvailableSpace();
+                        stock.setAvailableStock(availableStock);
+                        stock.setQuantity(availableStock + reservedStock);
+                        em.merge(stock);
+                        em.flush();
+
+                    } // if the space available in the bin is more than or equal to the space I need to put back the stock 
+                    else {
+                        System.out.println("NEW STOCK QUANTITY = " + newStockQuantity);
+                        Integer reservedStock = stock.getReservedStock() - newStockQuantity;
+                        stock.setReservedStock(reservedStock);
+                        Integer availableStock = stock.getAvailableStock() + newStockQuantity;
+                        stock.setAvailableStock(availableStock);
+                        stock.setQuantity(availableStock + reservedStock);
+                        em.merge(stock);
+                        em.flush();
+                        newStockQuantity = 0;
+                    }
+                    j++;
+                }
+                count++;
             }
 
             // to cancel, status = 1
@@ -492,7 +573,6 @@ public class TransportOrderSessionBean {
         return false;
     }
 
-    // might need to edit later
     public boolean receiveTransportOrder(Integer transportOrderId) {
         System.out.println("In receiveTransportOrder, TransportOrder ============================= : " + transportOrderId);
         TransportOrder transportOrder = new TransportOrder();
