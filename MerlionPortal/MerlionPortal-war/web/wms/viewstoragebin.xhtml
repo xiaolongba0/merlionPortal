@@ -150,6 +150,10 @@
                             <h:outputText value="#{storagebin.availableSpace}" />
                         </p:column>
 
+                        <p:column  headerText="Reserved Space" filterBy="#{storagebin.reservedSpace}" filterMatchMode="contains">
+                            <h:outputText value="#{storagebin.reservedSpace}" />
+                        </p:column>
+
                         <p:column  headerText="Rented Status" filterBy="#{storagebin.rented}" filterMatchMode="contains">
                             <h:outputText value="#{storagebin.rented}" />
                         </p:column>
