@@ -58,7 +58,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Contract.findByStorageType", query = "SELECT c FROM Contract c WHERE c.storageType = :storageType"),
     @NamedQuery(name = "Contract.findByWarehouseRental", query = "SELECT c FROM Contract c WHERE c.warehouseRental = :warehouseRental"),
     @NamedQuery(name = "Contract.findByAmountOfProduct", query = "SELECT c FROM Contract c WHERE c.amountOfProduct = :amountOfProduct"),
-    @NamedQuery(name = "Contract.findBySpacePerProduct", query = "SELECT c FROM Contract c WHERE c.spacePerProduct = :spacePerProduct")})
+    @NamedQuery(name = "Contract.findBySpacePerProduct", query = "SELECT c FROM Contract c WHERE c.spacePerProduct = :spacePerProduct"),
+    @NamedQuery(name = "Contract.findByWarehouseId", query = "SELECT c FROM Contract c WHERE c.warehouseId = :warehouseId")})
 public class Contract implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -116,6 +117,8 @@ public class Contract implements Serializable {
     private BigInteger amountOfProduct;
     @Column(name = "spacePerProduct")
     private Double spacePerProduct;
+    @Column(name = "warehouseId")
+    private Integer warehouseId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "contract")
     private List<ServicePO> servicePOList;
     @JoinColumn(name = "serviceQuotation", referencedColumnName = "quotationId")
@@ -289,6 +292,14 @@ public class Contract implements Serializable {
 
     public void setSpacePerProduct(Double spacePerProduct) {
         this.spacePerProduct = spacePerProduct;
+    }
+
+    public Integer getWarehouseId() {
+        return warehouseId;
+    }
+
+    public void setWarehouseId(Integer warehouseId) {
+        this.warehouseId = warehouseId;
     }
 
     @XmlTransient

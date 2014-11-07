@@ -39,7 +39,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "WmsOrder.findByProductId", query = "SELECT w FROM WmsOrder w WHERE w.productId = :productId"),
     @NamedQuery(name = "WmsOrder.findByMyCompanyId", query = "SELECT w FROM WmsOrder w WHERE w.myCompanyId = :myCompanyId"),
     @NamedQuery(name = "WmsOrder.findByServicePOId", query = "SELECT w FROM WmsOrder w WHERE w.servicePOId = :servicePOId"),
-    @NamedQuery(name = "WmsOrder.findByInternalOrder", query = "SELECT w FROM WmsOrder w WHERE w.internalOrder = :internalOrder")})
+    @NamedQuery(name = "WmsOrder.findByInternalOrder", query = "SELECT w FROM WmsOrder w WHERE w.internalOrder = :internalOrder"),
+    @NamedQuery(name = "WmsOrder.findByWarehouseId", query = "SELECT w FROM WmsOrder w WHERE w.warehouseId = :warehouseId")})
 public class WmsOrder implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -66,6 +67,8 @@ public class WmsOrder implements Serializable {
     private Integer servicePOId;
     @Column(name = "internalOrder")
     private Boolean internalOrder;
+    @Column(name = "warehouseId")
+    private Integer warehouseId;
 
     public WmsOrder() {
     }
@@ -144,6 +147,14 @@ public class WmsOrder implements Serializable {
 
     public void setInternalOrder(Boolean internalOrder) {
         this.internalOrder = internalOrder;
+    }
+
+    public Integer getWarehouseId() {
+        return warehouseId;
+    }
+
+    public void setWarehouseId(Integer warehouseId) {
+        this.warehouseId = warehouseId;
     }
 
     @Override

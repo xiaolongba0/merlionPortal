@@ -51,7 +51,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ServicePO.findByWarehousePOtype", query = "SELECT s FROM ServicePO s WHERE s.warehousePOtype = :warehousePOtype"),
     @NamedQuery(name = "ServicePO.findByServiceReceiveDate", query = "SELECT s FROM ServicePO s WHERE s.serviceReceiveDate = :serviceReceiveDate"),
     @NamedQuery(name = "ServicePO.findByServiceFulfilmentDate", query = "SELECT s FROM ServicePO s WHERE s.serviceFulfilmentDate = :serviceFulfilmentDate"),
-    @NamedQuery(name = "ServicePO.findByAmountOfProduct", query = "SELECT s FROM ServicePO s WHERE s.amountOfProduct = :amountOfProduct")})
+    @NamedQuery(name = "ServicePO.findByAmountOfProduct", query = "SELECT s FROM ServicePO s WHERE s.amountOfProduct = :amountOfProduct"),
+    @NamedQuery(name = "ServicePO.findByWarehouseId", query = "SELECT s FROM ServicePO s WHERE s.warehouseId = :warehouseId")})
 public class ServicePO implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -96,6 +97,8 @@ public class ServicePO implements Serializable {
     private Date serviceFulfilmentDate;
     @Column(name = "amountOfProduct")
     private BigInteger amountOfProduct;
+    @Column(name = "warehouseId")
+    private Integer warehouseId;
     @JoinColumn(name = "contract", referencedColumnName = "contractId")
     @ManyToOne(optional = false)
     private Contract contract;
@@ -235,6 +238,14 @@ public class ServicePO implements Serializable {
 
     public void setAmountOfProduct(BigInteger amountOfProduct) {
         this.amountOfProduct = amountOfProduct;
+    }
+
+    public Integer getWarehouseId() {
+        return warehouseId;
+    }
+
+    public void setWarehouseId(Integer warehouseId) {
+        this.warehouseId = warehouseId;
     }
 
     public Contract getContract() {

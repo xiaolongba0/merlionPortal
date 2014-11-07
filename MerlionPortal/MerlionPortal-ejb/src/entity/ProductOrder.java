@@ -46,7 +46,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ProductOrder.findByContactPersonName", query = "SELECT p FROM ProductOrder p WHERE p.contactPersonName = :contactPersonName"),
     @NamedQuery(name = "ProductOrder.findByCreatorId", query = "SELECT p FROM ProductOrder p WHERE p.creatorId = :creatorId"),
     @NamedQuery(name = "ProductOrder.findByQuotationId", query = "SELECT p FROM ProductOrder p WHERE p.quotationId = :quotationId"),
-    @NamedQuery(name = "ProductOrder.findByCompanyId", query = "SELECT p FROM ProductOrder p WHERE p.companyId = :companyId")})
+    @NamedQuery(name = "ProductOrder.findByCompanyId", query = "SELECT p FROM ProductOrder p WHERE p.companyId = :companyId"),
+    @NamedQuery(name = "ProductOrder.findByReceiveDate", query = "SELECT p FROM ProductOrder p WHERE p.receiveDate = :receiveDate")})
 public class ProductOrder implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -82,6 +83,9 @@ public class ProductOrder implements Serializable {
     private Integer quotationId;
     @Column(name = "companyId")
     private Integer companyId;
+    @Column(name = "receiveDate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date receiveDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productOrderproductPOId")
     private List<ProductOrderLineItem> productOrderLineItemList;
 
@@ -186,6 +190,14 @@ public class ProductOrder implements Serializable {
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
+    }
+
+    public Date getReceiveDate() {
+        return receiveDate;
+    }
+
+    public void setReceiveDate(Date receiveDate) {
+        this.receiveDate = receiveDate;
     }
 
     @XmlTransient
