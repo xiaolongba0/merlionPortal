@@ -142,8 +142,10 @@ public class ReceivingPutawaySessionBean {
         for (Object o : query.getResultList()) {
             stock = (Stock) o;
             if (stock.getStorageBin().getWarehouseZone().getWarehouse().getCompanyId() == companyId) {
-                allStocks.add(stock);
-                System.out.println("Stock: " + stock);
+                if (!stock.getStorageBin().getRented()) {
+                    allStocks.add(stock);
+                    System.out.println("Stock: " + stock);
+                }
             }
         }
         return allStocks;
@@ -178,8 +180,10 @@ public class ReceivingPutawaySessionBean {
         for (Object o : query.getResultList()) {
             stock = (Stock) o;
             if (stock.getStorageBin().getWarehouseZone().getWarehouse().getWarehouseId() == warehouseId) {
-                allStocks.add(stock);
-                System.out.println("Stock: " + stock);
+                if (!stock.getStorageBin().getRented()) {
+                    allStocks.add(stock);
+                    System.out.println("Stock: " + stock);
+                }
             }
         }
         return allStocks;
@@ -201,7 +205,7 @@ public class ReceivingPutawaySessionBean {
         return totalQuantity;
     }
 
-    public Integer countStockInWarehouse(Integer warehouseId, Integer productId) {
+    public Integer countAvailableStockInWarehouse(Integer warehouseId, Integer productId) {
         Stock tempStock = null;
         Integer totalQuantity = 0;
 
@@ -211,8 +215,11 @@ public class ReceivingPutawaySessionBean {
         for (Object o : query.getResultList()) {
             stock = (Stock) o;
             if (stock.getStorageBin().getWarehouseZone().getWarehouse().getWarehouseId() == warehouseId) {
-                allStocks.add(stock);
-                System.out.println("Stock: " + stock);
+                if (!stock.getStorageBin().getRented()) {
+                    allStocks.add(stock);
+                    System.out.println("Stock: " + stock);
+                }
+
             }
         }
 
@@ -318,8 +325,6 @@ public class ReceivingPutawaySessionBean {
 //        return searchResult;
 //
 //    }
-    
-
     // This method is called is after goods have arrived at warehouse then they are rejected
     public boolean rejectOrder(Integer servicePOId) {
 
@@ -429,7 +434,7 @@ public class ReceivingPutawaySessionBean {
         return true;
     }
 
-        //This method is called after goods have arrived at the warehouse TO BE COMBINED
+    //This method is called after goods have arrived at the warehouse TO BE COMBINED
     public boolean receivePutawayForRentedSpace(Integer servicePOId) {
         System.out.println("[IN EJB RPSB, receivePutawayForRentedSpace] ======================================");
         ServicePO servicePO = new ServicePO();
@@ -479,6 +484,7 @@ public class ReceivingPutawaySessionBean {
         }
         return false;
     }
+
     public boolean receivePutaway(Integer warehouseId, Integer totalQuantity) {
         System.out.println("[IN EJB RPSB, receivePutawayForRentedSpace] ======================================");
 
