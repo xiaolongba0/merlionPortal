@@ -6,11 +6,15 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui">
     <h:body>
+        <c:set var="root" value="${request.contextPath}" />
         <ui:composition template="${root}/templates/templateadmin.xhtml">
             <ui:param name="pageName" value="Messages" />
             <!-- imports -->
             <ui:define name="content">
-                <c:set var="root" value="${request.contextPath}" />
+                <p:breadCrumb>
+                    <p:menuitem value="Categories" url="${root}/index.xhtml" />
+                    <p:menuitem value="Message" url="${root}/admin/message.xhtml" />
+                </p:breadCrumb>
                 <ui:include src="/templates/messaging/inbox.xhtml" />
             </ui:define>
         </ui:composition>
