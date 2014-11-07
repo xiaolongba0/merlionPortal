@@ -10,11 +10,46 @@
     <h:body>
         <ui:composition>
             <script type="text/javascript">
+
+                var boxType = -1;
+
                 function openEditor() {
                     $("#editorDialog").modal('show');
                 }
                 function closeEditor() {
                     $("#editorDialog").modal('hide');
+                }
+
+                function updateMenu(s) {
+                    $("#messageMenuList").find("li").removeClass("active");
+                    $(s).addClass("active");
+                }
+
+                function goBackBox() {
+                    if (boxType == 1) {
+                        showInbox(null);
+                    }else if(boxType == 2){
+                        showOutbox(null);
+                    }
+                }
+                function showInbox(s) {
+                    if (s != null) {
+                        updateMenu(s);
+                    }
+                    boxType = 1;
+                    $("#messageReader").addClass("hide");
+                    $("#outboxRow").addClass("hide");
+                    $("#inboxRow").removeClass("hide");
+                }
+
+                function showOutbox(s) {
+                    if (s != null) {
+                        updateMenu(s);
+                    }
+                    boxType = 2;
+                    $("#messageReader").addClass("hide");
+                    $("#inboxRow").addClass("hide");
+                    $("#outboxRow").removeClass("hide");
                 }
 
                 function verifyEmail(result) {
@@ -48,7 +83,7 @@
                     $("#replyBtn").click({
                         "senderEmail": senderEmail,
                         "title": title
-                    }, function(e) {
+                    }, function (e) {
                         reply(e.data.senderEmail, e.data.title);
                     });
 
@@ -59,10 +94,12 @@
                     }
 
                     $("#deleteBtn").unbind("click");
-                    $("#deleteBtn").click(function(e) {
+                    $("#deleteBtn").click(function (e) {
                         deleteMail();
                     });
 
+                    $("#inboxRow").addClass("hide");
+                    $("#outboxRow").addClass("hide");
                     mailReader.removeClass("hide");
                 }
 
@@ -85,9 +122,9 @@
                 }
 
                 function readMail(menuitem, id) {
-                    $("#inboxMessages").find("li").removeClass("active");
-                    $("#outboxMessages").find("li").removeClass("active");
-                    $(menuitem).addClass("active");
+//                    $("#inboxMessages").find("li").removeClass("active");
+//                    $("#outboxMessages").find("li").removeClass("active");
+//                    $(menuitem).addClass("active");
                     $("#selectmsgid").val(id);
                     document.getElementById('messagingForm:readEmail').click();
                     return false;
@@ -110,20 +147,20 @@
                     }
                 }
 
-                $(document).ready(function() {
-                    $("#editorDialog").on('hide.bs.modal', function(e) {
+                $(document).ready(function () {
+                    $("#editorDialog").on('hide.bs.modal', function (e) {
                         $("#emailAddress").val("");
                         $("#subject").val("");
                         $("#content").val("");
                         $("#sendemailBtn").attr("disabled", "disabled");
                     });
-                    $("#emailAddress").keypress(function(e) {
+                    $("#emailAddress").keypress(function (e) {
                         if (e.keyCode === 13) {
                             document.getElementById('messagingForm:verifyEmail').click();
                             return false;
                         }
                     });
-                    $("#emailAddress").on("focusout", function(e) {
+                    $("#emailAddress").on("focusout", function (e) {
                         document.getElementById('messagingForm:verifyEmail').click();
                         return false;
                     });
@@ -131,84 +168,71 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-2">
-                        <h2>
-                            Inbox 
-                            <i class="glyphicon glyphicon-briefcase"></i>
-                        </h2>
-                    </div>
-                    <div class="col-md-2">
-                        <h2>
-                            <button class="btn btn-primary" onclick="openEditor();">Write Message <i class="glyphicon glyphicon-pencil"></i></button>
-                        </h2>
+                        <ul id="messageMenuList" class="list-group">
+                            <li onclick="openEditor();" class="list-group-item list-group-item-success pointer"><i class="glyphicon glyphicon-pencil"></i> Compose</li>
+                            <li onclick="showInbox(this);" class="list-group-item pointer">Inbox</li>
+                            <li onclick="showOutbox(this);" class="list-group-item pointer">Outbox</li>
+                        </ul>
                     </div>
                     <div class="col-md-8">
+
+                        <!-- inbox -->
+                        <div id="inboxRow" class="hide">
+                            <c:choose> 
+                                <c:when test="${empty messagerBean.inbox}">
+                                    No inbox message found. Start sending a <span class="message-link text-primary" onclick="openEditor();">message</span> today!
+                                </c:when>
+                                <c:otherwise>
+                                    <ul id="inboxMessages" class="list-group">
+                                        <c:forEach items="#{messagerBean.inbox}" var="message">
+                                            <c:choose>
+                                                <c:when test="#{message.status == 9990}">
+                                                    <li id="msg_#{message.messageId}" class="list-group-item list-group-item-info pointer" onclick="readMail(this,#{message.messageId});">#{message.messageTitle}</li>
+                                                </c:when>
+                                                <c:when test="#{message.status == 9991}">
+                                                    <li id="msg_#{message.messageId}" class="list-group-item pointer" onclick="readMail(this,#{message.messageId});">#{message.messageTitle}</li>
+                                                </c:when>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </ul>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+
+                        <!-- outbox -->
+                        <div id="outboxRow" class="hide">
+                            <c:choose> 
+                                <c:when test="${empty messagerBean.outbox}">
+                                    No outbox found. Start sending a <span class="message-link text-primary" onclick="openEditor();">message</span> today!
+                                </c:when>
+                                <c:otherwise>
+                                    <ul id="outboxMessages" class="list-group">
+                                        <c:forEach items="#{messagerBean.outbox}" var="message">
+                                            <c:choose>
+                                                <c:when test="#{message.status == 9990}">
+                                                    <li id="msg_#{message.messageId}" class="list-group-item list-group-item-info pointer" onclick="readMail(this,#{message.messageId});">#{message.messageTitle}</li>
+                                                </c:when>
+                                                <c:when test="#{message.status == 9991}">
+                                                    <li id="msg_#{message.messageId}" class="list-group-item pointer" onclick="readMail(this,#{message.messageId});">#{message.messageTitle}</li>
+                                                </c:when>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </ul>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+
                         <div id="messageReader" class="hide">
                             <h2 id="readMsgTitle"></h2>
                             <div id="readMsgSender"></div>
                             <div id="readMsgContent"></div>
+                            <button onclick="goBackBox();" class="btn btn-primary">Back</button>
                             <button id="replyBtn" class="btn btn-primary">Reply</button>
                             <button id="deleteBtn" class="btn btn-danger">Delete</button>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <c:choose> 
-                        <c:when test="${empty messagerBean.inbox}">
-                            <div class="col-md-6">
-                                No inbox message found. Start sending a <span class="message-link text-primary" onclick="openEditor();">message</span> today!
-                            </div>
-                        </c:when>
-                        <c:otherwise>
-                            <div class="col-md-2">
-                                <h4>Inbox Messages</h4>
-                                <ul id="inboxMessages" class="list-group">
-                                    <c:forEach items="#{messagerBean.inbox}" var="message">
-                                        <c:choose>
-                                            <c:when test="#{message.status == 9990}">
-                                                <li id="msg_#{message.messageId}" class="list-group-item list-group-item-info pointer" onclick="readMail(this,#{message.messageId});">#{message.messageTitle}</li>
-                                            </c:when>
-                                            <c:when test="#{message.status == 9991}">
-                                                <li id="msg_#{message.messageId}" class="list-group-item pointer" onclick="readMail(this,#{message.messageId});">#{message.messageTitle}</li>
-                                            </c:when>
-                                        </c:choose>
-                                    </c:forEach>
-                                </ul>
-                            </div>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <h2>Outbox
-                        </h2>
-                    </div>
-                </div>
-                <div class="row">
-                    <c:choose> 
-                        <c:when test="${empty messagerBean.outbox}">
-                            <div class="col-md-6">
-                                No outbox found. Start sending a <span class="message-link text-primary" onclick="openEditor();">message</span> today!
-                            </div>
-                        </c:when>
-                        <c:otherwise>
-                            <div class="col-md-2">
-                                <h4>Outbox Messages</h4>
-                                <ul id="outboxMessages" class="list-group">
-                                    <c:forEach items="#{messagerBean.outbox}" var="message">
-                                        <c:choose>
-                                            <c:when test="#{message.status == 9990}">
-                                                <li id="msg_#{message.messageId}" class="list-group-item list-group-item-info pointer" onclick="readMail(this,#{message.messageId});">#{message.messageTitle}</li>
-                                            </c:when>
-                                            <c:when test="#{message.status == 9991}">
-                                                <li id="msg_#{message.messageId}" class="list-group-item pointer" onclick="readMail(this,#{message.messageId});">#{message.messageTitle}</li>
-                                            </c:when>
-                                        </c:choose>
-                                    </c:forEach>
-                                </ul>
-                            </div>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
+
             </div>
             <div id="editorDialog" class="modal fade">
                 <div class="modal-dialog">
