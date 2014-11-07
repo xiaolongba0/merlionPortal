@@ -16,10 +16,14 @@
                 <link rel="stylesheet" href="${request.contextPath}/css/login.css" type="text/css" />
             </ui:insert>
         </ui:define>
-        
+
         <!-- Override Content -->
         <ui:define name="content">
             <div class="container">
+                <p:breadCrumb>
+                    <p:menuitem value="Categories" url="#" />
+                    <p:menuitem value="Contact" url="#" />
+                </p:breadCrumb>
                 <div class="col-md-4">
                     <div class="thumbnail">
                         <img src="img/aboutus.jpg" class="service-image" />
