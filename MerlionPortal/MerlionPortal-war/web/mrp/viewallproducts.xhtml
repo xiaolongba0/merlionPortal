@@ -12,6 +12,13 @@
         <c:set var="import" value="templateadmin.xhtml"/>
     </c:if>
 
+            <style>
+.ui-datatable-hor-scroll .ui-datatable-tablewrapper,.scrolling-div .ui-datatable-tablewrapper{
+     overflow: auto;
+     width: 100%;
+     padding-bottom: 5px;}
+</style>
+    
     <ui:composition template="${root}/templates/${import}">        
         <ui:param name="pageName" value="MRP II View All Product" />
 
@@ -52,7 +59,7 @@
             </p:breadCrumb>
             <h:form id="form">
                 <p:growl id="msgs"/>   
-                <p:dataTable id="products" var="product" sortMode="multiple" value="#{productViewEditManagedBean.myCompanyProducts}" editable="true" style="margin-bottom:20px"
+                <p:dataTable id="products" var="product" scrollable="true" scrollWidth="150%" scrollHeight="300" sortMode="multiple" value="#{productViewEditManagedBean.myCompanyProducts}" editable="true" style="margin-bottom:20px"
                              widgetVar="productsTable"
                              emptyMessage="No product found"
                              resizableColumns="true"
@@ -69,25 +76,25 @@
                     <p:ajax event="rowEditCancel" listener="#{productViewEditManagedBean.onRowCancel}" update=":form:msgs" />
 
 
-                    <p:column filterBy="#{product.productId}" width="55" filterStyle="width:35px" filterMatchMode="exact" headerText="ID">
+                    <p:column filterBy="#{product.productId}" width="45" filterStyle="width:30px" filterMatchMode="exact" headerText="ID">
                         <h:outputText value="#{product.productId}" />
                     </p:column>
 
-                    <p:column filterBy="#{product.productName}" width="100" filterStyle="width: 70px" filterMatchMode="contains" headerText="Product Name">
+                    <p:column filterBy="#{product.productName}" width="90" filterStyle="width: 70px" filterMatchMode="contains" headerText="Product Name">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{product.productName}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{product.productName}" style="width:100%" label="Product Name"/></f:facet>
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column filterBy="#{product.description}" filterStyle="width: 100px" filterMatchMode="contains" headerText="Product Description">
+                    <p:column filterBy="#{product.description}" width="100%" filterStyle="width: 120px" filterMatchMode="contains" headerText="Product Description">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{product.description}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{product.description}" style="width:100%" label="Product Description"/></f:facet>
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column filterBy="#{product.category}" filterStyle="width: 100px" filterMatchMode="contains" headerText="Product Category">
+                    <p:column filterBy="#{product.category}" width="120" filterStyle="width: 90px" filterMatchMode="contains" headerText="Product Category">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{product.category}" /></f:facet>
                             <f:facet name="input">
@@ -98,7 +105,7 @@
                         </p:cellEditor>
                     </p:column> 
 
-                    <p:column filterBy="#{product.productType}" filterStyle="width: 100px" filterMatchMode="contains" headerText="Product Type">
+                    <p:column filterBy="#{product.productType}" width="100" filterStyle="width: 100px" filterMatchMode="contains" headerText="Product Type">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{product.productType}" /></f:facet>
                             <f:facet name="input">
@@ -110,7 +117,7 @@
                     </p:column>
 
 
-                    <p:column filterBy="#{product.currency}" filterStyle="width: 100px" filterMatchMode="contains" headerText="Product Currency">
+                    <p:column filterBy="#{product.currency}" width="130" filterStyle="width: 100px" filterMatchMode="contains" headerText="Product Currency">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{product.currency}" /></f:facet>
                             <f:facet name="input">

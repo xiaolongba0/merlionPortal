@@ -67,7 +67,7 @@
 
 
                 <p:growl id="msgs" showDetail="true"/>   
-                <p:dataTable id="components" var="component1" sortMode="multiple" value="#{productComponentViewEditManagedBean.components}" editable="true" style="margin-bottom:20px"
+                <p:dataTable id="components" var="component1" scrollable="true" scrollWidth="150%" scrollHeight="300" sortMode="multiple" value="#{productComponentViewEditManagedBean.components}" editable="true" style="margin-bottom:20px"
                              widgetVar="components"
                              emptyMessage="No Component found"
                              resizableColumns="true"
@@ -103,14 +103,14 @@
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column headerText="Required Quantity" width="70">
+                    <p:column headerText="Quantity" width="70">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{component1.quantity}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{component1.quantity}" style="width:100%" label="Component Quantity"/></f:facet>
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column  headerText="Currency" width="70">
+                    <p:column  headerText="Currency" style="width:130px">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{component1.currency}" /></f:facet>
                             <f:facet name="input">
@@ -128,42 +128,36 @@
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column headerText="Lead Time (in weeks)">
+                    <p:column headerText="Lead Time">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{component1.leadTime}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{component1.leadTime}" style="width:100%" label="Component leadTime"/></f:facet>
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column headerText="Order Quantity">
+                    <p:column headerText="MOQ">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{component1.orderQuantity}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{component1.orderQuantity}" style="width:100%" label="Component orderQuantity"/></f:facet>
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column headerText="Supplier Company ID">
+                    <p:column headerText="SupplierID">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{component1.supplierCompanyId}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{component1.supplierCompanyId}" style="width:100%" label="Component supplier Company ID"/></f:facet>
                         </p:cellEditor>
                     </p:column>
-                    <p:column headerText="Supplier Contact Person">
+                    <p:column headerText="Contact Name" style="width:60px">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{component1.supplierContactPerson}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{component1.supplierContactPerson}" style="width:100%" label="Supplier Contact Person"/></f:facet>
                         </p:cellEditor>
                     </p:column>
-                    <p:column headerText="Supplier Contact Number">
+                    <p:column headerText="Contact No." style="width:60px">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{component1.supplierContactNumber}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{component1.supplierContactNumber}" style="width:100%" label="Supplier Contact Number"/></f:facet>
-                        </p:cellEditor>
-                    </p:column>
-                    <p:column headerText="Supplier Contact Email">
-                        <p:cellEditor>
-                            <f:facet name="output"><h:outputText value="#{component1.supplierContactEmail}" /></f:facet>
-                            <f:facet name="input"><p:inputText value="#{component1.supplierContactEmail}" style="width:100%" label="Supplier Contact Email"/></f:facet>
                         </p:cellEditor>
                     </p:column>
 
