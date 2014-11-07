@@ -8,6 +8,7 @@ package merlionportal.managedbean.crms;
 import entity.ServiceCatalog;
 import entity.SystemUser;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -50,6 +51,8 @@ public class CreateRFQManagedBean {
     private Date today;
     private Integer quantityPerMonth;
     private String storageType;
+    private Double spacePerProduct;
+    private BigInteger amountOfProduct;
 
     private ServiceCatalog selectedService;
 
@@ -84,7 +87,7 @@ public class CreateRFQManagedBean {
     }
 
     public void createRequestForQuotation() {
-        int result = quotationManagementSB.createRequestForQuotation(selectedService.getServiceCatalogId(), selectedService.getServiceType(), startDate, endDate, companyId, selectedService.getCompanyId(), origin, destination, quantityPerMonth, storageType);
+        int result = quotationManagementSB.createRequestForQuotation(selectedService.getServiceCatalogId(), selectedService.getServiceType(), startDate, endDate, companyId, selectedService.getCompanyId(), origin, destination, quantityPerMonth, storageType, amountOfProduct, spacePerProduct);
         if (result > 0) {
             this.clearAllField();
             logSB.recordSystemLog(userId, "CRMS created a request for quotation");
@@ -103,6 +106,8 @@ public class CreateRFQManagedBean {
         destination = null;
         quantityPerMonth = null;
         storageType = null;
+        spacePerProduct = null;
+        amountOfProduct = null;
     }
 
     public Integer getUserId() {
@@ -199,6 +204,22 @@ public class CreateRFQManagedBean {
 
     public void setStorageType(String storageType) {
         this.storageType = storageType;
+    }
+
+    public Double getSpacePerProduct() {
+        return spacePerProduct;
+    }
+
+    public void setSpacePerProduct(Double spacePerProduct) {
+        this.spacePerProduct = spacePerProduct;
+    }
+
+    public BigInteger getAmountOfProduct() {
+        return amountOfProduct;
+    }
+
+    public void setAmountOfProduct(BigInteger amountOfProduct) {
+        this.amountOfProduct = amountOfProduct;
     }
 
 }

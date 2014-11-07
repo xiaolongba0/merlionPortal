@@ -126,7 +126,7 @@ public class ViewTransportationRequestDetailManagedBean {
 
             if (canUpdateServicePO) {
 
-                int result = servicePOSB.updateServicePO(selectedTServicePO.getServicePOId(), deliveryDate, serviceStartDate, serviceEndDate, volume2, userId, productId2, productQuantityPerTEU2, null);
+                int result = servicePOSB.updateServicePO(selectedTServicePO.getServicePOId(), deliveryDate, serviceStartDate, serviceEndDate, volume2, userId, productId2, productQuantityPerTEU2, null, null);
                 if (result == 1) {
                     volume = volume2;
                     productId = productId2;

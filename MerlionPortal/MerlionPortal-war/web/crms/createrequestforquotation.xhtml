@@ -102,14 +102,19 @@
                             <p:inputText value="#{createRFQManagedBean.origin}"  required="true" requiredMessage="Origin is required" />
                             <p:outputLabel value="Destination *" /><p:spacer width="20" height="20" />
                             <p:inputText value="#{createRFQManagedBean.destination}" required="true" requiredMessage="Destination is required" />
+                            <p:outputLabel value="Total Expected Quantity (TEU) *" style="width: 150px"  /><p:spacer width="20" height="20" />
+                            <p:inputText value="#{createRFQManagedBean.quantityPerMonth}" required="true" requiredMessage="Expected Quantity is required" />
+
                         </c:if>
                         <c:if test="#{createRFQManagedBean.selectedService.serviceType eq 'Warehouse'}" >
                             <p:outputLabel value="Storage Type *" style="width: 150px"  /><p:spacer width="20" height="20" />
                             <p:inputText value="#{createRFQManagedBean.storageType}" required="true" requiredMessage="Storage Type is required" />
+                            <p:outputLabel value="Space per Product (meter cube) *" style="width: 150px"  /><p:spacer width="20" height="20" />
+                            <p:inputText value="#{createRFQManagedBean.spacePerProduct}" required="true" requiredMessage="Space per product is required" />
+                            <p:outputLabel value="Maximum Number of Products *" style="width: 150px"  /><p:spacer width="20" height="20" />
+                            <p:inputText value="#{createRFQManagedBean.amountOfProduct}" required="true" requiredMessage="Maximum number of product is required" />
                         </c:if>
 
-                        <p:outputLabel value="Total Expected Quantity (TEU) *" style="width: 150px"  /><p:spacer width="20" height="20" />
-                        <p:inputText value="#{createRFQManagedBean.quantityPerMonth}" required="true" requiredMessage="Expected Quantity is required" />
 
                     </h:panelGrid>
 

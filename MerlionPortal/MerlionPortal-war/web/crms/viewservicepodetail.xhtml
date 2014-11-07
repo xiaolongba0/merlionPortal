@@ -146,22 +146,31 @@
                         <p:outputLabel value="End Date:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.endDate}" />
 
-                        <p:outputLabel value="Expected Quantity (TEU):" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.serviceQuotation.quantityPerMonth}" />
 
                         <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Transportation'}" >
+                            <p:outputLabel value="Expected Quantity (TEU):" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.serviceQuotation.quantityPerMonth}" />
+
                             <p:outputLabel value="Origin:" /><p:spacer width="20" height="20" />
                             <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.origin}" />
                             <p:outputLabel value="Destination:" /><p:spacer width="20" height="20" />
                             <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.destination}" />
+                            <p:outputLabel value="Final Contract Price Per TEU:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.price}" />
                         </c:if>
                         <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Warehouse'}" >
                             <p:outputLabel value="Storage Type:" /><p:spacer width="20" height="20" />
                             <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.storageType}" />
-
+                            <p:outputLabel value="Maximum Amount of Product:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.amountOfProduct}" />
+                            <p:outputLabel value="Space of Product (meter cube)" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.spacePerProduct}" />
+                            <p:outputLabel value="Final Management Service Per Product:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.price}" />
+                            <p:outputLabel value="Warehouse ID" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.warehouseId}" />
                         </c:if>
-                        <p:outputLabel value="Final Contract Price Per TEU:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.price}" />
+
                         <p:outputLabel value="Terms &amp; Conditions:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.contract.conditionText}" />
 
@@ -173,17 +182,19 @@
                         <p:outputLabel value="PO ID:"/><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewServicePODetailManagedBean.selectedServicePO.servicePOId}"/>
 
-                        <p:outputLabel value="PO Quantity in TEU:"/><p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewServicePODetailManagedBean.volume}"/>
-                        <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewServicePODetailManagedBean.productId}" />
-                        <p:outputLabel value="Product Quantity Per TEU:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewServicePODetailManagedBean.productQuantityPerTEU}" />
+
 
 
                         <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Transportation'}" >
+                            <p:outputLabel value="PO Quantity in TEU:"/><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.volume}"/>
+                            <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.productId}" />
+                            <p:outputLabel value="Product Quantity Per TEU:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.productQuantityPerTEU}" />
                             <p:outputLabel value="Delivery Date:"/><p:spacer width="20" height="20" />
                             <h:outputText value="#{viewServicePODetailManagedBean.deliveryDate}"/>
+
                         </c:if>
 
                         <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Warehouse'}" >
@@ -198,6 +209,11 @@
                                 <p:outputLabel value="Receiving Date:"/><p:spacer width="20" height="20" />
                                 <h:outputText value="#{viewServicePODetailManagedBean.serviceReceiveDate}"/>
                             </c:if>
+                            <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.productId}" />
+                            <p:outputLabel value="Product Amount:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewServicePODetailManagedBean.amt}" />
+
                         </c:if>
 
                         <p:outputLabel value="Price:" style="color: red" /><p:spacer width="20" height="20" />
@@ -212,21 +228,22 @@
 
                 </p:fieldset>
 
-                <!--PO not processed yet, I am the sender-->
-                <c:if test="#{(viewServicePODetailManagedBean.compareStatus eq 1)and (viewServicePODetailManagedBean.selectedServicePO.senderCompanyId eq viewServicePODetailManagedBean.companyId)}" >
-                    <p:commandButton value="Modify PO" type="button" onclick="PF('dlg1').show();" />
-                    <p:commandButton value="Deleted PO"  action="#{viewServicePODetailManagedBean.deletePO()}" update="form" ajax="true" />
-                </c:if>
-
-
                 <p:dialog header="Update PO Information" widgetVar="dlg1" minHeight="40">
-                    <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Transportation'}" >
-                        <p:outputLabel for="deliveryDate" value="Service Delivery Date " />
-                        <p:calendar id="deliveryDate" required="true" requiredMessage="Delivery Date is required" value="#{viewServicePODetailManagedBean.deliveryDate}" pattern="dd-MM-yyyy" mindate="#{viewServicePODetailManagedBean.today}" />
-                    </c:if>
-
+                    <h:panelGrid columns="3" >
+                        <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Transportation'}" >
+                            <p:outputLabel value="Quantity in TEU * "/><p:spacer width="20" height="20" />
+                            <p:inputText  value="#{viewServicePODetailManagedBean.volume2}" required="true" requiredMessage="Quantity in TEU is required!" />
+                            <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
+                            <p:inputText value="#{viewServicePODetailManagedBean.productId2}" required="true" requiredMessage="Product ID is required!" />
+                            <p:outputLabel value="Product Quantity Per TEU:" /><p:spacer width="20" height="20" />
+                            <p:inputText value="#{viewServicePODetailManagedBean.productQuantityPerTEU2}" required="true" requiredMessage="Product Quantity per TEU is required!" />
+                            <p:outputLabel for="deliveryDate" value="Service Delivery Date " /><p:spacer width="20" height="20" />
+                            <p:calendar id="deliveryDate" required="true" requiredMessage="Delivery Date is required" value="#{viewServicePODetailManagedBean.deliveryDate}" pattern="dd-MM-yyyy" mindate="#{viewServicePODetailManagedBean.today}" />
+                        </c:if>
+                    </h:panelGrid>
                     <c:if test="#{viewServicePODetailManagedBean.selectedServicePO.serviceType eq 'Warehouse'}" >
-                        <p:outputLabel value="Warehouse Order Type " />
+
+                        <p:outputLabel value="Warehouse Order Type " /><p:spacer width="20" height="20" />
                         <p:selectOneMenu value="#{viewServicePODetailManagedBean.warehouseOrderType}" style="width:200px" >
                             <p:ajax update="dynamic" />
                             <f:selectItem itemLabel="Select Warehouse Order Type" itemValue="" noSelectionOption="true" />
@@ -234,26 +251,26 @@
                             <f:selectItem itemLabel="Receiving Order" itemValue="Receiving Order" />
                         </p:selectOneMenu>
                         <h:panelGroup id="dynamic" >
-                            <h:panelGrid rendered="#{viewServicePODetailManagedBean.warehouseOrderType eq 'Fulfillment Order'}" columns="3" >
-                                <p:outputLabel value="Fulfillment Date " /><p:spacer width="90" height="20" />
-                                <p:calendar required="true" requiredMessage="Fulfillment Date is required" value="#{viewServicePODetailManagedBean.serviceFulfillmentDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{viewServicePODetailManagedBean.today}" />
+                            <h:panelGrid columns="3">
+                                <c:if test="#{viewServicePODetailManagedBean.warehouseOrderType eq 'Fulfillment Order'}" >
+                                    <p:outputLabel value="Fulfillment Date " /><p:spacer width="70" height="20" />
+                                    <p:calendar required="true" requiredMessage="Fulfillment Date is required" value="#{viewServicePODetailManagedBean.serviceFulfillmentDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{viewServicePODetailManagedBean.today}" />
+                                </c:if>
+                                <c:if test="#{viewServicePODetailManagedBean.warehouseOrderType eq 'Receiving Order'}" >
+                                    <p:outputLabel  value="Receiving Date " /><p:spacer width="74" height="20" />
+                                    <p:calendar required="true" requiredMessage="Receiving Date is required" value="#{viewServicePODetailManagedBean.serviceReceiveDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{viewServicePODetailManagedBean.today}" />
+                                </c:if>
+
+                                <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
+                                <p:inputText value="#{viewServicePODetailManagedBean.productId2}" required="true" requiredMessage="Product ID is required!" />
+                                <p:outputLabel value="Product Amount"/><p:spacer width="20" height="20" />
+                                <p:inputText  value="#{viewServicePODetailManagedBean.amt2}" required="true" requiredMessage="Product amount is required!" />
                             </h:panelGrid>
 
-                            <h:panelGrid rendered="#{viewServicePODetailManagedBean.warehouseOrderType eq 'Receiving Order'}" columns="3" >
-                                <p:outputLabel  value="Receiving Date " /><p:spacer width="94" height="20" />
-                                <p:calendar required="true" requiredMessage="Receiving Date is required" value="#{viewServicePODetailManagedBean.serviceReceiveDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{viewServicePODetailManagedBean.today}" />
-                            </h:panelGrid>
                         </h:panelGroup>
+
                     </c:if>
 
-                    <h:panelGrid columns="3" >
-                        <p:outputLabel value="Quantity in TEU * "/><p:spacer width="20" height="20" />
-                        <p:inputText  value="#{viewServicePODetailManagedBean.volume2}" required="true" requiredMessage="Quantity in TEU is required!" />
-                        <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
-                        <p:inputText value="#{viewServicePODetailManagedBean.productId2}" required="true" requiredMessage="Product ID in TEU is required!" />
-                        <p:outputLabel value="Product Quantity Per TEU:" /><p:spacer width="20" height="20" />
-                        <p:inputText value="#{viewServicePODetailManagedBean.productQuantityPerTEU2}" required="true" requiredMessage="Product Quantity per TEU is required!" />
-                    </h:panelGrid>
                     <p:messages id="modalMsg" showDetail="true" autoUpdate="true" closable="true" />
                     <p:commandButton value="Confirm" action="#{viewServicePODetailManagedBean.updatePO()}" ajax="true" update=":form :form3" />
                 </p:dialog>
@@ -261,6 +278,11 @@
 
 
             <h:form id="form3">
+                <!--PO not processed yet, I am the sender-->
+                <c:if test="#{(viewServicePODetailManagedBean.compareStatus eq 1)and (viewServicePODetailManagedBean.selectedServicePO.senderCompanyId eq viewServicePODetailManagedBean.companyId)}" >
+                    <p:commandButton value="Modify PO" type="button" onclick="PF('dlg1').show();" />
+                    <p:commandButton value="Deleted PO"  action="#{viewServicePODetailManagedBean.deletePO()}" update=":form :form3" ajax="true" />
+                </c:if>
                 <!--PO not processed yet, I am service provider-->
                 <c:if test="#{(viewServicePODetailManagedBean.compareStatus eq 1)and (viewServicePODetailManagedBean.selectedServicePO.receiverCompanyId eq viewServicePODetailManagedBean.companyId)}" >
                     <p:commandButton value="Credit Check" action="#{viewServicePODetailManagedBean.checkCredit()}" update=":form :form3" ajax="true" />

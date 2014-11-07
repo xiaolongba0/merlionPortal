@@ -8,6 +8,7 @@ package merlionportal.crms.ordermanagementmodule;
 import entity.Contract;
 import entity.ServiceInvoice;
 import entity.ServicePO;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,25 +43,33 @@ public class ServicePOManagementSessionBean {
 //    9. Transportation SO in transit
 //    10.Packing in progress
 //    11.Receiving order rejected
-
-
-    public boolean createServicePO(Integer contractId, Integer creatorId, Integer volume, Date fulfillmentDate, Date receiveDate, Date serviceDeliveryDate, int QuantityPerTEU, Integer productId, String warehouseOrderType) {
+    public boolean createServicePO(Integer contractId, Integer creatorId, Integer volume, Date fulfillmentDate, Date receiveDate, Date serviceDeliveryDate, int QuantityPerTEU, Integer productId, String warehouseOrderType, BigInteger amount) {
         ServicePO po = new ServicePO();
         Contract contract = em.find(Contract.class, contractId);
         if (contract.getStatus() == 5) {
             po.setServiceType(contract.getServiceType());
+            if (contract.getServiceType().equals("Transportation")) {
+                po.setVolume(volume);
+                po.setPrice(volume * contract.getPrice());
+                po.setServiceDeliveryDate(serviceDeliveryDate);
+                po.setProductQuantityPerTEU(QuantityPerTEU);
+
+            } else {
+                po.setAmountOfProduct(amount);
+                po.setPrice(contract.getPrice() * amount.doubleValue());
+                po.setWarehousePOtype(warehouseOrderType);
+                po.setServiceFulfilmentDate(fulfillmentDate);
+                po.setServiceReceiveDate(receiveDate);
+                po.setWarehouseId(contract.getWarehouseId());
+
+                po.setAmountOfProduct(amount);
+            }
             po.setCreatedDate(new Date());
             po.setStatus(1);
-            po.setVolume(volume);
-            po.setPrice(volume * contract.getPrice());
+
             po.setReceiverCompanyId(contract.getPartyA());
             po.setSenderCompanyId(contract.getPartyB());
             po.setCreatorId(creatorId);
-            po.setServiceDeliveryDate(serviceDeliveryDate);
-            po.setWarehousePOtype(warehouseOrderType);
-            po.setServiceFulfilmentDate(fulfillmentDate);
-            po.setServiceReceiveDate(receiveDate);
-            po.setProductQuantityPerTEU(QuantityPerTEU);
             po.setProductId(productId);
             po.setContract(contract);
 
@@ -121,20 +130,33 @@ public class ServicePOManagementSessionBean {
         return null;
     }
 
-    public int updateServicePO(Integer servicePOId, Date deliveryDate, Date fulfillDate, Date receiveDate, Integer volume, Integer creatorId, Integer productId, Integer productQuantityPerTEU, String warehousePOType) {
+    public int updateServicePO(Integer servicePOId, Date deliveryDate, Date fulfillDate, Date receiveDate, Integer volume, Integer creatorId, Integer productId, Integer productQuantityPerTEU, String warehousePOType, BigInteger amount) {
         ServicePO po = em.find(ServicePO.class, servicePOId);
-        po.setWarehousePOtype(warehousePOType);
-        po.setServiceFulfilmentDate(fulfillDate);
-        po.setServiceReceiveDate(receiveDate);
-        po.setServiceDeliveryDate(deliveryDate);
-        po.setVolume(volume);
-        po.setProductId(productId);
-        po.setProductQuantityPerTEU(productQuantityPerTEU);
-        System.out.println("volume is :" + volume);
-        po.setPrice(volume * po.getContract().getPrice());
 
-        em.merge(po);
+        po.setProductId(productId);
+        System.out.println("I was here!");
+
+        if (po.getServiceType().equals("Transportation")) {
+            po.setVolume(volume);
+            po.setServiceFulfilmentDate(fulfillDate);
+            po.setProductQuantityPerTEU(productQuantityPerTEU);
+            System.out.println("volume is :" + volume);
+            po.setPrice(volume * po.getContract().getPrice());
+        } else {
+            po.setServiceReceiveDate(receiveDate);
+            po.setServiceDeliveryDate(deliveryDate);
+            po.setWarehousePOtype(warehousePOType);
+            po.setAmountOfProduct(amount);
+            po.setPrice(amount.doubleValue() * po.getContract().getPrice());
+
+        }
         em.flush();
+        em.merge(po);
+        System.out.println("I was merging!");
+
+        em.refresh(po);
+        em.flush();
+        System.out.println("I was flushing!");
 
         return 1;
     }
@@ -176,7 +198,7 @@ public class ServicePOManagementSessionBean {
         List<ServicePO> returnedList = new ArrayList<>();
         for (Object o : q.getResultList()) {
             ServicePO po = (ServicePO) o;
-            if (po.getStatus() == 5 || po.getStatus() == 6 || po.getStatus() == 7 || po.getStatus() == 8 || po.getStatus() == 10 ||po.getStatus() == 11) {
+            if (po.getStatus() == 5 || po.getStatus() == 6 || po.getStatus() == 7 || po.getStatus() == 8 || po.getStatus() == 10 || po.getStatus() == 11) {
                 returnedList.add(po);
             }
         }

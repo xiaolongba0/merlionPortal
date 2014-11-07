@@ -43,6 +43,7 @@ public class GenerateQuotationManagedBean {
 
     private Double price;
     private int discountRate;
+    private Double rental;
 
     private String senderCompanyName;
     private String receiverCompanyName;
@@ -82,7 +83,7 @@ public class GenerateQuotationManagedBean {
 
     public void createQuotation() {
         if (selectedRequest != null) {
-            int result = quotationManagementSB.createQuotation(selectedRequest.getQuotationId(), price, discountRate);
+            int result = quotationManagementSB.createQuotation(selectedRequest.getQuotationId(), price, discountRate, rental);
             if (result > 0) {
                 this.clearAllFields();
                 status = 2;
@@ -132,6 +133,7 @@ public class GenerateQuotationManagedBean {
     private void clearAllFields() {
         price = null;
         discountRate = 0;
+        rental = null;
     }
 
     private String retriveStatus(int status) {
@@ -241,6 +243,14 @@ public class GenerateQuotationManagedBean {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public Double getRental() {
+        return rental;
+    }
+
+    public void setRental(Double rental) {
+        this.rental = rental;
     }
 
 }

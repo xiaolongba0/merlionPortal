@@ -166,7 +166,7 @@
                             <p:outputLabel value="Account Info:" /> <p:spacer width="20" height="20" />
                             <h:inputText value="#{viewInvoiceDetailManagedBean.accountInfo}"  styleClass="form-control" />
                             <p:outputLabel value="Amount:" /> <p:spacer width="20" height="20" />
-                            <h:inputText value="#{viewInvoiceDetailManagedBean.amount}"  styleClass="form-control" />
+                            <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.price}" />
                             <p:outputLabel value="Expected Receive Date:" /> <p:spacer width="20" height="20" />
                             <p:calendar value="#{viewInvoiceDetailManagedBean.receivedDate}" />
                             <p:commandButton value="Submit Payment Info" action="#{viewInvoiceDetailManagedBean.recordPaymentInfo()}" update=":form" />
@@ -176,7 +176,7 @@
                             <p:outputLabel value="Credit Card Number:" /> <p:spacer width="20" height="20" />
                             <h:inputText value="#{viewInvoiceDetailManagedBean.creditCardNo}"  styleClass="form-control" />
                             <p:outputLabel value="Amount:" /> <p:spacer width="20" height="20" />
-                            <h:inputText value="#{viewInvoiceDetailManagedBean.amount}"  styleClass="form-control" />
+                            <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.price}" />
                             <p:outputLabel value="Expected Receive Date:" /> <p:spacer width="20" height="20" />
                             <p:calendar value="#{viewInvoiceDetailManagedBean.receivedDate}" />
                             <p:commandButton value="Submit Payment Info" action="#{viewInvoiceDetailManagedBean.recordPaymentInfo()}" update=":form" />
@@ -186,7 +186,7 @@
                             <p:outputLabel value="Check Number:" /> <p:spacer width="20" height="20" />
                             <h:inputText value="#{viewInvoiceDetailManagedBean.checkNumber}"  styleClass="form-control" />
                             <p:outputLabel value="Amount:" /> <p:spacer width="20" height="20" />
-                            <h:inputText value="#{viewInvoiceDetailManagedBean.amount}"  styleClass="form-control" />
+                            <h:outputText value="#{viewInvoiceDetailManagedBean.selectedInvoice.price}" />
                             <p:outputLabel value="Expected Receive Date:" /> <p:spacer width="20" height="20" />
                             <p:calendar value="#{viewInvoiceDetailManagedBean.receivedDate}" />
                             <p:commandButton value="Submit Payment Info" action="#{viewInvoiceDetailManagedBean.recordPaymentInfo()}" update=":form" />

@@ -119,7 +119,11 @@ public class ViewContractDetailManagedBean {
         dtoContract.setEndDate(selectedContract.getEndDate());
         dtoContract.setCreatedDate(selectedContract.getCreatedDate());
         dtoContract.setPrice(selectedContract.getPrice());
-        dtoContract.setAgreedQuantity(selectedContract.getServiceQuotation().getQuantityPerMonth().toString());
+
+        dtoContract.setAgreedQuantity("N.A.");
+        if (selectedContract.getServiceQuotation().getQuantityPerMonth() != null) {
+            dtoContract.setAgreedQuantity(selectedContract.getServiceQuotation().getQuantityPerMonth().toString());
+        }
 
         dtoContract.setOrigin("N.A.");
         if (selectedContract.getOrigin() != null) {
@@ -134,6 +138,22 @@ public class ViewContractDetailManagedBean {
         dtoContract.setStorageType("N.A.");
         if (selectedContract.getStorageType() != null) {
             dtoContract.setStorageType(selectedContract.getStorageType());
+        }
+        dtoContract.setSpacePerProduct("N.A.");
+        if (selectedContract.getSpacePerProduct() != null) {
+            dtoContract.setSpacePerProduct(selectedContract.getSpacePerProduct().toString());
+        }
+        dtoContract.setAmountOfProduct("N.A.");
+        if (selectedContract.getAmountOfProduct() != null) {
+            dtoContract.setAmountOfProduct(selectedContract.getAmountOfProduct().toString());
+        }
+        dtoContract.setWarehouseRental("N.A.");
+        if (selectedContract.getWarehouseRental() != null) {
+            dtoContract.setWarehouseRental(selectedContract.getWarehouseRental().toString());
+        }
+        dtoContract.setWarehouseId("N.A.");
+        if (selectedContract.getWarehouseId()!= null) {
+            dtoContract.setWarehouseId(selectedContract.getWarehouseId().toString());
         }
 
         dtoContract.setContactPersonName(selectedContract.getContactPersonName());

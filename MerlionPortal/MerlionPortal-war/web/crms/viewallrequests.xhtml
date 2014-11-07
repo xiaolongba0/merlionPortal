@@ -201,13 +201,18 @@
                                         <h:outputText value="#{viewAllRequestsManagedBean.requestToView.origin}" />
                                         <h:outputText value="Destination"/>
                                         <h:outputText value="#{viewAllRequestsManagedBean.requestToView.destination}" />
+                                        <h:outputText value="Total Expected Quantity (TEU)"/>
+                                        <h:outputText value="#{viewAllRequestsManagedBean.requestToView.quantityPerMonth}" />
                                     </c:if>
                                     <c:if test="#{viewAllRequestsManagedBean.requestToView.serviceType eq 'Warehouse'}" >
                                         <h:outputText value="Storage Type"/>
                                         <h:outputText value="#{viewAllRequestsManagedBean.requestToView.storageType}" />
+                                        <h:outputText value="Maximum Amount of Product"/>
+                                        <h:outputText value="#{viewAllRequestsManagedBean.requestToView.amoutOfProduct}" />
+                                        <h:outputText value="Space Per Product (meter cube)"/>
+                                        <h:outputText value="#{viewAllRequestsManagedBean.requestToView.spacePerProduct}" />
                                     </c:if>
-                                    <h:outputText value="Total Expected Quantity (TEU)"/>
-                                    <h:outputText value="#{viewAllRequestsManagedBean.requestToView.quantityPerMonth}" />
+
                                 </p:panelGrid>
                             </div>
                             <div class="modal-footer">

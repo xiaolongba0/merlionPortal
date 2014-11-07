@@ -7,6 +7,7 @@ package merlionportal.managedbean.crms;
 
 import entity.ServicePO;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -53,6 +54,8 @@ public class ViewServicePODetailManagedBean {
     private Integer productQuantityPerTEU;
     private Integer productId2;
     private Integer productQuantityPerTEU2;
+    private BigInteger amt;
+    private BigInteger amt2;
 
     private ServicePO selectedServicePO;
     private String status;
@@ -93,6 +96,7 @@ public class ViewServicePODetailManagedBean {
             serviceReceiveDate = selectedServicePO.getServiceReceiveDate();
 
             volume = selectedServicePO.getVolume();
+            amt = selectedServicePO.getAmountOfProduct();
             productId = selectedServicePO.getProductId();
             productQuantityPerTEU = selectedServicePO.getProductQuantityPerTEU();
             price = selectedServicePO.getPrice();
@@ -141,12 +145,19 @@ public class ViewServicePODetailManagedBean {
 
             if (canUpdateServicePO) {
 
-                int result = servicePOSB.updateServicePO(selectedServicePO.getServicePOId(), deliveryDate, serviceFulfillmentDate, serviceReceiveDate, volume2, userId, productId2, productQuantityPerTEU2, warehouseOrderType);
+                int result = servicePOSB.updateServicePO(selectedServicePO.getServicePOId(), deliveryDate, serviceFulfillmentDate, serviceReceiveDate, volume2, userId, productId2, productQuantityPerTEU2, warehouseOrderType, amt2);
                 if (result == 1) {
-                    volume = volume2;
-                    productId = productId2;
-                    productQuantityPerTEU = productQuantityPerTEU2;
-                    price = (volume2 * selectedServicePO.getContract().getPrice());
+
+                    if (selectedServicePO.getServiceType().equals("Transportation")) {
+                        volume = volume2;
+                        productId = productId2;
+                        productQuantityPerTEU = productQuantityPerTEU2;
+                        price = (volume2 * selectedServicePO.getContract().getPrice());
+                    }else{
+                        amt = amt2;
+                        productId = productId2;
+                        price = amt2.doubleValue() * selectedServicePO.getContract().getPrice();
+                    }
 
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PO is updated", ""));
                     logSB.recordSystemLog(userId, "CRMS updated service po detail");
@@ -274,7 +285,7 @@ public class ViewServicePODetailManagedBean {
         if (statusNumber == 11) {
             status = "Receiving order rejected";
         }
-     
+
     }
 
     public Integer getCompanyId() {
@@ -427,6 +438,22 @@ public class ViewServicePODetailManagedBean {
 
     public void setCompareStatus(Integer compareStatus) {
         this.compareStatus = compareStatus;
+    }
+
+    public BigInteger getAmt() {
+        return amt;
+    }
+
+    public void setAmt(BigInteger amt) {
+        this.amt = amt;
+    }
+
+    public BigInteger getAmt2() {
+        return amt2;
+    }
+
+    public void setAmt2(BigInteger amt2) {
+        this.amt2 = amt2;
     }
 
 }

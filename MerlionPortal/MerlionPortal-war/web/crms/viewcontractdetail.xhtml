@@ -93,25 +93,32 @@
                         <p:outputLabel value="End Date:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewContractManagedBean.selectedContract.endDate}" />
 
-                        <p:outputLabel value="Expected Quantity Per Month (TEU):" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewContractManagedBean.selectedContract.serviceQuotation.quantityPerMonth}" />
+
 
                         <c:if test="#{viewContractManagedBean.selectedContract.serviceType eq 'Transportation'}" >
                             <p:outputLabel value="Origin:" /><p:spacer width="20" height="20" />
                             <h:outputText value="#{viewContractManagedBean.selectedContract.origin}" />
                             <p:outputLabel value="Destination:" /><p:spacer width="20" height="20" />
                             <h:outputText value="#{viewContractManagedBean.selectedContract.destination}" />
+                            <p:outputLabel value="Total Excepted Quantity (TEU):" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewContractManagedBean.selectedContract.serviceQuotation.quantityPerMonth}" />
+                            <p:outputLabel value="Final Contract Price Per TEU:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewContractManagedBean.selectedContract.price}" />
                         </c:if>
                         <c:if test="#{viewContractManagedBean.selectedContract.serviceType eq 'Warehouse'}" >
                             <p:outputLabel value="Storage Type:" /><p:spacer width="20" height="20" />
                             <h:outputText value="#{viewContractManagedBean.selectedContract.storageType}" />
-
+                            <p:outputLabel value="Maximum Product Amount:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewContractManagedBean.selectedContract.amountOfProduct}" />
+                            <p:outputLabel value="Space Per Product (meter cube):" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewContractManagedBean.selectedContract.spacePerProduct}" />
+                            <p:outputLabel value="Management Service Price Per Product:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewContractManagedBean.selectedContract.price}" />
                         </c:if>
 
 
 
-                        <p:outputLabel value="Final Contract Price Per TEU:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewContractManagedBean.selectedContract.price}" />
+
                         <p:outputLabel value="Terms &amp; Conditions:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewContractManagedBean.selectedContract.conditionText}" />
                         <c:if test="#{viewContractManagedBean.selectedContract.status eq 2}" >

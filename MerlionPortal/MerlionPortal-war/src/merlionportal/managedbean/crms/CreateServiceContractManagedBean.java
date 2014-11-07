@@ -39,6 +39,7 @@ public class CreateServiceContractManagedBean {
     private Integer quotationId;
     private String conditionText;
     private String serviceType;
+    private Integer warehouseId;
 
     private ServiceQuotation quotation;
 
@@ -84,7 +85,7 @@ public class CreateServiceContractManagedBean {
 
             }
         } else {
-            int result = contractManagementSB.createWarehouseServiceContract(quotationId, conditionText, userId);
+            int result = contractManagementSB.createWarehouseServiceContract(quotationId, conditionText, userId, warehouseId);
             if (result > 0) {
                 this.clearAllFields();
                 logSB.recordSystemLog(userId, "CRMS created a warehouse service contract");
@@ -124,6 +125,7 @@ public class CreateServiceContractManagedBean {
 
     private void clearAllFields() {
         conditionText = null;
+        warehouseId = null;
     }
 
     public Integer getCompanyId() {
@@ -188,6 +190,14 @@ public class CreateServiceContractManagedBean {
 
     public void setPartyBName(String partyBName) {
         this.partyBName = partyBName;
+    }
+
+    public Integer getWarehouseId() {
+        return warehouseId;
+    }
+
+    public void setWarehouseId(Integer warehouseId) {
+        this.warehouseId = warehouseId;
     }
 
 }

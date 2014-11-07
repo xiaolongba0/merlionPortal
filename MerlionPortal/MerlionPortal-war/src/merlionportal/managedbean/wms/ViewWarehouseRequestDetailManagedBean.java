@@ -7,6 +7,7 @@ package merlionportal.managedbean.wms;
 
 import entity.ServicePO;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -52,6 +53,8 @@ public class ViewWarehouseRequestDetailManagedBean {
     private Integer productQuantityPerTEU;
     private Integer productId2;
     private Integer productQuantityPerTEU2;
+    private BigInteger amt;
+    private BigInteger amt2;
 
     private ServicePO selectedWServicePO;
     private String status;
@@ -90,6 +93,8 @@ public class ViewWarehouseRequestDetailManagedBean {
             fulfillmentDate = selectedWServicePO.getServiceFulfilmentDate();
             receiveDate = selectedWServicePO.getServiceReceiveDate();
             volume = selectedWServicePO.getVolume();
+            amt = selectedWServicePO.getAmountOfProduct();
+
             productId = selectedWServicePO.getProductId();
             productQuantityPerTEU = selectedWServicePO.getProductQuantityPerTEU();
             price = selectedWServicePO.getPrice();
@@ -131,12 +136,11 @@ public class ViewWarehouseRequestDetailManagedBean {
 
             if (canUpdateServicePO) {
 
-                int result = servicePOSB.updateServicePO(selectedWServicePO.getServicePOId(), null, fulfillmentDate, receiveDate, volume2, userId, productId2, productQuantityPerTEU2, warehouseOrderType);
+                int result = servicePOSB.updateServicePO(selectedWServicePO.getServicePOId(), null, fulfillmentDate, receiveDate, volume2, userId, productId2, 0, warehouseOrderType, amt2);
                 if (result == 1) {
-                    volume = volume2;
+                    amt = amt2;
                     productId = productId2;
-                    productQuantityPerTEU = productQuantityPerTEU2;
-                    price = (volume2 * selectedWServicePO.getContract().getPrice());
+                    price = amt2.doubleValue() * selectedWServicePO.getContract().getPrice();
 
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "PO is updated", ""));
                     logSB.recordSystemLog(userId, "WMS updated service po detail");
@@ -205,7 +209,7 @@ public class ViewWarehouseRequestDetailManagedBean {
         if (statusNumber == 11) {
             status = "Receiving order rejected";
         }
-       
+
     }
 
     public SystemLogSessionBean getLogSB() {
@@ -366,6 +370,22 @@ public class ViewWarehouseRequestDetailManagedBean {
 
     public void setCompareStatus(Integer compareStatus) {
         this.compareStatus = compareStatus;
+    }
+
+    public BigInteger getAmt() {
+        return amt;
+    }
+
+    public void setAmt(BigInteger amt) {
+        this.amt = amt;
+    }
+
+    public BigInteger getAmt2() {
+        return amt2;
+    }
+
+    public void setAmt2(BigInteger amt2) {
+        this.amt2 = amt2;
     }
 
 }

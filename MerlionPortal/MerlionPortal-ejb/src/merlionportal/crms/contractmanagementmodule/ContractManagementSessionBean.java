@@ -79,7 +79,7 @@ public class ContractManagementSessionBean {
 
     }
 
-    public int createWarehouseServiceContract(Integer quotationId, String condition, Integer creatorId) {
+    public int createWarehouseServiceContract(Integer quotationId, String condition, Integer creatorId, Integer warehouseId) {
         Contract contract = new Contract();
 
         contract.setStatus(1);
@@ -101,6 +101,10 @@ public class ContractManagementSessionBean {
             contract.setServiceQuotation(quotation);
             contract.setConditionText(condition);
             contract.setStorageType(quotation.getStorageType());
+            contract.setWarehouseId(warehouseId);
+            contract.setWarehouseRental(quotation.getWarehouseRental());
+            contract.setSpacePerProduct(quotation.getSpacePerProduct());
+            contract.setAmountOfProduct(quotation.getAmoutOfProduct());
 
             List<ServicePO> servicePOList = new ArrayList<>();
             contract.setServicePOList(servicePOList);
@@ -200,6 +204,10 @@ public class ContractManagementSessionBean {
             renewContract.setServiceQuotation(contract.getServiceQuotation());
             renewContract.setServiceType(contract.getServiceType());
             renewContract.setStorageType(contract.getStorageType());
+            renewContract.setWarehouseId(contract.getWarehouseId());
+            renewContract.setWarehouseRental(contract.getWarehouseRental());
+            renewContract.setSpacePerProduct(contract.getSpacePerProduct());
+            renewContract.setAmountOfProduct(contract.getAmountOfProduct());
 
             renewContract.setCreatedDate(new Date());
             renewContract.setStartDate(startDate);

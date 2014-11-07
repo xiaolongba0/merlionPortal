@@ -99,8 +99,8 @@
                         <p:outputLabel value="End Date:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewWarehouseRequestDetailMB.selectedWServicePO.contract.endDate}" />
 
-                        <p:outputLabel value="Expected Quantity (TEU):" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewWarehouseRequestDetailMB.selectedWServicePO.contract.serviceQuotation.quantityPerMonth}" />
+                        <p:outputLabel value="Maximum Product Quantity:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.selectedWServicePO.contract.serviceQuotation.amoutOfProduct}" />
 
 
                         <c:if test="#{viewWarehouseRequestDetailMB.selectedWServicePO.serviceType eq 'Warehouse'}" >
@@ -121,15 +121,6 @@
                         <p:outputLabel value="PO ID:"/><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewWarehouseRequestDetailMB.selectedWServicePO.servicePOId}"/>
 
-                        <p:outputLabel value="PO Quantity in TEU:"/><p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewWarehouseRequestDetailMB.volume}"/>
-                        <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewWarehouseRequestDetailMB.productId}" />
-                        <p:outputLabel value="Product Quantity Per TEU:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewWarehouseRequestDetailMB.productQuantityPerTEU}" />
-
-
-
                         <p:outputLabel value="Warehouse Order Type:"/><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewWarehouseRequestDetailMB.warehouseOrderType}"/>
                         <c:if test="#{viewWarehouseRequestDetailMB.warehouseOrderType eq 'Fulfillment Order'}" >
@@ -141,7 +132,12 @@
                             <p:outputLabel value="Receiving Date:"/><p:spacer width="20" height="20" />
                             <h:outputText value="#{viewWarehouseRequestDetailMB.receiveDate}"/>
                         </c:if>
-
+              
+                        <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.productId}" />
+                        <p:outputLabel value="Product Amount" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewWarehouseRequestDetailMB.amt}" />
+                        
                         <p:outputLabel value="Price:" style="color: red" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewWarehouseRequestDetailMB.price}" style="color: red" />
 
@@ -185,12 +181,10 @@
                     </c:if>
 
                     <h:panelGrid columns="3" >
-                        <p:outputLabel value="Quantity in TEU * "/><p:spacer width="20" height="20" />
-                        <p:inputText  value="#{viewWarehouseRequestDetailMB.volume2}" required="true" requiredMessage="Quantity in TEU is required!" />
-                        <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
+                       <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
                         <p:inputText value="#{viewWarehouseRequestDetailMB.productId2}" required="true" requiredMessage="Product ID in TEU is required!" />
-                        <p:outputLabel value="Product Quantity Per TEU:" /><p:spacer width="20" height="20" />
-                        <p:inputText value="#{viewWarehouseRequestDetailMB.productQuantityPerTEU2}" required="true" requiredMessage="Product Quantity per TEU is required!" />
+                        <p:outputLabel value="Product Amount:" /><p:spacer width="20" height="20" />
+                        <p:inputText value="#{viewWarehouseRequestDetailMB.amt2}" required="true" requiredMessage="Product Amount is required!" />
                     </h:panelGrid>
                     <p:messages id="modalMsg" showDetail="true" autoUpdate="true" closable="true" />
                     <p:commandButton value="Confirm" action="#{viewWarehouseRequestDetailMB.updatePO()}" ajax="true" update=":form" />

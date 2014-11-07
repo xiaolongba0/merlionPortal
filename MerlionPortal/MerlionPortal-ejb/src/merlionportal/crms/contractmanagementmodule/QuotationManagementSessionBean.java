@@ -9,6 +9,7 @@ import entity.Contract;
 import entity.CustomerAccount;
 import entity.ServiceCatalog;
 import entity.ServiceQuotation;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,10 +44,10 @@ public class QuotationManagementSessionBean {
 //    8 fulfillment check success
 //    
     public int createRequestForQuotation(Integer serviceCatalogId, String serviceType, Date startDate, Date endDate, Integer senderCompanyId, Integer receiverCompanyId,
-            String origin, String destination, Integer quantityPerMonth, String storageType) {
+            String origin, String destination, Integer quantityPerMonth, String storageType, BigInteger amtOfPdt, Double spaceOfProduct) {
 
         int customerAccountId = this.createNewCustomerAccount(senderCompanyId, receiverCompanyId);
-        
+
         ServiceQuotation serviceQuotation = new ServiceQuotation();
         serviceQuotation.setServiceType(serviceType);
         serviceQuotation.setCreatedDate(new Date());
@@ -56,12 +57,14 @@ public class QuotationManagementSessionBean {
         serviceQuotation.setReceiverCompanyId(receiverCompanyId);
         serviceQuotation.setStatus(1);
         serviceQuotation.setQuantityPerMonth(quantityPerMonth);
-        
+
         if (serviceType.equals("Transportation") && !origin.isEmpty() && !destination.isEmpty()) {
             serviceQuotation.setDestination(destination);
             serviceQuotation.setOrigin(origin);
-        }else{
+        } else {
             serviceQuotation.setStorageType(storageType);
+            serviceQuotation.setAmoutOfProduct(amtOfPdt);
+            serviceQuotation.setSpacePerProduct(spaceOfProduct);
         }
 
         List<Contract> contracts = new ArrayList<>();
@@ -72,7 +75,6 @@ public class QuotationManagementSessionBean {
 
         serviceQuotation.setServiceCatalog(serviceCatalog);
 
-        
         CustomerAccount customerAcc = em.find(CustomerAccount.class, customerAccountId);
         customerAcc.getServiceQuotationList().add(serviceQuotation);
         serviceQuotation.setCustomerAccount(customerAcc);
@@ -107,9 +109,8 @@ public class QuotationManagementSessionBean {
             em.flush();
             System.out.println("Flush here");
             return newCustomer.getCustomerAccountId();
-        }
-        else{
-            CustomerAccount existAcc = (CustomerAccount)q.getSingleResult();
+        } else {
+            CustomerAccount existAcc = (CustomerAccount) q.getSingleResult();
             return existAcc.getCustomerAccountId();
         }
 
@@ -125,12 +126,13 @@ public class QuotationManagementSessionBean {
         return serviceQuotation.getQuotationId();
     }
 
-    public int createQuotation(Integer quotationId, Double price, int discountRate) {
+    public int createQuotation(Integer quotationId, Double price, int discountRate, Double rental) {
         ServiceQuotation serviceQuotation = em.find(ServiceQuotation.class, quotationId);
         serviceQuotation.setStatus(2);
         serviceQuotation.setPrice(price);
         serviceQuotation.setDiscountRate(discountRate);
         serviceQuotation.setCreatedDate(new Date());
+        serviceQuotation.setWarehouseRental(rental);
 
         em.merge(serviceQuotation);
         em.flush();
@@ -191,23 +193,25 @@ public class QuotationManagementSessionBean {
         Query q = em.createQuery("SELECT s FROM ServiceQuotation s WHERE s.senderCompanyId = :senderCompanyId AND (s.status =2 OR s.status =3 OR s.status =4 OR s.status =5 OR s.status =6 OR s.status =7 OR s.status =8)").setParameter("senderCompanyId", myCompanyId);
         return (List<ServiceQuotation>) q.getResultList();
     }
-    
-    public List<ServiceQuotation> retrieveAllTransportationFulfillmentcheckList (Integer myCompanyId){
+
+    public List<ServiceQuotation> retrieveAllTransportationFulfillmentcheckList(Integer myCompanyId) {
         Query q = em.createQuery("SELECT s FROM ServiceQuotation s WHERE s.receiverCompanyId = :receiverCompanyId AND s.status=6 AND s.serviceType='Transportation'").setParameter("receiverCompanyId", myCompanyId);
         return (List<ServiceQuotation>) q.getResultList();
     }
-    public List<ServiceQuotation> retrieveAllWarehouseFulfillmentcheckList (Integer myCompanyId){
+
+    public List<ServiceQuotation> retrieveAllWarehouseFulfillmentcheckList(Integer myCompanyId) {
         Query q = em.createQuery("SELECT s FROM ServiceQuotation s WHERE s.receiverCompanyId = :receiverCompanyId AND s.status=6 AND s.serviceType='Warehouse'").setParameter("receiverCompanyId", myCompanyId);
         return (List<ServiceQuotation>) q.getResultList();
     }
 
-    public void passFulfillmentCheck(Integer quotationId){
+    public void passFulfillmentCheck(Integer quotationId) {
         ServiceQuotation quotation = em.find(ServiceQuotation.class, quotationId);
         quotation.setStatus(8);
         em.merge(quotation);
         em.flush();
     }
-    public void failFulfillmentCheck(Integer quotationId){
+
+    public void failFulfillmentCheck(Integer quotationId) {
         ServiceQuotation quotation = em.find(ServiceQuotation.class, quotationId);
         quotation.setStatus(7);
         em.merge(quotation);

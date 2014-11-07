@@ -91,18 +91,29 @@
                         <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.startDate}" />
                         <p:outputLabel value="End Date:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.endDate}" />
+
                         <c:if test="#{viewQuotationManagedBean.selectedQuotation.serviceType eq 'Transportation'}" >
                             <p:outputLabel value="Origin:" /><p:spacer width="20" height="20" />
                             <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.origin}" />
                             <p:outputLabel value="Destination:" /><p:spacer width="20" height="20" />
                             <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.destination}" />
+                            <p:outputLabel value="Total Expected Quantity (TEU):" style="width: 150px" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.quantityPerMonth}" />
+                            <p:outputLabel value="Quotation Price Per TEU:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.price}" />
                         </c:if>
-                        <p:outputLabel value="Total Expected Quantity (TEU):" style="width: 150px" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.quantityPerMonth}" />
+                        <c:if test="#{viewQuotationManagedBean.selectedQuotation.serviceType eq 'Warehouse'}" >
+                            <p:outputLabel value="Maximum Product Amount" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.amoutOfProduct}" />
+                            <p:outputLabel value="Space of Product (meter cube)" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.spacePerProduct}" />
+                            <p:outputLabel value="Warehoue Rental" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.warehouseRental}" />
+                            <p:outputLabel value="Management Service Price per Product" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.price}" />
 
+                        </c:if>
 
-                        <p:outputLabel value="Quotation Price Per TEU:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.price}" />
                         <p:outputLabel value="Discount in %:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.discountRate}" />
 
@@ -111,22 +122,36 @@
 
                     </h:panelGrid>
                     <p:separator />
-                    <h:panelGrid style="float:right">
-                        <h:panelGrid columns="3" cellpadding="6">
-                            <p:spacer width="20" height="20"/><p:spacer width="20" height="20"/><p:outputLabel value="Total" />
 
-                            <h:outputText value="Original Price" /><p:spacer width="20" height="20"/><h:outputText value="#{viewQuotationManagedBean.selectedQuotation.price}" />
-                            <h:outputText value="less discount" /><p:spacer width="20" height="20"/><h:outputText value="#{viewQuotationManagedBean.discountedPrice}" />
+                    <h:panelGroup style="float:right">
+                        <c:if test="#{viewQuotationManagedBean.selectedQuotation.serviceType eq 'Warehouse'}" >
+
+                            <h:panelGrid columns="3" cellpadding="6">
+                                <p:spacer width="20" height="20"/><p:spacer width="20" height="20"/><p:outputLabel value="Rental" />
+                                <h:outputText value="Original Rental Price" /><p:spacer width="20" height="20"/><h:outputText value="#{viewQuotationManagedBean.selectedQuotation.warehouseRental}" />
+                            </h:panelGrid>
+                            <p:separator/>
+                            <h:panelGrid columns="3" cellpadding="6" >
+                                <p:outputLabel value="Final Rental Price:" /><p:spacer width="20" height="20"/><h:outputText value="#{viewQuotationManagedBean.selectedQuotation.warehouseRental}"/>
+                            </h:panelGrid> 
+                        </c:if>
+                        <p:spacer width="20" height="20"/><p:spacer width="20" height="20"/><p:spacer width="20" height="20"/>
+                        <h:panelGrid columns="3" cellpadding="6">
+                            <p:spacer width="20" height="20"/><p:spacer width="20" height="20"/><p:outputLabel value="Service Total" />
+                            <h:outputText value="Original Price" /><p:spacer width="20" height="20"/><h:outputText value="#{viewQuotationManagedBean.selectedQuotation.price}" style="float:right" />
+                            <h:outputText value="less discount" /><p:spacer width="20" height="20"/><h:outputText value="#{viewQuotationManagedBean.discountedPrice}" style="float:right" />
                         </h:panelGrid>
                         <p:separator/>
                         <h:panelGrid columns="3" cellpadding="6" >
-                            <p:outputLabel value="Final Price:" /><p:spacer width="20" height="20"/><h:outputText value="#{viewQuotationManagedBean.finalPrice}"/>
-                        </h:panelGrid> 
-                    </h:panelGrid>
+                            <c:if test="#{viewQuotationManagedBean.selectedQuotation.serviceType eq 'Warehouse'}" >
+                                <p:outputLabel value="Final Price Per Product:" /><p:spacer width="20" height="20"/><h:outputText value="#{viewQuotationManagedBean.finalPrice}"/>
+                            </c:if>
+                            <c:if test="#{viewQuotationManagedBean.selectedQuotation.serviceType eq 'Transportation'}" >
+                                <p:outputLabel value="Final Price Per TEU:" /><p:spacer width="20" height="20"/><h:outputText value="#{viewQuotationManagedBean.finalPrice}"/>
+                            </c:if>
 
-
-
-
+                        </h:panelGrid>
+                    </h:panelGroup> 
 
                 </p:fieldset>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />

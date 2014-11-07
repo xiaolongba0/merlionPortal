@@ -23,7 +23,7 @@
         </ui:define>
 
         <ui:define name="left">
- <p:menu>
+            <p:menu>
                 <p:submenu label ="Map">
                     <p:submenu label="Node" >
                         <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
@@ -173,14 +173,6 @@
 
 
                 </p:fieldset>
-
-                <!--PO not processed yet, I am the sender-->
-                <c:if test="#{(viewTransportationRequestDetailMB.compareStatus eq 1)and (viewTransportationRequestDetailMB.selectedTServicePO.senderCompanyId eq viewTransportationRequestDetailMB.companyId)}" >
-                    <p:commandButton value="Modify Request" type="button" onclick="PF('dlg1').show();" />
-                    <p:commandButton value="Deleted Request"  action="#{viewTransportationRequestDetailMB.deletePO()}" update="form" ajax="true" />
-                </c:if>
-
-
                 <p:dialog header="Update PO Information" widgetVar="dlg1" minHeight="40">
                     <h:panelGrid id="detail" columns="3">
                         <c:if test="#{viewTransportationRequestDetailMB.selectedTServicePO.serviceType eq 'Transportation'}" >
@@ -211,17 +203,19 @@
                 </p:dialog>
             </h:form>
 
-
             <h:form id="form3">
-                <!--PO not processed yet, I am service provider-->
-                <c:if test="#{(viewTransportationRequestDetailMB.compareStatus eq 1)and (viewTransportationRequestDetailMB.selectedTServicePO.receiverCompanyId eq viewTransportationRequestDetailMB.companyId)}" >
-                    <p:commandButton value="Credit Check" action="#{viewServicePODetailManagedBean.checkCredit()}" update=":form :form3" ajax="true" />
-                    <p:commandButton value="Reject PO" action="#{viewServicePODetailManagedBean.rejectPO()}" update=":form :form3" ajax="true" />
+                <!--PO not processed yet, I am the sender-->
+                <c:if test="#{(viewTransportationRequestDetailMB.compareStatus eq 1)and (viewTransportationRequestDetailMB.selectedTServicePO.senderCompanyId eq viewTransportationRequestDetailMB.companyId)}" >
+                    <p:commandButton value="Modify Request" type="button" onclick="PF('dlg1').show();" />
+                    <p:commandButton value="Deleted Request"  action="#{viewTransportationRequestDetailMB.deletePO()}" update=":form" ajax="true" />
                 </c:if>
 
-                <!--PO is on hold and I am the Service Provider-->
-       
             </h:form>
+
+
+
+
+
             <p:commandButton value="Go Back" icon="ui-icon-circle-arrow-w" action="viewallrequest.xhtml?faces-redirect=true"/>
 
         </ui:define>

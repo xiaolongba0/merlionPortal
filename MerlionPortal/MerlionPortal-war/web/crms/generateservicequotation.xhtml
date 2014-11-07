@@ -134,22 +134,37 @@
                             <h:outputText value="#{generateQuotationManagedBean.selectedRequest.origin}" />
                             <p:outputLabel value="Destination:" /><p:spacer width="20" height="20" />
                             <h:outputText value="#{generateQuotationManagedBean.selectedRequest.destination}" />
+                            <p:outputLabel value="Total Expected Quantity (TEU) :" style="width: 150px" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{generateQuotationManagedBean.selectedRequest.quantityPerMonth}" />
                         </c:if>
                         <c:if test="#{generateQuotationManagedBean.selectedRequest.serviceType eq 'Warehouse'}" >
                             <p:outputLabel value="Storage Type" /><p:spacer width="20" height="20" />
                             <h:outputText value="#{generateQuotationManagedBean.selectedRequest.storageType}" />
+                            <p:outputLabel value="Space per Product (meter cube)" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{generateQuotationManagedBean.selectedRequest.spacePerProduct}" />
+                            <p:outputLabel value="Maximum Number of Products" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{generateQuotationManagedBean.selectedRequest.amoutOfProduct}" />
                         </c:if>
 
-                        <p:outputLabel value="Total Expected Quantity (TEU) :" style="width: 150px" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{generateQuotationManagedBean.selectedRequest.quantityPerMonth}" />
+
                     </h:panelGrid>
                 </p:fieldset>
                 <p:fieldset legend="Quotation Information" style="margin-bottom:20px">
                     <h:panelGrid columns="3" cellpadding="10">
-                        <p:outputLabel value="Quotation Price Per TEU:" /><p:spacer width="20" height="20" />
-                        <h:inputText value="#{generateQuotationManagedBean.price}" required="true" requiredMessage="Price is required" styleClass="form-control" />
-                        <p:outputLabel value="Discount in %:" /><p:spacer width="20" height="20" />
-                        <h:inputText value="#{generateQuotationManagedBean.discountRate}" styleClass="form-control" />
+                        <c:if test="#{generateQuotationManagedBean.selectedRequest.serviceType eq 'Transportation'}" >
+                            <p:outputLabel value="Quotation Price Per TEU:" /><p:spacer width="20" height="20" />
+                            <h:inputText value="#{generateQuotationManagedBean.price}" required="true" requiredMessage="Price is required" styleClass="form-control" />
+                            <p:outputLabel value="Discount in %:" /><p:spacer width="20" height="20" />
+                            <h:inputText value="#{generateQuotationManagedBean.discountRate}" styleClass="form-control" />
+                        </c:if>
+                        <c:if test="#{generateQuotationManagedBean.selectedRequest.serviceType eq 'Warehouse'}" >
+                            <p:outputLabel value="Warehouse Rental:" /><p:spacer width="20" height="20" />
+                            <h:inputText value="#{generateQuotationManagedBean.rental}" required="true" requiredMessage="Rental is required" styleClass="form-control" />
+                            <p:outputLabel value="Management Service Price Per Product" /><p:spacer width="20" height="20" />
+                            <h:inputText value="#{generateQuotationManagedBean.price}" required="true" requiredMessage="Price is required" styleClass="form-control" />
+                            <p:outputLabel value="Management Service Discount in %:" /><p:spacer width="20" height="20" />
+                            <h:inputText value="#{generateQuotationManagedBean.discountRate}" styleClass="form-control" />
+                        </c:if>
                     </h:panelGrid>
                 </p:fieldset>
 

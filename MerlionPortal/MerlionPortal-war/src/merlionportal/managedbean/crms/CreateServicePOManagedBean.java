@@ -7,6 +7,7 @@ package merlionportal.managedbean.crms;
 
 import entity.Contract;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -50,6 +51,7 @@ public class CreateServicePOManagedBean {
     private String serviceType;
     private Integer productQuantityPerTEU;
     private Integer productId;
+    private BigInteger amount;
 
     private Date today;
     private String partyAName;
@@ -113,7 +115,12 @@ public class CreateServicePOManagedBean {
             }
         }
         if (canCreateServicePO) {
-            boolean result = servicePOSB.createServicePO(contractId, userId, volume, serviceFulfillmentDate, serviceReceiveDate, serviceDeliveryDate, productQuantityPerTEU, productId, warehouseOrderType);
+            boolean result;
+            if (serviceType.equals("Transportation")) {
+                result = servicePOSB.createServicePO(contractId, userId, volume, serviceFulfillmentDate, serviceReceiveDate, serviceDeliveryDate, productQuantityPerTEU, productId, warehouseOrderType, amount);
+            } else {
+                result = servicePOSB.createServicePO(contractId, userId, 0, serviceFulfillmentDate, serviceReceiveDate, serviceDeliveryDate, 0, productId, warehouseOrderType, amount);
+            }
             if (result) {
                 this.clearAllFields();
 
@@ -161,6 +168,7 @@ public class CreateServicePOManagedBean {
         serviceDeliveryDate = null;
         productQuantityPerTEU = null;
         productId = null;
+        amount = null;
     }
 
     public Integer getCompanyId() {
@@ -281,6 +289,14 @@ public class CreateServicePOManagedBean {
 
     public void setPartyBName(String partyBName) {
         this.partyBName = partyBName;
+    }
+
+    public BigInteger getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigInteger amount) {
+        this.amount = amount;
     }
 
 }

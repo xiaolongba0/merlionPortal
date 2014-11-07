@@ -119,19 +119,21 @@
                             <h:outputLabel  style="font-weight: bold" value="End Date  "/><p:spacer width="40" height="20" />
                             <h:outputLabel  value="#{createServiceContractManagedBean.quotation.endDate}" />
 
-                            <h:outputLabel  style="font-weight: bold" value="Price Per TEU  "/><p:spacer width="20" height="20" />
-                            <h:outputLabel  value="#{createServiceContractManagedBean.quotation.price}" />
 
-
-                            <h:outputLabel  style="font-weight: bold" value="Discount Rate in %  "/><p:spacer width="20" height="20" />
-                            <h:outputLabel  value="#{createServiceContractManagedBean.quotation.discountRate}" />
-
-
-                            <h:outputLabel  style="font-weight: bold" value="Expected Quantity Per Month (TEU)"/><p:spacer width="20" height="20" />
-                            <h:outputLabel  value="#{createServiceContractManagedBean.quotation.quantityPerMonth}" />
 
 
                             <c:if test="#{createServiceContractManagedBean.quotation.serviceType eq 'Transportation'}" >
+                                <h:outputLabel  style="font-weight: bold" value="Price Per TEU  "/><p:spacer width="20" height="20" />
+                                <h:outputLabel  value="#{createServiceContractManagedBean.quotation.price}" />
+
+
+                                <h:outputLabel  style="font-weight: bold" value="Discount Rate in %  "/><p:spacer width="20" height="20" />
+                                <h:outputLabel  value="#{createServiceContractManagedBean.quotation.discountRate}" />
+
+
+                                <h:outputLabel  style="font-weight: bold" value="Expected Quantity Per Month (TEU)"/><p:spacer width="20" height="20" />
+                                <h:outputLabel  value="#{createServiceContractManagedBean.quotation.quantityPerMonth}" />
+
                                 <h:outputLabel  style="font-weight: bold" value="Origin "/><p:spacer width="20" height="20" />
                                 <h:outputLabel  value="#{createServiceContractManagedBean.quotation.origin}" />
 
@@ -144,8 +146,22 @@
                             <c:if test="#{createServiceContractManagedBean.quotation.serviceType eq 'Warehouse'}" >
                                 <h:outputLabel  style="font-weight: bold" value="Storage Type " /><p:spacer width="20" height="20" />
                                 <h:outputLabel value="#{createServiceContractManagedBean.quotation.storageType}" />
-                                
+                                <h:outputLabel  style="font-weight: bold" value="Maximum Amount of Product " /><p:spacer width="20" height="20" />
+                                <h:outputLabel value="#{createServiceContractManagedBean.quotation.amoutOfProduct}" />
+                                <h:outputLabel  style="font-weight: bold" value="Space Per Product " /><p:spacer width="20" height="20" />
+                                <h:outputLabel value="#{createServiceContractManagedBean.quotation.spacePerProduct}" />
+                                <h:outputLabel  style="font-weight: bold" value="Warehouse Rental" /><p:spacer width="20" height="20" />
+                                <h:outputLabel value="#{createServiceContractManagedBean.quotation.warehouseRental}" />
+                                <h:outputLabel  style="font-weight: bold" value="Management Service Price Per Product" /><p:spacer width="20" height="20" />
+                                <h:outputLabel value="#{createServiceContractManagedBean.quotation.price}" />
+                                <h:outputLabel  style="font-weight: bold" value="Management Service Discount in %:" /><p:spacer width="20" height="20" />
+                                <h:outputLabel value="#{createServiceContractManagedBean.quotation.discountRate}" />
+                                <h:outputLabel style="font-weight: bold" value="Warehouse ID" /><p:spacer width="20" height="20" />
+                                <p:inputText value="#{createServiceContractManagedBean.warehouseId}" required="true" requiredMessage="Warehouse ID is required" />                  
+
+
                             </c:if>
+
 
                             <h:outputLabel for="conditionText" style="font-weight: bold" value="Terms &amp; Conditions * "/><p:spacer width="20" height="20" />
                             <p:inputTextarea id="conditionText" styleClass="form-control" required="true" requiredMessage="Terms &amp; Conditions are required." rows="10" cols="60" counter="display" maxlength="8888" counterTemplate="{0} characters remaining." autoResize="true" value="#{createServiceContractManagedBean.conditionText}" />

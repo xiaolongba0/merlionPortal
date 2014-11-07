@@ -38,6 +38,10 @@ public class DTOContract implements Serializable{
     private String reasonModification;
     private String storageType;
     private String agreedQuantity;
+    private String spacePerProduct;
+    private String amountOfProduct;
+    private String warehouseRental;
+    private String warehouseId;
 
     public Integer getContractId() {
         return contractId;
@@ -198,6 +202,38 @@ public class DTOContract implements Serializable{
 
     public void setStorageType(String storageType) {
         this.storageType = storageType;
+    }
+
+    public String getSpacePerProduct() {
+        return spacePerProduct;
+    }
+
+    public void setSpacePerProduct(String spacePerProduct) {
+        this.spacePerProduct = spacePerProduct;
+    }
+
+    public String getAmountOfProduct() {
+        return amountOfProduct;
+    }
+
+    public void setAmountOfProduct(String amountOfProduct) {
+        this.amountOfProduct = amountOfProduct;
+    }
+
+    public String getWarehouseRental() {
+        return warehouseRental;
+    }
+
+    public void setWarehouseRental(String warehouseRental) {
+        this.warehouseRental = warehouseRental;
+    }
+
+    public String getWarehouseId() {
+        return warehouseId;
+    }
+
+    public void setWarehouseId(String warehouseId) {
+        this.warehouseId = warehouseId;
     }
   
 }

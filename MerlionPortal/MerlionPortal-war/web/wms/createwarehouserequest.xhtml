@@ -21,7 +21,7 @@
         </ui:define>
 
         <ui:define name="left">
-                <p:menu styleClass="menu-width">
+            <p:menu styleClass="menu-width">
                 <p:submenu label =" WMS HOME" styleClass="display:block">
                     <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
                 </p:submenu>
@@ -125,7 +125,7 @@
                             <h:outputLabel  style="font-weight: bold" value="End Date  "/><p:spacer width="40" height="20" />
                             <h:outputLabel  value="#{createWarehouseRequestMB.contract.endDate}" />
 
-                            <h:outputLabel  style="font-weight: bold" value="Final Price Per TEU  "/><p:spacer width="20" height="20" />
+                            <h:outputLabel  style="font-weight: bold" value="Service Management Price Per Product"/><p:spacer width="20" height="20" />
                             <h:outputLabel  value="#{createWarehouseRequestMB.contract.price}" />
 
 
@@ -149,15 +149,13 @@
                                     <p:outputLabel for="endDate" value="Receiving Date " /><p:spacer width="20" height="20" />
                                     <p:calendar id="endDate" required="true" requiredMessage="Receiving Date is required" value="#{createWarehouseRequestMB.serviceReceiveDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{createWarehouseRequestMB.today}" />
                                 </c:if>
+                                <h:outputLabel  style="font-weight: bold" value="Product ID * "/><p:spacer width="20" height="20" />
+                                <p:inputText  value="#{createWarehouseRequestMB.productId}" required="true"  requiredMessage="Product ID is required"/>
+
+                                <h:outputLabel  style="font-weight: bold" value="Product Amount * "/><p:spacer width="20" height="20" />
+                                <p:inputText  value="#{createWarehouseRequestMB.amount}" required="true"  requiredMessage="Product amount is required"/>
+
                             </c:if>
-                            <h:outputLabel  style="font-weight: bold" value="Quantity in TEU * "/><p:spacer width="20" height="20" />
-                            <p:inputText  value="#{createWarehouseRequestMB.volume}" required="true"  requiredMessage="Quantity is required"/>
-
-                            <h:outputLabel  style="font-weight: bold" value="Product ID * "/><p:spacer width="20" height="20" />
-                            <p:inputText  value="#{createWarehouseRequestMB.productId}" required="true"  requiredMessage="Product ID is required"/>
-
-                            <h:outputLabel  style="font-weight: bold" value="Product Quantity per TEU * "/><p:spacer width="20" height="20" />
-                            <p:inputText  value="#{createWarehouseRequestMB.productQuantityPerTEU}" required="true"  requiredMessage="Product Quantity per TEU  is required"/>
                             <p:commandButton value="Create Warehouse Service Request" icon="ui-icon-check" actionListener="#{createWarehouseRequestMB.createServicePO()}" ajax="true" update="form2" />
                         </c:if>
 
