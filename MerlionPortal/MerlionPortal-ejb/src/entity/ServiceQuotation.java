@@ -7,6 +7,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -50,7 +51,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ServiceQuotation.findByOrigin", query = "SELECT s FROM ServiceQuotation s WHERE s.origin = :origin"),
     @NamedQuery(name = "ServiceQuotation.findByDiscountRate", query = "SELECT s FROM ServiceQuotation s WHERE s.discountRate = :discountRate"),
     @NamedQuery(name = "ServiceQuotation.findByQuantityPerMonth", query = "SELECT s FROM ServiceQuotation s WHERE s.quantityPerMonth = :quantityPerMonth"),
-    @NamedQuery(name = "ServiceQuotation.findByStorageType", query = "SELECT s FROM ServiceQuotation s WHERE s.storageType = :storageType")})
+    @NamedQuery(name = "ServiceQuotation.findByStorageType", query = "SELECT s FROM ServiceQuotation s WHERE s.storageType = :storageType"),
+    @NamedQuery(name = "ServiceQuotation.findBySpacePerProduct", query = "SELECT s FROM ServiceQuotation s WHERE s.spacePerProduct = :spacePerProduct"),
+    @NamedQuery(name = "ServiceQuotation.findByAmoutOfProduct", query = "SELECT s FROM ServiceQuotation s WHERE s.amoutOfProduct = :amoutOfProduct"),
+    @NamedQuery(name = "ServiceQuotation.findByWarehouseRental", query = "SELECT s FROM ServiceQuotation s WHERE s.warehouseRental = :warehouseRental")})
 public class ServiceQuotation implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -92,6 +96,12 @@ public class ServiceQuotation implements Serializable {
     @Size(max = 100)
     @Column(name = "storageType")
     private String storageType;
+    @Column(name = "spacePerProduct")
+    private Double spacePerProduct;
+    @Column(name = "amoutOfProduct")
+    private BigInteger amoutOfProduct;
+    @Column(name = "warehouseRental")
+    private Double warehouseRental;
     @JoinColumn(name = "serviceCatalog", referencedColumnName = "serviceCatalogId")
     @ManyToOne(optional = false)
     private ServiceCatalog serviceCatalog;
@@ -218,6 +228,30 @@ public class ServiceQuotation implements Serializable {
 
     public void setStorageType(String storageType) {
         this.storageType = storageType;
+    }
+
+    public Double getSpacePerProduct() {
+        return spacePerProduct;
+    }
+
+    public void setSpacePerProduct(Double spacePerProduct) {
+        this.spacePerProduct = spacePerProduct;
+    }
+
+    public BigInteger getAmoutOfProduct() {
+        return amoutOfProduct;
+    }
+
+    public void setAmoutOfProduct(BigInteger amoutOfProduct) {
+        this.amoutOfProduct = amoutOfProduct;
+    }
+
+    public Double getWarehouseRental() {
+        return warehouseRental;
+    }
+
+    public void setWarehouseRental(Double warehouseRental) {
+        this.warehouseRental = warehouseRental;
     }
 
     public ServiceCatalog getServiceCatalog() {

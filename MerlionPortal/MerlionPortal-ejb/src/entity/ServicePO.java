@@ -7,6 +7,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -49,7 +50,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "ServicePO.findByProductQuantityPerTEU", query = "SELECT s FROM ServicePO s WHERE s.productQuantityPerTEU = :productQuantityPerTEU"),
     @NamedQuery(name = "ServicePO.findByWarehousePOtype", query = "SELECT s FROM ServicePO s WHERE s.warehousePOtype = :warehousePOtype"),
     @NamedQuery(name = "ServicePO.findByServiceReceiveDate", query = "SELECT s FROM ServicePO s WHERE s.serviceReceiveDate = :serviceReceiveDate"),
-    @NamedQuery(name = "ServicePO.findByServiceFulfilmentDate", query = "SELECT s FROM ServicePO s WHERE s.serviceFulfilmentDate = :serviceFulfilmentDate")})
+    @NamedQuery(name = "ServicePO.findByServiceFulfilmentDate", query = "SELECT s FROM ServicePO s WHERE s.serviceFulfilmentDate = :serviceFulfilmentDate"),
+    @NamedQuery(name = "ServicePO.findByAmountOfProduct", query = "SELECT s FROM ServicePO s WHERE s.amountOfProduct = :amountOfProduct")})
 public class ServicePO implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -92,6 +94,8 @@ public class ServicePO implements Serializable {
     @Column(name = "serviceFulfilmentDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date serviceFulfilmentDate;
+    @Column(name = "amountOfProduct")
+    private BigInteger amountOfProduct;
     @JoinColumn(name = "contract", referencedColumnName = "contractId")
     @ManyToOne(optional = false)
     private Contract contract;
@@ -223,6 +227,14 @@ public class ServicePO implements Serializable {
 
     public void setServiceFulfilmentDate(Date serviceFulfilmentDate) {
         this.serviceFulfilmentDate = serviceFulfilmentDate;
+    }
+
+    public BigInteger getAmountOfProduct() {
+        return amountOfProduct;
+    }
+
+    public void setAmountOfProduct(BigInteger amountOfProduct) {
+        this.amountOfProduct = amountOfProduct;
     }
 
     public Contract getContract() {

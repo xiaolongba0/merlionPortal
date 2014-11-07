@@ -7,6 +7,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -54,7 +55,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Contract.findByContactPersonName", query = "SELECT c FROM Contract c WHERE c.contactPersonName = :contactPersonName"),
     @NamedQuery(name = "Contract.findByContactPersonNumber", query = "SELECT c FROM Contract c WHERE c.contactPersonNumber = :contactPersonNumber"),
     @NamedQuery(name = "Contract.findByReasonModification", query = "SELECT c FROM Contract c WHERE c.reasonModification = :reasonModification"),
-    @NamedQuery(name = "Contract.findByStorageType", query = "SELECT c FROM Contract c WHERE c.storageType = :storageType")})
+    @NamedQuery(name = "Contract.findByStorageType", query = "SELECT c FROM Contract c WHERE c.storageType = :storageType"),
+    @NamedQuery(name = "Contract.findByWarehouseRental", query = "SELECT c FROM Contract c WHERE c.warehouseRental = :warehouseRental"),
+    @NamedQuery(name = "Contract.findByAmountOfProduct", query = "SELECT c FROM Contract c WHERE c.amountOfProduct = :amountOfProduct"),
+    @NamedQuery(name = "Contract.findBySpacePerProduct", query = "SELECT c FROM Contract c WHERE c.spacePerProduct = :spacePerProduct")})
 public class Contract implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -106,6 +110,12 @@ public class Contract implements Serializable {
     @Size(max = 100)
     @Column(name = "storageType")
     private String storageType;
+    @Column(name = "warehouseRental")
+    private Double warehouseRental;
+    @Column(name = "amountOfProduct")
+    private BigInteger amountOfProduct;
+    @Column(name = "spacePerProduct")
+    private Double spacePerProduct;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "contract")
     private List<ServicePO> servicePOList;
     @JoinColumn(name = "serviceQuotation", referencedColumnName = "quotationId")
@@ -255,6 +265,30 @@ public class Contract implements Serializable {
 
     public void setStorageType(String storageType) {
         this.storageType = storageType;
+    }
+
+    public Double getWarehouseRental() {
+        return warehouseRental;
+    }
+
+    public void setWarehouseRental(Double warehouseRental) {
+        this.warehouseRental = warehouseRental;
+    }
+
+    public BigInteger getAmountOfProduct() {
+        return amountOfProduct;
+    }
+
+    public void setAmountOfProduct(BigInteger amountOfProduct) {
+        this.amountOfProduct = amountOfProduct;
+    }
+
+    public Double getSpacePerProduct() {
+        return spacePerProduct;
+    }
+
+    public void setSpacePerProduct(Double spacePerProduct) {
+        this.spacePerProduct = spacePerProduct;
     }
 
     @XmlTransient
