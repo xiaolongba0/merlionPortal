@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <!-- Imports -->
         <ui:insert name="imports" >
@@ -24,6 +25,10 @@
             </ui:insert>
             <!-- Content -->
             <div class="container content-area">
+                <p:breadCrumb>
+                    <p:menuitem value="Categories" url="#" />
+                    <p:menuitem value="Dashboard" url="#" />
+                </p:breadCrumb>
                 <ui:insert name="content" >
                     <div class="container right-container">
                         <ui:insert name="right"></ui:insert>
