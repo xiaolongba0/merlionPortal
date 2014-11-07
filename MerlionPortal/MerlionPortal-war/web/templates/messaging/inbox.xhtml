@@ -39,7 +39,7 @@
                     return false;
                 }
 
-                function postReadMail(title, content, senderEmail,isSender) {
+                function postReadMail(title, content, senderEmail, isSender) {
                     var mailReader = $("#messageReader");
                     $("#readMsgTitle").html(title);
                     $("#readMsgContent").html(content);
@@ -52,9 +52,9 @@
                         reply(e.data.senderEmail, e.data.title);
                     });
 
-                    if(isSender === "1"){
+                    if (isSender === "1") {
                         $("#replyBtn").addClass("hide");
-                    }else{
+                    } else {
                         $("#replyBtn").removeClass("hide");
                     }
 
@@ -266,8 +266,8 @@
                             </h:form>
                         </div>
                         <div class="modal-footer">
-                            <button id="sendemailBtn" type="button" class="btn btn-primary" onclick="sendEmail();" disabled="disabled">Send Email</button>
-                            <button id="broadcastmailBtn" type="button" class="btn btn-warning" onclick="broadCastMail();">Broadcast Email</button>
+                            <button id="sendemailBtn" type="button" class="btn btn-primary" onclick="sendEmail();" disabled="disabled">Send Message</button>
+                            <button id="broadcastmailBtn" type="button" class="btn btn-warning" onclick="broadCastMail();">Broadcast Message</button>
                             <button id="closeEditorBtn" type="button" class="btn btn-danger" onclick="closeEditor();">Close</button>
                         </div>
                     </div><!-- /.modal-content -->
