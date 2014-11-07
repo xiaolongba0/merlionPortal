@@ -322,7 +322,7 @@ public class AssetManagementSessionBean {
             j++;
         }
         List<StorageBin> myRentedBins = new ArrayList<>();
-        myRentedBins = viewRentedBins(companyId);
+        myRentedBins = viewAllRentedBins(companyId);
 
         if (myBins == null) {
             return myBins;
@@ -333,16 +333,38 @@ public class AssetManagementSessionBean {
 
     }
 
-    public List<StorageBin> viewRentedBins(Integer rentedCompanyId) {
+    // all the rented bins
+    public List<StorageBin> viewAllRentedBins(Integer rentedCompanyId) {
 
         Query query = em.createNamedQuery("StorageBin.findByRentedCompanyId").setParameter("rentedCompanyId", rentedCompanyId);
         List<StorageBin> allBins = new ArrayList<>();
+        allBins = query.getResultList();
 
+        return allBins;
+
+    }
+
+    // view rented bins from 1 company only
+    // I AM THE RENTED COMPANY
+    public List<StorageBin> viewRentedBins(Integer myCompanyId, Integer rentedCompanyId) {
+
+        Query query = em.createNamedQuery("StorageBin.findByRentedCompanyId").setParameter("rentedCompanyId", rentedCompanyId);
+        List<StorageBin> allBins = new ArrayList<>();
+        List<StorageBin> myBins = new ArrayList<>();
+        allBins = query.getResultList();
+        
         if (allBins.isEmpty()) {
             return null;
         } else {
-            allBins = query.getResultList();
-            return allBins;
+            int i = 0;
+            while (i < allBins.size()) {
+                if (allBins.get(i).getWarehouseZone().getWarehouse().getCompanyId() == myCompanyId) {
+                    myBins.add(allBins.get(i));
+                    return myBins;
+                }
+                i++;
+            }
+            return null;
         }
 
     }

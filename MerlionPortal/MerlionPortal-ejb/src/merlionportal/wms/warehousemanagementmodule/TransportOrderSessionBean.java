@@ -57,7 +57,7 @@ public class TransportOrderSessionBean {
         // check total number of stocks in the warehouse
         Integer eQuantity = 0;
 
-        eQuantity = rpsb.countAvailableStockInWarehouse(sourceWarehouseId, productId);
+        eQuantity = rpsb.countAvailbleStockInWarehouse(sourceWarehouseId, productId);
         System.out.println("eQuantity = " + eQuantity);
         // 0 for to be processed, 1 for cancelled, 2 for sent, 3 for received and completed
         Integer orderStatus = 0;
