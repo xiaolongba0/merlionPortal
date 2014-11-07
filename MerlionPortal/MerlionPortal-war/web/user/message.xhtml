@@ -10,6 +10,10 @@
             <ui:param name="pageName" value="Messages" />
             <!-- imports -->
             <ui:define name="content">
+                <p:breadCrumb>
+                    <p:menuitem value="Categories" url="${root}/index.xhtml" />
+                    <p:menuitem value="Message" url="${root}/user/message.xhtml" />
+                </p:breadCrumb>
                 <c:set var="root" value="${request.contextPath}" />
                 <ui:include src="/templates/messaging/inbox.xhtml" />
             </ui:define>
