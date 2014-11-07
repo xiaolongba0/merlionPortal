@@ -22,8 +22,11 @@
 
         <!-- Override Content -->
         <ui:define name="content">
-            <c:set var="root" value="${request.contextPath}" />
             <div class="container" >
+                <p:breadCrumb>
+                    <p:menuitem value="Categories" url="${root}/index.xhtml" />
+                    <p:menuitem value="View Log" url="${root}/viewsystemlog.xhtml" />
+                </p:breadCrumb>
                 <h2>View User Log</h2>
 
                 <h:form id="mainForm">
