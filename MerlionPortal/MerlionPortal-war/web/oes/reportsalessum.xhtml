@@ -55,18 +55,26 @@
                     <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />                           
                     </c:if>
-
+                    <c:if test="#{dashboardBean.checkOESCanGenerateSO()||dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:menuitem value="Confirm Payment" url="allwaitinginvoice.xhtml" />                           
+                    </c:if>
                 </p:submenu>
                 <c:if test="#{dashboardBean.checkOESCanGenerateSalesReport()||dashboardBean.loginedUser.userType == 'superuser'}">
                     <p:submenu label="Reports" styleClass="display:block">
                         <p:menuitem value="Sales Reports" url="reportdashboard.xhtml" />
                     </p:submenu>
                 </c:if>
+                
             </p:menu>
         </ui:define>
 
         <ui:define name="right">
             <h:form id="form">
+                <p:breadCrumb>
+                    <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
+                    <p:menuitem value="Report Dashboard" url="reportdashboard.xhtml" />
+                    <p:menuitem value="Monthly Report" url="reportsalessum.xhtml" />
+                </p:breadCrumb>
                 <p:fieldset legend="Monthly Sales Report" style="margin-bottom:20px">
                     <p:chart type="line" model="#{monthlyReportManagedBean.lineModel2}" style="height:400px;"/>
                 </p:fieldset>

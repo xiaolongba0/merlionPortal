@@ -55,17 +55,25 @@
                     <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />                           
                     </c:if>
-
+                    <c:if test="#{dashboardBean.checkOESCanGenerateSO()||dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:menuitem value="Confirm Payment" url="allwaitinginvoice.xhtml" />                           
+                    </c:if>
                 </p:submenu>
                 <c:if test="#{dashboardBean.checkOESCanGenerateSalesReport()||dashboardBean.loginedUser.userType == 'superuser'}">
                     <p:submenu label="Reports" styleClass="display:block">
                         <p:menuitem value="Sales Reports" url="reportdashboard.xhtml" />
                     </p:submenu>
                 </c:if>
+                
             </p:menu>
         </ui:define>
 
         <ui:define name="right">
+            <p:breadCrumb>
+                <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
+                <p:menuitem value="All Unconfirmed Payments" url="allwaitinginvoice.xhtml" />
+                <p:menuitem value="Confirm Payment" url="comfirmpayment.xhtml" />                     
+            </p:breadCrumb>
             <h:form id="form">
                 <p:fieldset legend="Customer Information" style="margin-bottom:20px">
                     <h:panelGrid columns="3" cellpadding="6">
@@ -152,7 +160,7 @@
             </h:form>
             <h:form>
                 <p:commandButton value="Confirm Payment" action="#{comfirmPayament.confirmPayment()}"/>
-                <p:commandButton value="Go Back" action="makepayment.xhtml?faces-redirect=ture" icon="ui-icon-circle-arrow-w"/>
+                <p:commandButton value="Go Back" action="allwaitinginvoice.xhtml?faces-redirect=ture" icon="ui-icon-circle-arrow-w"/>
             </h:form>
 
         </ui:define>

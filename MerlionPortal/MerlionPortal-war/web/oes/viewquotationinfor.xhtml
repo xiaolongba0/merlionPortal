@@ -55,13 +55,16 @@
                     <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:menuitem value="All unapid Orders" url="makepayment.xhtml" />                           
                     </c:if>
-
+                    <c:if test="#{dashboardBean.checkOESCanGenerateSO()||dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:menuitem value="Confirm Payment" url="allwaitinginvoice.xhtml" />                           
+                    </c:if>
                 </p:submenu>
                 <c:if test="#{dashboardBean.checkOESCanGenerateSalesReport()||dashboardBean.loginedUser.userType == 'superuser'}">
                     <p:submenu label="Reports" styleClass="display:block">
                         <p:menuitem value="Sales Reports" url="reportdashboard.xhtml" />
                     </p:submenu>
                 </c:if>
+                
             </p:menu>
         </ui:define>
 
@@ -69,19 +72,10 @@
             <h:form>
                  <p:breadCrumb>
                     <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
-                    <p:menuitem value="All Quotation" url="displayallquotations.xhtml" /> 
+                    <p:menuitem value="All Quotations" url="displayallquotations.xhtml" /> 
                     <p:menuitem value="Quotation Detail" url="viewquotationinfor.xhtml" />
                 </p:breadCrumb>
-                <p:breadCrumb>
-                    <p:menuitem value="Categories" url="#" />
-                    <p:menuitem value="Sports" url="#" />
-                    <p:menuitem value="Basketball" url="#" />
-                    <p:menuitem value="NBA" url="#" />
-                    <p:menuitem value="Teams" url="#" />
-                    <p:menuitem value="L.A. Lakers" url="#" />
-                    <p:menuitem value="Roster" url="#" />
-                    <p:menuitem value="Kobe Bryant" url="#" />
-                </p:breadCrumb>
+                
                 <p:fieldset legend="Customer Information" style="margin-bottom:20px">
                     <h:panelGrid columns="2" cellpadding="5">
                         <h:outputText value="Customer Id:"/>
