@@ -53,6 +53,8 @@ public class CreateStorageBinManagedBean {
     private SystemUser loginedUser;
     private Integer companyId;
     private Integer userId;
+    private Boolean rented;
+    private Integer rentedCompanyId;
 
     private List<String> listStorageBinType;
 
@@ -82,10 +84,11 @@ public class CreateStorageBinManagedBean {
     }
 
     public void createStorageBin() {
-        boolean result = amsb.addStorageBin(storageBinName, storageBinType, storagebinDescription, maxQuantity, maxWeight, storageTypeId);
-        if (result) {
+        Integer storageBinId = amsb.addStorageBin(storageBinName, storageBinType, storagebinDescription, maxQuantity, maxWeight, storageTypeId, rented, rentedCompanyId);
+        System.out.println("in CSBMB, createstoragebin ======================== rentedCompanyId = " + rentedCompanyId);
+        if (storageBinId != null) {
             clearAllFields();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "New Storage Bin created!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success! New Storage Bin with Bin ID = "+ storageBinId+ " created!", ""));
             systemLogSB.recordSystemLog(userId, "WMS create storage bin");
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
@@ -107,6 +110,7 @@ public class CreateStorageBinManagedBean {
         storageBinType = null;
         maxQuantity = null;
         maxWeight = null;
+        rented = null;
     }
 
 //    public List<String> getListStorageBinType() {
@@ -213,6 +217,22 @@ public class CreateStorageBinManagedBean {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public Boolean getRented() {
+        return rented;
+    }
+
+    public void setRented(Boolean rented) {
+        this.rented = rented;
+    }
+
+    public Integer getRentedCompanyId() {
+        return rentedCompanyId;
+    }
+
+    public void setRentedCompanyId(Integer rentedCompanyId) {
+        this.rentedCompanyId = rentedCompanyId;
     }
 
 }

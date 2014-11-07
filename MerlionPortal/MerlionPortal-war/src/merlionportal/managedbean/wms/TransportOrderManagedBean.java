@@ -178,8 +178,7 @@ public class TransportOrderManagedBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", ""));
         }
 
-    }
-    
+    }  
 
     public String getTransportOrderStatus(int transportOrderStatus) {
         if (transportOrderStatus == 0) {

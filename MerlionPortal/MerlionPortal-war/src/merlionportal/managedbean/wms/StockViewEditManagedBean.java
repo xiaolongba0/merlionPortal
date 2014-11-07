@@ -86,26 +86,13 @@ public class StockViewEditManagedBean {
     public StockViewEditManagedBean() {
     }
 
-//    public void countTotalQuantity() {
-//        List<Integer> productIdList = new ArrayList<>();
-//        Stock tempStock = null;
-//
-//        for (Object o : stocks) {
-//            tempStock = (Stock) o;
-//            totalQuantity = totalQuantity + tempStock.getQuantity();
-//            System.out.println("Stock: " + tempStock + "Quantity: " + tempStock.getQuantity());
-//        }
-//
-//        System.out.println("In countTotalQuantity, TotalQuantity ============================= : " + totalQuantity);
-//    }
-
     public void viewStocks() {
         System.out.println("===============================[In Managed Bean - view Stocks]");
         System.out.println("[In Managed Bean - getStocks] Product ID : " + productId);
         totalQuantity = 0;
         if (productId != null) {
             stocks = rpsb.viewStock(companyId, productId);
-            totalQuantity = rpsb.countTotalAvailbleStock(companyId, productId);
+            totalQuantity = rpsb.countTotalAvailableStock(companyId, productId);
             systemLogSB.recordSystemLog(userId, "WMS view stocks");
             if (stocks == null) {
                 System.out.println("============== FAILED TO VIEW STOCK ===============");
@@ -137,7 +124,7 @@ public class StockViewEditManagedBean {
         stock = new Stock();
         stock = (Stock) event.getObject();
         System.out.println("[In Managed Bean - STOCK ON ROW EDIT]===============================: " + stock.getQuantity());
-        boolean result = rpsb.editStock(stock.getName(), stock.getComments(), stock.getStockId(), stock.getExpiryDate());
+        boolean result = rpsb.editStock(stock.getName(), stock.getComments(), stock.getStockId(), stock.getExpiryDate(), stock.getCreatedDate());
         if (result) {
             systemLogSB.recordSystemLog(userId, "WMS edit stock");
             FacesMessage msg = new FacesMessage("Stock with ID = " + stock.getStockId() + " has sucessfully been edited");
