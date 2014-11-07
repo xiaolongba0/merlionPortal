@@ -46,6 +46,10 @@
         </ui:define>
 
         <ui:define name="right">
+            <p:breadCrumb>
+                <p:menuitem value="MRP Home" url="mrp.xhtml" />
+                <p:menuitem value="View, Edit and Delete Product" url="viewallproducts.xhtml" />
+            </p:breadCrumb>
             <h:form id="form">
                 <p:growl id="msgs"/>   
                 <p:dataTable id="products" var="product" sortMode="multiple" value="#{productViewEditManagedBean.myCompanyProducts}" editable="true" style="margin-bottom:20px"

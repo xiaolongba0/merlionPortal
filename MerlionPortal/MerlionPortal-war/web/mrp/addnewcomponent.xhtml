@@ -46,6 +46,11 @@
         </ui:define>
 
         <ui:define name="right">
+             <p:breadCrumb>
+                <p:menuitem value="MRP Home" url="mrp.xhtml" />
+                <p:menuitem value="Add New Component" url="addnewcomponent.xhtml" />
+            </p:breadCrumb>
+            
             <h:form id="formMain">
                 <p:growl id="growl" showDetail="true" sticky="true" /> 
                 <p:panel id="panel" header="Add Component">

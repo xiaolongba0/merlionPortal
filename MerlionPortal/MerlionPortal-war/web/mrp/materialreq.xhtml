@@ -47,6 +47,10 @@
         </ui:define>
 
         <ui:define name="right">
+                <p:breadCrumb>
+                <p:menuitem value="MRP Home" url="mrp.xhtml" />
+                <p:menuitem value="MRP Process" url="forecast.xhtml" />
+            </p:breadCrumb>
             <h:form>
                 <p:panel>
                     <p:dataGrid id="mrps" var="mrp" value="#{materialReqManagedBean.mrps}" style="margin-bottom:20px"

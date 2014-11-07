@@ -22,32 +22,35 @@
         </ui:define>
 
         <ui:define name="left">
-                            <p:menu>
-                    <p:submenu label="MRP HOME" styleClass="display:block">
-                        <p:menuitem value="MRP II Home" url="mrp.xhtml" style="background-color: lavender"/>
+            <p:menu>
+                <p:submenu label="MRP HOME" styleClass="display:block">
+                    <p:menuitem value="MRP II Home" url="mrp.xhtml" style="background-color: lavender"/>
+                </p:submenu>
+                <c:if test="#{dashboardBean.checkMRPCanManageProductComponent() || dashboardBean.loginedUser.userType == 'superuser'}">
+                    <p:submenu label="Product Catalog Management">
+                        <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
+                        <p:menuitem value="View, Edit and Delete" url="viewallproducts.xhtml" />
                     </p:submenu>
-                    <c:if test="#{dashboardBean.checkMRPCanManageProductComponent() || dashboardBean.loginedUser.userType == 'superuser'}">
-                           <p:submenu label="Product Catalog Management">
-                                <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
-                                <p:menuitem value="View, Edit and Delete" url="viewallproducts.xhtml" />
-                            </p:submenu>
-                            <p:submenu label="BOM Management">
-                                <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
-                                <p:menuitem value="View, Edit and Delete BOM" url="viewbom.xhtml" />
-                            </p:submenu>
-                    </c:if>
-                    <c:if test="#{dashboardBean.checkMRPCanManageUseForecast() || dashboardBean.loginedUser.userType == 'superuser'}">
-                            <p:submenu label="MRP">
-                                <p:menuitem value="MRP Process" url="forecast.xhtml" />
-                            </p:submenu>
-                    </c:if>
+                    <p:submenu label="BOM Management">
+                        <p:menuitem value="Add a New Component" url="addnewcomponent.xhtml" />
+                        <p:menuitem value="View, Edit and Delete BOM" url="viewbom.xhtml" />
+                    </p:submenu>
+                </c:if>
+                <c:if test="#{dashboardBean.checkMRPCanManageUseForecast() || dashboardBean.loginedUser.userType == 'superuser'}">
+                    <p:submenu label="MRP">
+                        <p:menuitem value="MRP Process" url="forecast.xhtml" />
+                    </p:submenu>
+                </c:if>
 
-                </p:menu>
+            </p:menu>
 
         </ui:define>
 
         <ui:define name="right">
-
+            <p:breadCrumb>
+                <p:menuitem value="MRP Home" url="mrp.xhtml" />
+                <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
+            </p:breadCrumb>
             <h:form id="formMain">
                 <p:growl id="growl" sticky="true" /> 
                 <p:panel id="panel" header="Add New Product">

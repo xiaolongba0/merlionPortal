@@ -38,8 +38,8 @@
                 </c:if>
                 <c:if test="#{dashboardBean.checkMRPCanManageUseForecast() || dashboardBean.loginedUser.userType == 'superuser'}">
                     <p:submenu label="MRP">
-                                <p:menuitem value="MRP Process" url="forecast.xhtml" />
-                            </p:submenu>
+                        <p:menuitem value="MRP Process" url="forecast.xhtml" />
+                    </p:submenu>
                 </c:if>
 
             </p:menu>
@@ -47,6 +47,10 @@
         </ui:define>
 
         <ui:define name="right">
+            <p:breadCrumb>
+                <p:menuitem value="MRP Home" url="mrp.xhtml" />
+                <p:menuitem value="MRP Process" url="forecast.xhtml" />
+            </p:breadCrumb>
             <h:form>
                 <p:panel header="View Forecast Result in Line Chart" style="margin-bottom:10px;">
                     <p:chart type="line" model="#{forecastResultManagedBean.forecastSales}" style="height:300px" />
