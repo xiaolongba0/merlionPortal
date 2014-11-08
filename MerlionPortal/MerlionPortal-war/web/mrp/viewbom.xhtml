@@ -67,7 +67,7 @@
 
 
                 <p:growl id="msgs" showDetail="true"/>   
-                <p:dataTable id="components" var="component1" scrollable="true" scrollWidth="150%" scrollHeight="300" sortMode="multiple" value="#{productComponentViewEditManagedBean.components}" editable="true" style="margin-bottom:20px"
+                <p:dataTable id="components" var="component1" scrollable="true" scrollWidth="1400"  sortMode="multiple" value="#{productComponentViewEditManagedBean.components}" editable="true" style="margin-bottom:20px"
                              widgetVar="components"
                              emptyMessage="No Component found"
                              resizableColumns="true"
@@ -85,32 +85,32 @@
                     <p:ajax event="rowEditCancel" listener="#{productComponentViewEditManagedBean.onRowCancel}" update=":formMain:msgs" />
 
 
-                    <p:column filterBy="#{component1.componentId}" width="50" filterStyle="width: 32px" filterMatchMode="exact"  headerText="ID" style="width:105px">
+                    <p:column filterBy="#{component1.componentId}" filterStyle="width: 32px" filterMatchMode="exact"  headerText="ID" style="width:105px">
                         <h:outputText value="#{component1.componentId}" />
                     </p:column>
 
-                    <p:column filterBy="#{component1.componentName}" width="80" filterStyle="width: 60px" filterMatchMode="contains" headerText="Name" style="width:105px">
+                    <p:column filterBy="#{component1.componentName}" filterStyle="width: 60px" filterMatchMode="contains" headerText="Name" style="width:105px">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{component1.componentName}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{component1.componentName}" style="width:100%" label="Component Name"/></f:facet>
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column headerText="Description" width="80">
+                    <p:column headerText="Description" >
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{component1.description}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{component1.description}" style="width:100%" label="Component Description"/></f:facet>
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column headerText="Quantity" width="70">
+                    <p:column headerText="Quantity">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{component1.quantity}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{component1.quantity}" style="width:100%" label="Component Quantity"/></f:facet>
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column  headerText="Currency" style="width:130px">
+                    <p:column  headerText="Currency">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{component1.currency}" /></f:facet>
                             <f:facet name="input">
@@ -121,7 +121,7 @@
                         </p:cellEditor>
                     </p:column> 
 
-                    <p:column headerText="Cost" width="45">
+                    <p:column headerText="Cost">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{component1.cost}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{component1.cost}" style="width:100%" label="Component Cost"/></f:facet>
@@ -148,16 +148,22 @@
                             <f:facet name="input"><p:inputText value="#{component1.supplierCompanyId}" style="width:100%" label="Component supplier Company ID"/></f:facet>
                         </p:cellEditor>
                     </p:column>
-                    <p:column headerText="Contact Name" style="width:60px">
+                    <p:column headerText="Contact Name">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{component1.supplierContactPerson}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{component1.supplierContactPerson}" style="width:100%" label="Supplier Contact Person"/></f:facet>
                         </p:cellEditor>
                     </p:column>
-                    <p:column headerText="Contact No." style="width:60px">
+                    <p:column headerText="Contact No.">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{component1.supplierContactNumber}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{component1.supplierContactNumber}" style="width:100%" label="Supplier Contact Number"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Contact Email">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{component1.supplierContactEmail}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{component1.supplierContactEmail}" style="width:100%" label="Supplier Contact Email"/></f:facet>
                         </p:cellEditor>
                     </p:column>
 
