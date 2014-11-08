@@ -195,6 +195,10 @@ ul.rights-menu li{
     width:100%;
 }
 
+.left-container > form > .ui-menu{
+    width:100%;
+}
+
 /*.content-area{
     padding-top: 45px;
     padding-bottom: 45px;
@@ -356,7 +360,7 @@ ol.d {
 .user-info{
     background-color: #ddd;
     border-radius: 8px;
-    width:200px;
+    width:100%;
     height:auto;
     padding:10px;
 }

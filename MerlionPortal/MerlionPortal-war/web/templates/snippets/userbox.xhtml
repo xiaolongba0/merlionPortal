@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <body>
+        
+        <ui:composition>
+            <div class="user-info">
+
+                <div class="avatar"></div>
+                <div class="user-info-right">
+                    <div class="user-name title-font">${dashboardBean.loginedUser.firstName}</div>
+                    <div class="user-company">${dashboardBean.loginedUser.companycompanyId.name}</div>
+                    <br/>
+                    <span class="inbox"><a href="${request.contextPath}/admin/message.xhtml">Message</a></span>
+                    <span class="viewlog"><a href="${request.contextPath}/viewsystemlog.xhtml">View log</a></span>
+                </div>
+
+                <hr />
+                <ul class="role-list">
+                    <c:if test="#{dashboardBean.loginedUser.userType == 'superuser'}">
+                        <li>Merlion Portal Superuser</li>
+                    </c:if>
+                    <c:forEach items="#{dashboardBean.loginedUser.userRoleList}" var="role" rendered="#{dashboardBean.loginedUser.userRoleList ne null}" >
+                        <li>#{role.roleName}</li>
+                    </c:forEach>
+                </ul>
+
+            </div>
+        </ui:composition>
+    </body>
+</html>
