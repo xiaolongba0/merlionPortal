@@ -11,11 +11,6 @@
             <ui:param name="pageName" value="Messages" />
             <!-- imports -->
             <ui:define name="content">
-                <p:breadCrumb>
-                    <p:menuitem value="Categories" url="${root}/index.xhtml" />
-                    <p:menuitem value="Dashboard" url="${root}/admin/dashboard.xhtml" />
-                    <p:menuitem value="Message" url="${root}/admin/message.xhtml" />
-                </p:breadCrumb>
                 <ui:include src="/templates/messaging/inbox.xhtml" />
             </ui:define>
         </ui:composition>

@@ -19,11 +19,6 @@
         <!-- Override Content -->
         <ui:define name="content">
             <div class="container" >
-                <p:breadCrumb>
-                    <p:menuitem value="Categories" url="${root}/index.xhtml" />
-                    <p:menuitem value="User" url="${root}/admin/viewallsubscribers.xhtml" />
-                    <p:menuitem value="View Subscribers" url="${root}/admin/viewallsubscribers.xhtml" />
-                </p:breadCrumb>
                 <h2>View Subscribers</h2>
                 <h:form>
                     <p:dataTable var="company" value="#{getAllSubscribersInfo.companys}" widgetVar="companyTable"
