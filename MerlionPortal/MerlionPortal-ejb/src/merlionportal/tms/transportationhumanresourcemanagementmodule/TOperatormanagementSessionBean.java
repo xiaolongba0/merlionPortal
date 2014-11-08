@@ -9,15 +9,18 @@ import javax.ejb.Stateless;
 import entity.TransportationOperator;
 import entity.OperatorSchedule;
 import entity.SystemUser;
+import entity.Company;
 import entity.AssetSchedule;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 
 /**
  *
@@ -29,6 +32,9 @@ public class TOperatormanagementSessionBean {
 
     @PersistenceContext
     EntityManager em;
+
+    @EJB
+    private UserAccountManagementSessionBean uamsb;
 
     // Opertator
     private TransportationOperator operator;
@@ -72,17 +78,34 @@ public class TOperatormanagementSessionBean {
         return false;
     }
 
-    public Integer addNewOperator(String operatorName, String operatorGender, Date birthday, String operatorType, String operatorStatus, Integer companyId) {
+    public Integer addNewOperator(Integer operatorId, String operatorName, String operatorLastName, String operatorGender, Date birthday, String operatorType, String operatorStatus, Integer companyId, String emailAddress, String contactNumber, String password) {
         System.out.println("[INSIDE EJB]================================Add New Operator");
-      
+////      public int createSystemUser(Integer operatorId, Integer companyId, List<Integer> roles, String firstName, String lastName, String emailAddress, String password, String postalAddress,
+//        String contactNumber, String salution, Integer credit)   
+        String salution = new String();
+        if (operatorGender.equals("Male")) {
+            salution = "Mr.";
+        } else {
+            salution = "Ms.";
+        }
+        Company tempcompany = em.find(Company.class, companyId);
+        String postalAddress = tempcompany.getAddress();
+        
+        List<Integer> roles = new ArrayList();
+        roles.add(1);
+// MANLI COME CHECK!!!!!!!!!!!     
+//        What are the roles and operatorId;
+        Integer userId = uamsb.createSystemUser(operatorId, companyId, roles, operatorName, operatorLastName, emailAddress, password, postalAddress, contactNumber, salution, 1);
+        System.out.println("==========Created System User====== :" + userId);
         TransportationOperator operatorr = new TransportationOperator();
-
+        String tempName = operatorName+operatorLastName;
+        
         operatorr.setOperatorType(operatorType);
         operatorr.setOperatorStatus(operatorStatus);
         operatorr.setIsAvailable(Boolean.TRUE);
         operatorr.setBirthday(birthday);
         operatorr.setGender(operatorGender);
-        operatorr.setOperatorName(operatorName);
+        operatorr.setOperatorName(tempName);
         operatorr.setCompanyId(companyId);
 
         operatorScheduleList = new ArrayList<OperatorSchedule>();
@@ -95,7 +118,7 @@ public class TOperatormanagementSessionBean {
         System.out.println("==========Operator Name=========== :" + operatorName);
         System.out.println("==========Operator Company======== :" + companyId);
         System.out.println("==========Operator is Availble==== :" + "yes");
-        
+
         em.persist(operatorr);
         em.flush();
         System.out.println("==========Operator Id============= :" + operatorr.getOperatorId());
@@ -141,7 +164,6 @@ public class TOperatormanagementSessionBean {
             schedule.setStartDate(startDate);
             schedule.setEndDate(endDate);
             schedule.setTransportationOperatoroperatorId(tOperator);
-            
 
             em.persist(schedule);
             em.flush();
