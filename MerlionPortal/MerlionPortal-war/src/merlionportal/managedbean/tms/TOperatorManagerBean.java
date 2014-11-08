@@ -41,13 +41,16 @@ public class TOperatorManagerBean {
     
 //  -------------Operator
     private String operatorName;
+    private String operatorLastName;
     private String operatorStatus;
     private Date birthday;
     private String operatorGender;
     private String operatorType;
     private List<TransportationOperator> operators;
     private Integer newOperatorId;
-    
+    private String emailaddress;
+    private String password;
+    private String contactNumber;
     /**
      * Creates a new instance of AssestManagedBean
      */
@@ -83,8 +86,8 @@ public class TOperatorManagerBean {
         try {
             System.out.println("[INSIDE WAR FILE]===========================Create New Operator");
             System.out.println("OperatorType:" + operatorType);
-           
-            newOperatorId = toperatorManagementSessionBean.addNewOperator(operatorName, operatorGender, birthday, operatorType, operatorStatus, companyId);
+            Integer operatorId = loginedUser.getSystemUserId();
+            newOperatorId = toperatorManagementSessionBean.addNewOperator(operatorId ,operatorName, operatorLastName, operatorGender, birthday, operatorType, operatorStatus, companyId, emailaddress, contactNumber, password);
             System.out.println("NEW TRANSPORTATION ASSET ID =================: " + newOperatorId);
             if (newOperatorId == -1) {
                 clearAllFields();
@@ -105,6 +108,7 @@ public class TOperatorManagerBean {
     private void clearAllFields(){
         
         operatorName = null;
+        operatorLastName = null;
         operatorGender = null;
         birthday = null;
         operatorType = null;
@@ -182,6 +186,38 @@ public class TOperatorManagerBean {
 
     public void setNewOperatorId(Integer newOperatorId) {
         this.newOperatorId = newOperatorId;
+    }
+
+    public String getOperatorLastName() {
+        return operatorLastName;
+    }
+
+    public void setOperatorLastName(String operatorLastName) {
+        this.operatorLastName = operatorLastName;
+    }
+
+    public String getEmailaddress() {
+        return emailaddress;
+    }
+
+    public void setEmailaddress(String emailaddress) {
+        this.emailaddress = emailaddress;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
     }
      
 
