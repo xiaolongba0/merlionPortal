@@ -58,12 +58,12 @@ public class OrderFulfillmentSessionBean {
                 Stock tempStock = new Stock();
                 tempStock = allStocks.get(count);
 
-                if (newQ >= tempStock.getQuantity()) {
-                    newQ = newQ - tempStock.getQuantity();
-                    rpsb.reserveStock(tempStock.getStockId(), tempStock.getQuantity());
+                if (newQ > tempStock.getAvailableStock()) {
+                    newQ = newQ - tempStock.getAvailableStock();
+                    rpsb.reserveStock(tempStock.getStockId(), tempStock.getAvailableStock());
                 } else {
-                    newQ = 0;
                     rpsb.reserveStock(tempStock.getStockId(), newQ);
+                    newQ = 0;
                 }
                 count++;
             }

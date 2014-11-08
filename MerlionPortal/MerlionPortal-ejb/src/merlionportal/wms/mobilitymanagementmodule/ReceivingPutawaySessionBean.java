@@ -99,16 +99,19 @@ public class ReceivingPutawaySessionBean {
 
         Query query = em.createNamedQuery("Stock.findByStockId").setParameter("stockId", stockId);
         Stock stock = (Stock) query.getSingleResult();
+        System.out.println("reservedQ = "+ reserveQ);
+        System.out.println("[IN EJB RPSB, reserveStock] ============================dd==========");
 
         System.out.println("[IN EJB RPSB, reserveStock] ======================================");
 
         if (stock != null) {
-
-            reserveQ = stock.getReservedStock() + reserveQ;
-            Integer availableStock = stock.getQuantity() - reserveQ;
+            int tempQ = reserveQ;
+            reserveQ = stock.getReservedStock() + tempQ;
+            Integer availableStock = stock.getAvailableStock() - tempQ;
             System.out.println("ReserveQ = " + reserveQ + "  Available Stock = " + availableStock);
             stock.setReservedStock(reserveQ);
             stock.setAvailableStock(availableStock);
+            em.flush();
             em.merge(stock);
             em.flush();
 
