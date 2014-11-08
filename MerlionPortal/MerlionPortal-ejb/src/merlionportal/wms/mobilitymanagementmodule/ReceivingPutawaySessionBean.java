@@ -153,7 +153,7 @@ public class ReceivingPutawaySessionBean {
         return allStocks;
     }
 
-    // View stocks in rented bins
+    // View stocks in my rented bin that belongs to 1 company
     public List<Stock> viewStockInRentedBin(Integer ownerCompanyId, Integer rentedCompanyId, Integer productId) {
 
         System.out.println("In viewStockInRentedBin, Product ID ============================= : " + productId);
@@ -175,7 +175,27 @@ public class ReceivingPutawaySessionBean {
         return allStocks;
     }
 
-    // View stocks in a warehouse only, for TO use
+    // view all my stocks in bins that I've rented from others
+    public List<Stock> viewAllStockInRentedBin(Integer rentedCompanyId, Integer productId) {
+
+        System.out.println("In viewStockInRentedBin, Product ID ============================= : " + productId);
+
+        List<Stock> allStocks = new ArrayList<>();
+        String stockId = null;
+        Query query = em.createNamedQuery("Stock.findByProductId").setParameter("productId", productId);
+
+        for (Object o : query.getResultList()) {
+            stock = (Stock) o;
+            if (stock.getStorageBin().getRentedCompanyId() == rentedCompanyId) {
+                allStocks.add(stock);
+                System.out.println("Stock: " + stock);
+
+            }
+        }
+        return allStocks;
+    }
+
+    // View stocks in a warehouse only, excluding those which are rented
     public List<Stock> getWarehouseStock(Integer warehouseId, Integer productId) {
 
         System.out.println("In getWarehouseStock, Product ID ============================= : " + productId);
@@ -215,7 +235,7 @@ public class ReceivingPutawaySessionBean {
         return totalQuantity;
     }
 
-    // Count all my available stocks in my company
+    // Count all my available stocks in my company, exclude rented bins
     public Integer countAvailbleStocksInCompany(Integer companyId, Integer productId) {
 
         Integer totalQuantity = 0;
@@ -230,6 +250,24 @@ public class ReceivingPutawaySessionBean {
                 System.out.println("Stock: " + stock);
 
             }
+        }
+
+        return totalQuantity;
+    }
+
+    // count available stock in all rented bins
+    public Integer countAvailbleStockInAllRentedBin(Integer rentedCompanyId, Integer productId) {
+        System.out.println("RPSB =============== countAvailbleStockInAllRentedBin");
+        Stock tempStock = null;
+        Integer totalQuantity = 0;
+
+        List<Stock> stocks = new ArrayList<>();
+        stocks = viewAllStockInRentedBin(rentedCompanyId, productId);
+
+        for (Object o : stocks) {
+            tempStock = (Stock) o;
+            totalQuantity = totalQuantity + tempStock.getAvailableStock();
+            System.out.println("[RPSB] =============== Stock: " + tempStock + "Quantity: " + tempStock.getAvailableStock());
         }
 
         return totalQuantity;

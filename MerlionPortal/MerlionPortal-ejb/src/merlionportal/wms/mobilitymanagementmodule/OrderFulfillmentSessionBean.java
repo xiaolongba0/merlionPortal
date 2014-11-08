@@ -75,6 +75,7 @@ public class OrderFulfillmentSessionBean {
     }
 
     // FOR MANLI
+    // count available stock in 1 rented bins
     public Integer countTotalAvailbleStockInRentedBin(Integer ownerCompanyId, Integer rentedCompanyId, Integer productId) {
         Stock tempStock = null;
         Integer totalQuantity = 0;
