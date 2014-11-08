@@ -287,6 +287,30 @@ public class AssetManagementSessionBean {
 
     }
 
+    // View all bins in A warehouse 
+    public List<StorageBin> viewBinsInAWarehouse(Integer warehouseId) {
+
+        System.out.println("In viewBinsInAWarehouse, Warehouse ID ============================= : " + warehouseId);
+
+        List<StorageBin> allBins = new ArrayList();
+        if (warehouseId != null) {
+            Warehouse warehouse = em.find(Warehouse.class, warehouseId);
+            List<WarehouseZone> allZones = new ArrayList();
+            allZones = viewWarehouseZoneForAWarehouse(warehouseId);
+
+            List<StorageBin> bins = new ArrayList();
+
+            int i = 0;
+            while (i < allZones.size()) {
+                bins = viewStorageBinForWarehouseZone(allZones.get(i).getWarehouseZoneId());
+                allBins.addAll(bins);
+                i++;
+            }
+        }
+        return allBins;
+
+    }
+
     public List<StorageBin> viewAllMyBinsIncludingRented(Integer companyId) {
 
         System.out.println("[IN EJB AMSB, viewAllMyBinsIncludingRented]===================");
@@ -358,7 +382,7 @@ public class AssetManagementSessionBean {
         } else {
             int i = 0;
             while (i < allBins.size()) {
-                if (allBins.get(i).getWarehouseZone().getWarehouse().getCompanyId() == (int)myCompanyId) {
+                if (allBins.get(i).getWarehouseZone().getWarehouse().getCompanyId() == (int) myCompanyId) {
                     myBins.add(allBins.get(i));
                 }
                 i++;
@@ -468,33 +492,6 @@ public class AssetManagementSessionBean {
             bin.setAvailableSpace(0);
             return true;
         }
-    }
-
-    public Integer createWarehouseOrder(Integer myCompanyId, String orderType, Date fulfillmentDate, Date receiveDate, Integer quantity,
-            Integer productId, Boolean internalOrder, Integer servicePOId) {
-
-        System.out.println("[INSIDE EJB]================================Add Warehouse Order");
-
-        if (myCompanyId != null) {
-            WmsOrder order = new WmsOrder();
-
-            order.setMyCompanyId(myCompanyId);
-            order.setOrderType(orderType);
-            order.setFulfillmentDate(fulfillmentDate);
-            order.setReceiveDate(receiveDate);
-            order.setQuantity(quantity);
-            order.setProductId(productId);
-            order.setServicePOId(servicePOId);
-            order.setInternalOrder(internalOrder);
-
-            em.persist(order);
-            em.flush();
-
-            return order.getOrderId();
-        } else {
-            return null;
-        }
-
     }
 
 }
