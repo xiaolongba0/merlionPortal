@@ -23,7 +23,7 @@
         <ui:define name="left">
             <p:menu styleClass="menu-width">
                 <p:submenu label =" WMS HOME" styleClass="display:block">
-                    <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
+                    <p:menuitem value="WMS Home" url="wmsindex.xhtml" />
                 </p:submenu>
                 <p:submenu label =" Warehouse" styleClass="display:block">
                     <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
@@ -51,10 +51,16 @@
                     <p:menuitem value="View Transport Order To Be Procssed" url="viewsourcetransportorder.xhtml"/>
                     <p:menuitem value="All IncomingTransport Orders" url="viewdesttransportorder.xhtml"/>
                 </p:submenu>
-                <p:submenu label="Warehouse Space Request Orders" styleClass="display:block" >
-                    <p:menuitem value="All Pending Request" url="viewallpendingrequests.xhtml"/>
+                <p:submenu label="Internal Warehouse Request Orders" styleClass="display:block" >
+                    <p:menuitem value="Create Internal Warehouse Request" url="createinternalwo.xhtml"/>
+                    <p:menuitem value="View Incoming Internal Orders" url="viewincomingorders.xhtml"/>
+                    <p:menuitem value="View Outgoing Internal Orders" url="viewoutgoingorders.xhtml"/>
                 </p:submenu>
-                <p:submenu label="Warehouse Service Fulfillment Check" >
+                <p:submenu label="External Warehouse Request Orders" styleClass="display:block" >
+                    <p:menuitem value="Create External Warehouse Request" url="createwarehouserequest.xhtml"/>
+                    <p:menuitem value="View All External Orders" url="viewallpendingrequests.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Warehouse Space Fulfillment Check" >
                     <p:menuitem value="Fulfillment Check" url="warehouseservicefulfillmentcheck.xhtml" />
                 </p:submenu>
                 <p:submenu label="View Notification" >
@@ -116,7 +122,7 @@
                         </h:form>
 
                         <h:form id="datafield2" >
-                            <p:dataTable id="stockData" var="stock"  scrollable="true" scrollWidth="150%" scrollHeight="300" sortMode="multiple" editable="true" value="#{stockViewEditManagedBean.stocks}" 
+                            <p:dataTable id="stockData" var="stock"  scrollable="true" scrollWidth="1500" sortMode="multiple" editable="true" value="#{stockViewEditManagedBean.stocks}" 
                                          widgetVar="stockTable"
                                          emptyMessage="No such stock found"
                                          resizableColumns="true"
@@ -155,7 +161,7 @@
                                 <p:column  headerText="Comments" filterStyle="width:60px" filterBy="#{stock.comments}" filterMatchMode="contains">
                                     <p:cellEditor>
                                         <f:facet name="output"><h:outputText value="#{stock.comments}" /></f:facet>
-                                        <f:facet name="input"><p:inputText value="#{stock.comments}" style="width:100%" label="Comments"/></f:facet>
+                                        <f:facet name="input"><p:inputText value="#{stock.comments}" label="Comments"/></f:facet>
                                     </p:cellEditor>
                                 </p:column>
 
@@ -181,7 +187,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column style="width:48px">
+                                <p:column >
                                     <p:commandButton actionListener="#{stockViewEditManagedBean.deleteStock(stock)}" ajax="true" update=":tv:datafield2:totalQuantity :tv:datafield2:stockData" icon="ui-icon-trash"  >
                                         <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this stock?" icon="ui-icon-alert" />
                                     </p:commandButton> 
@@ -190,7 +196,7 @@
                                         <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                                     </p:confirmDialog>
                                 </p:column> 
-                                <p:column style="width:42px">
+                                <p:column >
                                     <p:rowEditor />
                                 </p:column>
                             </p:dataTable>
@@ -238,7 +244,7 @@
                         </h:form>
 
                         <h:form id="datafield" >
-                            <p:dataTable id="stockData" var="stock"  scrollable="true" scrollWidth="150%" scrollHeight="300" sortMode="multiple" editable="true" value="#{stockViewEditManagedBean.stocks}" 
+                            <p:dataTable id="stockData" var="stock"  scrollable="true" scrollWidth="1500"  sortMode="multiple" editable="true" value="#{stockViewEditManagedBean.stocks}" 
                                          widgetVar="stockTable"
                                          emptyMessage="No such stock found"
                                          resizableColumns="true"
