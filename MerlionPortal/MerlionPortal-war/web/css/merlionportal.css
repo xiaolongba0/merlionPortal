@@ -265,6 +265,10 @@ body{
 .no-border{
     border:none;
 }
+.ui-breadcrumb{
+    background: transparent;
+    border:0px;
+}
 
 h2.system-welcome{  
 }
