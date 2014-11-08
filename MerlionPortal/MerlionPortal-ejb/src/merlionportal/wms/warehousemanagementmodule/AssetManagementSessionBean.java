@@ -370,7 +370,7 @@ public class AssetManagementSessionBean {
 
     // view rented bins from 1 company only
     // I AM THE RENTED COMPANY
-    public List<StorageBin> viewRentedBins(Integer myCompanyId, Integer rentedCompanyId) {
+    public List<StorageBin> viewRentedBinsInOneCompany(Integer myCompanyId, Integer rentedCompanyId) {
 
         Query query = em.createNamedQuery("StorageBin.findByRentedCompanyId").setParameter("rentedCompanyId", rentedCompanyId);
         List<StorageBin> allBins = new ArrayList<>();
