@@ -82,8 +82,8 @@ public class LoginManagedBean {
 
                             if (uamsb.checkLocked((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"))) {
 //                              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "User Locked!", "Please try another account"));
-                                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
-                                RequestContext.getCurrentInstance().execute("userLocked()");
+                                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml?isLocked=yes");
+//                                RequestContext.getCurrentInstance().execute("userLocked()");
                             } //                            check if user needs reset
                             else if (uamsb.checkResetPasswordUponLogin((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"))) {
                                 FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/changepassword.xhtml");

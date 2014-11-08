@@ -6,7 +6,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">    
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">    
 
     <ui:composition template="templates/template.xhtml">
         <ui:param name="pageName" value="Index" />
@@ -17,7 +18,7 @@
                 <link rel="stylesheet" href="${request.contextPath}/css/login.css" type="text/css" />
             </ui:insert>
         </ui:define>
-        
+
 
         <!-- Override body -->
         <ui:define name="body">
@@ -30,17 +31,17 @@
                         </div>
                     </ui:insert>
                     <!-- Content -->
-                    
+
                 </div>
                 <!-- Footer -->
-<!--                <ui:insert name="footer" >
-                    <ui:include src="/templates/snippets/footer.xhtml" />
-                </ui:insert>-->
+                <!--                <ui:insert name="footer" >
+                                    <ui:include src="/templates/snippets/footer.xhtml" />
+                                </ui:insert>-->
             </h:panelGroup>
             <script type="text/javascript">
                 PrimeFaces.validator['custom.emailValidator'] = {
                     pattern: /\S+@\S+/,
-                    validate: function(element, value) {
+                    validate: function (element, value) {
                         //use element.data() to access validation metadata, in this case there is none.
                         if (!this.pattern.test(value)) {
                             throw {
@@ -50,8 +51,18 @@
                         }
                     }
                 };
-                
+
             </script>
+            <c:if test="${not empty param.isLocked}">
+                <c:if test="${param.isLocked == 'yes'}">
+                    <script type="text/javascript">
+                        $(document).ready(function(){
+                           userLocked(); 
+                        });
+                    </script>
+                </c:if>
+            </c:if>
+
         </ui:define>
 
     </ui:composition>
