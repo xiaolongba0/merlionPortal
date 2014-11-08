@@ -20,67 +20,74 @@
             </ui:insert>
         </ui:define>
         <ui:define name="left">
-            <p:menu>
-                <p:submenu label ="Map">
-                    <p:submenu label="Node" >
-                        <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
-                        <p:menuitem value="View All Nodes" url="viewallnode.xhtml" />
+            <h:form id="formMain">
+                <p:menu>
+                    <p:submenu label ="Map">
+                        <p:submenu label="Node" >
+                            <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
+                            <p:menuitem value="View All Nodes" url="viewallnode.xhtml" />
+                        </p:submenu>
+                        <p:submenu label="Route" >
+                            <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
+                            <p:menuitem value="View All Routes" url="viewallroute.xhtml"/>
+                        </p:submenu>
                     </p:submenu>
-                    <p:submenu label="Route" >
-                        <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
-                        <p:menuitem value="View All Routes" url="viewallroute.xhtml"/>
+                    <p:submenu label =" Manage Your Transportation">
+                        <p:menuitem value="TMS Home" url="tmsindex.xhtml"  style="background-color: lavender"/>
                     </p:submenu>
-                </p:submenu>
-                <p:submenu label =" Manage Your Transportation">
-                    <p:menuitem value="TMS Home" url="tmsindex.xhtml"  style="background-color: lavender"/>
-                </p:submenu>
-                <p:submenu label="Location" >
-                    <p:menuitem value="Add A Location" url="addnewlocation.xhtml"/>
-                    <p:menuitem value="View All Locations" url="viewalllocation.xhtml"/>
-                </p:submenu>
-                <p:submenu label="Transportation Asset" >
-                    <p:menuitem value="Add Transportation Assets" url="addnewtasset.xhtml" />
-                    <p:menuitem value="View Transportation Assets" url="viewalltasset.xhtml" />
-                </p:submenu>
-                <p:submenu label="Asset Schedule" >
-                    <p:menuitem value="Add A Asset Schedule" url="addnewtassetschedule.xhtml" />
-                    <p:menuitem value="View All Schedule" url="viewalltassetschedule.xhtml" />
-                </p:submenu>
+                    <p:submenu label="Location" >
+                        <p:menuitem value="Add A Location" url="addnewlocation.xhtml"/>
+                        <p:menuitem value="View All Locations" url="viewalllocation.xhtml"/>
+                    </p:submenu>
+                    <p:submenu label="Transportation Asset" >
+                        <p:menuitem value="Add Transportation Assets" url="addnewtasset.xhtml" />
+                        <p:menuitem value="View Transportation Assets" url="viewalltasset.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Asset Schedule" >
+                        <p:menuitem value="Add A Asset Schedule" url="addnewtassetschedule.xhtml" />
+                        <p:menuitem value="View All Schedule" url="viewalltassetschedule.xhtml" />
+                    </p:submenu>
 
-                <p:submenu label="Maintenance" >
-                    <p:menuitem value="Create Maintenance" url="addnewmaintenancelog.xhtml"  />
-                    <p:menuitem value="View All Maintenance" url="viewallmaintenancelog.xhtml" />
-                </p:submenu>
-                <p:submenu label="Operator" >
-                    <p:menuitem value="Add A Operator" url="addnewoperator.xhtml"  />
-                    <p:menuitem value="View All Operator" url="viewalloperator.xhtml" />
-                </p:submenu>
-                <p:submenu label="Operator Schedule" >
-                    <p:menuitem value="Add A Operator Schedule" url="addnewoperatorschedule.xhtml" />
-                    <p:menuitem value="View All Operator Schedule" url="viewalloperatorschedule.xhtml" />
-                </p:submenu>
+                    <p:submenu label="Maintenance" >
+                        <p:menuitem value="Create Maintenance" url="addnewmaintenancelog.xhtml"  />
+                        <p:menuitem value="View All Maintenance" url="viewallmaintenancelog.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Operator" >
+                        <p:menuitem value="Add A Operator" url="addnewoperator.xhtml"  />
+                        <p:menuitem value="View All Operator" url="viewalloperator.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Operator Schedule" >
+                        <p:menuitem value="Add A Operator Schedule" url="addnewoperatorschedule.xhtml" />
+                        <p:menuitem value="View All Operator Schedule" url="viewalloperatorschedule.xhtml" />
+                    </p:submenu>
 
-                <p:submenu label="Transportation Order" >
-                    <p:menuitem value="Create Transportation Order" url="addnewtorder.xhtml" />
-                    <p:menuitem value="View All Orders" url="viewalltorder.xhtml" />
-                    <p:menuitem value="View Order Details" url="viewalllog.xhtml"/>
-                </p:submenu>
-                <p:submenu label="Transportation Order" >
-                    <p:menuitem value="Create Log For Order" url="addnewlog.xhtml" />
-                </p:submenu>
-                <p:submenu label="Transportation Request" >
-                    <p:menuitem value="Create A Transportation Request" url="addnewrequest.xhtml" />
-                    <p:menuitem value="View All Request" url="viewallrequest.xhtml" />
-                </p:submenu>
-                <p:submenu label="Transportation Service Fulfillment Check" >
-                    <p:menuitem value="Fulfillment Check" url="transportationservicefulfillmentcheck.xhtml" />
-                </p:submenu>
+                    <p:submenu label="Transportation Order" >
+                        <p:menuitem value="Create Transportation Order" url="addnewtorder.xhtml" />
+                        <p:menuitem value="View All Orders" url="viewalltorder.xhtml" />
+                        <p:menuitem value="View Order Details" url="viewalllog.xhtml"/>
+                    </p:submenu>
+                    <p:submenu label="Transportation Order" >
+                        <p:menuitem value="Create Log For Order" url="addnewlog.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Transportation Request" >
+                        <p:menuitem value="Create A Transportation Request" url="addnewrequest.xhtml" />
+                        <p:menuitem value="View All Request" url="viewallrequest.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Transportation Service Fulfillment Check" >
+                        <p:menuitem value="Fulfillment Check" url="transportationservicefulfillmentcheck.xhtml" />
+                    </p:submenu>
 
-            </p:menu>
+                </p:menu>
+            </h:form>
         </ui:define>
 
-        <ui:define name="right">       
-            <h:form id="formMain">
+        <ui:define name="right">   
+            <p:breadCrumb>
+                <p:menuitem value="CRMS Home" url="crmsindex.xhtml" />
+                <p:menuitem value="View All Orders" url="viewallservicepos.xhtml" />
+                <p:menuitem value="Generate Service Invoice" url="generateserviceinvoice.xhtml" />
+            </p:breadCrumb>
+            <h:form id="form">
 
                 <br/>
                 <p:panel id="panel" header="Add New Operator">
@@ -92,102 +99,65 @@
                             <h:outputText value="" />
                         </f:facet>
                     </p:ajaxStatus>
-                    <p:panelGrid>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="operatorName" style="font-weight: bold" value="First Name: " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="Operator Name: " requiredMessage="Operator Name is required." id="operatorName" value="#{tOperatorManagerBean.operatorName}">
-                                    <f:validateLength minimum="4" maximum="40" />
-                                </p:inputText>
-                            </p:column>                       
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="operatorLastName" style="font-weight: bold" value="Last Name: " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="Operator Name: " requiredMessage="Operator Name is required." id="operatorName" value="#{tOperatorManagerBean.operatorLastName}">
-                                    <f:validateLength minimum="4" maximum="40" />
-                                </p:inputText>
-                            </p:column>                       
-                        </p:row>
+                    <h:panelGrid columns="3" >
 
-                        <p:row>
-                            <p:outputLabel for="opeartorGender" value="Gender" />
-                            <p:selectOneRadio id="operatorGender" value="#{tOperatorManagerBean.operatorGender}">
-                                <f:selectItem itemLabel="Male" itemValue="Xbox One" />
-                                <f:selectItem itemLabel="Female" itemValue="PS+" />
-                            </p:selectOneRadio>                           
-                        </p:row>  
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="emailAddress" style="font-weight: bold" value="Email Address: " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="Email Address: " requiredMessage="Email address is required." id="operatorName" value="#{tOperatorManagerBean.emailaddress}">
-                                    <f:validateLength minimum="4" maximum="40" />
-                                </p:inputText>
-                            </p:column>                       
-                        </p:row>
+                        <p:outputLabel for="operatorName" style="font-weight: bold" value="First Name: " /><p:spacer width="20" height="20" />
+                        <p:inputText required="true" label="Operator Name: " requiredMessage="Operator Name is required." id="operatorName" value="#{tOperatorManagerBean.operatorName}">
+                            <f:validateLength minimum="4" maximum="40" />
+                        </p:inputText>
 
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="password" style="font-weight: bold" value="Password: " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="Password: " requiredMessage="Password is required." id="operatorName" value="#{tOperatorManagerBean.password}">
-                                    <f:validateLength minimum="4" maximum="40" />
-                                </p:inputText>
-                            </p:column>                       
-                        </p:row>
+                        <p:outputLabel for="operatorLastName" style="font-weight: bold" value="Last Name: " /><p:spacer width="20" height="20" />
+                        <p:inputText required="true" label="Operator Name: " requiredMessage="Operator Name is required." id="operatorLastName" value="#{tOperatorManagerBean.operatorLastName}">
+                            <f:validateLength minimum="4" maximum="40" />
+                        </p:inputText>
 
 
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="contactNumber" style="font-weight: bold" value="Contact Number: " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="Contact Number: " requiredMessage="Contact number is required." id="operatorName" value="#{tOperatorManagerBean.contactNumber}">
-                                    <f:validateLength minimum="4" maximum="40" />
-                                </p:inputText>
-                            </p:column>                       
-                        </p:row>
 
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="birthday" value="Birthday" /><p:spacer width="20" height="20" /></p:column>
-                            <p:column>
-                                <p:calendar id="birthday" required="true" requiredMessage="Birthday is required" value="#{tOperatorManagerBean.birthday}" pattern="dd-MM-yyyy" mask="true" />
-                            </p:column>
-                        </p:row>
 
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="operatorType" style="font-weight: bold" value="Operator Type:  " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="Operator Type:" requiredMessage="Operator Type is required." id="operatorType" value="#{tOperatorManagerBean.operatorType}">
-                                    <f:validateLength minimum="1" maximum="19" />
-                                </p:inputText>
-                            </p:column>                             
-                        </p:row>  
+                        <p:outputLabel value="Gender: " /><p:spacer width="20" height="20" />
+                        <p:selectOneRadio  value="#{tOperatorManagerBean.gender}">
+                            <f:selectItem itemLabel="Male" itemValue="Male" />
+                            <f:selectItem itemLabel="Female" itemValue="Female" />
+                        </p:selectOneRadio>                           
 
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="operatorStatus" style="font-weight: bold" value="Operator Status: " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="Operator Status: " requiredMessage="Operator Status: is required." id="operatorStatus" value="#{tOperatorManagerBean.operatorStatus}">
-                                    <f:validateLength minimum="1" maximum="19" />
-                                </p:inputText>
-                            </p:column>                             
-                        </p:row>  
 
-                    </p:panelGrid>
+                        <p:outputLabel for="emailAddress" style="font-weight: bold" value="Email Address: " /><p:spacer width="20" height="20" />
+                        <p:inputText required="true" label="Email Address: " requiredMessage="Email address is required." id="emailAddress" value="#{tOperatorManagerBean.emailaddress}">
+                            <f:validateLength minimum="4" maximum="40" />
+                        </p:inputText>
+
+                        <p:outputLabel for="password" style="font-weight: bold" value="Password: " /><p:spacer width="20" height="20" />
+                        <p:inputText required="true" label="Password: " requiredMessage="Password is required." id="password" value="#{tOperatorManagerBean.password}">
+                            <f:validateLength minimum="4" maximum="40" />
+                        </p:inputText>
+
+
+
+
+                        <p:outputLabel for="contactNumber" style="font-weight: bold" value="Contact Number: " /><p:spacer width="20" height="20" />
+                        <p:inputText required="true" label="Contact Number: " requiredMessage="Contact number is required." id="contactNumber" value="#{tOperatorManagerBean.contactNumber}">
+                            <f:validateLength minimum="4" maximum="40" />
+                        </p:inputText>
+
+
+                        <p:outputLabel for="birthday" value="Birthday" /><p:spacer width="20" height="20" />
+                        <p:calendar id="birthday" required="true" requiredMessage="Birthday is required" value="#{tOperatorManagerBean.birthday}" pattern="dd-MM-yyyy" mask="true" />
+
+                        <h:outputLabel for="operatorType" style="font-weight: bold" value="Operator Type:  " /><p:spacer width="20" height="20" />
+                        <p:inputText required="true" label="Operator Type:" requiredMessage="Operator Type is required." id="operatorType" value="#{tOperatorManagerBean.operatorType}">
+                            <f:validateLength minimum="1" maximum="19" />
+                        </p:inputText>
+
+                        <h:outputLabel for="operatorStatus" style="font-weight: bold" value="Operator Status: " /><p:spacer width="20" height="20" />
+                        <p:inputText required="true" label="Operator Status: " requiredMessage="Operator Status: is required." id="operatorStatus" value="#{tOperatorManagerBean.operatorStatus}">
+                            <f:validateLength minimum="1" maximum="19" />
+                        </p:inputText>
+
+
+                    </h:panelGrid>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                    <p:commandButton id="btn" value="Create New Operator" update="formMain" actionListener="#{tOperatorManagerBean.createNewOperator(company)}" ajax="true" >
+                    <br></br>
+                    <p:commandButton id="btn" value="Create New Operator" update="form" actionListener="#{tOperatorManagerBean.createNewOperator(company)}" ajax="true" >
                     </p:commandButton>
 
                 </p:panel>

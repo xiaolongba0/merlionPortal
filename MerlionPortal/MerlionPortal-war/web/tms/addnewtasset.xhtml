@@ -11,77 +11,83 @@
         <c:set var="import" value="templateadmin.xhtml"/>
     </c:if>
     <ui:composition template="${root}/templates/${import}">
-        <ui:param name="pageName" value="WMS home" />
+        <ui:param name="pageName" value="Add new tAsset" />
 
         <ui:define name="more-imports">
             <ui:insert>
                 <!--                import CSS style or Javascript here, if any-->
+
             </ui:insert>
         </ui:define>
-        
-
-       <ui:define name="left">
- <p:menu>
-                <p:submenu label ="Map">
-                    <p:submenu label="Node" >
-                        <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
-                        <p:menuitem value="View All Nodes" url="viewallnode.xhtml" />
-                    </p:submenu>
-                    <p:submenu label="Route" >
-                        <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
-                        <p:menuitem value="View All Routes" url="viewallroute.xhtml"/>
-                    </p:submenu>
-                </p:submenu>
-                <p:submenu label =" Manage Your Transportation">
-                    <p:menuitem value="TMS Home" url="tmsindex.xhtml"  style="background-color: lavender"/>
-                </p:submenu>
-                <p:submenu label="Location" >
-                    <p:menuitem value="Add A Location" url="addnewlocation.xhtml"/>
-                    <p:menuitem value="View All Locations" url="viewalllocation.xhtml"/>
-                </p:submenu>
-                <p:submenu label="Transportation Asset" >
-                    <p:menuitem value="Add Transportation Assets" url="addnewtasset.xhtml" />
-                    <p:menuitem value="View Transportation Assets" url="viewalltasset.xhtml" />
-                </p:submenu>
-                <p:submenu label="Asset Schedule" >
-                    <p:menuitem value="Add A Asset Schedule" url="addnewtassetschedule.xhtml" />
-                    <p:menuitem value="View All Schedule" url="viewalltassetschedule.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="Maintenance" >
-                    <p:menuitem value="Create Maintenance" url="addnewmaintenancelog.xhtml"  />
-                    <p:menuitem value="View All Maintenance" url="viewallmaintenancelog.xhtml" />
-                </p:submenu>
-                <p:submenu label="Operator" >
-                    <p:menuitem value="Add A Operator" url="addnewoperator.xhtml"  />
-                    <p:menuitem value="View All Operator" url="viewalloperator.xhtml" />
-                </p:submenu>
-                <p:submenu label="Operator Schedule" >
-                    <p:menuitem value="Add A Operator Schedule" url="addnewoperatorschedule.xhtml" />
-                    <p:menuitem value="View All Operator Schedule" url="viewalloperatorschedule.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="Transportation Order" >
-                    <p:menuitem value="Create Transportation Order" url="addnewtorder.xhtml" />
-                    <p:menuitem value="View All Orders" url="viewalltorder.xhtml" />
-                    <p:menuitem value="View Order Details" url="viewalllog.xhtml"/>
-                </p:submenu>
-                <p:submenu label="Transportation Order" >
-                    <p:menuitem value="Create Log For Order" url="addnewlog.xhtml" />
-                </p:submenu>
-                <p:submenu label="Transportation Request" >
-                    <p:menuitem value="Create A Transportation Request" url="addnewrequest.xhtml" />
-                    <p:menuitem value="View All Request" url="viewallrequest.xhtml" />
-                </p:submenu>
-                <p:submenu label="Transportation Service Fulfillment Check" >
-                    <p:menuitem value="Fulfillment Check" url="transportationservicefulfillmentcheck.xhtml" />
-                </p:submenu>
-
-            </p:menu>
-        </ui:define>
-        
-         <ui:define name="right">       
+        <ui:define name="left">
             <h:form id="formMain">
+                <p:menu>
+                    <p:submenu label ="Map">
+                        <p:submenu label="Node" >
+                            <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
+                            <p:menuitem value="View All Nodes" url="viewallnode.xhtml" />
+                        </p:submenu>
+                        <p:submenu label="Route" >
+                            <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
+                            <p:menuitem value="View All Routes" url="viewallroute.xhtml"/>
+                        </p:submenu>
+                    </p:submenu>
+                    <p:submenu label =" Manage Your Transportation">
+                        <p:menuitem value="TMS Home" url="tmsindex.xhtml"  style="background-color: lavender"/>
+                    </p:submenu>
+                    <p:submenu label="Location" >
+                        <p:menuitem value="Add A Location" url="addnewlocation.xhtml"/>
+                        <p:menuitem value="View All Locations" url="viewalllocation.xhtml"/>
+                    </p:submenu>
+                    <p:submenu label="Transportation Asset" >
+                        <p:menuitem value="Add Transportation Assets" url="addnewtasset.xhtml" />
+                        <p:menuitem value="View Transportation Assets" url="viewalltasset.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Asset Schedule" >
+                        <p:menuitem value="Add A Asset Schedule" url="addnewtassetschedule.xhtml" />
+                        <p:menuitem value="View All Schedule" url="viewalltassetschedule.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Maintenance" >
+                        <p:menuitem value="Create Maintenance" url="addnewmaintenancelog.xhtml"  />
+                        <p:menuitem value="View All Maintenance" url="viewallmaintenancelog.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Operator" >
+                        <p:menuitem value="Add A Operator" url="addnewoperator.xhtml"  />
+                        <p:menuitem value="View All Operator" url="viewalloperator.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Operator Schedule" >
+                        <p:menuitem value="Add A Operator Schedule" url="addnewoperatorschedule.xhtml" />
+                        <p:menuitem value="View All Operator Schedule" url="viewalloperatorschedule.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Transportation Order" >
+                        <p:menuitem value="Create Transportation Order" url="addnewtorder.xhtml" />
+                        <p:menuitem value="View All Orders" url="viewalltorder.xhtml" />
+                        <p:menuitem value="View Order Details" url="viewalllog.xhtml"/>
+                    </p:submenu>
+                    <p:submenu label="Transportation Order" >
+                        <p:menuitem value="Create Log For Order" url="addnewlog.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Transportation Request" >
+                        <p:menuitem value="Create A Transportation Request" url="addnewrequest.xhtml" />
+                        <p:menuitem value="View All Request" url="viewallrequest.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Transportation Service Fulfillment Check" >
+                        <p:menuitem value="Fulfillment Check" url="transportationservicefulfillmentcheck.xhtml" />
+                    </p:submenu>
+
+                </p:menu>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">   
+            <p:breadCrumb>
+                <p:menuitem value="CRMS Home" url="crmsindex.xhtml" />
+                <p:menuitem value="View All Orders" url="viewallservicepos.xhtml" />
+                <p:menuitem value="Generate Service Invoice" url="generateserviceinvoice.xhtml" />
+            </p:breadCrumb>
+            <h:form id="form">
 
             <p:panel id="panel" header="Add Transportation Asset">
                 <p:ajaxStatus style="width:16px;height:16px;">
@@ -175,7 +181,7 @@
                 </p:panelGrid>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 
-                <p:commandButton id="btn" value="Create New Transportation Asset" update="panel" actionListener="#{tAssetManagedBean.createNewTAsset}" ajax="true" />
+                <p:commandButton id="btn" value="Create New Transportation Asset" update="form" actionListener="#{tAssetManagedBean.createNewTAsset}" ajax="true" />
             </p:panel>
             </h:form>
         </ui:define>
