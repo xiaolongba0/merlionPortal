@@ -359,7 +359,7 @@ ol.d {
 }
 .user-info{
     background-color: #ddd;
-    border-radius: 8px;
+    border-radius: 6px 6px 0px 0px;
     width:100%;
     height:auto;
     padding:10px;
@@ -386,4 +386,10 @@ ol.d {
     font-size:14px;
     margin-right: 8px;
     text-decoration: underline;
+}
+.ui-menu.ui-widget{
+    border-radius: 0px 0px 6px 6px;
+}
+.ui-breadcrumb ul li .ui-menuitem-link{
+    margin-top:0px;
 }
