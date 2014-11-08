@@ -4,7 +4,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
 
     <body>
         
@@ -14,20 +15,25 @@
                 <div class="avatar"></div>
                 <div class="user-info-right">
                     <div class="user-name title-font">${dashboardBean.loginedUser.firstName}</div>
-                    <div class="user-company">${dashboardBean.loginedUser.companycompanyId.name}</div>
+                    <div class="user-company">
+                        <span class="glyphicon glyphicon-lock"></span>
+                        ${dashboardBean.loginedUser.companycompanyId.name}
+                    </div>
                     <br/>
-                    <span class="inbox"><a href="${request.contextPath}/admin/message.xhtml">Message</a></span>
-                    <span class="viewlog"><a href="${request.contextPath}/viewsystemlog.xhtml">View log</a></span>
+                    <a href="${request.contextPath}/admin/message.xhtml" title="Message"><span class="inbox glyphicon glyphicon-envelope"></span></a>
+                    <a href="${request.contextPath}/viewsystemlog.xhtml" title="View log"><span class="viewlog glyphicon glyphicon-list-alt"></span></a>
+  
                 </div>
 
-                <hr />
+                <hr/>
                 <ul class="role-list">
                     <c:if test="#{dashboardBean.loginedUser.userType == 'superuser'}">
-                        <li>Merlion Portal Superuser</li>
+                        <li><span class="glyphicon glyphicon-unchecked"></span>Merlion Portal Superuser</li>
                     </c:if>
                     <c:forEach items="#{dashboardBean.loginedUser.userRoleList}" var="role" rendered="#{dashboardBean.loginedUser.userRoleList ne null}" >
-                        <li>#{role.roleName}</li>
+                        <li><span class="glyphicon glyphicon-unchecked"></span>#{role.roleName}</li>
                     </c:forEach>
+                    
                 </ul>
 
             </div>

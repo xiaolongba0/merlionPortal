@@ -40,8 +40,8 @@
 .nav>li>a:hover, .nav>li>a:focus{
     color: #d96f70 !important;
 }
-.navbar-nav{
-    margin: 5px;
+.navbar-nav>li>a{
+    line-height: 30px;
 }
 
 .form-control-spacing{
@@ -249,7 +249,7 @@ body{
 .footer, .push {
     height: 80px; /* .push must be the same height as .footer */
 }
-.footer>.container>ul>li>a:hover, .nav>li>a:focus{
+.footer>.container>ul>li>a:hover, .footer>.container>.nav>li>a:focus{
     color:white !important;
 }
 .footer>.container>ul>li{
@@ -352,26 +352,22 @@ ol.d {
     width: 70%;
 }
 
-//user box
-.user-info>.row{
-    margin-right:0;
-    margin-left:0;
-}
 .user-info{
-    background-color: #ddd;
+    background-color: #E7e7e7;
     border-radius: 6px 6px 0px 0px;
     width:100%;
     height:auto;
     padding:10px;
+}
+.user-info-right{
+    display:inline-block;
+    padding-left:10px;
 }
 .avatar{
     background: url('../img/avatar.png') no-repeat;
     display:inline-block;
     height:75px;
     width:63px;
-}
-.user-info-right{
-    display:inline-block;
 }
 .user-name{
     text-align: left;
@@ -383,11 +379,33 @@ ol.d {
     margin-top:-4px;
 }
 .inbox, .viewlog{
-    font-size:14px;
-    margin-right: 8px;
-    text-decoration: underline;
+    font-size:17px;
+    text-decoration: none;
 }
+.user-info>hr{
+    margin-top:10px;
+    margin-bottom:10px;
+}
+.user-info>.role-list{
+    list-style: none;
+}
+.user-info>.role-list>li>.glyphicon{
+    padding-right:5px;
+}
+.role-list>li{
+    font-size:13px;
+}
+.user-info-right>a{
+    color: #732829;
+}
+.user-info-right>a:hover{
+    color: maroon;
+}
+
+
 .ui-menu.ui-widget{
+    -webkit-border-radius: 0px 0px 6px 6px !important;
+    -moz-border-radius: 0px 0px 6px 6px;
     border-radius: 0px 0px 6px 6px;
 }
 .ui-breadcrumb ul li .ui-menuitem-link{
