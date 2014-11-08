@@ -103,6 +103,9 @@ public class TransportOrderSessionBean {
             List<Date> createdDates = new ArrayList<>();
             List<Date> expiryDates = new ArrayList<>();
             List<String> stockNames = new ArrayList<>();
+
+            List<Integer> tempStockId = new ArrayList<>();
+            List<Integer> tempStockQuantity = new ArrayList<>();
             Integer newTotalQ = totalQuantity;
             Integer tempTotalQuantity = totalQuantity;
 
@@ -117,11 +120,16 @@ public class TransportOrderSessionBean {
                     stockNames.add(tempStock.getName());
                     expiryDates.add(tempStock.getExpiryDate());
                     createdDates.add(tempStock.getCreatedDate());
-                    // reserve the stock
-                    rpsb.reserveStock(tempStock.getStockId(), tempStock.getQuantity());
+
+                    // data to reserve the stock
+                    tempStockId.add(tempStock.getStockId());
+                    tempStockQuantity.add(tempStock.getQuantity());
                     System.out.println(count + " SourceBinId1: " + tempStock.getStorageBin().getStorageBinId());
                 } else {
-                    rpsb.reserveStock(tempStock.getStockId(), newTotalQ);
+                    // data to reserve the stock
+                    tempStockId.add(tempStock.getStockId());
+                    tempStockQuantity.add(tempStock.getQuantity());
+
                     sourceQuantity.add(newTotalQ);
                     newTotalQ = 0;
                     stockNames.add(tempStock.getName());
@@ -223,6 +231,18 @@ public class TransportOrderSessionBean {
             em.merge(transportOrder);
             em.flush();
 
+            // set reserve stock space
+            int count2 = 0;
+            while (count2 < tempStockId.size()) {
+
+                System.out.println("tempStock ID" + tempStockId.get(count2));
+                System.out.println("Reserved Quantity : " + tempStockQuantity.get(count2));
+                boolean result = rpsb.reserveStock(tempStockId.get(count2), tempStockQuantity.get(count2));
+                if (!result) {
+                    return false;
+                }
+                count2++;
+            }
             // set reserve bin space
             int n = 0;
             while (n < destBinIds.size()) {
