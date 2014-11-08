@@ -11,11 +11,12 @@
     <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
         <c:set var="import" value="templateadmin.xhtml"/>
     </c:if>
-    <ui:composition template="${root}/templates/${import}">        <ui:param name="pageName" value="WMS home" />
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="WMS home" />
 
         <ui:define name="more-imports">
             <ui:insert>
-                              <link rel="stylesheet" href="${request.contextPath}/css/mrp.css" type="text/css" />
+                <link rel="stylesheet" href="${request.contextPath}/css/mrp.css" type="text/css" />
             </ui:insert>
         </ui:define>
 
@@ -101,7 +102,7 @@
                         </p:row>
                     </p:panelGrid>
 
-                    <p:dataTable id="storagebinData" var="storagebin"  scrollable="true" scrollWidth="150%" scrollHeight="300" sortMode="multiple" editable="true" value="#{storageBinViewEditManagedBean.bins}" 
+                    <p:dataTable id="storagebinData" var="storagebin"  scrollable="true" scrollWidth="1500" sortMode="multiple" editable="true" value="#{storageBinViewEditManagedBean.bins}" 
                                  widgetVar="storageBinTable"
                                  emptyMessage="No Storage Bin found"
                                  resizableColumns="true"
@@ -124,14 +125,14 @@
                         <p:column  filterBy="#{storagebin.binName}" filterStyle="width:70px" filterMatchMode="contains" headerText="Bin Name">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{storagebin.binName}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{storagebin.binName}" style="width:100%" label="Bin Name"/></f:facet>
+                                <f:facet name="input"><p:inputText value="#{storagebin.binName}"  label="Bin Name"/></f:facet>
                             </p:cellEditor>
                         </p:column>  
 
                         <p:column  headerText="Description" filterBy="#{storagebin.description}" filterStyle="width:70px" filterMatchMode="contains">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{storagebin.description}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{storagebin.description}" style="width:100%" label="Description"/></f:facet>
+                                <f:facet name="input"><p:inputText value="#{storagebin.description}"  label="Description"/></f:facet>
                             </p:cellEditor>
                         </p:column>
 

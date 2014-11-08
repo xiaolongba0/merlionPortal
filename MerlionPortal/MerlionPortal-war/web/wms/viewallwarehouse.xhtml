@@ -69,11 +69,11 @@
                 <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
             </p:breadCrumb>
             <h:form id="formMain">
-                <p:dataTable id="warehouse" var="warehouse"  scrollable="true" scrollWidth="150%" scrollHeight="300" sortMode="multiple" editable="true" value="#{warehouseViewEditManagedBean.warehouses}" 
+                <p:dataTable id="warehouse" var="warehouse" sortMode="multiple" editable="true" value="#{warehouseViewEditManagedBean.warehouses}" 
                              widgetVar="warehousesTable"
                              emptyMessage="No warehouse found"
                              resizableColumns="true"
-                             rowKey="#{warehouse.warehouseId}">
+                             rowKey="#{warehouse.warehouseId}" scrollable="true" scrollWidth="1400" >
 
                     <f:facet name="header">                    
                         <p:outputPanel>
@@ -92,14 +92,14 @@
                     <p:column  filterBy="#{warehouse.name}" filterMatchMode="contains" headerText="Name Of Warehouse">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{warehouse.name}" /></f:facet>
-                            <f:facet name="input"><p:inputText value="#{warehouse.name}" style="width:100%" label="Name Of Warehouse"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{warehouse.name}"  label="Name Of Warehouse"/></f:facet>
                         </p:cellEditor>
                     </p:column>
 
                     <p:column  filterBy="#{warehouse.country}" filterMatchMode="contains" headerText="Country">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{warehouse.country}" /></f:facet>
-                            <f:facet name="input"><p:inputText value="#{warehouse.country}" style="width:100%" label="Country"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{warehouse.country}"  label="Country"/></f:facet>
 
                         </p:cellEditor>
                     </p:column>
@@ -107,32 +107,32 @@
                     <p:column  filterBy="#{warehouse.city}" filterMatchMode="contains" headerText="City">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{warehouse.city}" /></f:facet>
-                            <f:facet name="input"><p:inputText value="#{warehouse.city}" style="width:100%" label="City"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{warehouse.city}" label="City"/></f:facet>
                         </p:cellEditor>
                     </p:column>
 
                     <p:column  filterBy="#{warehouse.street}" filterMatchMode="contains" headerText="Street">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{warehouse.street}" /></f:facet>
-                            <f:facet name="input"><p:inputText value="#{warehouse.street}" style="width:100%" label="Street"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{warehouse.street}" label="Street"/></f:facet>
                         </p:cellEditor>
                     </p:column>
 
                     <p:column  filterBy="#{warehouse.zipcode}" filterMatchMode="contains" headerText="ZipCode">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{warehouse.zipcode}" /></f:facet>
-                            <f:facet name="input"><p:inputText value="#{warehouse.zipcode}" style="width:100%" label="ZipCode"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{warehouse.zipcode}"  label="ZipCode"/></f:facet>
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column  headerText="Description" filterBy="#{warehouse.description}" filterMatchMode="contains">
+                    <p:column headerText="Description" filterBy="#{warehouse.description}" filterMatchMode="contains">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{warehouse.description}" /></f:facet>
-                            <f:facet name="input"><p:inputText value="#{warehouse.description}" style="width:100%" label="Description"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{warehouse.description}"  label="Description"/></f:facet>
                         </p:cellEditor>
                     </p:column> 
 
-                    <p:column style="width:48px">
+                    <p:column  >
                         <p:commandButton action="#{warehouseViewEditManagedBean.deleteWarehouse(warehouse)}" update="warehouse" icon = "ui-icon-trash">
                             <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this warehouse?" icon="ui-icon-alert" />
                         </p:commandButton> 
@@ -142,7 +142,7 @@
                         </p:confirmDialog>
                     </p:column>
 
-                    <p:column style="width:40px">
+                    <p:column >
                         <p:rowEditor />
                     </p:column>
 
