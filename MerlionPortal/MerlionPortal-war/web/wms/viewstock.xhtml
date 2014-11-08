@@ -64,128 +64,265 @@
         </ui:define>
 
         <ui:define name="right">
-            <p:panel id="panel" header=" View Stocks">
-                <h:form id="formMain">
 
-                    <p:ajaxStatus style="width:16px;height:16px;">
-                        <f:facet name="start">
-                            <h:graphicImage value="/img/load.gif" />
-                        </f:facet>
-                        <f:facet name="complete">
-                            <h:outputText value="" />
-                        </f:facet>
-                    </p:ajaxStatus>
+            <p:tabView id = "tv">
+                <p:tab title="View Available Stocks in a Warehouse">
 
-                    <p:selectOneRadio id="myRadioID" value="#{stockViewEditManagedBean.radioValue}" layout="custom">
-                        <f:selectItem itemLabel="Choose ID" itemValue="1"/>
-                        <f:selectItem itemLabel="Enter " itemValue="2"/>
-                        <p:ajax process="@this" update="formMain" />
-                    </p:selectOneRadio>
+                    <p:panel id="panel2" header=" View Stocks">
+                        <h:form id="formMain2">
+                            <p:ajaxStatus style="width:16px;height:16px;">
+                                <f:facet name="start">
+                                    <h:graphicImage value="/img/load.gif" />
+                                </f:facet>
+                                <f:facet name="complete">
+                                    <h:outputText value="" />
+                                </f:facet>
+                            </p:ajaxStatus>
 
-                    <h:panelGrid columns="7" id="area">
-                        <p:radioButton id="id00" for="myRadioID" itemIndex="0"/>
-                        <h:outputLabel for="id00" value="Choose Product ID "/>
+                            <p:selectOneRadio id="myRadioID" value="#{stockViewEditManagedBean.radioValue}" layout="custom">
+                                <f:selectItem itemLabel="Choose ID" itemValue="1"/>
+                                <f:selectItem itemLabel="Enter " itemValue="2"/>
+                                <p:ajax process="@this" update="formMain2" />
+                            </p:selectOneRadio>
 
-                        <p:selectOneMenu id="product" value="#{stockViewEditManagedBean.productId}"  style="width:200px" disabled="#{stockViewEditManagedBean.radioValue != '1'}">
-                            <f:selectItem itemLabel="Select Product ID" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{stockViewEditManagedBean.productList}" var="product" itemLabel="ID:#{product.productId}   Name:#{product.productName}" itemValue="#{product.productId}"/>
-                            <p:ajax listener="#{stockViewEditManagedBean.viewStocks()}" update=":datafield" />
-                        </p:selectOneMenu>
+                            <h:panelGrid columns="7" id="area">
+                                <p:radioButton id="id00" for="myRadioID" itemIndex="0"/>
+                                <h:outputLabel for="id00" value="Choose Product ID "/>
 
-                        <p:radioButton id="id01" for="myRadioID" itemIndex="1"/>
-                        <h:outputLabel for="id01" value="Enter Product ID "/>
-                        <p:inputText id="input01" value="#{stockViewEditManagedBean.productId}" disabled="#{stockViewEditManagedBean.radioValue != '2'}">
-                            <p:ajax listener="#{stockViewEditManagedBean.viewStocks()}" update=":datafield" />
-                            <!--                            <p:ajax update="totalQuantity" />-->
-                        </p:inputText>
-                    </h:panelGrid>
-                </h:form>
-                <h:form id="datafield" >
-                    <p:dataTable id="stockData" var="stock"  scrollable="true" scrollWidth="1500"  sortMode="multiple" editable="true" value="#{stockViewEditManagedBean.stocks}" 
-                                 widgetVar="stockTable"
-                                 emptyMessage="No such stock found"
-                                 resizableColumns="true"
-                                 rowKey="#{stock.stockId}">
+                                <p:selectOneMenu id="product" value="#{stockViewEditManagedBean.productId}"  style="width:200px" disabled="#{stockViewEditManagedBean.radioValue != '1'}">
+                                    <f:selectItem itemLabel="Select Product ID" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{stockViewEditManagedBean.productList}" var="product" itemLabel="ID:#{product.productId}   Name:#{product.productName}" itemValue="#{product.productId}"/>
+                                    <p:ajax listener="#{stockViewEditManagedBean.viewStocksForAWarehouse()}" update=":tv:datafield2" />
+                                </p:selectOneMenu>
 
-                        <f:facet name="header">                    
-                            <p:outputPanel>
-                                <h:outputText value="Search Stock fields:" />
-                                <p:inputText id="globalFilter" onkeyup="PF('stockTable').filter()" />
-                            </p:outputPanel>
-                        </f:facet>
+                                <p:radioButton id="id01" for="myRadioID" itemIndex="1"/>
+                                <h:outputLabel for="id01" value="Enter Product ID "/>
+                                <p:inputText id="input01" value="#{stockViewEditManagedBean.productId}" disabled="#{stockViewEditManagedBean.radioValue != '2'}">
+                                    <p:ajax listener="#{stockViewEditManagedBean.viewStocksForAWarehouse()}" update=":tv:datafield2" />
+                                </p:inputText>
+                            </h:panelGrid>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="warehouse" value="Warehouse Name: " />
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu id="warehouse" value="#{stockViewEditManagedBean.warehouseId}"  style="width:210px" required="true" requiredMessage="Please select a warehouse">
+                                        <f:selectItem itemLabel="Select Warehouse" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems value="#{stockViewEditManagedBean.warehouses}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId}   Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"/>
+                                        <p:ajax listener="#{stockViewEditManagedBean.viewStocksForAWarehouse()}" update=":tv:datafield2" />
+                                    </p:selectOneMenu>
+                                </p:column>
+                            </p:row>
+                        </h:form>
 
-                        <p:ajax event="rowEdit" listener="#{stockViewEditManagedBean.onRowEdit}" />
-                        <p:ajax event="rowEditCancel" listener="#{stockViewEditManagedBean.onRowCancel}"/>                
+                        <h:form id="datafield2" >
+                            <p:dataTable id="stockData" var="stock"  scrollable="true" scrollWidth="150%" scrollHeight="300" sortMode="multiple" editable="true" value="#{stockViewEditManagedBean.stocks}" 
+                                         widgetVar="stockTable"
+                                         emptyMessage="No such stock found"
+                                         resizableColumns="true"
+                                         rowKey="#{stock.stockId}">
 
-                        <p:column filterBy="#{stock.storageBin.warehouseZone.warehouse.warehouseId}" filterStyle="width:60px" filterMatchMode="contains" headerText="Warehouse" >
-                            <h:outputText value="ID: #{stock.storageBin.warehouseZone.warehouse.warehouseId} Name: #{stock.storageBin.warehouseZone.warehouse.name}"  />
-                        </p:column>
-                        <p:column filterBy="#{stock.storageBin.warehouseZone.warehouseZoneId}" filterStyle="width:60px" filterMatchMode="contains" headerText="Zone" >
-                            <h:outputText value="ID: #{stock.storageBin.warehouseZone.warehouseZoneId} Name:#{stock.storageBin.warehouseZone.warehouseZoneId} " />
-                        </p:column>
-                        <p:column filterBy="#{stock.storageBin.storageBinId}" filterStyle="width:60px" filterMatchMode="contains" headerText="Storage Bin ID" >
-                            <h:outputText value="#{stock.storageBin.storageBinId}"/>
-                        </p:column>
-                        <p:column filterBy="#{stock.stockId}" filterStyle="width:60px" filterMatchMode="contains" headerText="Stock ID" >
-                            <h:outputText value="#{stock.stockId}" />
-                        </p:column>
+                                <f:facet name="header">                    
+                                    <p:outputPanel>
+                                        <h:outputText value="Search Stock fields:" />
+                                        <p:inputText id="globalFilter" onkeyup="PF('stockTable').filter()" />
+                                    </p:outputPanel>
+                                </f:facet>
 
-                        <p:column  filterBy="#{stock.name}" filterStyle="width:60px" filterMatchMode="contains" headerText="Stock Name">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{stock.name}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{stock.name}" style="width:100%" label="Stock Name"/></f:facet>
-                            </p:cellEditor>
-                        </p:column> 
+                                <p:ajax event="rowEdit" listener="#{stockViewEditManagedBean.onRowEdit}" />
+                                <p:ajax event="rowEditCancel" listener="#{stockViewEditManagedBean.onRowCancel}"/>                
 
-                        <p:column  headerText="Comments" filterStyle="width:60px" filterBy="#{stock.comments}" filterMatchMode="contains">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{stock.comments}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{stock.comments}" style="width:100%" label="Comments"/></f:facet>
-                            </p:cellEditor>
-                        </p:column>
+                                <p:column filterBy="#{stock.storageBin.warehouseZone.warehouse.warehouseId}" filterStyle="width:60px" filterMatchMode="contains" headerText="Warehouse" >
+                                    <h:outputText value="ID: #{stock.storageBin.warehouseZone.warehouse.warehouseId} Name: #{stock.storageBin.warehouseZone.warehouse.name}"  />
+                                </p:column>
+                                <p:column filterBy="#{stock.storageBin.warehouseZone.warehouseZoneId}" filterStyle="width:60px" filterMatchMode="contains" headerText="Zone" >
+                                    <h:outputText value="ID: #{stock.storageBin.warehouseZone.warehouseZoneId} Name:#{stock.storageBin.warehouseZone.warehouseZoneId} " />
+                                </p:column>
+                                <p:column filterBy="#{stock.storageBin.storageBinId}" filterStyle="width:60px" filterMatchMode="contains" headerText="Storage Bin ID" >
+                                    <h:outputText value="#{stock.storageBin.storageBinId}"/>
+                                </p:column>
+                                <p:column filterBy="#{stock.stockId}" filterStyle="width:60px" filterMatchMode="contains" headerText="Stock ID" >
+                                    <h:outputText value="#{stock.stockId}" />
+                                </p:column>
 
-                        <p:column  headerText="Available Quantity" filterStyle="width:60px" filterBy="#{stock.availableStock}" filterMatchMode="contains">
-                            <h:outputText value="#{stock.availableStock}" />
-                        </p:column> 
+                                <p:column  filterBy="#{stock.name}" filterStyle="width:60px" filterMatchMode="contains" headerText="Stock Name">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{stock.name}" /></f:facet>
+                                        <f:facet name="input"><p:inputText value="#{stock.name}" style="width:100%" label="Stock Name"/></f:facet>
+                                    </p:cellEditor>
+                                </p:column> 
 
-                        <p:column  headerText="Reserve Quantity" filterStyle="width:60px" filterBy="#{stock.reservedStock}" filterMatchMode="contains">
-                            <h:outputText value="#{stock.reservedStock}" />
-                        </p:column>
+                                <p:column  headerText="Comments" filterStyle="width:60px" filterBy="#{stock.comments}" filterMatchMode="contains">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{stock.comments}" /></f:facet>
+                                        <f:facet name="input"><p:inputText value="#{stock.comments}" style="width:100%" label="Comments"/></f:facet>
+                                    </p:cellEditor>
+                                </p:column>
 
-                        <p:column  headerText="Expiry Date" filterStyle="width:60px" filterBy="#{stock.expiryDate}" filterMatchMode="contains">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{stock.expiryDate}" /></f:facet>
-                                <f:facet name="input"><p:calendar id="expiryDate" value="#{stock.expiryDate}" /></f:facet>
-                            </p:cellEditor>
-                        </p:column>
+                                <p:column  headerText="Available Quantity" filterStyle="width:60px" filterBy="#{stock.availableStock}" filterMatchMode="contains">
+                                    <h:outputText value="#{stock.availableStock}" />
+                                </p:column> 
 
-                        <p:column  headerText="Created Date" filterStyle="width:60px" filterBy="#{stock.createdDate}" filterMatchMode="contains">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{stock.createdDate}" /></f:facet>
-                                <f:facet name="input"><p:calendar id="createdDate" value="#{stock.createdDate}" /></f:facet>
-                            </p:cellEditor>
-                        </p:column>
+                                <p:column  headerText="Reserve Quantity" filterStyle="width:60px" filterBy="#{stock.reservedStock}" filterMatchMode="contains">
+                                    <h:outputText value="#{stock.reservedStock}" />
+                                </p:column>
 
-                        <p:column >
-                            <p:commandButton actionListener="#{stockViewEditManagedBean.deleteStock(stock)}" ajax="true" update=":datafield:totalQuantity :datafield:stockData" icon="ui-icon-trash"  >
-                                <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this stock?" icon="ui-icon-alert" />
-                            </p:commandButton> 
-                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                            </p:confirmDialog>
-                        </p:column> 
-                        <!--                        <p:remoteCommand name="updateQuantity" update="totalQuantity" />-->
-                        <p:column >
-                            <p:rowEditor />
-                        </p:column>
-                    </p:dataTable>
+                                <p:column  headerText="Expiry Date" filterStyle="width:60px" filterBy="#{stock.expiryDate}" filterMatchMode="contains">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{stock.expiryDate}" /></f:facet>
+                                        <f:facet name="input"><p:calendar id="expiryDate" value="#{stock.expiryDate}" /></f:facet>
+                                    </p:cellEditor>
+                                </p:column>
 
-                    <p:messages id="messages" autoUpdate="true" closable="true" />
-                    <br></br>
-                    <p:outputLabel id="totalQuantity" value="Total Available Quantity: #{stockViewEditManagedBean.totalQuantity}" />
-                </h:form>
-            </p:panel>
+                                <p:column  headerText="Created Date" filterStyle="width:60px" filterBy="#{stock.createdDate}" filterMatchMode="contains">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{stock.createdDate}" /></f:facet>
+                                        <f:facet name="input"><p:calendar id="createdDate" value="#{stock.createdDate}" /></f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column style="width:48px">
+                                    <p:commandButton actionListener="#{stockViewEditManagedBean.deleteStock(stock)}" ajax="true" update=":tv:datafield2:totalQuantity :tv:datafield2:stockData" icon="ui-icon-trash"  >
+                                        <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this stock?" icon="ui-icon-alert" />
+                                    </p:commandButton> 
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                    </p:confirmDialog>
+                                </p:column> 
+                                <p:column style="width:42px">
+                                    <p:rowEditor />
+                                </p:column>
+                            </p:dataTable>
+                            <p:messages id="messages" autoUpdate="true" closable="true" />
+                            <br></br>
+                            <p:outputLabel id="totalQuantity" value="Total Available Quantity: #{stockViewEditManagedBean.totalQuantity}" />
+                        </h:form>
+                    </p:panel>     
+                </p:tab>
+
+                <p:tab title="View All Available Stocks">
+                    <p:panel id="panel" header=" View Stocks">
+                        <h:form id="formMain">
+                            <p:ajaxStatus style="width:16px;height:16px;">
+                                <f:facet name="start">
+                                    <h:graphicImage value="/img/load.gif" />
+                                </f:facet>
+                                <f:facet name="complete">
+                                    <h:outputText value="" />
+                                </f:facet>
+                            </p:ajaxStatus>
+
+                            <p:selectOneRadio id="myRadioID" value="#{stockViewEditManagedBean.radioValue}" layout="custom">
+                                <f:selectItem itemLabel="Choose ID" itemValue="1"/>
+                                <f:selectItem itemLabel="Enter " itemValue="2"/>
+                                <p:ajax process="@this" update="formMain" />
+                            </p:selectOneRadio>
+
+                            <h:panelGrid columns="7" id="area">
+                                <p:radioButton id="id00" for="myRadioID" itemIndex="0"/>
+                                <h:outputLabel for="id00" value="Choose Product ID "/>
+
+                                <p:selectOneMenu id="product" value="#{stockViewEditManagedBean.productId}"  style="width:200px" disabled="#{stockViewEditManagedBean.radioValue != '1'}">
+                                    <f:selectItem itemLabel="Select Product ID" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{stockViewEditManagedBean.productList}" var="product" itemLabel="ID:#{product.productId}   Name:#{product.productName}" itemValue="#{product.productId}"/>
+                                    <p:ajax listener="#{stockViewEditManagedBean.viewAllStocks()}" update=":tv:datafield" />
+                                </p:selectOneMenu>
+
+                                <p:radioButton id="id01" for="myRadioID" itemIndex="1"/>
+                                <h:outputLabel for="id01" value="Enter Product ID "/>
+                                <p:inputText id="input01" value="#{stockViewEditManagedBean.productId}" disabled="#{stockViewEditManagedBean.radioValue != '2'}">
+                                    <p:ajax listener="#{stockViewEditManagedBean.viewAllStocks()}" update=":tv:datafield" />
+                                </p:inputText>
+                            </h:panelGrid>
+                        </h:form>
+
+                        <h:form id="datafield" >
+                            <p:dataTable id="stockData" var="stock"  scrollable="true" scrollWidth="150%" scrollHeight="300" sortMode="multiple" editable="true" value="#{stockViewEditManagedBean.stocks}" 
+                                         widgetVar="stockTable"
+                                         emptyMessage="No such stock found"
+                                         resizableColumns="true"
+                                         rowKey="#{stock.stockId}">
+
+                                <f:facet name="header">                    
+                                    <p:outputPanel>
+                                        <h:outputText value="Search Stock fields:" />
+                                        <p:inputText id="globalFilter" onkeyup="PF('stockTable').filter()" />
+                                    </p:outputPanel>
+                                </f:facet>
+
+                                <p:ajax event="rowEdit" listener="#{stockViewEditManagedBean.onRowEdit}" />
+                                <p:ajax event="rowEditCancel" listener="#{stockViewEditManagedBean.onRowCancel}"/>                
+
+                                <p:column filterBy="#{stock.storageBin.warehouseZone.warehouse.warehouseId}" filterStyle="width:60px" filterMatchMode="contains" headerText="Warehouse" >
+                                    <h:outputText value="ID: #{stock.storageBin.warehouseZone.warehouse.warehouseId} Name: #{stock.storageBin.warehouseZone.warehouse.name}"  />
+                                </p:column>
+                                <p:column filterBy="#{stock.storageBin.warehouseZone.warehouseZoneId}" filterStyle="width:60px" filterMatchMode="contains" headerText="Zone" >
+                                    <h:outputText value="ID: #{stock.storageBin.warehouseZone.warehouseZoneId} Name:#{stock.storageBin.warehouseZone.warehouseZoneId} " />
+                                </p:column>
+                                <p:column filterBy="#{stock.storageBin.storageBinId}" filterStyle="width:60px" filterMatchMode="contains" headerText="Storage Bin ID" >
+                                    <h:outputText value="#{stock.storageBin.storageBinId}"/>
+                                </p:column>
+                                <p:column filterBy="#{stock.stockId}" filterStyle="width:60px" filterMatchMode="contains" headerText="Stock ID" >
+                                    <h:outputText value="#{stock.stockId}" />
+                                </p:column>
+
+                                <p:column  filterBy="#{stock.name}" filterStyle="width:60px" filterMatchMode="contains" headerText="Stock Name">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{stock.name}" /></f:facet>
+                                        <f:facet name="input"><p:inputText value="#{stock.name}" style="width:100%" label="Stock Name"/></f:facet>
+                                    </p:cellEditor>
+                                </p:column> 
+
+                                <p:column  headerText="Comments" filterStyle="width:60px" filterBy="#{stock.comments}" filterMatchMode="contains">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{stock.comments}" /></f:facet>
+                                        <f:facet name="input"><p:inputText value="#{stock.comments}" style="width:100%" label="Comments"/></f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column  headerText="Available Quantity" filterStyle="width:60px" filterBy="#{stock.availableStock}" filterMatchMode="contains">
+                                    <h:outputText value="#{stock.availableStock}" />
+                                </p:column> 
+
+                                <p:column  headerText="Reserve Quantity" filterStyle="width:60px" filterBy="#{stock.reservedStock}" filterMatchMode="contains">
+                                    <h:outputText value="#{stock.reservedStock}" />
+                                </p:column>
+
+                                <p:column  headerText="Expiry Date" filterStyle="width:60px" filterBy="#{stock.expiryDate}" filterMatchMode="contains">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{stock.expiryDate}" /></f:facet>
+                                        <f:facet name="input"><p:calendar id="expiryDate" value="#{stock.expiryDate}" /></f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column  headerText="Created Date" filterStyle="width:60px" filterBy="#{stock.createdDate}" filterMatchMode="contains">
+                                    <p:cellEditor>
+                                        <f:facet name="output"><h:outputText value="#{stock.createdDate}" /></f:facet>
+                                        <f:facet name="input"><p:calendar id="createdDate" value="#{stock.createdDate}" /></f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column style="width:48px">
+                                    <p:commandButton actionListener="#{stockViewEditManagedBean.deleteStock(stock)}" ajax="true" update=":tv:datafield:totalQuantity :tv:datafield:stockData" icon="ui-icon-trash"  >
+                                        <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this stock?" icon="ui-icon-alert" />
+                                    </p:commandButton> 
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                    </p:confirmDialog>
+                                </p:column> 
+                                <p:column style="width:42px">
+                                    <p:rowEditor />
+                                </p:column>
+                            </p:dataTable>
+                            <p:messages id="messages" autoUpdate="true" closable="true" />
+                            <br></br>
+                            <p:outputLabel id="totalQuantity" value="Total Available Quantity: #{stockViewEditManagedBean.totalQuantity}" />
+                        </h:form>
+                    </p:panel>                           
+                </p:tab>
+            </p:tabView>
         </ui:define>
     </ui:composition>
 </html>                 
