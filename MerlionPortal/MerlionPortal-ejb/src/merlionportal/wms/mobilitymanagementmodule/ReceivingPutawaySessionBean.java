@@ -76,7 +76,7 @@ public class ReceivingPutawaySessionBean {
                 stock.setProductId(productId);
                 stock.setStorageBin(bin);
                 stock.setExpiryDate(expiryDate);
-                stock.setAvailableStock(maxQuantity);
+                stock.setAvailableStock(quantity);
                 stock.setCreatedDate(currentDate);
                 stock.setReservedStock(0);
                 bin.getStockList().add(stock);
