@@ -48,7 +48,6 @@ public class StorageBinViewEditManagedBean {
     private Integer companyId;
      private Integer userId;
 
-    private List<String> storageBinType;
 
     /**
      * Creates a new instance of StorageBinViewEditManagedBean

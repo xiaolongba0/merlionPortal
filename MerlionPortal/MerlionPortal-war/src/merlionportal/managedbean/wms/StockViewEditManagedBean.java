@@ -50,7 +50,7 @@ public class StockViewEditManagedBean {
     private Integer totalQuantity;
 
     private List<Product> productList;
-    private Product product;
+
     
     private Integer warehouseId;
     private List<Warehouse> warehouses;
@@ -110,7 +110,7 @@ public class StockViewEditManagedBean {
             stocks = rpsb.getWarehouseStock(warehouseId, productId);
             totalQuantity = rpsb.countAvailbleStockInWarehouse(productId, productId);
             System.out.println("TOTAL QUANTITY IN VIEW ALL STOCKS = " + totalQuantity);
-            systemLogSB.recordSystemLog(userId, "WMS view stocks");
+            systemLogSB.recordSystemLog(userId, "WMS view stocks for a warehouse");
             if (stocks == null) {
                 System.out.println("============== FAILED TO VIEW STOCK ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Stock.", ""));
@@ -201,14 +201,6 @@ public class StockViewEditManagedBean {
 
     public void setProductList(List<Product> productList) {
         this.productList = productList;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
 
     public Integer getCompanyId() {
