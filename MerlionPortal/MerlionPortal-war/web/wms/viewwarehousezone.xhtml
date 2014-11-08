@@ -16,7 +16,7 @@
 
         <ui:define name="more-imports">
             <ui:insert>
-                <!--                import CSS style or Javascript here, if any-->
+                          <link rel="stylesheet" href="${request.contextPath}/css/mrp.css" type="text/css" />
             </ui:insert>
         </ui:define>
 
@@ -91,9 +91,10 @@
                         </p:row>
                     </p:panelGrid>
 
-                    <p:dataTable id="warehousezoneData" var="warehousezone" sortMode="multiple" editable="true" value="#{warehouseZoneViewEditManagedBean.warehouseZones}" 
+                    <p:dataTable id="warehousezoneData" var="warehousezone"  scrollable="true" scrollWidth="150%" scrollHeight="300" sortMode="multiple" editable="true" value="#{warehouseZoneViewEditManagedBean.warehouseZones}" 
                                  widgetVar="warehouseZoneTable"
                                  emptyMessage="No Warehouse Zone found"
+                                 resizableColumns="true"
                                  rowKey="#{warehousezone.warehouseZoneId}">
 
                         <f:facet name="header">                    
@@ -106,7 +107,7 @@
                         <p:ajax event="rowEdit" listener="#{warehouseZoneViewEditManagedBean.onRowEdit}" />
                         <p:ajax event="rowEditCancel" listener="#{warehouseZoneViewEditManagedBean.onRowCancel}"/>                
 
-                        <p:column headerText="Warehouse Id" >
+                        <p:column headerText="Warehouse Id">
                             <h:outputText value="#{warehousezone.warehouse.warehouseId}" />
                         </p:column>
 

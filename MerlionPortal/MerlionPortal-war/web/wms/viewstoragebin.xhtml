@@ -15,7 +15,7 @@
 
         <ui:define name="more-imports">
             <ui:insert>
-                <!--                import CSS style or Javascript here, if any-->
+                              <link rel="stylesheet" href="${request.contextPath}/css/mrp.css" type="text/css" />
             </ui:insert>
         </ui:define>
 
@@ -101,9 +101,10 @@
                         </p:row>
                     </p:panelGrid>
 
-                    <p:dataTable id="storagebinData" var="storagebin" sortMode="multiple" editable="true" value="#{storageBinViewEditManagedBean.bins}" 
+                    <p:dataTable id="storagebinData" var="storagebin"  scrollable="true" scrollWidth="150%" scrollHeight="300" sortMode="multiple" editable="true" value="#{storageBinViewEditManagedBean.bins}" 
                                  widgetVar="storageBinTable"
                                  emptyMessage="No Storage Bin found"
+                                 resizableColumns="true"
                                  rowKey="#{storagebin.storageBinId}">
 
                         <f:facet name="header">                    
@@ -116,49 +117,49 @@
                         <p:ajax event="rowEdit" listener="#{storageBinViewEditManagedBean.onRowEdit}"/>
                         <p:ajax event="rowEditCancel" listener="#{storageBinViewEditManagedBean.onRowCancel}"/>                
 
-                        <p:column filterBy="#{storagebin.storageBinId}" filterMatchMode="exact" headerText="Storage Bin ID" >
+                        <p:column filterBy="#{storagebin.storageBinId}" filterStyle="width:70px" filterMatchMode="exact" headerText="Storage Bin ID" >
                             <h:outputText value="#{storagebin.storageBinId}" />
                         </p:column>
 
-                        <p:column  filterBy="#{storagebin.binName}" filterMatchMode="contains" headerText="Bin Name">
+                        <p:column  filterBy="#{storagebin.binName}" filterStyle="width:70px" filterMatchMode="contains" headerText="Bin Name">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{storagebin.binName}" /></f:facet>
                                 <f:facet name="input"><p:inputText value="#{storagebin.binName}" style="width:100%" label="Bin Name"/></f:facet>
                             </p:cellEditor>
                         </p:column>  
 
-                        <p:column  headerText="Description" filterBy="#{storagebin.description}" filterMatchMode="contains">
+                        <p:column  headerText="Description" filterBy="#{storagebin.description}" filterStyle="width:70px" filterMatchMode="contains">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{storagebin.description}" /></f:facet>
                                 <f:facet name="input"><p:inputText value="#{storagebin.description}" style="width:100%" label="Description"/></f:facet>
                             </p:cellEditor>
                         </p:column>
 
-                        <p:column  headerText="Bin Type" filterBy="#{storagebin.binType}" filterMatchMode="contains">
+                        <p:column  headerText="Bin Type" filterBy="#{storagebin.binType}" filterStyle="width:70px" filterMatchMode="contains">
                             <h:outputText value="#{storagebin.binType}" />
                         </p:column>
 
-                        <p:column  headerText="Max Quantity" filterBy="#{storagebin.maxQuantity}" filterMatchMode="contains">
+                        <p:column  headerText="Max Quantity" filterBy="#{storagebin.maxQuantity}" filterStyle="width:70px" filterMatchMode="contains">
                             <h:outputText value="#{storagebin.maxQuantity}" />
                         </p:column>
 
-                        <p:column  headerText="Max Weight" filterBy="#{storagebin.maxWeight}" filterMatchMode="contains">
+                        <p:column  headerText="Max Weight" filterBy="#{storagebin.maxWeight}" filterStyle="width:70px" filterMatchMode="contains">
                             <h:outputText value="#{storagebin.maxWeight}" />
                         </p:column>
 
-                        <p:column  headerText="Available Space" filterBy="#{storagebin.availableSpace}" filterMatchMode="contains">
+                        <p:column  headerText="Available Space" filterBy="#{storagebin.availableSpace}" filterStyle="width:70px" filterMatchMode="contains">
                             <h:outputText value="#{storagebin.availableSpace}" />
                         </p:column>
 
-                        <p:column  headerText="Reserved Space" filterBy="#{storagebin.reservedSpace}" filterMatchMode="contains">
+                        <p:column  headerText="Reserved Space" filterBy="#{storagebin.reservedSpace}" filterStyle="width:70px" filterMatchMode="contains">
                             <h:outputText value="#{storagebin.reservedSpace}" />
                         </p:column>
 
-                        <p:column  headerText="Rented Status" filterBy="#{storagebin.rented}" filterMatchMode="contains">
+                        <p:column  headerText="Rented Status" filterBy="#{storagebin.rented}" filterStyle="width:70px" filterMatchMode="contains">
                             <h:outputText value="#{storagebin.rented}" />
                         </p:column>
 
-                        <p:column  headerText="Rented Company ID" filterBy="#{storagebin.rentedCompanyId}" filterMatchMode="contains">
+                        <p:column  headerText="Rented Company ID" filterBy="#{storagebin.rentedCompanyId}" filterStyle="width:70px" filterMatchMode="contains">
                             <h:outputText value="#{storagebin.rentedCompanyId}" />
                         </p:column>
 

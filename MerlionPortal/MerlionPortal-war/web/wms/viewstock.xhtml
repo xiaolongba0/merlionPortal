@@ -15,7 +15,7 @@
 
         <ui:define name="more-imports">
             <ui:insert>
-                <!--                import CSS style or Javascript here, if any-->
+                               <link rel="stylesheet" href="${request.contextPath}/css/mrp.css" type="text/css" />
             </ui:insert>
         </ui:define>
 
@@ -100,9 +100,10 @@
                     </h:panelGrid>
                 </h:form>
                 <h:form id="datafield" >
-                    <p:dataTable id="stockData" var="stock" sortMode="multiple" editable="true" value="#{stockViewEditManagedBean.stocks}" 
+                    <p:dataTable id="stockData" var="stock"  scrollable="true" scrollWidth="150%" scrollHeight="300" sortMode="multiple" editable="true" value="#{stockViewEditManagedBean.stocks}" 
                                  widgetVar="stockTable"
                                  emptyMessage="No such stock found"
+                                 resizableColumns="true"
                                  rowKey="#{stock.stockId}">
 
                         <f:facet name="header">                    
@@ -115,49 +116,49 @@
                         <p:ajax event="rowEdit" listener="#{stockViewEditManagedBean.onRowEdit}" />
                         <p:ajax event="rowEditCancel" listener="#{stockViewEditManagedBean.onRowCancel}"/>                
 
-                        <p:column filterBy="#{stock.storageBin.warehouseZone.warehouse.warehouseId}" filterMatchMode="contains" headerText="Warehouse" >
+                        <p:column filterBy="#{stock.storageBin.warehouseZone.warehouse.warehouseId}" filterStyle="width:60px" filterMatchMode="contains" headerText="Warehouse" >
                             <h:outputText value="ID: #{stock.storageBin.warehouseZone.warehouse.warehouseId} Name: #{stock.storageBin.warehouseZone.warehouse.name}"  />
                         </p:column>
-                        <p:column filterBy="#{stock.storageBin.warehouseZone.warehouseZoneId}" filterMatchMode="contains" headerText="Warehouse Zone" >
+                        <p:column filterBy="#{stock.storageBin.warehouseZone.warehouseZoneId}" filterStyle="width:60px" filterMatchMode="contains" headerText="Zone" >
                             <h:outputText value="ID: #{stock.storageBin.warehouseZone.warehouseZoneId} Name:#{stock.storageBin.warehouseZone.warehouseZoneId} " />
                         </p:column>
-                        <p:column filterBy="#{stock.storageBin.storageBinId}" filterMatchMode="contains" headerText="Storage Bin ID" >
+                        <p:column filterBy="#{stock.storageBin.storageBinId}" filterStyle="width:60px" filterMatchMode="contains" headerText="Storage Bin ID" >
                             <h:outputText value="#{stock.storageBin.storageBinId}"/>
                         </p:column>
-                        <p:column filterBy="#{stock.stockId}" filterMatchMode="contains" headerText="Stock ID" >
+                        <p:column filterBy="#{stock.stockId}" filterStyle="width:60px" filterMatchMode="contains" headerText="Stock ID" >
                             <h:outputText value="#{stock.stockId}" />
                         </p:column>
 
-                        <p:column  filterBy="#{stock.name}" filterMatchMode="contains" headerText="Stock Name">
+                        <p:column  filterBy="#{stock.name}" filterStyle="width:60px" filterMatchMode="contains" headerText="Stock Name">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{stock.name}" /></f:facet>
                                 <f:facet name="input"><p:inputText value="#{stock.name}" style="width:100%" label="Stock Name"/></f:facet>
                             </p:cellEditor>
                         </p:column> 
 
-                        <p:column  headerText="Comments" filterBy="#{stock.comments}" filterMatchMode="contains">
+                        <p:column  headerText="Comments" filterStyle="width:60px" filterBy="#{stock.comments}" filterMatchMode="contains">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{stock.comments}" /></f:facet>
                                 <f:facet name="input"><p:inputText value="#{stock.comments}" style="width:100%" label="Comments"/></f:facet>
                             </p:cellEditor>
                         </p:column>
 
-                        <p:column  headerText="Available Quantity" filterBy="#{stock.availableStock}" filterMatchMode="contains">
+                        <p:column  headerText="Available Quantity" filterStyle="width:60px" filterBy="#{stock.availableStock}" filterMatchMode="contains">
                             <h:outputText value="#{stock.availableStock}" />
                         </p:column> 
 
-                        <p:column  headerText="Reserve Quantity" filterBy="#{stock.reservedStock}" filterMatchMode="contains">
+                        <p:column  headerText="Reserve Quantity" filterStyle="width:60px" filterBy="#{stock.reservedStock}" filterMatchMode="contains">
                             <h:outputText value="#{stock.reservedStock}" />
                         </p:column>
 
-                        <p:column  headerText="Expiry Date" filterBy="#{stock.expiryDate}" filterMatchMode="contains">
+                        <p:column  headerText="Expiry Date" filterStyle="width:60px" filterBy="#{stock.expiryDate}" filterMatchMode="contains">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{stock.expiryDate}" /></f:facet>
                                 <f:facet name="input"><p:calendar id="expiryDate" value="#{stock.expiryDate}" /></f:facet>
                             </p:cellEditor>
                         </p:column>
 
-                        <p:column  headerText="Created Date" filterBy="#{stock.createdDate}" filterMatchMode="contains">
+                        <p:column  headerText="Created Date" filterStyle="width:60px" filterBy="#{stock.createdDate}" filterMatchMode="contains">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{stock.createdDate}" /></f:facet>
                                 <f:facet name="input"><p:calendar id="createdDate" value="#{stock.createdDate}" /></f:facet>

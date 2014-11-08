@@ -16,7 +16,7 @@
 
         <ui:define name="more-imports">
             <ui:insert>
-                <!--                import CSS style or Javascript here, if any-->
+                                <link rel="stylesheet" href="${request.contextPath}/css/mrp.css" type="text/css" />
             </ui:insert>
         </ui:define>
 
@@ -65,10 +65,12 @@
 
         <ui:define name="right">
             <h:form id="formMain">
-                <p:dataTable id="productOrder" var="productOrder" value="#{viewNotificationManagedBean.productOrders}"  resizableColumns="true" selectionMode="single" selection="#{retrieveSavedOrder.selectedOrder}" rowKey="#{productOrder.productPOId}">
+                <p:dataTable id="productOrder" var="productOrder" value="#{viewNotificationManagedBean.productOrders}"  scrollable="true" scrollWidth="150%" scrollHeight="300" resizableColumns="true" selectionMode="single" selection="#{retrieveSavedOrder.selectedOrder}" rowKey="#{productOrder.productPOId}"
+                             >
                     <p:column  
                         filterBy="#{productOrder.productPOId}" 
-                        filterMatchMode="exact" headerText="Saved Id" >
+                        filterMatchMode="exact" headerText="Saved Id" 
+                        >
                         <h:outputText value="#{productOrder.productPOId}" />
                     </p:column>
                     <p:column headerText="Contact Person">
@@ -83,16 +85,16 @@
                     <p:column headerText="Receiving Date">
                         <h:outputText value="2014-11-15" />
                     </p:column>
-                    <p:column headerText="Items to be received">
+                    <p:column headerText="Items to be received" width="200">
 
                         <p:dataTable id="item" var="item" value="#{productOrder.productOrderLineItemList}"  resizableColumns="true">
-                            <p:column headerText="Item ID">
+                            <p:column headerText="Item ID" width="50">
                                 <h:outputText value="#{item.line}" />
                             </p:column>
-                            <p:column headerText="Name">
+                            <p:column headerText="Name" width="80">
                                 <h:outputText value="#{item.productproductId.productName}" />
                             </p:column>
-                            <p:column headerText="Ordered Quantity">
+                            <p:column headerText="Order Quantity" width="80">
                                 <h:outputText value="#{item.quantity}" />
                             </p:column>
                         </p:dataTable>

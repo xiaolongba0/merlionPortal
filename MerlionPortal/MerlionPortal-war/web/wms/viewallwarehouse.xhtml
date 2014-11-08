@@ -16,7 +16,7 @@
 
         <ui:define name="more-imports">
             <ui:insert>
-                <!--                import CSS style or Javascript here, if any-->
+               <link rel="stylesheet" href="${request.contextPath}/css/mrp.css" type="text/css" />
             </ui:insert>
         </ui:define>
 
@@ -64,10 +64,15 @@
         </ui:define>
 
         <ui:define name="right">
+            <p:breadCrumb>
+                <p:menuitem value="WMS Home" url="wmsindex.xhtml" />
+                <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
+            </p:breadCrumb>
             <h:form id="formMain">
-                <p:dataTable id="warehouse" var="warehouse" sortMode="multiple" editable="true" value="#{warehouseViewEditManagedBean.warehouses}" 
+                <p:dataTable id="warehouse" var="warehouse"  scrollable="true" scrollWidth="150%" scrollHeight="300" sortMode="multiple" editable="true" value="#{warehouseViewEditManagedBean.warehouses}" 
                              widgetVar="warehousesTable"
                              emptyMessage="No warehouse found"
+                             resizableColumns="true"
                              rowKey="#{warehouse.warehouseId}">
 
                     <f:facet name="header">                    
