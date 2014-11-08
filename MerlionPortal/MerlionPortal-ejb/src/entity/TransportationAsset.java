@@ -44,7 +44,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TransportationAsset.findByStatus", query = "SELECT t FROM TransportationAsset t WHERE t.status = :status"),
     @NamedQuery(name = "TransportationAsset.findByIsAvailable", query = "SELECT t FROM TransportationAsset t WHERE t.isAvailable = :isAvailable"),
     @NamedQuery(name = "TransportationAsset.findByIsMaintain", query = "SELECT t FROM TransportationAsset t WHERE t.isMaintain = :isMaintain"),
-    @NamedQuery(name = "TransportationAsset.findByRouteId", query = "SELECT t FROM TransportationAsset t WHERE t.routeId = :routeId")})
+    @NamedQuery(name = "TransportationAsset.findByRouteId", query = "SELECT t FROM TransportationAsset t WHERE t.routeId = :routeId"),
+    @NamedQuery(name = "TransportationAsset.findByLoad", query = "SELECT t FROM TransportationAsset t WHERE t.load = :load")})
 public class TransportationAsset implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -70,6 +71,8 @@ public class TransportationAsset implements Serializable {
     private Boolean isMaintain;
     @Column(name = "routeId")
     private Integer routeId;
+    @Column(name = "load")
+    private Integer load;
     @ManyToMany(mappedBy = "transportationAssetList")
     private List<Route> routeList;
     @JoinTable(name = "TransporationAsset_has_TransportationOrder", joinColumns = {
@@ -162,6 +165,14 @@ public class TransportationAsset implements Serializable {
 
     public void setRouteId(Integer routeId) {
         this.routeId = routeId;
+    }
+
+    public Integer getLoad() {
+        return load;
+    }
+
+    public void setLoad(Integer load) {
+        this.load = load;
     }
 
     @XmlTransient
