@@ -154,7 +154,7 @@
                                 <h:outputLabel value="#{createServicePOManagedBean.contract.serviceQuotation.storageType}" />
 
                                 <p:outputLabel for="wotype" value="Warehouse Order Type " /><p:spacer width="20" height="20" />
-                                <p:selectOneMenu id="wotype" value="#{createServicePOManagedBean.warehouseOrderType}" style="width:230px">
+                                <p:selectOneMenu id="wotype" value="#{createServicePOManagedBean.warehouseOrderType}" style="width:230px" required="ture" requiredMessage="Please select an order type" >
                                     <p:ajax update=":form2" />
                                     <f:selectItem itemLabel="Select Warehouse Order Type" itemValue="" noSelectionOption="true" />
                                     <f:selectItem itemLabel="Fulfillment Order" itemValue="Fulfillment Order" />
