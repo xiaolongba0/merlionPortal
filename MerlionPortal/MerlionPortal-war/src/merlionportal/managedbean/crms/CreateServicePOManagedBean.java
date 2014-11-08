@@ -18,6 +18,8 @@ import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.crms.ordermanagementmodule.ServicePOManagementSessionBean;
+import merlionportal.wms.mobilitymanagementmodule.OrderFulfillmentSessionBean;
+import merlionportal.wms.mobilitymanagementmodule.ReceivingPutawaySessionBean;
 
 /**
  *
@@ -36,6 +38,10 @@ public class CreateServicePOManagedBean {
     UserAccountManagementSessionBean uamsb;
     @EJB
     SystemLogSessionBean logSB;
+    @EJB
+    ReceivingPutawaySessionBean receivingSB;
+    @EJB
+    OrderFulfillmentSessionBean orderFulfillSB;
 
     private Integer companyId;
     private Integer userId;
@@ -119,7 +125,24 @@ public class CreateServicePOManagedBean {
             if (serviceType.equals("Transportation")) {
                 result = servicePOSB.createServicePO(contractId, userId, volume, serviceFulfillmentDate, serviceReceiveDate, serviceDeliveryDate, productQuantityPerTEU, productId, warehouseOrderType, amount);
             } else {
-                result = servicePOSB.createServicePO(contractId, userId, 0, serviceFulfillmentDate, serviceReceiveDate, serviceDeliveryDate, 0, productId, warehouseOrderType, amount);
+                if (warehouseOrderType.equals("Fulfillment Order")) {
+                    boolean inStock = orderFulfillSB.reserveStockRentedBins(contract.getPartyA(), contract.getPartyB(), amount.intValue(), productId);
+                    if (inStock) {
+                        result = servicePOSB.createServicePO(contractId, userId, 0, serviceFulfillmentDate, serviceReceiveDate, serviceDeliveryDate, 0, productId, warehouseOrderType, amount);
+                    } else {
+                        result = false;
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Insufficeint Stock!", "Not enough Stock in service provider's warehouse"));
+                    }
+                } else {
+                    boolean available = receivingSB.checkBinSpaceForRentedBins(contract.getPartyA(), contract.getPartyB(), amount.intValue(), contract.getStorageType());
+                    if (available) {
+                        result = servicePOSB.createServicePO(contractId, userId, 0, serviceFulfillmentDate, serviceReceiveDate, serviceDeliveryDate, 0, productId, warehouseOrderType, amount);
+                    } else {
+                        result = false;
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Insufficeint Bin Space!", "Not enough Space in service provider's warehouse"));
+                    }
+                }
+
             }
             if (result) {
                 this.clearAllFields();
@@ -133,9 +156,6 @@ public class CreateServicePOManagedBean {
                     logSB.recordSystemLog(userId, "CRMS created a  warehouse service po");
 
                 }
-
-            } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong"));
 
             }
         }

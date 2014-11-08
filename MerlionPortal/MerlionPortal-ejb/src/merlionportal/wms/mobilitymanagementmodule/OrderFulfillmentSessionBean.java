@@ -63,7 +63,7 @@ public class OrderFulfillmentSessionBean {
                     rpsb.reserveStock(tempStock.getStockId(), tempStock.getQuantity());
                 } else {
                     newQ = 0;
-                    rpsb.reserveStock(tempStock.getStockId(), tempStock.getQuantity());
+                    rpsb.reserveStock(tempStock.getStockId(), newQ);
                 }
                 count++;
             }
