@@ -15,11 +15,11 @@
                 <div class="navbar navbar-default navbar-static-top" role="navigation">
                     <div class="top-nav">
                         <div class="top-nav">
-                        <div class="top-nav-content pull-right">
-                        <span><i>Tel: +65-1800-mer-lion</i></span>
-                        <span><i>Email: contact@merlion.com</i></span>
+                            <div class="top-nav-content pull-right">
+                                <span><i>Tel: +65-1800-mer-lion</i></span>
+                                <span><i>Email: contact@merlion.com</i></span>
+                            </div>
                         </div>
-                    </div>
                     </div>
                     <div class="container">
                         <div class="navbar-header">        
@@ -86,7 +86,11 @@
                     $("#loginModal").modal('show');
                 }
             </script>
-
+            <script>
+                function userLocked() {
+                    $.notify("User Locked.", "error");
+                }
+            </script>
             <style>
                 #loginModal>.modal-backdrop.fade.in
                 {
