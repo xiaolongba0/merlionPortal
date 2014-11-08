@@ -59,7 +59,7 @@
                         <div class="col-md-12">
                             <c:choose>
                                 <c:when test="#{empty feedbackBean.loginedUser}">
-                                    You are not logined. Please login to submit your feedback.
+                                    You are not logged in. Please login to submit your feedback.
                                 </c:when>
                                 <c:otherwise>
                                     Hello #{feedbackBean.loginedUser.firstName},
