@@ -133,7 +133,7 @@ public class ReceivingPutawaySessionBean {
     }
 
     // view my stock, excluding stock in rented bins
-    public List<Stock> viewStock(Integer companyId, Integer productId) {
+    public List<Stock> viewAllStocks(Integer companyId, Integer productId) {
 
         System.out.println("In viewStock, Product ID ============================= : " + productId);
 
@@ -181,7 +181,6 @@ public class ReceivingPutawaySessionBean {
         System.out.println("In getWarehouseStock, Product ID ============================= : " + productId);
 
         List<Stock> allStocks = new ArrayList<>();
-        String stockId = null;
         Query query = em.createNamedQuery("Stock.findByProductId").setParameter("productId", productId);
 
         for (Object o : query.getResultList()) {
@@ -200,16 +199,35 @@ public class ReceivingPutawaySessionBean {
     public Integer countAvailbleStockInWarehouse(Integer warehouseId, Integer productId) {
 
         Integer totalQuantity = 0;
-        List<Stock> allStocks = new ArrayList<>();
         Query query = em.createNamedQuery("Stock.findByProductId").setParameter("productId", productId);
 
         for (Object o : query.getResultList()) {
             stock = (Stock) o;
             if (stock.getStorageBin().getWarehouseZone().getWarehouse().getWarehouseId() == warehouseId) {
                 if (!stock.getStorageBin().getRented()) {
-                    allStocks.add(stock);
+                    totalQuantity = totalQuantity + stock.getQuantity();
                     System.out.println("Stock: " + stock);
                 }
+
+            }
+        }
+
+        return totalQuantity;
+    }
+
+    // Count all my available stocks in my company
+    public Integer countAvailbleStocksInCompany(Integer companyId, Integer productId) {
+
+        Integer totalQuantity = 0;
+        List<Stock> allStocks = new ArrayList<>();
+        Query query = em.createNamedQuery("Stock.findByProductId").setParameter("productId", productId);
+
+        for (Object o : query.getResultList()) {
+            stock = (Stock) o;
+
+            if (!stock.getStorageBin().getRented()) {
+                totalQuantity = totalQuantity + stock.getQuantity();
+                System.out.println("Stock: " + stock);
 
             }
         }
@@ -251,7 +269,6 @@ public class ReceivingPutawaySessionBean {
 //
 //        return totalQuantity;
 //    }
-
     public Boolean deleteStock(Integer stockId) {
 
         Query query = em.createNamedQuery("Stock.findByStockId").setParameter("stockId", stockId);

@@ -42,7 +42,7 @@ public class OrderFulfillmentSessionBean {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     // FOR MANLI
-    public boolean reserveStockRentedBins(Integer ownerCompanyId,Integer myCompanyId, Integer quantityNeeded, Integer productId) {
+    public boolean reserveStockRentedBins(Integer ownerCompanyId, Integer myCompanyId, Integer quantityNeeded, Integer productId) {
 
         System.out.println("[IN OFSB] =================== checkStockMyBins");
         Integer availableQuantity = countTotalAvailbleStockInRentedBin(ownerCompanyId, myCompanyId, productId);
@@ -92,8 +92,7 @@ public class OrderFulfillmentSessionBean {
     }
 
     // check for total stock in rented bins + bins that I own
-    // haven't written
-    // to be edited
+    // NEED TO CHECK
     // When internal order = false 
     public boolean sendOrderFromRentedBin(Integer wmsOrderId, Integer myCompanyId) {
         System.out.println("In sendOrderFromRentedBin, wmsOrderId ============================= : " + wmsOrderId);
@@ -201,7 +200,7 @@ public class OrderFulfillmentSessionBean {
             Integer rentedCompanyId = wmsOrder.getMyCompanyId();
             List<StorageBin> allBins = new ArrayList<>();
             allBins = amsb.viewBinsInAWarehouse(wmsOrderId);
-            
+
             // go through all the relevant storage bins to retrieve the stock
             int i = 0;
             while (i < allBins.size()) {
@@ -214,7 +213,7 @@ public class OrderFulfillmentSessionBean {
 
                 Stock tempStock = new Stock();
                 tempStock = stockList.get(0);
-                
+
                 // sort by created date
                 if (tempStock.getExpiryDate() == null) {
                     Collections.sort(stockList, new Comparator<Stock>() {
