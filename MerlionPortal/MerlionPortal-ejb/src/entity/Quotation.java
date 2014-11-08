@@ -40,7 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Quotation.findByCustomerId", query = "SELECT q FROM Quotation q WHERE q.customerId = :customerId"),
     @NamedQuery(name = "Quotation.findByStatus", query = "SELECT q FROM Quotation q WHERE q.status = :status"),
     @NamedQuery(name = "Quotation.findByCreateDate", query = "SELECT q FROM Quotation q WHERE q.createDate = :createDate"),
-    @NamedQuery(name = "Quotation.findByCompany", query = "SELECT q FROM Quotation q WHERE q.company = :company")})
+    @NamedQuery(name = "Quotation.findByCompany", query = "SELECT q FROM Quotation q WHERE q.company = :company"),
+    @NamedQuery(name = "Quotation.findByCurrency", query = "SELECT q FROM Quotation q WHERE q.currency = :currency")})
 public class Quotation implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -48,7 +49,7 @@ public class Quotation implements Serializable {
     @Basic(optional = false)
     @Column(name = "quotationId")
     private Integer quotationId;
-    @Size(max = 45)
+    @Size(max = 5000)
     @Column(name = "description")
     private String description;
     @Column(name = "customerId")
@@ -60,6 +61,9 @@ public class Quotation implements Serializable {
     private Date createDate;
     @Column(name = "company")
     private Integer company;
+    @Size(max = 200)
+    @Column(name = "currency")
+    private String currency;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "quotationquotationId")
     private List<QuotationLineItem> quotationLineItemList;
 
@@ -116,6 +120,14 @@ public class Quotation implements Serializable {
 
     public void setCompany(Integer company) {
         this.company = company;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     @XmlTransient

@@ -42,17 +42,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Post.findByServiceType", query = "SELECT p FROM Post p WHERE p.serviceType = :serviceType"),
     @NamedQuery(name = "Post.findByDescription", query = "SELECT p FROM Post p WHERE p.description = :description"),
     @NamedQuery(name = "Post.findByPostDate", query = "SELECT p FROM Post p WHERE p.postDate = :postDate"),
-    @NamedQuery(name = "Post.findByCargoType", query = "SELECT p FROM Post p WHERE p.cargoType = :cargoType"),
-    @NamedQuery(name = "Post.findByCargoWeight", query = "SELECT p FROM Post p WHERE p.cargoWeight = :cargoWeight"),
     @NamedQuery(name = "Post.findByDestination", query = "SELECT p FROM Post p WHERE p.destination = :destination"),
     @NamedQuery(name = "Post.findByOrigin", query = "SELECT p FROM Post p WHERE p.origin = :origin"),
-    @NamedQuery(name = "Post.findByTimeEnd", query = "SELECT p FROM Post p WHERE p.timeEnd = :timeEnd"),
-    @NamedQuery(name = "Post.findByTimeStart", query = "SELECT p FROM Post p WHERE p.timeStart = :timeStart"),
     @NamedQuery(name = "Post.findByStorageStartDate", query = "SELECT p FROM Post p WHERE p.storageStartDate = :storageStartDate"),
     @NamedQuery(name = "Post.findByStorageEndDate", query = "SELECT p FROM Post p WHERE p.storageEndDate = :storageEndDate"),
-    @NamedQuery(name = "Post.findByQuantity", query = "SELECT p FROM Post p WHERE p.quantity = :quantity"),
-    @NamedQuery(name = "Post.findByWatehouseZone", query = "SELECT p FROM Post p WHERE p.watehouseZone = :watehouseZone"),
-    @NamedQuery(name = "Post.findByDeliveryDate", query = "SELECT p FROM Post p WHERE p.deliveryDate = :deliveryDate")})
+    @NamedQuery(name = "Post.findByQuantityInTEU", query = "SELECT p FROM Post p WHERE p.quantityInTEU = :quantityInTEU"),
+    @NamedQuery(name = "Post.findByDeliveryDate", query = "SELECT p FROM Post p WHERE p.deliveryDate = :deliveryDate"),
+    @NamedQuery(name = "Post.findByWarehouseId", query = "SELECT p FROM Post p WHERE p.warehouseId = :warehouseId"),
+    @NamedQuery(name = "Post.findByWarehouseSpace", query = "SELECT p FROM Post p WHERE p.warehouseSpace = :warehouseSpace")})
 public class Post implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -69,37 +66,28 @@ public class Post implements Serializable {
     @Column(name = "postDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date postDate;
-    @Size(max = 45)
-    @Column(name = "cargoType")
-    private String cargoType;
-    @Column(name = "cargoWeight")
-    private Integer cargoWeight;
     @Size(max = 200)
     @Column(name = "destination")
     private String destination;
     @Size(max = 200)
     @Column(name = "origin")
     private String origin;
-    @Column(name = "timeEnd")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timeEnd;
-    @Column(name = "timeStart")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timeStart;
     @Column(name = "storageStartDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date storageStartDate;
     @Column(name = "storageEndDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date storageEndDate;
-    @Column(name = "quantity")
-    private Integer quantity;
-    @Size(max = 45)
-    @Column(name = "watehouseZone")
-    private String watehouseZone;
+    @Column(name = "quantityInTEU")
+    private Integer quantityInTEU;
     @Column(name = "deliveryDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveryDate;
+    @Column(name = "warehouseId")
+    private Integer warehouseId;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "warehouseSpace")
+    private Double warehouseSpace;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     private List<Bid> bidList;
     @JoinColumn(name = "systemUser", referencedColumnName = "systemUserId")
@@ -147,22 +135,6 @@ public class Post implements Serializable {
         this.postDate = postDate;
     }
 
-    public String getCargoType() {
-        return cargoType;
-    }
-
-    public void setCargoType(String cargoType) {
-        this.cargoType = cargoType;
-    }
-
-    public Integer getCargoWeight() {
-        return cargoWeight;
-    }
-
-    public void setCargoWeight(Integer cargoWeight) {
-        this.cargoWeight = cargoWeight;
-    }
-
     public String getDestination() {
         return destination;
     }
@@ -177,22 +149,6 @@ public class Post implements Serializable {
 
     public void setOrigin(String origin) {
         this.origin = origin;
-    }
-
-    public Date getTimeEnd() {
-        return timeEnd;
-    }
-
-    public void setTimeEnd(Date timeEnd) {
-        this.timeEnd = timeEnd;
-    }
-
-    public Date getTimeStart() {
-        return timeStart;
-    }
-
-    public void setTimeStart(Date timeStart) {
-        this.timeStart = timeStart;
     }
 
     public Date getStorageStartDate() {
@@ -211,20 +167,12 @@ public class Post implements Serializable {
         this.storageEndDate = storageEndDate;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public Integer getQuantityInTEU() {
+        return quantityInTEU;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getWatehouseZone() {
-        return watehouseZone;
-    }
-
-    public void setWatehouseZone(String watehouseZone) {
-        this.watehouseZone = watehouseZone;
+    public void setQuantityInTEU(Integer quantityInTEU) {
+        this.quantityInTEU = quantityInTEU;
     }
 
     public Date getDeliveryDate() {
@@ -233,6 +181,22 @@ public class Post implements Serializable {
 
     public void setDeliveryDate(Date deliveryDate) {
         this.deliveryDate = deliveryDate;
+    }
+
+    public Integer getWarehouseId() {
+        return warehouseId;
+    }
+
+    public void setWarehouseId(Integer warehouseId) {
+        this.warehouseId = warehouseId;
+    }
+
+    public Double getWarehouseSpace() {
+        return warehouseSpace;
+    }
+
+    public void setWarehouseSpace(Double warehouseSpace) {
+        this.warehouseSpace = warehouseSpace;
     }
 
     @XmlTransient

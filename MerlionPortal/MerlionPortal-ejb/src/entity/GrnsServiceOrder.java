@@ -37,17 +37,18 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "GrnsServiceOrder.findByServiceType", query = "SELECT g FROM GrnsServiceOrder g WHERE g.serviceType = :serviceType"),
     @NamedQuery(name = "GrnsServiceOrder.findByServiceRequester", query = "SELECT g FROM GrnsServiceOrder g WHERE g.serviceRequester = :serviceRequester"),
     @NamedQuery(name = "GrnsServiceOrder.findByServiceProvider", query = "SELECT g FROM GrnsServiceOrder g WHERE g.serviceProvider = :serviceProvider"),
-    @NamedQuery(name = "GrnsServiceOrder.findByCargoType", query = "SELECT g FROM GrnsServiceOrder g WHERE g.cargoType = :cargoType"),
-    @NamedQuery(name = "GrnsServiceOrder.findByCargoWeight", query = "SELECT g FROM GrnsServiceOrder g WHERE g.cargoWeight = :cargoWeight"),
     @NamedQuery(name = "GrnsServiceOrder.findByDestination", query = "SELECT g FROM GrnsServiceOrder g WHERE g.destination = :destination"),
     @NamedQuery(name = "GrnsServiceOrder.findByOrigin", query = "SELECT g FROM GrnsServiceOrder g WHERE g.origin = :origin"),
-    @NamedQuery(name = "GrnsServiceOrder.findByTimeEnd", query = "SELECT g FROM GrnsServiceOrder g WHERE g.timeEnd = :timeEnd"),
-    @NamedQuery(name = "GrnsServiceOrder.findByTimeStart", query = "SELECT g FROM GrnsServiceOrder g WHERE g.timeStart = :timeStart"),
     @NamedQuery(name = "GrnsServiceOrder.findByStorageStartDate", query = "SELECT g FROM GrnsServiceOrder g WHERE g.storageStartDate = :storageStartDate"),
     @NamedQuery(name = "GrnsServiceOrder.findByStorageEndDate", query = "SELECT g FROM GrnsServiceOrder g WHERE g.storageEndDate = :storageEndDate"),
-    @NamedQuery(name = "GrnsServiceOrder.findByQuantity", query = "SELECT g FROM GrnsServiceOrder g WHERE g.quantity = :quantity"),
-    @NamedQuery(name = "GrnsServiceOrder.findByWarehouseZone", query = "SELECT g FROM GrnsServiceOrder g WHERE g.warehouseZone = :warehouseZone"),
-    @NamedQuery(name = "GrnsServiceOrder.findByDeliveryDate", query = "SELECT g FROM GrnsServiceOrder g WHERE g.deliveryDate = :deliveryDate")})
+    @NamedQuery(name = "GrnsServiceOrder.findByQuantityInTEU", query = "SELECT g FROM GrnsServiceOrder g WHERE g.quantityInTEU = :quantityInTEU"),
+    @NamedQuery(name = "GrnsServiceOrder.findByStorageType", query = "SELECT g FROM GrnsServiceOrder g WHERE g.storageType = :storageType"),
+    @NamedQuery(name = "GrnsServiceOrder.findByDeliveryDate", query = "SELECT g FROM GrnsServiceOrder g WHERE g.deliveryDate = :deliveryDate"),
+    @NamedQuery(name = "GrnsServiceOrder.findByWarehouseSpace", query = "SELECT g FROM GrnsServiceOrder g WHERE g.warehouseSpace = :warehouseSpace"),
+    @NamedQuery(name = "GrnsServiceOrder.findByDescription", query = "SELECT g FROM GrnsServiceOrder g WHERE g.description = :description"),
+    @NamedQuery(name = "GrnsServiceOrder.findByPrice", query = "SELECT g FROM GrnsServiceOrder g WHERE g.price = :price"),
+    @NamedQuery(name = "GrnsServiceOrder.findByCurrency", query = "SELECT g FROM GrnsServiceOrder g WHERE g.currency = :currency"),
+    @NamedQuery(name = "GrnsServiceOrder.findByStatus", query = "SELECT g FROM GrnsServiceOrder g WHERE g.status = :status")})
 public class GrnsServiceOrder implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -65,37 +66,40 @@ public class GrnsServiceOrder implements Serializable {
     private Integer serviceRequester;
     @Column(name = "serviceProvider")
     private Integer serviceProvider;
-    @Size(max = 45)
-    @Column(name = "cargoType")
-    private String cargoType;
-    @Column(name = "cargoWeight")
-    private Integer cargoWeight;
     @Size(max = 200)
     @Column(name = "destination")
     private String destination;
     @Size(max = 200)
     @Column(name = "origin")
     private String origin;
-    @Column(name = "timeEnd")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timeEnd;
-    @Column(name = "timeStart")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timeStart;
     @Column(name = "storageStartDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date storageStartDate;
     @Column(name = "storageEndDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date storageEndDate;
-    @Column(name = "quantity")
-    private Integer quantity;
+    @Column(name = "quantityInTEU")
+    private Integer quantityInTEU;
     @Size(max = 45)
-    @Column(name = "warehouseZone")
-    private String warehouseZone;
+    @Column(name = "storageType")
+    private String storageType;
     @Column(name = "deliveryDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveryDate;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "warehouseSpace")
+    private Double warehouseSpace;
+    @Size(max = 2000)
+    @Column(name = "description")
+    private String description;
+    @Column(name = "price")
+    private Double price;
+    @Size(max = 200)
+    @Column(name = "currency")
+    private String currency;
+    @Size(max = 45)
+    @Column(name = "status")
+    private String status;
     @JoinColumn(name = "orderId", referencedColumnName = "postId", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private Post post;
@@ -147,22 +151,6 @@ public class GrnsServiceOrder implements Serializable {
         this.serviceProvider = serviceProvider;
     }
 
-    public String getCargoType() {
-        return cargoType;
-    }
-
-    public void setCargoType(String cargoType) {
-        this.cargoType = cargoType;
-    }
-
-    public Integer getCargoWeight() {
-        return cargoWeight;
-    }
-
-    public void setCargoWeight(Integer cargoWeight) {
-        this.cargoWeight = cargoWeight;
-    }
-
     public String getDestination() {
         return destination;
     }
@@ -177,22 +165,6 @@ public class GrnsServiceOrder implements Serializable {
 
     public void setOrigin(String origin) {
         this.origin = origin;
-    }
-
-    public Date getTimeEnd() {
-        return timeEnd;
-    }
-
-    public void setTimeEnd(Date timeEnd) {
-        this.timeEnd = timeEnd;
-    }
-
-    public Date getTimeStart() {
-        return timeStart;
-    }
-
-    public void setTimeStart(Date timeStart) {
-        this.timeStart = timeStart;
     }
 
     public Date getStorageStartDate() {
@@ -211,20 +183,20 @@ public class GrnsServiceOrder implements Serializable {
         this.storageEndDate = storageEndDate;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public Integer getQuantityInTEU() {
+        return quantityInTEU;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setQuantityInTEU(Integer quantityInTEU) {
+        this.quantityInTEU = quantityInTEU;
     }
 
-    public String getWarehouseZone() {
-        return warehouseZone;
+    public String getStorageType() {
+        return storageType;
     }
 
-    public void setWarehouseZone(String warehouseZone) {
-        this.warehouseZone = warehouseZone;
+    public void setStorageType(String storageType) {
+        this.storageType = storageType;
     }
 
     public Date getDeliveryDate() {
@@ -233,6 +205,46 @@ public class GrnsServiceOrder implements Serializable {
 
     public void setDeliveryDate(Date deliveryDate) {
         this.deliveryDate = deliveryDate;
+    }
+
+    public Double getWarehouseSpace() {
+        return warehouseSpace;
+    }
+
+    public void setWarehouseSpace(Double warehouseSpace) {
+        this.warehouseSpace = warehouseSpace;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Post getPost() {
