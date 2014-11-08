@@ -7,8 +7,8 @@ package merlionportal.managedbean.wms;
 
 import entity.Product;
 import entity.Stock;
-import entity.StockAudit;
 import entity.SystemUser;
+import entity.Warehouse;
 import java.io.IOException;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -20,8 +20,8 @@ import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.mrp.productcatalogmodule.ProductSessionBean;
-import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
 import merlionportal.wms.mobilitymanagementmodule.ReceivingPutawaySessionBean;
+import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -52,8 +52,8 @@ public class StockViewEditManagedBean {
     private List<Product> productList;
     private Product product;
     
-    private StockAudit stockaudit;
-    private List<StockAudit> stockAudits;
+    private Integer warehouseId;
+    private List<Warehouse> warehouses;
 
     private Integer companyId;
     private SystemUser loginedUser;
@@ -78,6 +78,7 @@ public class StockViewEditManagedBean {
             }
         }
         productList = psb.getMyProducts(companyId);
+        warehouses = amsb.viewMyWarehouses(companyId);
     }
 
     /**
@@ -86,14 +87,14 @@ public class StockViewEditManagedBean {
     public StockViewEditManagedBean() {
     }
 
-    public void viewStocks() {
+    public void viewAllStocks() {
         System.out.println("===============================[In Managed Bean - view Stocks]");
         System.out.println("[In Managed Bean - getStocks] Product ID : " + productId);
         totalQuantity = 0;
         if (productId != null) {
-            stocks = rpsb.viewStock(companyId, productId);
-            // EDIT LATER
-//            totalQuantity = rpsb.countTotalAvailableStock(companyId, productId);
+            stocks = rpsb.viewAllStocks(companyId, productId);
+            totalQuantity = rpsb.countAvailbleStocksInCompany(companyId, productId);
+            System.out.println("TOTAL QUANTITY IN VIEW ALL STOCKS = " + totalQuantity);
             systemLogSB.recordSystemLog(userId, "WMS view stocks");
             if (stocks == null) {
                 System.out.println("============== FAILED TO VIEW STOCK ===============");
@@ -101,7 +102,21 @@ public class StockViewEditManagedBean {
             }
         }
     }
-
+    
+        public void viewStocksForAWarehouse() {
+        System.out.println("===============================[In Managed Bean -  viewStocksForAWarehouse]");
+        totalQuantity = 0;
+        if (productId != null) {
+            stocks = rpsb.getWarehouseStock(warehouseId, productId);
+            totalQuantity = rpsb.countAvailbleStockInWarehouse(productId, productId);
+            System.out.println("TOTAL QUANTITY IN VIEW ALL STOCKS = " + totalQuantity);
+            systemLogSB.recordSystemLog(userId, "WMS view stocks");
+            if (stocks == null) {
+                System.out.println("============== FAILED TO VIEW STOCK ===============");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Stock.", ""));
+            }
+        }
+    }
 
     public void deleteStock(Stock stock) {
         try {
@@ -220,20 +235,21 @@ public class StockViewEditManagedBean {
         this.userId = userId;
     }
 
-    public StockAudit getStockaudit() {
-        return stockaudit;
+    public Integer getWarehouseId() {
+        return warehouseId;
     }
 
-    public void setStockaudit(StockAudit stockaudit) {
-        this.stockaudit = stockaudit;
+    public void setWarehouseId(Integer warehouseId) {
+        this.warehouseId = warehouseId;
     }
 
-    public List<StockAudit> getStockAudits() {
-        return stockAudits;
+    public List<Warehouse> getWarehouses() {
+        return warehouses;
     }
 
-    public void setStockAudits(List<StockAudit> stockAudits) {
-        this.stockAudits = stockAudits;
+    public void setWarehouses(List<Warehouse> warehouses) {
+        this.warehouses = warehouses;
     }
+
 
 }
