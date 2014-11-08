@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="WMS home" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <link rel="stylesheet" href="${request.contextPath}/css/mrp.css" type="text/css" />
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <p:menu styleClass="menu-width">
+                <p:submenu label =" WMS HOME" styleClass="display:block">
+                    <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender"/>
+                </p:submenu>
+                <p:submenu label =" Warehouse" styleClass="display:block">
+                    <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
+                    <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
+                </p:submenu>
+                <p:submenu label="Warehouse Zone" styleClass="display:block" >
+                    <p:menuitem value="Add Warehouse Zone" url="addwarehousezone.xhtml" />
+                    <p:menuitem value="View Warehouse Zones" url="viewwarehousezone.xhtml" />
+                </p:submenu>
+                <p:submenu label="Storage Bin" styleClass="display:block" >
+                    <p:menuitem value="Add Storage Bin" url="addstoragebin.xhtml" />
+                    <p:menuitem value="View Storage Bin" url="viewstoragebin.xhtml" />
+                </p:submenu>
+                <p:submenu label="Stock" styleClass="display:block" >
+                    <p:menuitem value="Add Stock" url="addstock.xhtml"/>
+                    <p:menuitem value="View Stock" url="viewstock.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Stock Audit" styleClass="display:block" >
+                    <p:menuitem value="Create Stock Audit" url="createstockaudit.xhtml"/>
+                    <p:menuitem value="View All Stock Audits" url="viewallstockaudit.xhtml"/>
+                    <p:menuitem value="View Today's Stock Audits" url="viewduestockaudit.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Stock Transport Order" styleClass="display:block" >
+                    <p:menuitem value="Create Transport Order" url="createtransportorder.xhtml"/>
+                    <p:menuitem value="View Transport Order To Be Procssed" url="viewsourcetransportorder.xhtml"/>
+                    <p:menuitem value="All IncomingTransport Orders" url="viewdesttransportorder.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Warehouse Space Request Orders" styleClass="display:block" >
+                    <p:menuitem value="All Pending Request" url="viewallpendingrequests.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Warehouse Service Fulfillment Check" >
+                    <p:menuitem value="Fulfillment Check" url="warehouseservicefulfillmentcheck.xhtml" />
+                </p:submenu>
+                <p:submenu label="View Notification" >
+                    <p:menuitem value="View Notification" url="viewallnotification.xhtml" />
+                </p:submenu>
+            </p:menu>
+        </ui:define>
+
+        <ui:define name="right">
+            <h:form id="formMain">
+                <p:panel id="panel" header=" View All Rented Storage Bins">
+                    <p:ajaxStatus style="width:16px;height:16px;">
+                        <f:facet name="start">
+                            <h:graphicImage value="/img/load.gif" />
+                        </f:facet>
+                        <f:facet name="complete">
+                            <h:outputText value="" />
+                        </f:facet>
+                    </p:ajaxStatus>
+
+                    <p:dataTable id="storagebinData" var="storagebin"  scrollable="true" scrollWidth="1500" sortMode="multiple" editable="true" value="#{rentedBinsManagementManagedBean.bins}" 
+                                 widgetVar="storageBinTable"
+                                 emptyMessage="No Storage Bin found"
+                                 resizableColumns="true"
+                                 rowKey="#{storagebin.storageBinId}">
+
+                        <f:facet name="header">                    
+                            <p:outputPanel>
+                                <h:outputText value="Search Storage Bin fields:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('storageBinTable').filter()" />
+                            </p:outputPanel>
+                        </f:facet>         
+
+                        <p:column filterBy="#{storagebin.storageBinId}" filterStyle="width:70px" filterMatchMode="exact" headerText="Storage Bin ID" >
+                            <h:outputText value="#{storagebin.storageBinId}" />
+                        </p:column>
+
+                        <p:column  filterBy="#{storagebin.binName}" filterStyle="width:70px" filterMatchMode="contains" headerText="Bin Name">
+                            <h:outputText value="#{storagebin.binName}" />
+                        </p:column>  
+
+                        <p:column  headerText="Description" filterBy="#{storagebin.description}" filterStyle="width:70px" filterMatchMode="contains">
+                            <h:outputText value="#{storagebin.description}" />
+                        </p:column>
+
+                        <p:column  headerText="Bin Type" filterBy="#{storagebin.binType}" filterStyle="width:70px" filterMatchMode="contains">
+                            <h:outputText value="#{storagebin.binType}" />
+                        </p:column>
+
+                        <p:column  headerText="Max Quantity" filterBy="#{storagebin.maxQuantity}" filterStyle="width:70px" filterMatchMode="contains">
+                            <h:outputText value="#{storagebin.maxQuantity}" />
+                        </p:column>
+
+                        <p:column  headerText="Max Weight" filterBy="#{storagebin.maxWeight}" filterStyle="width:70px" filterMatchMode="contains">
+                            <h:outputText value="#{storagebin.maxWeight}" />
+                        </p:column>
+
+                        <p:column  headerText="Available Space" filterBy="#{storagebin.availableSpace}" filterStyle="width:70px" filterMatchMode="contains">
+                            <h:outputText value="#{storagebin.availableSpace}" />
+                        </p:column>
+
+                        <p:column  headerText="Reserved Space" filterBy="#{storagebin.reservedSpace}" filterStyle="width:70px" filterMatchMode="contains">
+                            <h:outputText value="#{storagebin.reservedSpace}" />
+                        </p:column>
+
+                        <p:column  headerText="Warehouse" filterBy="#{storagebin.warehouseZone.warehouse.warehouseId}" filterStyle="width:70px" filterMatchMode="contains">
+                            <h:outputText value="ID = #{storagebin.warehouseZone.warehouse.warehouseId} Name = #{storagebin.warehouseZone.warehouse.name}" />
+                        </p:column>
+
+                        <p:column  headerText="Owner Company ID" filterBy="#{storagebin.warehouseZone.warehouse.companyId}" filterStyle="width:70px" filterMatchMode="contains">
+                            <h:outputText value="#{storagebin.warehouseZone.warehouse.companyId}" />
+                        </p:column>
+
+                    </p:dataTable>
+                    <p:messages id="messages" autoUpdate="true" closable="true" />
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>                 
+
