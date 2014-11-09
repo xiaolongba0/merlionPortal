@@ -101,7 +101,7 @@ public class ViewAllUncomfirmedPayment {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
         sessionMap.put("unpaidOrder", selectedOrder);
-
+        systemLogSB.recordSystemLog(userId, "OES confirmed payment");
         return "comfirmpayment.xhtml?faces-redirect=true;";
     }
 }
