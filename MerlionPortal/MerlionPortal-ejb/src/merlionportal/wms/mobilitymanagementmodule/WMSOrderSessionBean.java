@@ -98,8 +98,8 @@ public class WMSOrderSessionBean {
 //        }
 //        return false;
 //    }
-    // View all orders that are incoming for receiving and putaway
-    public List<WmsOrder> viewIncomingOrders(Integer companyId, Integer warehouseId, Boolean internalOrder) {
+    // View all Own internal orders that are incoming for receiving and putaway
+    public List<WmsOrder> viewMyIncomingOrders(Integer companyId, Integer warehouseId) {
         System.out.println("[INSIDE WMS ORDER EJB]================================viewIncomingOrders");
 
         List<WmsOrder> allmyOrders = new ArrayList();
@@ -109,17 +109,41 @@ public class WMSOrderSessionBean {
         while (i < query.getResultList().size()) {
             WmsOrder wmsOrder = new WmsOrder();
             wmsOrder = (WmsOrder) query.getResultList().get(i);
-            if (wmsOrder.getOrderType().equalsIgnoreCase("Receiving Order")) {
+            if (wmsOrder.getOrderType().equalsIgnoreCase("Receiving Order") && (int) wmsOrder.getWarehouseId() == warehouseId) {
                 if (wmsOrder.getInternalOrder()) {
                     allmyOrders.add(wmsOrder);
                 }
             }
+            i++;
+
         }
         return allmyOrders;
     }
 
+    // View all Own internal orders that are incoming for receiving and putaway
+    public List<WmsOrder> viewOthersIncomingOrders(Integer companyId, Integer warehouseId) {
+        System.out.println("[INSIDE WMS ORDER EJB]================================viewIncomingOrders");
+
+        List<WmsOrder> allmyOrders = new ArrayList();
+        Query query = em.createNamedQuery("WmsOrder.findByMyCompanyId").setParameter("myCompanyId", companyId);
+        System.out.println("Query: " + query.getResultList().size());
+
+        int i = 0;
+        while (i < query.getResultList().size()) {
+            WmsOrder wmsOrder = (WmsOrder) query.getResultList().get(i);
+            if (wmsOrder.getOrderType().equalsIgnoreCase("Receiving Order") && (int) wmsOrder.getWarehouseId() == warehouseId) {
+                if (!wmsOrder.getInternalOrder()) {
+                    allmyOrders.add(wmsOrder);
+                }
+            }
+            i++;
+        }
+        System.out.println("Number: " + allmyOrders.size());
+        return allmyOrders;
+    }
+
     // View all orders that are going out for fulfillment 
-    public List<WmsOrder> viewFulfillmentOrders(Integer companyId, Integer warehouseId) {
+    public List<WmsOrder> viewMyFulfillmentOrders(Integer companyId, Integer warehouseId) {
 
         System.out.println("[INSIDE WMS ORDER EJB]================================viewFulfillmentOrders");
         List<WmsOrder> allOrders = new ArrayList();
@@ -129,9 +153,32 @@ public class WMSOrderSessionBean {
         while (i < query.getResultList().size()) {
             WmsOrder wmsOrder = new WmsOrder();
             wmsOrder = (WmsOrder) query.getResultList().get(i);
-            if (wmsOrder.getOrderType().equalsIgnoreCase("Fulfillment Order")) {
-                allOrders.add(wmsOrder);
+            if (wmsOrder.getOrderType().equalsIgnoreCase("Fulfillment Order") && (int) wmsOrder.getWarehouseId() == warehouseId) {
+                if (wmsOrder.getInternalOrder()) {
+                    allOrders.add(wmsOrder);
+                }
             }
+            i++;
+        }
+        return allOrders;
+    }
+
+    public List<WmsOrder> viewOthersFulfillmentOrders(Integer companyId, Integer warehouseId) {
+
+        System.out.println("[INSIDE WMS ORDER EJB]================================viewFulfillmentOrders");
+        List<WmsOrder> allOrders = new ArrayList();
+        Query query = em.createNamedQuery("WmsOrder.findByMyCompanyId").setParameter("myCompanyId", companyId);
+
+        int i = 0;
+        while (i < query.getResultList().size()) {
+            WmsOrder wmsOrder = new WmsOrder();
+            wmsOrder = (WmsOrder) query.getResultList().get(i);
+            if (wmsOrder.getOrderType().equalsIgnoreCase("Fulfillment Order") && (int) wmsOrder.getWarehouseId() == warehouseId) {
+                if (!wmsOrder.getInternalOrder()) {
+                    allOrders.add(wmsOrder);
+                }
+            }
+            i++;
         }
         return allOrders;
     }
@@ -214,11 +261,11 @@ public class WMSOrderSessionBean {
             return null;
         }
     }
-    
-    public boolean convertExternalOrderToInternalWOrder(Integer poId, Integer companyId){
+
+    public boolean convertExternalOrderToInternalWOrder(Integer poId, Integer companyId) {
         WmsOrder wmsOrder = new WmsOrder();
         ServicePO po = em.find(ServicePO.class, poId);
-        if(po!=null){
+        if (po != null) {
             wmsOrder.setMyCompanyId(companyId);
             wmsOrder.setOrderType(po.getWarehousePOtype());
             wmsOrder.setFulfillmentDate(po.getServiceFulfilmentDate());
@@ -229,10 +276,10 @@ public class WMSOrderSessionBean {
             wmsOrder.setServicePOId(po.getServicePOId());
             wmsOrder.setInternalOrder(false);
             wmsOrder.setWarehouseId(po.getWarehouseId());
-            
+
             em.persist(wmsOrder);
             em.flush();
-            
+
             return true;
         }
         return false;

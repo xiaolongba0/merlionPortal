@@ -5,18 +5,13 @@
  */
 package merlionportal.managedbean.wms;
 
-import entity.ServicePO;
 import entity.SystemUser;
-import entity.TransportOrder;
 import entity.Warehouse;
 import entity.WmsOrder;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -86,12 +81,14 @@ public class ReceivingPutawayManagedBean {
         System.out.println("[In Managed Bean - viewOrdersToBeReceived] =============================== Source company ID : " + companyId);
 
         if (warehouseId != null) {
-            internalOrder = true;
-            wmsOrders = osb.viewIncomingOrders(companyId, warehouseId, internalOrder);
-            systemLogSB.recordSystemLog(userId, "WMS view my orders to be received");
-            if (warehouseId == null) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View", ""));
+            wmsOrders = osb.viewMyIncomingOrders(companyId, warehouseId);
+            if (wmsOrders == null) {
+                System.out.println("NULL NULL NULL check it out!");
+            } else {
+                System.out.println("order "+wmsOrders);
+
             }
+            systemLogSB.recordSystemLog(userId, "WMS view my orders to be received");
         }
     }
 
@@ -99,14 +96,15 @@ public class ReceivingPutawayManagedBean {
     public void viewOthersOrderToBeReceived() {
         System.out.println("[In Managed Bean - viewOthersOrderToBeReceived] =============================== Source company ID : " + companyId);
 
-        if (warehouseId != null) {
-            internalOrder = true;
-            wmsOrders = osb.viewIncomingOrders(companyId, warehouseId, internalOrder);
+        if (warehouseId2 != null) {
+            wmsOrders = osb.viewOthersIncomingOrders(companyId, warehouseId2);
             System.out.println("WMS ORDERS = " + wmsOrders);
-            systemLogSB.recordSystemLog(userId, "WMS view others orders to be received");
-            if (warehouseId == null) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View", ""));
+            if (wmsOrders == null) {
+                System.out.println("NULL NULL NULL check it out!");
+            } else {
+                System.out.println("order "+wmsOrders);
             }
+            systemLogSB.recordSystemLog(userId, "WMS view others orders to be received");
         }
     }
 
