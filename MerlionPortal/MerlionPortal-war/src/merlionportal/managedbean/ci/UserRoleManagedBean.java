@@ -146,6 +146,7 @@ public class UserRoleManagedBean implements Serializable {
             if (result == 1) {
                 this.clearAllFields();
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Role Created!", "You can now assign users to this role"));
+                systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User created user role");
 
             } else if (result == -1) {
 
@@ -157,9 +158,8 @@ public class UserRoleManagedBean implements Serializable {
             }
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Role Name Exist", "Please change another role name"));
-
         }
-        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User created user role");
+        
     }
 
     public void checkCompanyPackage() {
@@ -170,7 +170,6 @@ public class UserRoleManagedBean implements Serializable {
         }
         companyPackage = ccpsb.checkCompanyPackage(companyId);
         systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User checked company package");
-
     }
 
     private void clearAllFields() {
