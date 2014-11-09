@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">
+        <ui:param name="pageName" value="WMS home" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <p:menu styleClass="menu-width">
+                <p:submenu label =" WMS HOME" styleClass="display:block">
+                    <p:menuitem value="WMS Home" url="wmsindex.xhtml" />
+                </p:submenu>
+                <p:submenu label =" Warehouse" styleClass="display:block">
+                    <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
+                    <p:menuitem value="View All Warehouses" url="viewallwarehouse.xhtml" />
+                </p:submenu>
+                <p:submenu label="Warehouse Zone" styleClass="display:block" >
+                    <p:menuitem value="Add Warehouse Zone" url="addwarehousezone.xhtml" />
+                    <p:menuitem value="View Warehouse Zones" url="viewwarehousezone.xhtml" />
+                </p:submenu>
+                <p:submenu label="Storage Bin" styleClass="display:block" >
+                    <p:menuitem value="Add Storage Bin" url="addstoragebin.xhtml" />
+                    <p:menuitem value="View Storage Bin" url="viewstoragebin.xhtml" />
+                </p:submenu>
+                <p:submenu label="Stock" styleClass="display:block" >
+                    <p:menuitem value="Add Stock" url="addstock.xhtml"/>
+                    <p:menuitem value="View Stock" url="viewstock.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Stock Audit" styleClass="display:block" >
+                    <p:menuitem value="Create Stock Audit" url="createstockaudit.xhtml"/>
+                    <p:menuitem value="View All Stock Audits" url="viewallstockaudit.xhtml"/>
+                    <p:menuitem value="View Today's Stock Audits" url="viewduestockaudit.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Stock Transport Order" styleClass="display:block" >
+                    <p:menuitem value="Create Transport Order" url="createtransportorder.xhtml"/>
+                    <p:menuitem value="View Transport Order To Be Procssed" url="viewsourcetransportorder.xhtml"/>
+                    <p:menuitem value="All IncomingTransport Orders" url="viewdesttransportorder.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Internal Warehouse Request Orders" styleClass="display:block" >
+                    <p:menuitem value="Create Internal Warehouse Request" url="createinternalwo.xhtml"/>
+                    <p:menuitem value="View Incoming Internal Orders" url="viewincomingorders.xhtml"/>
+                    <p:menuitem value="View Outgoing Internal Orders" url="viewoutgoingorders.xhtml"/>
+                </p:submenu>
+                <p:submenu label="External Warehouse Request Orders" styleClass="display:block" >
+                    <p:menuitem value="Create External Warehouse Request" url="createwarehouserequest.xhtml"/>
+                    <p:menuitem value="View All External Orders" url="viewallpendingrequests.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Warehouse Space Fulfillment Check" >
+                    <p:menuitem value="Fulfillment Check" url="warehouseservicefulfillmentcheck.xhtml" />
+                </p:submenu>
+                <p:submenu label="View Notification" >
+                    <p:menuitem value="View Notification" url="viewallnotification.xhtml" />
+                </p:submenu>
+            </p:menu>
+        </ui:define>
+
+        <ui:define name="right">
+            <h:form id="formMain">
+                <p:panel id="panel" header="Order Fulfillment Process">
+                    <p:ajaxStatus style="width:16px;height:16px;">
+                        <f:facet name="start">
+                            <h:graphicImage value="/img/load.gif" />
+                        </f:facet>
+                        <f:facet name="complete">
+                            <h:outputText value="" />
+                        </f:facet>
+                    </p:ajaxStatus>
+
+                    <h:panelGrid columns="3">
+
+                        <p:outputLabel for="orderId" style="font-weight: bold" value="WMS Order ID:  " /><p:spacer width="40" height="20" />
+                        <h:outputText id="orderId" value="#{orderFulfillmentProcessManagedBean.selectedOrder.orderId}"/>
+
+                        <c:if test="#{!orderFulfillmentProcessManagedBean.selectedOrder.internalOrder}" >
+                            <p:outputLabel for="servicepoid" value="Service PO ID " /><p:spacer width="20" height="20" />
+                            <h:outputText id="servicepoid" value="#{orderFulfillmentProcessManagedBean.selectedOrder.servicePOId}"/>
+                        </c:if>
+
+                        <p:outputLabel for="ordertype" style="font-weight: bold" value="Order Type:  " /><p:spacer width="40" height="20" />
+                        <h:outputText id="ordertype" value="#{orderFulfillmentProcessManagedBean.selectedOrder.orderType}"/>
+
+                        <p:outputLabel for="scheduledDate" style="font-weight: bold" value="Scheduled Fulfillment Date:  " /><p:spacer width="40" height="20" />
+                        <h:outputText id="scheduledDate" value="#{orderFulfillmentProcessManagedBean.selectedOrder.fulfillmentDate}"/>
+
+                        <p:outputLabel for="quantity" style="font-weight: bold" value="Quantity:  " /><p:spacer width="40" height="20" />
+                        <h:outputText id="quantity" value="#{orderFulfillmentProcessManagedBean.selectedOrder.quantity}"/>
+
+                        <p:outputLabel for="productId" style="font-weight: bold" value="Product ID:  " /><p:spacer width="40" height="20" />
+                        <h:outputText id="productId" value="#{orderFulfillmentProcessManagedBean.selectedOrder.productId}"/>
+                        
+                        <p:spacer width="40" height="20" />
+                        <p:spacer width="40" height="20" />
+                        <p:spacer width="40" height="20" />
+                        
+                        <p:outputLabel id="process" style="font-weight: bold" value="* Please check if the order:  " /><p:spacer width="40" height="20" /><p:spacer width="40" height="20" />
+                        <p:outputLabel id="process2" style="font-weight: bold" value="1) Has the correct quantity  " /><p:spacer width="40" height="20" /><p:spacer width="40" height="20" />
+                        <p:outputLabel id="process3" style="font-weight: bold" value="2) The goods have not been damaged  " />
+
+
+                    </h:panelGrid>
+                    <h:panelGrid columns="1">
+                        <p:messages id="messages" autoUpdate="true" closable="true" /><p:spacer width="40" height="20" />
+
+                        <p:commandButton id="btn" value="Complete" action="wmsindex.xhtml?faces-redirect=true" icon=" ui-icon-circle-check" >
+                            <p:ajax listener="#{orderFulfillmentProcessManagedBean.carryOutOrderFulfillment()}"/>
+                        </p:commandButton>
+                        <p:spacer width="40" height="20" />
+                        <p:commandButton value="Go Back" action="viewoutgoingorders.xhtml?faces-redirect=true" icon="ui-icon-circle-arrow-w"/>
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>                 
+

@@ -117,7 +117,7 @@
                                 </p:column>
 
                                 <p:column headerText="">
-                                    <p:commandButton  value="Process Order">
+                                    <p:commandButton  action="#{receivingPutawayManagedBean.getOrder(order)}" value="Process Order">
                                     </p:commandButton> 
                                 </p:column>
                             </p:dataTable>
@@ -129,7 +129,7 @@
 
                 <p:tab title="View Others' Incoming Orders">
                     <h:form id="formMain2">
-                        <p:panel id="panel2" header=" View My Incoming Orders to be received">
+                        <p:panel id="panel2" header=" View Others' Incoming Orders to be received">
                             <p:row>
                                 <p:column>
                                     <p:outputLabel for="warehouse" value="Warehouse Name: " />
@@ -176,7 +176,7 @@
                                 </p:column>
 
                                 <p:column headerText="">
-                                    <p:commandButton  value="Process Order">
+                                    <p:commandButton  action="#{receivingPutawayManagedBean.getOrder(order)}" value="Process Order">
                                     </p:commandButton> 
                                 </p:column>
                             </p:dataTable>
