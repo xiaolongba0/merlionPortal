@@ -78,7 +78,7 @@ public class MonthlyReportManagedBean {
         }
 
         createMyModels();
-        systemLogSB.recordSystemLog(userId, "OES View Monthely Report. ");
+        systemLogSB.recordSystemLog(userId, "OES View Monthly Report. ");
 
     }
 
