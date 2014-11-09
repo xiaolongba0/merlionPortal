@@ -5,12 +5,10 @@
  */
 package merlionportal.wms.mobilitymanagementmodule;
 
+import entity.ServicePO;
 import entity.Stock;
-import entity.StorageBin;
 import entity.WmsOrder;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -100,7 +98,6 @@ public class WMSOrderSessionBean {
 //        }
 //        return false;
 //    }
-
     // View all orders that are incoming for receiving and putaway
     public List<WmsOrder> viewIncomingOrders(Integer companyId, Integer warehouseId, Boolean internalOrder) {
         System.out.println("[INSIDE WMS ORDER EJB]================================viewIncomingOrders");
@@ -222,6 +219,29 @@ public class WMSOrderSessionBean {
         } else {
             return null;
         }
+    }
+    
+    public boolean convertExternalOrderToInternalWOrder(Integer poId, Integer companyId){
+        WmsOrder wmsOrder = new WmsOrder();
+        ServicePO po = em.find(ServicePO.class, poId);
+        if(po!=null){
+            wmsOrder.setMyCompanyId(companyId);
+            wmsOrder.setOrderType(po.getWarehousePOtype());
+            wmsOrder.setFulfillmentDate(po.getServiceFulfilmentDate());
+            wmsOrder.setReceiveDate(po.getServiceReceiveDate());
+            wmsOrder.setQuantity(po.getAmountOfProduct().intValue());
+            wmsOrder.setProductId(po.getProductId());
+            wmsOrder.setServicePOId(po.getServicePOId());
+            wmsOrder.setServicePOId(po.getServicePOId());
+            wmsOrder.setInternalOrder(false);
+            wmsOrder.setWarehouseId(po.getWarehouseId());
+            
+            em.persist(wmsOrder);
+            em.flush();
+            
+            return true;
+        }
+        return false;
     }
 
 }

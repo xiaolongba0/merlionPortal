@@ -19,6 +19,7 @@ import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.crms.ordermanagementmodule.POProcessingManagementSessionBean;
 import merlionportal.crms.ordermanagementmodule.ServicePOManagementSessionBean;
+import merlionportal.wms.mobilitymanagementmodule.WMSOrderSessionBean;
 
 /**
  *
@@ -37,6 +38,8 @@ public class ViewWarehouseRequestDetailManagedBean {
     UserAccountManagementSessionBean userAccountSB;
     @EJB
     POProcessingManagementSessionBean poProcessingSB;
+    @EJB
+    WMSOrderSessionBean wmsBean;
     @EJB
     SystemLogSessionBean logSB;
 
@@ -171,6 +174,16 @@ public class ViewWarehouseRequestDetailManagedBean {
             }
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong, please go back to previous page"));
+        }
+    }
+
+    public void processToBeInternal() {
+        boolean result = wmsBean.convertExternalOrderToInternalWOrder(selectedWServicePO.getServicePOId(), companyId);
+        if (result) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Convert to External Order to Internal Order", ""));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Something went wrong", ""));
+
         }
     }
 

@@ -137,12 +137,12 @@
                             <p:outputLabel value="Receiving Date:"/><p:spacer width="20" height="20" />
                             <h:outputText value="#{viewWarehouseRequestDetailMB.receiveDate}"/>
                         </c:if>
-              
+
                         <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewWarehouseRequestDetailMB.productId}" />
                         <p:outputLabel value="Product Amount" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewWarehouseRequestDetailMB.amt}" />
-                        
+
                         <p:outputLabel value="Price:" style="color: red" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewWarehouseRequestDetailMB.price}" style="color: red" />
 
@@ -186,7 +186,7 @@
                     </c:if>
 
                     <h:panelGrid columns="3" >
-                       <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
+                        <p:outputLabel value="Product ID:" /><p:spacer width="20" height="20" />
                         <p:inputText value="#{viewWarehouseRequestDetailMB.productId2}" required="true" requiredMessage="Product ID in TEU is required!" />
                         <p:outputLabel value="Product Amount:" /><p:spacer width="20" height="20" />
                         <p:inputText value="#{viewWarehouseRequestDetailMB.amt2}" required="true" requiredMessage="Product Amount is required!" />
@@ -195,7 +195,11 @@
                     <p:commandButton value="Confirm" action="#{viewWarehouseRequestDetailMB.updatePO()}" ajax="true" update=":form" />
                 </p:dialog>
             </h:form>
-
+            <h:form >
+                <c:if test="#{((viewWarehouseRequestDetailMB.compareStatus eq 5 ) or (viewWarehouseRequestDetailMB.compareStatus eq 6 ) or (viewWarehouseRequestDetailMB.compareStatus eq 7 ) or (viewWarehouseRequestDetailMB.compareStatus eq 8 ) or (viewWarehouseRequestDetailMB.compareStatus eq 11 ))and (viewWarehouseRequestDetailMB.selectedWServicePO.receiverCompanyId eq viewServicePODetailManagedBean.companyId)}" >
+                    <p:commandButton value="Process To Become Internal Order" action="#{viewWarehouseRequestDetailMB.processToBeInternal()}" />
+                </c:if>
+            </h:form>
             <p:commandButton value="Go Back" icon="ui-icon-circle-arrow-w" action="viewallpendingrequests.xhtml?faces-redirect=true"/>
 
         </ui:define>
