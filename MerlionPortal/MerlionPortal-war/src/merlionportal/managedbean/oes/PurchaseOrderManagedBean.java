@@ -101,6 +101,7 @@ public class PurchaseOrderManagedBean {
         }
         shipto = address1 + " " + address2 + " " + address3 + " " + "," + city + "," + country + " " + postalCode;
         System.out.println("Shipto Adress is not null" + shipto);
+        
     }
 
     public String checkAvailability(ProductOrderLineItem line) {
@@ -120,6 +121,7 @@ public class PurchaseOrderManagedBean {
         FacesContext.getCurrentInstance().addMessage(null, msg);
         ProductOrderLineItem testout = (ProductOrderLineItem) event.getObject();
         System.out.println("Set line item quantity" + testout.getQuantity());
+        systemLogSB.recordSystemLog(userId, "OES Edited row");
     }
 
     public void onRowCancel(RowEditEvent event) {
@@ -127,6 +129,7 @@ public class PurchaseOrderManagedBean {
 //        quotationMB.setLineItemPrice(selectedRequest, myLine, null);
         FacesMessage msg = new FacesMessage("Edit quantity cancelled");
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        systemLogSB.recordSystemLog(userId, "OES Cancelled row");
 
     }
 
