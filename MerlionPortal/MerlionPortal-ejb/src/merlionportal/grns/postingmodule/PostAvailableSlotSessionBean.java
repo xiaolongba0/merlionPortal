@@ -28,14 +28,14 @@ public class PostAvailableSlotSessionBean {
     
     public Integer AvailableBin (Integer warehouseID) {
 
-        System.out.println("In viewStorageBinForType, WarehouseZoneID ============================= : " + warehouseZoneId);
-        WarehouseZone typeTemp = null;
+        System.out.println("In viewStorageBinForType, WarehouseID ============================= : " + warehouseId);
+        Warehouse typeTemp = null;
 
-        if (warehouseZoneId != null) {
+        if (warehouseId != null) {
             typeTemp = em.find(warehouseID.WarehouseZone.warehousebin.class, warehouseId);
             System.out.println("In viewMyWarehouseZones, finding warehouse" + typeTemp);
         }
-        return typeTemp.getStorageBinList();
+        
 
     }
 }
