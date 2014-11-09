@@ -42,6 +42,7 @@ public class TAssetmanagementSessionBean {
     //-------Location
     private Location location;
     private Integer locationId;
+    private ArrayList<AssetSchedule> assetScheduleList;
     private ArrayList<TransportationAsset> transportationAssetList;
 
     //-------------Asset
@@ -194,9 +195,9 @@ public class TAssetmanagementSessionBean {
         route.setEndNodeId(nodeend.getNodeId());
         route.setStartNodeId(nodee);
 
-        transportationAssetList = new ArrayList<TransportationAsset>();
-        route.setTransportationAssetList(transportationAssetList);
-
+        assetScheduleList = new ArrayList<AssetSchedule>();
+        route.setAssetScheduleList(assetScheduleList);
+        
         System.out.println("==========Route Orgin========== :" + nodee.getLocationName());
         System.out.println("==========Route Destination==== :" + nodeend.getLocationName());
         System.out.println("==========Route Distance======= :" + distance);
@@ -321,6 +322,7 @@ public class TAssetmanagementSessionBean {
         tAsset.setIsAvailable(Boolean.TRUE);
         tAsset.setIsMaintain(Boolean.FALSE);
         tAsset.setStatus(status);
+        tAsset.setLoad(0);
 
         scheduleList = new ArrayList<AssetSchedule>();
         tAsset.setAssetScheduleList(scheduleList);
@@ -378,14 +380,13 @@ public class TAssetmanagementSessionBean {
             System.out.println("In viewMyTransportationAssets, finding location" + locationTemp);
         }
         Integer count = 0;
-        List <TransportationAsset> temp = locationTemp.getTransportationAssetList();
+        List<TransportationAsset> temp = locationTemp.getTransportationAssetList();
         for (TransportationAsset tAsset : temp) {
             if (tAsset.getIsAvailable() == true) {
                 count++;
             }
         }
         return count;
-
 
     }
 
@@ -456,7 +457,8 @@ public class TAssetmanagementSessionBean {
         }
         return maint;
     }
-        public Integer countMaintAssetForALocation(Integer locationId) {
+
+    public Integer countMaintAssetForALocation(Integer locationId) {
 
         System.out.println("In viewMyTransportationAsset at, Location ID ============================= : " + locationId);
         System.out.println("viewAssetForALocation");
@@ -596,5 +598,80 @@ public class TAssetmanagementSessionBean {
         }
 
     }
+// check if asset is free during start date and end date;
+    public boolean checkAssetAvailableSchedule(Date startDate, Date endDate, Integer assetId) {
+        TransportationAsset tempAsset = em.find(TransportationAsset.class, assetId);
 
+        List<AssetSchedule> tempScheduleList = new ArrayList();
+        tempScheduleList = tempAsset.getAssetScheduleList();
+
+        for (AssetSchedule o : tempScheduleList) {
+            Date tempStart = o.getStartDate();
+            Date tempEnd = o.getEndDate();
+            if (startDate.after(tempStart) && startDate.before(tempEnd)) {
+                return false;
+            } else if (endDate.before(tempEnd) && endDate.after(tempStart)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return true;
+    }
+
+// check not full asset on route;
+//    public List<TransportationAsset> findNotFullAssetOnRoute(Integer routeId) {
+//        Route tempRoute = em.find(Route.class, routeId);
+//
+//        List<TransportationAsset> tempAssetList = tempRoute.getTransportationAssetList();
+//        List<TransportationAsset> notFullAssetList = new ArrayList();
+//
+//        for (TransportationAsset o : tempAssetList) {
+//            if ((o.getCapacity() - o.getLoad()) != 0) {
+//                notFullAssetList.add(o);
+//            }
+//        }
+//        return notFullAssetList;
+//    }
+
+//    public List<TransportationAsset> findNotFullAssetonRouteAfterDate(Date startDate, Integer routeId) {
+//
+//        List<TransportationAsset> tempAssetList = this.findNotFullAssetOnRoute(routeId);
+//        List<TransportationAsset> returnThisList = new ArrayList();
+//        for (TransportationAsset o : tempAssetList) {
+//            List<AssetSchedule> tempScheduleList = new ArrayList();
+//            tempScheduleList = o.getAssetScheduleList();
+//            test:
+//            for (AssetSchedule k : tempScheduleList) {
+//                if (k.getStartDate().after(startDate)) {
+//                    returnThisList.add(o);
+//                    break;
+//                }
+//            }
+//        }
+//
+//        return returnThisList;
+//    }
+
+    public Integer numberOfFreeTruckOnLocation(Integer locationId) {
+        Location templocation = em.find(Location.class, locationId);
+
+        List<TransportationAsset> temptrans = templocation.getTransportationAssetList();
+
+        Integer count = 0;
+        for (TransportationAsset o : temptrans) {
+            if (o.getAssetType().equals("Truck")) {
+                if (o.getLoad() == 0) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+
+    }
+
+//    public Integer numberOfFreeShipOnLocation(Integer locationId) {
+//
+//    }
 }
