@@ -18,7 +18,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.ci.loggingmodule.SystemLogSessionBean;
-import merlionportal.mrp.productcatalogmodule.ProductSessionBean;
 import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
 import merlionportal.wms.warehousemanagementmodule.TransportOrderSessionBean;
 
@@ -32,13 +31,10 @@ public class MovingStockViewManagedBean {
 
     @EJB
     private UserAccountManagementSessionBean uamb;
-
-    @EJB
-    private TransportOrderSessionBean tosb;
-
     @EJB
     private SystemLogSessionBean systemLogSB;
-
+    @EJB
+    private TransportOrderSessionBean tosb;
     @EJB
     private AssetManagementSessionBean amsb;
 

@@ -7,13 +7,17 @@ package merlionportal.managedbean.wms;
 
 import entity.Product;
 import entity.SystemUser;
+import entity.TransportOrder;
 import entity.Warehouse;
+import entity.WmsOrder;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;

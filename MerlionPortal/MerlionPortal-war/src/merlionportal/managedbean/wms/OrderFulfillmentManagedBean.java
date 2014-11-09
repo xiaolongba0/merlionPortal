@@ -15,32 +15,37 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.faces.view.ViewScoped;
 import merlionportal.ci.loggingmodule.SystemLogSessionBean;
-import merlionportal.wms.mobilitymanagementmodule.ReceivingPutawaySessionBean;
 import merlionportal.wms.mobilitymanagementmodule.WMSOrderSessionBean;
+import merlionportal.wms.mobilitymanagementmodule.OrderFulfillmentSessionBean;
 import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
 
 /**
  *
  * @author YunWei
  */
-@Named(value = "receivingPutawayManagedBean")
+@Named(value = "orderFulfillmentManagedBean")
 @ViewScoped
-public class ReceivingPutawayManagedBean {
+public class OrderFulfillmentManagedBean {
 
+    /**
+     * Creates a new instance of OrderFulfillmentManagedBean
+     */
+    public OrderFulfillmentManagedBean() {
+    }
     @EJB
     private SystemLogSessionBean systemLogSB;
 
     @EJB
-    private ReceivingPutawaySessionBean rpsb;
+    private WMSOrderSessionBean osb;
+
+    @EJB
+    private OrderFulfillmentSessionBean ofsb;
 
     @EJB
     private AssetManagementSessionBean amsb;
-
-    @EJB
-    private WMSOrderSessionBean osb;
 
     private SystemUser loginedUser;
     private Integer companyId;
@@ -51,13 +56,6 @@ public class ReceivingPutawayManagedBean {
     private List<Warehouse> warehouses;
 
     private List<WmsOrder> wmsOrders;
-    private Boolean internalOrder;
-
-    /**
-     * Creates a new instance of ReceivingPutawayManagedBean
-     */
-    public ReceivingPutawayManagedBean() {
-    }
 
     @PostConstruct
     public void init() {
@@ -79,11 +77,11 @@ public class ReceivingPutawayManagedBean {
         warehouses = amsb.viewMyWarehouses(companyId);
     }
 
-    public void viewMyOrdersToBeReceived() {
-        System.out.println("[In Managed Bean - viewOrdersToBeReceived] =============================== Source company ID : " + companyId);
+    public void viewMyOrdersToBeFulfilled() {
+        System.out.println("[In Managed Bean - viewMyOrdersToBeFulfilled] =============================== Source company ID : " + companyId);
 
         if (warehouseId != null) {
-            wmsOrders = osb.viewMyIncomingOrders(companyId, warehouseId);
+            wmsOrders = osb.viewMyFulfillmentOrders(companyId, warehouseId);
             if (wmsOrders == null) {
                 System.out.println("NULL NULL NULL check it out!");
             } else {
@@ -94,12 +92,12 @@ public class ReceivingPutawayManagedBean {
         }
     }
 
-    // view others order that are coming to my warehouse 
-    public void viewOthersOrderToBeReceived() {
-        System.out.println("[In Managed Bean - viewOthersOrderToBeReceived] =============================== Source company ID : " + companyId);
+    // view others order that are to be fulfilled from my warehouse
+    public void viewOthersOrderToBeFulfilled() {
+        System.out.println("[In Managed Bean - viewOthersOrderToBeFulfilled] =============================== Source company ID : " + companyId);
 
         if (warehouseId2 != null) {
-            wmsOrders = osb.viewOthersIncomingOrders(companyId, warehouseId2);
+            wmsOrders = osb.viewOthersFulfillmentOrders(companyId, warehouseId2);
             System.out.println("WMS ORDERS = " + wmsOrders);
             if (wmsOrders == null) {
                 System.out.println("NULL NULL NULL check it out!");
@@ -111,22 +109,14 @@ public class ReceivingPutawayManagedBean {
     }
 
     public String getOrder(WmsOrder wmsOrder) {
-        System.out.println("RECEVINGPUTAWAYMANAGEDBEAN =============== getOrder "+ wmsOrder);
+        System.out.println("ORDERFULFILLMENTMANAGEDBEAN =============== getOrder " + wmsOrder);
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
         WmsOrder selectedOrder = wmsOrder;
         sessionMap.put("selectedOrder", selectedOrder);
         System.out.println("GETORDER ========" + selectedOrder);
 
-        return "receivingputawayprocess?faces-redirect=true";
-    }
-
-    public SystemUser getLoginedUser() {
-        return loginedUser;
-    }
-
-    public void setLoginedUser(SystemUser loginedUser) {
-        this.loginedUser = loginedUser;
+        return "stockfulfillmentprocess?faces-redirect=true";
     }
 
     public Integer getCompanyId() {
@@ -153,6 +143,14 @@ public class ReceivingPutawayManagedBean {
         this.warehouseId = warehouseId;
     }
 
+    public Integer getWarehouseId2() {
+        return warehouseId2;
+    }
+
+    public void setWarehouseId2(Integer warehouseId2) {
+        this.warehouseId2 = warehouseId2;
+    }
+
     public List<Warehouse> getWarehouses() {
         return warehouses;
     }
@@ -167,22 +165,6 @@ public class ReceivingPutawayManagedBean {
 
     public void setWmsOrders(List<WmsOrder> wmsOrders) {
         this.wmsOrders = wmsOrders;
-    }
-
-    public Boolean isInternalOrder() {
-        return internalOrder;
-    }
-
-    public void setInternalOrder(Boolean internalOrder) {
-        this.internalOrder = internalOrder;
-    }
-
-    public Integer getWarehouseId2() {
-        return warehouseId2;
-    }
-
-    public void setWarehouseId2(Integer warehouseId2) {
-        this.warehouseId2 = warehouseId2;
     }
 
 }
