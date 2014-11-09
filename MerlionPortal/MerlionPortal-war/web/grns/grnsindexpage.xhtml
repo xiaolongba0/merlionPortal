@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="GRNS Home" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <p:menu styleClass="menu-width">
+                <p:submenu label="Home" styleClass="display:block">
+                    <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
+                </p:submenu>
+                <p:submenu label="Posting" styleClass="display:block">
+                    <p:menuitem value="Aggregate Requests" url="aggregaterequests.xhtml" />
+                    <p:menuitem value="Spare Space" url="postmyspace.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Marketplace" styleClass="display:block">
+                    <p:menuitem value="Start Reverse Auction" url="viewallposts.xhtml" />
+                    <p:menuitem value="Start Auction" url="viewallposts.xhtml" />
+                </p:submenu>
+                <p:submenu label="Manage My Posts" styleClass="display:block">
+                    <p:menuitem value="All Posts" url="allmyposts.xhtml" />
+                </p:submenu>
+                <p:submenu label="Manage My Bids" styleClass="display:block">
+                    <p:menuitem value="My biddings" url="allmybids.xhtml" />
+                </p:submenu>
+            </p:menu>
+        </ui:define>
+
+        <ui:define name="right">
+            <div class="system-banner oes-system-banner"></div>
+
+            <h2 class="system-welcome">Welcome to Global Rate Negotiation System!</h2>
+
+
+            <div class="system-welcome">
+                GRNS .<br></br>
+            </div>
+            <div class="system-description">
+                Benefits of GRNS<br></br>
+                <br></br>
+                1.Allow easy aggregation of clients’ demands for negotiation of more favourable rates with service providers <br></br>
+                2.Provide a user-friendly platform for service providers to sell off underutilized capacity at more favorable rates<br></br>
+                3.Reduce resource wastage and achieve overall economic benefit both the clients and service providers<br></br>
+                4.Source for revenue generate revenue for MerLION Logistics<br></br>
+
+
+
+            </div>
+
+        </ui:define>
+    </ui:composition>
+</html>
+

@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="GRNS Home" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <p:menu styleClass="menu-width">
+                <p:submenu label="Home" styleClass="display:block">
+                    <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
+                </p:submenu>
+                <p:submenu label="Posting" styleClass="display:block">
+                    <p:menuitem value="Aggregate Requests" url="aggregaterequests.xhtml" />
+                    <p:menuitem value="Spare Space" url="postmyspace.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Marketplace" styleClass="display:block">
+                    <p:menuitem value="Start Reverse Auction" url="viewallposts.xhtml" />
+                    <p:menuitem value="Start Auction" url="viewallposts.xhtml" />
+                </p:submenu>
+                <p:submenu label="Manage My Posts" styleClass="display:block">
+                    <p:menuitem value="All Posts" url="allmyposts.xhtml" />
+                </p:submenu>
+                <p:submenu label="Manage My Bids" styleClass="display:block">
+                    <p:menuitem value="My biddings" url="allmybids.xhtml" />
+                </p:submenu>
+            </p:menu>
+        </ui:define>
+        <ui:define name="right">
+            <p:breadCrumb>
+                <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
+                <p:menuitem value="All Posts" url="viewallposts.xhtml" /> 
+                <p:menuitem value="Bid Post" url="bidpost.xhtml" />
+            </p:breadCrumb>
+            <h:form id="postForm">
+
+                <c:if test="#{biddingManagedBean.serviceType==1}">
+                    <p:panel id="basicInfo" header="Service Information" style="margin-bottom:20px">
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <p>Service Type : </p><h:outputText value="Transportation Service"/>
+                            <p>Company Name: </p><h:outputText value="#{biddingManagedBean.mypost.systemUser.companycompanyId.name}"/>
+                            <p>Origin : </p><h:outputText value="#{biddingManagedBean.mypost.origin}"/>
+                            <p>Destination : </p><h:outputText value="#{biddingManagedBean.mypost.destination}"/>
+                            <p>Volume : </p><h:outputText value="#{biddingManagedBean.mypost.quantityInTEU}"/>
+                            <p>Require Delivery Date : </p><h:outputText value="#{biddingManagedBean.mypost.deliveryDate}"/>p>
+                        </h:panelGrid>
+                    </p:panel>
+                    <br></br>                    
+                </c:if>
+
+                <c:if test="#{biddingManagedBean.serviceType==2}">
+                    <p:panel id="basicInfo" header="Service Information" style="margin-bottom:20px">
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <p>Service Type : </p><h:outputText value="Warehouse Service"/>
+                            <p>Company Name: </p><h:outputText value="#{biddingManagedBean.mypost.systemUser.companycompanyId.name}"/>
+                            <p>Start Date : </p><h:outputText value="#{biddingManagedBean.mypost.storageStartDate}"/>
+                            <p>End Date : </p><h:outputText value="#{biddingManagedBean.mypost.storageEndDate}"/>
+                            <p>Require Space : </p><h:outputText value="#{biddingManagedBean.mypost.warehouseSpace}"/><h:outputText value="m3" style="color:#FE642E"/>
+                        </h:panelGrid>
+                    </p:panel>
+                    <br></br>
+                </c:if>
+                <p:panel id="termsCondition" header="Terms and Condition" style="margin-bottom:20px">
+                    <h:panelGrid columns="1" cellpadding="10">
+                        <h:outputText value="#{biddingManagedBean.mypost.description}"/>
+                    </h:panelGrid>
+                </p:panel>
+                <br></br>
+                <p:panel id="postInfo" header="Bidding Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="2" cellpadding="10">
+                        <p>Expire Date: </p><h:outputText value="#{biddingManagedBean.mypost.expireDate}"/> 
+                        <p>Currency: </p><h:outputText value="#{biddingManagedBean.mypost.currency}" style="color: #2E9AFE"/> 
+                        <p>Please Enter your Price: </p><p:inputText value="#{biddingManagedBean.bids}"/>
+                    </h:panelGrid>
+                </p:panel>
+                <br></br>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <p:commandButton action="viewallposts.xhtml?faces-redirect=true" value="Go Back" icon="ui-icon-circle-arrow-w"/> 
+                <p:commandButton action="#{biddingManagedBean.bisPost()}" value="Submit Bid"/> 
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,250 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="GRNS Home" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <p:menu styleClass="menu-width">
+                <p:submenu label="Home" styleClass="display:block">
+                    <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
+                </p:submenu>
+                <p:submenu label="Posting" styleClass="display:block">
+                    <p:menuitem value="Aggregate Requests" url="aggregaterequests.xhtml" />
+                    <p:menuitem value="Spare Space" url="postmyspace.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Marketplace" styleClass="display:block">
+                    <p:menuitem value="Start Reverse Auction" url="viewallposts.xhtml" />
+                    <p:menuitem value="Start Auction" url="viewallposts.xhtml" />
+                </p:submenu>
+                <p:submenu label="Manage My Posts" styleClass="display:block">
+                    <p:menuitem value="All Posts" url="allmyposts.xhtml" />
+                </p:submenu>
+                <p:submenu label="Manage My Bids" styleClass="display:block">
+                    <p:menuitem value="My biddings" url="allmybids.xhtml" />
+                </p:submenu>
+            </p:menu>
+        </ui:define>
+
+        <ui:define name="right">
+            <h3 style="margin-top:0">Aggregate Service Requests</h3>
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
+                    <p:menuitem value="All Posts" url="allmyposts.xhtml" /> 
+                </p:breadCrumb>
+                <p:tabView>
+                    <p:tab title="Active Transportation Posts">
+                        <p:dataTable id="allTPosts" var="myTPost" selectionMode="single" sortMode="single" value="#{postManagedBean.allTPosts}" 
+                                     widgetVar="allTPostTable"
+                                     selection="#{postManagedBean.selectedPost}"
+                                     emptyMessage="No Transportation Posts found with given criteria"
+                                     rowKey="#{myTPost.postId}" 
+                                     scrollable="true" scrollHeight="600">
+
+                            <p:column  
+                                filterBy="#{myTPost.postId}" 
+                                filterMatchMode="exact" headerText="PostID" filterStyle="width: 40px" style="text-align:center">
+                                <h:outputText value="#{myTPost.postId}" />
+                            </p:column>
+
+                            <p:column  filterBy="#{myTPost.systemUser.companycompanyId.name}" filterMatchMode="contains" 
+                                       headerText="Requester Company" filterStyle="width: 50px" style="text-align:center">
+                                <h:outputText value="#{myTPost.systemUser.companycompanyId.name}" />
+                            </p:column>
+
+                            <p:column  
+                                filterBy="#{myTPost.deliveryDate}" 
+                                filterMatchMode="contains" headerText="Delivery Date" filterStyle="width: 50px" style="text-align:center">
+                                <h:outputText value="#{myTPost.deliveryDate}" />
+                            </p:column>  
+                            <p:column  
+                                filterBy="#{myTPost.origin}" 
+                                filterMatchMode="contains" headerText="Origin " filterStyle="width: 50px" style="text-align:center">
+                                <h:outputText value="#{myTPost.origin}" />
+                            </p:column>  
+                            <p:column  
+                                filterBy="#{myTPost.destination}" 
+                                filterMatchMode="contains" headerText="Destination " filterStyle="width: 50px" style="text-align:center" >
+                                <h:outputText value="#{myTPost.destination}" />
+                            </p:column> 
+
+                            <p:column  
+                                filterBy="#{myTPost.quantityInTEU}" 
+                                filterMatchMode="contains" headerText="Volume" filterStyle="width: 40px" style="text-align:center">
+                                <h:outputText value="#{myTPost.quantityInTEU}" />
+                            </p:column>
+
+                            <p:column  
+                                filterBy="#{myTPost.expireDate}" 
+                                filterMatchMode="contains" headerText="Expire Date" filterStyle="width: 50px" style="text-align:center">
+                                <h:outputText value="#{myTPost.expireDate}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+
+                    <p:tab title="Active Warehouse Requests"> 
+                        <h:panelGrid columns="1" cellpadding="10">  
+                            <p:dataTable id="allWPosts" var="myWPost" selectionMode="single" sortMode="single" value="#{postManagedBean.allWPosts}" 
+                                         widgetVar="allWPostTable"
+                                         selection="#{postManagedBean.selectedWPost}"
+                                         emptyMessage="No Warehouse Posts found with given criteria"
+                                         rowKey="#{myWPost.postId}" 
+                                         scrollable="true" scrollHeight="600">
+
+                                <p:column  
+                                    filterBy="#{myWPost.postId}" 
+                                    filterMatchMode="exact" headerText="Post Number" >
+                                    <h:outputText value="#{myWPost.postId}" />
+                                </p:column>
+
+                                <p:column  filterBy="#{myWPost.systemUser.companycompanyId.name}" filterMatchMode="contains" headerText="Requester">
+                                    <h:outputText value="#{myWPost.systemUser.companycompanyId.name}" />
+                                </p:column>
+
+                                <p:column  
+                                    filterBy="#{myWPost.storageStartDate}" 
+                                    filterMatchMode="contains" headerText="Service Start Date" >
+                                    <h:outputText value="#{myWPost.storageStartDate}" />
+                                </p:column>  
+
+                                <p:column  
+                                    filterBy="#{myWPost.storageEndDate}" 
+                                    filterMatchMode="contains" headerText="Service End Date" >
+                                    <h:outputText value="#{myWPost.storageEndDate}" />
+                                </p:column>
+
+                                <p:column  
+                                    filterBy="#{myWPost.warehouseSpace}" 
+                                    filterMatchMode="contains" headerText="Required Space" >
+                                    <h:outputText value="#{myWPost.warehouseSpace}" />
+                                </p:column>
+
+                                <p:column  
+                                    filterBy="#{myWPost.expireDate}" 
+                                    filterMatchMode="contains" headerText="Expire Date" >
+                                    <h:outputText value="#{myWPost.expireDate}" />
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
+                        <br></br>
+                    </p:tab>
+                    <p:tab title="Past Transportation Posts">
+                        <p:dataTable id="eTPosts" var="myTPost" selectionMode="single" sortMode="single" value="#{postManagedBean.pastTposts}" 
+                                     widgetVar="eTPostTable"
+                                     selection="#{postManagedBean.pastT}"
+                                     emptyMessage="No Transportation Posts found with given criteria"
+                                     rowKey="#{myTPost.postId}" 
+                                     scrollable="true" scrollHeight="600">
+
+                            <p:column  
+                                filterBy="#{myTPost.postId}" 
+                                filterMatchMode="exact" headerText="PostID" filterStyle="width: 40px" style="text-align:center">
+                                <h:outputText value="#{myTPost.postId}" />
+                            </p:column>
+
+                            <p:column  filterBy="#{myTPost.systemUser.companycompanyId.name}" filterMatchMode="contains" 
+                                       headerText="Requester Company" filterStyle="width: 50px" style="text-align:center">
+                                <h:outputText value="#{myTPost.systemUser.companycompanyId.name}" />
+                            </p:column>
+
+                            <p:column  
+                                filterBy="#{myTPost.deliveryDate}" 
+                                filterMatchMode="contains" headerText="Delivery Date" filterStyle="width: 50px" style="text-align:center">
+                                <h:outputText value="#{myTPost.deliveryDate}" />
+                            </p:column>  
+                            <p:column  
+                                filterBy="#{myTPost.origin}" 
+                                filterMatchMode="contains" headerText="Origin " filterStyle="width: 50px" style="text-align:center">
+                                <h:outputText value="#{myTPost.origin}" />
+                            </p:column>  
+                            <p:column  
+                                filterBy="#{myTPost.destination}" 
+                                filterMatchMode="contains" headerText="Destination " filterStyle="width: 50px" style="text-align:center" >
+                                <h:outputText value="#{myTPost.destination}" />
+                            </p:column> 
+
+                            <p:column  
+                                filterBy="#{myTPost.quantityInTEU}" 
+                                filterMatchMode="contains" headerText="Volume" filterStyle="width: 40px" style="text-align:center">
+                                <h:outputText value="#{myTPost.quantityInTEU}" />
+                            </p:column>
+
+                            <p:column  
+                                filterBy="#{myTPost.expireDate}" 
+                                filterMatchMode="contains" headerText="Expire Date" filterStyle="width: 50px" style="text-align:center">
+                                <h:outputText value="#{myTPost.expireDate}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+                    <p:tab title="Past Warehouse Requests"> 
+                        <h:panelGrid columns="1" cellpadding="10">  
+                            <p:dataTable id="eWPosts" var="myWPost" selectionMode="single" sortMode="single" value="#{postManagedBean.pastWposts}" 
+                                         widgetVar="eWPostTable"
+                                         selection="#{postManagedBean.pastW}"
+                                         emptyMessage="No Warehouse Posts found with given criteria"
+                                         rowKey="#{myWPost.postId}" 
+                                         scrollable="true" scrollHeight="600">
+
+                                <p:column  
+                                    filterBy="#{myWPost.postId}" 
+                                    filterMatchMode="exact" headerText="Post Number" >
+                                    <h:outputText value="#{myWPost.postId}" />
+                                </p:column>
+
+                                <p:column  filterBy="#{myWPost.systemUser.companycompanyId.name}" filterMatchMode="contains" headerText="Requester">
+                                    <h:outputText value="#{myWPost.systemUser.companycompanyId.name}" />
+                                </p:column>
+
+                                <p:column  
+                                    filterBy="#{myWPost.storageStartDate}" 
+                                    filterMatchMode="contains" headerText="Service Start Date" >
+                                    <h:outputText value="#{myWPost.storageStartDate}" />
+                                </p:column>  
+
+                                <p:column  
+                                    filterBy="#{myWPost.storageEndDate}" 
+                                    filterMatchMode="contains" headerText="Service End Date" >
+                                    <h:outputText value="#{myWPost.storageEndDate}" />
+                                </p:column>
+
+                                <p:column  
+                                    filterBy="#{myWPost.warehouseSpace}" 
+                                    filterMatchMode="contains" headerText="Required Space" >
+                                    <h:outputText value="#{myWPost.warehouseSpace}" />
+                                </p:column>
+
+                                <p:column  
+                                    filterBy="#{myWPost.expireDate}" 
+                                    filterMatchMode="contains" headerText="Expire Date" >
+                                    <h:outputText value="#{myWPost.expireDate}" />
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
+                        <br></br>
+                    </p:tab>
+                </p:tabView>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <p:commandButton action="#{postManagedBean.viwPost()}" value="View My Post"/> 
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

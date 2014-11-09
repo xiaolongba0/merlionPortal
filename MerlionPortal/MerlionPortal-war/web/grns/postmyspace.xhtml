@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="GRNS Home" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+           <p:menu styleClass="menu-width">
+                <p:submenu label="Home" styleClass="display:block">
+                    <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
+                </p:submenu>
+                <p:submenu label="Posting" styleClass="display:block">
+                    <p:menuitem value="Aggregate Requests" url="aggregaterequests.xhtml" />
+                    <p:menuitem value="Spare Space" url="postmyspace.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Marketplace" styleClass="display:block">
+                    <p:menuitem value="Start Reverse Auction" url="viewallposts.xhtml" />
+                    <p:menuitem value="Start Auction" url="viewallposts.xhtml" />
+                </p:submenu>
+                <p:submenu label="Manage My Posts" styleClass="display:block">
+                    <p:menuitem value="All Posts" url="allmyposts.xhtml" />
+                </p:submenu>
+                <p:submenu label="Manage My Bids" styleClass="display:block">
+                    <p:menuitem value="My biddings" url="allmybids.xhtml" />
+                </p:submenu>
+            </p:menu>
+        </ui:define>
+
+        <ui:define name="right">
+            <p:breadCrumb>
+                <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
+                <p:menuitem value="Post space" url="postmyspace.xhtml" /> 
+            </p:breadCrumb>
+            <h:form>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <p:tabView>
+                    <p:tab title="Transportation Space">
+                        <h:panelGrid columns="1" cellpadding="10">
+                            <p:panel id="basicInfo" header="Service Information" style="margin-bottom:20px">
+                                <h:panelGrid columns="2" cellpadding="10">
+                                    <p>Service Type : </p><h:outputText value="Transportation Space"/>
+                                    <p>Company Name: </p><h:outputText value="#{postSpaceManagedBean.viewCompanyName(postSpaceManagedBean.companyId)}"/>
+                                    <p>Origin : </p><h:inputText value="#{postSpaceManagedBean.orign}"/>
+                                    <p>Destination : </p><h:inputText value="#{postSpaceManagedBean.desti}"/>
+                                    <p>Available Volume in TEU: </p><h:inputText value="#{postSpaceManagedBean.volume}"/>
+                                    <p:outputLabel for="deliverDate" value="Delivery Date" /><p:spacer width="20" height="20" />
+                                    <p:calendar id="deliverDate" value="#{postSpaceManagedBean.deliveryDate}" />
+                                </h:panelGrid>
+                            </p:panel>
+                            <br></br>
+                        </h:panelGrid>
+                    </p:tab>
+
+                    <p:tab title="Warhhouse Space">
+                        <h:panelGrid columns="1" cellpadding="10">
+                            <p:panel id="basicInfo" header="Service Information" style="margin-bottom:20px">
+                                <h:panelGrid columns="2" cellpadding="10">
+                                    <p>Service Type : </p><h:outputText value="Warehouse Space"/>
+                                    <p>Company Name: </p><h:outputText value="#{postSpaceManagedBean.viewCompanyName(postSpaceManagedBean.companyId)}"/>
+                                    <p>Warehouse Id:</p><h:inputText value="#{postSpaceManagedBean.warehouseId}"/>
+                                    <p>Start Date : </p><h:inputText value="#{postSpaceManagedBean.startDate}"/>
+                                    <p>End Date : </p><h:inputText value="#{postSpaceManagedBean.endDate}"/>
+                                    <p>Available Space : </p><h:inputText value="#{postSpaceManagedBean.totalSpace}"/><h:outputText value="m3" style="color:#FE642E"/>
+                                    <p:commandButton action="#{postSpaceManagedBean.postWrequest()}" value="Update" update="basicInfo"/> 
+                                </h:panelGrid>
+                            </p:panel>
+                        </h:panelGrid>
+                    </p:tab>
+
+                </p:tabView>
+                <br></br>
+                <p:panel id="postInfo" header="Post Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="2" cellpadding="10">
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="currency" style="font-weight: bold" value="Currency:   *" />
+                            </p:column>
+                            <p:column>                        
+                                <h:selectOneMenu id="currency" value="#{postSpaceManagedBean.currency}" label="Currency">
+                                    <f:selectItem itemLabel="Select Currency" itemValue="" noSelectionOption="true" />
+
+                                    <f:selectItem itemLabel="US Dollar (USD)" itemValue="US Dollar (USD)" />
+                                    <f:selectItem itemLabel="European Euro (EUR)" itemValue="European Euro (EUR)" />
+                                    <f:selectItem itemLabel="Japan Yen (JPY)" itemValue="Japan Yen (JPY)" />
+                                    <f:selectItem itemLabel="Pound Sterling (GBP)" itemValue="Pound Sterling (GBP)" />
+                                    <f:selectItem itemLabel="Australian Dollar (AUD)" itemValue="Australian Dollar (AUD)" />
+                                    <f:selectItem itemLabel="Swiss Franc (CHF)" itemValue="Swiss Franc (CHF)" />
+                                    <f:selectItem itemLabel="Canadian Dollar (CAD)" itemValue="Canadian Dollar (CAD)" />
+                                    <f:selectItem itemLabel="Hong Kong Dollar (HKD)" itemValue="Hong Kong Dollar (HKD)" />
+                                    <f:selectItem itemLabel="Swedish Krona (SEK)" itemValue="Swedish Krona (SEK)" />
+                                    <f:selectItem itemLabel="New Zealand Dollar (NZD)" itemValue="New Zealand Dollar (NZD)" />
+
+                                    <f:selectItem itemLabel="South African Rand (ZAR)" itemValue="South African Rand (ZAR)" />
+                                    <f:selectItem itemLabel="Russian Ruble (RUB)" itemValue="Russian Ruble (RUB)" />
+                                    <f:selectItem itemLabel="Indian Rupee (INR)" itemValue="Indian Rupee (INR)" />
+                                    <f:selectItem itemLabel="Singapore Dollar (SGD)" itemValue="Singapore Dollar (SGD)" />
+                                    <f:selectItem itemLabel="Bulgarian Lev (BGN)" itemValue="Bulgarian Lev (BGN)" />
+                                    <f:selectItem itemLabel="Chinese Yuan Renminbi (CNY)" itemValue="Chinese Yuan Renminbi (CNY)" />
+                                    <f:selectItem itemLabel="Thailand Baht (THB)" itemValue="Thailand Baht (THB)" />
+                                    <f:selectItem itemLabel="Hungary Forint(HUF)" itemValue="Hungary Forint(HUF)" />   
+                                    <f:selectItem itemLabel="Norwegian Krone (NOK)" itemValue="Norwegian Krone (NOK)" />
+                                    <f:selectItem itemLabel="Mexican Peso (MXN)" itemValue="Mexican Peso (MXN)" />
+                                </h:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:outputLabel for="endDate" value="Expiry Date" /><p:spacer width="20" height="20" />
+                        <p:calendar id="endDate" value="#{postSpaceManagedBean.expireDate}" />
+                    </h:panelGrid>
+                </p:panel>
+                <br></br>
+                <c:if test="#{postReuqestManagedBean.serviceType==1}">
+                    <p:commandButton action="#{postReuqestManagedBean.postTrequest()}" value="Post"/> 
+                </c:if>
+                <c:if test="#{postReuqestManagedBean.serviceType==2}">
+                    <p:commandButton action="#{postReuqestManagedBean.postWrequest()}" value="Post"/> 
+                </c:if>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

@@ -1,0 +1,166 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="GRNS Home" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+           <p:menu styleClass="menu-width">
+                <p:submenu label="Home" styleClass="display:block">
+                    <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
+                </p:submenu>
+                <p:submenu label="Posting" styleClass="display:block">
+                    <p:menuitem value="Aggregate Requests" url="aggregaterequests.xhtml" />
+                    <p:menuitem value="Spare Space" url="postmyspace.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Marketplace" styleClass="display:block">
+                    <p:menuitem value="Start Reverse Auction" url="viewallposts.xhtml" />
+                    <p:menuitem value="Start Auction" url="viewallposts.xhtml" />
+                </p:submenu>
+                <p:submenu label="Manage My Posts" styleClass="display:block">
+                    <p:menuitem value="All Posts" url="allmyposts.xhtml" />
+                </p:submenu>
+                <p:submenu label="Manage My Bids" styleClass="display:block">
+                    <p:menuitem value="My biddings" url="allmybids.xhtml" />
+                </p:submenu>
+            </p:menu>
+        </ui:define>
+
+        <ui:define name="right">
+            <h3 style="margin-top:0">Aggregate Service Requests</h3>
+            <h:form>
+                <p:breadCrumb>
+                    <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
+                    <p:menuitem value="Aggregate Requests" url="aggregaterequests.xhtml" /> 
+                </p:breadCrumb>
+                <p:tabView>
+                    <p:tab title="Transportation Requests">
+                        <p:dataTable id="transportation" var="transportation" sortMode="multiple" value="#{aggregateRequestsManagedBean.transportionList}" 
+                                     widgetVar="requestTab"
+                                     selection="#{aggregateRequestsManagedBean.selectedTransList}"
+                                     filteredValue="#{aggregateRequestsManagedBean.filteredTlist}"
+                                     emptyMessage="No Requets  found with given criteria"
+                                     rowKey="#{transportation.servicePOId}">                                   
+
+                            <p:column selectionMode="multiple" style="text-align:center" width="40"/>
+                            <p:column  
+                                filterBy="#{transportation.servicePOId}" 
+                                filterMatchMode="exact" headerText="ID" width="60" filterStyle="width: 40px" style="text-align:center">
+                                <h:outputText value="#{transportation.servicePOId}" />
+                            </p:column>                           
+
+                            <p:column  
+                                filterBy="#{aggregateRequestsManagedBean.viewCompanyName(transportation.senderCompanyId)}" 
+                                filterMatchMode="contains" 
+                                headerText="Customer Company Name">
+                                <h:outputText value="#{aggregateRequestsManagedBean.viewCompanyName(transportation.senderCompanyId)}" />
+                            </p:column>
+
+                            <p:column 
+                                filterBy="#{aggregateRequestsManagedBean.origion(transportation)}" 
+                                filterMatchMode="in" 
+                                headerText="Origin">
+                                <f:facet name="filter">
+                                    <p:selectCheckboxMenu label="Select" 
+                                                          onchange="PF('requestTab').filter()" 
+                                                          panelStyle="width:150px" scrollHeight="150">
+                                        <f:selectItems value="#{aggregateRequestsManagedBean.allOrig}"/>
+                                    </p:selectCheckboxMenu>
+                                </f:facet>
+                                <h:outputText value="#{aggregateRequestsManagedBean.origion(transportation)}"/>
+                            </p:column>
+
+                            <p:column filterBy="#{aggregateRequestsManagedBean.destination(transportation)}" filterMatchMode="in" headerText="Destination">
+                                <f:facet name="filter">
+                                    <p:selectCheckboxMenu label="Select" 
+                                                          onchange="PF('requestTab').filter()" 
+                                                          panelStyle="width:150px" scrollHeight="150">
+                                        <f:selectItems value="#{aggregateRequestsManagedBean.allDest}"/>
+                                    </p:selectCheckboxMenu>
+                                </f:facet>
+                                <h:outputText value="#{aggregateRequestsManagedBean.destination(transportation)}"/>
+                            </p:column>                                        
+
+                            <p:column filterBy="#{transportation.serviceDeliveryDate}" filterMatchMode="contains" headerText="Receive Date">                            
+                                <h:outputText value="#{transportation.serviceDeliveryDate}" />
+                            </p:column>
+
+                            <p:column headerText="Volum" width="60" >
+                                <h:outputText value="#{transportation.volume}" />
+                            </p:column>
+                        </p:dataTable>
+                        <br></br>
+                        <p:commandButton action="#{aggregateRequestsManagedBean.checkTAggregatable()}" value="Check Aggregatable"/> 
+                        <p:commandButton action="#{aggregateRequestsManagedBean.postTRequest()}" value="Post Request"/> 
+                    </p:tab>
+                    <p:tab title="Warehouse Requests"> 
+                        <h:panelGrid columns="1" cellpadding="10">  
+                            <p:dataTable id="warehouse" var="warehouse" sortMode="multiple" value="#{aggregateRequestsManagedBean.warehouseList}" 
+                                         widgetVar="transTable"
+                                         selection="#{aggregateRequestsManagedBean.selectedWareList}"
+                                         filteredValue="#{aggregateRequestsManagedBean.filteredWlist}"
+                                         emptyMessage="No Transporation Requests found with given criteria"
+                                         rowKey="#{warehouse.contractId}">
+
+                                <p:column selectionMode="multiple" style="text-align:center" width="40"/>
+                                <p:column  
+                                    filterBy="#{warehouse.contractId}" 
+                                    filterMatchMode="exact" headerText="Warehouse Request ID" >
+                                    <h:outputText value="#{warehouse.contractId}" />
+                                </p:column>
+
+                                <p:column  filterBy="#{warehouse.partyB}" filterMatchMode="contains" headerText="Custoemr company Id">
+                                    <h:outputText value="#{warehouse.partyB}" />
+                                </p:column>
+
+                                <p:column  filterBy="#{aggregateRequestsManagedBean.viewCompanyName(warehouse.partyB)}" filterMatchMode="contains" headerText="Customer Company Name">
+                                    <h:outputText value="#{aggregateRequestsManagedBean.viewCompanyName(warehouse.partyB)}" />
+                                </p:column>
+
+                                <p:column filterBy="#{warehouse.startDate}" filterMatchMode="in" headerText="Starting Date">
+                                    <f:facet name="filter">
+                                        <p:calendar id="wbutton" value="#{aggregateRequestsManagedBean.startDate}" showOn="button" onchange="PF('transTable').filter()"/>
+                                    </f:facet>
+                                    <h:outputText value="#{warehouse.startDate}" />
+                                </p:column>
+                                <p:column filterBy="#{warehouse.endDate}" filterMatchMode="in" headerText="End Date">
+                                    <f:facet name="filter">
+                                        <p:calendar id="button" value="#{aggregateRequestsManagedBean.endDate}" showOn="button" onchange="PF('transTable').filter()"/>
+                                    </f:facet>
+                                    <h:outputText value="#{warehouse.endDate}" />
+                                </p:column>
+
+                                <p:column headerText="Service Catalog" >
+                                    <h:outputText value="#{warehouse.serviceQuotation.serviceCatalog.serviceCatalogId}" />
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
+                        <br></br>
+                        <p:commandButton action="#{aggregateRequestsManagedBean.checkWAggregatable()}" value="Check Aggregatable"/> 
+                        <p:commandButton action="#{aggregateRequestsManagedBean.postWReqeust()}" value="Post Request"/> 
+                    </p:tab>
+                </p:tabView>
+                <br></br>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+
