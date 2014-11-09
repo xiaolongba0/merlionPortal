@@ -103,6 +103,7 @@ public class ViewCompanyRolesManagedBean {
             roles.remove(selectedRole);
             selectedRole = null;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Deleted!", "This Role is deleted."));
+            systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User deleted role");
 
         } else if (result == -2) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Unsuccessful!", "Cannot deleted this role as there are users assigned to this role."));
@@ -113,7 +114,7 @@ public class ViewCompanyRolesManagedBean {
         } else {
 //            direct to login page
         }
-        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User deleted role");
+        
     }
 
     public void updateRole() {
@@ -125,6 +126,7 @@ public class ViewCompanyRolesManagedBean {
         }
         if (result == 1) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Role Updated!", "This user role is updated"));
+            systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User updated role");
 
         } else if (result == -1) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Access Denied!", "You do not have sufficient right to perform this action."));
@@ -133,7 +135,7 @@ public class ViewCompanyRolesManagedBean {
 //            redirect to login page
             System.out.println("++++++++++++++null++++++++++++");
         }
-        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User updated role");
+        
     }
 
     public void selectRole(UserRole role) {
