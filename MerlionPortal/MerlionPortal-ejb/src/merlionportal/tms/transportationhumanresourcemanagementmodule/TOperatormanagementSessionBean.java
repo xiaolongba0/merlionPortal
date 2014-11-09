@@ -95,7 +95,7 @@ public class TOperatormanagementSessionBean {
         roles.add(1);
 // MANLI COME CHECK!!!!!!!!!!!     
 //        What are the roles and operatorId;
-        Integer userId = uamsb.createSystemUser(operatorId, companyId, roles, operatorName, operatorLastName, emailAddress, password, postalAddress, contactNumber, salution, 1);
+        Integer userId = uamsb.createSystemUser(1, companyId, roles, operatorName, operatorLastName, emailAddress, password, postalAddress, contactNumber, salution, 1);
         System.out.println("==========Created System User====== :" + userId);
         TransportationOperator operatorr = new TransportationOperator();
         String tempName = operatorName+operatorLastName;
