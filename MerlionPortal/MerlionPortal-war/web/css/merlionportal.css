@@ -13,8 +13,9 @@
     font-weight: 500;
 }
 
-.wrapper{
+body{
     background-color: #F7F7F7;
+    height:100%;
 }
 
 .top-nav{
@@ -198,25 +199,40 @@ ul.rights-menu li{
 .left-container > form > .ui-menu{
     width:100%;
 }
+.left-container > .ui-menu{
+    width:100%;
+}
 
-/*.content-area{
-    padding-top: 45px;
-    padding-bottom: 45px;
-    padding-left: 100px;
-    padding-right: 100px;
-}*/
+
 
 .left-container{
-    width: 28%;
+    width: 23%;
     float:left;
-    margin: 50px 0px;
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
 
 .right-container{
-    width:72%;
+    width:77%;
     float:right;
-    margin: 50px 0px;
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
+/*@media (min-width: 591px) {
+  .content-area>.container {
+    width: 577px;
+  }
+}
+@media (min-width: 764px) {
+  .content-area>.container {
+    width: 747px;
+  }
+}
+@media (min-width: 924px) {
+  .content-area>.container {
+    width: 901px;
+  }
+}*/
 
 .menu-width{
     width:100%;
@@ -244,7 +260,7 @@ body{
     color:#fff;
     padding:25px;
     overflow: hidden;
-   
+    width:100%;
 }
 .footer, .push {
     height: 80px; /* .push must be the same height as .footer */
@@ -379,8 +395,9 @@ ol.d {
     margin-top:-4px;
 }
 .inbox, .viewlog{
-    font-size:17px;
+    font-size:19px;
     text-decoration: none;
+    padding-top:10px;
 }
 .user-info>hr{
     margin-top:10px;
@@ -396,15 +413,15 @@ ol.d {
     font-size:13px;
 }
 .user-info-right>a{
-    color: #732829;
+    color: #333;
 }
 .user-info-right>a:hover{
-    color: maroon;
+    color: #732829;
 }
 
 
 .ui-menu.ui-widget{
-    -webkit-border-radius: 0px 0px 6px 6px !important;
+    -webkit-border-radius: 0px 0px 6px 6px; 
     -moz-border-radius: 0px 0px 6px 6px;
     border-radius: 0px 0px 6px 6px;
 }
