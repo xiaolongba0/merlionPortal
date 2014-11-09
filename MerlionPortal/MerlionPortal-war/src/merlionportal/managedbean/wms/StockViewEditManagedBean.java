@@ -45,13 +45,14 @@ public class StockViewEditManagedBean {
 
     private List<Stock> stocks;
     private Integer productId;
+    private Integer productId2;
+    private Integer productId3;
     private Stock stock;
     private Integer radioValue;
     private Integer totalQuantity;
 
     private List<Product> productList;
 
-    
     private Integer warehouseId;
     private List<Warehouse> warehouses;
 
@@ -87,13 +88,28 @@ public class StockViewEditManagedBean {
     public StockViewEditManagedBean() {
     }
 
-    public void viewAllStocks() {
-        System.out.println("===============================[In Managed Bean - view Stocks]");
-        System.out.println("[In Managed Bean - getStocks] Product ID : " + productId);
+    public void viewStocksForAWarehouse() {
+        System.out.println("===============================[In Managed Bean -  viewStocksForAWarehouse]");
         totalQuantity = 0;
         if (productId != null) {
-            stocks = rpsb.viewAllStocks(companyId, productId);
-            totalQuantity = rpsb.countAvailbleStocksInCompany(companyId, productId);
+            stocks = rpsb.getWarehouseStock(warehouseId, productId);
+            totalQuantity = rpsb.countAvailbleStockInWarehouse(warehouseId, productId);
+            System.out.println("TOTAL QUANTITY IN VIEW ALL STOCKS = " + totalQuantity);
+            systemLogSB.recordSystemLog(userId, "WMS view stocks for a warehouse");
+            if (stocks == null) {
+                System.out.println("============== FAILED TO VIEW STOCK ===============");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Stock.", ""));
+            }
+        }
+    }
+    
+        public void viewAllStocks() {
+        System.out.println("===============================[In Managed Bean - view Stocks]");
+        System.out.println("[In Managed Bean - getStocks] Product ID : " + productId2);
+        totalQuantity = 0;
+        if (productId2 != null) {
+            stocks = rpsb.viewAllStocks(companyId, productId2);
+            totalQuantity = rpsb.countAvailbleStocksInCompany(companyId, productId2);
             System.out.println("TOTAL QUANTITY IN VIEW ALL STOCKS = " + totalQuantity);
             systemLogSB.recordSystemLog(userId, "WMS view stocks");
             if (stocks == null) {
@@ -102,15 +118,13 @@ public class StockViewEditManagedBean {
             }
         }
     }
-    
-        public void viewStocksForAWarehouse() {
-        System.out.println("===============================[In Managed Bean -  viewStocksForAWarehouse]");
+
+    public void viewClientStockInRentedBin() {
+        System.out.println("===============================[In Managed Bean -   viewClientStockInRentedBin");
         totalQuantity = 0;
-        if (productId != null) {
-            stocks = rpsb.getWarehouseStock(warehouseId, productId);
-            totalQuantity = rpsb.countAvailbleStockInWarehouse(productId, productId);
-            System.out.println("TOTAL QUANTITY IN VIEW ALL STOCKS = " + totalQuantity);
-            systemLogSB.recordSystemLog(userId, "WMS view stocks for a warehouse");
+        if (productId3 != null) {
+            stocks = rpsb.viewClientStockInRentedBin(companyId, productId3);
+            systemLogSB.recordSystemLog(userId, "WMS view client stock in my warehouses");
             if (stocks == null) {
                 System.out.println("============== FAILED TO VIEW STOCK ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Stock.", ""));
@@ -243,5 +257,20 @@ public class StockViewEditManagedBean {
         this.warehouses = warehouses;
     }
 
+    public Integer getProductId2() {
+        return productId2;
+    }
+
+    public void setProductId2(Integer productId2) {
+        this.productId2 = productId2;
+    }
+
+    public Integer getProductId3() {
+        return productId3;
+    }
+
+    public void setProductId3(Integer productId3) {
+        this.productId3 = productId3;
+    }
 
 }
