@@ -49,7 +49,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Post.findByQuantityInTEU", query = "SELECT p FROM Post p WHERE p.quantityInTEU = :quantityInTEU"),
     @NamedQuery(name = "Post.findByDeliveryDate", query = "SELECT p FROM Post p WHERE p.deliveryDate = :deliveryDate"),
     @NamedQuery(name = "Post.findByWarehouseId", query = "SELECT p FROM Post p WHERE p.warehouseId = :warehouseId"),
-    @NamedQuery(name = "Post.findByWarehouseSpace", query = "SELECT p FROM Post p WHERE p.warehouseSpace = :warehouseSpace")})
+    @NamedQuery(name = "Post.findByWarehouseSpace", query = "SELECT p FROM Post p WHERE p.warehouseSpace = :warehouseSpace"),
+    @NamedQuery(name = "Post.findByStatus", query = "SELECT p FROM Post p WHERE p.status = :status"),
+    @NamedQuery(name = "Post.findByCurrency", query = "SELECT p FROM Post p WHERE p.currency = :currency"),
+    @NamedQuery(name = "Post.findByExpireDate", query = "SELECT p FROM Post p WHERE p.expireDate = :expireDate")})
 public class Post implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -88,6 +91,15 @@ public class Post implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "warehouseSpace")
     private Double warehouseSpace;
+    @Size(max = 45)
+    @Column(name = "status")
+    private String status;
+    @Size(max = 200)
+    @Column(name = "currency")
+    private String currency;
+    @Column(name = "expireDate")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date expireDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     private List<Bid> bidList;
     @JoinColumn(name = "systemUser", referencedColumnName = "systemUserId")
@@ -197,6 +209,30 @@ public class Post implements Serializable {
 
     public void setWarehouseSpace(Double warehouseSpace) {
         this.warehouseSpace = warehouseSpace;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public Date getExpireDate() {
+        return expireDate;
+    }
+
+    public void setExpireDate(Date expireDate) {
+        this.expireDate = expireDate;
     }
 
     @XmlTransient
