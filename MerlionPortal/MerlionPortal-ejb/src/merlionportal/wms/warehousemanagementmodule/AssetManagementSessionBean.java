@@ -274,6 +274,7 @@ public class AssetManagementSessionBean {
 
     }
 
+    // view storage bins for a warehouse zone, including rented bins
     public List<StorageBin> viewStorageBinForWarehouseZone(Integer warehouseZoneId) {
 
         System.out.println("In viewStorageBinForType, WarehouseZoneID ============================= : " + warehouseZoneId);
@@ -287,8 +288,38 @@ public class AssetManagementSessionBean {
 
     }
 
-    // View all bins in A warehouse 
-    public List<StorageBin> viewBinsInAWarehouse(Integer warehouseId) {
+    // view my bins in a warehouse, excluding those which are rented
+    public List<StorageBin> viewAllMyBinsInAWarehouse(Integer warehouseId) {
+
+        System.out.println("[IN EJB AMSB, viewAllMyBinsInAWarehouse]===================");
+        List<StorageBin> bins = new ArrayList();
+        List<StorageBin> allBins = new ArrayList();
+        
+        if (warehouseId != null) {
+            Warehouse warehouse = em.find(Warehouse.class, warehouseId);
+            List<WarehouseZone> allZones = new ArrayList();
+            allZones = viewWarehouseZoneForAWarehouse(warehouseId);
+
+            int i = 0;
+            while (i < allZones.size()) {
+                allBins = viewStorageBinForWarehouseZone(allZones.get(i).getWarehouseZoneId());
+                int k = 0;
+                while (k < allBins.size()) {
+                    StorageBin bin = new StorageBin();
+                    bin = allBins.get(k);
+                    if (!bin.getRented()) {
+                        bins.add(bin);
+                    }
+                    k++;
+                }
+                i++;
+            }
+        }
+        return bins;
+    }
+
+    // View all bins in A warehouse, including bins rented to others
+    public List<StorageBin> viewBinsInAWarehouseIncludingRented (Integer warehouseId) {
 
         System.out.println("In viewBinsInAWarehouse, Warehouse ID ============================= : " + warehouseId);
 
