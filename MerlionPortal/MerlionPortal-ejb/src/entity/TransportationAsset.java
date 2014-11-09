@@ -73,8 +73,6 @@ public class TransportationAsset implements Serializable {
     private Integer routeId;
     @Column(name = "load")
     private Integer load;
-    @ManyToMany(mappedBy = "transportationAssetList")
-    private List<Route> routeList;
     @JoinTable(name = "TransporationAsset_has_TransportationOrder", joinColumns = {
         @JoinColumn(name = "TransporationAsset_assetId", referencedColumnName = "assetId")}, inverseJoinColumns = {
         @JoinColumn(name = "TransportationOrder_transportationOrderId", referencedColumnName = "transportationOrderId")})
@@ -173,15 +171,6 @@ public class TransportationAsset implements Serializable {
 
     public void setLoad(Integer load) {
         this.load = load;
-    }
-
-    @XmlTransient
-    public List<Route> getRouteList() {
-        return routeList;
-    }
-
-    public void setRouteList(List<Route> routeList) {
-        this.routeList = routeList;
     }
 
     @XmlTransient

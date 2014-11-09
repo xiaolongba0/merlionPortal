@@ -35,7 +35,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "AssetSchedule.findByScheduleId", query = "SELECT a FROM AssetSchedule a WHERE a.scheduleId = :scheduleId"),
     @NamedQuery(name = "AssetSchedule.findByStartDate", query = "SELECT a FROM AssetSchedule a WHERE a.startDate = :startDate"),
     @NamedQuery(name = "AssetSchedule.findByEndDate", query = "SELECT a FROM AssetSchedule a WHERE a.endDate = :endDate"),
-    @NamedQuery(name = "AssetSchedule.findByOperatorId", query = "SELECT a FROM AssetSchedule a WHERE a.operatorId = :operatorId")})
+    @NamedQuery(name = "AssetSchedule.findByOperatorId", query = "SELECT a FROM AssetSchedule a WHERE a.operatorId = :operatorId"),
+    @NamedQuery(name = "AssetSchedule.findByLoad", query = "SELECT a FROM AssetSchedule a WHERE a.load = :load")})
 public class AssetSchedule implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -51,9 +52,14 @@ public class AssetSchedule implements Serializable {
     private Date endDate;
     @Column(name = "operatorId")
     private Integer operatorId;
+    @Column(name = "load")
+    private Integer load;
     @JoinColumn(name = "TransporationAsset_assetId", referencedColumnName = "assetId")
     @ManyToOne(optional = false)
     private TransportationAsset transporationAssetassetId;
+    @JoinColumn(name = "route", referencedColumnName = "routeId")
+    @ManyToOne(optional = false)
+    private Route route;
 
     public AssetSchedule() {
     }
@@ -94,12 +100,28 @@ public class AssetSchedule implements Serializable {
         this.operatorId = operatorId;
     }
 
+    public Integer getLoad() {
+        return load;
+    }
+
+    public void setLoad(Integer load) {
+        this.load = load;
+    }
+
     public TransportationAsset getTransporationAssetassetId() {
         return transporationAssetassetId;
     }
 
     public void setTransporationAssetassetId(TransportationAsset transporationAssetassetId) {
         this.transporationAssetassetId = transporationAssetassetId;
+    }
+
+    public Route getRoute() {
+        return route;
+    }
+
+    public void setRoute(Route route) {
+        this.route = route;
     }
 
     @Override

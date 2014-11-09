@@ -9,17 +9,17 @@ package entity;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -60,11 +60,8 @@ public class Route implements Serializable {
     private Integer distance;
     @Column(name = "endNodeId")
     private Integer endNodeId;
-    @JoinTable(name = "TransporationAsset_has_Route", joinColumns = {
-        @JoinColumn(name = "Route_routeId", referencedColumnName = "routeId")}, inverseJoinColumns = {
-        @JoinColumn(name = "TransporationAsset_assetId", referencedColumnName = "assetId")})
-    @ManyToMany
-    private List<TransportationAsset> transportationAssetList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "route")
+    private List<AssetSchedule> assetScheduleList;
     @JoinColumn(name = "startNodeId", referencedColumnName = "nodeId")
     @ManyToOne(optional = false)
     private Node startNodeId;
@@ -125,12 +122,12 @@ public class Route implements Serializable {
     }
 
     @XmlTransient
-    public List<TransportationAsset> getTransportationAssetList() {
-        return transportationAssetList;
+    public List<AssetSchedule> getAssetScheduleList() {
+        return assetScheduleList;
     }
 
-    public void setTransportationAssetList(List<TransportationAsset> transportationAssetList) {
-        this.transportationAssetList = transportationAssetList;
+    public void setAssetScheduleList(List<AssetSchedule> assetScheduleList) {
+        this.assetScheduleList = assetScheduleList;
     }
 
     public Node getStartNodeId() {
