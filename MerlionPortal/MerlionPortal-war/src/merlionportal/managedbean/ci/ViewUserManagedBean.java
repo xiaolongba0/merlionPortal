@@ -21,6 +21,7 @@ import merlionportal.ci.administrationmodule.GetCompanyRoleSessionBean;
 import merlionportal.ci.administrationmodule.GetCompanySessionBean;
 import merlionportal.ci.administrationmodule.GetCompanyUserSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.utility.MD5Generator;
 
 /**
@@ -42,6 +43,8 @@ public class ViewUserManagedBean {
     GetCompanyUserSessionBean gcusb;
     @EJB
     GetCompanyRoleSessionBean gcrsb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private SystemUser loginedUser;
     private List<Company> companys;
@@ -112,6 +115,7 @@ public class ViewUserManagedBean {
         } else {
 //            direct to login page
         }
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI deleted user");
     }
 
     public void updateUser() {
@@ -129,6 +133,7 @@ public class ViewUserManagedBean {
         } else {
 //            direct to login page
         }
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI updated user");
     }
 
     public void detachRole(UserRole role) {
@@ -146,6 +151,7 @@ public class ViewUserManagedBean {
         } else {
 //            direct to login page
         }
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI detached role");
 
     }
 
@@ -165,6 +171,7 @@ public class ViewUserManagedBean {
         } else {
 //            direct to login page
         }
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI added role");
     }
 
     public void refreshDisplayedRoles() {
@@ -196,7 +203,7 @@ public class ViewUserManagedBean {
     public void selectUser(SystemUser user) {
         System.out.println("Hsjdhfkajsdhfklashdfkjas");
         selectedUser = user;
-        System.out.println("User" +user.getLastName());
+        System.out.println("User" + user.getLastName());
         System.out.println("Selected User" + selectedUser.getLastName());
 
     }
