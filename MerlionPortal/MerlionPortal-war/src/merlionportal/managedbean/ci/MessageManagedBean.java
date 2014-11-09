@@ -79,8 +79,8 @@ public class MessageManagedBean {
                 String functionCall = "postEmail(1)";
                 RequestContext.getCurrentInstance().execute(functionCall);
             }
+            systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User broadcasted message");
         }
-        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User broadcasted message");
     }
 
     public void verifyEmail() {
@@ -101,17 +101,17 @@ public class MessageManagedBean {
             Message m = msb.getMail(mailid);
             //Change mail status
             msb.changeMailStatus(mailid, MessagingStatus.MAIL_READ);
+            systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User read message");
             if (m != null) {
                 String isSender = "0";
-                if(m.getSender().equals(loginedUser.getSystemUserId())){
+                if (m.getSender().equals(loginedUser.getSystemUserId())) {
                     isSender = "1";
                 }
                 String s = m.getMessageBody().replace("\n", " ");
-                String functionCall = "postReadMail('" + m.getMessageTitle() + "','" + s + "','" + msb.findEmail(m.getSender()) + "','"+isSender+"')";
+                String functionCall = "postReadMail('" + m.getMessageTitle() + "','" + s + "','" + msb.findEmail(m.getSender()) + "','" + isSender + "')";
                 RequestContext.getCurrentInstance().execute(functionCall);
             }
         }
-        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User read message");
     }
 
     public void deleteEmail() {
@@ -129,8 +129,8 @@ public class MessageManagedBean {
                 String functionCall = "postDeleteMail()";
                 RequestContext.getCurrentInstance().execute(functionCall);
             }
+            systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User deleted message");
         }
-        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User deleted message");
     }
 
     public void sendEmail() {
@@ -145,10 +145,10 @@ public class MessageManagedBean {
             String subject = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("subject");
             String content = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("content");
             success = msb.createMessage(loginedUser.getSystemUserId(), receipentid, subject, content, MessagingStatus.MAIL_UNREAD);
+            systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User sent message");
         }
         String functionCall = "postEmail(" + success + ")";
         RequestContext.getCurrentInstance().execute(functionCall);
-        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User sent message");
     }
 
     //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
@@ -159,7 +159,8 @@ public class MessageManagedBean {
     public void setInbox(List<Message> inbox) {
         this.inbox = inbox;
     }
-     public List<Message> getOutbox() {
+
+    public List<Message> getOutbox() {
         return outbox;
     }
 
