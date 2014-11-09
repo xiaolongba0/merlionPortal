@@ -103,7 +103,6 @@ public class WMSOrderSessionBean {
         System.out.println("[INSIDE WMS ORDER EJB]================================viewIncomingOrders");
 
         List<WmsOrder> allmyOrders = new ArrayList();
-        List<WmsOrder> allOthersOrders = new ArrayList();
         Query query = em.createNamedQuery("WmsOrder.findByMyCompanyId").setParameter("myCompanyId", companyId);
 
         int i = 0;
@@ -113,15 +112,10 @@ public class WMSOrderSessionBean {
             if (wmsOrder.getOrderType().equalsIgnoreCase("Receiving Order")) {
                 if (wmsOrder.getInternalOrder()) {
                     allmyOrders.add(wmsOrder);
-                    return allmyOrders;
-                } else {
-                    allOthersOrders.add(wmsOrder);
-                    return allOthersOrders;
                 }
-
             }
         }
-        return null;
+        return allmyOrders;
     }
 
     // View all orders that are going out for fulfillment 
