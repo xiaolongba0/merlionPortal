@@ -15,6 +15,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.crms.contractmanagementmodule.QuotationManagementSessionBean;
 
 /**
@@ -27,6 +28,8 @@ public class ViewAllRequestsManagedBean {
 
     @EJB
     QuotationManagementSessionBean quotationManagementSB;
+    @EJB
+    private SystemLogSessionBean logSB;
     private Integer companyId;
     private Integer userId;
 
@@ -81,12 +84,12 @@ public class ViewAllRequestsManagedBean {
         if (selectedRequest != null) {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedRequest");
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedRequest", selectedRequest);
+            logSB.recordSystemLog(userId, "CRMS generated quotation");
             return "generateservicequotation.xhtml?faces-redirect=true";
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select a service to request!", ""));
             return null;
         }
-
     }
 
     public void viewARequest(ServiceQuotation viewRequest) {
