@@ -35,8 +35,8 @@ public class MaterialReqPlanningSessionBean {
 
     public List<Mrp> addNewMrpList(Integer productId, Integer mpsId, int wk1Demand, int wk2Demand, int wk3Demand, int wk4Demand, int wk5Demand, int minOnHand) {
         
-          System.out.println("FY 5NOV:MpsId in Mrp sesson bean: " + mpsId);
-          System.out.println("FY 5NOV:productId in Mrp sesson bean: " + productId);
+          System.out.println("@@@@@@@@@@@@@@@@MPS id" + mpsId);
+          System.out.println("@@@@@@@@@@@@@@@@product id" + productId);
         /*    Mps mps = entityManager.find(Mps.class, mpsId);
          productMRP = mps.getMRPList();
          productMRP.setMrpDate(new Date());
@@ -95,7 +95,10 @@ public class MaterialReqPlanningSessionBean {
             int leadTime;
             int initialOnHand;
             int minOnHandtemp;
-            int orderQuantity = 1000;
+            int orderQuantity;
+            System.out.println("##########@@@@@@@@@@@@@@@@@"+ product.getComponentList().get(i).getOrderQuantity());
+            orderQuantity = product.getComponentList().get(i).getOrderQuantity();
+            
 
             minOnHandtemp = minOnHand * product.getComponentList().get(i).getQuantity();
             GrossReq1 = product.getComponentList().get(i).getQuantity() * wk1Demand;

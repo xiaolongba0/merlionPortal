@@ -12,6 +12,7 @@ import entity.ProductOrder;
 import entity.ProductOrderLineItem;
 import entity.Quotation;
 import entity.QuotationLineItem;
+import entity.Stock;
 import entity.SystemUser;
 import java.util.ArrayList;
 import java.util.Date;
@@ -84,6 +85,9 @@ public class PurchaseOrderSessionBean {
                 Product supplierProduct = new Product();
 
                 for (int j = 0; j < products.size(); j++) {
+                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!! pruduct Name: " + products.get(j).getProductName());
+                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!! pruduct Name from component: " + product.getComponentList().get(i).getComponentName());
+
                     if (products.get(j).getProductName().equals(product.getComponentList().get(i).getComponentName())) {
                         supplierProduct = entityManager.find(Product.class, products.get(j).getProductId());
                     }
@@ -189,16 +193,34 @@ public class PurchaseOrderSessionBean {
 
     }
 
+    public String getBinType(Integer productId) {
+        Query query = entityManager.createQuery("SELECT s FROM Stock s WHERE s.productId = :inProductId");
+        query.setParameter("inProductId", productId);
+        List<Stock> stocks = query.getResultList();
+        return stocks.get(0).getStorageBin().getBinType();
+    }
+
     public Integer checkValidAccessUser(String userIDTemp, String password, Integer poReference) {
         ProductOrder productOrder = new ProductOrder();
         productOrder = entityManager.find(ProductOrder.class, poReference);
         List<ProductOrderLineItem> productOrderLineItemList = productOrder.getProductOrderLineItemList();
         int sizePOItems = productOrderLineItemList.size();
+        System.out.println("#######################po size: " + sizePOItems);
+        /*         Query query = entityManager.createQuery("SELECT q.quotationId FROM Quotation q");
+         List<Integer> quotationids = query.getResultList();
+         List<Quotation> quotations = new ArrayList<Quotation>();
+         Quotation tempQ = new Quotation();
+         for (int b = 0; b < quotationids.size(); b++) {
+         tempQ = entityManager.find(Quotation.class, quotations.get(b).getQuotationId());
+         quotations.add(tempQ);
+         }*/
 
-
+        System.out.println("#######################");
         Query query = entityManager.createQuery("SELECT q FROM Quotation q");
+        System.out.println("#######################");
         List<Quotation> quotations = query.getResultList();
         int size = quotations.size();
+        System.out.println("#######################" + size);
         List<QuotationLineItem> quotationLineItems = new ArrayList<QuotationLineItem>();
         int size1;
         Quotation reqiredQuotation = new Quotation();
@@ -208,51 +230,56 @@ public class PurchaseOrderSessionBean {
             //for each quotation item
             quotationLineItems = quotations.get(i).getQuotationLineItemList();
             size1 = quotationLineItems.size();
+            System.out.println("#######################one quotation size, size1" + size1);
             //handle if two size are diff, just pass
             int count = 0;
             if (sizePOItems == size1) {
                 for (int j = 0; j < size1; j++) {
                     for (int k = 0; k < size1; k++) {
+                        System.out.println("#######################quotationName" + quotationLineItems.get(j).getProductproductId().getProductName());
+                        System.out.println("#######################pOName" + quotationLineItems.get(j).getProductproductId().getProductName());
                         if (quotationLineItems.get(j).getProductproductId().getProductName().equals(productOrderLineItemList.get(k).getProductproductId().getProductName())) {
                             count++;
                         }
                     }
                 }
-
+                System.out.println("Count" + count);
                 if (count == size1) {
                     reqiredQuotation = quotations.get(i);
+                    System.out.println("Quotation customer user id:" + reqiredQuotation.getCustomerId());
                     i = size;//end the loop
                 }
             }
-         }
+        }
         System.out.println("Quotation customer user id:" + reqiredQuotation.getCustomerId());
-
-     
-        //  Query q = entityManager.createQuery("SELECT s FROM SystemUser s WHERE s.emailAddress = :InEmailAddress AND s.password = :InPassword").setParameter("InEmailAddress", userIDTemp); q.setParameter("InPassword", password);
-        Query q = entityManager.createQuery("SELECT s FROM SystemUser s WHERE s.emailAddress = :InEmailAddress");
-        q.setParameter("InEmailAddress", userIDTemp);
-        List<SystemUser> sysUsers = new ArrayList();
-        SystemUser sysUser = new SystemUser();
-        sysUsers = q.getResultList();
-        if (sysUsers.isEmpty()) {
+        if (reqiredQuotation.getCustomerId() == null) {
             return null;
         } else {
-            sysUser = sysUsers.get(0);
+            //  Query q = entityManager.createQuery("SELECT s FROM SystemUser s WHERE s.emailAddress = :InEmailAddress AND s.password = :InPassword").setParameter("InEmailAddress", userIDTemp); q.setParameter("InPassword", password);
+            Query q = entityManager.createQuery("SELECT s FROM SystemUser s WHERE s.emailAddress = :InEmailAddress");
+            q.setParameter("InEmailAddress", userIDTemp);
+            List<SystemUser> sysUsers = new ArrayList();
+            SystemUser sysUser = new SystemUser();
+            sysUsers = q.getResultList();
+            if (sysUsers.isEmpty()) {
+                return null;
+            } else {
+                sysUser = sysUsers.get(0);
+            }
+            System.out.println("sys user user id:" + sysUser.getSystemUserId());
+            if (reqiredQuotation.getCustomerId().equals(sysUser.getSystemUserId())) {
+                productOrder.setQuotationId(reqiredQuotation.getQuotationId());
+                entityManager.merge(productOrder);
+                entityManager.flush();
+
+                return sysUser.getSystemUserId();
+            }
         }
-        System.out.println("sys user user id:" + sysUser.getSystemUserId());
-        if(reqiredQuotation.getCustomerId().equals(sysUser.getSystemUserId())){
-            productOrder.setQuotationId(reqiredQuotation.getQuotationId()); 
-            entityManager.merge(productOrder);
-            entityManager.flush();
-            
-            return sysUser.getSystemUserId();
-        }
-        
-        
+
         return null;
     }
-    
-    public void cancelAPO(Integer poReference){
+
+    public void cancelAPO(Integer poReference) {
         ProductOrder po = entityManager.find(ProductOrder.class, poReference);
         entityManager.remove(po);
         entityManager.flush();
