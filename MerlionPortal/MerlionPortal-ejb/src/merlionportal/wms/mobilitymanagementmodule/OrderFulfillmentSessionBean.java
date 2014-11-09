@@ -44,13 +44,34 @@ public class OrderFulfillmentSessionBean {
     // FOR MANLI
     public boolean reserveStockRentedBins(Integer ownerCompanyId, Integer myCompanyId, Integer quantityNeeded, Integer productId) {
 
-        System.out.println("[IN OFSB] =================== checkStockMyBins");
+        System.out.println("[IN OFSB] =================== creserveStockRentedBins");
         Integer availableQuantity = countTotalAvailbleStockInRentedBin(ownerCompanyId, myCompanyId, productId);
 
         if (availableQuantity >= quantityNeeded) {
             // reserve the stock
             List<Stock> allStocks = new ArrayList<>();
             allStocks = rpsb.viewStockInRentedBin(ownerCompanyId, myCompanyId, productId);
+            Stock stock = allStocks.get(0);
+            System.out.println("[UNSORTED] AllStocks = " + allStocks);
+            // sort by created date
+            if (stock.getExpiryDate() == null) {
+                Collections.sort(allStocks, new Comparator<Stock>() {
+                    @Override
+                    public int compare(Stock o1, Stock o2) {
+                        return o1.getCreatedDate().compareTo(o2.getCreatedDate());
+                    }
+                });
+            } // sort the list of stocks according to expiry date
+            else {
+                Collections.sort(allStocks, new Comparator<Stock>() {
+                    @Override
+                    public int compare(Stock o1, Stock o2) {
+                        return o1.getExpiryDate().compareTo(o2.getExpiryDate());
+                    }
+                });
+            }
+
+            System.out.println("[SORTED] AllStocks = " + allStocks);
 
             Integer newQ = quantityNeeded;
             Integer count = 0;
@@ -92,11 +113,67 @@ public class OrderFulfillmentSessionBean {
         return totalQuantity;
     }
 
-    // check for total stock in rented bins + bins that I own
-    // NEED TO CHECK
-    // When internal order = false 
-    public boolean sendOrderFromRentedBin(Integer wmsOrderId, Integer myCompanyId) {
-        System.out.println("In sendOrderFromRentedBin, wmsOrderId ============================= : " + wmsOrderId);
+    // reserve stock in my bin
+    public boolean reserveStockInMyBin(Integer myCompanyId, Integer warehouseId, Integer quantityNeeded, Integer productId) {
+
+        System.out.println("[IN OFSB] =================== checkStockMyBins");
+        Integer availableQuantity = rpsb.countAvailbleStockInWarehouse(warehouseId, productId);
+
+        if (availableQuantity >= quantityNeeded) {
+            // reserve the stock
+            List<Stock> allStocks = new ArrayList<>();
+            allStocks = rpsb.getWarehouseStock(warehouseId, productId);
+            if (availableQuantity >= quantityNeeded) {
+
+                Stock stock = allStocks.get(0);
+                System.out.println("[UNSORTED] AllStocks = " + allStocks);
+                // sort by created date
+                if (stock.getExpiryDate() == null) {
+                    Collections.sort(allStocks, new Comparator<Stock>() {
+                        @Override
+                        public int compare(Stock o1, Stock o2) {
+                            return o1.getCreatedDate().compareTo(o2.getCreatedDate());
+                        }
+                    });
+                } // sort the list of stocks according to expiry date
+                else {
+                    Collections.sort(allStocks, new Comparator<Stock>() {
+                        @Override
+                        public int compare(Stock o1, Stock o2) {
+                            return o1.getExpiryDate().compareTo(o2.getExpiryDate());
+                        }
+                    });
+                }
+
+                System.out.println("[SORTED] AllStocks = " + allStocks);
+
+                Integer newQ = quantityNeeded;
+                Integer count = 0;
+                while (count < allStocks.size() & newQ != 0) {
+                    Stock tempStock = new Stock();
+                    tempStock = allStocks.get(count);
+
+                    if (newQ > tempStock.getAvailableStock()) {
+                        newQ = newQ - tempStock.getAvailableStock();
+                        rpsb.reserveStock(tempStock.getStockId(), tempStock.getAvailableStock());
+                    } else {
+                        rpsb.reserveStock(tempStock.getStockId(), newQ);
+                        newQ = 0;
+                    }
+                    count++;
+                }
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+        // fulfill orders from rented bins
+    // internalOrder = false
+
+    public boolean fulfillOrderFromRentedBin(Integer wmsOrderId, Integer myCompanyId) {
+        System.out.println("fulfillOrderFromRentedBin, wmsOrderId ============================= : " + wmsOrderId);
         WmsOrder wmsOrder = new WmsOrder();
         wmsOrder = em.find(WmsOrder.class, wmsOrderId);
 
@@ -187,20 +264,21 @@ public class OrderFulfillmentSessionBean {
     }
 
     // send order from my own bin
-    public boolean sendOrderFromMyBin(Integer wmsOrderId, Integer myCompanyId) {
-        System.out.println("In sendOrderFromMyBin, wmsOrderId ============================= : " + wmsOrderId);
+    public boolean fulfillOrderFromMyBin(Integer wmsOrderId, Integer myCompanyId) {
+        System.out.println("fulfillOrderFromMyBin, wmsOrderId ============================= : " + wmsOrderId);
         WmsOrder wmsOrder = new WmsOrder();
         wmsOrder = em.find(WmsOrder.class, wmsOrderId);
+
+        Integer warehouseId = wmsOrder.getWarehouseId();
 
         if (wmsOrder != null) {
 
             // receive stock into the warehouse        
             Integer outgointQuantity = wmsOrder.getQuantity();
 
-            // find bins which belongs to the rented company
-            Integer rentedCompanyId = wmsOrder.getMyCompanyId();
+            // find bins which belongs to my company
             List<StorageBin> allBins = new ArrayList<>();
-            allBins = amsb.viewBinsInAWarehouse(wmsOrderId);
+            allBins = amsb.viewAllMyBinsInAWarehouse(warehouseId);
 
             // go through all the relevant storage bins to retrieve the stock
             int i = 0;
