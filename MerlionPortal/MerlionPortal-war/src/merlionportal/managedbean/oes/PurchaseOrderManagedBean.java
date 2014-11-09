@@ -121,7 +121,6 @@ public class PurchaseOrderManagedBean {
         FacesContext.getCurrentInstance().addMessage(null, msg);
         ProductOrderLineItem testout = (ProductOrderLineItem) event.getObject();
         System.out.println("Set line item quantity" + testout.getQuantity());
-        systemLogSB.recordSystemLog(userId, "OES Edited row");
     }
 
     public void onRowCancel(RowEditEvent event) {
@@ -129,8 +128,6 @@ public class PurchaseOrderManagedBean {
 //        quotationMB.setLineItemPrice(selectedRequest, myLine, null);
         FacesMessage msg = new FacesMessage("Edit quantity cancelled");
         FacesContext.getCurrentInstance().addMessage(null, msg);
-        systemLogSB.recordSystemLog(userId, "OES Cancelled row");
-
     }
 
     public boolean checkUserIsCustomer() {
