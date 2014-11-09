@@ -95,7 +95,7 @@ public class StockViewEditManagedBean {
             stocks = rpsb.getWarehouseStock(warehouseId, productId);
             totalQuantity = rpsb.countAvailbleStockInWarehouse(warehouseId, productId);
             System.out.println("TOTAL QUANTITY IN VIEW ALL STOCKS = " + totalQuantity);
-            systemLogSB.recordSystemLog(userId, "WMS view stocks for a warehouse");
+//            systemLogSB.recordSystemLog(userId, "WMS view stocks for a warehouse");
             if (stocks == null) {
                 System.out.println("============== FAILED TO VIEW STOCK ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Stock.", ""));
@@ -111,7 +111,7 @@ public class StockViewEditManagedBean {
             stocks = rpsb.viewAllStocks(companyId, productId2);
             totalQuantity = rpsb.countAvailbleStocksInCompany(companyId, productId2);
             System.out.println("TOTAL QUANTITY IN VIEW ALL STOCKS = " + totalQuantity);
-            systemLogSB.recordSystemLog(userId, "WMS view stocks");
+//            systemLogSB.recordSystemLog(userId, "WMS view stocks");
             if (stocks == null) {
                 System.out.println("============== FAILED TO VIEW STOCK ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Stock.", ""));
@@ -124,7 +124,7 @@ public class StockViewEditManagedBean {
         totalQuantity = 0;
         if (productId3 != null) {
             stocks = rpsb.viewClientStockInRentedBin(companyId, productId3);
-            systemLogSB.recordSystemLog(userId, "WMS view client stock in my warehouses");
+//            systemLogSB.recordSystemLog(userId, "WMS view client stock in my warehouses");
             if (stocks == null) {
                 System.out.println("============== FAILED TO VIEW STOCK ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Stock.", ""));

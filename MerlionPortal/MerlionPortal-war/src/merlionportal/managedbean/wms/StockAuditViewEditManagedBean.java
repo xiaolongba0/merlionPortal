@@ -104,7 +104,7 @@ public class StockAuditViewEditManagedBean {
 
         if (warehouseId != null) {
             stockAudits = sasb.viewStockAuditsForAWarehouse(warehouseId);
-            systemLogSB.recordSystemLog(userId, "WMS view all stock audit");
+//            systemLogSB.recordSystemLog(userId, "WMS view all stock audit");
             if (warehouseId == null) {
                 System.out.println("============== FAILED TO VIEW STOCK Audits ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Stock Audit", ""));
@@ -117,7 +117,7 @@ public class StockAuditViewEditManagedBean {
 
         if (warehouseId != null) {
             stockAudits = sasb.viewDueStockAuditsForAWarehouse(warehouseId);
-            systemLogSB.recordSystemLog(userId, "WMS view due stock audit");
+//            systemLogSB.recordSystemLog(userId, "WMS view due stock audit");
             if (warehouseId == null) {
                 System.out.println("============== FAILED TO VIEW STOCK Audits ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Stock Audit", ""));

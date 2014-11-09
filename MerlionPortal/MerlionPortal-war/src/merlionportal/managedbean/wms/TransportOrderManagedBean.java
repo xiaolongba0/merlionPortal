@@ -124,7 +124,7 @@ public class TransportOrderManagedBean {
 
         if (sourceWarehouseId != null) {
             transportOrders = tosb.viewAllTransportOrdersForSource(sourceWarehouseId);
-            systemLogSB.recordSystemLog(userId, "WMS view transport orders from source warehouse");
+//            systemLogSB.recordSystemLog(userId, "WMS view transport orders from source warehouse");
             if (sourceWarehouseId == null) {
                 System.out.println("============== FAILED TO VIEW SOURCE WAREHOUSES ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View", ""));
@@ -137,7 +137,7 @@ public class TransportOrderManagedBean {
 
         if (destWarehouseId != null) {
             transportOrders = tosb.viewAllTransportOrdersForDest(destWarehouseId);
-            systemLogSB.recordSystemLog(userId, "WMS view transport orders from dest warehouse");
+//            systemLogSB.recordSystemLog(userId, "WMS view transport orders from dest warehouse");
             if (destWarehouseId == null) {
                 System.out.println("============== FAILED TO VIEW SOURCE WAREHOUSES ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View", ""));
