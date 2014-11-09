@@ -9,6 +9,7 @@ package entity;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,6 +18,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -26,6 +28,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -99,6 +102,8 @@ public class ServicePO implements Serializable {
     private BigInteger amountOfProduct;
     @Column(name = "warehouseId")
     private Integer warehouseId;
+    @ManyToMany(mappedBy = "servicePOList")
+    private List<Post> postList;
     @JoinColumn(name = "contract", referencedColumnName = "contractId")
     @ManyToOne(optional = false)
     private Contract contract;
@@ -246,6 +251,15 @@ public class ServicePO implements Serializable {
 
     public void setWarehouseId(Integer warehouseId) {
         this.warehouseId = warehouseId;
+    }
+
+    @XmlTransient
+    public List<Post> getPostList() {
+        return postList;
+    }
+
+    public void setPostList(List<Post> postList) {
+        this.postList = postList;
     }
 
     public Contract getContract() {

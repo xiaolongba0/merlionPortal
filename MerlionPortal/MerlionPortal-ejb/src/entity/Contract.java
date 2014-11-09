@@ -18,6 +18,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -119,6 +121,11 @@ public class Contract implements Serializable {
     private Double spacePerProduct;
     @Column(name = "warehouseId")
     private Integer warehouseId;
+    @JoinTable(name = "Contract_has_Post", joinColumns = {
+        @JoinColumn(name = "contract", referencedColumnName = "contractId")}, inverseJoinColumns = {
+        @JoinColumn(name = "post", referencedColumnName = "postId")})
+    @ManyToMany
+    private List<Post> postList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "contract")
     private List<ServicePO> servicePOList;
     @JoinColumn(name = "serviceQuotation", referencedColumnName = "quotationId")
@@ -300,6 +307,15 @@ public class Contract implements Serializable {
 
     public void setWarehouseId(Integer warehouseId) {
         this.warehouseId = warehouseId;
+    }
+
+    @XmlTransient
+    public List<Post> getPostList() {
+        return postList;
+    }
+
+    public void setPostList(List<Post> postList) {
+        this.postList = postList;
     }
 
     @XmlTransient
