@@ -34,6 +34,9 @@ public class WMSOrderSessionBean {
     @EJB
     private ReceivingPutawaySessionBean rpsb;
 
+    @EJB
+    private OrderFulfillmentSessionBean ofsb;
+
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     //check for bins and reserve space
@@ -42,10 +45,7 @@ public class WMSOrderSessionBean {
             Integer productId, Boolean internalOrder, Integer servicePOId, Integer warehouseId) {
 
         System.out.println("[INSIDE WMS ORDER EJB]================================Add create internal order");
-        Integer orderId;
-
-        orderId = createWarehouseOrder(myCompanyId, orderType, fulfillmentDate, receiveDate, quantity,
-                productId, internalOrder, servicePOId, warehouseId);
+        Integer orderId = null;
 
         if (orderType.equalsIgnoreCase("Receiving Order")) {
             System.out.println("====================== Receiving Order");
@@ -63,58 +63,10 @@ public class WMSOrderSessionBean {
         if (orderType.equalsIgnoreCase("Fulfillment Order")) {
             System.out.println("====================== Fulfillment Order");
 
-            Integer availableStock = rpsb.countAvailbleStockInWarehouse(warehouseId, productId);
-
-            // WMS has enoughs stock from this warehouse to fulfill
-            if (availableStock >= quantity) {
-                List<Stock> allStocks = new ArrayList<>();
-                // get stocks that belong to that warehouse only
-                allStocks = rpsb.getWarehouseStock(warehouseId, productId);
-                Stock stock = allStocks.get(0);
-
-                System.out.println("[UNSORTED] AllStocks = " + allStocks);
-                // sort by created date
-                if (stock.getExpiryDate() == null) {
-                    Collections.sort(allStocks, new Comparator<Stock>() {
-                        @Override
-                        public int compare(Stock o1, Stock o2) {
-                            return o1.getCreatedDate().compareTo(o2.getCreatedDate());
-                        }
-                    });
-                } // sort the list of stocks according to expiry date
-                else {
-                    Collections.sort(allStocks, new Comparator<Stock>() {
-                        @Override
-                        public int compare(Stock o1, Stock o2) {
-                            return o1.getExpiryDate().compareTo(o2.getExpiryDate());
-                        }
-                    });
-                }
-
-                System.out.println("[SORTED] AllStocks = " + allStocks);
-
-                // get list of source bins
-                Integer newTotalQ = quantity;
-                Boolean result = null;
-
-                Integer count = 0;
-                while (count < allStocks.size() & newTotalQ != 0 & result != false) {
-
-                    Stock tempStock = new Stock();
-                    tempStock = allStocks.get(count);
-                    if (newTotalQ >= tempStock.getQuantity()) {
-                        newTotalQ = newTotalQ - tempStock.getQuantity();
-                        // reserve the stock
-                        result = rpsb.reserveStock(tempStock.getStockId(), tempStock.getQuantity());
-                        System.out.println(count + " SourceBinId1: " + tempStock.getStorageBin().getStorageBinId());
-                    } else {
-                        result = rpsb.reserveStock(tempStock.getStockId(), newTotalQ);
-                        newTotalQ = 0;
-                        // reserve the stock
-                        System.out.println(count + " SourceBinId2: " + tempStock.getStorageBin().getStorageBinId());
-                    }
-                    count++;
-                }
+            Boolean result = ofsb.reserveStockInMyBin(myCompanyId, warehouseId, quantity, productId);
+            if (result) {
+                orderId = createWarehouseOrder(myCompanyId, orderType, fulfillmentDate, receiveDate, quantity,
+                        productId, internalOrder, servicePOId, warehouseId);
             } else {
                 orderId = null;
             }
@@ -130,32 +82,120 @@ public class WMSOrderSessionBean {
         List<Stock> stocks = query.getResultList();
         return stocks.get(0).getStorageBin().getBinType();
     }
-    
-    public List<WmsOrder> viewIncomingOrders (Integer companyId, Integer warehouseId){
-       
+
+//    // cancel wms order
+//    public boolean cancelWMSOrder(Integer companyId, Integer wmsOrderId) {
+//        System.out.println("[INSIDE WMS ORDER EJB]================================cancelWMSOrder");
+//        WmsOrder wmsOrder = new WmsOrder();
+//        wmsOrder = em.find(WmsOrder.class, wmsOrderId);
+//        
+//        String orderType = wmsOrder.getOrderType();
+//        if (orderType.equalsIgnoreCase("Receiving Order")){
+//            // unreserve bin space
+//            rpsb.receivePutawayForMyBin(companyId, wmsOrderId);
+//        }
+//        if (orderType.equalsIgnoreCase("Fulfillment Order")){
+//            // unreserve stock
+//            
+//        }
+//        return false;
+//    }
+
+    // View all orders that are incoming for receiving and putaway
+    public List<WmsOrder> viewIncomingOrders(Integer companyId, Integer warehouseId, Boolean internalOrder) {
+        System.out.println("[INSIDE WMS ORDER EJB]================================viewIncomingOrders");
+
+        List<WmsOrder> allmyOrders = new ArrayList();
+        List<WmsOrder> allOthersOrders = new ArrayList();
+        Query query = em.createNamedQuery("WmsOrder.findByMyCompanyId").setParameter("myCompanyId", companyId);
+
+        int i = 0;
+        while (i < query.getResultList().size()) {
+            WmsOrder wmsOrder = new WmsOrder();
+            wmsOrder = (WmsOrder) query.getResultList().get(i);
+            if (wmsOrder.getOrderType().equalsIgnoreCase("Receiving Order")) {
+                if (wmsOrder.getInternalOrder()) {
+                    allmyOrders.add(wmsOrder);
+                    return allmyOrders;
+                } else {
+                    allOthersOrders.add(wmsOrder);
+                    return allOthersOrders;
+                }
+
+            }
+        }
+        return null;
+    }
+
+    // View all orders that are going out for fulfillment 
+    public List<WmsOrder> viewFulfillmentOrders(Integer companyId, Integer warehouseId) {
+
+        System.out.println("[INSIDE WMS ORDER EJB]================================viewFulfillmentOrders");
         List<WmsOrder> allOrders = new ArrayList();
         Query query = em.createNamedQuery("WmsOrder.findByMyCompanyId").setParameter("myCompanyId", companyId);
-        
+
         int i = 0;
-        while (i < allOrders.size()){
+        while (i < query.getResultList().size()) {
             WmsOrder wmsOrder = new WmsOrder();
-            wmsOrder = allOrders.get(i);
-            
-            
-        }              
+            wmsOrder = (WmsOrder) query.getResultList().get(i);
+            if (wmsOrder.getOrderType().equalsIgnoreCase("Fulfillment Order")) {
+                allOrders.add(wmsOrder);
+            }
+        }
         return allOrders;
     }
 
-    public boolean processReceivedOrder(Integer wmsOrderId) {
+    // perform order fulfillment
+    public boolean performOrderFulfillment(Integer companyId, Integer wmsOrderId) {
 
-        System.out.println("[INSIDE WMS ORDER EJB]================================processReceivedOrder");
+        System.out.println("[INSIDE WMS ORDER EJB]================================performOrderFulfillment");
         WmsOrder wmsOrder = new WmsOrder();
         wmsOrder = em.find(WmsOrder.class, wmsOrderId);
-        
-        // check if order is mine or for rented bins
-        return true;
+
+        // check if the order is mine or for rented bins
+        if (wmsOrder.getInternalOrder()) {
+            Boolean result = ofsb.fulfillOrderFromMyBin(wmsOrderId, companyId);
+            if (result) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            Boolean result = ofsb.fulfillOrderFromRentedBin(wmsOrderId, companyId);
+            if (result) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
+    // perform receiving putaway
+    public boolean performReceivingPutaway(Integer companyId, Integer wmsOrderId) {
+
+        System.out.println("[INSIDE WMS ORDER EJB]================================performRecevingPutaway");
+        WmsOrder wmsOrder = new WmsOrder();
+        wmsOrder = em.find(WmsOrder.class, wmsOrderId);
+
+        // check if the order is mine or for rented bins
+        if (wmsOrder.getInternalOrder()) {
+            Boolean result = rpsb.receivePutawayForMyBin(companyId, wmsOrderId);
+            if (result) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            Boolean result = rpsb.receivePutawayForRentedBin(companyId, wmsOrderId);
+            if (result) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    // fulfillment & receiving and putaway method needed then direct to the respective types, rented or not
     // GENERAL create method
     public Integer createWarehouseOrder(Integer myCompanyId, String orderType, Date fulfillmentDate, Date receiveDate, Integer quantity,
             Integer productId, Boolean internalOrder, Integer servicePOId, Integer warehouseId) {

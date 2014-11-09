@@ -116,7 +116,7 @@ public class OrderFulfillmentSessionBean {
     // reserve stock in my bin
     public boolean reserveStockInMyBin(Integer myCompanyId, Integer warehouseId, Integer quantityNeeded, Integer productId) {
 
-        System.out.println("[IN OFSB] =================== checkStockMyBins");
+        System.out.println("[IN OFSB] =================== reserveStockInMyBin");
         Integer availableQuantity = rpsb.countAvailbleStockInWarehouse(warehouseId, productId);
 
         if (availableQuantity >= quantityNeeded) {
@@ -169,7 +169,7 @@ public class OrderFulfillmentSessionBean {
         }
         return false;
     }
-        // fulfill orders from rented bins
+    // fulfill orders from rented bins
     // internalOrder = false
 
     public boolean fulfillOrderFromRentedBin(Integer wmsOrderId, Integer myCompanyId) {
@@ -348,5 +348,6 @@ public class OrderFulfillmentSessionBean {
         }
         return false;
     }
+
 
 }

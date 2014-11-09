@@ -5,7 +5,6 @@
  */
 package merlionportal.wms.mobilitymanagementmodule;
 
-import entity.Product;
 import entity.ServicePO;
 import entity.Stock;
 import entity.StorageBin;
