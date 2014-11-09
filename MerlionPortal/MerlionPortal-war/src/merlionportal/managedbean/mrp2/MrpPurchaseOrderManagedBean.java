@@ -78,8 +78,6 @@ public class MrpPurchaseOrderManagedBean {
     private int temp;
     private Integer poReference;
 
-
-
     @PostConstruct
     public void init() {
 
@@ -109,10 +107,8 @@ public class MrpPurchaseOrderManagedBean {
     }
 
     public void createPO() {
-        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP create PO. ");
-
         pos = productOrderSessionBean.createPO(productId, companyId, loginedUser, mrps);
-
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP create PO. ");
     }
 
     public void sendPO() {
@@ -133,8 +129,8 @@ public class MrpPurchaseOrderManagedBean {
             }
         }
     }
-    
-     public void cancelPO() {
+
+    public void cancelPO() {
 
         productOrderSessionBean.cancelAPO(poReference);
 
@@ -161,9 +157,8 @@ public class MrpPurchaseOrderManagedBean {
     }
 
 //    public String cancelPO() {
-  //      return ("mrp");
+    //      return ("mrp");
     //}
-
     public void setUserIDTemp(String userIDTemp) {
         this.userIDTemp = userIDTemp;
     }
@@ -179,8 +174,8 @@ public class MrpPurchaseOrderManagedBean {
     public String getPassword() {
         return password;
     }
-    
-        public void setPoReference(Integer poReference) {
+
+    public void setPoReference(Integer poReference) {
         this.poReference = poReference;
     }
 
