@@ -85,7 +85,7 @@ public class CreateWarehouseZoneManagedBean {
             if (newWarehouseZoneId > -1) {
                 clearAllFields();
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Warehouse Zone Added!", ""));
-                systemLogSB.recordSystemLog(userId, "WMS create warehouse zone");
+                systemLogSB.recordSystemLog(userId, "WMS created warehouse zone");
             } else {
                 System.out.println("============== FAILED TO ADD STORAGE TYPE DUE TO WRONG WAREHOUSE ID ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed to Add Warehouse Zone ", ""));
