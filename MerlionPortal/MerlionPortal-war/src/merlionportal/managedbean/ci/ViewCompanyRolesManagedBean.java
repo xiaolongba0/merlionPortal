@@ -20,6 +20,7 @@ import merlionportal.ci.administrationmodule.GetCompanyRoleSessionBean;
 import merlionportal.ci.administrationmodule.GetCompanySessionBean;
 import merlionportal.ci.administrationmodule.RoleManagementSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 
 /**
  *
@@ -37,6 +38,8 @@ public class ViewCompanyRolesManagedBean {
     GetCompanySessionBean gcsb;
     @EJB
     RoleManagementSessionBean rmsb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private Integer companyId;
     private SystemUser loginedUser;
@@ -98,9 +101,9 @@ public class ViewCompanyRolesManagedBean {
         }
         if (result == 1) {
             roles.remove(selectedRole);
-            selectedRole=null;
+            selectedRole = null;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Deleted!", "This Role is deleted."));
-            
+
         } else if (result == -2) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Unsuccessful!", "Cannot deleted this role as there are users assigned to this role."));
 
@@ -110,6 +113,7 @@ public class ViewCompanyRolesManagedBean {
         } else {
 //            direct to login page
         }
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User deleted role");
     }
 
     public void updateRole() {
@@ -129,13 +133,15 @@ public class ViewCompanyRolesManagedBean {
 //            redirect to login page
             System.out.println("++++++++++++++null++++++++++++");
         }
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User updated role");
     }
-    
-    public void selectRole(UserRole role){
+
+    public void selectRole(UserRole role) {
         System.out.println("here!");
         selectedRole = role;
         System.out.println("ROLE " + role.getRoleName());
         System.out.println("Selected ROLE " + selectedRole.getRoleName());
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI User selected role");
     }
 
     public int getCompanyId() {
