@@ -36,10 +36,10 @@ public class MPSResultManagedBean {
 
     @EJB
     MaterialReqPlanningSessionBean materialReqPlanningSessionBean;
-  
+
     @EJB
     private SystemLogSessionBean systemLogSB;
-  
+
     @EJB
     MpsSessionBean mpsSessionBean;
     @EJB
@@ -111,7 +111,6 @@ public class MPSResultManagedBean {
     }
 
     public void computeDemand() {
-        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP compute demand. ");
         forecastData = (Vector<Integer>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("forecastR");
         forecastDate = (Vector<String>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("monthlyDateR");
         buffer = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("buffer");
@@ -244,7 +243,7 @@ public class MPSResultManagedBean {
         mpsId = mpsSessionBean.storeMPS(buffer, requiredDemand, fResultId);
         System.out.println("FY 5NOV:MpsId in Mps managed bean: " + mpsId);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mpsId", mpsId);
-
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP compute demand. ");
     }
 
     public void setMinOnHand(Integer minOnHand) {
