@@ -90,7 +90,6 @@ public class ForecastShowHistoryManagedBean implements Serializable {
         //produce a list of date correspond to sales
         //size need to be retreved/computed later
 
-        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP get sales history. ");
         productId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("productId");
 
         dateList = rsdsb.retrieveDateList(productId);
@@ -134,12 +133,11 @@ public class ForecastShowHistoryManagedBean implements Serializable {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
             calendar.add(Calendar.MONTH, -2);
-            firstDateOnAxis  = df.format(calendar.getTime());
+            firstDateOnAxis = df.format(calendar.getTime());
         } catch (ParseException ex) {
             Logger.getLogger(ForecastShowHistoryManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
         //Compute ending date to be shown on x-axis
         String lastDateOnAxis = "2015-02-01";
         try {
@@ -147,7 +145,7 @@ public class ForecastShowHistoryManagedBean implements Serializable {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
             calendar.add(Calendar.MONTH, +2);
-            lastDateOnAxis  = df.format(calendar.getTime());
+            lastDateOnAxis = df.format(calendar.getTime());
         } catch (ParseException ex) {
             Logger.getLogger(ForecastShowHistoryManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -167,7 +165,7 @@ public class ForecastShowHistoryManagedBean implements Serializable {
         axis.setMin(firstDateOnAxis);
         axis.setMax(lastDateOnAxis);
         axis.setTickFormat("%b, %y");
-
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP get sales history. ");
     }
 
     public int getFirstDigit(int num) {

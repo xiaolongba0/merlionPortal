@@ -23,7 +23,7 @@ public class ForecastGetParameterManagedBean implements Serializable {
 
     @EJB
     UserAccountManagementSessionBean uamb;
-      @EJB
+    @EJB
     private SystemLogSessionBean systemLogSB;
 
     Integer companyId;
@@ -55,7 +55,7 @@ public class ForecastGetParameterManagedBean implements Serializable {
     }
 
     public String onParameterChange() {
-        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP gets forecasting parameters from system user. ");
+
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("expectedGrowth", expectedGrowth);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("periodicity", periodicity);
 
@@ -70,6 +70,7 @@ public class ForecastGetParameterManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, msg);
             return "null";
         } else {
+            systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP gets forecasting parameters from system user. ");
             return "forecastresult?faces-redirect=true";
         }
 

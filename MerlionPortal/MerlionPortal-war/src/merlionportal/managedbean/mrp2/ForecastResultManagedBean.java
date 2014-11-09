@@ -43,7 +43,7 @@ public class ForecastResultManagedBean implements Serializable {
     ForecastSessionBean fsb;
     @EJB
     RetrieveSalesDataSessionBean rsdsb;
-      @EJB
+    @EJB
     private SystemLogSessionBean systemLogSB;
 
     Integer companyId;
@@ -75,10 +75,9 @@ public class ForecastResultManagedBean implements Serializable {
     List<Integer> quantityList;
     private SystemUser loginedUser;
     Integer forecastResultID;
-List<MonthForecastResult> monthForecastResults;
-MonthForecastResult monthForecastResult;
+    List<MonthForecastResult> monthForecastResults;
+    MonthForecastResult monthForecastResult;
 
- 
     //variables for forecasting
     @PostConstruct
     public void init() {
@@ -113,8 +112,8 @@ MonthForecastResult monthForecastResult;
     public void setForecastSales(LineChartModel forecastSales) {
         this.forecastSales = forecastSales;
     }
-    
-       public void setMonthForecastResults(List<MonthForecastResult> monthForecastResults) {
+
+    public void setMonthForecastResults(List<MonthForecastResult> monthForecastResults) {
         this.monthForecastResults = monthForecastResults;
     }
 
@@ -122,17 +121,16 @@ MonthForecastResult monthForecastResult;
         monthForecastResults = fsb.retrieveMonthForecastResult(forecastResultID);
         return monthForecastResults;
     }
-        public void setMonthForecastResult(MonthForecastResult monthForecastResult) {
+
+    public void setMonthForecastResult(MonthForecastResult monthForecastResult) {
         this.monthForecastResult = monthForecastResult;
     }
 
     public MonthForecastResult getMonthForecastResult() {
         return monthForecastResult;
     }
-    
 
     public void computeForecastResult() {
-        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP compute forecast result. ");
         //produce a list of date correspond to sales
         //size need to be retrieved/computed later
         productId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("productId");
@@ -147,13 +145,13 @@ MonthForecastResult monthForecastResult;
         //put results into the session
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("forecastR", forecastR);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("monthlyDateR", monthlyDateR);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("forecastResultID",  forecastResultID);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("forecastResultID", forecastResultID);
 
         forecastSales = new LineChartModel();
         LineChartSeries series1 = new LineChartSeries();
         series1.setLabel("Sales Figure");
 
-          int k = 0;
+        int k = 0;
         for (int i = 1; i <= periodicity; i++) {
             series1.set(monthlyDateR.get(i), forecastR.get(i));
             //Assign largest sales data to k
@@ -161,8 +159,8 @@ MonthForecastResult monthForecastResult;
                 k = forecastR.get(i);
             }
         }
-        
-         //Compute Maximum Y axis value
+
+        //Compute Maximum Y axis value
         int length = String.valueOf(k).length();
         int first = this.getFirstDigit(k);
         first++;
@@ -178,13 +176,12 @@ MonthForecastResult monthForecastResult;
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
             calendar.add(Calendar.MONTH, -4);
-            firstDateOnAxis  = df.format(calendar.getTime());
+            firstDateOnAxis = df.format(calendar.getTime());
             System.out.println("FY test new first date: " + firstDateOnAxis);
         } catch (ParseException ex) {
             Logger.getLogger(ForecastShowHistoryManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
         //Compute ending date to be shown on x-axis
         String lastDateOnAxis = "2016-05-01";
         try {
@@ -192,7 +189,7 @@ MonthForecastResult monthForecastResult;
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
             calendar.add(Calendar.MONTH, +4);
-            lastDateOnAxis  = df.format(calendar.getTime());
+            lastDateOnAxis = df.format(calendar.getTime());
             System.out.println("FY test lastdate: " + lastDateOnAxis);
         } catch (ParseException ex) {
             Logger.getLogger(ForecastShowHistoryManagedBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -214,10 +211,10 @@ MonthForecastResult monthForecastResult;
         axis.setMin(firstDateOnAxis);
         axis.setMax(lastDateOnAxis);
         axis.setTickFormat("%b, %y");
-
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP compute forecast result. ");
     }
-    
-        public int getFirstDigit(int num) {
+
+    public int getFirstDigit(int num) {
         while (num < -9 || 9 < num) {
             num /= 10;
         }
