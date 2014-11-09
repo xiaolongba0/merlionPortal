@@ -5,21 +5,18 @@
  */
 package merlionportal.managedbean.tms;
 
-import entity.Node;
 import javax.inject.Named;
 import entity.SystemUser;
 import entity.TransportationOrder;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.tms.transportationmanagementmodule.TOrderManagementSessionBean;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 
 /**
  *
@@ -33,6 +30,8 @@ public class TOrderViewEditManagedBean {
     private TOrderManagementSessionBean tomsb;
     @EJB
     private UserAccountManagementSessionBean uamb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private SystemUser loginedUser;
     private Integer companyId;

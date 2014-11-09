@@ -23,6 +23,7 @@ import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.tms.transportationmanagementmodule.TOrderManagementSessionBean;
 import merlionportal.tms.transportationhumanresourcemanagementmodule.TOperatormanagementSessionBean;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 
 /**
  *
@@ -38,6 +39,8 @@ public class TOLogManagerBean {
     private UserAccountManagementSessionBean uamb;
     @EJB
     private TOperatormanagementSessionBean tpomsb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private SystemUser loginedUser;
     private Integer companyId;
@@ -86,6 +89,7 @@ public class TOLogManagerBean {
             newLogId = tomsb.addNewLog(orderId, OperatorId, action, actionMessage, timeStamp);
             if (newLogId > -1) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Node Order!", ""));
+                systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS created new log");
                 clearAllFields();
                 System.out.println("[WAR FILE]===========================Create New Node");
             } else {

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package merlionportal.managedbean.tms;
 
 import entity.ServicePO;
@@ -16,6 +15,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.crms.ordermanagementmodule.ServicePOManagementSessionBean;
 
 /**
@@ -29,8 +29,10 @@ public class TransportationRequestsManagedBean {
     /**
      * Creates a new instance of TransportationRequestsManagedBean
      */
-     @EJB
+    @EJB
     ServicePOManagementSessionBean servicePOSB;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private Integer companyId;
     private Integer userId;
@@ -44,10 +46,10 @@ public class TransportationRequestsManagedBean {
 
     private List<String> status;
     private String statusNumber;
-    
+
     public TransportationRequestsManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         boolean redirect = true;
@@ -79,6 +81,7 @@ public class TransportationRequestsManagedBean {
         status.add("SO Closed");
         status.add("Transportation SO in transit");
     }
+
     public String viewSentTransportationServicePO() {
         if (selectedSentTServicePO != null) {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedTransServicePO");
@@ -203,5 +206,5 @@ public class TransportationRequestsManagedBean {
     public void setStatusNumber(String statusNumber) {
         this.statusNumber = statusNumber;
     }
-    
+
 }
