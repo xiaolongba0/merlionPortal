@@ -76,11 +76,11 @@ public class FeedbackManagedBean {
             if (fsb.createFeedback(userId, feedBackTitle, feedBackContent) > -1) {
                 RequestContext.getCurrentInstance().execute("postCreateFeedback()");
                 onLoad();
+                systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI posted feedback");
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Feedback Not Posted!", "Something is wrong."));
             }
         }
-        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI posted feedback");
     }
 
     public void postComment() {
@@ -95,10 +95,10 @@ public class FeedbackManagedBean {
                 if (fsb.createComment(userId, commentMsg, id) > -1) {
                     RequestContext.getCurrentInstance().execute("commentCreated()");
                     onLoad();
+                    systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI posted comment");
                 }
             }
         }
-        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI posted comment");
     }
 
     public void likeFeedback() {
@@ -110,6 +110,7 @@ public class FeedbackManagedBean {
                 FeedBack fb = fsb.getFeedBack(id);
                 RequestContext.getCurrentInstance().execute("feedbackLiked('" + fb.getTitle() + "')");
                 onLoad();
+                systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI liked feedback");
             }
         }
     }
@@ -122,9 +123,9 @@ public class FeedbackManagedBean {
             if (fsb.addLike(id, TYPE_COMMENT) > -1) {
                 RequestContext.getCurrentInstance().execute("commentLiked()");
                 onLoad();
+                systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI liked comment");
             }
         }
-        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI liked comment");
     }
 
     public SystemLogSessionBean getSystemLogSB() {
