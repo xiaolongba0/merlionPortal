@@ -197,7 +197,7 @@
                         </p:row>
                         <p:row>
                             <p:column>
-                                <p:inputText id="password" value="#{mrpPurchaseOrderManagedBean.password}" required="true" requiredMessage="Password is required." label="password"></p:inputText>
+                                <p:password id="password" value="#{mrpPurchaseOrderManagedBean.password}" required="true" requiredMessage="Password is required." label="password"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -211,11 +211,11 @@
                             </p:column>
                         </p:row>
                         <p:commandButton value="Submit ID to Send PO" actionListener="#{mrpPurchaseOrderManagedBean.sendPO}" update="growl"></p:commandButton>
-                       <p:commandButton value="Cancel on submitting this PO" actionListener="#{mrpPurchaseOrderManagedBean.cancelPO}" update="growl"></p:commandButton>
+                        <p:commandButton value="Cancel on submitting this PO" actionListener="#{mrpPurchaseOrderManagedBean.cancelPO}" update="growl"></p:commandButton>
 
                     </p:dataGrid>
                     <p:commandButton value="Finish and Go Back"  action="#{mrpPurchaseOrderManagedBean.backToMrpHome}" />
-        
+
                 </p:panel>
 
 
