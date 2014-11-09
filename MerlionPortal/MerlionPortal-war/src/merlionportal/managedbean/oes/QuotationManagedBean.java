@@ -31,6 +31,7 @@ import org.primefaces.event.RowEditEvent;
 @Named(value = "quotationManagedBean")
 @SessionScoped
 public class QuotationManagedBean implements Serializable {
+
     @EJB
     private CommonFunctionSessionBean commonSB;
 
@@ -124,14 +125,14 @@ public class QuotationManagedBean implements Serializable {
             return "viewallrequests.xhtml";
         }
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "View", "Action Accepted"));
-
+        systemLogSB.recordSystemLog(userId, "OES edited quotation");
         return "generatequotation.xhtml?faces-redirect=true";
-
     }
 
     public String deletRequest() {
         System.out.println("Deleted quotation Id " + selectedRequest.getQuotationId());
         quotationMB.deleteRequest(selectedRequest.getQuotationId());
+        systemLogSB.recordSystemLog(userId, "OES deleted request");
         return "viewallrequests.xhtml?faces-redirect=true";
 
     }
@@ -247,8 +248,8 @@ public class QuotationManagedBean implements Serializable {
 
         return qStatus;
     }
-    
-    public String viewCustomerName(int mycusId){
+
+    public String viewCustomerName(int mycusId) {
         return commonSB.viewCustomerName(mycusId);
     }
 
