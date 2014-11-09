@@ -78,15 +78,15 @@ public class LoginManagedBean {
                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("companyId", sessionMap.get("companyId"));
                         try {
 //                            check if user is locked
-                            systemLogSB.recordSystemLog(uamsb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")).getSystemUserId(), "CI User Logged in");
-
                             if (uamsb.checkLocked((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"))) {
 //                              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "User Locked!", "Please try another account"));
                                 FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml?isLocked=yes");
+                                systemLogSB.recordSystemLog(uamsb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")).getSystemUserId(), "CI User tried to log in");
 //                                RequestContext.getCurrentInstance().execute("userLocked()");
                             } //                            check if user needs reset
                             else if (uamsb.checkResetPasswordUponLogin((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId"))) {
                                 FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/changepassword.xhtml");
+                                systemLogSB.recordSystemLog(uamsb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")).getSystemUserId(), "CI User Logged in");
                             } //                            Check if it is admin or user
                             else {
                                 if (uamsb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")).getUserType() != null) {
@@ -98,12 +98,11 @@ public class LoginManagedBean {
                                 } else {
                                     FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/user/dashboard.xhtml");
                                 }
-
+                                systemLogSB.recordSystemLog(uamsb.getUser((int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId")).getSystemUserId(), "CI User Logged in");
                             }
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
-
                     }
                 } else {
                     //Sorry you have tried more than 5 times...

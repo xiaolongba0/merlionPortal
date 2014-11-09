@@ -80,6 +80,7 @@ public class FeedbackManagedBean {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Feedback Not Posted!", "Something is wrong."));
             }
         }
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI posted feedback");
     }
 
     public void postComment() {
@@ -97,6 +98,7 @@ public class FeedbackManagedBean {
                 }
             }
         }
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI posted comment");
     }
 
     public void likeFeedback() {
@@ -122,6 +124,7 @@ public class FeedbackManagedBean {
                 onLoad();
             }
         }
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "CI liked comment");
     }
 
     public SystemLogSessionBean getSystemLogSB() {

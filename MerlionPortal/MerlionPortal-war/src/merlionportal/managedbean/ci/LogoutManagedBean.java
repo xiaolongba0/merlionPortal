@@ -41,5 +41,4 @@ public class LogoutManagedBean {
             e.printStackTrace();
         }
     }
-
 }
