@@ -69,7 +69,7 @@ public class ReceivingPutawayProcessManagedBean {
         System.out.println("[In Managed Bean - carryOutRecevingPutaway] ===============================: " + wmsOrderId);
         if (wmsOrderId != null) {
             osb.performReceivingPutaway(companyId, wmsOrderId);
-            systemLogSB.recordSystemLog(userId, "WMS receiving putaway process");
+            systemLogSB.recordSystemLog(userId, "WMS carried out receiving putaway process");
             if (wmsOrderId == null) {
                 System.out.println("============== FAILED TO CARRY OUT RECEIVING PUTAWAY ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View", ""));
