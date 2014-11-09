@@ -1,53 +1,52 @@
 .dashboard-box{
-    margin:5px;
     display:inline-block;
     border-radius: 5px;
     height:200px;
-    max-width:200px;
+    width:100%;
 }
-/*
-.dashboard-content{
-    text-align: center;
-    margin:50px 0px 80px 0px;
-}*/
-///////////////////////
-/*.dashboard-tile{
-    position:absolute;
-    background-color: maroon;
-    color:white;
-    text-align: center;
-    vertical-align:central;
-}*/
 
 .tile-texts{
     color:white;
 }
 
 .tile-area{
-    width:80%;
     margin-left:auto;
     margin-right:auto;
     position:relative;
 }
-.crmstile{
-    background: url('../img/tile-crms.jpg') no-repeat -40px -12px;
+.tile-overlay{
+    position:absolute;
+    color:white;
+    background-color:rgba(0,0,0,0.4);
+    font-size:55px;
+    width:260px;
+    top:127px;
+    border-radius: 0px 0px 6px 6px;
 }
 
+.crmstile{
+    background: url('../img/tile-crms.jpg') no-repeat -60px -17px;
+}
 .wmstile{ 
-    background: url('../img/tile-wms.jpg');
+    background: url('../img/wms.jpg') -90px;
 }
 .oestile{
-    background: url('../img/tile-oes.jpg');
+    background: url('../img/tile-oes.jpg') -80px -10px;
 }
 .mrptile{
-    background: url('../img/tile-mrp.jpg');
+    background: url('../img/MRP.jpg');
 }
 .tmstile{
-    background: url('../img/tile-tms.jpg');
+    background: url('../img/TMS.jpg') -30px;
 }
 .grnstile{
     background: url('../img/tile-grns.jpg');
 }
+
+.row-fluid>.col-md-4{
+    padding:5px;
+}
+
 
 .highlight {
     -webkit-box-shadow: 0 0 5px #444;

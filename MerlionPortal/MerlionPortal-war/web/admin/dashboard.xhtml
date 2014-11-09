@@ -18,14 +18,15 @@
         <!-- Override Right Container -->
         <ui:define name="right">
             <div class="tile-area">
-                <div class="row">
+                <div class="row-fluid">
                     <!--CRMS-->
                     <c:set var="disablecrms" value="true" />
                     <c:if test ="#{dashboardBean.canUseCRMS() || dashboardBean.loginedUser.userType == 'superuser'}">
                         <c:set var="disablecrms" value="false" />
                     </c:if>
-                    <div>
-                        <p:commandLink action="/crms/crmsindex.xhtml?faces-redirect=true" disabled="${disablecrms}" styleClass="col-md-4 dashboard-box crmstile">   
+                    <div class="col-md-4">
+                        <div class="tile-overlay">CRMS</div>
+                        <p:commandLink action="/crms/crmsindex.xhtml?faces-redirect=true" disabled="${disablecrms}" styleClass="dashboard-box crmstile">   
                         </p:commandLink>
                     </div>
 
@@ -34,112 +35,59 @@
                     <c:if test ="#{dashboardBean.canUseWMS() || dashboardBean.loginedUser.userType == 'superuser'}">
                         <c:set var="disablewms" value="false" />
                     </c:if>
-                    <p:commandLink action="/wms/wmsindex.xhtml?faces-redirect=true" disabled="${disablewms}" styleClass="col-md-4 dashboard-box wmstile">
-                    </p:commandLink>
+                    <div class="col-md-4">
+                        <div class="tile-overlay">WMS</div>
+                        <p:commandLink action="/wms/wmsindex.xhtml?faces-redirect=true" disabled="${disablewms}" styleClass="dashboard-box wmstile">
+                        </p:commandLink>
+                    </div>
 
                     <!--OES-->
                     <c:set var="disableoes" value="true" />
                     <c:if test ="#{dashboardBean.canUseOES() || dashboardBean.loginedUser.userType == 'superuser'}">
                         <c:set var="disableoes" value="false" />
                     </c:if>
-                    <p:commandLink action="/oes/oesindexpage.xhtml?faces-redirect=true" disabled="${disableoes}" styleClass="col-md-4 dashboard-box oestile">
-                    </p:commandLink>
+                    <div class="col-md-4">
+                        <div class="tile-overlay">OES</div>
+                        <p:commandLink action="/oes/oesindexpage.xhtml?faces-redirect=true" disabled="${disableoes}" styleClass="dashboard-box oestile">
+                        </p:commandLink>
+                    </div>
                 </div>
 
-                <div class="row">
+
+                <div class="row-fluid">
                     <c:set var="disablemrp" value="true" />
                     <c:if test ="#{dashboardBean.canUseMRP() || dashboardBean.loginedUser.userType == 'superuser'}">
                         <c:set var="disablemrp" value="false" />
                     </c:if>
-                    <p:commandLink action="/mrp/mrp.xhtml?faces-redirect=true" disabled="${disablemrp}" styleClass="col-md-4 dashboard-box mrptile">
-                    </p:commandLink>  
+                    <div class="col-md-4">
+                        <div class="tile-overlay">MRP II</div>
+                        <p:commandLink action="/mrp/mrp.xhtml?faces-redirect=true" disabled="${disablemrp}" styleClass="dashboard-box mrptile">
+                        </p:commandLink>  
+                    </div>
 
                     <!--TMS-->
                     <c:set var="disabletms" value="true" />
                     <c:if test ="#{dashboardBean.canUseTMS() || dashboardBean.loginedUser.userType == 'superuser'}">
                         <c:set var="disabletms" value="false" />
                     </c:if>
-                    <p:commandLink action="/tms/tmsindex.xhtml?faces-redirect=true" disabled="${disabletms}" styleClass="col-md-4 dashboard-box tmstile">
-                    </p:commandLink> 
+                    <div class="col-md-4">
+                        <div class="tile-overlay">TMS</div>
+                        <p:commandLink action="/tms/tmsindex.xhtml?faces-redirect=true" disabled="${disabletms}" styleClass="dashboard-box tmstile">
+                        </p:commandLink> 
+                    </div>
 
                     <!--GRNS-->
                     <c:set var="disablegrns" value="true" />
                     <c:if test ="#{dashboardBean.canUseGRNS() || dashboardBean.loginedUser.userType == 'superuser'}">
                         <c:set var="disablegrns" value="false" />
                     </c:if>
-                    <p:commandLink action="#" disabled="${disablegrns}" styleClass="col-md-4 dashboard-box grnstile" >
-                    </p:commandLink>
+                    <div class="col-md-4">
+                        <div class="tile-overlay">GRNS</div>
+                        <p:commandLink action="#" disabled="${disablegrns}" styleClass="dashboard-box grnstile" >
+                        </p:commandLink>
+                    </div>
                 </div>
             </div>
-
-<!--            <c:set var="root" value="${request.contextPath}" />
-<div class="dashboard-content">
-    <div class="row">
-        <div>Welcome! Please select a service to proceed</div>
-        <div class="dashboard-box">
-            OES
-            <c:set var="disableoes" value="true" />
-            <c:if test ="#{dashboardBean.canUseOES() || dashboardBean.loginedUser.userType == 'superuser'}">
-                <c:set var="disableoes" value="false" />
-            </c:if>
-            <p:commandLink action="/oes/oesindexpage.xhtml?faces-redirect=true" disabled="${disableoes}" >
-                <p:graphicImage value="../img/oestile.jpg"/>
-            </p:commandLink>
-        </div>
-        <div class="dashboard-box">
-            MRP
-            <c:set var="disablemrp" value="true" />
-            <c:if test ="#{dashboardBean.canUseMRP() || dashboardBean.loginedUser.userType == 'superuser'}">
-                <c:set var="disablemrp" value="false" />
-            </c:if>
-            <p:commandLink action="/mrp/mrp.xhtml?faces-redirect=true" disabled="${disablemrp}" >
-                <p:graphicImage value="../img/mrptile.jpg"/>
-            </p:commandLink>  
-        </div>
-        <div class="dashboard-box">
-            WMS
-            <c:set var="disablewms" value="true" />
-            <c:if test ="#{dashboardBean.canUseWMS() || dashboardBean.loginedUser.userType == 'superuser'}">
-                <c:set var="disablewms" value="false" />
-            </c:if>
-            <p:commandLink action="/wms/wmsindex.xhtml?faces-redirect=true" disabled="${disablewms}" >
-                <p:graphicImage value="../img/wmstile.jpg"/>
-            </p:commandLink>
-        </div>
-    </div>
-    <div class="row">
-        <div class="dashboard-box">
-            CRMS
-            <c:set var="disablecrms" value="true" />
-            <c:if test ="#{dashboardBean.canUseCRMS() || dashboardBean.loginedUser.userType == 'superuser'}">
-                <c:set var="disablecrms" value="false" />
-            </c:if>
-            <p:commandLink action="/crms/crmsindex.xhtml?faces-redirect=true" disabled="${disablecrms}" >
-                <p:graphicImage value="../img/crmstile.jpg"/>
-            </p:commandLink> 
-        </div>
-        <div class="dashboard-box">
-            TMS
-            <c:set var="disabletms" value="true" />
-            <c:if test ="#{dashboardBean.canUseTMS() || dashboardBean.loginedUser.userType == 'superuser'}">
-                <c:set var="disabletms" value="false" />
-            </c:if>
-            <p:commandLink action="/tms/tmsindex.xhtml?faces-redirect=true" disabled="${disabletms}" >
-                <p:graphicImage value="../img/tmstile.jpg"/>
-            </p:commandLink> 
-        </div>
-        <div class="dashboard-box">
-            GRNS
-            <c:set var="disablegrns" value="true" />
-            <c:if test ="#{dashboardBean.canUseGRNS() || dashboardBean.loginedUser.userType == 'superuser'}">
-                <c:set var="disablegrns" value="false" />
-            </c:if>
-            <p:commandLink action="#" disabled="${disablegrns}" >
-                <p:graphicImage value="../img/grnstile.jpg"/>
-            </p:commandLink>
-        </div>
-    </div>
-</div>-->
 
         </ui:define>
     </ui:composition>
