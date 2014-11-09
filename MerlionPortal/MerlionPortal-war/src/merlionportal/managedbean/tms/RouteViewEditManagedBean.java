@@ -18,6 +18,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionBean;
 
 /**
@@ -32,6 +33,8 @@ public class RouteViewEditManagedBean {
     private TAssetmanagementSessionBean tassetmanagementSessionBean;
     @EJB
     private UserAccountManagementSessionBean uamb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
     private List<Route> routes;
     private Integer routeId;
     private Integer nodeId;
@@ -82,6 +85,7 @@ public class RouteViewEditManagedBean {
             System.out.println("[In WAR FILE - Delete Route Function] Route ID========== :" + routeId);
             tassetmanagementSessionBean.deleteRoute(routeId);
             System.out.println("successfully deleted Route" +routeId);
+            systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS deleted route");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

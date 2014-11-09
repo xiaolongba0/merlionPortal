@@ -20,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.tms.transportationassetmaintenancemanagementmodule.TransportationAssetMaintenanceManagementSessionBean;
 import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionBean;
 import org.primefaces.event.CellEditEvent;
@@ -39,6 +40,8 @@ public class TAssetMaintenanceViewEditManagedBean {
     private UserAccountManagementSessionBean uamb;
     @EJB
     private TransportationAssetMaintenanceManagementSessionBean tammsb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private Integer companyId;
     private Integer gtAssssssssetId;
@@ -123,6 +126,7 @@ public class TAssetMaintenanceViewEditManagedBean {
             if (result) {
                 logs.remove(log);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "MaintenanceLog is deleted"));
+                systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS deleted maintenance log");
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong"));
 

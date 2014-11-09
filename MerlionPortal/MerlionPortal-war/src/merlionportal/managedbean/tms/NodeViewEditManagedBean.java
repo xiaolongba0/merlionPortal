@@ -16,8 +16,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionBean;
-
 
 /**
  *
@@ -31,6 +31,8 @@ public class NodeViewEditManagedBean {
     private TAssetmanagementSessionBean tassetmanagementSessionBean;
     @EJB
     private UserAccountManagementSessionBean uamb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private SystemUser loginedUser;
     private List<Node> nodes;
@@ -75,13 +77,12 @@ public class NodeViewEditManagedBean {
             nodeId = node.getNodeId();
             System.out.println("[In WAR FILE - Delete Node Function] Node ID========== :" + nodeId);
             tassetmanagementSessionBean.deleteNode(nodeId);
-
+            systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS deleted node");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    
     public SystemUser getLoginedUser() {
         return loginedUser;
     }

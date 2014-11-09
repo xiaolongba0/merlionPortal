@@ -20,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.tms.transportationhumanresourcemanagementmodule.TOperatormanagementSessionBean;
 import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionBean;
 
@@ -37,6 +38,8 @@ public class TAssetScheduleManagerBean {
     private UserAccountManagementSessionBean uamb;
     @EJB
     private TOperatormanagementSessionBean tomsb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private Integer locationId;
     private List<Location> locations;
@@ -79,6 +82,7 @@ public class TAssetScheduleManagerBean {
         if (result) {
             clearAllFields();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "New Schedule created!"));
+            systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS created new schedule");
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
         }

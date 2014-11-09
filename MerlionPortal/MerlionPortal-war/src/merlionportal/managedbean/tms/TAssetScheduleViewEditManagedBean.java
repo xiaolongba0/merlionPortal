@@ -18,6 +18,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionBean;
 import org.primefaces.event.RowEditEvent;
 
@@ -34,6 +35,8 @@ public class TAssetScheduleViewEditManagedBean {
     private TAssetmanagementSessionBean tamsb;
     @EJB
     private UserAccountManagementSessionBean uamb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private List<Location> locations;
     private List<TransportationAsset> tassetss;
@@ -106,6 +109,7 @@ public class TAssetScheduleViewEditManagedBean {
             if (result) {
                 schedules.remove(schedule);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Asset Schedule is deleted"));
+                systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS deleted asset schedule");
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong"));
 

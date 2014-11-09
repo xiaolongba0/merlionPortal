@@ -19,6 +19,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionBean;
 
 /**
@@ -33,6 +34,8 @@ public class RouteManagerBean {
     private TAssetmanagementSessionBean tassetManagementSessionBean;
     @EJB
     private UserAccountManagementSessionBean uamb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
     private Integer newRouteId;
     private Integer routeId;
     private Integer companyId;
@@ -84,6 +87,7 @@ public class RouteManagerBean {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Route Added!", ""));
                 clearAllFields();
                 System.out.println("[WAR FILE]===========================Create New Route");
+                systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS created new route");
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Something went wrong!", ""));
             }

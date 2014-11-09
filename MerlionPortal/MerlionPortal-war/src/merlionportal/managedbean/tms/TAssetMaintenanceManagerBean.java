@@ -23,6 +23,7 @@ import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionB
 import merlionportal.tms.transportationassetmaintenancemanagementmodule.TransportationAssetMaintenanceManagementSessionBean;
 import merlionportal.tms.transportationhumanresourcemanagementmodule.TOperatormanagementSessionBean;
 import java.util.List;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 
 /**
  *
@@ -40,6 +41,8 @@ public class TAssetMaintenanceManagerBean {
     private TransportationAssetMaintenanceManagementSessionBean tammsb;
     @EJB
     private TOperatormanagementSessionBean tomsb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
     
     private Integer companyId;
     private Integer tassssssetId;
@@ -88,6 +91,7 @@ public class TAssetMaintenanceManagerBean {
         if (result> -1) {
             clearAllFields();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "New Maintenance created!"));
+            systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS created new maintenance");
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong."));
         }

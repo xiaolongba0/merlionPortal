@@ -19,6 +19,7 @@ import javax.faces.event.ActionEvent;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionBean;
 import java.util.List;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 
 
 /**
@@ -34,7 +35,8 @@ public class TAssetManagerBean {
     private TAssetmanagementSessionBean tassetManagementSessionBean;
     @EJB
     private UserAccountManagementSessionBean uamb;
-    
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
 
 
@@ -102,6 +104,7 @@ public class TAssetManagerBean {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to Add Transportation Asset. Please check LOCATION ID! ", ""));
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New TransportationAsset Added!", ""));
+                systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS created new asset");
             }
             }
             System.out.println("[WAR FILE]===========================Create New Transportation Asset");

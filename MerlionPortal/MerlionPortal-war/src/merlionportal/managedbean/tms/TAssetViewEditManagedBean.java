@@ -20,8 +20,7 @@ import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionB
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 import entity.SystemUser;
-import java.io.Serializable;
-import javax.faces.bean.ManagedBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import org.primefaces.model.chart.PieChartModel;
 
 /**
@@ -36,6 +35,8 @@ public class TAssetViewEditManagedBean {
     private TAssetmanagementSessionBean tassetManagementSessionBean;
     @EJB
     private UserAccountManagementSessionBean uamb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private List<TransportationAsset> tassets;
     private List<Location> locations;
@@ -154,6 +155,7 @@ public class TAssetViewEditManagedBean {
             tassetManagementSessionBean.deletetAsset(tAsset.getAssetId());
             tassets.remove(tAsset);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Transportation Asset is deleted"));
+            systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS deleted transportation assset");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

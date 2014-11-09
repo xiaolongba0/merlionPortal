@@ -16,6 +16,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionBean;
 
 /**
@@ -30,6 +31,8 @@ public class NodeManagerBean {
     private TAssetmanagementSessionBean tassetManagementSessionBean;
     @EJB
     private UserAccountManagementSessionBean uamb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
     private SystemUser loginedUser;
     private Integer companyId;
     private Integer nodeId;
@@ -72,6 +75,7 @@ public class NodeManagerBean {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Node Added!", ""));
                 clearAllFields();
                 System.out.println("[WAR FILE]===========================Create New Node");
+                systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS created new node");
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Something went wrong!", ""));
             }

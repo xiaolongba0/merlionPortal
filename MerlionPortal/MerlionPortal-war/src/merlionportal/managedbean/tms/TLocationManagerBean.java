@@ -8,7 +8,6 @@ package merlionportal.managedbean.tms;
 import javax.inject.Named;
 import entity.SystemUser;
 import entity.Location;
-import entity.TransportationAsset;
 import java.io.IOException;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -19,6 +18,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionBean;
 /**
  *
@@ -36,6 +36,8 @@ public class TLocationManagerBean {
     private TAssetmanagementSessionBean tassetManagementSessionBean;
     @EJB
     private UserAccountManagementSessionBean uamb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
     
     private Integer newLocationId;
     private Integer locationId;
@@ -83,6 +85,7 @@ public class TLocationManagerBean {
             newLocationId = tassetManagementSessionBean.addNewLocation(locationName, locationType, companyId, nodeId);
             if (newLocationId > -1) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Location Added!", ""));
+                systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS added new location");
                 clearAllFields();
                 System.out.println("[WAR FILE]===========================Create New Location");
             } else {

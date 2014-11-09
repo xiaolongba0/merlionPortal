@@ -16,6 +16,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionBean;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
@@ -32,6 +33,8 @@ public class TLocationViewEditManagedBean {
     private TAssetmanagementSessionBean tassetmanagementSessionBean;
     @EJB
     private UserAccountManagementSessionBean uamb;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private List<Location> locations;
     private Integer locationId;
@@ -77,6 +80,7 @@ public class TLocationViewEditManagedBean {
             locationId = location.getLocationId();
             System.out.println("[In WAR FILE - Delete Warehouse Function] Location ID========== :" + locationId);
             tassetmanagementSessionBean.deleteLocation(companyId, locationId);
+            systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS deleted location");
 
         } catch (Exception ex) {
             ex.printStackTrace();
