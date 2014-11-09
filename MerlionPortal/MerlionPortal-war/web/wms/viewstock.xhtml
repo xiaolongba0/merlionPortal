@@ -399,7 +399,7 @@
                                 </p:column> 
 
                                 <p:column  headerText="Comments" filterStyle="width:60px" filterBy="#{stock.comments}" filterMatchMode="contains">
-                                    <p:inputText value="#{stock.comments}" style="width:100%" label="Comments"/>
+                                    <h:outputText value="#{stock.comments}" />
                                 </p:column>
 
                                 <p:column  headerText="Available Quantity" filterStyle="width:60px" filterBy="#{stock.availableStock}" filterMatchMode="contains">
