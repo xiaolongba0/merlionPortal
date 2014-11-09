@@ -63,7 +63,8 @@ public class ViewContractDetailManagedBean {
     private String status;
     private List<DTOContract> contractToPrint;
     private Integer compareStatus;
-
+    private String origin;
+    private String destination;
     private String conditionText;
 
     public ViewContractDetailManagedBean() {
@@ -95,6 +96,10 @@ public class ViewContractDetailManagedBean {
             this.mapContractClassToDTO();
             contractToPrint = new ArrayList<>();
             contractToPrint.add(dtoContract);
+            if (selectedContract.getServiceType().equals("Transportation")) {
+                origin = selectedContract.getOrigin().replace("^", " ,");
+                destination = selectedContract.getDestination().replace("^", " ,");
+            }
         }
         compareStatus = selectedContract.getStatus();
         this.statusText(selectedContract.getStatus());
@@ -152,7 +157,7 @@ public class ViewContractDetailManagedBean {
             dtoContract.setWarehouseRental(selectedContract.getWarehouseRental().toString());
         }
         dtoContract.setWarehouseId("N.A.");
-        if (selectedContract.getWarehouseId()!= null) {
+        if (selectedContract.getWarehouseId() != null) {
             dtoContract.setWarehouseId(selectedContract.getWarehouseId().toString());
         }
 
@@ -378,6 +383,22 @@ public class ViewContractDetailManagedBean {
 
     public void setCompareStatus(Integer compareStatus) {
         this.compareStatus = compareStatus;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 
 }

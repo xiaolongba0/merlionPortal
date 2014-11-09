@@ -98,10 +98,22 @@
                         <p:outputLabel for="endDate" value="End Date " /><p:spacer width="20" height="20" />
                         <p:calendar id="endDate" required="true" requiredMessage="End Date is required" value="#{createRFQManagedBean.endDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{createRFQManagedBean.startDate}" />
                         <c:if test="#{createRFQManagedBean.selectedService.serviceType eq 'Transportation'}" >
-                            <p:outputLabel value="Origin *" /><p:spacer width="20" height="20" />
-                            <p:inputText value="#{createRFQManagedBean.origin}"  required="true" requiredMessage="Origin is required" />
-                            <p:outputLabel value="Destination *" /><p:spacer width="20" height="20" />
-                            <p:inputText value="#{createRFQManagedBean.destination}" required="true" requiredMessage="Destination is required" />
+                            <p:outputLabel value="Origin Address Line 1 *" /><p:spacer width="20" height="20" />
+                            <p:inputText value="#{createRFQManagedBean.originAdd1}"  required="true" requiredMessage="Address Line 1 is required" />
+                            <p:outputLabel value="Origin Address Line 2 *" /><p:spacer width="20" height="20" />
+                            <p:inputText value="#{createRFQManagedBean.originAdd2}"  required="true" requiredMessage="Address Line 2 is required" />
+                            <p:outputLabel value="Origin State *" /><p:spacer width="20" height="20" />
+                            <p:inputText value="#{createRFQManagedBean.originRegion}"  required="true" requiredMessage="State is required" />
+                            <p:outputLabel value="Origin Country *" /><p:spacer width="20" height="20" />
+                            <p:inputText value="#{createRFQManagedBean.originCountry}"  required="true" requiredMessage="Country is required" />
+                            <p:outputLabel value="Destination Address Line 1 *" /><p:spacer width="20" height="20" />
+                            <p:inputText value="#{createRFQManagedBean.destinationAdd1}" required="true" requiredMessage="Destination Address Line 1 is required" />
+                            <p:outputLabel value="Destination Address Line 2 *" /><p:spacer width="20" height="20" />
+                            <p:inputText value="#{createRFQManagedBean.destinationAdd2}" required="true" requiredMessage="Destination Address Line 2is required" />
+                            <p:outputLabel value="Destination State *" /><p:spacer width="20" height="20" />
+                            <p:inputText value="#{createRFQManagedBean.destinationRegion}" required="true" requiredMessage="Destination State is required" />
+                            <p:outputLabel value="Destination Country*" /><p:spacer width="20" height="20" />
+                            <p:inputText value="#{createRFQManagedBean.destinationCountry}" required="true" requiredMessage="Destination Country is required" />
                             <p:outputLabel value="Total Expected Quantity (TEU) *" style="width: 150px"  /><p:spacer width="20" height="20" />
                             <p:inputText value="#{createRFQManagedBean.quantityPerMonth}" required="true" requiredMessage="Expected Quantity is required" />
 

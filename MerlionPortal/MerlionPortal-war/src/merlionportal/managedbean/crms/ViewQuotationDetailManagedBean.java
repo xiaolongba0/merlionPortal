@@ -43,6 +43,9 @@ public class ViewQuotationDetailManagedBean {
     private Double discountedPrice;
     private Double finalPrice;
 
+    private String origin;
+    private String destination;
+
     private String status;
     private Integer compareStatus;
 
@@ -75,6 +78,10 @@ public class ViewQuotationDetailManagedBean {
         if (selectedQuotation != null) {
             senderCompanyName = userAccountSB.getCompany(selectedQuotation.getReceiverCompanyId()).getName();
             receiverCompanyName = userAccountSB.getCompany(selectedQuotation.getSenderCompanyId()).getName();
+            if (selectedQuotation.getServiceType().equals("Transportation")) {
+                origin = selectedQuotation.getOrigin().replace("^", " ,");
+                destination = selectedQuotation.getDestination().replace("^", " ,");
+            }
             if (selectedQuotation.getDiscountRate() != null) {
                 discountedPrice = selectedQuotation.getDiscountRate() * selectedQuotation.getPrice() / 100;
                 finalPrice = selectedQuotation.getPrice() - discountedPrice;
@@ -222,6 +229,22 @@ public class ViewQuotationDetailManagedBean {
 
     public void setCompareStatus(Integer compareStatus) {
         this.compareStatus = compareStatus;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 
 }

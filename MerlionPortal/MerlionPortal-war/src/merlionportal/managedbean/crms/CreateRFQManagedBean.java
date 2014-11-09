@@ -48,6 +48,15 @@ public class CreateRFQManagedBean {
     private Date endDate;
     private String origin;
     private String destination;
+
+    private String originAdd1;
+    private String originAdd2;
+    private String originRegion;
+    private String originCountry;
+    private String destinationAdd1;
+    private String destinationAdd2;
+    private String destinationRegion;
+    private String destinationCountry;
     private Date today;
     private Integer quantityPerMonth;
     private String storageType;
@@ -87,6 +96,9 @@ public class CreateRFQManagedBean {
     }
 
     public void createRequestForQuotation() {
+        origin = originAdd1.trim() + "^" + originAdd2.trim() + "^" + originRegion.trim() + "^" + originCountry.trim();
+        destination = destinationAdd1.trim() + "^" + destinationAdd2.trim() + "^" + destinationRegion.trim() + "^" + destinationCountry.trim();
+
         int result = quotationManagementSB.createRequestForQuotation(selectedService.getServiceCatalogId(), selectedService.getServiceType(), startDate, endDate, companyId, selectedService.getCompanyId(), origin, destination, quantityPerMonth, storageType, amountOfProduct, spacePerProduct);
         if (result > 0) {
             this.clearAllField();
@@ -104,6 +116,14 @@ public class CreateRFQManagedBean {
         endDate = null;
         origin = null;
         destination = null;
+        originAdd1 = null;
+        originAdd2 = null;
+        originRegion = null;
+        originCountry = null;
+        destinationAdd1 = null;
+        destinationAdd2 = null;
+        destinationRegion = null;
+        destinationCountry = null;
         quantityPerMonth = null;
         storageType = null;
         spacePerProduct = null;
@@ -220,6 +240,70 @@ public class CreateRFQManagedBean {
 
     public void setAmountOfProduct(BigInteger amountOfProduct) {
         this.amountOfProduct = amountOfProduct;
+    }
+
+    public String getOriginAdd1() {
+        return originAdd1;
+    }
+
+    public void setOriginAdd1(String originAdd1) {
+        this.originAdd1 = originAdd1;
+    }
+
+    public String getOriginAdd2() {
+        return originAdd2;
+    }
+
+    public void setOriginAdd2(String originAdd2) {
+        this.originAdd2 = originAdd2;
+    }
+
+    public String getOriginRegion() {
+        return originRegion;
+    }
+
+    public void setOriginRegion(String originRegion) {
+        this.originRegion = originRegion;
+    }
+
+    public String getOriginCountry() {
+        return originCountry;
+    }
+
+    public void setOriginCountry(String originCountry) {
+        this.originCountry = originCountry;
+    }
+
+    public String getDestinationAdd1() {
+        return destinationAdd1;
+    }
+
+    public void setDestinationAdd1(String destinationAdd1) {
+        this.destinationAdd1 = destinationAdd1;
+    }
+
+    public String getDestinationAdd2() {
+        return destinationAdd2;
+    }
+
+    public void setDestinationAdd2(String destinationAdd2) {
+        this.destinationAdd2 = destinationAdd2;
+    }
+
+    public String getDestinationRegion() {
+        return destinationRegion;
+    }
+
+    public void setDestinationRegion(String destinationRegion) {
+        this.destinationRegion = destinationRegion;
+    }
+
+    public String getDestinationCountry() {
+        return destinationCountry;
+    }
+
+    public void setDestinationCountry(String destinationCountry) {
+        this.destinationCountry = destinationCountry;
     }
 
 }

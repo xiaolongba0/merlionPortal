@@ -97,9 +97,9 @@
 
                         <c:if test="#{viewContractManagedBean.selectedContract.serviceType eq 'Transportation'}" >
                             <p:outputLabel value="Origin:" /><p:spacer width="20" height="20" />
-                            <h:outputText value="#{viewContractManagedBean.selectedContract.origin}" />
+                            <h:outputText value="#{viewContractManagedBean.origin}" />
                             <p:outputLabel value="Destination:" /><p:spacer width="20" height="20" />
-                            <h:outputText value="#{viewContractManagedBean.selectedContract.destination}" />
+                            <h:outputText value="#{viewContractManagedBean.destination}" />
                             <p:outputLabel value="Total Excepted Quantity (TEU):" /><p:spacer width="20" height="20" />
                             <h:outputText value="#{viewContractManagedBean.selectedContract.serviceQuotation.quantityPerMonth}" />
                             <p:outputLabel value="Final Contract Price Per TEU:" /><p:spacer width="20" height="20" />

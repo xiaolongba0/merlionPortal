@@ -94,9 +94,9 @@
 
                         <c:if test="#{viewQuotationManagedBean.selectedQuotation.serviceType eq 'Transportation'}" >
                             <p:outputLabel value="Origin:" /><p:spacer width="20" height="20" />
-                            <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.origin}" />
+                            <h:outputText value="#{viewQuotationManagedBean.origin}" />
                             <p:outputLabel value="Destination:" /><p:spacer width="20" height="20" />
-                            <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.destination}" />
+                            <h:outputText value="#{viewQuotationManagedBean.destination}" />
                             <p:outputLabel value="Total Expected Quantity (TEU):" style="width: 150px" /><p:spacer width="20" height="20" />
                             <h:outputText value="#{viewQuotationManagedBean.selectedQuotation.quantityPerMonth}" />
                             <p:outputLabel value="Quotation Price Per TEU:" /><p:spacer width="20" height="20" />

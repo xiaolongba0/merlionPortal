@@ -62,6 +62,8 @@ public class ViewServicePODetailManagedBean {
     private Date today;
     private String senderCompanyName;
     private String receiverCompanyName;
+    private String origin;
+    private String destination;
 
     private Integer compareStatus;
 
@@ -102,6 +104,10 @@ public class ViewServicePODetailManagedBean {
             price = selectedServicePO.getPrice();
             senderCompanyName = userAccountSB.getCompany(selectedServicePO.getSenderCompanyId()).getName();
             receiverCompanyName = userAccountSB.getCompany(selectedServicePO.getReceiverCompanyId()).getName();
+            if (selectedServicePO.getServiceType().equals("Transportation")) {
+                origin = selectedServicePO.getContract().getOrigin().replace("^", " ,");
+                destination = selectedServicePO.getContract().getDestination().replace("^", " ,");
+            }
 
         }
 
@@ -153,7 +159,7 @@ public class ViewServicePODetailManagedBean {
                         productId = productId2;
                         productQuantityPerTEU = productQuantityPerTEU2;
                         price = (volume2 * selectedServicePO.getContract().getPrice());
-                    }else{
+                    } else {
                         amt = amt2;
                         productId = productId2;
                         price = amt2.doubleValue() * selectedServicePO.getContract().getPrice();
@@ -454,6 +460,22 @@ public class ViewServicePODetailManagedBean {
 
     public void setAmt2(BigInteger amt2) {
         this.amt2 = amt2;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 
 }
