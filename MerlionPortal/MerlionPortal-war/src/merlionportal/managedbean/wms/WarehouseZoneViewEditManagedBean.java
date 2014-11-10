@@ -114,7 +114,7 @@ public class WarehouseZoneViewEditManagedBean {
         boolean result = assetManagementSessionBean.deleteWarehouseZone(warehouseZone.getWarehouseZoneId());
         if (result) {
             warehouseZones.remove(warehouseZone);
-            systemLogSB.recordSystemLog(userId, "WMS delete storage bin");
+            systemLogSB.recordSystemLog(userId, "WMS delete storage zone");
             FacesMessage msg = new FacesMessage("Warehouse Zone ID = " + warehouseZone.getWarehouseZoneId() + " has sucessfully been deleted");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         } else {
