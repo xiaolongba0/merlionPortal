@@ -111,6 +111,7 @@ public class CreateStorageBinManagedBean {
         maxQuantity = null;
         maxWeight = null;
         rented = null;
+        rentedCompanyId = null;
     }
 
     public void setListStorageBinType(List<String> listStorageBinType) {

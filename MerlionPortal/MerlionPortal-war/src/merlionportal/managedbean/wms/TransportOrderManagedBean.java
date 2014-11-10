@@ -105,7 +105,6 @@ public class TransportOrderManagedBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success! Transport Order Added!", ""));
             systemLogSB.recordSystemLog(userId, "WMS create transport order");
         } else {
-            clearAllFields();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", ""));
         }
     }
