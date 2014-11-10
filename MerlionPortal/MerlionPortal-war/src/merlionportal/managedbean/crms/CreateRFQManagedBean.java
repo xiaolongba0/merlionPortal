@@ -96,9 +96,11 @@ public class CreateRFQManagedBean {
     }
 
     public void createRequestForQuotation() {
-        origin = originAdd1.trim() + "^" + originAdd2.trim() + "^" + originRegion.trim() + "^" + originCountry.trim();
-        destination = destinationAdd1.trim() + "^" + destinationAdd2.trim() + "^" + destinationRegion.trim() + "^" + destinationCountry.trim();
 
+        if (selectedService.getServiceType().equals("Transportation")) {
+            origin = originAdd1.trim() + "^" + originAdd2.trim() + "^" + originRegion.trim() + "^" + originCountry.trim();
+            destination = destinationAdd1.trim() + "^" + destinationAdd2.trim() + "^" + destinationRegion.trim() + "^" + destinationCountry.trim();
+        }
         int result = quotationManagementSB.createRequestForQuotation(selectedService.getServiceCatalogId(), selectedService.getServiceType(), startDate, endDate, companyId, selectedService.getCompanyId(), origin, destination, quantityPerMonth, storageType, amountOfProduct, spacePerProduct);
         if (result > 0) {
             this.clearAllField();
