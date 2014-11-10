@@ -327,7 +327,7 @@ public class OrderFulfillmentSessionBean {
 
                         // update the relevant stock related attributes
                         stock.setQuantity(newStockQuantity);
-                        Integer reservedStock = newStockQuantity - stock.getAvailableStock();
+                        Integer reservedStock = stock.getReservedStock() - outgointQuantity ;
                         stock.setReservedStock(reservedStock);
                         System.out.println("NEW RESERVED STOCK = " + reservedStock);
                         outgointQuantity = 0;

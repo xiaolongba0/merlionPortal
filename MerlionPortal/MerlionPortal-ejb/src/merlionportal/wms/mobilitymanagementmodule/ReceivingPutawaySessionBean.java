@@ -338,6 +338,7 @@ public class ReceivingPutawaySessionBean {
         if (stock != null) {
             StorageBin bin = stock.getStorageBin();
             bin.getStockList().remove(stock);
+            bin.setAvailableSpace(bin.getAvailableSpace() + stock.getQuantity());
             em.merge(bin);
             em.remove(stock);
             em.flush();
