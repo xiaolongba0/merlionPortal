@@ -76,8 +76,8 @@
                         <p:column headerText="Bid Type" filterBy="#{bid.amount}" filterMatchMode="contains">
                             <h:outputText value="#{bid.amount}" />
                         </p:column>
-                        <p:column filterBy="#{bid.systemUser}" headerText="Bidder" filterMatchMode="contains">
-                            <h:outputText value="#{bid.systemUser}" />
+                        <p:column filterBy="#{bid.systemUser.Company_companyId}" headerText="Bidder Company" filterMatchMode="contains">
+                            <h:outputText value="#{bid.systemUser.Company_companyId}" />
                         </p:column>
 
                         <p:column filterBy="#{BiddingManagedBean.getServiceType(bid.serviceType)}" headerText="Service Type" filterMatchMode="in">
