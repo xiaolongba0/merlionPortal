@@ -58,7 +58,7 @@ public class TransportOrderSessionBean {
         Integer eQuantity = 0;
 
         eQuantity = rpsb.countAvailbleStockInWarehouse(sourceWarehouseId, productId);
-        System.out.println("eQuantity = " + eQuantity);
+        
         // 0 for to be processed, 1 for cancelled, 2 for sent, 3 for received and completed
         Integer orderStatus = 0;
 
@@ -77,7 +77,8 @@ public class TransportOrderSessionBean {
             String sourceBinType = stock.getStorageBin().getBinType();
 
             System.out.println("[UNSORTED] AllStocks = " + allStocks);
-            // sort by created date
+            System.out.println("source bin typr = " + sourceBinType);
+
             if (stock.getExpiryDate() == null) {
                 Collections.sort(allStocks, new Comparator<Stock>() {
                     @Override
@@ -106,17 +107,22 @@ public class TransportOrderSessionBean {
 
             List<Integer> tempStockId = new ArrayList<>();
             List<Integer> tempStockQuantity = new ArrayList<>();
+
             Integer newTotalQ = totalQuantity;
             Integer tempTotalQuantity = totalQuantity;
 
             Integer count = 0;
+
             while (count < allStocks.size() & newTotalQ != 0) {
                 Stock tempStock = new Stock();
                 tempStock = allStocks.get(count);
+
                 if (newTotalQ >= tempStock.getQuantity()) {
                     newTotalQ = newTotalQ - tempStock.getQuantity();
+
                     sourceBinIds.add(tempStock.getStorageBin().getStorageBinId());
                     sourceQuantity.add(tempStock.getQuantity());
+
                     stockNames.add(tempStock.getName());
                     expiryDates.add(tempStock.getExpiryDate());
                     createdDates.add(tempStock.getCreatedDate());
@@ -126,11 +132,13 @@ public class TransportOrderSessionBean {
                     tempStockQuantity.add(tempStock.getQuantity());
                     System.out.println(count + " SourceBinId1: " + tempStock.getStorageBin().getStorageBinId());
                 } else {
-                    // data to reserve the stock
+                    
                     tempStockId.add(tempStock.getStockId());
-                    tempStockQuantity.add(tempStock.getQuantity());
+                    tempStockQuantity.add(newTotalQ);
 
+                    //Fuyao: changed 
                     sourceQuantity.add(newTotalQ);
+
                     newTotalQ = 0;
                     stockNames.add(tempStock.getName());
                     expiryDates.add(tempStock.getExpiryDate());
@@ -144,6 +152,7 @@ public class TransportOrderSessionBean {
                 count++;
             }
             System.out.println("Exited while loop!");
+            System.out.println("CORRECT!!!!!!!!!!!!1");
 
             List<WarehouseZone> destWarehouseZones;
             destWarehouseZones = destWarehouse.getWarehouseZoneList();
@@ -237,6 +246,7 @@ public class TransportOrderSessionBean {
 
                 System.out.println("tempStock ID" + tempStockId.get(count2));
                 System.out.println("Reserved Quantity : " + tempStockQuantity.get(count2));
+
                 boolean result = rpsb.reserveStock(tempStockId.get(count2), tempStockQuantity.get(count2));
                 if (!result) {
                     return false;

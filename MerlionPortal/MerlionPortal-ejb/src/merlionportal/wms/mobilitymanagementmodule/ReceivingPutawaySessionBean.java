@@ -105,6 +105,8 @@ public class ReceivingPutawaySessionBean {
 
         if (stock != null) {
             int tempQ = reserveQ;
+            System.out.println("###############reserved stock" + stock.getReservedStock());
+            System.out.println("###############avail stock" + stock.getAvailableStock());
             reserveQ = stock.getReservedStock() + tempQ;
             Integer availableStock = stock.getAvailableStock() - tempQ;
             System.out.println("ReserveQ = " + reserveQ + "  Available Stock = " + availableStock);
@@ -389,6 +391,7 @@ public class ReceivingPutawaySessionBean {
 
         if (bin != null) {
             Stock stock = new Stock();
+            Date currentDate = new Date();
 
             stock.setName(stockName);
             stock.setComments(comments);
@@ -396,7 +399,9 @@ public class ReceivingPutawaySessionBean {
             stock.setProductId(productId);
             stock.setStorageBin(bin);
             stock.setExpiryDate(expiryDate);
-// set created date
+            stock.setAvailableStock(quantity);
+            stock.setCreatedDate(currentDate);
+            stock.setReservedStock(0);
             bin.getStockList().add(stock);
 
             em.merge(bin);
