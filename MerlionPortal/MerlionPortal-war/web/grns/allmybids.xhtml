@@ -1,12 +1,98 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
-</html>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
 
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="View All My Biddings" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <p:menu styleClass="menu-width">
+                <p:submenu label="Home" styleClass="display:block">
+                    <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
+                </p:submenu>
+                <p:submenu label="Posting" styleClass="display:block">
+                    <p:menuitem value="Aggregate Requests" url="aggregaterequests.xhtml" />
+                    <p:menuitem value="Spare Space" url="postmyspace.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Marketplace" styleClass="display:block">
+                    <p:menuitem value="Start Reverse Auction" url="viewallposts.xhtml" />
+                    <p:menuitem value="Start Auction" url="viewallposts.xhtml" />
+                </p:submenu>
+                <p:submenu label="Manage My Posts" styleClass="display:block">
+                    <p:menuitem value="All Posts" url="allmyposts.xhtml" />
+                </p:submenu>
+                <p:submenu label="Manage My Bids" styleClass="display:block">
+                    <p:menuitem value="My biddings" url="allmybids.xhtml" />
+                </p:submenu>
+            </p:menu>
+        </ui:define>
+
+        <ui:define name="right">
+            <p:breadCrumb>
+                <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
+                <p:menuitem value="View All My Biddings" url="allmybids.xhtml" />
+            </p:breadCrumb>
+            <h:form id="form">
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start">
+                        <h:graphicImage value="/img/load.gif" />
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:panel  header="My Biddings"  style="margin-bottom:20px">
+                    <p:dataTable var="biddings" value="#{MyPostManagedBean.biddings}" widgetVar="biddingsTable" rowKey="#{bid.bidId}"
+                                 emptyMessage="No Biddings found with given criteria" selectionMode="single" selection="#{MyPostManagedBean.selectedBiddings}"
+                                 filteredValue="#{MyPostManagedBean.filteredBiddings}" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="20,50,100">
+
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Search all fields:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('biddingsTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:column filterBy="#{bid.bidId}" headerText="Bidding ID" filterMatchMode="contains">
+                            <h:outputText value="#{bid.bidId}" />
+                        </p:column>
+                        <p:column headerText="Bid Type" filterBy="#{bid.amount}" filterMatchMode="contains">
+                            <h:outputText value="#{bid.amount}" />
+                        </p:column>
+                        <p:column filterBy="#{bid.systemUser}" headerText="Bidder" filterMatchMode="contains">
+                            <h:outputText value="#{bid.systemUser}" />
+                        </p:column>
+
+                        <p:column filterBy="#{MyPostManagedBean.getServiceType(bid.serviceType)}" headerText="Service Type" filterMatchMode="in">
+                            <f:facet name="filter">
+                                <p:selectCheckboxMenu label="Service Type" onchange="PF('biddingsTable').filter()" panelStyle="width:250px" scrollHeight="150">
+                                    <f:selectItems value="#{MyPostManagedBean.serviceType}" />
+                                </p:selectCheckboxMenu>
+                            </f:facet>
+                            <h:outputText value="#{MyPostManagedBean.getServiceType(bid.serviceType)}" />
+                        </p:column>
+                    </p:dataTable>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:commandButton value="View Bidding" action="#{MyPostManagedBean.viewBiddings()}" />
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
