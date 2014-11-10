@@ -40,7 +40,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "WmsOrder.findByMyCompanyId", query = "SELECT w FROM WmsOrder w WHERE w.myCompanyId = :myCompanyId"),
     @NamedQuery(name = "WmsOrder.findByServicePOId", query = "SELECT w FROM WmsOrder w WHERE w.servicePOId = :servicePOId"),
     @NamedQuery(name = "WmsOrder.findByInternalOrder", query = "SELECT w FROM WmsOrder w WHERE w.internalOrder = :internalOrder"),
-    @NamedQuery(name = "WmsOrder.findByWarehouseId", query = "SELECT w FROM WmsOrder w WHERE w.warehouseId = :warehouseId")})
+    @NamedQuery(name = "WmsOrder.findByWarehouseId", query = "SELECT w FROM WmsOrder w WHERE w.warehouseId = :warehouseId"),
+    @NamedQuery(name = "WmsOrder.findByStatus", query = "SELECT w FROM WmsOrder w WHERE w.status = :status")})
 public class WmsOrder implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -69,6 +70,9 @@ public class WmsOrder implements Serializable {
     private Boolean internalOrder;
     @Column(name = "warehouseId")
     private Integer warehouseId;
+    @Size(max = 45)
+    @Column(name = "status")
+    private String status;
 
     public WmsOrder() {
     }
@@ -155,6 +159,14 @@ public class WmsOrder implements Serializable {
 
     public void setWarehouseId(Integer warehouseId) {
         this.warehouseId = warehouseId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override
