@@ -123,7 +123,7 @@ public class WMSOrderSessionBean {
     // View all Own internal orders that are incoming for receiving and putaway
     public List<WmsOrder> viewOthersIncomingOrders(Integer companyId, Integer warehouseId) {
         System.out.println("[INSIDE WMS ORDER EJB]================================viewIncomingOrders");
-
+        
         List<WmsOrder> allmyOrders = new ArrayList();
         Query query = em.createNamedQuery("WmsOrder.findByMyCompanyId").setParameter("myCompanyId", companyId);
         System.out.println("Query: " + query.getResultList().size());
@@ -278,6 +278,9 @@ public class WMSOrderSessionBean {
             wmsOrder.setWarehouseId(po.getWarehouseId());
 
             em.persist(wmsOrder);
+            
+            po.setStatus(12);
+            em.merge(po);
             em.flush();
 
             return true;

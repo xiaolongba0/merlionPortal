@@ -578,13 +578,13 @@ public class ReceivingPutawaySessionBean {
 
                 if (totalQuantity <= bin.getReservedSpace()) {
                     bin.setReservedSpace(bin.getReservedSpace() - totalQuantity);
-                    bin.setAvailableSpace(bin.getMaxQuantity() - bin.getReservedSpace());
+                    bin.setAvailableSpace(bin.getAvailableSpace() + totalQuantity);
                     System.out.println(bin.getReservedSpace() - totalQuantity);
                 } //totalQuantity is more than reserved space
                 else {
                     totalQuantity = totalQuantity - bin.getReservedSpace();
                     bin.setReservedSpace(0);
-                    bin.setAvailableSpace(bin.getMaxQuantity() - bin.getReservedSpace());
+                    bin.setAvailableSpace(bin.getMaxQuantity());
                 }
 
                 em.merge(bin);
@@ -624,13 +624,13 @@ public class ReceivingPutawaySessionBean {
 
             if (totalQuantity <= bin.getReservedSpace()) {
                 bin.setReservedSpace(bin.getReservedSpace() - totalQuantity);
-                bin.setAvailableSpace(bin.getMaxQuantity() - bin.getReservedSpace());
-                System.out.println(bin.getReservedSpace() - totalQuantity);
+                bin.setAvailableSpace(bin.getAvailableSpace() + totalQuantity);
+                System.out.println(bin.getAvailableSpace() + totalQuantity);
             } //totalQuantity is more than reserved space
             else {
                 totalQuantity = totalQuantity - bin.getReservedSpace();
                 bin.setReservedSpace(0);
-                bin.setAvailableSpace(bin.getMaxQuantity() - bin.getReservedSpace());
+                bin.setAvailableSpace(bin.getMaxQuantity());
             }
             em.merge(bin);
             em.flush();
