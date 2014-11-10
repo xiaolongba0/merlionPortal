@@ -103,7 +103,7 @@ public class MovingStockViewManagedBean {
 
         boolean result = tosb.sendTransportOrder(transportOrder.getTransportOrderId());
         if (result) {
-            systemLogSB.recordSystemLog(userId, "WMS send tranrsport order");
+            systemLogSB.recordSystemLog(userId, "WMS send transport order");
             FacesMessage msg = new FacesMessage("Transport Order with ID = " + transportOrder.getTransportOrderId() + " has sucessfully been processed");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         } else {
