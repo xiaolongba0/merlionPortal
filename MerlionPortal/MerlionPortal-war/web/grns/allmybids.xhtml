@@ -49,48 +49,45 @@
                 <p:menuitem value="View All My Biddings" url="allmybids.xhtml" />
             </p:breadCrumb>
             <h:form id="form">
-                <p:ajaxStatus style="width:16px;height:16px;">
-                    <f:facet name="start">
-                        <h:graphicImage value="/img/load.gif" />
-                    </f:facet>
-                    <f:facet name="complete">
-                        <h:outputText value="" />
-                    </f:facet>
-                </p:ajaxStatus>
                 <p:panel  header="My Biddings"  style="margin-bottom:20px">
-                    <p:dataTable var="bids" value="#{BiddingManagedBean.bids}" widgetVar="bidsTable" rowKey="#{bid.bidId}"
-                                 emptyMessage="No Biddings found with given criteria" selectionMode="single" selection="#{BiddingManagedBean.selectedBids}"
-                                 filteredValue="#{BiddingManagedBean.filteredBids}" paginator="true"
+                    <p:dataTable var="myBid" value="#{allMyBidsManagedBean.allMyBid}" widgetVar="bidsTable" rowKey="#{myBid.bidId}"
+                                 emptyMessage="No Biddings found with given criteria" 
+                                 selectionMode="single" 
+                                 selection="#{allMyBidsManagedBean.selectedBid}"
+                                 paginator="true"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="20,50,100">
 
-                        <f:facet name="header">
-                            <p:outputPanel>
-                                <h:outputText value="Search all fields:" />
-                                <p:inputText id="globalFilter" onkeyup="PF('bidsTable').filter()" style="width:150px" placeholder="Enter keyword"/>
-                            </p:outputPanel>
+                        <p:column filterBy="#{myBid.bidId}" headerText="Bidding ID" filterMatchMode="exact">
+                            <h:outputText value="#{myBid.bidId}" />
+                        </p:column>
+                        <p:column filterBy="#{myBid.post.serviceType}" headerText="Service Type" filterMatchMode="contains">
+                            <h:outputText value="#{myBid.post.serviceType}" />
+                        </p:column>
+                        <p:column filterBy="#{allMyBidsManagedBean.viewCompanyName(myBid.post.systemUser.companycompanyId.companyId)}" 
+                                  headerText="Bidder Company" filterMatchMode="contains">
+                            <h:outputText value="#{allMyBidsManagedBean.viewCompanyName(myBid.post.systemUser.companycompanyId.companyId)}" />
+                        </p:column>
+                        
+                        <p:column filterBy="#{myBid.amount}" headerText="My Bid" >
+                            <h:outputText value="#{myBid.amount}" />
+                        </p:column>
+                        <p:column filterBy="#{myBid.post.expireDate}" headerText="Post Expire Date" filterMatchMode="contains">
+                            <h:outputText value="#{myBid.post.expireDate}" />
+                        </p:column>
+                        <p:column filterBy="#{allMyBidsManagedBean.viewBidStatus(myBid)}" filterMatchMode="in" headerText="Bid Status">
+                        <f:facet name="filter">
+                            <p:selectCheckboxMenu label="Select" 
+                                                  onchange="PF('bidsTable').filter()" 
+                                                  panelStyle="width:150px" scrollHeight="150">
+                                <f:selectItems value="#{allMyBidsManagedBean.bidStatus}"/>
+                            </p:selectCheckboxMenu>
                         </f:facet>
+                        <h:outputText value="#{allMyBidsManagedBean.viewBidStatus(myBid)}" />
+                    </p:column>
 
-                        <p:column filterBy="#{bid.bidId}" headerText="Bidding ID" filterMatchMode="contains">
-                            <h:outputText value="#{bid.bidId}" />
-                        </p:column>
-                        <p:column headerText="Bid Type" filterBy="#{bid.amount}" filterMatchMode="contains">
-                            <h:outputText value="#{bid.amount}" />
-                        </p:column>
-                        <p:column filterBy="#{bid.systemUser.Company_companyId}" headerText="Bidder Company" filterMatchMode="contains">
-                            <h:outputText value="#{bid.systemUser.Company_companyId}" />
-                        </p:column>
-
-                        <p:column filterBy="#{BiddingManagedBean.getServiceType(bid.serviceType)}" headerText="Service Type" filterMatchMode="in">
-                            <f:facet name="filter">
-                                <p:selectCheckboxMenu label="Service Type" onchange="PF('bidsTable').filter()" panelStyle="width:250px" scrollHeight="150">
-                                    <f:selectItems value="#{BiddingManagedBean.serviceType}" />
-                                </p:selectCheckboxMenu>
-                            </f:facet>
-                            <h:outputText value="#{BiddingManagedBean.getServiceType(bid.serviceType)}" />
-                        </p:column>
                     </p:dataTable>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                    <p:commandButton value="View Bidding" action="#{BiddingManagedBean.viewBids()}" />
+                    <p:commandButton value="View My Bidding" action="#{allMyBidsManagedBean.updateMyBid()}" />
                 </p:panel>
             </h:form>
         </ui:define>
