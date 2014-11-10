@@ -71,20 +71,20 @@ public class PostsManagerSessionBean {
         for (Object o : q.getResultList()) {
             Post p = (Post) o;
             if (companyId == p.getSystemUser().getCompanycompanyId().getCompanyId()
-                    && p.getStatus().equalsIgnoreCase("Valid")&& p.getServiceType().equals("Transportation")) {
+                    && p.getStatus().equalsIgnoreCase("Valid") && p.getServiceType().equals("Transportation")) {
                 result.add(p);
             }
         }
         return result;
     }
-    
+
     public List<Post> getMyActiveWPosts(int companyId) {
         List<Post> result = new ArrayList();
         Query q = em.createQuery("SELECT p FROM Post p");
         for (Object o : q.getResultList()) {
             Post p = (Post) o;
             if (companyId == p.getSystemUser().getCompanycompanyId().getCompanyId()
-                    && p.getStatus().equalsIgnoreCase("Valid")&& p.getServiceType().equals("Warehouse")) {
+                    && p.getStatus().equalsIgnoreCase("Valid") && p.getServiceType().equals("Warehouse")) {
                 result.add(p);
             }
         }
@@ -97,20 +97,20 @@ public class PostsManagerSessionBean {
         for (Object o : q.getResultList()) {
             Post p = (Post) o;
             if (companyId == p.getSystemUser().getCompanycompanyId().getCompanyId()
-                    && p.getStatus().equalsIgnoreCase("Expired")&& p.getServiceType().equals("Warehouse")) {
+                    && p.getStatus().equalsIgnoreCase("Expired") && p.getServiceType().equals("Warehouse")) {
                 result.add(p);
             }
         }
         return result;
     }
-    
+
     public List<Post> getMyHistoricalTPosts(int companyId) {
         List<Post> result = new ArrayList();
         Query q = em.createQuery("SELECT p FROM Post p");
         for (Object o : q.getResultList()) {
             Post p = (Post) o;
             if (companyId == p.getSystemUser().getCompanycompanyId().getCompanyId()
-                    && p.getStatus().equalsIgnoreCase("Expired")&& p.getServiceType().equals("Transportation")) {
+                    && p.getStatus().equalsIgnoreCase("Expired") && p.getServiceType().equals("Transportation")) {
                 result.add(p);
             }
         }
@@ -121,21 +121,45 @@ public class PostsManagerSessionBean {
         Date todayDate = new Date();
         return !myPost.getExpireDate().before(todayDate);
     }
-    
-    public void bidPost(Double amount, Integer userId, Post post){
+
+    public void bidPost(Double amount, Integer userId, Post post) {
+        
         Bid newBid = new Bid();
-        SystemUser myUser=em.find(SystemUser.class, userId);
+        SystemUser myUser = em.find(SystemUser.class, userId);
+        if(myUser.getBidList()==null){
+            List<Bid> myBidslist=new ArrayList();
+            myUser.setBidList(myBidslist);
+        }
         newBid.setAmount(amount);
         newBid.setSystemUser(myUser);
         newBid.setPost(post);
-        newBid.setSelected(false);
         em.persist(newBid);
         post.getBidList().add(newBid);
-        em.merge(post);       
+        myUser.getBidList().add(newBid);
+        em.merge(post);
     }
-    
-    public void cancelPost(Post myPost){
+
+    public void cancelPost(Post myPost) {
         myPost.setStatus("Expired");
         em.merge(myPost);
+    }
+
+    public List<Bid> viewAllMyBids(int companyId) {
+        List<Bid> result = new ArrayList();
+        Query q = em.createQuery("SELECT b FROM Bid b");
+        for (Object o : q.getResultList()) {
+            Bid myBid = (Bid) o;
+            Post myPost = myBid.getPost();
+            if (myPost.getSystemUser().getCompanycompanyId().getCompanyId() == companyId) {
+                result.add(myBid);
+            }
+        }
+        return result;
+    }
+
+    public void updateMyBid(Bid myBid, Double newprice) {
+        myBid.setAmount(newprice);
+        em.merge(myBid);
+        em.flush();
     }
 }

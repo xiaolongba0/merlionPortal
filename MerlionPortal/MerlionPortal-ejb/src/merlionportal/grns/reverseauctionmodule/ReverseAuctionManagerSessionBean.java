@@ -187,6 +187,10 @@ public class ReverseAuctionManagerSessionBean {
             Date expireDate, Integer systemU, Integer totalVolum) {
         List<Bid> bidList = new ArrayList();
         SystemUser systemUser = em.find(SystemUser.class, systemU);
+        List<Post> myPostlist = new ArrayList();
+        if (systemUser.getPostList() == null) {
+            systemUser.setPostList(myPostlist);
+        }
         Post newPost = new Post();
         newPost.setServiceType("Transportation");
         newPost.setDescription(description);
@@ -208,11 +212,18 @@ public class ReverseAuctionManagerSessionBean {
             p.getPostList().add(newPost);
             em.merge(p);
         }
+        systemUser.getPostList().add(newPost);
+        em.merge(systemUser);
+        em.flush();
     }
 
     public void submitWPost(List<Contract> wList, String description, Date sStart, Date sEnd,
             Double wareSpace, String currency, Date expireDate, Integer sysUser) {
         SystemUser systemUser = em.find(SystemUser.class, sysUser);
+        List<Post> myPostlist = new ArrayList();
+        if (systemUser.getPostList() == null) {
+            systemUser.setPostList(myPostlist);
+        }
         Post newPost = new Post();
         List<Bid> bidList = new ArrayList();
         newPost.setServiceType("Warehouse");
@@ -234,6 +245,9 @@ public class ReverseAuctionManagerSessionBean {
             p.getPostList().add(newPost);
             em.merge(p);
         }
+        systemUser.getPostList().add(newPost);
+        em.merge(systemUser);
+        em.flush();
 
     }
 
