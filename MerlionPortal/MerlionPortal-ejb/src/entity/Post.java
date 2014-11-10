@@ -17,6 +17,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -100,6 +102,13 @@ public class Post implements Serializable {
     @Column(name = "expireDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date expireDate;
+    @ManyToMany(mappedBy = "postList")
+    private List<Contract> contractList;
+    @JoinTable(name = "ServicePO_has_Post", joinColumns = {
+        @JoinColumn(name = "post", referencedColumnName = "postId")}, inverseJoinColumns = {
+        @JoinColumn(name = "servicePO", referencedColumnName = "servicePOId")})
+    @ManyToMany
+    private List<ServicePO> servicePOList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     private List<Bid> bidList;
     @JoinColumn(name = "systemUser", referencedColumnName = "systemUserId")
@@ -233,6 +242,24 @@ public class Post implements Serializable {
 
     public void setExpireDate(Date expireDate) {
         this.expireDate = expireDate;
+    }
+
+    @XmlTransient
+    public List<Contract> getContractList() {
+        return contractList;
+    }
+
+    public void setContractList(List<Contract> contractList) {
+        this.contractList = contractList;
+    }
+
+    @XmlTransient
+    public List<ServicePO> getServicePOList() {
+        return servicePOList;
+    }
+
+    public void setServicePOList(List<ServicePO> servicePOList) {
+        this.servicePOList = servicePOList;
     }
 
     @XmlTransient
