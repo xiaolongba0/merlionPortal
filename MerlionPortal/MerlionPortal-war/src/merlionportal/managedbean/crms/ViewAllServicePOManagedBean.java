@@ -77,6 +77,7 @@ public class ViewAllServicePOManagedBean {
         status.add("SO Invoiced");
         status.add("SO Closed");
         status.add("Transportation SO in transit");
+        status.add("Converted to WMS internal order");
     }
 
     public String viewSentServicePO() {
@@ -129,8 +130,18 @@ public class ViewAllServicePOManagedBean {
         if (passedStatus == 9) {
             statusNumber = "Transportation SO in transit";
         }
+        if (passedStatus == 10) {
+            statusNumber = "Packing in progress";
+        }
+        if (passedStatus == 11) {
+            statusNumber = "Receiving order rejected";
+        }
+        if (passedStatus == 12) {
+            statusNumber = "Converted to WMS internal order";
+        }
         return statusNumber;
     }
+
 
     public Integer getCompanyId() {
         return companyId;

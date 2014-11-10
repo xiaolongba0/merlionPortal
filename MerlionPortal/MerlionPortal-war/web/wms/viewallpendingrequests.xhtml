@@ -102,7 +102,7 @@
 
                         <p:column filterBy="#{warehouseReqeustManagedBean.getStatusNumber(po.status)}" headerText="Status" filterMatchMode="in">
                             <f:facet name="filter">
-                                <p:selectCheckboxMenu label="Status" onchange="PF('poTable').filter()" panelStyle="width:250px" scrollHeight="150">
+                                <p:selectCheckboxMenu label="Status" onchange="PF('poTable').filter()" panelStyle="width:300px" scrollHeight="150">
                                     <f:selectItems value="#{warehouseReqeustManagedBean.status}" />
                                 </p:selectCheckboxMenu>
                             </f:facet>
@@ -141,7 +141,7 @@
                         </p:column>
                         <p:column filterBy="#{warehouseReqeustManagedBean.getStatusNumber(poR.status)}" headerText="Status" filterMatchMode="in">
                             <f:facet name="filter">
-                                <p:selectCheckboxMenu label="Status" onchange="PF('poTable2').filter()" panelStyle="width:250px" scrollHeight="150">
+                                <p:selectCheckboxMenu label="Status" onchange="PF('poTable2').filter()" panelStyle="width:300px" scrollHeight="150">
                                     <f:selectItems value="#{warehouseReqeustManagedBean.status}" />
                                 </p:selectCheckboxMenu>
                             </f:facet>

@@ -291,6 +291,9 @@ public class ViewServicePODetailManagedBean {
         if (statusNumber == 11) {
             status = "Receiving order rejected";
         }
+        if (statusNumber == 12) {
+            status = "Converted to WMS internal order";
+        }
 
     }
 

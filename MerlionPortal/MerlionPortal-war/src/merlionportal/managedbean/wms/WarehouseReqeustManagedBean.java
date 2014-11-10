@@ -74,7 +74,7 @@ public class WarehouseReqeustManagedBean {
         status.add("SO Fulfilled");
         status.add("SO Invoiced");
         status.add("SO Closed");
-        status.add("Transportation SO in transit");
+        status.add("Converted to WMS internal order");
     }
 
     public String viewSentWarehouseServicePO() {
@@ -132,6 +132,9 @@ public class WarehouseReqeustManagedBean {
         }
         if (passedStatus == 11) {
             statusNumber = "Receiving order rejected";
+        }
+        if (passedStatus == 12) {
+            statusNumber = "Converted to WMS internal order";
         }
         return statusNumber;
     }

@@ -43,6 +43,7 @@ public class ServicePOManagementSessionBean {
 //    9. Transportation SO in transit
 //    10.Packing in progress
 //    11.Receiving order rejected
+//    12.Converted to WMS internal order
     public boolean createServicePO(Integer contractId, Integer creatorId, Integer volume, Date fulfillmentDate, Date receiveDate, Date serviceDeliveryDate, int QuantityPerTEU, Integer productId, String warehouseOrderType, BigInteger amount) {
         ServicePO po = new ServicePO();
         Contract contract = em.find(Contract.class, contractId);
@@ -198,7 +199,7 @@ public class ServicePOManagementSessionBean {
         List<ServicePO> returnedList = new ArrayList<>();
         for (Object o : q.getResultList()) {
             ServicePO po = (ServicePO) o;
-            if (po.getStatus() == 5 || po.getStatus() == 6 || po.getStatus() == 7 || po.getStatus() == 8 || po.getStatus() == 10 || po.getStatus() == 11) {
+            if (po.getStatus() == 5 || po.getStatus() == 6 || po.getStatus() == 7 || po.getStatus() == 8 || po.getStatus() == 10 || po.getStatus() == 11 || po.getStatus() == 12) {
                 returnedList.add(po);
             }
         }

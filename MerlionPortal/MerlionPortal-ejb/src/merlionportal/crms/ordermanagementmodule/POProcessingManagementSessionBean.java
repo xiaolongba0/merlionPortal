@@ -37,7 +37,10 @@ public class POProcessingManagementSessionBean {
 //    6. SO Fulfilled (For WMS only)
 //    7. SO Invoiced
 //    8. SO Closed
-//    9. Transportation SO in transit (For TMS only)
+//    9. Transportation SO in transit (For TMS only
+//    10.Packing in progress
+//    11.Receiving order rejected
+//    12.Converted to WMS internal order
 
     public int rejectPO(Integer servicePOId) {
         ServicePO po = em.find(ServicePO.class, servicePOId);
@@ -120,7 +123,7 @@ public class POProcessingManagementSessionBean {
             //This contract, but not this po
             if (po.getContract().getContractId() == (int) contractId && po.getServicePOId() != (int) servicePOId && po.getCreatedDate().before(thisPO.getCreatedDate())) {
                 //not paid
-                if ((po.getServiceInvoice() != null && po.getServiceInvoice().getStatus() != 3) || po.getServiceInvoice()==null ) {
+                if ((po.getServiceInvoice() != null && po.getServiceInvoice().getStatus() != 3) || po.getServiceInvoice() == null) {
                     System.out.println("Enter EJB Order not paid" + po.getServicePOId());
                     result = false;
 
