@@ -13,6 +13,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.grns.reverseauctionmodule.PostsManagerSessionBean;
 
 /**
@@ -25,6 +26,8 @@ public class BiddingManagedBean {
 
     @EJB
     private PostsManagerSessionBean postsSB;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private Integer userId;
     private Integer companyId;
@@ -106,11 +109,13 @@ public class BiddingManagedBean {
     }
 
     public String bisPost() {
+        
         if (bids == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please Enter Bids"));
             return "bidpost.xhtml";
         }
         postsSB.bidPost(bids, userId, mypost);
+        systemLogSB.recordSystemLog(userId, "GRNS placed a bid.");
         return "viewallposts.xhtml?faces-redirect=true";
     }
 }

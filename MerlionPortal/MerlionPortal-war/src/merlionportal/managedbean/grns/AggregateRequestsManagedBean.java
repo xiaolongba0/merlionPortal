@@ -18,6 +18,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.grns.reverseauctionmodule.ReverseAuctionManagerSessionBean;
 
 /**
@@ -30,6 +31,8 @@ public class AggregateRequestsManagedBean {
 
     @EJB
     private ReverseAuctionManagerSessionBean reverseSB;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private Integer userId;
     private Integer companyId;
@@ -251,6 +254,7 @@ public class AggregateRequestsManagedBean {
         Map<String, Object> sessionMap = externalContext.getSessionMap();
         sessionMap.put("serviceType", 1);
         sessionMap.put("selectedT", selectedTransList);
+        systemLogSB.recordSystemLog(userId, "GRNS posted Transportation Reverse Auction.");
         return "post.xhtml?faces-redirect=true";
     }
 
@@ -271,6 +275,7 @@ public class AggregateRequestsManagedBean {
         Map<String, Object> sessionMap = externalContext.getSessionMap();
         sessionMap.put("serviceType", 2);
         sessionMap.put("selectedW", selectedWareList);
+        systemLogSB.recordSystemLog(userId, "GRNS posted Transportation Reverse Auction.");
         return "post.xhtml?faces-redirect=true";
 
     }
