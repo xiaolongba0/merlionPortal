@@ -14,6 +14,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.grns.reverseauctionmodule.PostsManagerSessionBean;
 
 /**
@@ -26,6 +27,8 @@ public class UpdateMyBidManagedBean {
 
     @EJB
     private PostsManagerSessionBean postsSB;
+    @EJB
+    private SystemLogSessionBean systemLogSB;
 
     private Integer userId;
     private Integer companyId;
@@ -132,6 +135,6 @@ public class UpdateMyBidManagedBean {
     public void updateMyBid() {
         postsSB.updateMyBid(myBid, bids);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO!", " Bids Updated "));
-
+        systemLogSB.recordSystemLog(userId, "GRNS updated bid.");
     }
 }
