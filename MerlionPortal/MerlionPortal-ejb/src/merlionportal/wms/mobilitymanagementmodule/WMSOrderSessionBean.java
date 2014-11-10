@@ -39,6 +39,11 @@ public class WMSOrderSessionBean {
     // "Insert Code > Add Business Method")
     //check for bins and reserve space
     //check for stock and reserve space
+    
+//    Status
+//    1. Processing
+//    2. Rejected
+//    3. Compeleted
     public Integer createInternalOrder(Integer myCompanyId, String orderType, Date fulfillmentDate, Date receiveDate, Integer quantity,
             Integer productId, Boolean internalOrder, Integer servicePOId, Integer warehouseId) {
 
@@ -276,6 +281,7 @@ public class WMSOrderSessionBean {
             wmsOrder.setServicePOId(po.getServicePOId());
             wmsOrder.setInternalOrder(false);
             wmsOrder.setWarehouseId(po.getWarehouseId());
+            wmsOrder.setStatus("Processing");
 
             em.persist(wmsOrder);
             
