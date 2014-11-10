@@ -320,6 +320,14 @@ h2.system-welcome{
 .crms-system-banner{
     background: url('../img/CRMS.jpg') -0px -0px no-repeat;
 }
+.grns-system-banner{
+    background: url('../img/GRNS.jpg') 0px -50px;
+}
+.system-banner-overlay{
+    background: rgba(0,0,0,0.6);
+    color: white;
+    position:absolute;
+}
 
 .pad-it{
     padding-left: 10px;
