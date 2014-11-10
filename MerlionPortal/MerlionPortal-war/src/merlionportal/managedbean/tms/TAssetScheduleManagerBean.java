@@ -44,6 +44,7 @@ public class TAssetScheduleManagerBean {
     private Integer locationId;
     private List<Location> locations;
     private Integer tassetId;
+    private Integer loading;
     private List<TransportationAsset> transassetss;
     private Date startDate;
     private Date endDate;
@@ -78,8 +79,8 @@ public class TAssetScheduleManagerBean {
 
     public void createTassetSchedule() {
         System.out.println("tAsset Id: " + tassetId);
-        boolean result = tamsb.addTAssetSchedule(startDate, endDate, tassetId, operatorId);
-        if (result) {
+        Integer result = tamsb.addTAssetSchedule(startDate, endDate,loading, tassetId, operatorId);
+        if (result>0) {
             clearAllFields();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "New Schedule created!"));
             systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS created new schedule");
@@ -187,6 +188,14 @@ public class TAssetScheduleManagerBean {
 
     public void setOperators(List<TransportationOperator> operators) {
         this.operators = operators;
+    }
+
+    public Integer getLoading() {
+        return loading;
+    }
+
+    public void setLoading(Integer loading) {
+        this.loading = loading;
     }
 
 }

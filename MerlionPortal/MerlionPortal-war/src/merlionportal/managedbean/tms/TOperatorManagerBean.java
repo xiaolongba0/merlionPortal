@@ -43,8 +43,8 @@ public class TOperatorManagerBean {
     private String operatorName;
     private String operatorLastName;
     private String operatorStatus;
+    private String gender;
     private Date birthday;
-    private String operatorGender;
     private String operatorType;
     private List<TransportationOperator> operators;
     private Integer newOperatorId;
@@ -87,7 +87,7 @@ public class TOperatorManagerBean {
             System.out.println("[INSIDE WAR FILE]===========================Create New Operator");
             System.out.println("OperatorType:" + operatorType);
             Integer operatorId = loginedUser.getSystemUserId();
-            newOperatorId = toperatorManagementSessionBean.addNewOperator(operatorId ,operatorName, operatorLastName, operatorGender, birthday, operatorType, operatorStatus, companyId, emailaddress, contactNumber, password);
+            newOperatorId = toperatorManagementSessionBean.addNewOperator(operatorId ,operatorName, operatorLastName, gender, birthday, operatorType, operatorStatus, companyId, emailaddress, contactNumber, password);
             System.out.println("NEW TRANSPORTATION ASSET ID =================: " + newOperatorId);
             if (newOperatorId == -1) {
                 clearAllFields();
@@ -109,7 +109,7 @@ public class TOperatorManagerBean {
         
         operatorName = null;
         operatorLastName = null;
-        operatorGender = null;
+        gender = null;
         birthday = null;
         operatorType = null;
         operatorStatus = null;
@@ -156,13 +156,14 @@ public class TOperatorManagerBean {
         this.birthday = birthday;
     }
 
-    public String getOperatorGender() {
-        return operatorGender;
+    public String getGender() {
+        return gender;
     }
 
-    public void setOperatorGender(String operatorGender) {
-        this.operatorGender = operatorGender;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
+
 
     public String getOperatorType() {
         return operatorType;
