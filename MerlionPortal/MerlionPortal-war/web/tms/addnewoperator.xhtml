@@ -103,12 +103,12 @@
 
                         <p:outputLabel for="operatorName" style="font-weight: bold" value="First Name: " /><p:spacer width="20" height="20" />
                         <p:inputText required="true" label="Operator Name: " requiredMessage="Operator Name is required." id="operatorName" value="#{tOperatorManagerBean.operatorName}">
-                            <f:validateLength minimum="4" maximum="40" />
+                            <f:validateLength minimum="1" maximum="40" />
                         </p:inputText>
 
                         <p:outputLabel for="operatorLastName" style="font-weight: bold" value="Last Name: " /><p:spacer width="20" height="20" />
                         <p:inputText required="true" label="Operator Name: " requiredMessage="Operator Name is required." id="operatorLastName" value="#{tOperatorManagerBean.operatorLastName}">
-                            <f:validateLength minimum="4" maximum="40" />
+                            <f:validateLength minimum="1" maximum="40" />
                         </p:inputText>
 
 
@@ -120,6 +120,11 @@
                             <f:selectItem itemLabel="Female" itemValue="Female" />
                         </p:selectOneRadio>                           
 
+                        <p:outputLabel for="roleId" value="Operator Role: " /><p:spacer width="20" height="20" />
+                        <p:selectOneMenu id="roleId" value="#{tOperatorManagerBean.roleId}"  style="width:300px" required="true" requiredMessage="Please select operator's role">
+                            <f:selectItem itemLabel="Select Operator's Role" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{tOperatorManagerBean.roles}" var="roleId" itemLabel="ID:#{roleId.userRoleId} Type:#{roleId.roleName}"  itemValue="#{roleId.userRoleId}"/>
+                        </p:selectOneMenu>
 
                         <p:outputLabel for="emailAddress" style="font-weight: bold" value="Email Address: " /><p:spacer width="20" height="20" />
                         <p:inputText required="true" label="Email Address: " requiredMessage="Email address is required." id="emailAddress" value="#{tOperatorManagerBean.emailaddress}">

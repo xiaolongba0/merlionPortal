@@ -107,6 +107,7 @@
                             <p:column>
                                 <p:selectOneMenu id="location" value="#{tAssetScheduleManagerBean.locationId}"  style="width:300px" required="true" requiredMessage="Please select a Location">
                                     <p:ajax listener="#{tAssetScheduleManagerBean.onChangeLocation()}" update="tasset" />
+                                    <p:ajax listener="#{tAssetScheduleManagerBean.onChangeLocationS()}" update="route" />
                                     <f:selectItem itemLabel="Select location" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{tAssetScheduleManagerBean.locations}" var="location" itemLabel="ID:#{location.locationId} Name:#{location.locationName}"  itemValue="#{location.locationId}"/>
                                 </p:selectOneMenu>
@@ -120,6 +121,17 @@
                                 <p:selectOneMenu id="tasset" value="#{tAssetScheduleManagerBean.tassetId}"  style="width:300px" required="true" requiredMessage="Please select a Transportation Asset">
                                     <f:selectItem itemLabel="Select Transportation Asset" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{tAssetScheduleManagerBean.transassetss}" var="tasset" itemLabel="ID:#{tasset.assetId} Type:#{tasset.assetType}"  itemValue="#{tasset.assetId}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="route" value="Destination: " />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="route" value="#{tAssetScheduleManagerBean.routeId}"  style="width:300px" required="true" requiredMessage="Please select a Destination">
+                                    <f:selectItem itemLabel="Select Destination" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{tAssetScheduleManagerBean.routes}" var="route" itemLabel="ID:#{route.routeId} To:#{route.destination}"  itemValue="#{route.routeId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>

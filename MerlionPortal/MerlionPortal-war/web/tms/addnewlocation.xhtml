@@ -99,44 +99,37 @@
                             <h:outputText value="" />
                         </f:facet>
                     </p:ajaxStatus>
-                    <p:panelGrid>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="nodeId" value="Physical Location: " />
-                            </p:column>
-                            <p:column>
-                                <p:selectOneMenu id="nodeId" value="#{tLocationManagerBean.nodeId}"  style="width:210px" required="true" requiredMessage="Please Select Physical Location">
+                    <h:panelGrid columns="3">
 
-                                    <f:selectItem itemLabel="Select Physical Location" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{routeManagerBean.startNodes}" var="node" itemLabel="ID:#{node.nodeId}   Name:#{node.locationName}"  itemValue="#{node.nodeId}"/>
-                                </p:selectOneMenu>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="locationName" style="font-weight: bold" value="Location Name: " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="Location Name" requiredMessage="Location Name is required." id="locationName" value="#{tLocationManagerBean.locationName}">
-                                    <f:validateLength minimum="4" maximum="40" />
-                                </p:inputText>
-                            </p:column>                       
-                        </p:row>
+                        <p:outputLabel  value="Location Type: " /><p:spacer width="20" height="20" />
+                        <p:selectOneRadio  value="#{tLocationManagerBean.type}">
+                            <p:ajax listener="#{tLocationManagerBean.onTypeChange()}" update="nodeId" />
+                            <f:selectItem itemLabel="Distribution Center" itemValue="Dist" />
+                            <f:selectItem itemLabel="Maintenance Center" itemValue="Maint" />
+                        </p:selectOneRadio>
 
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="locationType" style="font-weight: bold" value="location Type:  " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="locationType" requiredMessage="locationType is required." id="locationType" value="#{tLocationManagerBean.locationType}">
-                                    <f:validateLength minimum="1" maximum="19" />
-                                </p:inputText>
-                            </p:column>                             
-                        </p:row>  
+                        <p:outputLabel for="nodeId" value="Physical Location: " /><p:spacer width="20" height="20" />
+                       
+                        <p:selectOneMenu id="nodeId" value="#{tLocationManagerBean.nodeId}"  style="width:210px" required="true" requiredMessage="Please Select Physical Location">
+                            <f:selectItem itemLabel="Select Physical Location" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{tLocationManagerBean.nodes}" var="nodeId" itemLabel="ID:#{nodeId.nodeId}   Name:#{nodeId.locationName}"  itemValue="#{nodeId.nodeId}"/>
+                        </p:selectOneMenu>
 
-                    </p:panelGrid>
+                        <p:outputLabel for="locationName" style="font-weight: bold" value="Location Name: " /><p:spacer width="20" height="20" />
+                        <p:inputText required="true" label="Location Name" requiredMessage="Location Name is required." id="locationName" value="#{tLocationManagerBean.locationName}">
+                            <f:validateLength minimum="1" maximum="40" />
+                        </p:inputText>
+
+                        <h:outputLabel for="locationType" style="font-weight: bold" value="Remark:  " /><p:spacer width="20" height="20" />
+
+                        <p:inputText required="true" label="locationType" requiredMessage="locationType is required." id="locationType" value="#{tLocationManagerBean.locationType}">
+                            <f:validateLength minimum="1" maximum="40" />
+                        </p:inputText>
+                        <br></br>
+                    </h:panelGrid>
+                    
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                    <p:commandButton id="btn" value="Create New Location" update="form" actionListener="#{tLocationManagerBean.createNewLocation(location)}" ajax="true" >
+                    <p:commandButton id="btn" value="Create New Location" update="form" actionListener="#{tLocationManagerBean.createNewLocation()}" ajax="true" >
                     </p:commandButton>
 
                 </p:panel>
