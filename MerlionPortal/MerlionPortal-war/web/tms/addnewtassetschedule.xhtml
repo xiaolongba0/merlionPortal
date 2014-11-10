@@ -136,6 +136,16 @@
                         </p:row>
                         <p:row>
                             <p:column>
+                                <h:outputLabel for="loading" style="font-weight: bold" value="Load(TEU) : *" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="loading" requiredMessage="Asset load is required." id="loading" value="#{tAssetScheduleManagerBean.loading}">
+                                    <f:validateLength minimum="1" maximum="25" />
+                                </p:inputText>
+                            </p:column>
+                        </p:row> 
+                        <p:row>
+                            <p:column>
                                 <p:outputLabel for="startDate" value="Start Date " /><p:spacer width="20" height="20" /></p:column>
                             <p:column>
                                 <p:calendar id="startDate" required="true" requiredMessage="Start Date is required" value="#{tAssetScheduleManagerBean.startDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{tAssetScheduleManagerBean.today}" />
