@@ -58,15 +58,15 @@
                     </f:facet>
                 </p:ajaxStatus>
                 <p:panel  header="My Biddings"  style="margin-bottom:20px">
-                    <p:dataTable var="biddings" value="#{MyPostManagedBean.biddings}" widgetVar="biddingsTable" rowKey="#{bid.bidId}"
-                                 emptyMessage="No Biddings found with given criteria" selectionMode="single" selection="#{MyPostManagedBean.selectedBiddings}"
-                                 filteredValue="#{MyPostManagedBean.filteredBiddings}" paginator="true"
+                    <p:dataTable var="bids" value="#{BiddingManagedBean.bids}" widgetVar="bidsTable" rowKey="#{bid.bidId}"
+                                 emptyMessage="No Biddings found with given criteria" selectionMode="single" selection="#{BiddingManagedBean.selectedBids}"
+                                 filteredValue="#{BiddingManagedBean.filteredBids}" paginator="true"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="20,50,100">
 
                         <f:facet name="header">
                             <p:outputPanel>
                                 <h:outputText value="Search all fields:" />
-                                <p:inputText id="globalFilter" onkeyup="PF('biddingsTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                                <p:inputText id="globalFilter" onkeyup="PF('bidsTable').filter()" style="width:150px" placeholder="Enter keyword"/>
                             </p:outputPanel>
                         </f:facet>
 
@@ -80,17 +80,17 @@
                             <h:outputText value="#{bid.systemUser}" />
                         </p:column>
 
-                        <p:column filterBy="#{MyPostManagedBean.getServiceType(bid.serviceType)}" headerText="Service Type" filterMatchMode="in">
+                        <p:column filterBy="#{BiddingManagedBean.getServiceType(bid.serviceType)}" headerText="Service Type" filterMatchMode="in">
                             <f:facet name="filter">
-                                <p:selectCheckboxMenu label="Service Type" onchange="PF('biddingsTable').filter()" panelStyle="width:250px" scrollHeight="150">
-                                    <f:selectItems value="#{MyPostManagedBean.serviceType}" />
+                                <p:selectCheckboxMenu label="Service Type" onchange="PF('bidsTable').filter()" panelStyle="width:250px" scrollHeight="150">
+                                    <f:selectItems value="#{BiddingManagedBean.serviceType}" />
                                 </p:selectCheckboxMenu>
                             </f:facet>
-                            <h:outputText value="#{MyPostManagedBean.getServiceType(bid.serviceType)}" />
+                            <h:outputText value="#{BiddingManagedBean.getServiceType(bid.serviceType)}" />
                         </p:column>
                     </p:dataTable>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                    <p:commandButton value="View Bidding" action="#{MyPostManagedBean.viewBiddings()}" />
+                    <p:commandButton value="View Bidding" action="#{BiddingManagedBean.viewBids()}" />
                 </p:panel>
             </h:form>
         </ui:define>
