@@ -10,6 +10,7 @@ import entity.ProductOrder;
 import entity.ProductOrderLineItem;
 import entity.SystemUser;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -19,12 +20,14 @@ import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.persistence.Query;
+import merlionportal.ci.administrationmodule.LoginSessionBean;
 import merlionportal.ci.administrationmodule.SystemAccessRightSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.mrp.backordermodule.BackorderSessionBean;
 import merlionportal.mrp.pomodule.PurchaseOrderSessionBean;
 import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
+import merlionportal.utility.MD5Generator;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -41,6 +44,8 @@ public class MrpPurchaseOrderManagedBean {
     PurchaseOrderSessionBean productOrderSessionBean;
     @EJB
     private SystemLogSessionBean systemLogSB;
+    @EJB
+    LoginSessionBean loginSessionBean;
 
     private SystemUser loginedUser;
     Integer companyId;
@@ -112,20 +117,29 @@ public class MrpPurchaseOrderManagedBean {
     }
 
     public void sendPO() {
-
-        //create a query to get user id
-        userIDID = productOrderSessionBean.checkValidAccessUser(userIDTemp, password, poReference);
-
-        if (userIDID == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "User ID is invalid!"));
-            tempStatus = false;
+        //hash password
+        HashMap<String, Integer> sessionMap = loginSessionBean.verifyAccount(userIDTemp, MD5Generator.hash(password));
+        if (sessionMap == null) {
+            //Login failed
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Wrong username/password!", "Please try again"));
+            System.out.println("+++++++++++++++++++++++++++wrong user name or password");
         } else {
-            if (systemAccessRightSB.checkOESGeneratePO(userIDID)) {
-                tempStatus = true;
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Info", "User ID is correct!"));
-            } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "User ID is invalid!"));
+            //create a query to get user id
+            userIDID = productOrderSessionBean.checkValidAccessUser(userIDTemp, password, poReference);
+
+            if (userIDID == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Quotation is not available!"));
                 tempStatus = false;
+            } else {
+                if (systemAccessRightSB.checkOESGeneratePO(userIDID)) {
+                    tempStatus = true;
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Correct", "PO is sent!"));
+                    System.out.println("+++++++++++++++++++++++++++quotation correct");
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Quotation is not available!"));
+                    tempStatus = false;
+                    System.out.println("+++++++++++++++++++++++++++quotation wrong");
+                }
             }
         }
     }
