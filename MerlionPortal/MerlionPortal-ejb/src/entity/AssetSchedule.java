@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "AssetSchedule.findByStartDate", query = "SELECT a FROM AssetSchedule a WHERE a.startDate = :startDate"),
     @NamedQuery(name = "AssetSchedule.findByEndDate", query = "SELECT a FROM AssetSchedule a WHERE a.endDate = :endDate"),
     @NamedQuery(name = "AssetSchedule.findByOperatorId", query = "SELECT a FROM AssetSchedule a WHERE a.operatorId = :operatorId"),
-    @NamedQuery(name = "AssetSchedule.findByLoad", query = "SELECT a FROM AssetSchedule a WHERE a.load = :load")})
+    @NamedQuery(name = "AssetSchedule.findByAssetLoad", query = "SELECT a FROM AssetSchedule a WHERE a.assetLoad = :assetLoad")})
 public class AssetSchedule implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -52,8 +52,8 @@ public class AssetSchedule implements Serializable {
     private Date endDate;
     @Column(name = "operatorId")
     private Integer operatorId;
-    @Column(name = "load")
-    private Integer load;
+    @Column(name = "assetLoad")
+    private Integer assetLoad;
     @JoinColumn(name = "TransporationAsset_assetId", referencedColumnName = "assetId")
     @ManyToOne(optional = false)
     private TransportationAsset transporationAssetassetId;
@@ -100,12 +100,12 @@ public class AssetSchedule implements Serializable {
         this.operatorId = operatorId;
     }
 
-    public Integer getLoad() {
-        return load;
+    public Integer getAssetLoad() {
+        return assetLoad;
     }
 
-    public void setLoad(Integer load) {
-        this.load = load;
+    public void setAssetLoad(Integer assetLoad) {
+        this.assetLoad = assetLoad;
     }
 
     public TransportationAsset getTransporationAssetassetId() {
