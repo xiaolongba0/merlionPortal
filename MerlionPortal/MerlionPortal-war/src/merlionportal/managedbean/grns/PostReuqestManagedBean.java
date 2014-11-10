@@ -16,6 +16,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.grns.reverseauctionmodule.ReverseAuctionManagerSessionBean;
 
 /**
@@ -28,7 +29,9 @@ public class PostReuqestManagedBean {
 
     @EJB
     private ReverseAuctionManagerSessionBean reverseSB;
-
+    @EJB
+    private SystemLogSessionBean systemLogSB;
+    
     private Integer userId;
     private Integer companyId;
     private List<ServicePO> transList;
@@ -247,6 +250,7 @@ public class PostReuqestManagedBean {
         reverseSB.submitTPost(transList, description, shipto, pickingPoint, deliveryDate,
                 currency, expiryDate, userId, volume);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Post Successful!"));
+        systemLogSB.recordSystemLog(userId, "GRNS posted Transportation request.");
         return "aggregaterequests.xhtml?faces-redirect=true";
 
     }
@@ -259,6 +263,7 @@ public class PostReuqestManagedBean {
         reverseSB.submitWPost(warehouseList, description, storageStart,
                 storageEnd, totalSpace, currency, expiryDate, userId);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Post Successful!"));
+        systemLogSB.recordSystemLog(userId, "GRNS posted Warehouse request.");
         return "aggregaterequests.xhtml?faces-redirect=true";
     }
 }
