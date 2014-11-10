@@ -12,6 +12,7 @@ import entity.Node;
 import entity.Location;
 import entity.TransportationAsset;
 import entity.AssetSchedule;
+import entity.MaintenanceLog;
 import entity.TransportationOperator;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,27 +34,6 @@ public class TAssetmanagementSessionBean {
 
     @PersistenceContext
     EntityManager em;
-    //-------Node
-    private Node node;
-    private ArrayList<Location> locationList;
-    //------Route
-    private Route route;
-    private ArrayList<Route> routeList;
-    //-------Location
-    private Location location;
-    private Integer locationId;
-    private ArrayList<AssetSchedule> assetScheduleList;
-    private ArrayList<TransportationAsset> transportationAssetList;
-
-    //-------------Asset
-    private TransportationAsset asset;
-    private Integer assetId;
-    private ArrayList<TransportationOrder> orderList;
-    //------------Schedule
-    private ArrayList<AssetSchedule> scheduleList;
-
-    //-----------Operator
-    private ArrayList<TransportationOperator> operatorList;
 
     public List<Node> viewTheNodes() {
 
@@ -88,7 +68,7 @@ public class TAssetmanagementSessionBean {
         node.setLocationName(nodeName);
         node.setLocationType(nodeType);
 
-        locationList = new ArrayList<Location>();
+        List<Location> locationList = new ArrayList();
         node.setLocationList(locationList);
 
         List<Route> RouteList = new ArrayList<Route>();
@@ -186,7 +166,7 @@ public class TAssetmanagementSessionBean {
                 nodeend = e;
             }
         }
-        route = new Route();
+        Route route = new Route();
 
         route.setDestination(nodeend.getLocationName());
         route.setDistance(distance);
@@ -195,9 +175,9 @@ public class TAssetmanagementSessionBean {
         route.setEndNodeId(nodeend.getNodeId());
         route.setStartNodeId(nodee);
 
-        assetScheduleList = new ArrayList<AssetSchedule>();
+        List<AssetSchedule> assetScheduleList = new ArrayList();
         route.setAssetScheduleList(assetScheduleList);
-        
+
         System.out.println("==========Route Orgin========== :" + nodee.getLocationName());
         System.out.println("==========Route Destination==== :" + nodeend.getLocationName());
         System.out.println("==========Route Distance======= :" + distance);
@@ -220,7 +200,7 @@ public class TAssetmanagementSessionBean {
 
         Query query = em.createNamedQuery("Location.findByCompanyId").setParameter("companyId", companyId);
         for (Object o : query.getResultList()) {
-            location = (Location) o;
+            Location location = (Location) o;
             allMyLocation.add(location);
         }
 
@@ -248,7 +228,7 @@ public class TAssetmanagementSessionBean {
 
         List<Node> allMyNodes = query.getResultList();
 
-        location = new Location();
+        Location location = new Location();
         Node tempnode = new Node();
         for (Node n : allMyNodes) {
             if (Objects.equals(n.getNodeId(), NodeId)) {
@@ -260,7 +240,7 @@ public class TAssetmanagementSessionBean {
         location.setCompanyId(companyId);
         location.setNodeId(tempnode);
 
-        transportationAssetList = new ArrayList<TransportationAsset>();
+        List<TransportationAsset> transportationAssetList = new ArrayList();
         location.setTransportationAssetList(transportationAssetList);
 
         System.out.println("==========Location Name========== :" + locationName);
@@ -312,22 +292,26 @@ public class TAssetmanagementSessionBean {
                 locationn = l;
             }
         }
-
+    
         TransportationAsset tAsset = new TransportationAsset();
         tAsset.setAssetType(assetType);
         tAsset.setCapacity(capacity);
         tAsset.setLocationlocationId(locationn);
         tAsset.setPrice(price);
         tAsset.setSpeed(speed);
-        tAsset.setIsAvailable(Boolean.TRUE);
-        tAsset.setIsMaintain(Boolean.FALSE);
+        tAsset.setIsAvailable(true);
+        tAsset.setIsMaintain(false);
         tAsset.setStatus(status);
-        tAsset.setLoad(0);
+        tAsset.setAssetLoad(0);
+        tAsset.setRouteId(0);
 
-        scheduleList = new ArrayList<AssetSchedule>();
+        List<MaintenanceLog> maintLogList = new ArrayList();
+        tAsset.setMaintenanceLogList(maintLogList);
+
+        List<AssetSchedule> scheduleList = new ArrayList();
         tAsset.setAssetScheduleList(scheduleList);
 
-        orderList = new ArrayList<TransportationOrder>();
+        List<TransportationOrder> orderList = new ArrayList();
         tAsset.setTransportationOrderList(orderList);
 
 //        storageBinList = new ArrayList<StorageBin>();
@@ -347,6 +331,7 @@ public class TAssetmanagementSessionBean {
             em.flush();
 
             locationn.getTransportationAssetList().add(tAsset);
+
             em.merge(locationn);
             em.flush();
             return tAsset.getAssetId();
@@ -423,13 +408,12 @@ public class TAssetmanagementSessionBean {
             System.out.println("In viewMyTransportationAssets, finding location" + locationTemp);
         }
 
-        List<TransportationAsset> temp = new ArrayList();
-        List<TransportationAsset> available = new ArrayList();
+        List<TransportationAsset> temp;
+
         temp = locationTemp.getTransportationAssetList();
         Integer count = 0;
         for (TransportationAsset tAsset : temp) {
             if (tAsset.getIsAvailable() == true) {
-                available.add(tAsset);
                 count++;
             }
         }
@@ -519,7 +503,7 @@ public class TAssetmanagementSessionBean {
 
     }
 
-    public boolean addTAssetSchedule(Date startDate, Date endDate, Integer tAssetId, Integer operatorId) {
+    public Integer addTAssetSchedule(Date startDate, Date endDate, Integer loading, Integer tAssetId, Integer operatorId) {
 
         System.out.println("[INSIDE EJB]================================Add Transportation Asset Schedule");
         Query query = em.createNamedQuery("TransportationAsset.findByAssetId").setParameter("assetId", tAssetId);
@@ -530,6 +514,7 @@ public class TAssetmanagementSessionBean {
             schedule.setStartDate(startDate);
             schedule.setEndDate(endDate);
             schedule.setTransporationAssetassetId(tAsset);
+            schedule.setAssetLoad(loading);
 
             schedule.setOperatorId(operatorId);
             tAsset.getAssetScheduleList().add(schedule);
@@ -540,9 +525,9 @@ public class TAssetmanagementSessionBean {
 
             em.flush();
 
-            return true;
+            return schedule.getScheduleId();
         } else {
-            return false;
+            return -1;
         }
 
     }
@@ -599,6 +584,7 @@ public class TAssetmanagementSessionBean {
 
     }
 // check if asset is free during start date and end date;
+
     public boolean checkAssetAvailableSchedule(Date startDate, Date endDate, Integer assetId) {
         TransportationAsset tempAsset = em.find(TransportationAsset.class, assetId);
 
@@ -619,6 +605,38 @@ public class TAssetmanagementSessionBean {
         return true;
     }
 
+    // select a transportation asset from location to depart from 
+    public boolean moveAssetToRoute(Integer assetId, Integer routeId, Integer loading, Date startDate, Date endDate, Integer operatorId) {
+
+        TransportationAsset tempAsset = em.find(TransportationAsset.class, assetId);
+        Location tempLocation = tempAsset.getLocationlocationId();
+
+        List<TransportationAsset> tempAssetList = new ArrayList();
+        tempAssetList = tempLocation.getTransportationAssetList();
+
+        Integer tempScheduleId = this.addTAssetSchedule(startDate, endDate, loading, assetId, operatorId);
+
+        AssetSchedule scheduelTemp = em.find(AssetSchedule.class, tempScheduleId);
+        Route tempRoute = em.find(Route.class, routeId);
+
+        tempRoute.getAssetScheduleList().add(scheduelTemp);
+        tempAssetList.remove(tempAsset);
+
+        em.persist(scheduelTemp);
+        em.remove(tempAsset);
+        em.merge(tempLocation);
+        em.merge(tempRoute);
+
+        em.flush();
+
+        return true;
+    }
+
+    public boolean moveAssetToLocation(Integer assetId, Integer locationId) {
+
+        return true;
+    }
+
 // check not full asset on route;
 //    public List<TransportationAsset> findNotFullAssetOnRoute(Integer routeId) {
 //        Route tempRoute = em.find(Route.class, routeId);
@@ -633,7 +651,6 @@ public class TAssetmanagementSessionBean {
 //        }
 //        return notFullAssetList;
 //    }
-
 //    public List<TransportationAsset> findNotFullAssetonRouteAfterDate(Date startDate, Integer routeId) {
 //
 //        List<TransportationAsset> tempAssetList = this.findNotFullAssetOnRoute(routeId);
@@ -652,7 +669,6 @@ public class TAssetmanagementSessionBean {
 //
 //        return returnThisList;
 //    }
-
     public Integer numberOfFreeTruckOnLocation(Integer locationId) {
         Location templocation = em.find(Location.class, locationId);
 
@@ -661,7 +677,7 @@ public class TAssetmanagementSessionBean {
         Integer count = 0;
         for (TransportationAsset o : temptrans) {
             if (o.getAssetType().equals("Truck")) {
-                if (o.getLoad() == 0) {
+                if (o.getAssetLoad()== 0) {
                     count++;
                 }
             }
