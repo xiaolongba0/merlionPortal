@@ -217,6 +217,10 @@ ul.rights-menu li{
     float:right;
     margin-top: 50px;
     margin-bottom: 50px;
+    position:relative;
+}
+.content-area{
+    position:relative;
 }
 /*@media (min-width: 591px) {
   .content-area>.container {
@@ -324,9 +328,15 @@ h2.system-welcome{
     background: url('../img/GRNS.jpg') 0px -50px;
 }
 .system-banner-overlay{
-    background: rgba(0,0,0,0.6);
+    background: rgba(115,40,41,0.9);
     color: white;
     position:absolute;
+    width: 814px;
+    height:70px;
+    font-size:50px;
+    padding-right:15px;
+    text-align:right;
+    top:130px;
 }
 
 .pad-it{
