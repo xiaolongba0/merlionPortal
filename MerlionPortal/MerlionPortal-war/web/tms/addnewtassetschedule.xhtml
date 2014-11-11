@@ -34,16 +34,16 @@
                         <p:menuitem value="Add A Location" url="addnewlocation.xhtml"/>
                         <p:menuitem value="View All Locations" url="viewalllocation.xhtml"/>
                     </p:submenu>
-                    <p:submenu label="Transportation Asset" >
+                    <p:submenu label="Transportation Asset Management" >
                         <p:menuitem value="Add Transportation Assets" url="addnewtasset.xhtml" />
-                        <p:menuitem value="View Transportation Assets" url="viewalltasset.xhtml" />
+                        <p:menuitem value="Location Dashboard" url="viewalltasset.xhtml" />
                     </p:submenu>
-                    <p:submenu label="Asset Schedule" >
-                        <p:menuitem value="Add A Asset Schedule" url="addnewtassetschedule.xhtml" />
-                        <p:menuitem value="View All Schedule" url="viewalltassetschedule.xhtml" />
+                    <p:submenu label="Asset Dispatching" >
+                        <p:menuitem value="Dispatch a Asset" url="addnewtassetschedule.xhtml" />
+                        <p:menuitem value="View Current Tasks" url="viewalltassetschedule.xhtml" />
                     </p:submenu>
 
-                    <p:submenu label="Maintenance" >
+                    <p:submenu label="Asset Maintenance" >
                         <p:menuitem value="Create Maintenance" url="addnewmaintenancelog.xhtml"  />
                         <p:menuitem value="View All Maintenance" url="viewallmaintenancelog.xhtml" />
                     </p:submenu>
@@ -102,7 +102,7 @@
                             <p:column>
                                 <p:selectOneMenu id="location" value="#{tAssetScheduleManagerBean.locationId}"  style="width:300px" required="true" requiredMessage="Please select a Location">
                                     <p:ajax listener="#{tAssetScheduleManagerBean.onChangeLocation()}" update="tasset" />
-                                    <p:ajax listener="#{tAssetScheduleManagerBean.onChangeLocationS()}" update="route" />
+
                                     <f:selectItem itemLabel="Select location" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{tAssetScheduleManagerBean.locations}" var="location" itemLabel="ID:#{location.locationId} Name:#{location.locationName}"  itemValue="#{location.locationId}"/>
                                 </p:selectOneMenu>
@@ -114,6 +114,7 @@
                             </p:column>
                             <p:column>
                                 <p:selectOneMenu id="tasset" value="#{tAssetScheduleManagerBean.tassetId}"  style="width:300px" required="true" requiredMessage="Please select a Transportation Asset">
+                                    <p:ajax listener="#{tAssetScheduleManagerBean.onChangeLocationS()}" update="route" />
                                     <f:selectItem itemLabel="Select Transportation Asset" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{tAssetScheduleManagerBean.transassetss}" var="tasset" itemLabel="ID:#{tasset.assetId} Type:#{tasset.assetType}"  itemValue="#{tasset.assetId}"/>
                                 </p:selectOneMenu>
