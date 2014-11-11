@@ -47,9 +47,9 @@
                         <p:menuitem value="Create Maintenance" url="addnewmaintenancelog.xhtml"  />
                         <p:menuitem value="View All Maintenance" url="viewallmaintenancelog.xhtml" />
                     </p:submenu>
-                    <p:submenu label="Operator" >
-                        <p:menuitem value="Add A Operator" url="addnewoperator.xhtml"  />
-                        <p:menuitem value="View All Operator" url="viewalloperator.xhtml" />
+                    <p:submenu label="Human Resource Management" >
+                        <p:menuitem value="New Operator" url="addnewoperator.xhtml"  />
+                        <p:menuitem value="Operator List" url="viewalloperator.xhtml" />
                     </p:submenu>
                     <p:submenu label="Operator Schedule" >
                         <p:menuitem value="Add A Operator Schedule" url="addnewoperatorschedule.xhtml" />
@@ -107,19 +107,12 @@
                         </p:inputText>
 
 
-
-
                         <p:outputLabel value="Gender: " /><p:spacer width="20" height="20" />
                         <p:selectOneRadio  value="#{tOperatorManagerBean.gender}">
                             <f:selectItem itemLabel="Male" itemValue="Male" />
                             <f:selectItem itemLabel="Female" itemValue="Female" />
                         </p:selectOneRadio>                           
 
-                        <p:outputLabel for="roleId" value="Operator Role: " /><p:spacer width="20" height="20" />
-                        <p:selectOneMenu id="roleId" value="#{tOperatorManagerBean.roleId}"  style="width:300px" required="true" requiredMessage="Please select operator's role">
-                            <f:selectItem itemLabel="Select Operator's Role" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{tOperatorManagerBean.roles}" var="roleId" itemLabel="ID:#{roleId.userRoleId} Type:#{roleId.roleName}"  itemValue="#{roleId.userRoleId}"/>
-                        </p:selectOneMenu>
 
                         <p:outputLabel for="emailAddress" style="font-weight: bold" value="Email Address: " /><p:spacer width="20" height="20" />
                         <p:inputText required="true" label="Email Address: " requiredMessage="Email address is required." id="emailAddress" value="#{tOperatorManagerBean.emailaddress}">
@@ -144,11 +137,19 @@
                         <p:calendar id="birthday" required="true" requiredMessage="Birthday is required" value="#{tOperatorManagerBean.birthday}" pattern="dd-MM-yyyy" mask="true" />
 
                         <h:outputLabel for="operatorType" style="font-weight: bold" value="Operator Type:  " /><p:spacer width="20" height="20" />
-                        <p:inputText required="true" label="Operator Type:" requiredMessage="Operator Type is required." id="operatorType" value="#{tOperatorManagerBean.operatorType}">
-                            <f:validateLength minimum="1" maximum="19" />
-                        </p:inputText>
+                        <p:selectOneRadio  value="#{tOperatorManagerBean.operatorType}">
+                            <f:selectItem itemLabel="Operator" itemValue="Operator" />
+                            <f:selectItem itemLabel="Driver" itemValue="Driver" />
+                        </p:selectOneRadio>  
+                        
+                        <p:outputLabel for="roleId" value="Operator Role: " /><p:spacer width="20" height="20" />
+                        <p:selectOneMenu id="roleId" value="#{tOperatorManagerBean.roleId}"  style="width:300px" required="true" requiredMessage="Please select operator's role">
+                            <f:selectItem itemLabel="Select Operator's Role" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{tOperatorManagerBean.roles}" var="roleId" itemLabel="ID:#{roleId.userRoleId} Type:#{roleId.roleName}"  itemValue="#{roleId.userRoleId}"/>
+                        </p:selectOneMenu>
 
-                        <h:outputLabel for="operatorStatus" style="font-weight: bold" value="Operator Status: " /><p:spacer width="20" height="20" />
+
+                        <h:outputLabel for="operatorStatus" style="font-weight: bold" value="Remark: " /><p:spacer width="20" height="20" />
                         <p:inputText required="true" label="Operator Status: " requiredMessage="Operator Status: is required." id="operatorStatus" value="#{tOperatorManagerBean.operatorStatus}">
                             <f:validateLength minimum="1" maximum="19" />
                         </p:inputText>
