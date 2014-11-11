@@ -142,6 +142,7 @@ public class TAssetmanagementSessionBean {
 
         return allMyRoute;
     }
+    
 
     public Boolean deleteRoute(Integer routeId) {
         Query query = em.createNamedQuery("Route.findByRouteId").setParameter("routeId", routeId);
@@ -150,7 +151,7 @@ public class TAssetmanagementSessionBean {
         for (Route r : allMyRoute) {
             if (r.getRouteId().equals(routeId)) {
                 Node tempNode = r.getStartNodeId();
-                
+
                 em.remove(r);
                 em.merge(tempNode);
                 em.flush();
@@ -161,7 +162,6 @@ public class TAssetmanagementSessionBean {
         return false;
     }
 
-    
 //        Query query = em.createNamedQuery("Node.findAll");
 //        List<Node> allMyNode = query.getResultList();
 //
@@ -352,6 +352,7 @@ public class TAssetmanagementSessionBean {
 
     }
 
+
     public Integer addTAsset(String assetType, Integer capacity, Integer locationlocationId, Integer price, Integer speed, Integer companyId, String status) {
 
         System.out.println("[INSIDE EJB]================================Add Transportation Asset");
@@ -411,7 +412,8 @@ public class TAssetmanagementSessionBean {
         }
 
     }
-    public TransportationAsset getAsset (Integer assetId){
+
+    public TransportationAsset getAsset(Integer assetId) {
         TransportationAsset asset = em.find(TransportationAsset.class, assetId);
         return asset;
     }
