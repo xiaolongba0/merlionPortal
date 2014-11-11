@@ -155,7 +155,10 @@ public class PostsManagerSessionBean {
 
     public Boolean checkPostValidity(Post myPost) {
         Date todayDate = new Date();
-        return !myPost.getExpireDate().before(todayDate);
+        if(myPost.getStatus().equalsIgnoreCase("Expired")||myPost.getExpireDate().before(todayDate)){
+            return false;
+        }
+        return true;
     }
 
     public void bidPost(Double amount, Integer userId, Post post) {
@@ -218,8 +221,7 @@ public class PostsManagerSessionBean {
         Query q = em.createQuery("SELECT b FROM Bid b");
         for (Object o : q.getResultList()) {
             Bid myBid = (Bid) o;
-            Post myPost = myBid.getPost();
-            if (myPost.getSystemUser().getCompanycompanyId().getCompanyId() == companyId) {
+            if (myBid.getSystemUser().getCompanycompanyId().getCompanyId() == companyId) {
                 result.add(myBid);
             }
         }
