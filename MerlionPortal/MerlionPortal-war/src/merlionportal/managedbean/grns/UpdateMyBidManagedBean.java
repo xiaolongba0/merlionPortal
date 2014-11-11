@@ -64,9 +64,17 @@ public class UpdateMyBidManagedBean {
         if (serviceT.equals("Transportation")) {
             serviceType = 1;
         }
+        if (serviceT.equals("Transportation Space")) {
+            serviceType = 3;
+        }
         if (serviceT.equals("Warehouse")) {
             serviceType = 2;
         }
+        if (serviceT.equals("Warehouse Space")) {
+            serviceType = 4;
+        }
+
+        System.out.println("=======" + serviceType);
 
         if (myPost.getStatus().equalsIgnoreCase("Expired")) {
             updatable = false;
@@ -137,10 +145,18 @@ public class UpdateMyBidManagedBean {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO!", " Bids Updated "));
         systemLogSB.recordSystemLog(userId, "GRNS updated bid.");
     }
-    public String getWarehouName(Integer wId){
+
+    public String getWarehouName(Integer wId) {
+        if (wId == null) {
+            return "";
+        }
         return postsSB.getWarehouseName(wId);
     }
-    public String getWarehouseLocation(Integer wId){
+
+    public String getWarehouseLocation(Integer wId) {
+        if (wId == null) {
+            return "";
+        }
         return postsSB.getWarehouseLocation(wId);
     }
 }
