@@ -39,7 +39,6 @@ public class WMSOrderSessionBean {
     // "Insert Code > Add Business Method")
     //check for bins and reserve space
     //check for stock and reserve space
-    
 //    Status
 //    1. Processing
 //    2. Rejected
@@ -49,6 +48,7 @@ public class WMSOrderSessionBean {
 
         System.out.println("[INSIDE WMS ORDER EJB]================================Add create internal order");
         Integer orderId = null;
+        String status = "Processing";
 
         if (orderType.equalsIgnoreCase("Receiving Order")) {
             System.out.println("====================== Receiving Order");
@@ -57,7 +57,7 @@ public class WMSOrderSessionBean {
             Boolean result = rpsb.checkBinSpaceForAWarehouse(warehouseId, quantity, neededBinType);
             if (result) {
                 orderId = createWarehouseOrder(myCompanyId, orderType, fulfillmentDate, receiveDate, quantity,
-                        productId, internalOrder, servicePOId, warehouseId);
+                        productId, internalOrder, servicePOId, warehouseId, status);
             } else {
                 orderId = null;
             }
@@ -69,7 +69,7 @@ public class WMSOrderSessionBean {
             Boolean result = ofsb.reserveStockInMyBin(myCompanyId, warehouseId, quantity, productId);
             if (result) {
                 orderId = createWarehouseOrder(myCompanyId, orderType, fulfillmentDate, receiveDate, quantity,
-                        productId, internalOrder, servicePOId, warehouseId);
+                        productId, internalOrder, servicePOId, warehouseId, status);
             } else {
                 orderId = null;
             }
@@ -84,6 +84,27 @@ public class WMSOrderSessionBean {
         query.setParameter("inProductId", productId);
         List<Stock> stocks = query.getResultList();
         return stocks.get(0).getStorageBin().getBinType();
+    }
+
+    public boolean rejectOrder(Integer wmsOrderId) {
+        System.out.println("[INSIDE WMS ORDER EJB]================================reject order");
+        WmsOrder wmsOrder = new WmsOrder();
+        wmsOrder = em.find(WmsOrder.class, wmsOrderId);
+
+        Integer servicePOId = wmsOrder.getServicePOId();
+        ServicePO servicePO = new ServicePO();
+        servicePO = em.find(ServicePO.class, servicePOId);
+
+        if (servicePO != null) {
+            servicePO.setStatus(11);
+            em.merge(servicePO);
+            em.flush();
+        }
+        wmsOrder.setStatus("Rejected");
+        em.merge(wmsOrder);
+        em.flush();
+
+        return false;
     }
 
 //    // cancel wms order
@@ -128,7 +149,7 @@ public class WMSOrderSessionBean {
     // View all Own internal orders that are incoming for receiving and putaway
     public List<WmsOrder> viewOthersIncomingOrders(Integer companyId, Integer warehouseId) {
         System.out.println("[INSIDE WMS ORDER EJB]================================viewIncomingOrders");
-        
+
         List<WmsOrder> allmyOrders = new ArrayList();
         Query query = em.createNamedQuery("WmsOrder.findByMyCompanyId").setParameter("myCompanyId", companyId);
         System.out.println("Query: " + query.getResultList().size());
@@ -199,12 +220,18 @@ public class WMSOrderSessionBean {
         if (wmsOrder.getInternalOrder()) {
             Boolean result = ofsb.fulfillOrderFromMyBin(wmsOrderId, companyId);
             if (result) {
+                wmsOrder.setStatus("Completed");
+                em.merge(wmsOrder);
+                em.flush();
                 return true;
             } else {
                 return false;
             }
         } else {
             Boolean result = ofsb.fulfillOrderFromRentedBin(wmsOrderId, companyId);
+            wmsOrder.setStatus("Completed");
+            em.merge(wmsOrder);
+            em.flush();
             if (result) {
                 return true;
             } else {
@@ -224,6 +251,9 @@ public class WMSOrderSessionBean {
         if (wmsOrder.getInternalOrder()) {
             Boolean result = rpsb.receivePutawayForMyBin(companyId, wmsOrderId);
             if (result) {
+                wmsOrder.setStatus("Completed");
+                em.merge(wmsOrder);
+                em.flush();
                 return true;
             } else {
                 return false;
@@ -231,6 +261,9 @@ public class WMSOrderSessionBean {
         } else {
             Boolean result = rpsb.receivePutawayForRentedBin(companyId, wmsOrderId);
             if (result) {
+                wmsOrder.setStatus("Completed");
+                em.merge(wmsOrder);
+                em.flush();
                 return true;
             } else {
                 return false;
@@ -241,7 +274,7 @@ public class WMSOrderSessionBean {
     // fulfillment & receiving and putaway method needed then direct to the respective types, rented or not
     // GENERAL create method
     public Integer createWarehouseOrder(Integer myCompanyId, String orderType, Date fulfillmentDate, Date receiveDate, Integer quantity,
-            Integer productId, Boolean internalOrder, Integer servicePOId, Integer warehouseId) {
+            Integer productId, Boolean internalOrder, Integer servicePOId, Integer warehouseId, String status) {
 
         System.out.println("[INSIDE WMS ORDER EJB]================================Add Warehouse Order");
 
@@ -257,6 +290,7 @@ public class WMSOrderSessionBean {
             order.setServicePOId(servicePOId);
             order.setInternalOrder(internalOrder);
             order.setWarehouseId(warehouseId);
+            order.setStatus(status);
 
             em.persist(order);
             em.flush();
@@ -284,7 +318,7 @@ public class WMSOrderSessionBean {
             wmsOrder.setStatus("Processing");
 
             em.persist(wmsOrder);
-            
+
             po.setStatus(12);
             em.merge(po);
             em.flush();
