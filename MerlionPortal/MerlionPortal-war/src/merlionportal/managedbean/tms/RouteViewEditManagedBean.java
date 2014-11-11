@@ -84,6 +84,7 @@ public class RouteViewEditManagedBean {
             routeId = route.getRouteId();
             System.out.println("[In WAR FILE - Delete Route Function] Route ID========== :" + routeId);
             tassetmanagementSessionBean.deleteRoute(routeId);
+            routes.remove(route);
             System.out.println("successfully deleted Route" +routeId);
             systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS deleted route");
         } catch (Exception ex) {

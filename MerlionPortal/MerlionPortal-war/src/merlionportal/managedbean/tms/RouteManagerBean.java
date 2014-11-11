@@ -36,7 +36,7 @@ public class RouteManagerBean {
     private UserAccountManagementSessionBean uamb;
     @EJB
     private SystemLogSessionBean systemLogSB;
-    private Integer newRouteId;
+    private Boolean newRouteId;
     private Integer routeId;
     private Integer companyId;
     private Route route;
@@ -83,7 +83,7 @@ public class RouteManagerBean {
             System.out.println("=====endNode Id:" + endNodeId);
             
             newRouteId = tassetManagementSessionBean.addRoute(distance, routeType, startNodeId, endNodeId);
-            if (newRouteId > -1) {
+            if (newRouteId = true) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Route Added!", ""));
                 clearAllFields();
                 System.out.println("[WAR FILE]===========================Create New Route");
@@ -105,13 +105,14 @@ public class RouteManagerBean {
 
     }
 
-    public Integer getNewRouteId() {
+    public Boolean getNewRouteId() {
         return newRouteId;
     }
 
-    public void setNewRouteId(Integer newRouteId) {
+    public void setNewRouteId(Boolean newRouteId) {
         this.newRouteId = newRouteId;
     }
+
 
     public Integer getRouteId() {
         return routeId;
