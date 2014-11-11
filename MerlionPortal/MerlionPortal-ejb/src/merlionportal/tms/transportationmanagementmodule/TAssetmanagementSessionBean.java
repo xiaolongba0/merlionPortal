@@ -411,6 +411,10 @@ public class TAssetmanagementSessionBean {
         }
 
     }
+    public TransportationAsset getAsset (Integer assetId){
+        TransportationAsset asset = em.find(TransportationAsset.class, assetId);
+        return asset;
+    }
 
     public List<TransportationAsset> viewtAssetForALocation(Integer locationId) {
 
@@ -542,8 +546,7 @@ public class TAssetmanagementSessionBean {
     public Boolean deletetAsset(Integer assetId) {
 
         TransportationAsset tAsset = new TransportationAsset();
-        Query query = em.createNamedQuery("TransportationAsset.findByAssetId").setParameter("tAssetId", assetId);
-        tAsset = (TransportationAsset) query.getSingleResult();
+        tAsset = em.find(TransportationAsset.class, assetId);
         System.out.println("DeleteStorageType ================= : " + tAsset);
         if (tAsset == null) {
             return false;
