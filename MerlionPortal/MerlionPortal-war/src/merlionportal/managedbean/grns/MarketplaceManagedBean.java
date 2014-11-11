@@ -33,9 +33,14 @@ public class MarketplaceManagedBean {
     private Integer companyId;
     private List<Post> allTPosts;
     private List<Post> allWPosts;
-    private Post selectedPost;
+    private List<Post> allSTPosts;
+    private List<Post> allSWPosts;
+
     private List<Post> filteredPosts;
+    private Post selectedPost;
     private Post selectedWPost;
+    private Post selectedSTpost;
+    private Post selectedSWpost;
 
     @PostConstruct
     public void init() {
@@ -57,6 +62,9 @@ public class MarketplaceManagedBean {
         }
         allTPosts = postsSB.getAllTPosts(companyId);
         allWPosts = postsSB.getAllWPosts(companyId);
+        allSTPosts = postsSB.getAllSTPosts(companyId);
+        allSWPosts = postsSB.getAllSWPosts(companyId);
+
     }
 
     public MarketplaceManagedBean() {
@@ -118,8 +126,24 @@ public class MarketplaceManagedBean {
         this.selectedWPost = selectedWPost;
     }
 
+    public Post getSelectedSTpost() {
+        return selectedSTpost;
+    }
+
+    public void setSelectedSTpost(Post selectedSTpost) {
+        this.selectedSTpost = selectedSTpost;
+    }
+
+    public Post getSelectedSWpost() {
+        return selectedSWpost;
+    }
+
+    public void setSelectedSWpost(Post selectedSWpost) {
+        this.selectedSWpost = selectedSWpost;
+    }
+
     public String bidSelectedPost() {
-        if (selectedPost == null && selectedWPost==null) {
+        if (selectedPost == null && selectedWPost == null && selectedSTpost == null && selectedSWpost == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please select One Post to bid"));
         }
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -132,6 +156,35 @@ public class MarketplaceManagedBean {
         if (selectedWPost != null) {
             sessionMap.put("selectedPost", selectedWPost);
         }
+        if (selectedSTpost != null) {
+            sessionMap.put("selectedPost", selectedSTpost);
+
+        }
+        if (selectedSWpost != null) {
+            sessionMap.put("selectedPost", selectedSWpost);
+
+        }
         return "bidpost.xhtml?faces-redirect=true";
     }
+
+    public String getWarehouseName(Integer warehouId) {
+        return postsSB.getWarehouseLocation(warehouId);
+    }
+
+    public List<Post> getAllSTPosts() {
+        return allSTPosts;
+    }
+
+    public void setAllSTPosts(List<Post> allSTPosts) {
+        this.allSTPosts = allSTPosts;
+    }
+
+    public List<Post> getAllSWPosts() {
+        return allSWPosts;
+    }
+
+    public void setAllSWPosts(List<Post> allSWPosts) {
+        this.allSWPosts = allSWPosts;
+    }
+
 }

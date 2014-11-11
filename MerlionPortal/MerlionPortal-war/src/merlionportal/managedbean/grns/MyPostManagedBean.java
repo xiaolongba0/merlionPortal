@@ -35,7 +35,7 @@ public class MyPostManagedBean {
     private Boolean needCancel;
     private Bid selectedBid;
     private Boolean openPost;
-    
+
     @PostConstruct
     public void init() {
         boolean redirect = true;
@@ -67,18 +67,18 @@ public class MyPostManagedBean {
             serviceType = 2;
         }
         Date todayDate = new Date();
-        if ((!myPost.getExpireDate().after(todayDate))&&myPost.getStatus().equals("Valid")) {
+        if ((!myPost.getExpireDate().after(todayDate)) && myPost.getStatus().equals("Valid")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "!", "This Post is No Longer Valid Please Cancel"));
         }
-        if(myPost.getStatus().equals("Valid")){
-            needCancel=true;
+        if (myPost.getStatus().equals("Valid")) {
+            needCancel = true;
         }
-        if(myPost.getExpireDate().after(todayDate)&& myPost.getStatus().equals("Valid")){
-            openPost=true;
+        if (myPost.getExpireDate().after(todayDate) && myPost.getStatus().equals("Valid")) {
+            openPost = true;
         }
     }
-    
-    public void cancelThisRequest(){
+
+    public void cancelThisRequest() {
         postsSB.cancelPost(myPost);
     }
 
@@ -140,6 +140,13 @@ public class MyPostManagedBean {
     public void setOpenPost(Boolean openPost) {
         this.openPost = openPost;
     }
-    
-    
+
+    public String getWarehouName(Integer wId) {
+        return postsSB.getWarehouseName(wId);
+    }
+
+    public String getWarehouseLocation(Integer wId) {
+        return postsSB.getWarehouseLocation(wId);
+    }
+
 }

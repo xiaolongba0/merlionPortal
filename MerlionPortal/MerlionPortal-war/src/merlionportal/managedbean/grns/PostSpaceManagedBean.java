@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -37,6 +38,11 @@ public class PostSpaceManagedBean {
     private Double totalSpace;
     private String currency;
     private Date expireDate;
+    private Integer serviceType;
+    private String warehouseLocation;
+    private String warehouseName;
+    private String description;
+    private Boolean summitable;
 
     @PostConstruct
     public void init() {
@@ -56,7 +62,8 @@ public class PostSpaceManagedBean {
                 ex.printStackTrace();
             }
         }
-
+        serviceType = 1;
+        summitable = true;
     }
 
     public PostSpaceManagedBean() {
@@ -163,6 +170,81 @@ public class PostSpaceManagedBean {
 
     public void setExpireDate(Date expireDate) {
         this.expireDate = expireDate;
+    }
+
+    public void updateWinfo() {
+        if (warehouseId == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please Enter Warehouse Id."));
+
+        } else {
+            if (reverseSB.checkValidWarehouse(warehouseId, companyId)) {
+                serviceType = 2;
+                warehouseName = reverseSB.getWarehouseName(warehouseId);
+                warehouseLocation = reverseSB.getWarehouseLocation(warehouseId);
+            }
+        }
+    }
+
+    public Integer getServiceType() {
+        return serviceType;
+    }
+
+    public void setServiceType(Integer serviceType) {
+        this.serviceType = serviceType;
+    }
+
+    public String getWarehouseLocation() {
+        return warehouseLocation;
+    }
+
+    public void setWarehouseLocation(String warehouseLocation) {
+        this.warehouseLocation = warehouseLocation;
+    }
+
+    public String getWarehouseName() {
+        return warehouseName;
+    }
+
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
+    }
+
+    public void postRequest() {
+        if (serviceType == 1) {
+            if (orign == null || desti == null || volume == null || deliveryDate == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please fillin all filed."));
+            } else {
+                reverseSB.postTPost(description, desti, orign, deliveryDate, currency, expireDate, userId, volume);
+                summitable = false;
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Post successful"));
+            }
+        }
+        if (serviceType == 2) {
+            if (warehouseId == null || warehouseName == null || warehouseLocation == null || startDate == null || endDate == null || totalSpace == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please fillin all filed."));
+            } else {
+                reverseSB.postWPost(warehouseId, description, startDate, endDate, totalSpace, currency, expireDate, userId);
+                summitable = false;
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Post successful"));
+
+            }
+        }
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Boolean isSummitable() {
+        return summitable;
+    }
+
+    public void setSummitable(Boolean summitable) {
+        this.summitable = summitable;
     }
 
 }

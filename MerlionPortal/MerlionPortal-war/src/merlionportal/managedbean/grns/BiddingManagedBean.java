@@ -34,6 +34,9 @@ public class BiddingManagedBean {
     private Post mypost;
     private int serviceType;
     private Double bids;
+    private String warehoueLocation;
+    private String warehouseName;
+         
 
     @PostConstruct
     public void init() {
@@ -62,6 +65,14 @@ public class BiddingManagedBean {
         }
         if (serviceT.equals("Warehouse")) {
             serviceType = 2;
+        }
+        if (serviceT.equals("Transportation Space")) {
+            serviceType = 3;
+        }
+        if (serviceT.equals("Warehouse Space")) {
+            serviceType = 4;
+            warehoueLocation=postsSB.getWarehouseLocation(mypost.getWarehouseId());
+            warehouseName=postsSB.getWarehouseName(mypost.getWarehouseId());
         }
     }
 
@@ -108,6 +119,22 @@ public class BiddingManagedBean {
         this.bids = bids;
     }
 
+    public String getWarehoueLocation() {
+        return warehoueLocation;
+    }
+
+    public void setWarehoueLocation(String warehoueLocation) {
+        this.warehoueLocation = warehoueLocation;
+    }
+
+    public String getWarehouseName() {
+        return warehouseName;
+    }
+
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
+    }
+
     public String bisPost() {
         
         if (bids == null) {
@@ -118,4 +145,5 @@ public class BiddingManagedBean {
         systemLogSB.recordSystemLog(userId, "GRNS placed a bid.");
         return "viewallposts.xhtml?faces-redirect=true";
     }
+    
 }

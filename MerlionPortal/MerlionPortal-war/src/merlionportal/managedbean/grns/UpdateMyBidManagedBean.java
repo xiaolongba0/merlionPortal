@@ -137,4 +137,10 @@ public class UpdateMyBidManagedBean {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "INFO!", " Bids Updated "));
         systemLogSB.recordSystemLog(userId, "GRNS updated bid.");
     }
+    public String getWarehouName(Integer wId){
+        return postsSB.getWarehouseName(wId);
+    }
+    public String getWarehouseLocation(Integer wId){
+        return postsSB.getWarehouseLocation(wId);
+    }
 }
