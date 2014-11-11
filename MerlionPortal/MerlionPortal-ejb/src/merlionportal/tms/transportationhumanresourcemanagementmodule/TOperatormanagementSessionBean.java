@@ -64,6 +64,54 @@ public class TOperatormanagementSessionBean {
         return allMyOperator;
     }
 
+    public List<TransportationOperator> viewMyAvailableOperator(Integer companyId) {
+        List<TransportationOperator> allMyOperator = new ArrayList<>();
+        List<TransportationOperator> tempList = new ArrayList();
+        System.out.println("In viewMyOperator, company ID ============================= : " + companyId);
+        System.out.println("ehhh===================== : " + companyId);
+
+        Query query = em.createNamedQuery("TransportationOperator.findByCompanyId").setParameter("companyId", companyId);
+        tempList = query.getResultList();
+        for(TransportationOperator o : tempList){
+            if (o.getIsAvailable()){
+                allMyOperator.add(o);
+            }
+        }
+        return allMyOperator;
+    }
+
+    public Integer countMyAvailableOperator(Integer companyId) {
+        Integer count = 0;
+        List<TransportationOperator> tempList = new ArrayList();
+        System.out.println("In viewMyOperator, company ID ============================= : " + companyId);
+        System.out.println("ehhh===================== : " + companyId);
+
+        Query query = em.createNamedQuery("TransportationOperator.findByCompanyId").setParameter("companyId", companyId);
+        tempList = query.getResultList();
+        for(TransportationOperator o : tempList){
+            if (o.getIsAvailable()){
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    public List<TransportationOperator> viewMyNotAvailableOperator(Integer companyId) {
+        List<TransportationOperator> allMyOperator = new ArrayList<>();
+        List<TransportationOperator> tempList = new ArrayList();
+        System.out.println("In viewMyOperator, company ID ============================= : " + companyId);
+        System.out.println("ehhh===================== : " + companyId);
+
+        Query query = em.createNamedQuery("TransportationOperator.findByCompanyId").setParameter("companyId", companyId);
+        tempList = query.getResultList();
+        for(TransportationOperator o : tempList){
+            if (!o.getIsAvailable()){
+                allMyOperator.add(o);
+            }
+        }
+        return allMyOperator;
+    }
+
     public Boolean deleteOperator(Integer operatorId) {
 
         Query query = em.createNamedQuery("TransportationOperator.findByOperatorId").setParameter("operatorId", operatorId);
@@ -94,14 +142,14 @@ public class TOperatormanagementSessionBean {
 
         List<Integer> roles = new ArrayList();
         roles.add(roleId);
-        
+
 // MANLI COME CHECK!!!!!!!!!!!     
 //        What are the roles and operatorId;
         Integer userId = uamsb.createSystemUser(1, companyId, roles, operatorName, operatorLastName, emailAddress, password, postalAddress, contactNumber, salution, 1);
         System.out.println("==========Created System User====== :" + userId);
         TransportationOperator operatorr = new TransportationOperator();
-        String tempName = operatorName+operatorLastName;
-        
+        String tempName = operatorName + operatorLastName;
+
         operatorr.setOperatorType(operatorType);
         operatorr.setOperatorStatus(operatorStatus);
         operatorr.setIsAvailable(Boolean.TRUE);
@@ -209,7 +257,7 @@ public class TOperatormanagementSessionBean {
         return true;
     }
 
-    public boolean editOSchedule(Date startDate, Date endDate, Integer operatorScheduleId) {
+    public Boolean editOSchedule(Date startDate, Date endDate, Integer operatorScheduleId) {
 
         OperatorSchedule oSchedule = new OperatorSchedule();
         Query query = em.createNamedQuery("OperatorSchedule.findByOperatorScheduleId").setParameter("operatorScheduleId", operatorScheduleId);

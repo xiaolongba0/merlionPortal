@@ -224,7 +224,7 @@ public class TAssetmanagementSessionBean {
 
     }
 
-    public Boolean addRoute(Integer distance, String routeType, Integer startNodeId, Integer endNodeId){
+    public Boolean addRoute(Integer distance, String routeType, Integer startNodeId, Integer endNodeId) {
         this.addRoute2(distance, routeType, startNodeId, endNodeId);
         this.addRoute2(distance, routeType, endNodeId, startNodeId);
         return true;
@@ -437,6 +437,28 @@ public class TAssetmanagementSessionBean {
 
         return locationTemp.getTransportationAssetList();
 
+    }
+
+    public List<TransportationAsset> viewMainttAssetForALocation(Integer locationId) {
+
+        System.out.println("In viewMyTransportationAsset at, Location ID ============================= : " + locationId);
+        System.out.println("viewAssetForALocation");
+        Location locationTemp = new Location();
+
+        if (locationId != null) {
+            locationTemp = em.find(Location.class, locationId);
+            System.out.println("In viewMyTransportationAssets, finding location" + locationTemp);
+        }
+
+        List<TransportationAsset> temp = new ArrayList();
+        List<TransportationAsset> available = new ArrayList();
+        temp = locationTemp.getTransportationAssetList();
+        for (TransportationAsset tAsset : temp) {
+            if (tAsset.getIsMaintain()== true) {
+                available.add(tAsset);
+            }
+        }
+        return available;
     }
 
     public Integer counttAssetForALocation(Integer locationId) {
