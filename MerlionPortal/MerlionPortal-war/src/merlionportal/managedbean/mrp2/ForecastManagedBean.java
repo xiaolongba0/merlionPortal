@@ -79,15 +79,15 @@ public class ForecastManagedBean implements Serializable {
     }
 
     public String navigator() {
-        return ("forecastviewhistory");
+        return "forecastviewhistory?faces-redirect=true";
     }
 
     public String proceedGetUserInput() {
-        return ("forecastgetperiodicity");
+        return "forecastgetperiodicity?faces-redirect=true";
     }
 
     public String stopForecasting() {
-        return ("forecast");
+        return "forecast?faces-redirect=true";
     }
 
     public String proceedViewResult() {
@@ -95,15 +95,15 @@ public class ForecastManagedBean implements Serializable {
     }
 
     public String goBackForecastParameter() {
-        return ("forecastgetperiodicity");
+        return "forecastgetperiodicity?faces-redirect=true";
     }
 
     public String proceedMPS() {
-        return ("mps");
+        return "mps?faces-redirect=true";
     }
     
     public String backToHistory() {
-        return ("forecastviewhistory");
+        return "forecastviewhistory?faces-redirect=true";
     }
     
     

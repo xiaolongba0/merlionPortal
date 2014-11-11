@@ -367,7 +367,7 @@ public class MPSResultManagedBean {
 
     public String proceedToMaterialReq() {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("minOnHand", minOnHand);
-        return ("materialreq");
+        return "materialreq?faces-redirect=true";
     }
 
 }

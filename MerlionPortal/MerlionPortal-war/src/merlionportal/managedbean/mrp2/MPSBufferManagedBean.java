@@ -142,7 +142,7 @@ public class MPSBufferManagedBean {
     public String proceedToMPSResult() {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("buffer", buffer);
 
-        return ("mpsresult");
+        return "mpsresult?faces-redirect=true";
     }
 
 }

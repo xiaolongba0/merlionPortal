@@ -138,11 +138,11 @@ public class MaterialReqManagedBean {
       public String proceedToPO(){
            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mrps", mrps);
            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listOfSentPO", listOfSentPO);
-          return ("allpo");
+          return "allpo?faces-redirect=true";
       }
       
       public String doNotToPO(){
-          return ("mrp");
+          return "mrp?faces-redirect=true";
       }
           
 
