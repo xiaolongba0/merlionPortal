@@ -121,6 +121,10 @@ public class TOperatorManagerBean {
         birthday = null;
         operatorType = null;
         operatorStatus = null;
+        contactNumber = null;
+        password = null;
+        emailaddress = null;
+        roleId = null;
         
     }
 

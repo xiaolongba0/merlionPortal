@@ -11,6 +11,7 @@ import entity.TransportationAsset;
 import entity.TransportationOperator;
 import entity.Route;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -82,8 +83,8 @@ public class TAssetScheduleManagerBean {
 
     public void createTassetSchedule() {
         System.out.println("tAsset Id: " + tassetId);
-        Integer result = tamsb.addTAssetSchedule(startDate, endDate,loading, tassetId, operatorId, routeId);
-        if (result>0) {
+        Integer result = tamsb.addTAssetSchedule(startDate, endDate, loading, tassetId, operatorId, routeId);
+        if (result > 0) {
             clearAllFields();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "New Schedule created!"));
             systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS created new schedule");
@@ -98,12 +99,33 @@ public class TAssetScheduleManagerBean {
 
         }
     }
+
     public void onChangeLocationS() {
+        List<Route> updateList = new ArrayList();
+        String temp = new String();
         if (locationId != null) {
-           
-            routes = tamsb.viewRoutesForLocation(locationId);
+            if (tassetId != null) {
+                List<Route> tempList = tamsb.viewRoutesForLocation(locationId);
+                String type = tamsb.getAsset(tassetId).getAssetType();
+                if (type.equals("Truck")) {
+                    temp = "Land";
+                } else if (type.equals("Ship")) {
+                    temp = "Sea";
+                } else if (type.equals("Plane")) {
+                    temp = "Air";
+                }
+                for (Route r : tempList) {
+                    if (r.getRouteType().equals(temp)) {
+                        updateList.add(r);
+                    }
+                }
+
+            }
+
         }
+        routes = updateList;
     }
+
     private void clearAllFields() {
         locationId = null;
         tassetId = null;
