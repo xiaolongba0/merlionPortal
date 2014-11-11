@@ -83,7 +83,7 @@ public class RouteManagerBean {
             System.out.println("=====endNode Id:" + endNodeId);
             
             newRouteId = tassetManagementSessionBean.addRoute(distance, routeType, startNodeId, endNodeId);
-            if (newRouteId = true) {
+            if (newRouteId) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Route Added!", ""));
                 clearAllFields();
                 System.out.println("[WAR FILE]===========================Create New Route");

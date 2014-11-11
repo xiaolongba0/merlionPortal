@@ -69,7 +69,7 @@ public class TOperatorScheduleViewEditManagedBean {
                 ex.printStackTrace();
             }
         }
-        operators = tomsb.viewMyOperator(companyId);
+        operators = tomsb.viewMyNotAvailableOperator(companyId);
     }
 
     public void onOperatorChange() {

@@ -83,7 +83,7 @@ public class TOperatorScheduleManagerBean {
 
     public void onChangeCompany() {
         if (companyId != null) {
-            operators = tomsb.viewMyOperator(companyId);
+            operators = tomsb.viewMyAvailableOperator(companyId);
         }
     }
 

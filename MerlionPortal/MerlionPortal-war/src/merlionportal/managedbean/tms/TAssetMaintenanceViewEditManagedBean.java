@@ -84,7 +84,7 @@ public class TAssetMaintenanceViewEditManagedBean {
 
     public void onLocationChange() {
         if (locationId != null) {
-            tassetss = tamsb.viewtAssetForALocation(locationId);
+            tassetss = tamsb.viewMainttAssetForALocation(locationId);
         }
     }
 
