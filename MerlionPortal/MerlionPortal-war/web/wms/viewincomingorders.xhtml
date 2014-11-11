@@ -175,10 +175,15 @@
                                     <h:outputText value="#{order.servicePOId}" />
                                 </p:column>
 
-                                <p:column headerText="">
-                                    <p:commandButton  action="#{receivingPutawayManagedBean.getOrder(order)}" value="Process Order">
+                                <p:column>
+                                    <p:commandButton  action="#{receivingPutawayManagedBean.getOrder(order)}" value="Process Order" rendered="#{(order.status).equalsIgnoreCase(Processing)}">
                                     </p:commandButton> 
                                 </p:column>
+                                <p:column>
+                                    <p:commandButton  action="#{receivingPutawayManagedBean.rejectOrder(order.orderId)}" value="Reject Order">
+                                    </p:commandButton> 
+                                </p:column>
+
                             </p:dataTable>
                             <br></br>
                             <p:messages id="msgs" autoUpdate="true" closable="true" />
