@@ -28,32 +28,34 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author manliqi
  */
 @Entity
-@Table(name = "ContractInvoice")
+@Table(name = "OtherInvoice")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "ContractInvoice.findAll", query = "SELECT c FROM ContractInvoice c"),
-    @NamedQuery(name = "ContractInvoice.findByContractInvoiceId", query = "SELECT c FROM ContractInvoice c WHERE c.contractInvoiceId = :contractInvoiceId"),
-    @NamedQuery(name = "ContractInvoice.findByPrice", query = "SELECT c FROM ContractInvoice c WHERE c.price = :price"),
-    @NamedQuery(name = "ContractInvoice.findBySenderCompanyId", query = "SELECT c FROM ContractInvoice c WHERE c.senderCompanyId = :senderCompanyId"),
-    @NamedQuery(name = "ContractInvoice.findByReceiverCompanyId", query = "SELECT c FROM ContractInvoice c WHERE c.receiverCompanyId = :receiverCompanyId"),
-    @NamedQuery(name = "ContractInvoice.findByCreatorId", query = "SELECT c FROM ContractInvoice c WHERE c.creatorId = :creatorId"),
-    @NamedQuery(name = "ContractInvoice.findByStatus", query = "SELECT c FROM ContractInvoice c WHERE c.status = :status"),
-    @NamedQuery(name = "ContractInvoice.findByConditionText", query = "SELECT c FROM ContractInvoice c WHERE c.conditionText = :conditionText"),
-    @NamedQuery(name = "ContractInvoice.findByCreatedDate", query = "SELECT c FROM ContractInvoice c WHERE c.createdDate = :createdDate"),
-    @NamedQuery(name = "ContractInvoice.findByMethod", query = "SELECT c FROM ContractInvoice c WHERE c.method = :method"),
-    @NamedQuery(name = "ContractInvoice.findByReceiveDate", query = "SELECT c FROM ContractInvoice c WHERE c.receiveDate = :receiveDate"),
-    @NamedQuery(name = "ContractInvoice.findByAccountInfo", query = "SELECT c FROM ContractInvoice c WHERE c.accountInfo = :accountInfo"),
-    @NamedQuery(name = "ContractInvoice.findByCreditCardNo", query = "SELECT c FROM ContractInvoice c WHERE c.creditCardNo = :creditCardNo"),
-    @NamedQuery(name = "ContractInvoice.findBySwiftcode", query = "SELECT c FROM ContractInvoice c WHERE c.swiftcode = :swiftcode"),
-    @NamedQuery(name = "ContractInvoice.findByCheckNumber", query = "SELECT c FROM ContractInvoice c WHERE c.checkNumber = :checkNumber"),
-    @NamedQuery(name = "ContractInvoice.findByContractId", query = "SELECT c FROM ContractInvoice c WHERE c.contractId = :contractId")})
-public class ContractInvoice implements Serializable {
+    @NamedQuery(name = "OtherInvoice.findAll", query = "SELECT o FROM OtherInvoice o"),
+    @NamedQuery(name = "OtherInvoice.findByInvoiceId", query = "SELECT o FROM OtherInvoice o WHERE o.invoiceId = :invoiceId"),
+    @NamedQuery(name = "OtherInvoice.findByPrice", query = "SELECT o FROM OtherInvoice o WHERE o.price = :price"),
+    @NamedQuery(name = "OtherInvoice.findBySenderCompanyId", query = "SELECT o FROM OtherInvoice o WHERE o.senderCompanyId = :senderCompanyId"),
+    @NamedQuery(name = "OtherInvoice.findByReceiverCompanyId", query = "SELECT o FROM OtherInvoice o WHERE o.receiverCompanyId = :receiverCompanyId"),
+    @NamedQuery(name = "OtherInvoice.findByCreatorId", query = "SELECT o FROM OtherInvoice o WHERE o.creatorId = :creatorId"),
+    @NamedQuery(name = "OtherInvoice.findByStatus", query = "SELECT o FROM OtherInvoice o WHERE o.status = :status"),
+    @NamedQuery(name = "OtherInvoice.findByConditionText", query = "SELECT o FROM OtherInvoice o WHERE o.conditionText = :conditionText"),
+    @NamedQuery(name = "OtherInvoice.findByCreatedDate", query = "SELECT o FROM OtherInvoice o WHERE o.createdDate = :createdDate"),
+    @NamedQuery(name = "OtherInvoice.findByMethod", query = "SELECT o FROM OtherInvoice o WHERE o.method = :method"),
+    @NamedQuery(name = "OtherInvoice.findByReceiveDate", query = "SELECT o FROM OtherInvoice o WHERE o.receiveDate = :receiveDate"),
+    @NamedQuery(name = "OtherInvoice.findByAccountInfo", query = "SELECT o FROM OtherInvoice o WHERE o.accountInfo = :accountInfo"),
+    @NamedQuery(name = "OtherInvoice.findByCreditCardNo", query = "SELECT o FROM OtherInvoice o WHERE o.creditCardNo = :creditCardNo"),
+    @NamedQuery(name = "OtherInvoice.findBySwiftcode", query = "SELECT o FROM OtherInvoice o WHERE o.swiftcode = :swiftcode"),
+    @NamedQuery(name = "OtherInvoice.findByCheckNumber", query = "SELECT o FROM OtherInvoice o WHERE o.checkNumber = :checkNumber"),
+    @NamedQuery(name = "OtherInvoice.findByContractId", query = "SELECT o FROM OtherInvoice o WHERE o.contractId = :contractId"),
+    @NamedQuery(name = "OtherInvoice.findByGrnsOrderId", query = "SELECT o FROM OtherInvoice o WHERE o.grnsOrderId = :grnsOrderId"),
+    @NamedQuery(name = "OtherInvoice.findByGrnsOrder", query = "SELECT o FROM OtherInvoice o WHERE o.grnsOrder = :grnsOrder")})
+public class OtherInvoice implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "contractInvoiceId")
-    private Integer contractInvoiceId;
+    @Column(name = "invoiceId")
+    private Integer invoiceId;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "price")
     private Double price;
@@ -89,20 +91,24 @@ public class ContractInvoice implements Serializable {
     private BigInteger checkNumber;
     @Column(name = "contractId")
     private Integer contractId;
+    @Column(name = "grnsOrderId")
+    private Integer grnsOrderId;
+    @Column(name = "grnsOrder")
+    private Boolean grnsOrder;
 
-    public ContractInvoice() {
+    public OtherInvoice() {
     }
 
-    public ContractInvoice(Integer contractInvoiceId) {
-        this.contractInvoiceId = contractInvoiceId;
+    public OtherInvoice(Integer invoiceId) {
+        this.invoiceId = invoiceId;
     }
 
-    public Integer getContractInvoiceId() {
-        return contractInvoiceId;
+    public Integer getInvoiceId() {
+        return invoiceId;
     }
 
-    public void setContractInvoiceId(Integer contractInvoiceId) {
-        this.contractInvoiceId = contractInvoiceId;
+    public void setInvoiceId(Integer invoiceId) {
+        this.invoiceId = invoiceId;
     }
 
     public Double getPrice() {
@@ -217,21 +223,37 @@ public class ContractInvoice implements Serializable {
         this.contractId = contractId;
     }
 
+    public Integer getGrnsOrderId() {
+        return grnsOrderId;
+    }
+
+    public void setGrnsOrderId(Integer grnsOrderId) {
+        this.grnsOrderId = grnsOrderId;
+    }
+
+    public Boolean getGrnsOrder() {
+        return grnsOrder;
+    }
+
+    public void setGrnsOrder(Boolean grnsOrder) {
+        this.grnsOrder = grnsOrder;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (contractInvoiceId != null ? contractInvoiceId.hashCode() : 0);
+        hash += (invoiceId != null ? invoiceId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ContractInvoice)) {
+        if (!(object instanceof OtherInvoice)) {
             return false;
         }
-        ContractInvoice other = (ContractInvoice) object;
-        if ((this.contractInvoiceId == null && other.contractInvoiceId != null) || (this.contractInvoiceId != null && !this.contractInvoiceId.equals(other.contractInvoiceId))) {
+        OtherInvoice other = (OtherInvoice) object;
+        if ((this.invoiceId == null && other.invoiceId != null) || (this.invoiceId != null && !this.invoiceId.equals(other.invoiceId))) {
             return false;
         }
         return true;
@@ -239,7 +261,7 @@ public class ContractInvoice implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.ContractInvoice[ contractInvoiceId=" + contractInvoiceId + " ]";
+        return "entity.OtherInvoice[ invoiceId=" + invoiceId + " ]";
     }
     
 }
