@@ -12,6 +12,7 @@ import entity.TransportationAsset;
 import entity.AssetSchedule;
 import entity.MaintenanceLog;
 import entity.OperatorSchedule;
+import entity.Route;
 import entity.TransportationOperator;
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,7 +71,7 @@ public class TransportationAssetMaintenanceManagementSessionBean {
         return false;
     }
 
-    public Integer addNewMaintenanceLog(String cost, String description, Integer operatorId, Date startDate, Date endDate, Integer tAssetId) {
+    public Integer addNewMaintenanceLog(String cost, String description, Integer operatorId, Date startDate, Date endDate, Integer tAssetId, Integer routeId) {
         System.out.println("[INSIDE EJB]================================Add New MaintenanceLog");
 
         Query query = em.createNamedQuery("TransportationAsset.findByAssetId").setParameter("assetId", tAssetId);
@@ -99,6 +100,8 @@ public class TransportationAssetMaintenanceManagementSessionBean {
             maintainSchedule.setEndDate(endDate);
             maintainSchedule.setTransporationAssetassetId(tAsset);
             maintainSchedule.setOperatorId(operatorId);
+            Route tempRoute = em.find(Route.class, routeId);
+            maintainSchedule.setRoute(tempRoute);
 
             System.out.println("==========Maintenance Cost========== :" + cost);
             System.out.println("==========Maintenance Description=== :" + description);

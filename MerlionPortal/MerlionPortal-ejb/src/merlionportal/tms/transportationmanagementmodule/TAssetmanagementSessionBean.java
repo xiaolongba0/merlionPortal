@@ -85,6 +85,20 @@ public class TAssetmanagementSessionBean {
         return node.getNodeId();
     }
 
+    public List<Node> findDist() {
+        Query query = em.createNamedQuery("Node.findByLocationType").setParameter("locationType", "Dist");
+        List<Node> dists = query.getResultList();
+
+        return dists;
+    }
+
+    public List<Node> findMaint() {
+        Query query = em.createNamedQuery("Node.findByLocationType").setParameter("locationType", "Maint");
+        List<Node> maints = query.getResultList();
+
+        return maints;
+    }
+
     public Integer editNode(String nodeName, String nodeType, Integer nodeId) {
 
         System.out.println("[EJB]================================edit Node");
@@ -134,8 +148,11 @@ public class TAssetmanagementSessionBean {
         List<Route> allMyRoute = query.getResultList();
 
         for (Route r : allMyRoute) {
-            if (Objects.equals(r.getRouteId(), routeId)) {
+            if (r.getRouteId().equals(routeId)) {
+                Node tempNode = r.getStartNodeId();
+                
                 em.remove(r);
+                em.merge(tempNode);
                 em.flush();
                 System.out.println("successfully deleted:" + routeId);
                 return true;
@@ -144,6 +161,18 @@ public class TAssetmanagementSessionBean {
         return false;
     }
 
+    
+//        Query query = em.createNamedQuery("Node.findAll");
+//        List<Node> allMyNode = query.getResultList();
+//
+//        for (Node n : allMyNode) {
+//            if (Objects.equals(n.getNodeId(), nodeId)) {
+//                em.remove(n);
+//                em.flush();
+//                return true;
+//            }
+//        }
+//        return false;
     public Integer addRoute(Integer distance, String routeType, Integer startNodeId, Integer endNodeId) {
         System.out.println("[INSIDE EJB]================================Add New Route");
 
@@ -192,6 +221,37 @@ public class TAssetmanagementSessionBean {
 
         return route.getRouteId();
 
+    }
+
+    public List<Location> viewMyDistLocations(Integer companyId) {
+        List<Location> allMyLocation = new ArrayList<>();
+        System.out.println("In viewMyLocation, Company ID ============================= : " + companyId);
+
+        Query query = em.createNamedQuery("Location.findByCompanyId").setParameter("companyId", companyId);
+        for (Object o : query.getResultList()) {
+            Location location = (Location) o;
+            Node tempNode = location.getNodeId();
+            if (tempNode.getLocationType().equals("Dist")) {
+                allMyLocation.add(location);
+            }
+        }
+
+        return allMyLocation;
+    }
+
+    public List<Location> viewMyMaintLocations(Integer companyId) {
+        List<Location> allMyLocation = new ArrayList<>();
+        System.out.println("In viewMyLocation, Company ID ============================= : " + companyId);
+        Query query = em.createNamedQuery("Location.findByCompanyId").setParameter("companyId", companyId);
+        for (Object o : query.getResultList()) {
+            Location location = (Location) o;
+            Node tempNode = location.getNodeId();
+            if (tempNode.getLocationType().equals("Maint")) {
+                allMyLocation.add(location);
+            }
+        }
+
+        return allMyLocation;
     }
 
     public List<Location> viewMyLocations(Integer companyId) {
@@ -279,6 +339,19 @@ public class TAssetmanagementSessionBean {
 
     }
 
+    public List<Route> viewRoutesForLocation(Integer locationId) {
+        List<Route> returnThisRoutes = new ArrayList();
+        if (locationId != null) {
+            Location tempLocation = em.find(Location.class, locationId);
+            Node node = tempLocation.getNodeId();
+
+            returnThisRoutes = this.viewtheRouteForNode(node.getNodeId());
+
+        }
+        return returnThisRoutes;
+
+    }
+
     public Integer addTAsset(String assetType, Integer capacity, Integer locationlocationId, Integer price, Integer speed, Integer companyId, String status) {
 
         System.out.println("[INSIDE EJB]================================Add Transportation Asset");
@@ -292,7 +365,7 @@ public class TAssetmanagementSessionBean {
                 locationn = l;
             }
         }
-    
+
         TransportationAsset tAsset = new TransportationAsset();
         tAsset.setAssetType(assetType);
         tAsset.setCapacity(capacity);
@@ -503,7 +576,7 @@ public class TAssetmanagementSessionBean {
 
     }
 
-    public Integer addTAssetSchedule(Date startDate, Date endDate, Integer loading, Integer tAssetId, Integer operatorId) {
+    public Integer addTAssetSchedule(Date startDate, Date endDate, Integer loading, Integer tAssetId, Integer operatorId, Integer routeId) {
 
         System.out.println("[INSIDE EJB]================================Add Transportation Asset Schedule");
         Query query = em.createNamedQuery("TransportationAsset.findByAssetId").setParameter("assetId", tAssetId);
@@ -515,6 +588,8 @@ public class TAssetmanagementSessionBean {
             schedule.setEndDate(endDate);
             schedule.setTransporationAssetassetId(tAsset);
             schedule.setAssetLoad(loading);
+            Route tempRoute = em.find(Route.class, routeId);
+            schedule.setRoute(tempRoute);
 
             schedule.setOperatorId(operatorId);
             tAsset.getAssetScheduleList().add(schedule);
@@ -614,7 +689,7 @@ public class TAssetmanagementSessionBean {
         List<TransportationAsset> tempAssetList = new ArrayList();
         tempAssetList = tempLocation.getTransportationAssetList();
 
-        Integer tempScheduleId = this.addTAssetSchedule(startDate, endDate, loading, assetId, operatorId);
+        Integer tempScheduleId = this.addTAssetSchedule(startDate, endDate, loading, assetId, operatorId, routeId);
 
         AssetSchedule scheduelTemp = em.find(AssetSchedule.class, tempScheduleId);
         Route tempRoute = em.find(Route.class, routeId);
@@ -677,7 +752,7 @@ public class TAssetmanagementSessionBean {
         Integer count = 0;
         for (TransportationAsset o : temptrans) {
             if (o.getAssetType().equals("Truck")) {
-                if (o.getAssetLoad()== 0) {
+                if (o.getAssetLoad() == 0) {
                     count++;
                 }
             }

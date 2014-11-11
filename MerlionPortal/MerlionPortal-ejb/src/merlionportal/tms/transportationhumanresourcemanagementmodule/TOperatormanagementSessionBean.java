@@ -11,6 +11,7 @@ import entity.OperatorSchedule;
 import entity.SystemUser;
 import entity.Company;
 import entity.AssetSchedule;
+import entity.UserRole;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -78,7 +79,7 @@ public class TOperatormanagementSessionBean {
         return false;
     }
 
-    public Integer addNewOperator(Integer operatorId, String operatorName, String operatorLastName, String operatorGender, Date birthday, String operatorType, String operatorStatus, Integer companyId, String emailAddress, String contactNumber, String password) {
+    public Integer addNewOperator(Integer operatorId, String operatorName, String operatorLastName, String operatorGender, Date birthday, String operatorType, String operatorStatus, Integer companyId, String emailAddress, String contactNumber, String password, Integer roleId) {
         System.out.println("[INSIDE EJB]================================Add New Operator");
 ////      public int createSystemUser(Integer operatorId, Integer companyId, List<Integer> roles, String firstName, String lastName, String emailAddress, String password, String postalAddress,
 //        String contactNumber, String salution, Integer credit)   
@@ -90,9 +91,10 @@ public class TOperatormanagementSessionBean {
         }
         Company tempcompany = em.find(Company.class, companyId);
         String postalAddress = tempcompany.getAddress();
-        
+
         List<Integer> roles = new ArrayList();
-        roles.add(1);
+        roles.add(roleId);
+        
 // MANLI COME CHECK!!!!!!!!!!!     
 //        What are the roles and operatorId;
         Integer userId = uamsb.createSystemUser(1, companyId, roles, operatorName, operatorLastName, emailAddress, password, postalAddress, contactNumber, salution, 1);
