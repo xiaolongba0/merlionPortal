@@ -77,7 +77,7 @@ public class NodeManagerBean {
                 System.out.println("[WAR FILE]===========================Create New Node");
                 systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS created new node");
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Something went wrong!", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please Select Type!", ""));
             }
 
         } catch (Exception ex) {

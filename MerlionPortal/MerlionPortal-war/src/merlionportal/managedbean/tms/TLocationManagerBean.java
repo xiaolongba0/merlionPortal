@@ -13,10 +13,10 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import entity.Node;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionBean;
@@ -28,7 +28,7 @@ import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionB
 
     
 @Named(value = "tLocationManagerBean")
-@RequestScoped
+@ViewScoped
 public class TLocationManagerBean {
     
     
@@ -48,6 +48,7 @@ public class TLocationManagerBean {
     private SystemUser loginedUser;
     private Integer nodeId;
     private List<Node> nodes;
+    private String type;
        /**
      * Creates a new instance of TLocationManagerBean
      */
@@ -71,10 +72,10 @@ public class TLocationManagerBean {
                 ex.printStackTrace();
             }
         }
-        nodes = tassetManagementSessionBean.viewTheNodes();
+
     }
     
-    public void createNewLocation(ActionEvent location) {
+    public void createNewLocation() {
 
         try {
             System.out.println("[INSIDE WAR FILE]===========================Create New location");
@@ -97,8 +98,23 @@ public class TLocationManagerBean {
         }
     }
 
+    public void onTypeChange(){
+        
+        switch (type) {
+            case "Dist":
+                nodes = tassetManagementSessionBean.findDist();
+                break;
+            case "Maint":
+                nodes = tassetManagementSessionBean.findMaint();
+                break;
+        }
+        
+    }
+    
     private void clearAllFields() {
-
+        
+        type = null;
+        nodes = null;
         locationName = null;
         locationType = null;
 
@@ -221,6 +237,14 @@ public class TLocationManagerBean {
 
     public void setNodes(List<Node> nodes) {
         this.nodes = nodes;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
  

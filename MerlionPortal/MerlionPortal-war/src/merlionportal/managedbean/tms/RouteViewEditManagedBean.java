@@ -68,16 +68,16 @@ public class RouteViewEditManagedBean {
 
     }
 
-    public List<Route> viewRoutes() {
-        System.out.println("===============================[In Managed Bean - get Route!]");
-        routes = tassetmanagementSessionBean.viewtheRouteForNode(nodeId);
-
-        // for checking
-        for (Object obj : routes) {
-            System.out.println(obj);
-        }
-        return routes;
-    }
+//    public List<Route> viewRoutes() {
+//        System.out.println("===============================[In Managed Bean - get Route!]");
+//        routes = tassetmanagementSessionBean.viewtheRouteForNode(nodeId);
+//
+//        // for checking
+//        for (Object obj : routes) {
+//            System.out.println(obj);
+//        }
+//        return routes;
+//    }
 
     public void deleteRoute(Route route) {
         try {

@@ -55,6 +55,7 @@ public class TAssetMaintenanceManagerBean {
     private String cost;
     private String description;
     private List<TransportationOperator> operators;
+    private Integer routeId;
     
 
     private SystemUser loginedUser;
@@ -87,7 +88,7 @@ public class TAssetMaintenanceManagerBean {
 
     public void createMaintenanceLog() {
         System.out.println("tAsset Id: " + tassssssetId);
-        Integer result = tammsb.addNewMaintenanceLog(cost, description, operatorId, startDate, endDate, tassssssetId);
+        Integer result = tammsb.addNewMaintenanceLog(cost, description, operatorId, startDate, endDate, tassssssetId, routeId);
         if (result> -1) {
             clearAllFields();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "New Maintenance created!"));
@@ -224,6 +225,14 @@ public class TAssetMaintenanceManagerBean {
 
     public void setOperators(List<TransportationOperator> operators) {
         this.operators = operators;
+    }
+
+    public Integer getRouteId() {
+        return routeId;
+    }
+
+    public void setRouteId(Integer routeId) {
+        this.routeId = routeId;
     }
 
      

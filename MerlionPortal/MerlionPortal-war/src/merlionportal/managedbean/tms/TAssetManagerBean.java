@@ -82,7 +82,7 @@ public class TAssetManagerBean {
                 ex.printStackTrace();
             }
         }
-        locations = tassetManagementSessionBean.viewMyLocations(companyId);
+        locations = tassetManagementSessionBean.viewMyDistLocations(companyId);
         
     }
     

@@ -5,6 +5,7 @@ import javax.inject.Named;
 import entity.SystemUser;
 import entity.Company;
 import entity.TransportationOperator;
+import entity.UserRole;
 import java.io.IOException;
 import java.util.Date;
 import javax.annotation.PostConstruct;
@@ -15,7 +16,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.tms.transportationhumanresourcemanagementmodule.TOperatormanagementSessionBean;
+import merlionportal.ci.administrationmodule.GetCompanyRoleSessionBean;
 import java.util.List;
+import merlionportal.utility.MD5Generator;
 
 
 /**
@@ -30,7 +33,8 @@ public class TOperatorManagerBean {
     private TOperatormanagementSessionBean toperatorManagementSessionBean;
     @EJB
     private UserAccountManagementSessionBean uamb;
-    
+    @EJB
+    private GetCompanyRoleSessionBean gcrsb;
 
 
 
@@ -51,6 +55,8 @@ public class TOperatorManagerBean {
     private String emailaddress;
     private String password;
     private String contactNumber;
+    private List<UserRole> roles;
+    private Integer roleId;
     /**
      * Creates a new instance of AssestManagedBean
      */
@@ -76,7 +82,8 @@ public class TOperatorManagerBean {
             }
         }
         operators = toperatorManagementSessionBean.viewMyOperator(companyId);
-        
+        roles = gcrsb.getAllRolesInCompany(companyId);
+                
     }
     
 
@@ -87,7 +94,8 @@ public class TOperatorManagerBean {
             System.out.println("[INSIDE WAR FILE]===========================Create New Operator");
             System.out.println("OperatorType:" + operatorType);
             Integer operatorId = loginedUser.getSystemUserId();
-            newOperatorId = toperatorManagementSessionBean.addNewOperator(operatorId ,operatorName, operatorLastName, gender, birthday, operatorType, operatorStatus, companyId, emailaddress, contactNumber, password);
+            String hashedPass = MD5Generator.hash(password);
+            newOperatorId = toperatorManagementSessionBean.addNewOperator(operatorId ,operatorName, operatorLastName, gender, birthday, operatorType, operatorStatus, companyId, emailaddress, contactNumber, hashedPass, roleId);
             System.out.println("NEW TRANSPORTATION ASSET ID =================: " + newOperatorId);
             if (newOperatorId == -1) {
                 clearAllFields();
@@ -219,6 +227,22 @@ public class TOperatorManagerBean {
 
     public void setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
+    }
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
+    public List<UserRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<UserRole> roles) {
+        this.roles = roles;
     }
      
 

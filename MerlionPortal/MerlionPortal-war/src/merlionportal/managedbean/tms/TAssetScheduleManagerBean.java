@@ -9,6 +9,7 @@ import entity.SystemUser;
 import entity.Location;
 import entity.TransportationAsset;
 import entity.TransportationOperator;
+import entity.Route;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
@@ -53,6 +54,8 @@ public class TAssetScheduleManagerBean {
     private Date today;
     private Integer operatorId;
     private List<TransportationOperator> operators;
+    private Integer routeId;
+    private List<Route> routes;
 
     @PostConstruct
     public void init() {
@@ -79,7 +82,7 @@ public class TAssetScheduleManagerBean {
 
     public void createTassetSchedule() {
         System.out.println("tAsset Id: " + tassetId);
-        Integer result = tamsb.addTAssetSchedule(startDate, endDate,loading, tassetId, operatorId);
+        Integer result = tamsb.addTAssetSchedule(startDate, endDate,loading, tassetId, operatorId, routeId);
         if (result>0) {
             clearAllFields();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "New Schedule created!"));
@@ -92,9 +95,15 @@ public class TAssetScheduleManagerBean {
     public void onChangeLocation() {
         if (locationId != null) {
             transassetss = tamsb.viewtAvailableAssetForALocation(locationId);
+
         }
     }
-
+    public void onChangeLocationS() {
+        if (locationId != null) {
+           
+            routes = tamsb.viewRoutesForLocation(locationId);
+        }
+    }
     private void clearAllFields() {
         locationId = null;
         tassetId = null;
@@ -196,6 +205,22 @@ public class TAssetScheduleManagerBean {
 
     public void setLoading(Integer loading) {
         this.loading = loading;
+    }
+
+    public Integer getRouteId() {
+        return routeId;
+    }
+
+    public void setRouteId(Integer routeId) {
+        this.routeId = routeId;
+    }
+
+    public List<Route> getRoutes() {
+        return routes;
+    }
+
+    public void setRoutes(List<Route> routes) {
+        this.routes = routes;
     }
 
 }
