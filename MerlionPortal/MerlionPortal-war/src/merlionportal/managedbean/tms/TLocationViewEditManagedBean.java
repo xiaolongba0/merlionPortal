@@ -198,6 +198,7 @@ public class TLocationViewEditManagedBean {
         location = (Location) event.getObject();
         System.err.println("location.getName(): " + location.getLocationName());
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS edited location");
     }
 
     public void onRowCancel(RowEditEvent event) {
