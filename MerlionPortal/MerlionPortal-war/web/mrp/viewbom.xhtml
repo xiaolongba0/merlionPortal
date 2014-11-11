@@ -67,7 +67,7 @@
 
 
                 <p:growl id="msgs" showDetail="true"/>   
-                <p:dataTable id="components" var="component1" scrollable="true" scrollWidth="1400"  sortMode="multiple" value="#{productComponentViewEditManagedBean.components}" editable="true" style="margin-bottom:20px"
+                <p:dataTable id="components" var="component1" scrollable="true" scrollWidth="2000"  sortMode="multiple" value="#{productComponentViewEditManagedBean.components}" editable="true" style="margin-bottom:20px"
                              widgetVar="components"
                              emptyMessage="No Component found"
                              resizableColumns="true"
@@ -85,11 +85,11 @@
                     <p:ajax event="rowEditCancel" listener="#{productComponentViewEditManagedBean.onRowCancel}" update=":formMain:msgs" />
 
 
-                    <p:column filterBy="#{component1.componentId}" filterStyle="width: 32px" filterMatchMode="exact"  headerText="ID" style="width:105px">
+                    <p:column filterBy="#{component1.componentId}" filterMatchMode="exact"  headerText="ID" style="width:105px">
                         <h:outputText value="#{component1.componentId}" />
                     </p:column>
 
-                    <p:column filterBy="#{component1.componentName}" filterStyle="width: 60px" filterMatchMode="contains" headerText="Name" style="width:105px">
+                    <p:column filterBy="#{component1.componentName}" filterMatchMode="contains" headerText="Name" style="width:105px">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{component1.componentName}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{component1.componentName}" style="width:100%" label="Component Name"/></f:facet>
@@ -110,7 +110,7 @@
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column  headerText="Currency">
+                    <p:column  headerText="Currency" style="width:90px">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{component1.currency}" /></f:facet>
                             <f:facet name="input">
@@ -160,7 +160,7 @@
                             <f:facet name="input"><p:inputText value="#{component1.supplierContactNumber}" style="width:100%" label="Supplier Contact Number"/></f:facet>
                         </p:cellEditor>
                     </p:column>
-                    <p:column headerText="Contact Email">
+                    <p:column headerText="Contact Email" style="width:90px">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{component1.supplierContactEmail}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{component1.supplierContactEmail}" style="width:100%" label="Supplier Contact Email"/></f:facet>

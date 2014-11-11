@@ -200,17 +200,8 @@
                                 <p:password id="password" value="#{mrpPurchaseOrderManagedBean.password}" required="true" requiredMessage="Password is required." label="password"/>
                             </p:column>
                         </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="poReference"  value="Please Enter PO Reference ID (Same as the PO reference ID as shown above: " />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:inputText id="poReference" value="#{mrpPurchaseOrderManagedBean.poReference}"  required="true" requiredMessage="PO reference ID is required." label="poReference"></p:inputText>
-                            </p:column>
-                        </p:row>
-                        <p:commandButton value="Submit ID to Send PO" actionListener="#{mrpPurchaseOrderManagedBean.sendPO}" update="growl"></p:commandButton>
+                        
+                        <p:commandButton value="Submit ID to Send PO" actionListener="#{mrpPurchaseOrderManagedBean.sendPO(po.productPOId)}" update="growl"></p:commandButton>
                         <p:commandButton value="Cancel on submitting this PO" actionListener="#{mrpPurchaseOrderManagedBean.cancelPO}" update="growl"></p:commandButton>
 
                     </p:dataGrid>
