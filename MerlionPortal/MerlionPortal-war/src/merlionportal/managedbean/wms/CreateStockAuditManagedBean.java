@@ -109,7 +109,6 @@ public class CreateStockAuditManagedBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success! Stock Audit Schedule Added!", ""));
             systemLogSB.recordSystemLog(userId, "WMS add stock audit");
         } else {
-            clearAllFields();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error! Please check if storage bin is empty!", ""));
         }
     }

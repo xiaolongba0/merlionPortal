@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -111,7 +112,7 @@ public class ReceivingPutawayManagedBean {
     }
 
     public String getOrder(WmsOrder wmsOrder) {
-        System.out.println("RECEVINGPUTAWAYMANAGEDBEAN =============== getOrder "+ wmsOrder);
+        System.out.println("RECEVINGPUTAWAYMANAGEDBEAN =============== getOrder " + wmsOrder);
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
         WmsOrder selectedOrder = wmsOrder;
@@ -119,6 +120,17 @@ public class ReceivingPutawayManagedBean {
         System.out.println("GETORDER ========" + selectedOrder);
 
         return "receivingputawayprocess?faces-redirect=true";
+    }
+
+    public void rejectOrder(Integer wmsOrderId) {
+        System.out.println("RECEVINGPUTAWAYMANAGEDBEAN =============== rejectOrder " + wmsOrderId);
+        boolean result = osb.rejectOrder(wmsOrderId);
+        if (result) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success! Order rejected!", ""));
+            systemLogSB.recordSystemLog(userId, "WMS reject receiving putaway order");
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error! ", ""));
+        }
     }
 
     public SystemUser getLoginedUser() {
