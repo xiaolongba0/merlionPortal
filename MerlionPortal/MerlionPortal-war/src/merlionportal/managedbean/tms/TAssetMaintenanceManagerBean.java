@@ -8,9 +8,11 @@ package merlionportal.managedbean.tms;
 import javax.inject.Named;
 import entity.SystemUser;
 import entity.Location;
+import entity.Route;
 import entity.TransportationAsset;
 import entity.TransportationOperator;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import javax.annotation.PostConstruct;
@@ -61,6 +63,7 @@ public class TAssetMaintenanceManagerBean {
     private SystemUser loginedUser;
     private List<Location> locations;
     private List<TransportationAsset> transassetss;
+    private List<Route> routes;
 
     @PostConstruct
     public void init() {
@@ -102,6 +105,31 @@ public class TAssetMaintenanceManagerBean {
         if (locationId != null) {
             transassetss = tassetManagementSessionBean.viewtAvailableAssetForALocation(locationId);
         }
+    }
+        public void onChangeLocationS() {
+        List<Route> updateList = new ArrayList();
+        String temp = new String();
+        if (locationId != null) {
+            if (tassssssetId != null) {
+                List<Route> tempList = tassetManagementSessionBean.viewRoutesForLocation(locationId);
+                String type = tassetManagementSessionBean.getAsset(tassssssetId).getAssetType();
+                if (type.equals("Truck")) {
+                    temp = "Land";
+                } else if (type.equals("Ship")) {
+                    temp = "Sea";
+                } else if (type.equals("Plane")) {
+                    temp = "Air";
+                }
+                for (Route r : tempList) {
+                    if (r.getRouteType().equals(temp)) {
+                        updateList.add(r);
+                    }
+                }
+
+            }
+
+        }
+        routes = updateList;
     }
 
     private void clearAllFields() {
@@ -233,6 +261,14 @@ public class TAssetMaintenanceManagerBean {
 
     public void setRouteId(Integer routeId) {
         this.routeId = routeId;
+    }
+
+    public List<Route> getRoutes() {
+        return routes;
+    }
+
+    public void setRoutes(List<Route> routes) {
+        this.routes = routes;
     }
 
      

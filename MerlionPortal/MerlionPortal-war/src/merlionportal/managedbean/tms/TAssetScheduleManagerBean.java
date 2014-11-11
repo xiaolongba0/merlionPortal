@@ -131,6 +131,9 @@ public class TAssetScheduleManagerBean {
         tassetId = null;
         startDate = null;
         endDate = null;
+        loading = null;
+        operatorId = null;
+        routeId = null;
     }
 
     public Integer getLocationId() {

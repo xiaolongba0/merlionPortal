@@ -5,8 +5,10 @@
  */
 package merlionportal.managedbean.tms;
 
+import entity.AssetSchedule;
 import entity.TransportationAsset;
 import entity.Location;
+import entity.Route;
 import java.io.IOException;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -39,6 +41,8 @@ public class TAssetViewEditManagedBean {
     private SystemLogSessionBean systemLogSB;
 
     private List<TransportationAsset> tassets;
+    private List<AssetSchedule> toAssets;
+    private List<AssetSchedule> fromAssets;
     private List<Location> locations;
     private TransportationAsset tAsset;
     private String description;
@@ -56,6 +60,10 @@ public class TAssetViewEditManagedBean {
     private Integer available;
     private Integer maintenance;
     private Integer total;
+    private List<Route> toRoutes;
+    private List<Route> fromRoutes;
+    private Integer toRouteId;
+    private Integer fromRouteId;
 
     private SystemUser loginedUser;
     private PieChartModel pieModel1;
@@ -85,7 +93,6 @@ public class TAssetViewEditManagedBean {
 //        createPieModel1();
     }
 
-
     public void onLocationChange() {
         System.out.println("===============================[In Managed Bean - get Locations]");
         System.out.println("[In Managed Bean - getLocation] location ID : " + locationId);
@@ -99,6 +106,34 @@ public class TAssetViewEditManagedBean {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Storage Type. Please check if warehouse ID exists! ", ""));
             }
 
+        }
+
+    }
+
+    // Show routes from location A
+    public void onLocationfromChange() {
+        fromRoutes = tassetManagementSessionBean.viewRoutesForLocation(locationId);
+    }
+
+    // show routes to location A
+    public void onLocationToChange() {
+        toRoutes = tassetManagementSessionBean.viewRoutestoLocation(locationId);
+    }
+
+    public void onFromRouteChange() {
+        System.out.println("===============================[In Managed Bean - From A Routes]");
+        System.out.println("[In Managed Bean - From Route: " + fromRouteId);
+        if (fromRouteId != null) {
+            fromAssets = tassetManagementSessionBean.viewAssetScheduleOnRoute(fromRouteId);
+        }
+
+    }
+
+    public void onToRouteChange() {
+        System.out.println("===============================[In Managed Bean - To A Routes]");
+        System.out.println("[In Managed Bean - From Route: " + toRouteId);
+        if (toRouteId != null) {
+            toAssets = tassetManagementSessionBean.viewAssetScheduleOnRoute(toRouteId);
         }
 
     }
@@ -311,6 +346,56 @@ public class TAssetViewEditManagedBean {
 
     public void setPieModel1(PieChartModel pieModel1) {
         this.pieModel1 = pieModel1;
+    }
+
+    public List<AssetSchedule> getToAssets() {
+        return toAssets;
+    }
+
+    public void setToAssets(List<AssetSchedule> toAssets) {
+        this.toAssets = toAssets;
+    }
+
+    public List<AssetSchedule> getFromAssets() {
+        return fromAssets;
+    }
+
+    public void setFromAssets(List<AssetSchedule> fromAssets) {
+        this.fromAssets = fromAssets;
+    }
+
+
+
+    public List<Route> getToRoutes() {
+        return toRoutes;
+    }
+
+    public void setToRoutes(List<Route> toRoutes) {
+        this.toRoutes = toRoutes;
+    }
+
+    public List<Route> getFromRoutes() {
+        return fromRoutes;
+    }
+
+    public void setFromRoutes(List<Route> fromRoutes) {
+        this.fromRoutes = fromRoutes;
+    }
+
+    public Integer getToRouteId() {
+        return toRouteId;
+    }
+
+    public void setToRouteId(Integer toRouteId) {
+        this.toRouteId = toRouteId;
+    }
+
+    public Integer getFromRouteId() {
+        return fromRouteId;
+    }
+
+    public void setFromRouteId(Integer fromRouteId) {
+        this.fromRouteId = fromRouteId;
     }
 
 }
