@@ -6,6 +6,7 @@
 package merlionportal.grns.reverseauctionmodule;
 
 import entity.Bid;
+import entity.GrnsServiceOrder;
 import entity.Post;
 import entity.SystemUser;
 import entity.Warehouse;
@@ -42,7 +43,7 @@ public class PostsManagerSessionBean {
         for (Object o : q.getResultList()) {
             Post p = (Post) o;
             //rmb to change to companyId!=p.getSystemUser..... !!!!
-            if (companyId == p.getSystemUser().getCompanycompanyId().getCompanyId() && p.getServiceType().equals("Transportation")) {
+            if (companyId != p.getSystemUser().getCompanycompanyId().getCompanyId() && p.getServiceType().equals("Transportation")) {
                 if (this.checkPostValidity(p)) {
                     result.add(p);
                 }
@@ -57,7 +58,7 @@ public class PostsManagerSessionBean {
         for (Object o : q.getResultList()) {
             Post p = (Post) o;
             //rmb to change to companyId!=p.getSystemUser..... !!!!
-            if (companyId == p.getSystemUser().getCompanycompanyId().getCompanyId() && p.getServiceType().equals("Transportation Space")) {
+            if (companyId != p.getSystemUser().getCompanycompanyId().getCompanyId() && p.getServiceType().equals("Transportation Space")) {
                 if (this.checkPostValidity(p)) {
                     result.add(p);
                 }
@@ -72,7 +73,7 @@ public class PostsManagerSessionBean {
         for (Object o : q.getResultList()) {
             Post p = (Post) o;
             //rmb to change to companyId!=p.getSystemUser..... !!!!!!
-            if (companyId == p.getSystemUser().getCompanycompanyId().getCompanyId() && p.getServiceType().equals("Warehouse")) {
+            if (companyId != p.getSystemUser().getCompanycompanyId().getCompanyId() && p.getServiceType().equals("Warehouse")) {
                 if (this.checkPostValidity(p)) {
                     result.add(p);
                 }
@@ -87,7 +88,7 @@ public class PostsManagerSessionBean {
         for (Object o : q.getResultList()) {
             Post p = (Post) o;
             //rmb to change to companyId!=p.getSystemUser..... !!!!!!
-            if (companyId == p.getSystemUser().getCompanycompanyId().getCompanyId() && p.getServiceType().equals("Warehouse Space")) {
+            if (companyId != p.getSystemUser().getCompanycompanyId().getCompanyId() && p.getServiceType().equals("Warehouse Space")) {
                 if (this.checkPostValidity(p)) {
                     result.add(p);
                 }
@@ -102,8 +103,8 @@ public class PostsManagerSessionBean {
         for (Object o : q.getResultList()) {
             Post p = (Post) o;
             if (companyId == p.getSystemUser().getCompanycompanyId().getCompanyId()
-                    && p.getStatus().equalsIgnoreCase("Valid") && 
-                    (p.getServiceType().equals("Transportation")||p.getServiceType().equals("Transportation Space"))) {
+                    && p.getStatus().equalsIgnoreCase("Valid")
+                    && (p.getServiceType().equals("Transportation") || p.getServiceType().equals("Transportation Space"))) {
                 result.add(p);
             }
         }
@@ -116,8 +117,8 @@ public class PostsManagerSessionBean {
         for (Object o : q.getResultList()) {
             Post p = (Post) o;
             if (companyId == p.getSystemUser().getCompanycompanyId().getCompanyId()
-                    && p.getStatus().equalsIgnoreCase("Valid") && 
-                    (p.getServiceType().equals("Warehouse")||p.getServiceType().equals("Warehouse Space"))) {
+                    && p.getStatus().equalsIgnoreCase("Valid")
+                    && (p.getServiceType().equals("Warehouse") || p.getServiceType().equals("Warehouse Space"))) {
                 result.add(p);
             }
         }
@@ -130,8 +131,8 @@ public class PostsManagerSessionBean {
         for (Object o : q.getResultList()) {
             Post p = (Post) o;
             if (companyId == p.getSystemUser().getCompanycompanyId().getCompanyId()
-                    && p.getStatus().equalsIgnoreCase("Expired") &&
-                    (p.getServiceType().equals("Warehouse")||p.getServiceType().equals("Warehouse Space"))) {
+                    && p.getStatus().equalsIgnoreCase("Expired")
+                    && (p.getServiceType().equals("Warehouse") || p.getServiceType().equals("Warehouse Space"))) {
                 result.add(p);
             }
         }
@@ -144,8 +145,8 @@ public class PostsManagerSessionBean {
         for (Object o : q.getResultList()) {
             Post p = (Post) o;
             if (companyId == p.getSystemUser().getCompanycompanyId().getCompanyId()
-                    && p.getStatus().equalsIgnoreCase("Expired") && 
-                    (p.getServiceType().equals("Transportation")||p.getServiceType().equals("Transportation Space"))) {
+                    && p.getStatus().equalsIgnoreCase("Expired")
+                    && (p.getServiceType().equals("Transportation") || p.getServiceType().equals("Transportation Space"))) {
                 result.add(p);
             }
         }
@@ -177,6 +178,39 @@ public class PostsManagerSessionBean {
     public void cancelPost(Post myPost) {
         myPost.setStatus("Expired");
         em.merge(myPost);
+    }
+
+    public void acceptBidConvertToGrnsServiceOrder(Post myPost, Bid bid) {
+        GrnsServiceOrder grnsOrder = new GrnsServiceOrder();
+        grnsOrder.setCreateDate(new Date());
+        grnsOrder.setCurrency(myPost.getCurrency());
+        grnsOrder.setServiceType(myPost.getServiceType());
+        grnsOrder.setPrice(bid.getAmount());
+        grnsOrder.setStatus("Confirmed");
+        grnsOrder.setDescription(myPost.getDescription());
+
+        if (myPost.getServicePOList().isEmpty() && myPost.getContractList().isEmpty()) {
+            grnsOrder.setServiceProvider(bid.getSystemUser().getCompanycompanyId().getCompanyId());
+            grnsOrder.setServiceRequester(myPost.getSystemUser().getCompanycompanyId().getCompanyId());
+        } else {
+            grnsOrder.setServiceProvider(myPost.getSystemUser().getCompanycompanyId().getCompanyId());
+            grnsOrder.setServiceRequester(bid.getSystemUser().getCompanycompanyId().getCompanyId());
+        }
+
+        if (grnsOrder.getServiceType().equals("Transportation")) {
+            grnsOrder.setDeliveryDate(myPost.getDeliveryDate());
+            grnsOrder.setOrigin(myPost.getOrigin());
+            grnsOrder.setDestination(myPost.getDestination());
+            grnsOrder.setQuantityInTEU(myPost.getQuantityInTEU());
+        }
+        if (grnsOrder.getServiceType().equals("Warehouse")) {
+            grnsOrder.setStorageStartDate(myPost.getStorageStartDate());
+            grnsOrder.setStorageEndDate(myPost.getStorageEndDate());
+            grnsOrder.setWarehouseSpace(myPost.getWarehouseSpace());
+        }
+        
+        em.persist(grnsOrder);
+        em.flush();
     }
 
     public List<Bid> viewAllMyBids(int companyId) {

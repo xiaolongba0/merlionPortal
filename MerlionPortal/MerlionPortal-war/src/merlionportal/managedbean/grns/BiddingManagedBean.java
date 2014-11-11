@@ -36,7 +36,6 @@ public class BiddingManagedBean {
     private Double bids;
     private String warehoueLocation;
     private String warehouseName;
-         
 
     @PostConstruct
     public void init() {
@@ -58,22 +57,27 @@ public class BiddingManagedBean {
         }
         System.out.println("Init start===========");
         mypost = (Post) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedPost");
-        String serviceT = mypost.getServiceType();
-        System.out.println("service Type" + serviceT);
-        if (serviceT.equals("Transportation")) {
-            serviceType = 1;
+        if (mypost != null) {
+            System.out.println("Not null");
+
+            String serviceT = mypost.getServiceType();
+            System.out.println("service Type" + serviceT);
+            if (serviceT.equals("Transportation")) {
+                serviceType = 1;
+            }
+            if (serviceT.equals("Warehouse")) {
+                serviceType = 2;
+            }
+            if (serviceT.equals("Transportation Space")) {
+                serviceType = 3;
+            }
+            if (serviceT.equals("Warehouse Space")) {
+                serviceType = 4;
+                warehoueLocation = postsSB.getWarehouseLocation(mypost.getWarehouseId());
+                warehouseName = postsSB.getWarehouseName(mypost.getWarehouseId());
+            }
         }
-        if (serviceT.equals("Warehouse")) {
-            serviceType = 2;
-        }
-        if (serviceT.equals("Transportation Space")) {
-            serviceType = 3;
-        }
-        if (serviceT.equals("Warehouse Space")) {
-            serviceType = 4;
-            warehoueLocation=postsSB.getWarehouseLocation(mypost.getWarehouseId());
-            warehouseName=postsSB.getWarehouseName(mypost.getWarehouseId());
-        }
+        System.out.println("My Post" + mypost);
     }
 
     public BiddingManagedBean() {
@@ -136,7 +140,7 @@ public class BiddingManagedBean {
     }
 
     public String bisPost() {
-        
+
         if (bids == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please Enter Bids"));
             return "bidpost.xhtml";
@@ -145,5 +149,5 @@ public class BiddingManagedBean {
         systemLogSB.recordSystemLog(userId, "GRNS placed a bid.");
         return "viewallposts.xhtml?faces-redirect=true";
     }
-    
+
 }

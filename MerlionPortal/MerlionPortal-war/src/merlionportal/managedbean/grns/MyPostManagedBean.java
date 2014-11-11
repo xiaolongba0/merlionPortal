@@ -80,6 +80,14 @@ public class MyPostManagedBean {
 
     public void cancelThisRequest() {
         postsSB.cancelPost(myPost);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "This Post is canceled", ""));
+
+    }
+
+    public void acceptThisRequest() {
+        postsSB.acceptBidConvertToGrnsServiceOrder(myPost, selectedBid);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "This Bid is accepted and GRNS Service Order is Generated", ""));
+
     }
 
     public MyPostManagedBean() {

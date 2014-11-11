@@ -49,7 +49,7 @@
             </p:breadCrumb>
             <h:form id="postForm">
 
-                <c:if test="#{biddingManagedBean.serviceType==1}">
+                <c:if test="#{biddingManagedBean.serviceType eq 1}">
                     <p:panel id="basicInfo1" header="Service Information" style="margin-bottom:20px">
                         <h:panelGrid columns="2" cellpadding="10">
                             <p>Service Type : </p><h:outputText value="Transportation Service"/>
@@ -63,7 +63,7 @@
                     <br></br>                    
                 </c:if>
 
-                <c:if test="#{biddingManagedBean.serviceType==2}">
+                <c:if test="#{biddingManagedBean.serviceType eq 2}">
                     <p:panel id="basicInfo2" header="Service Information" style="margin-bottom:20px">
                         <h:panelGrid columns="2" cellpadding="10">
                             <p>Service Type : </p><h:outputText value="Warehouse Service"/>
@@ -76,7 +76,7 @@
                     <br></br>
                 </c:if>
                 
-                <c:if test="#{biddingManagedBean.serviceType==3}">
+                <c:if test="#{biddingManagedBean.serviceType eq 3}">
                     <p:panel id="basicInfo3" header="Service Information" style="margin-bottom:20px">
                         <h:panelGrid columns="2" cellpadding="10">
                             <p>Service Type : </p><h:outputText value="Transportation Space Service"/>
@@ -90,7 +90,7 @@
                     <br></br>                    
                 </c:if>
                 
-                <c:if test="#{biddingManagedBean.serviceType==4}">
+                <c:if test="#{biddingManagedBean.serviceType eq 4}">
                     <p:panel id="basicInfo4" header="Service Information" style="margin-bottom:20px">
                         <h:panelGrid columns="2" cellpadding="10">
                             <p>Service Type : </p><h:outputText value="Warehouse Service"/>

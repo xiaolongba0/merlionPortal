@@ -8,11 +8,9 @@ package merlionportal.managedbean.grns;
 import entity.Post;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -143,26 +141,53 @@ public class MarketplaceManagedBean {
     }
 
     public String bidSelectedPost() {
-        if (selectedPost == null && selectedWPost == null && selectedSTpost == null && selectedSWpost == null) {
+        if (selectedPost == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please select One Post to bid"));
         }
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        Map<String, Object> sessionMap = externalContext.getSessionMap();
+
         System.out.println("bid selected");
-        System.out.println("================" + selectedPost.getDescription());
         if (selectedPost != null) {
-            sessionMap.put("selectedPost", selectedPost);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedPost");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedPost", selectedPost);
         }
-        if (selectedWPost != null) {
-            sessionMap.put("selectedPost", selectedWPost);
+        return "bidpost.xhtml?faces-redirect=true";
+    }
+
+    public String bidSelectedSTPost() {
+        if (selectedSTpost == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please select One Post to bid"));
         }
+
+        System.out.println("bid selected");
         if (selectedSTpost != null) {
-            sessionMap.put("selectedPost", selectedSTpost);
-
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedPost");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedPost", selectedSTpost);
         }
-        if (selectedSWpost != null) {
-            sessionMap.put("selectedPost", selectedSWpost);
+        return "bidpost.xhtml?faces-redirect=true";
+    }
 
+    public String bidSelectedSWPost() {
+        if (selectedSWpost == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please select One Post to bid"));
+        }
+
+        System.out.println("bid selected");
+        if (selectedSWpost != null) {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedPost");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedPost", selectedSWpost);
+        }
+        return "bidpost.xhtml?faces-redirect=true";
+    }
+
+    public String bidSelectedWPost() {
+        if (selectedWPost == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please select One Post to bid"));
+        }
+
+        System.out.println("bid selected");
+        if (selectedWPost != null) {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedPost");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedPost", selectedWPost);
         }
         return "bidpost.xhtml?faces-redirect=true";
     }

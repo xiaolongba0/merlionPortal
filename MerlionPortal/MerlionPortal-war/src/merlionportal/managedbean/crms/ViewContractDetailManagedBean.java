@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.crms.contractmanagementmodule.ContractManagementSessionBean;
+import merlionportal.crms.ordermanagementmodule.GRNSOrderSessionBean;
 import merlionportal.utility.DTOContract;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -49,6 +50,8 @@ public class ViewContractDetailManagedBean {
     UserAccountManagementSessionBean userAccountSB;
     @EJB
     SystemLogSessionBean logSB;
+    @EJB
+    GRNSOrderSessionBean grnsSB;
 
     private Integer companyId;
     private Integer userId;
@@ -230,6 +233,9 @@ public class ViewContractDetailManagedBean {
 
     public void acceptContract() {
         int result = contractManagementSB.acceptContract(selectedContract.getContractId());
+        if (selectedContract.getServiceType().equals("Warehouse")) {
+            grnsSB.createWarehouseSpaceContractInvoice(selectedContract.getContractId(), userId, selectedContract.getPartyA(), selectedContract.getPartyB(), selectedContract.getWarehouseRental());
+        }
         if (result == 1) {
             compareStatus = 4;
             status = "Waiting to be signed";

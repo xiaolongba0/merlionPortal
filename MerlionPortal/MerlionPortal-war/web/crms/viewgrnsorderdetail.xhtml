@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="View GRNS Order Detail" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <link rel="stylesheet" href="${request.contextPath}/css/crms.css" type="text/css" />
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <h:form id="formMain">
+                <p:menu>
+                    <p:submenu label="CRMS HOME" styleClass="display:block">
+                        <p:menuitem value="CRMS Home" url="crmsindex.xhtml"/>     
+                        <p:menuitem value="Service Yellow Pages" url="serviceyellowpages.xhtml"/>
+                    </p:submenu>
+                    <p:submenu label="Service Catalog Management" styleClass="display:block">
+                        <p:menuitem value="Create New Service" url="createservice.xhtml" />
+                        <p:menuitem value="View All Services" url="viewcompanyservices.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Quotation Management" styleClass="display:block">
+                        <p:menuitem value="View All Requests" url="viewallrequests.xhtml" />
+                        <p:menuitem value="View All Quotations" url="viewallquotations.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Contract Management" styleClass="display:block">
+                        <p:menuitem value="Create Service Contract" url="createservicecontract.xhtml" />
+                        <p:menuitem value="View All Contracts" url="viewallcontracts.xhtml" />
+                        <p:menuitem value="Renew Contracts" url="renewservicecontract.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Order Management" styleClass="display:block">
+                        <p:menuitem value="Create Service PO" url="createservicepo.xhtml" />
+                        <p:menuitem value="View All Orders" url="viewallservicepos.xhtml" />
+                        <p:menuitem value="View All Invoices" url="viewallinvoices.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Key Account Management" styleClass="display:block">
+                        <p:menuitem value="View Order Statistics" url="vieworderstatistics.xhtml" />
+                        <p:menuitem value="Create Key Account" url="createkeyaccount.xhtml" />
+                        <p:menuitem value="View All Key Accounts" url="viewallkeyaccounts.xhtml" />
+                    </p:submenu>
+                </p:menu>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">
+            <p:breadCrumb>
+                <p:menuitem value="CRMS Home" url="crmsindex.xhtml" />
+                <p:menuitem value="View All GRNS Orders" url="viewallgrnsorders.xhtml" />
+                <p:menuitem value="View GRNS Order Detail" url="viewgrnsorderdetail.xhtml" />
+            </p:breadCrumb>
+            <h:form id="form">
+                <p:fieldset legend="Contact Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <h:outputText value="Service Requester Company ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewGRNSOrderDetailMB.order.serviceRequester}" />
+                        <h:outputText value="Service Requester Company Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewGRNSOrderDetailMB.requesterCompanyName}" />
+                    </h:panelGrid>
+                    <p:separator />
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <h:outputText value="Service Provider Company ID:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewGRNSOrderDetailMB.order.serviceProvider}" />
+                        <h:outputText value="Service Provider Company Name:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewGRNSOrderDetailMB.providerCompanyName}" />
+                    </h:panelGrid>
+                </p:fieldset>
+                <p:fieldset legend="GRNS Service Order Information" style="margin-bottom:20px">
+                    <h:panelGrid columns="3" cellpadding="6">
+                        <p:outputLabel value="Order ID:" style="width: 150px"/><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewGRNSOrderDetailMB.order.orderId}" />
+                        <p:outputLabel value="Service Type:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewGRNSOrderDetailMB.order.serviceType}" />
+                        <p:outputLabel value="Created Date:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewGRNSOrderDetailMB.order.createDate}" />
+                        <c:if test="#{viewGRNSOrderDetailMB.order.serviceType eq 'Transportation'}" >
+                            <p:outputLabel value="Origin:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewGRNSOrderDetailMB.order.origin}" />
+                            <p:outputLabel value="Destination:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewGRNSOrderDetailMB.order.destination}" />
+                            <p:outputLabel value="Delivery Date:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewGRNSOrderDetailMB.order.deliveryDate}" />
+                            <p:outputLabel value="Quantity in TEU:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewGRNSOrderDetailMB.order.quantityInTEU}" />
+                        </c:if>
+                        <c:if test="#{viewGRNSOrderDetailMB.order.serviceType eq 'Warehouse'}" >
+                            <p:outputLabel value="Storage Start Date:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewGRNSOrderDetailMB.order.storageStartDate}" />
+                            <p:outputLabel value="Storeage End Date:" /><p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewGRNSOrderDetailMB.order.storageEndDate}" />
+                        </c:if>
+                        <p:outputLabel value="Currency:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewGRNSOrderDetailMB.order.currency}" />
+                        <p:outputLabel value="Price:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewGRNSOrderDetailMB.order.price}" />
+                        <p:outputLabel value="Status:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewGRNSOrderDetailMB.order.status}" style="color: red"  />
+                        <p:outputLabel value="Description:" /><p:spacer width="20" height="20" />
+                        <h:outputText value="#{viewGRNSOrderDetailMB.order.description}" />
+
+                    </h:panelGrid>
+                </p:fieldset>
+            </h:form>
+
+            <h:form id="form2" >
+                <p:dialog header="Record Payment Information" widgetVar="dlg1" minHeight="40">
+                    <p:outputLabel for="method" value="Payment Method: " />
+                    <p:selectOneMenu id="method" value="#{viewGRNSOrderDetailMB.method}" style="width:250px">
+                        <p:ajax  update="change" />
+                        <f:selectItem itemLabel="Please select payment method" itemValue="" noSelectionOption="true"  />
+                        <f:selectItem itemLabel="Telegraphic Transfer" itemValue="1"  />
+                        <f:selectItem itemLabel="Credit Card" itemValue="2" />
+                        <f:selectItem itemLabel="Paper Check" itemValue="3"  />
+                    </p:selectOneMenu> 
+                    <h:panelGroup id="change" >
+                        <h:panelGrid id="tt" rendered="#{viewGRNSOrderDetailMB.method eq 1}" columns="3">
+                            <p:outputLabel value="Swift Code:" /> <p:spacer width="20" height="20" />
+                            <h:inputText value="#{viewGRNSOrderDetailMB.swiftcode}" styleClass="form-control" />
+                            <p:outputLabel value="Account Info:" /> <p:spacer width="20" height="20" />
+                            <h:inputText value="#{viewGRNSOrderDetailMB.accountInfo}"  styleClass="form-control" />
+                            <p:outputLabel value="Amount:" /> <p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewGRNSOrderDetailMB.price}" />
+                            <p:outputLabel value="Expected Receive Date:" /> <p:spacer width="20" height="20" />
+                            <p:calendar value="#{viewGRNSOrderDetailMB.receivedDate}" />
+                            <p:commandButton value="Submit Payment Info" action="#{viewGRNSOrderDetailMB.recordPaymentInfo()}" update=":form" />
+
+                        </h:panelGrid >
+                        <h:panelGrid id="cc" rendered="#{viewGRNSOrderDetailMB.method eq 2}" columns="3">
+                            <p:outputLabel value="Credit Card Number:" /> <p:spacer width="20" height="20" />
+                            <h:inputText value="#{viewGRNSOrderDetailMB.creditCardNo}"  styleClass="form-control" />
+                            <p:outputLabel value="Amount:" /> <p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewGRNSOrderDetailMB.price}" />
+                            <p:outputLabel value="Expected Receive Date:" /> <p:spacer width="20" height="20" />
+                            <p:calendar value="#{viewGRNSOrderDetailMB.receivedDate}" />
+                            <p:commandButton value="Submit Payment Info" action="#{viewGRNSOrderDetailMB.recordPaymentInfo()}" update=":form" />
+
+                        </h:panelGrid>
+                        <h:panelGrid id="pc" rendered="#{viewGRNSOrderDetailMB.method eq 3}" columns="3">
+                            <p:outputLabel value="Check Number:" /> <p:spacer width="20" height="20" />
+                            <h:inputText value="#{viewGRNSOrderDetailMB.checkNumber}"  styleClass="form-control" />
+                            <p:outputLabel value="Amount:" /> <p:spacer width="20" height="20" />
+                            <h:outputText value="#{viewGRNSOrderDetailMB.price}" />
+                            <p:outputLabel value="Expected Receive Date:" /> <p:spacer width="20" height="20" />
+                            <p:calendar value="#{viewGRNSOrderDetailMB.receivedDate}" />
+                            <p:commandButton value="Submit Payment Info" action="#{viewGRNSOrderDetailMB.recordPaymentInfo()}" update=":form" />
+
+                        </h:panelGrid>
+                    </h:panelGroup>
+                </p:dialog>
+            </h:form>
+
+
+            <h:form id="form3">
+                <!--Requester record payment information-->
+                <c:if test="#{(viewGRNSOrderDetailMB.order.status eq 'Confirmed')and (viewGRNSOrderDetailMB.order.serviceRequester eq viewGRNSOrderDetailMB.companyId)}" >
+                    <p:commandButton value="Record Payment Information"  type="button" onclick="PF('dlg1').show();" />
+                </c:if>
+            </h:form>
+            <h:form id="form4" >
+                <!--Provider update payment status-->
+                <c:if test="#{(viewGRNSOrderDetailMB.order.status eq 'Payment Info Recorded')and (viewGRNSOrderDetailMB.order.serviceProvider eq viewGRNSOrderDetailMB.companyId)}" >
+                    <p:commandButton value="Update Payment Status" action="#{viewGRNSOrderDetailMB.updatePaymentStatus()}" update=":form :form3 :form4" ajax="true" >
+                        <p:confirm header="Confirmation" message="Payment information has been verified and payment is received. 
+                                   Please click on yes button to update payment status." icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="fade" >
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                </c:if>
+                <c:if test="#{viewGRNSOrderDetailMB.order.status eq 'Payment Info Recorded'}" >
+                    <p:commandButton value="View Payment Information" />
+                </c:if>
+
+            </h:form>
+            <p:commandButton value="Go Back" icon="ui-icon-circle-arrow-w" action="viewallservicepos.xhtml?faces-redirect=true"/>
+
+        </ui:define>
+    </ui:composition>
+</html>

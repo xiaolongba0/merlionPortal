@@ -505,9 +505,6 @@ public class MerlionPortalFilter implements Filter {
                         } else {
                             //Check company package
                             //2PL and 3/4/5PL has access
-                            if (filterbean.retrieveCompanyPac(companyId) == 3 || filterbean.retrieveCompanyPac(companyId) == 4) {
-
-                            }
                         }
                     } else {
                         //session is not valid
