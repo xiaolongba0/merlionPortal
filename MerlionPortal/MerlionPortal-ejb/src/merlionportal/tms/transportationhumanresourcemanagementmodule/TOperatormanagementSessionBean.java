@@ -166,6 +166,7 @@ public class TOperatormanagementSessionBean {
             schedule.setStartDate(startDate);
             schedule.setEndDate(endDate);
             schedule.setTransportationOperatoroperatorId(tOperator);
+            operator.setIsAvailable(Boolean.FALSE);
 
             em.persist(schedule);
             em.flush();
@@ -199,6 +200,7 @@ public class TOperatormanagementSessionBean {
         }
         TransportationOperator tOperator = oSchedule.getTransportationOperatoroperatorId();
         tOperator.getOperatorScheduleList().remove(oSchedule);
+        tOperator.setIsAvailable(Boolean.TRUE);
         em.merge(tOperator);
         em.remove(oSchedule);
         em.flush();

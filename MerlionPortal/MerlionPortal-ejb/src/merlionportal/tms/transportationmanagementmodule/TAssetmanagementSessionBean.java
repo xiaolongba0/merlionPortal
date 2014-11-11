@@ -174,7 +174,7 @@ public class TAssetmanagementSessionBean {
 //            }
 //        }
 //        return false;
-    public Integer addRoute(Integer distance, String routeType, Integer startNodeId, Integer endNodeId) {
+    public Integer addRoute2(Integer distance, String routeType, Integer startNodeId, Integer endNodeId) {
         System.out.println("[INSIDE EJB]================================Add New Route");
 
         Query query1 = em.createNamedQuery("Node.findAll");
@@ -222,6 +222,12 @@ public class TAssetmanagementSessionBean {
 
         return route.getRouteId();
 
+    }
+
+    public Boolean addRoute(Integer distance, String routeType, Integer startNodeId, Integer endNodeId){
+        this.addRoute2(distance, routeType, startNodeId, endNodeId);
+        this.addRoute2(distance, routeType, endNodeId, startNodeId);
+        return true;
     }
 
     public List<Location> viewMyDistLocations(Integer companyId) {
@@ -635,6 +641,7 @@ public class TAssetmanagementSessionBean {
             return false;
         }
         TransportationAsset tAsset = schedule.getTransporationAssetassetId();
+        tAsset.setIsAvailable(Boolean.TRUE);
         Route route = schedule.getRoute();
         route.getAssetScheduleList().remove(schedule);
         tAsset.getAssetScheduleList().remove(schedule);
