@@ -291,10 +291,10 @@ public class AssetManagementSessionBean {
     // view my bins in a warehouse, excluding those which are rented
     public List<StorageBin> viewAllMyBinsInAWarehouse(Integer warehouseId) {
 
-        System.out.println("[IN EJB AMSB, viewAllMyBinsInAWarehouse]===================");
+        System.out.println("[IN EJB AMSB, viewAllMyBinsInAWarehouse]===================" + warehouseId);
         List<StorageBin> bins = new ArrayList();
         List<StorageBin> allBins = new ArrayList();
-        
+
         if (warehouseId != null) {
             Warehouse warehouse = em.find(Warehouse.class, warehouseId);
             List<WarehouseZone> allZones = new ArrayList();
@@ -315,11 +315,12 @@ public class AssetManagementSessionBean {
                 i++;
             }
         }
+        System.out.println("BINS = " + bins);
         return bins;
     }
 
     // View all bins in A warehouse, including bins rented to others
-    public List<StorageBin> viewBinsInAWarehouseIncludingRented (Integer warehouseId) {
+    public List<StorageBin> viewBinsInAWarehouseIncludingRented(Integer warehouseId) {
 
         System.out.println("In viewBinsInAWarehouse, Warehouse ID ============================= : " + warehouseId);
 
@@ -474,6 +475,8 @@ public class AssetManagementSessionBean {
         binReservedSpace = bin.getReservedSpace();
 
         binInUseSpace = binInUseSpace + newQuantity;
+        System.out.println("Bin Reserved Space = " + binReservedSpace);
+        System.out.println("Bin in use space = " + binInUseSpace);
         binReservedSpace = binReservedSpace + reservedQuantity;
         binAvailableSpace = bin.getMaxQuantity() - binInUseSpace - binReservedSpace;
         System.out.println("Bin max quantity = " + bin.getMaxQuantity());
@@ -490,21 +493,23 @@ public class AssetManagementSessionBean {
     }
 
     public boolean calculateTOBinSpace(StorageBin bin, Integer newQuantity, Integer reservedQuantity) {
-        System.out.println("[AMSB] Calculate Bin Space =======================");
+        System.out.println("[AMSB] Calculate TO Bin Space =======================");
         Integer binAvailableSpace;
         Integer binInUseSpace;
         Integer binReservedSpace;
 
+        System.out.println("================ Bin new reserved quantity = " + reservedQuantity);
+        System.out.println("NEW QUANTITY = " + newQuantity);
         binInUseSpace = bin.getInuseSpace();
+        System.out.println("================= Bin in use space = " + bin.getInuseSpace());
         binAvailableSpace = bin.getAvailableSpace();
         binReservedSpace = bin.getReservedSpace();
-        System.out.println("Bin reserved space1 = " + binReservedSpace);
-        System.out.println("Bin new reserved quantity = " + reservedQuantity);
+        System.out.println("=============== Bin reserved space1 = " + binReservedSpace);
 
         binInUseSpace = binInUseSpace + newQuantity;
         binReservedSpace = binReservedSpace + reservedQuantity;
         System.out.println("Bin reserved space2 = " + binReservedSpace);
-        System.out.println("Bin in use space = " + binInUseSpace);
+        System.out.println("Bin in use space2 = " + binInUseSpace);
         binAvailableSpace = bin.getMaxQuantity() - binInUseSpace - binReservedSpace;
         System.out.println("Bin max quantity = " + bin.getMaxQuantity());
         System.out.println("Bin available space 2 = " + binAvailableSpace);

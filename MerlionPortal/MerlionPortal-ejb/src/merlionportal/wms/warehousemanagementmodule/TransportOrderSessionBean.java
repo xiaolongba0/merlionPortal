@@ -58,7 +58,7 @@ public class TransportOrderSessionBean {
         Integer eQuantity = 0;
 
         eQuantity = rpsb.countAvailbleStockInWarehouse(sourceWarehouseId, productId);
-        
+
         // 0 for to be processed, 1 for cancelled, 2 for sent, 3 for received and completed
         Integer orderStatus = 0;
 
@@ -72,30 +72,33 @@ public class TransportOrderSessionBean {
             List<Stock> allStocks = new ArrayList<>();
             // get stocks that belong to that warehouse only
             allStocks = rpsb.getWarehouseStock(sourceWarehouseId, productId);
-            Stock stock = allStocks.get(0);
-            // get the type of the source bin, to compare to the type of the destination bin later
-            String sourceBinType = stock.getStorageBin().getBinType();
 
-            System.out.println("[UNSORTED] AllStocks = " + allStocks);
-            System.out.println("source bin typr = " + sourceBinType);
+            String sourceBinType = "";
+            if (allStocks.size() != 0) {
+                Stock stock = allStocks.get(0);
+                // get the type of the source bin, to compare to the type of the destination bin later
+                sourceBinType = stock.getStorageBin().getBinType();
 
-            if (stock.getExpiryDate() == null) {
-                Collections.sort(allStocks, new Comparator<Stock>() {
-                    @Override
-                    public int compare(Stock o1, Stock o2) {
-                        return o1.getCreatedDate().compareTo(o2.getCreatedDate());
-                    }
-                });
-            } // sort the list of stocks according to expiry date
-            else {
-                Collections.sort(allStocks, new Comparator<Stock>() {
-                    @Override
-                    public int compare(Stock o1, Stock o2) {
-                        return o1.getExpiryDate().compareTo(o2.getExpiryDate());
-                    }
-                });
+                System.out.println("[UNSORTED] AllStocks = " + allStocks);
+                System.out.println("source bin typr = " + sourceBinType);
+
+                if (stock.getExpiryDate() == null) {
+                    Collections.sort(allStocks, new Comparator<Stock>() {
+                        @Override
+                        public int compare(Stock o1, Stock o2) {
+                            return o1.getCreatedDate().compareTo(o2.getCreatedDate());
+                        }
+                    });
+                } // sort the list of stocks according to expiry date
+                else {
+                    Collections.sort(allStocks, new Comparator<Stock>() {
+                        @Override
+                        public int compare(Stock o1, Stock o2) {
+                            return o1.getExpiryDate().compareTo(o2.getExpiryDate());
+                        }
+                    });
+                }
             }
-
             System.out.println("[SORTED] AllStocks = " + allStocks);
 
             // get list of source bins
@@ -132,7 +135,7 @@ public class TransportOrderSessionBean {
                     tempStockQuantity.add(tempStock.getQuantity());
                     System.out.println(count + " SourceBinId1: " + tempStock.getStorageBin().getStorageBinId());
                 } else {
-                    
+
                     tempStockId.add(tempStock.getStockId());
                     tempStockQuantity.add(newTotalQ);
 
@@ -579,7 +582,11 @@ public class TransportOrderSessionBean {
                         Integer reservedStock = newStockQuantity - stock.getAvailableStock();
                         stock.setReservedStock(reservedStock);
                         System.out.println("NEW RESERVED STOCK = " + reservedStock);
+                        
+                        bin.setInuseSpace(bin.getInuseSpace() - transportQuantity);
+                        bin.setAvailableSpace(bin.getAvailableSpace() + transportQuantity);
                         transportQuantity = 0;
+                        em.merge(bin);
                         em.merge(stock);
                         em.flush();
 
