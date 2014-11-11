@@ -202,11 +202,20 @@
                         </p:row>
                         
                         <p:commandButton value="Submit ID to Send PO" actionListener="#{mrpPurchaseOrderManagedBean.sendPO(po.productPOId)}" update="growl"></p:commandButton>
-                        <p:commandButton value="Cancel on submitting this PO" actionListener="#{mrpPurchaseOrderManagedBean.cancelPO}" update="growl"></p:commandButton>
 
                     </p:dataGrid>
-                    <p:commandButton value="Finish and Go Back"  action="#{mrpPurchaseOrderManagedBean.backToMrpHome}" />
-
+                    
+                    <p:column style="width:42px">
+                        <p:commandButton value="Complete whole MRP Process" actionListener="#{mrpPurchaseOrderManagedBean.backToMrpHome}" action="mrp">
+                            <p:confirm header="Comfirm to Complete MRP Process?" message="POs that are not being verified by customer login Id, password and quotation will not be created. Are you sure that you want to complete the MRP process?" icon="ui-icon-alert" />
+                        </p:commandButton> 
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </p:column>
+                    
+                    
                 </p:panel>
 
 

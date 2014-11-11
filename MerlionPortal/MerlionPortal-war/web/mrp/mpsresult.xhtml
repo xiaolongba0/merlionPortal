@@ -140,10 +140,11 @@
                                 <h:outputLabel for="minOnHand" value="Enter Minimum Remaining On Hand Quantity:" style="font-weight:bold" />
                             </p:column>
                             <p:column> 
-                                <p:inputText required="true" requiredMessage="Minimum remaining quantity required is required." id="minOnHand" value="#{mPSResultManagedBean.minOnHand}" />
+                                <p:inputText id="minOnHand" value="#{mPSResultManagedBean.minOnHand}" />
 
                             </p:column>
                         </p:row>
+                                              
                     </p:panelGrid>
                     <p:column style="width:42px">
                         <p:commandButton value="Proceed to view material requirement planning" action="#{mPSResultManagedBean.proceedToMaterialReq}">
