@@ -47,92 +47,142 @@
                 <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
                 <p:menuitem value="Post space" url="postmyspace.xhtml" /> 
             </p:breadCrumb>
-            <h:form id="summitable">
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <p:tabView>
-                    <p:tab title="Transportation Space">
+            <p:tabView>
+
+                <p:tab title="Transportation Space">
+                    <h:form id="summitable1">
+
                         <h:panelGrid columns="1" cellpadding="10">
-                            <p:panel id="basicInfo" header="Service Information" style="margin-bottom:20px">
+                            <p:panel header="Service Information" style="margin-bottom:20px">
                                 <h:panelGrid columns="2" cellpadding="10">
                                     <p>Service Type : </p><h:outputText value="Transportation Space"/>
                                     <p>Company Name: </p><h:outputText value="#{postSpaceManagedBean.viewCompanyName(postSpaceManagedBean.companyId)}"/>
-                                    <p>Origin : </p><h:inputText value="#{postSpaceManagedBean.orign}"/>
-                                    <p>Destination : </p><h:inputText value="#{postSpaceManagedBean.desti}"/>
-                                    <p>Available Volume in TEU: </p><h:inputText value="#{postSpaceManagedBean.volume}"/>
+                                    <p>Origin : </p><h:inputText value="#{postSpaceManagedBean.orign}" required="true" requiredMessage="Origin is required" />
+                                    <p>Destination : </p><h:inputText value="#{postSpaceManagedBean.desti}" required="true" requiredMessage="Destination is required"/>
+                                    <p>Available Volume in TEU: </p><h:inputText value="#{postSpaceManagedBean.volume}" required="true" requiredMessage="Available Volume in TEU is required"/>
                                     <p:outputLabel for="deliverDate" value="Delivery Date" /><p:spacer width="20" height="20" />
-                                    <p:calendar id="deliverDate" value="#{postSpaceManagedBean.deliveryDate}" />
+                                    <p:calendar id="deliverDate" value="#{postSpaceManagedBean.deliveryDate}" required="true" requiredMessage="Delivery Date is required"/>
                                 </h:panelGrid>
                             </p:panel>
                             <br></br>
                         </h:panelGrid>
-                    </p:tab>
+                        <p:panel id="postInfo" header="Post Information" style="margin-bottom:20px">
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel for="currency" style="font-weight: bold" value="Currency:   *" />
+                                    </p:column>
+                                    <p:column>                        
+                                        <h:selectOneMenu id="currency" value="#{postSpaceManagedBean.currency}" label="Currency">
+                                            <f:selectItem itemLabel="Select Currency" itemValue="" noSelectionOption="true" />
 
-                    <p:tab title="Warhhouse Space">
+                                            <f:selectItem itemLabel="US Dollar (USD)" itemValue="US Dollar (USD)" />
+                                            <f:selectItem itemLabel="European Euro (EUR)" itemValue="European Euro (EUR)" />
+                                            <f:selectItem itemLabel="Japan Yen (JPY)" itemValue="Japan Yen (JPY)" />
+                                            <f:selectItem itemLabel="Pound Sterling (GBP)" itemValue="Pound Sterling (GBP)" />
+                                            <f:selectItem itemLabel="Australian Dollar (AUD)" itemValue="Australian Dollar (AUD)" />
+                                            <f:selectItem itemLabel="Swiss Franc (CHF)" itemValue="Swiss Franc (CHF)" />
+                                            <f:selectItem itemLabel="Canadian Dollar (CAD)" itemValue="Canadian Dollar (CAD)" />
+                                            <f:selectItem itemLabel="Hong Kong Dollar (HKD)" itemValue="Hong Kong Dollar (HKD)" />
+                                            <f:selectItem itemLabel="Swedish Krona (SEK)" itemValue="Swedish Krona (SEK)" />
+                                            <f:selectItem itemLabel="New Zealand Dollar (NZD)" itemValue="New Zealand Dollar (NZD)" />
+
+                                            <f:selectItem itemLabel="South African Rand (ZAR)" itemValue="South African Rand (ZAR)" />
+                                            <f:selectItem itemLabel="Russian Ruble (RUB)" itemValue="Russian Ruble (RUB)" />
+                                            <f:selectItem itemLabel="Indian Rupee (INR)" itemValue="Indian Rupee (INR)" />
+                                            <f:selectItem itemLabel="Singapore Dollar (SGD)" itemValue="Singapore Dollar (SGD)" />
+                                            <f:selectItem itemLabel="Bulgarian Lev (BGN)" itemValue="Bulgarian Lev (BGN)" />
+                                            <f:selectItem itemLabel="Chinese Yuan Renminbi (CNY)" itemValue="Chinese Yuan Renminbi (CNY)" />
+                                            <f:selectItem itemLabel="Thailand Baht (THB)" itemValue="Thailand Baht (THB)" />
+                                            <f:selectItem itemLabel="Hungary Forint(HUF)" itemValue="Hungary Forint(HUF)" />   
+                                            <f:selectItem itemLabel="Norwegian Krone (NOK)" itemValue="Norwegian Krone (NOK)" />
+                                            <f:selectItem itemLabel="Mexican Peso (MXN)" itemValue="Mexican Peso (MXN)" />
+                                        </h:selectOneMenu>
+                                    </p:column>
+                                </p:row>
+                                <p:outputLabel for="endDate" value="Expiry Date" /><p:spacer width="20" height="20" />
+                                <p:calendar id="endDate" value="#{postSpaceManagedBean.expireDate}" />
+                                <h3 style="margin-top: 0">Terms and Conditions</h3>
+                                <p>Please terms and Conditions below</p>
+                                <p:inputTextarea id="display" rows="10" cols="80" value="#{postSpaceManagedBean.description}" />
+                            </h:panelGrid>
+                        </p:panel>
+                        <br></br>
+                        <p:commandButton action="#{postSpaceManagedBean.postRequest()}" value="Post" /> 
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+                    </h:form>
+
+                </p:tab>
+                <p:tab title="Warhhouse Space">
+                    <h:form id="summitable2" >
+
                         <h:panelGrid columns="1" cellpadding="10">
                             <p:panel id="basicInfo1" header="Service Information" style="margin-bottom:20px">
                                 <h:panelGrid columns="2" cellpadding="10">
                                     <p>Service Type : </p><h:outputText value="Warehouse Space"/>
                                     <p>Company Name: </p><h:outputText value="#{postSpaceManagedBean.viewCompanyName(postSpaceManagedBean.companyId)}"/>
-                                    <p>Warehouse Id:</p><h:inputText value="#{postSpaceManagedBean.warehouseId}"/>
-                                    <p>Warehouse Name:</p><h:inputText value="#{postSpaceManagedBean.warehouseName}"/>
-                                    <p>Warehouse Location:</p><h:inputText value="#{postSpaceManagedBean.warehouseLocation}"/>
-                                    <p>Start Date : </p><h:inputText value="#{postSpaceManagedBean.startDate}"/>
-                                    <p>End Date : </p><h:inputText value="#{postSpaceManagedBean.endDate}"/>
-                                    <p>Available Space : </p><h:inputText value="#{postSpaceManagedBean.totalSpace}"/><h:outputText value="m3" style="color:#FE642E"/>
-                                    <p:commandButton action="#{postSpaceManagedBean.updateWinfo()}" value="Update" update="basicInfo"/> 
+                                    <p>Warehouse Id:</p><h:inputText value="#{postSpaceManagedBean.warehouseId}" required="true" requiredMessage="Warehouse ID is required"/>
+                                    <p>Warehouse Name:</p><h:outputText value="#{postSpaceManagedBean.warehouseName}"/>
+                                    <p>Warehouse Location:</p><h:outputText value="#{postSpaceManagedBean.warehouseLocation}"/>
+                                    <p>Start Date : </p><p:calendar value="#{postSpaceManagedBean.startDate}"  required="true" requiredMessage="Start Date is required" />
+                                    <p>End Date : </p><p:calendar value="#{postSpaceManagedBean.endDate}" required="true" requiredMessage="End Date is required" />
+                                    <p>Available Space (meter cube) : </p><h:inputText value="#{postSpaceManagedBean.totalSpace}" required="true" requiredMessage="Available Space is required" />
+                                    <p:commandButton action="#{postSpaceManagedBean.updateWinfo()}" value="Update" update="basicInfo1" /> 
                                 </h:panelGrid>
                             </p:panel>
                         </h:panelGrid>
-                    </p:tab>
+                        <p:panel id="postInfo" header="Post Information" style="margin-bottom:20px">
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel for="currency" style="font-weight: bold" value="Currency:   *" />
+                                    </p:column>
+                                    <p:column>                        
+                                        <h:selectOneMenu id="currency" value="#{postSpaceManagedBean.currency}" label="Currency">
+                                            <f:selectItem itemLabel="Select Currency" itemValue="" noSelectionOption="true" />
 
-                </p:tabView>
-                <br></br>
-                <p:panel id="postInfo" header="Post Information" style="margin-bottom:20px">
-                    <h:panelGrid columns="2" cellpadding="10">
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="currency" style="font-weight: bold" value="Currency:   *" />
-                            </p:column>
-                            <p:column>                        
-                                <h:selectOneMenu id="currency" value="#{postSpaceManagedBean.currency}" label="Currency">
-                                    <f:selectItem itemLabel="Select Currency" itemValue="" noSelectionOption="true" />
+                                            <f:selectItem itemLabel="US Dollar (USD)" itemValue="US Dollar (USD)" />
+                                            <f:selectItem itemLabel="European Euro (EUR)" itemValue="European Euro (EUR)" />
+                                            <f:selectItem itemLabel="Japan Yen (JPY)" itemValue="Japan Yen (JPY)" />
+                                            <f:selectItem itemLabel="Pound Sterling (GBP)" itemValue="Pound Sterling (GBP)" />
+                                            <f:selectItem itemLabel="Australian Dollar (AUD)" itemValue="Australian Dollar (AUD)" />
+                                            <f:selectItem itemLabel="Swiss Franc (CHF)" itemValue="Swiss Franc (CHF)" />
+                                            <f:selectItem itemLabel="Canadian Dollar (CAD)" itemValue="Canadian Dollar (CAD)" />
+                                            <f:selectItem itemLabel="Hong Kong Dollar (HKD)" itemValue="Hong Kong Dollar (HKD)" />
+                                            <f:selectItem itemLabel="Swedish Krona (SEK)" itemValue="Swedish Krona (SEK)" />
+                                            <f:selectItem itemLabel="New Zealand Dollar (NZD)" itemValue="New Zealand Dollar (NZD)" />
 
-                                    <f:selectItem itemLabel="US Dollar (USD)" itemValue="US Dollar (USD)" />
-                                    <f:selectItem itemLabel="European Euro (EUR)" itemValue="European Euro (EUR)" />
-                                    <f:selectItem itemLabel="Japan Yen (JPY)" itemValue="Japan Yen (JPY)" />
-                                    <f:selectItem itemLabel="Pound Sterling (GBP)" itemValue="Pound Sterling (GBP)" />
-                                    <f:selectItem itemLabel="Australian Dollar (AUD)" itemValue="Australian Dollar (AUD)" />
-                                    <f:selectItem itemLabel="Swiss Franc (CHF)" itemValue="Swiss Franc (CHF)" />
-                                    <f:selectItem itemLabel="Canadian Dollar (CAD)" itemValue="Canadian Dollar (CAD)" />
-                                    <f:selectItem itemLabel="Hong Kong Dollar (HKD)" itemValue="Hong Kong Dollar (HKD)" />
-                                    <f:selectItem itemLabel="Swedish Krona (SEK)" itemValue="Swedish Krona (SEK)" />
-                                    <f:selectItem itemLabel="New Zealand Dollar (NZD)" itemValue="New Zealand Dollar (NZD)" />
+                                            <f:selectItem itemLabel="South African Rand (ZAR)" itemValue="South African Rand (ZAR)" />
+                                            <f:selectItem itemLabel="Russian Ruble (RUB)" itemValue="Russian Ruble (RUB)" />
+                                            <f:selectItem itemLabel="Indian Rupee (INR)" itemValue="Indian Rupee (INR)" />
+                                            <f:selectItem itemLabel="Singapore Dollar (SGD)" itemValue="Singapore Dollar (SGD)" />
+                                            <f:selectItem itemLabel="Bulgarian Lev (BGN)" itemValue="Bulgarian Lev (BGN)" />
+                                            <f:selectItem itemLabel="Chinese Yuan Renminbi (CNY)" itemValue="Chinese Yuan Renminbi (CNY)" />
+                                            <f:selectItem itemLabel="Thailand Baht (THB)" itemValue="Thailand Baht (THB)" />
+                                            <f:selectItem itemLabel="Hungary Forint(HUF)" itemValue="Hungary Forint(HUF)" />   
+                                            <f:selectItem itemLabel="Norwegian Krone (NOK)" itemValue="Norwegian Krone (NOK)" />
+                                            <f:selectItem itemLabel="Mexican Peso (MXN)" itemValue="Mexican Peso (MXN)" />
+                                        </h:selectOneMenu>
+                                    </p:column>
+                                </p:row>
+                                <p:outputLabel for="expDate" value="Expiry Date" /><p:spacer width="20" height="20" />
+                                <p:calendar id="expDate" value="#{postSpaceManagedBean.expireDate}" />
+                                <h3 style="margin-top: 0">Terms and Conditions</h3>
+                                <p>Please terms and Conditions below</p>
+                                <p:inputTextarea id="display" rows="10" cols="50" value="#{postSpaceManagedBean.description}" />
+                            </h:panelGrid>
+                        </p:panel>
+                        <br></br>
+                        <p:messages id="msg" showDetail="true" autoUpdate="true" closable="true" />
 
-                                    <f:selectItem itemLabel="South African Rand (ZAR)" itemValue="South African Rand (ZAR)" />
-                                    <f:selectItem itemLabel="Russian Ruble (RUB)" itemValue="Russian Ruble (RUB)" />
-                                    <f:selectItem itemLabel="Indian Rupee (INR)" itemValue="Indian Rupee (INR)" />
-                                    <f:selectItem itemLabel="Singapore Dollar (SGD)" itemValue="Singapore Dollar (SGD)" />
-                                    <f:selectItem itemLabel="Bulgarian Lev (BGN)" itemValue="Bulgarian Lev (BGN)" />
-                                    <f:selectItem itemLabel="Chinese Yuan Renminbi (CNY)" itemValue="Chinese Yuan Renminbi (CNY)" />
-                                    <f:selectItem itemLabel="Thailand Baht (THB)" itemValue="Thailand Baht (THB)" />
-                                    <f:selectItem itemLabel="Hungary Forint(HUF)" itemValue="Hungary Forint(HUF)" />   
-                                    <f:selectItem itemLabel="Norwegian Krone (NOK)" itemValue="Norwegian Krone (NOK)" />
-                                    <f:selectItem itemLabel="Mexican Peso (MXN)" itemValue="Mexican Peso (MXN)" />
-                                </h:selectOneMenu>
-                            </p:column>
-                        </p:row>
-                        <p:outputLabel for="endDate" value="Expiry Date" /><p:spacer width="20" height="20" />
-                        <p:calendar id="endDate" value="#{postSpaceManagedBean.expireDate}" />
-                        <h3 style="margin-top: 0">Terms and Conditions</h3>
-                        <p>Please terms and Conditions below</p>
-                        <p:inputTextarea id="display" rows="10" cols="80" value="#{postSpaceManagedBean.description}" />
-                    </h:panelGrid>
-                </p:panel>
-                <br></br>
-                <c:if test="#{postSpaceManagedBean.isSummitable()}">
-                    <p:commandButton action="#{postSpaceManagedBean.postRequest()}" value="Post" update="summitable"/> 
-                </c:if>
-            </h:form>
+                        <p:commandButton action="#{postSpaceManagedBean.postRequest()}" value="Post" update="summitable2"/> 
+                    </h:form>
+
+                </p:tab>
+            </p:tabView>
+
+
         </ui:define>
     </ui:composition>
 </html>

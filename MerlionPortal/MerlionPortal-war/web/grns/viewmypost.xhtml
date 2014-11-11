@@ -48,7 +48,7 @@
                 <p:menuitem value="My Post" url="viewmypost.xhtml" />
             </p:breadCrumb>
             <h:form id="postForm">
-
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 <c:if test="#{myPostManagedBean.serviceType==1}">
                     <p:panel id="basicInfo" header="Service Information" style="margin-bottom:20px">
                         <h:panelGrid columns="2" cellpadding="10">
@@ -58,7 +58,7 @@
                             <p>Destination : </p><h:outputText value="#{myPostManagedBean.myPost.destination}"/>
                             <p>Volume : </p><h:outputText value="#{myPostManagedBean.myPost.quantityInTEU}"/>
                             <p>Require Delivery Date : </p><h:outputText value="#{myPostManagedBean.myPost.deliveryDate}"/>
-                            <p>Post Expiry Date : </p><h:outputText value="#{myPostManagedBean.myPost.expireDate}"/>p>
+                            <p>Post Expiry Date : </p><h:outputText value="#{myPostManagedBean.myPost.expireDate}"/>
 
                         </h:panelGrid>
                     </p:panel>
@@ -72,7 +72,7 @@
                             <p>Company Name: </p><h:outputText value="#{myPostManagedBean.myPost.systemUser.companycompanyId.name}"/>
                             <p>Start Date : </p><h:outputText value="#{myPostManagedBean.myPost.storageStartDate}"/>
                             <p>End Date : </p><h:outputText value="#{myPostManagedBean.myPost.storageEndDate}"/>
-                            <p>Require Space : </p><h:outputText value="#{myPostManagedBean.myPost.warehouseSpace}"/><h:outputText value="m3" style="color:#FE642E"/>
+                            <p>Require Space (meter cube) : </p><h:outputText value="#{myPostManagedBean.myPost.warehouseSpace}"/>
                             <p>Post Expiry Date : </p><h:outputText value="#{myPostManagedBean.myPost.expireDate}"/>
 
                         </h:panelGrid>
@@ -88,7 +88,7 @@
                             <p>Origin : </p><h:outputText value="#{myPostManagedBean.myPost.origin}"/>
                             <p>Destination : </p><h:outputText value="#{myPostManagedBean.myPost.destination}"/>
                             <p>Available Volume : </p><h:outputText value="#{myPostManagedBean.myPost.quantityInTEU}"/>
-                            <p>Delivery Date : </p><h:outputText value="#{myPostManagedBean.myPost.deliveryDate}"/>p>
+                            <p>Delivery Date : </p><h:outputText value="#{myPostManagedBean.myPost.deliveryDate}"/>
                         </h:panelGrid>
                     </p:panel>
                     <br></br>                    
@@ -104,7 +104,7 @@
                             <p>Warehouse Location : </p><h:outputText value="#{myPostManagedBean.getWarehouseLocation(myPostManagedBean.myPost.warehouseId)}"/>
                             <p>Start Date : </p><h:outputText value="#{myPostManagedBean.myPost.storageStartDate}"/>
                             <p>End Date : </p><h:outputText value="#{myPostManagedBean.myPost.storageEndDate}"/>
-                            <p>Available Space : </p><h:outputText value="#{myPostManagedBean.myPost.warehouseSpace}"/><h:outputText value="m3" style="color:#FE642E"/>
+                            <p>Available Space (meter cube) : </p><h:outputText value="#{myPostManagedBean.myPost.warehouseSpace}"/>
                         </h:panelGrid>
                     </p:panel>
                     <br></br>
@@ -150,12 +150,11 @@
                     </p:panel>
                 </c:if>
                 <br></br>
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 <c:if test="#{myPostManagedBean.isNeedCancel()}">
-                    <p:commandButton action="#{myPostManagedBean.cancelThisRequest()}" value="Cancel This Post" update="postForm"/> 
+                    <p:commandButton action="#{myPostManagedBean.cancelThisRequest()}" value="Cancel This Post" update="postForm" ajax="true"/> 
                 </c:if>
                 <c:if test="#{myPostManagedBean.isOpenPost()}">
-                    <p:commandButton action="#{myPostManagedBean.acceptThisRequest()}" value="Accept Bid"/> 
+                    <p:commandButton action="#{myPostManagedBean.acceptThisRequest()}" value="Accept Bid" ajax="true"/> 
                 </c:if>
                 <p:commandButton action="allmyposts.xhtml?faces-redirect=true" value="Go Back" icon="ui-icon-circle-arrow-w"/> 
             </h:form>

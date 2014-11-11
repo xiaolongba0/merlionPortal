@@ -49,6 +49,7 @@
                     <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
                     <p:menuitem value="All Posts" url="viewallposts.xhtml" /> 
                 </p:breadCrumb>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 <p:tabView>
                     <p:tab title="Transportation Posts">
                         <p:dataTable id="allTPosts" var="myTPost" selectionMode="single" sortMode="single" value="#{marketplaceManagedBean.allTPosts}" 
@@ -57,7 +58,7 @@
                                      filteredValue="#{marketplaceManagedBean.filteredPosts}"
                                      emptyMessage="No Transportation Posts found with given criteria"
                                      rowKey="#{myTPost.postId}" 
-                                     scrollable="true" scrollHeight="600">
+                                     scrollable="true" scrollHeight="400" >
 
                             <p:column  
                                 filterBy="#{myTPost.postId}" 
@@ -98,153 +99,152 @@
                                 <h:outputText value="#{myTPost.expireDate}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton action="#{marketplaceManagedBean.bidSelectedPost()}" value="Start Bidding"/> 
+                        <p:commandButton action="#{marketplaceManagedBean.bidSelectedPost()}" value="Start T Bidding"/> 
                     </p:tab>
-                    
+
                     <p:tab title="Transportation Space Post">
                         <p:dataTable id="stpost" var="stpost" selectionMode="single" sortMode="single" value="#{marketplaceManagedBean.allSTPosts}" 
                                      widgetVar="TPostTable"
                                      selection="#{marketplaceManagedBean.selectedSTpost}"
                                      emptyMessage="No Transportation Space Posts found with given criteria"
-                                     rowKey="#{myTPost.postId}" 
-                                     scrollable="true" scrollHeight="600">
+                                     rowKey="#{stpost.postId}" 
+                                     scrollable="true" scrollHeight="400" >
 
                             <p:column  
-                                filterBy="#{myTPost.postId}" 
+                                filterBy="#{stpost.postId}" 
                                 filterMatchMode="exact" headerText="PostID" filterStyle="width: 40px" style="text-align:center">
-                                <h:outputText value="#{myTPost.postId}" />
+                                <h:outputText value="#{stpost.postId}" />
                             </p:column>
 
-                            <p:column  filterBy="#{myTPost.systemUser.companycompanyId.name}" filterMatchMode="contains" 
+                            <p:column  filterBy="#{stpost.systemUser.companycompanyId.name}" filterMatchMode="contains" 
                                        headerText="Requester Company" filterStyle="width: 50px" style="text-align:center">
-                                <h:outputText value="#{myTPost.systemUser.companycompanyId.name}" />
+                                <h:outputText value="#{stpost.systemUser.companycompanyId.name}" />
                             </p:column>
 
                             <p:column  
-                                filterBy="#{myTPost.deliveryDate}" 
+                                filterBy="#{stpost.deliveryDate}" 
                                 filterMatchMode="contains" headerText="Delivery Date" filterStyle="width: 50px" style="text-align:center">
-                                <h:outputText value="#{myTPost.deliveryDate}" />
+                                <h:outputText value="#{stpost.deliveryDate}" />
                             </p:column>  
                             <p:column  
-                                filterBy="#{myTPost.origin}" 
+                                filterBy="#{stpost.origin}" 
                                 filterMatchMode="contains" headerText="Origin " filterStyle="width: 50px" style="text-align:center">
-                                <h:outputText value="#{myTPost.origin}" />
+                                <h:outputText value="#{stpost.origin}" />
                             </p:column>  
                             <p:column  
-                                filterBy="#{myTPost.destination}" 
+                                filterBy="#{stpost.destination}" 
                                 filterMatchMode="contains" headerText="Destination " filterStyle="width: 50px" style="text-align:center" >
-                                <h:outputText value="#{myTPost.destination}" />
+                                <h:outputText value="#{stpost.destination}" />
                             </p:column> 
 
                             <p:column  
-                                filterBy="#{myTPost.quantityInTEU}" 
+                                filterBy="#{stpost.quantityInTEU}" 
                                 filterMatchMode="contains" headerText="Available Space" filterStyle="width: 40px" style="text-align:center">
-                                <h:outputText value="#{myTPost.quantityInTEU}" />
+                                <h:outputText value="#{stpost.quantityInTEU}" />
                             </p:column>
 
                             <p:column  
-                                filterBy="#{myTPost.expireDate}" 
+                                filterBy="#{stpost.expireDate}" 
                                 filterMatchMode="contains" headerText="Expire Date" filterStyle="width: 50px" style="text-align:center">
-                                <h:outputText value="#{myTPost.expireDate}" />
+                                <h:outputText value="#{stpost.expireDate}" />
                             </p:column>
                         </p:dataTable>
                         <p:commandButton action="#{marketplaceManagedBean.bidSelectedSTPost()}" value="Start Bidding"/> 
                     </p:tab>
-
                     <p:tab title="Warehouse Requests"> 
                         <h:panelGrid columns="1" cellpadding="10">  
-                            <p:dataTable id="allWPosts" var="myWPost" selectionMode="single" sortMode="single" value="#{marketplaceManagedBean.allWPosts}" 
-                                         widgetVar="allWPostTable"
-                                         selection="#{marketplaceManagedBean.selectedWPost}"
-                                         filteredValue="#{marketplaceManagedBean.filteredPosts}"
-                                         emptyMessage="No Warehouse Posts found with given criteria"
-                                         rowKey="#{myWPost.postId}" 
-                                         scrollable="true" scrollHeight="600">
+                            <p:dataTable id="mywarehouse" var="mywpost" selectionMode="single" sortMode="single" value="#{marketplaceManagedBean.allWPosts}" 
+                                         widgetVar="WPostTable"
+                                         selection="#{marketplaceManagedBean.selectedMyPost}"
+                                         emptyMessage="No Warehouse  Posts found with given criteria"
+                                         rowKey="#{mywpost.postId}" 
+                                         scrollable="true" scrollHeight="400" >
 
                                 <p:column  
-                                    filterBy="#{myWPost.postId}" 
+                                    filterBy="#{mywpost.postId}" 
                                     filterMatchMode="exact" headerText="Post Number" >
-                                    <h:outputText value="#{myWPost.postId}" />
+                                    <h:outputText value="#{mywpost.postId}" />
                                 </p:column>
 
-                                <p:column  filterBy="#{myWPost.systemUser.companycompanyId.name}" filterMatchMode="contains" headerText="Requester">
-                                    <h:outputText value="#{myWPost.systemUser.companycompanyId.name}" />
+                                <p:column  filterBy="#{mywpost.systemUser.companycompanyId.name}" filterMatchMode="contains" headerText="Requester">
+                                    <h:outputText value="#{mywpost.systemUser.companycompanyId.name}" />
                                 </p:column>
 
                                 <p:column  
-                                    filterBy="#{myWPost.storageStartDate}" 
+                                    filterBy="#{mywpost.storageStartDate}" 
                                     filterMatchMode="contains" headerText="Service Start Date" >
-                                    <h:outputText value="#{myWPost.storageStartDate}" />
+                                    <h:outputText value="#{mywpost.storageStartDate}" />
                                 </p:column>  
 
                                 <p:column  
-                                    filterBy="#{myWPost.storageEndDate}" 
+                                    filterBy="#{mywpost.storageEndDate}" 
                                     filterMatchMode="contains" headerText="Service End Date" >
-                                    <h:outputText value="#{myWPost.storageEndDate}" />
+                                    <h:outputText value="#{mywpost.storageEndDate}" />
                                 </p:column>
 
                                 <p:column  
-                                    filterBy="#{myWPost.warehouseSpace}" 
-                                    filterMatchMode="contains" headerText="Required Space" >
-                                    <h:outputText value="#{myWPost.warehouseSpace}" />
+                                    filterBy="#{mywpost.warehouseSpace}" 
+                                    filterMatchMode="contains" headerText="Available Space" >
+                                    <h:outputText value="#{mywpost.warehouseSpace}" />
                                 </p:column>
-
+                               
                                 <p:column  
-                                    filterBy="#{myWPost.expireDate}" 
+                                    filterBy="#{mywpost.expireDate}" 
                                     filterMatchMode="contains" headerText="Expire Date" >
-                                    <h:outputText value="#{myWPost.expireDate}" />
+                                    <h:outputText value="#{mywpost.expireDate}" />
                                 </p:column>
                             </p:dataTable>
                         </h:panelGrid>
                         <br></br>
                         <p:commandButton action="#{marketplaceManagedBean.bidSelectedWPost()}" value="Start Bidding"/> 
                     </p:tab>
-                    
+
+
                     <p:tab title="Warehouse Space Requests"> 
                         <h:panelGrid columns="1" cellpadding="10">  
                             <p:dataTable id="WPosts" var="WPost" selectionMode="single" sortMode="single" value="#{marketplaceManagedBean.allSWPosts}" 
                                          widgetVar="allWPostTable"
                                          selection="#{marketplaceManagedBean.selectedSWpost}"
                                          emptyMessage="No Warehouse Space Posts found with given criteria"
-                                         rowKey="#{myWPost.postId}" 
-                                         scrollable="true" scrollHeight="600">
+                                         rowKey="#{WPost.postId}" 
+                                         scrollable="true" scrollHeight="400" >
 
                                 <p:column  
-                                    filterBy="#{myWPost.postId}" 
+                                    filterBy="#{WPost.postId}" 
                                     filterMatchMode="exact" headerText="Post Number" >
-                                    <h:outputText value="#{myWPost.postId}" />
+                                    <h:outputText value="#{WPost.postId}" />
                                 </p:column>
 
-                                <p:column  filterBy="#{myWPost.systemUser.companycompanyId.name}" filterMatchMode="contains" headerText="Requester">
-                                    <h:outputText value="#{myWPost.systemUser.companycompanyId.name}" />
+                                <p:column  filterBy="#{WPost.systemUser.companycompanyId.name}" filterMatchMode="contains" headerText="Requester">
+                                    <h:outputText value="#{WPost.systemUser.companycompanyId.name}" />
                                 </p:column>
 
                                 <p:column  
-                                    filterBy="#{myWPost.storageStartDate}" 
+                                    filterBy="#{WPost.storageStartDate}" 
                                     filterMatchMode="contains" headerText="Service Start Date" >
-                                    <h:outputText value="#{myWPost.storageStartDate}" />
+                                    <h:outputText value="#{WPost.storageStartDate}" />
                                 </p:column>  
 
                                 <p:column  
-                                    filterBy="#{myWPost.storageEndDate}" 
+                                    filterBy="#{WPost.storageEndDate}" 
                                     filterMatchMode="contains" headerText="Service End Date" >
-                                    <h:outputText value="#{myWPost.storageEndDate}" />
+                                    <h:outputText value="#{WPost.storageEndDate}" />
                                 </p:column>
 
                                 <p:column  
-                                    filterBy="#{myWPost.warehouseSpace}" 
+                                    filterBy="#{WPost.warehouseSpace}" 
                                     filterMatchMode="contains" headerText="Required Space" >
-                                    <h:outputText value="#{myWPost.warehouseSpace}" />
+                                    <h:outputText value="#{WPost.warehouseSpace}" />
                                 </p:column>
                                 <p:column  
-                                    filterBy="#{marketplaceManagedBean.getWarehouseName(myWPost.warehouseId)}" 
+                                    filterBy="#{marketplaceManagedBean.getWarehouseName(WPost.warehouseId)}" 
                                     filterMatchMode="contains" headerText="Warehouse Location" >
-                                    <h:outputText value="#{marketplaceManagedBean.getWarehouseName(myWPost.warehouseId)}" />
+                                    <h:outputText value="#{marketplaceManagedBean.getWarehouseName(WPost.warehouseId)}" />
                                 </p:column>
                                 <p:column  
-                                    filterBy="#{myWPost.expireDate}" 
+                                    filterBy="#{WPost.expireDate}" 
                                     filterMatchMode="contains" headerText="Expire Date" >
-                                    <h:outputText value="#{myWPost.expireDate}" />
+                                    <h:outputText value="#{WPost.expireDate}" />
                                 </p:column>
                             </p:dataTable>
                         </h:panelGrid>
@@ -252,8 +252,6 @@
                         <p:commandButton action="#{marketplaceManagedBean.bidSelectedSWPost()}" value="Start Bidding"/> 
                     </p:tab>
                 </p:tabView>
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-
             </h:form>
         </ui:define>
     </ui:composition>
