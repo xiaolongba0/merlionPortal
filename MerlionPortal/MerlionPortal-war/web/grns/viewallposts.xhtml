@@ -100,6 +100,54 @@
                             </p:column>
                         </p:dataTable>
                     </p:tab>
+                    <p:tab title="Transportation Space Post">
+                        <p:dataTable id="stpost" var="stpost" selectionMode="single" sortMode="single" value="#{marketplaceManagedBean.allSTPosts}" 
+                                     widgetVar="TPostTable"
+                                     selection="#{marketplaceManagedBean.selectedSTpost}"
+                                     emptyMessage="No Transportation Space Posts found with given criteria"
+                                     rowKey="#{myTPost.postId}" 
+                                     scrollable="true" scrollHeight="600">
+
+                            <p:column  
+                                filterBy="#{myTPost.postId}" 
+                                filterMatchMode="exact" headerText="PostID" filterStyle="width: 40px" style="text-align:center">
+                                <h:outputText value="#{myTPost.postId}" />
+                            </p:column>
+
+                            <p:column  filterBy="#{myTPost.systemUser.companycompanyId.name}" filterMatchMode="contains" 
+                                       headerText="Requester Company" filterStyle="width: 50px" style="text-align:center">
+                                <h:outputText value="#{myTPost.systemUser.companycompanyId.name}" />
+                            </p:column>
+
+                            <p:column  
+                                filterBy="#{myTPost.deliveryDate}" 
+                                filterMatchMode="contains" headerText="Delivery Date" filterStyle="width: 50px" style="text-align:center">
+                                <h:outputText value="#{myTPost.deliveryDate}" />
+                            </p:column>  
+                            <p:column  
+                                filterBy="#{myTPost.origin}" 
+                                filterMatchMode="contains" headerText="Origin " filterStyle="width: 50px" style="text-align:center">
+                                <h:outputText value="#{myTPost.origin}" />
+                            </p:column>  
+                            <p:column  
+                                filterBy="#{myTPost.destination}" 
+                                filterMatchMode="contains" headerText="Destination " filterStyle="width: 50px" style="text-align:center" >
+                                <h:outputText value="#{myTPost.destination}" />
+                            </p:column> 
+
+                            <p:column  
+                                filterBy="#{myTPost.quantityInTEU}" 
+                                filterMatchMode="contains" headerText="Available Space" filterStyle="width: 40px" style="text-align:center">
+                                <h:outputText value="#{myTPost.quantityInTEU}" />
+                            </p:column>
+
+                            <p:column  
+                                filterBy="#{myTPost.expireDate}" 
+                                filterMatchMode="contains" headerText="Expire Date" filterStyle="width: 50px" style="text-align:center">
+                                <h:outputText value="#{myTPost.expireDate}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
 
                     <p:tab title="Warehouse Requests"> 
                         <h:panelGrid columns="1" cellpadding="10">  
@@ -139,6 +187,56 @@
                                     <h:outputText value="#{myWPost.warehouseSpace}" />
                                 </p:column>
 
+                                <p:column  
+                                    filterBy="#{myWPost.expireDate}" 
+                                    filterMatchMode="contains" headerText="Expire Date" >
+                                    <h:outputText value="#{myWPost.expireDate}" />
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
+                        <br></br>
+                    </p:tab>
+                    <p:tab title="Warehouse Space Requests"> 
+                        <h:panelGrid columns="1" cellpadding="10">  
+                            <p:dataTable id="WPosts" var="WPost" selectionMode="single" sortMode="single" value="#{marketplaceManagedBean.allSWPosts}" 
+                                         widgetVar="allWPostTable"
+                                         selection="#{marketplaceManagedBean.selectedSWpost}"
+                                         emptyMessage="No Warehouse Space Posts found with given criteria"
+                                         rowKey="#{myWPost.postId}" 
+                                         scrollable="true" scrollHeight="600">
+
+                                <p:column  
+                                    filterBy="#{myWPost.postId}" 
+                                    filterMatchMode="exact" headerText="Post Number" >
+                                    <h:outputText value="#{myWPost.postId}" />
+                                </p:column>
+
+                                <p:column  filterBy="#{myWPost.systemUser.companycompanyId.name}" filterMatchMode="contains" headerText="Requester">
+                                    <h:outputText value="#{myWPost.systemUser.companycompanyId.name}" />
+                                </p:column>
+
+                                <p:column  
+                                    filterBy="#{myWPost.storageStartDate}" 
+                                    filterMatchMode="contains" headerText="Service Start Date" >
+                                    <h:outputText value="#{myWPost.storageStartDate}" />
+                                </p:column>  
+
+                                <p:column  
+                                    filterBy="#{myWPost.storageEndDate}" 
+                                    filterMatchMode="contains" headerText="Service End Date" >
+                                    <h:outputText value="#{myWPost.storageEndDate}" />
+                                </p:column>
+
+                                <p:column  
+                                    filterBy="#{myWPost.warehouseSpace}" 
+                                    filterMatchMode="contains" headerText="Required Space" >
+                                    <h:outputText value="#{myWPost.warehouseSpace}" />
+                                </p:column>
+                                <p:column  
+                                    filterBy="#{marketplaceManagedBean.getWarehouseName(myWPost.warehouseId)}" 
+                                    filterMatchMode="contains" headerText="Warehouse Location" >
+                                    <h:outputText value="#{marketplaceManagedBean.getWarehouseName(myWPost.warehouseId)}" />
+                                </p:column>
                                 <p:column  
                                     filterBy="#{myWPost.expireDate}" 
                                     filterMatchMode="contains" headerText="Expire Date" >

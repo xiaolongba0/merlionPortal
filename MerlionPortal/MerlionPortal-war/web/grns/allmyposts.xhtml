@@ -65,6 +65,12 @@
                                 <h:outputText value="#{myTPost.postId}" />
                             </p:column>
 
+                            <p:column  
+                                filterBy="#{myTPost.serviceType}" 
+                                filterMatchMode="contains" headerText="Service Type " filterStyle="width: 50px" style="text-align:center">
+                                <h:outputText value="#{myTPost.serviceType}" />
+                            </p:column> 
+
                             <p:column  filterBy="#{myTPost.systemUser.companycompanyId.name}" filterMatchMode="contains" 
                                        headerText="Requester Company" filterStyle="width: 50px" style="text-align:center">
                                 <h:outputText value="#{myTPost.systemUser.companycompanyId.name}" />
@@ -115,6 +121,12 @@
                                     <h:outputText value="#{myWPost.postId}" />
                                 </p:column>
 
+                                <p:column  
+                                    filterBy="#{myWPost.serviceType}" 
+                                    filterMatchMode="contains" headerText="Service Type " filterStyle="width: 50px" style="text-align:center">
+                                    <h:outputText value="#{myWPost.serviceType}" />
+                                </p:column> 
+
                                 <p:column  filterBy="#{myWPost.systemUser.companycompanyId.name}" filterMatchMode="contains" headerText="Requester">
                                     <h:outputText value="#{myWPost.systemUser.companycompanyId.name}" />
                                 </p:column>
@@ -159,6 +171,12 @@
                                 filterMatchMode="exact" headerText="PostID" filterStyle="width: 40px" style="text-align:center">
                                 <h:outputText value="#{myTPost.postId}" />
                             </p:column>
+
+                            <p:column  
+                                filterBy="#{myTPost.serviceType}" 
+                                filterMatchMode="contains" headerText="Service Type " filterStyle="width: 50px" style="text-align:center">
+                                <h:outputText value="#{myTPost.serviceType}" />
+                            </p:column> 
 
                             <p:column  filterBy="#{myTPost.systemUser.companycompanyId.name}" filterMatchMode="contains" 
                                        headerText="Requester Company" filterStyle="width: 50px" style="text-align:center">
@@ -209,6 +227,12 @@
                                     <h:outputText value="#{myWPost.postId}" />
                                 </p:column>
 
+                                <p:column  
+                                    filterBy="#{myWPost.postId}" 
+                                    filterMatchMode="exact" headerText="PostID" filterStyle="width: 40px" style="text-align:center">
+                                    <h:outputText value="#{myWPost.postId}" />
+                                </p:column>
+                                
                                 <p:column  filterBy="#{myWPost.systemUser.companycompanyId.name}" filterMatchMode="contains" headerText="Requester">
                                     <h:outputText value="#{myWPost.systemUser.companycompanyId.name}" />
                                 </p:column>

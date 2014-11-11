@@ -51,7 +51,7 @@
             <h:form id="postForm">
 
                 <c:if test="#{biddingManagedBean.serviceType==1}">
-                    <p:panel id="basicInfo" header="Service Information" style="margin-bottom:20px">
+                    <p:panel id="basicInfo1" header="Service Information" style="margin-bottom:20px">
                         <h:panelGrid columns="2" cellpadding="10">
                             <p>Service Type : </p><h:outputText value="Transportation Service"/>
                             <p>Company Name: </p><h:outputText value="#{biddingManagedBean.mypost.systemUser.companycompanyId.name}"/>
@@ -65,7 +65,7 @@
                 </c:if>
 
                 <c:if test="#{biddingManagedBean.serviceType==2}">
-                    <p:panel id="basicInfo" header="Service Information" style="margin-bottom:20px">
+                    <p:panel id="basicInfo2" header="Service Information" style="margin-bottom:20px">
                         <h:panelGrid columns="2" cellpadding="10">
                             <p>Service Type : </p><h:outputText value="Warehouse Service"/>
                             <p>Company Name: </p><h:outputText value="#{biddingManagedBean.mypost.systemUser.companycompanyId.name}"/>
@@ -76,6 +76,37 @@
                     </p:panel>
                     <br></br>
                 </c:if>
+                
+                <c:if test="#{biddingManagedBean.serviceType==3}">
+                    <p:panel id="basicInfo3" header="Service Information" style="margin-bottom:20px">
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <p>Service Type : </p><h:outputText value="Transportation Space Service"/>
+                            <p>Company Name: </p><h:outputText value="#{biddingManagedBean.mypost.systemUser.companycompanyId.name}"/>
+                            <p>Origin : </p><h:outputText value="#{biddingManagedBean.mypost.origin}"/>
+                            <p>Destination : </p><h:outputText value="#{biddingManagedBean.mypost.destination}"/>
+                            <p>Available Volume : </p><h:outputText value="#{biddingManagedBean.mypost.quantityInTEU}"/>
+                            <p>Delivery Date : </p><h:outputText value="#{biddingManagedBean.mypost.deliveryDate}"/>p>
+                        </h:panelGrid>
+                    </p:panel>
+                    <br></br>                    
+                </c:if>
+                
+                <c:if test="#{biddingManagedBean.serviceType==4}">
+                    <p:panel id="basicInfo4" header="Service Information" style="margin-bottom:20px">
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <p>Service Type : </p><h:outputText value="Warehouse Service"/>
+                            <p>Company Name: </p><h:outputText value="#{biddingManagedBean.mypost.systemUser.companycompanyId.name}"/>
+                            <p>Warehouse Id : </p><h:outputText value="#{biddingManagedBean.mypost.warehouseId}"/>
+                            <p>Warehouse Name : </p><h:outputText value="#{biddingManagedBean.warehouseName}"/>
+                            <p>Warehouse Location : </p><h:outputText value="#{biddingManagedBean.warehoueLocation}"/>
+                            <p>Start Date : </p><h:outputText value="#{biddingManagedBean.mypost.storageStartDate}"/>
+                            <p>End Date : </p><h:outputText value="#{biddingManagedBean.mypost.storageEndDate}"/>
+                            <p>Available Space : </p><h:outputText value="#{biddingManagedBean.mypost.warehouseSpace}"/><h:outputText value="m3" style="color:#FE642E"/>
+                        </h:panelGrid>
+                    </p:panel>
+                    <br></br>
+                </c:if>
+                
                 <p:panel id="termsCondition" header="Terms and Condition" style="margin-bottom:20px">
                     <h:panelGrid columns="1" cellpadding="10">
                         <h:outputText value="#{biddingManagedBean.mypost.description}"/>

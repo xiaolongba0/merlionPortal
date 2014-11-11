@@ -81,6 +81,37 @@
                     </p:panel>
                     <br></br>
                 </c:if>
+                
+                 <c:if test="#{biddingManagedBean.serviceType==3}">
+                    <p:panel id="basicInfo3" header="Service Information" style="margin-bottom:20px">
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <p>Service Type : </p><h:outputText value="Transportation Space Service"/>
+                            <p>Company Name: </p><h:outputText value="#{myPostManagedBean.myPost.systemUser.companycompanyId.name}"/>
+                            <p>Origin : </p><h:outputText value="#{myPostManagedBean.myPost.origin}"/>
+                            <p>Destination : </p><h:outputText value="#{myPostManagedBean.myPost.destination}"/>
+                            <p>Available Volume : </p><h:outputText value="#{myPostManagedBean.myPost.quantityInTEU}"/>
+                            <p>Delivery Date : </p><h:outputText value="#{myPostManagedBean.myPost.deliveryDate}"/>p>
+                        </h:panelGrid>
+                    </p:panel>
+                    <br></br>                    
+                </c:if>
+                
+                <c:if test="#{biddingManagedBean.serviceType==4}">
+                    <p:panel id="basicInfo4" header="Service Information" style="margin-bottom:20px">
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <p>Service Type : </p><h:outputText value="Warehouse Service"/>
+                            <p>Company Name: </p><h:outputText value="#{myPostManagedBean.myPost.systemUser.companycompanyId.name}"/>
+                            <p>Warehouse Id : </p><h:outputText value="#{myPostManagedBean.myPost.warehouseId}"/>
+                            <p>Warehouse Name : </p><h:outputText value="#{myPostManagedBean.getWarehouName(myPostManagedBean.myPost.warehouseId)}"/>
+                            <p>Warehouse Location : </p><h:outputText value="#{myPostManagedBean.getWarehouseLocation(myPostManagedBean.myPost.warehouseId)}"/>
+                            <p>Start Date : </p><h:outputText value="#{myPostManagedBean.myPost.storageStartDate}"/>
+                            <p>End Date : </p><h:outputText value="#{myPostManagedBean.myPost.storageEndDate}"/>
+                            <p>Available Space : </p><h:outputText value="#{myPostManagedBean.myPost.warehouseSpace}"/><h:outputText value="m3" style="color:#FE642E"/>
+                        </h:panelGrid>
+                    </p:panel>
+                    <br></br>
+                </c:if>
+                
                 <br></br>
                 <p:panel id="termsCondition" header="Terms and Condition" style="margin-bottom:20px">
                     <h:panelGrid columns="1" cellpadding="10">

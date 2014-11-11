@@ -21,7 +21,7 @@
         </ui:define>
 
         <ui:define name="left">
-           <p:menu styleClass="menu-width">
+            <p:menu styleClass="menu-width">
                 <p:submenu label="Home" styleClass="display:block">
                     <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
                 </p:submenu>
@@ -48,7 +48,7 @@
                 <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
                 <p:menuitem value="Post space" url="postmyspace.xhtml" /> 
             </p:breadCrumb>
-            <h:form>
+            <h:form id="summitable">
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 <p:tabView>
                     <p:tab title="Transportation Space">
@@ -70,15 +70,17 @@
 
                     <p:tab title="Warhhouse Space">
                         <h:panelGrid columns="1" cellpadding="10">
-                            <p:panel id="basicInfo" header="Service Information" style="margin-bottom:20px">
+                            <p:panel id="basicInfo1" header="Service Information" style="margin-bottom:20px">
                                 <h:panelGrid columns="2" cellpadding="10">
                                     <p>Service Type : </p><h:outputText value="Warehouse Space"/>
                                     <p>Company Name: </p><h:outputText value="#{postSpaceManagedBean.viewCompanyName(postSpaceManagedBean.companyId)}"/>
                                     <p>Warehouse Id:</p><h:inputText value="#{postSpaceManagedBean.warehouseId}"/>
+                                    <p>Warehouse Name:</p><h:inputText value="#{postSpaceManagedBean.warehouseName}"/>
+                                    <p>Warehouse Location:</p><h:inputText value="#{postSpaceManagedBean.warehouseLocation}"/>
                                     <p>Start Date : </p><h:inputText value="#{postSpaceManagedBean.startDate}"/>
                                     <p>End Date : </p><h:inputText value="#{postSpaceManagedBean.endDate}"/>
                                     <p>Available Space : </p><h:inputText value="#{postSpaceManagedBean.totalSpace}"/><h:outputText value="m3" style="color:#FE642E"/>
-                                    <p:commandButton action="#{postSpaceManagedBean.postWrequest()}" value="Update" update="basicInfo"/> 
+                                    <p:commandButton action="#{postSpaceManagedBean.updateWinfo()}" value="Update" update="basicInfo"/> 
                                 </h:panelGrid>
                             </p:panel>
                         </h:panelGrid>
@@ -122,14 +124,14 @@
                         </p:row>
                         <p:outputLabel for="endDate" value="Expiry Date" /><p:spacer width="20" height="20" />
                         <p:calendar id="endDate" value="#{postSpaceManagedBean.expireDate}" />
+                        <h3 style="margin-top: 0">Terms and Conditions</h3>
+                        <p>Please terms and Conditions below</p>
+                        <p:inputTextarea id="display" rows="10" cols="80" value="#{postSpaceManagedBean.description}" />
                     </h:panelGrid>
                 </p:panel>
                 <br></br>
-                <c:if test="#{postReuqestManagedBean.serviceType==1}">
-                    <p:commandButton action="#{postReuqestManagedBean.postTrequest()}" value="Post"/> 
-                </c:if>
-                <c:if test="#{postReuqestManagedBean.serviceType==2}">
-                    <p:commandButton action="#{postReuqestManagedBean.postWrequest()}" value="Post"/> 
+                <c:if test="#{postSpaceManagedBean.isSummitable()}">
+                    <p:commandButton action="#{postSpaceManagedBean.postRequest()}" value="Post" update="summitable"/> 
                 </c:if>
             </h:form>
         </ui:define>
