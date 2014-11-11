@@ -215,7 +215,7 @@ ul.rights-menu li{
 .right-container{
     width:74%;
     float:right;
-    margin-top: 50px;
+    margin-top: 20px;
     margin-bottom: 50px;
     position:relative;
 }
@@ -306,8 +306,10 @@ h2.system-welcome{
     padding-top:30px;
 }
 .system-banner{
-    height:200px;
+    height:180px;
     width:100%;
+    position:relative;
+    border-radius:6px 6px 0px 0px;
 }
 .wms-system-banner{
     background: url('../img/wms.jpg') -0px -0px no-repeat;
@@ -322,7 +324,7 @@ h2.system-welcome{
     background: url('../img/MRP.jpg') -0px -0px no-repeat;
 }
 .crms-system-banner{
-    background: url('../img/CRMS.jpg') -0px -0px no-repeat;
+    background: url('../img/CRMS.jpg') -140px -120px no-repeat;
 }
 .grns-system-banner{
     background: url('../img/GRNS.jpg') 0px -50px;
@@ -332,11 +334,12 @@ h2.system-welcome{
     color: white;
     position:absolute;
     width: 814px;
-    height:70px;
-    font-size:50px;
+    height:40px;
+    font-size:30px;
     padding-right:15px;
     text-align:right;
-    top:130px;
+    top:170px;
+    z-index:1;
 }
 
 .pad-it{

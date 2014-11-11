@@ -17,15 +17,18 @@
 .tile-overlay{
     position:absolute;
     color:white;
-    background-color:rgba(0,0,0,0.4);
-    font-size:55px;
+    background-color:rgba(60,60,60,0.7);
+    font-size:45px;
     width:260px;
-    top:127px;
+    top:135px;
     border-radius: 0px 0px 6px 6px;
+    text-align:right;
+    padding-right:10px;
+    border-top: 6px solid rgba(190, 20, 20, 0.6);
 }
 
 .crmstile{
-    background: url('../img/tile-crms.jpg') no-repeat -60px -17px;
+    background: url('../img/CRMS.jpg') no-repeat -290px -80px;
 }
 .wmstile{ 
     background: url('../img/wms.jpg') -90px;
