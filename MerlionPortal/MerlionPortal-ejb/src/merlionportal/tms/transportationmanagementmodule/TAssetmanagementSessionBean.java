@@ -359,6 +359,20 @@ public class TAssetmanagementSessionBean {
 
     }
 
+    public List<Route> viewRoutestoLocation(Integer locationId) {
+        List<Route> returnThisRoutes = new ArrayList();
+        String destination = new String();
+        if (locationId != null) {
+            Location tempLocation = em.find(Location.class, locationId);
+            Node node = tempLocation.getNodeId();
+            destination = node.getLocationName();
+            Query query = em.createNamedQuery("Route.findByDestination").setParameter(destination, destination);
+
+            returnThisRoutes = query.getResultList();
+        }
+        return returnThisRoutes;
+    }
+
     public Integer addTAsset(String assetType, Integer capacity, Integer locationlocationId, Integer price, Integer speed, Integer companyId, String status) {
 
         System.out.println("[INSIDE EJB]================================Add Transportation Asset");
@@ -454,7 +468,7 @@ public class TAssetmanagementSessionBean {
         List<TransportationAsset> available = new ArrayList();
         temp = locationTemp.getTransportationAssetList();
         for (TransportationAsset tAsset : temp) {
-            if (tAsset.getIsMaintain()== true) {
+            if (tAsset.getIsMaintain() == true) {
                 available.add(tAsset);
             }
         }
@@ -607,6 +621,24 @@ public class TAssetmanagementSessionBean {
         System.out.println("[EJB]================================Successfully EDITED TransportationAsset");
         return tAsset.getAssetId();
 
+    }
+
+    public List<TransportationAsset> viewAssetOnRoute(Integer routeId) {
+        Route tempRoute = em.find(Route.class, routeId);
+        List<AssetSchedule> tempScheduleList = tempRoute.getAssetScheduleList();
+        TransportationAsset adding = new TransportationAsset();
+        List<TransportationAsset> returnThisList = new ArrayList();
+        for (AssetSchedule o : tempScheduleList) {
+            adding = o.getTransporationAssetassetId();
+            returnThisList.add(adding);
+        }
+        return returnThisList;
+    }
+
+    public List<AssetSchedule> viewAssetScheduleOnRoute(Integer routeId) {
+        Route tempRoute = em.find(Route.class, routeId);
+        List<AssetSchedule> tempScheduleList = tempRoute.getAssetScheduleList();
+        return tempScheduleList;
     }
 
     public Integer addTAssetSchedule(Date startDate, Date endDate, Integer loading, Integer tAssetId, Integer operatorId, Integer routeId) {
