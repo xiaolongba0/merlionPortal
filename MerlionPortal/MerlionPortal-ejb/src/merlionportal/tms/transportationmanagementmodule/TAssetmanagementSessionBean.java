@@ -142,7 +142,6 @@ public class TAssetmanagementSessionBean {
 
         return allMyRoute;
     }
-    
 
     public Boolean deleteRoute(Integer routeId) {
         Query query = em.createNamedQuery("Route.findByRouteId").setParameter("routeId", routeId);
@@ -151,9 +150,11 @@ public class TAssetmanagementSessionBean {
         for (Route r : allMyRoute) {
             if (r.getRouteId().equals(routeId)) {
                 Node tempNode = r.getStartNodeId();
+                tempNode.getRouteList().remove(r);
 
-                em.remove(r);
                 em.merge(tempNode);
+                em.remove(r);
+
                 em.flush();
                 System.out.println("successfully deleted:" + routeId);
                 return true;
@@ -351,7 +352,6 @@ public class TAssetmanagementSessionBean {
         return returnThisRoutes;
 
     }
-
 
     public Integer addTAsset(String assetType, Integer capacity, Integer locationlocationId, Integer price, Integer speed, Integer companyId, String status) {
 
@@ -635,7 +635,10 @@ public class TAssetmanagementSessionBean {
             return false;
         }
         TransportationAsset tAsset = schedule.getTransporationAssetassetId();
+        Route route = schedule.getRoute();
+        route.getAssetScheduleList().remove(schedule);
         tAsset.getAssetScheduleList().remove(schedule);
+        em.merge(route);
         em.merge(tAsset);
         em.remove(schedule);
         em.flush();
