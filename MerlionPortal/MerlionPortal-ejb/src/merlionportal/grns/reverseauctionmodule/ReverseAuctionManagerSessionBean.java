@@ -288,6 +288,7 @@ public void postTPost(String description, String destination, String origin,
         Post newPost = new Post();
         List<Bid> bidList = new ArrayList();
         newPost.setServiceType("Warehouse Space");
+        newPost.setWarehouseId(warehouId);
         newPost.setDescription(description);
         newPost.setCurrency(currency);
         Date todayDate = new Date();
