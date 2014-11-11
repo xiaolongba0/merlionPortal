@@ -150,10 +150,16 @@ public class GRNSOrderSessionBean {
 
         return true;
     }
-    
-    public Integer getOtherInvoiceIdFromOrder(Integer orderId){
+
+    public Integer getOtherInvoiceIdFromOrder(Integer orderId) {
         Query q = em.createNamedQuery("OtherInvoice.findByGrnsOrderId").setParameter("grnsOrderId", orderId);
-        OtherInvoice in = (OtherInvoice)q.getSingleResult();
+        OtherInvoice in = (OtherInvoice) q.getSingleResult();
         return in.getInvoiceId();
+    }
+
+    public OtherInvoice getOtherInvoiceFromOrder(Integer orderId) {
+        Query q = em.createNamedQuery("OtherInvoice.findByGrnsOrderId").setParameter("grnsOrderId", orderId);
+        OtherInvoice in = (OtherInvoice) q.getSingleResult();
+        return in;
     }
 }

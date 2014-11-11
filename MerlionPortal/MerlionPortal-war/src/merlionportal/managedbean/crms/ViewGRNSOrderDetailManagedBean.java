@@ -6,6 +6,7 @@
 package merlionportal.managedbean.crms;
 
 import entity.GrnsServiceOrder;
+import entity.OtherInvoice;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Date;
@@ -47,6 +48,7 @@ public class ViewGRNSOrderDetailManagedBean {
     private Double amount;
     private Integer swiftcode;
     private BigInteger checkNumber;
+    private OtherInvoice invoice;
 
     private Double price;
 
@@ -76,7 +78,7 @@ public class ViewGRNSOrderDetailManagedBean {
             providerCompanyName = userAccountSB.getCompany(order.getServiceProvider()).getName();
 
             price = order.getPrice();
-
+            invoice = grnsSB.getOtherInvoiceFromOrder(order.getOrderId());
         }
 
     }
@@ -207,6 +209,14 @@ public class ViewGRNSOrderDetailManagedBean {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public OtherInvoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(OtherInvoice invoice) {
+        this.invoice = invoice;
     }
 
 }

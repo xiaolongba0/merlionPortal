@@ -7,6 +7,7 @@ package merlionportal.crms.contractmanagementmodule;
 
 import entity.Company;
 import entity.Contract;
+import entity.OtherInvoice;
 import entity.ServicePO;
 import entity.ServiceQuotation;
 import entity.SignedContract;
@@ -14,11 +15,13 @@ import entity.SystemUser;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import merlionportal.crms.ordermanagementmodule.GRNSOrderSessionBean;
 
 /**
  *
@@ -33,6 +36,8 @@ public class ContractManagementSessionBean {
     @PersistenceContext
     EntityManager em;
 
+    @EJB
+    GRNSOrderSessionBean grnsSB;
 //    contract status
 //    1. Initial contract
 //    2. Request to modify
@@ -113,6 +118,9 @@ public class ContractManagementSessionBean {
             em.persist(contract);
             em.merge(quotation);
             em.flush();
+            
+            grnsSB.createWarehouseSpaceContractInvoice(contract.getContractId(), creatorId, contract.getPartyA(), contract.getPartyB(), contract.getWarehouseRental());
+           
 
             return contract.getContractId();
         } else {
