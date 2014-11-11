@@ -177,23 +177,23 @@ public class OrderFulfillmentSessionBean {
         WmsOrder wmsOrder = new WmsOrder();
         wmsOrder = em.find(WmsOrder.class, wmsOrderId);
 
-        Integer servicePOId = wmsOrder.getServicePOId();
-        ServicePO servicePO = new ServicePO();
-        servicePO = em.find(ServicePO.class, servicePOId);
-
         if (wmsOrder != null) {
+            Integer servicePOId = wmsOrder.getServicePOId();
+            ServicePO servicePO = new ServicePO();
+            servicePO = em.find(ServicePO.class, servicePOId);
 
             // receive stock into the warehouse        
-            Integer outgointQuantity = wmsOrder.getQuantity();
+            Integer outgoingQuantity = wmsOrder.getQuantity();
 
             // find bins which belongs to the rented company
             Integer rentedCompanyId = servicePO.getSenderCompanyId();
             List<StorageBin> allBins = new ArrayList<>();
             allBins = amsb.viewRentedBinsInOneCompany(myCompanyId, rentedCompanyId);
+            Integer productId = wmsOrder.getProductId();
 
             // go through all the relevant storage bins to retrieve the stock
             int i = 0;
-            while (i < allBins.size()) {
+            while (i < allBins.size() & outgoingQuantity != 0) {
 
                 StorageBin bin = new StorageBin();
                 bin = allBins.get(i);
@@ -201,55 +201,64 @@ public class OrderFulfillmentSessionBean {
                 List<Stock> stockList = new ArrayList();
                 stockList = bin.getStockList();
 
-                Stock tempStock = new Stock();
-                tempStock = stockList.get(0);
-                // sort by created date
-                if (tempStock.getExpiryDate() == null) {
-                    Collections.sort(stockList, new Comparator<Stock>() {
-                        @Override
-                        public int compare(Stock o1, Stock o2) {
-                            return o1.getCreatedDate().compareTo(o2.getCreatedDate());
+                if (stockList.size() != 0) {
+                    Stock tempStock = new Stock();
+                    tempStock = stockList.get(0);
+                    // sort by created date
+                    if (tempStock.getProductId() == productId) {
+                        if (tempStock.getExpiryDate() == null) {
+                            Collections.sort(stockList, new Comparator<Stock>() {
+                                @Override
+                                public int compare(Stock o1, Stock o2) {
+                                    return o1.getCreatedDate().compareTo(o2.getCreatedDate());
+                                }
+                            });
+                        } // sort the list of stocks according to expiry date
+                        else {
+                            Collections.sort(stockList, new Comparator<Stock>() {
+                                @Override
+                                public int compare(Stock o1, Stock o2) {
+                                    return o1.getExpiryDate().compareTo(o2.getExpiryDate());
+                                }
+                            });
                         }
-                    });
-                } // sort the list of stocks according to expiry date
-                else {
-                    Collections.sort(stockList, new Comparator<Stock>() {
-                        @Override
-                        public int compare(Stock o1, Stock o2) {
-                            return o1.getExpiryDate().compareTo(o2.getExpiryDate());
-                        }
-                    });
-                }
-
-                int j = 0;
-                while (j < stockList.size() & outgointQuantity != 0) {
-                    Stock stock = new Stock();
-                    stock = stockList.get(j);
-                    Integer stockQuantity = stock.getQuantity();
-
-                    Integer newStockQuantity = 0;
-                    System.out.println("Stock Quantity = " + stockQuantity);
-                    System.out.println("Incoming Quantity = " + outgointQuantity);
-
-                    if (stockQuantity > outgointQuantity) {
-                        newStockQuantity = stockQuantity - outgointQuantity;
-                        System.out.println("NEW STOCK QUANTITY = " + newStockQuantity);
-
-                        // update the relevant stock related attributes
-                        stock.setQuantity(newStockQuantity);
-                        Integer reservedStock = newStockQuantity - stock.getAvailableStock();
-                        stock.setReservedStock(reservedStock);
-                        System.out.println("NEW RESERVED STOCK = " + reservedStock);
-                        outgointQuantity = 0;
-                        em.merge(stock);
-                        em.flush();
-
-                    } else if (stockQuantity <= outgointQuantity) {
-                        System.out.println("Delete stock");
-                        outgointQuantity = outgointQuantity - stockQuantity;
-                        rpsb.deleteStock(stock.getStockId());
                     }
-                    j++;
+
+                    int j = 0;
+                    while (j < stockList.size() & outgoingQuantity != 0) {
+                        Stock stock = new Stock();
+                        stock = stockList.get(j);
+                        Integer stockQuantity = stock.getQuantity();
+
+                        Integer newStockQuantity = 0;
+                        System.out.println("Stock Quantity = " + stockQuantity);
+                        System.out.println("Outgoing Quantity = " + outgoingQuantity);
+
+                        if (stockQuantity > outgoingQuantity) {
+                            newStockQuantity = stockQuantity - outgoingQuantity;
+                            System.out.println("NEW STOCK QUANTITY = " + newStockQuantity);
+
+                            // update the relevant stock related attributes
+                            stock.setQuantity(newStockQuantity);
+                            Integer reservedStock = newStockQuantity - stock.getAvailableStock();
+                            stock.setReservedStock(reservedStock);
+                            System.out.println("NEW RESERVED STOCK = " + reservedStock);
+                            // update bin in use space
+                            System.out.println("##################### OUTGOING QUANTITY ######################## " + outgoingQuantity);
+                            bin.setInuseSpace(bin.getInuseSpace() - outgoingQuantity);
+                            bin.setAvailableSpace(bin.getAvailableSpace() + outgoingQuantity);
+                            outgoingQuantity = 0;
+                            em.merge(bin);
+                            em.merge(stock);
+                            em.flush();
+
+                        } else if (stockQuantity <= outgoingQuantity) {
+                            System.out.println("Delete stock");
+                            outgoingQuantity = outgoingQuantity - stockQuantity;
+                            rpsb.deleteStock(stock.getStockId());
+                        }
+                        j++;
+                    }
                 }
                 i++;
             }
@@ -269,12 +278,11 @@ public class OrderFulfillmentSessionBean {
         WmsOrder wmsOrder = new WmsOrder();
         wmsOrder = em.find(WmsOrder.class, wmsOrderId);
 
-        Integer warehouseId = wmsOrder.getWarehouseId();
-
         if (wmsOrder != null) {
-
+            Integer warehouseId = wmsOrder.getWarehouseId();
+            Integer productId = wmsOrder.getProductId();
             // receive stock into the warehouse        
-            Integer outgointQuantity = wmsOrder.getQuantity();
+            Integer outgoingQuantity = wmsOrder.getQuantity();
 
             // find bins which belongs to my company
             List<StorageBin> allBins = new ArrayList<>();
@@ -282,7 +290,7 @@ public class OrderFulfillmentSessionBean {
 
             // go through all the relevant storage bins to retrieve the stock
             int i = 0;
-            while (i < allBins.size()) {
+            while (i < allBins.size() & outgoingQuantity != 0) {
 
                 StorageBin bin = new StorageBin();
                 bin = allBins.get(i);
@@ -290,56 +298,69 @@ public class OrderFulfillmentSessionBean {
                 List<Stock> stockList = new ArrayList();
                 stockList = bin.getStockList();
 
-                Stock tempStock = new Stock();
-                tempStock = stockList.get(0);
+                System.out.println("Stock List = " + stockList.size());
 
-                // sort by created date
-                if (tempStock.getExpiryDate() == null) {
-                    Collections.sort(stockList, new Comparator<Stock>() {
-                        @Override
-                        public int compare(Stock o1, Stock o2) {
-                            return o1.getCreatedDate().compareTo(o2.getCreatedDate());
+                if (stockList.size() != 0) {
+                    Stock tempStock = new Stock();
+                    tempStock = stockList.get(0);
+
+                    if (tempStock.getProductId() == productId) {
+
+                        // sort by created date
+                        if (tempStock.getExpiryDate() == null) {
+                            Collections.sort(stockList, new Comparator<Stock>() {
+                                @Override
+                                public int compare(Stock o1, Stock o2) {
+                                    return o1.getCreatedDate().compareTo(o2.getCreatedDate());
+                                }
+                            });
+                        } // sort the list of stocks according to expiry date
+                        else {
+                            Collections.sort(stockList, new Comparator<Stock>() {
+                                @Override
+                                public int compare(Stock o1, Stock o2) {
+                                    return o1.getExpiryDate().compareTo(o2.getExpiryDate());
+                                }
+                            });
                         }
-                    });
-                } // sort the list of stocks according to expiry date
-                else {
-                    Collections.sort(stockList, new Comparator<Stock>() {
-                        @Override
-                        public int compare(Stock o1, Stock o2) {
-                            return o1.getExpiryDate().compareTo(o2.getExpiryDate());
+
+                        int j = 0;
+                        while (j < stockList.size() & outgoingQuantity != 0) {
+                            Stock stock = new Stock();
+                            stock = stockList.get(j);
+                            Integer stockQuantity = stock.getQuantity();
+
+                            Integer newStockQuantity = 0;
+                            System.out.println("Stock Quantity = " + stockQuantity);
+                            System.out.println("Outgoing Quantity = " + outgoingQuantity);
+
+                            if (stockQuantity > outgoingQuantity) {
+                                newStockQuantity = stockQuantity - outgoingQuantity;
+                                System.out.println("NEW STOCK QUANTITY = " + newStockQuantity);
+                                // update the relevant stock related attributes
+                                stock.setQuantity(newStockQuantity);
+                                Integer reservedStock = newStockQuantity - stock.getAvailableStock();
+                                stock.setReservedStock(reservedStock);
+                                System.out.println("NEW RESERVED STOCK = " + reservedStock);
+
+                                // update bin in use space
+                                System.out.println("##################### OUTGOING QUANTITY ######################## " + outgoingQuantity);
+                                bin.setInuseSpace(bin.getInuseSpace() - outgoingQuantity);
+                                bin.setAvailableSpace(bin.getAvailableSpace() + outgoingQuantity);
+                                outgoingQuantity = 0;
+
+                                em.merge(bin);
+                                em.merge(stock);
+                                em.flush();
+
+                            } else if (stockQuantity <= outgoingQuantity) {
+                                System.out.println("Delete stock");
+                                outgoingQuantity = outgoingQuantity - stockQuantity;
+                                rpsb.deleteStock(stock.getStockId());
+                            }
+                            j++;
                         }
-                    });
-                }
-
-                int j = 0;
-                while (j < stockList.size() & outgointQuantity != 0) {
-                    Stock stock = new Stock();
-                    stock = stockList.get(j);
-                    Integer stockQuantity = stock.getQuantity();
-
-                    Integer newStockQuantity = 0;
-                    System.out.println("Stock Quantity = " + stockQuantity);
-                    System.out.println("Incoming Quantity = " + outgointQuantity);
-
-                    if (stockQuantity > outgointQuantity) {
-                        newStockQuantity = stockQuantity - outgointQuantity;
-                        System.out.println("NEW STOCK QUANTITY = " + newStockQuantity);
-
-                        // update the relevant stock related attributes
-                        stock.setQuantity(newStockQuantity);
-                        Integer reservedStock = stock.getReservedStock() - outgointQuantity ;
-                        stock.setReservedStock(reservedStock);
-                        System.out.println("NEW RESERVED STOCK = " + reservedStock);
-                        outgointQuantity = 0;
-                        em.merge(stock);
-                        em.flush();
-
-                    } else if (stockQuantity <= outgointQuantity) {
-                        System.out.println("Delete stock");
-                        outgointQuantity = outgointQuantity - stockQuantity;
-                        rpsb.deleteStock(stock.getStockId());
                     }
-                    j++;
                 }
                 i++;
             }
@@ -348,6 +369,5 @@ public class OrderFulfillmentSessionBean {
         }
         return false;
     }
-
 
 }

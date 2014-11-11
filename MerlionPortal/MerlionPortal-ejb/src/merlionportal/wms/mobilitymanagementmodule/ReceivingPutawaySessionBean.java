@@ -44,8 +44,8 @@ public class ReceivingPutawaySessionBean {
             Integer storageBinId, Date expiryDate) {
 
         // need to check to product ID
-        System.out.println("[INSIDE AMSB EJB]================================Add Stock");
-        System.out.println("[INSIDE AMSB EJB, Add Stock]===== StorageBinId: " + storageBinId);
+        System.out.println("[INSIDE  RPSB EJB]================================Add Stock");
+        System.out.println("[INSIDE RPB EJB, Add Stock]===== StorageBinId: " + storageBinId);
         Query query = em.createNamedQuery("StorageBin.findByStorageBinId").setParameter("storageBinId", storageBinId);
 
         StorageBin bin = (StorageBin) query.getSingleResult();
@@ -124,7 +124,7 @@ public class ReceivingPutawaySessionBean {
 
     public Integer countStockInBin(List<Stock> stockTemp, Integer currentQuantity, Integer quantity) {
 
-        System.out.println("[INSIDE AMSB EJB, count stock in BIN] ================== BIN IS NOT EMPTY");
+        System.out.println("[INSIDE EJB, count stock in BIN] ================== BIN IS NOT EMPTY");
         for (Object o : stockTemp) {
             stock = (Stock) o;
             currentQuantity = currentQuantity + stock.getQuantity();
@@ -242,6 +242,7 @@ public class ReceivingPutawaySessionBean {
     // Count available stock in 1 of  my warehouse only, exclude rented bins
     public Integer countAvailbleStockInWarehouse(Integer warehouseId, Integer productId) {
 
+        System.out.println("[In RPSB, count available stock in warehouse]");
         Integer totalQuantity = 0;
         Query query = em.createNamedQuery("Stock.findByProductId").setParameter("productId", productId);
 
@@ -249,7 +250,7 @@ public class ReceivingPutawaySessionBean {
             stock = (Stock) o;
             if (stock.getStorageBin().getWarehouseZone().getWarehouse().getWarehouseId() == warehouseId) {
                 if (!stock.getStorageBin().getRented()) {
-                    totalQuantity = totalQuantity + stock.getQuantity();
+                    totalQuantity = totalQuantity + stock.getAvailableStock();
                     System.out.println("Stock: " + stock);
                 }
 
@@ -270,8 +271,8 @@ public class ReceivingPutawaySessionBean {
             stock = (Stock) o;
 
             if (!stock.getStorageBin().getRented()) {
-                totalQuantity = totalQuantity + stock.getQuantity();
-                System.out.println("Stock: " + stock);
+                totalQuantity = totalQuantity + stock.getAvailableStock();
+                System.out.println("Total Quantity  " + totalQuantity);
 
             }
         }
@@ -297,40 +298,6 @@ public class ReceivingPutawaySessionBean {
         return totalQuantity;
     }
 
-    // Including those stocks which are in rented bins
-//    public Integer countTotalAvailableStock(Integer companyId, Integer productId) {
-//        Stock tempStock = null;
-//        Integer totalQuantity = 0;
-//
-//        List<Stock> allStocks = new ArrayList<>();
-//        Query query = em.createNamedQuery("Stock.findByProductId").setParameter("productId", productId);
-//
-//        for (Object o : query.getResultList()) {
-//            stock = (Stock) o;
-//            if (stock.getStorageBin().getWarehouseZone().getWarehouse().getCompanyId() == companyId) {
-//                if (!stock.getStorageBin().getRented()) {
-//                    allStocks.add(stock);
-//                    System.out.println("Stock: " + stock);
-//                }
-//
-//            }
-//        }
-//        System.out.println("COMPANY ID = " + companyId);
-//
-//        // count the stocks in the rented bins
-//        List<Stock> stocksInRentedBins = new ArrayList();
-//        stocksInRentedBins = viewStockInRentedBin(companyId, productId);
-//
-//        allStocks.addAll(stocksInRentedBins);
-//
-//        for (Object o : allStocks) {
-//            tempStock = (Stock) o;
-//            totalQuantity = totalQuantity + tempStock.getQuantity();
-//            System.out.println("[AMSB] =============== countStockInWarehouse " + tempStock + "Quantity: " + tempStock.getQuantity());
-//        }
-//
-//        return totalQuantity;
-//    }
     public Boolean deleteStock(Integer stockId) {
 
         Query query = em.createNamedQuery("Stock.findByStockId").setParameter("stockId", stockId);
@@ -340,6 +307,7 @@ public class ReceivingPutawaySessionBean {
         if (stock != null) {
             StorageBin bin = stock.getStorageBin();
             bin.getStockList().remove(stock);
+            bin.setInuseSpace(bin.getInuseSpace() - stock.getQuantity());
             bin.setAvailableSpace(bin.getAvailableSpace() + stock.getQuantity());
             em.merge(bin);
             em.remove(stock);
@@ -357,7 +325,7 @@ public class ReceivingPutawaySessionBean {
         Query query = em.createNamedQuery("Stock.findByStockId").setParameter("stockId", stockId);
         Stock stock = (Stock) query.getSingleResult();
 
-        System.out.println("[IN EJB AMSB, editStock] ======================================");
+        System.out.println("[IN EJB RPSB, editStock] ======================================");
 
         if (stock != null) {
 
@@ -379,8 +347,8 @@ public class ReceivingPutawaySessionBean {
             Integer storageBinId, Date expiryDate, Date createdDate) {
 
         // need to check to product ID
-        System.out.println("[INSIDE AMSB EJB]================================Add  TO Stock");
-        System.out.println("[INSIDE AMSB EJB, Add Stock]===== StorageBinId: " + storageBinId);
+        System.out.println("[INSIDE RPSB EJB]================================Add  TO Stock");
+        System.out.println("[INSIDE RPSB EJB, Add Stock]===== StorageBinId: " + storageBinId);
         Query query = em.createNamedQuery("StorageBin.findByStorageBinId").setParameter("storageBinId", storageBinId);
 
         StorageBin bin = (StorageBin) query.getSingleResult();
@@ -483,7 +451,7 @@ public class ReceivingPutawaySessionBean {
 
     // Reserve bin space method
     public boolean reserveBinSpace(List<StorageBin> allBins, Integer totalQuantityReserved, String neededBinType) {
-        System.out.println("[IN EJB RPSB, checkBinSpace] ======================================");
+        System.out.println("[IN EJB RPSB, reserveBinSpace] ======================================");
 
         Integer tempTotalQuantity = totalQuantityReserved;
         List<Integer> destBinIds = new ArrayList<>();
@@ -492,7 +460,7 @@ public class ReceivingPutawaySessionBean {
         int i = 0;
         while (i < allBins.size()) {
             // stop if the total quantity is 0
-            System.out.println("[IN EJB RPSB, checkBinSpace] ================================ checking bins");
+            System.out.println("[IN EJB RPSB, reserveBinSpace] ================================ checking bins");
             if (tempTotalQuantity == 0) {
                 break;
             }
@@ -500,13 +468,13 @@ public class ReceivingPutawaySessionBean {
             destBin = allBins.get(i);
             // sam check for the bin type
             System.out.println("NEEDED BIN TYPE: " + neededBinType);
-            System.out.println("Destination BIN TYPE: " + destBin.getBinType());
-            System.out.println("Destnation BIN ID: " + destBin.getStorageBinId());
+            System.out.println("Available BIN TYPE: " + destBin.getBinType());
+            System.out.println("Available  BIN ID: " + destBin.getStorageBinId());
 
             if (neededBinType.equalsIgnoreCase(destBin.getBinType()) & tempTotalQuantity != 0);
             {
-                System.out.println("[IN EJB RPSB, checkBinSpace]================================ bins have the same bin type");
-                System.out.println("[IN EJB RPSB, checkBinSpace]================================ bins available space " + destBin.getAvailableSpace());
+                System.out.println("[IN EJB RPSB, reserveBinSpace]================================ bins have the same bin type");
+                System.out.println("[IN EJB RPSB, reserveBinSpace]================================ bins available space " + destBin.getStorageBinId());
                 // check for space in BIN quantity
                 if (destBin.getAvailableSpace() == 0) {
                     i++;
@@ -514,14 +482,14 @@ public class ReceivingPutawaySessionBean {
                     Integer reservedQuantity = 0;
                     reservedQuantity = tempTotalQuantity;
                     tempTotalQuantity = 0;
-                    System.out.println("[INSIDE EJB RPSB, checkBinSpace]================================ Reserved Quantity1: " + reservedQuantity);
+                    System.out.println("[INSIDE EJB RPSB, reserveBinSpace]================================ Reserved Quantity1: " + reservedQuantity);
                     destBinIds.add(destBin.getStorageBinId());
                     destReservedQuantity.add(reservedQuantity);
                     i++;
                 } else if ((tempTotalQuantity > destBin.getAvailableSpace()) & tempTotalQuantity != 0) {
                     Integer reservedQuantity = 0;
                     reservedQuantity = destBin.getAvailableSpace();
-                    System.out.println("[INSIDE EJB RPSB, checkBinSpace]================================ Reserved Quantity2: " + reservedQuantity);
+                    System.out.println("[INSIDE EJB RPSB,reserveBinSpace]================================ Reserved Quantity2: " + reservedQuantity);
                     tempTotalQuantity = tempTotalQuantity - reservedQuantity;
                     destBinIds.add(destBin.getStorageBinId());
                     destReservedQuantity.add(reservedQuantity);
@@ -538,11 +506,11 @@ public class ReceivingPutawaySessionBean {
         int n = 0;
         while (n < destBinIds.size()) {
             StorageBin destBinTemp = new StorageBin();
-            System.out.println("Destination Bin ID" + destBinIds.get(n));
+            System.out.println("Bin ID" + destBinIds.get(n));
             destBinTemp = em.find(StorageBin.class, destBinIds.get(n));
 
             boolean result = amsb.calculateTOBinSpace(destBinTemp, 0, destReservedQuantity.get(n));
-            System.out.println("Destination bin : " + destBinTemp);
+            System.out.println("Bin : " + destBinTemp);
             System.out.println("Reserved Quantity : " + destReservedQuantity.get(n));
 
             if (!result) {
@@ -586,11 +554,12 @@ public class ReceivingPutawaySessionBean {
                     bin.setReservedSpace(bin.getReservedSpace() - totalQuantity);
                     bin.setAvailableSpace(bin.getAvailableSpace() + totalQuantity);
                     System.out.println(bin.getReservedSpace() - totalQuantity);
+                    totalQuantity = 0;
                 } //totalQuantity is more than reserved space
                 else {
                     totalQuantity = totalQuantity - bin.getReservedSpace();
                     bin.setReservedSpace(0);
-                    bin.setAvailableSpace(bin.getMaxQuantity());
+                    bin.setAvailableSpace(bin.getMaxQuantity() - bin.getInuseSpace());
                 }
 
                 em.merge(bin);
@@ -610,7 +579,7 @@ public class ReceivingPutawaySessionBean {
     // Receive and putaway into my warehouse
     // After this method, user will be directed to the add stock page
     public boolean receivePutawayForMyBin(Integer companyId, Integer WmsOrderId) {
-        System.out.println("[IN EJB RPSB, receivePutawayForRentedSpace] ======================================");
+        System.out.println("[IN EJB RPSB, receivePutawayForMyBin] ======================================");
 
         WmsOrder wmsOrder = new WmsOrder();
         wmsOrder = em.find(WmsOrder.class, WmsOrderId);
@@ -629,14 +598,18 @@ public class ReceivingPutawaySessionBean {
             bin = myBins.get(i);
 
             if (totalQuantity <= bin.getReservedSpace()) {
+                System.out.println("totalQuantity <= bin.getReservedSpace()");
                 bin.setReservedSpace(bin.getReservedSpace() - totalQuantity);
                 bin.setAvailableSpace(bin.getAvailableSpace() + totalQuantity);
                 System.out.println(bin.getAvailableSpace() + totalQuantity);
+                totalQuantity = 0;
             } //totalQuantity is more than reserved space
             else {
+                System.out.println("totalQuantity is more than reserved space");
                 totalQuantity = totalQuantity - bin.getReservedSpace();
+                System.out.println("Total Quantity = " + totalQuantity);
                 bin.setReservedSpace(0);
-                bin.setAvailableSpace(bin.getMaxQuantity());
+                bin.setAvailableSpace(bin.getMaxQuantity() - bin.getInuseSpace());
             }
             em.merge(bin);
             em.flush();

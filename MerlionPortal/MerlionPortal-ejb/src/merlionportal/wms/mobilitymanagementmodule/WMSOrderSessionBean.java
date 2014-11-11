@@ -7,16 +7,20 @@ package merlionportal.wms.mobilitymanagementmodule;
 
 import entity.ServicePO;
 import entity.Stock;
+import entity.StorageBin;
 import entity.WmsOrder;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import merlionportal.wms.warehousemanagementmodule.AssetManagementSessionBean;
 
 /**
  *
@@ -35,6 +39,9 @@ public class WMSOrderSessionBean {
     @EJB
     private OrderFulfillmentSessionBean ofsb;
 
+    @EJB
+    private AssetManagementSessionBean amsb;
+
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     //check for bins and reserve space
@@ -44,16 +51,15 @@ public class WMSOrderSessionBean {
 //    2. Rejected
 //    3. Compeleted
     public Integer createInternalOrder(Integer myCompanyId, String orderType, Date fulfillmentDate, Date receiveDate, Integer quantity,
-            Integer productId, Boolean internalOrder, Integer servicePOId, Integer warehouseId) {
+            Integer productId, Boolean internalOrder, Integer servicePOId, Integer warehouseId, String neededBinType) {
 
         System.out.println("[INSIDE WMS ORDER EJB]================================Add create internal order");
         Integer orderId = null;
         String status = "Processing";
-
+        System.out.println("Product ID = " + productId);
         if (orderType.equalsIgnoreCase("Receiving Order")) {
             System.out.println("====================== Receiving Order");
 
-            String neededBinType = getBinType(productId);
             Boolean result = rpsb.checkBinSpaceForAWarehouse(warehouseId, quantity, neededBinType);
             if (result) {
                 orderId = createWarehouseOrder(myCompanyId, orderType, fulfillmentDate, receiveDate, quantity,
@@ -79,11 +85,18 @@ public class WMSOrderSessionBean {
 
     }
 
-    public String getBinType(Integer productId) {
-        Query query = em.createQuery("SELECT s FROM Stock s WHERE s.productId = :inProductId");
-        query.setParameter("inProductId", productId);
-        List<Stock> stocks = query.getResultList();
-        return stocks.get(0).getStorageBin().getBinType();
+    public Set<String> displayBinType(Integer warehouseId) {
+        System.out.println("displayBinType ================");
+        List<StorageBin> bins = amsb.viewAllMyBinsInAWarehouse(warehouseId);
+        System.out.println("Bins  = " + bins);
+        Set<String> binTypes = new HashSet<String>();
+        int i = 0;
+        while (i < bins.size()) {
+            binTypes.add(bins.get(i).getBinType());
+            i++;
+        }
+        System.out.println("Bin Types = " + binTypes);
+        return binTypes;
     }
 
     public boolean rejectOrder(Integer wmsOrderId) {
@@ -92,18 +105,21 @@ public class WMSOrderSessionBean {
         wmsOrder = em.find(WmsOrder.class, wmsOrderId);
 
         Integer servicePOId = wmsOrder.getServicePOId();
-        ServicePO servicePO = new ServicePO();
-        servicePO = em.find(ServicePO.class, servicePOId);
 
-        if (servicePO != null) {
-            servicePO.setStatus(11);
-            em.merge(servicePO);
+        if (wmsOrder != null) {
+            if (servicePOId != null) {
+                ServicePO servicePO = new ServicePO();
+                servicePO = em.find(ServicePO.class, servicePOId);
+                servicePO.setStatus(11);
+                em.merge(servicePO);
+                em.flush();
+            }
+            wmsOrder.setStatus("Rejected");
+            em.merge(wmsOrder);
             em.flush();
-        }
-        wmsOrder.setStatus("Rejected");
-        em.merge(wmsOrder);
-        em.flush();
 
+            return true;
+        }
         return false;
     }
 
