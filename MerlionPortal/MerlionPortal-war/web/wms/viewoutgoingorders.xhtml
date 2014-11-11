@@ -92,7 +92,7 @@
                                 </p:column>
                             </p:row>
 
-                            <p:dataTable id="myincomingorders" var="order" sortMode="multiple" editable="true" value="#{orderFulfillmentManagedBean.wmsOrders}" 
+                            <p:dataTable id="myincomingorders" var="order" scrollable="true" scrollWidth="1500" resizableColumns="true" sortMode="multiple" editable="true" value="#{orderFulfillmentManagedBean.wmsOrders}" 
                                          widgetVar="myincomingorderTable"
                                          emptyMessage="No records found"
                                          rowKey="#{order.orderId}">

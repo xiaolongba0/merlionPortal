@@ -77,7 +77,7 @@
             </p:breadCrumb>
             <h:form id="formMain">
 
-                <p:dataTable id="movingStockData" var="movingStock" sortMode="multiple" editable="true" value="#{movingStockViewManagedBean.destMovingStocks}" 
+                <p:dataTable id="movingStockData" var="movingStock" scrollable="true" scrollWidth="1500" resizableColumns="true" sortMode="multiple" editable="true" value="#{movingStockViewManagedBean.destMovingStocks}" 
                              widgetVar="movingStockTable"
                              emptyMessage="No records found"
                              rowKey="#{movingStock.movingStockId}">

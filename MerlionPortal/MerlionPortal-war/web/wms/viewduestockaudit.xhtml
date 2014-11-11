@@ -89,7 +89,7 @@
                         </p:column>
                     </p:row>
 
-                    <p:dataTable id="stockAuditData" var="stockaudit" sortMode="multiple" editable="true" value="#{stockAuditViewEditManagedBean.stockAudits}" 
+                    <p:dataTable id="stockAuditData" var="stockaudit" scrollable="true" scrollWidth="1500" resizableColumns="true" sortMode="multiple" editable="true" value="#{stockAuditViewEditManagedBean.stockAudits}" 
                                  widgetVar="stockAuditTable"
                                  emptyMessage="No stock audit records found for today"
                                  rowKey="#{stockaudit.stockAuditId}">

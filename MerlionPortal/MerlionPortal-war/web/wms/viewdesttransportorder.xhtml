@@ -88,7 +88,7 @@
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
-                    <p:dataTable id="destWarehouseData" var="transportOrder" sortMode="multiple" editable="true" value="#{transportOrderManagedBean.transportOrders}" 
+                    <p:dataTable id="destWarehouseData" var="transportOrder" scrollable="true" scrollWidth="2000" resizableColumns="true" sortMode="multiple" editable="true" value="#{transportOrderManagedBean.transportOrders}" 
                                  widgetVar="destWarehouseTable"
                                  emptyMessage="No records found"
                                  rowKey="#{transportOrder.transportOrderId}">
