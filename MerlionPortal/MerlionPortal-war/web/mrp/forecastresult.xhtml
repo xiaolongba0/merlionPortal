@@ -75,9 +75,17 @@
 
 
                 <p:panel header="Satisfied with the result?" style="margin-bottom:10px;"> 
-
+                    <p:column style="width:42px">
+                        <p:commandButton value="Proceed" action="#{forecastManagedBean.proceedMPS}">
+                            <p:confirm header="Satified with the result?" message="Are you sure that you want to proceed to MPS based on the forecasted result?" icon="ui-icon-alert" />
+                        </p:commandButton> 
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </p:column>
                     <p:commandButton value="Go Back"  action="#{forecastManagedBean.goBackForecastParameter}" />
-                    <p:commandButton value="Proceed"  action="#{forecastManagedBean.proceedMPS}" />
+                    
                 </p:panel>
             </h:form>
         </ui:define>

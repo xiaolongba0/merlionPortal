@@ -80,8 +80,15 @@
                             </p:column>
                         </p:row>
                     </p:panelGrid>
-                    <p:commandButton value="Go Back"  action="#{mPSBufferManagedBean.backToHistory}" />
-                    <p:commandButton value="Proceed with MPS weekly demand"  action="#{mPSBufferManagedBean.proceedToMPSResult}" />
+                    <p:column style="width:42px">
+                        <p:commandButton value="Proceed with MPS weekly demand" action="#{mPSBufferManagedBean.proceedToMPSResult}">
+                            <p:confirm header="Proceed?" message="Are you comfirm with the amount of buffer being entered?" icon="ui-icon-alert" />
+                        </p:commandButton> 
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </p:column>
                 </p:panel>
             </h:form>
         </ui:define>
