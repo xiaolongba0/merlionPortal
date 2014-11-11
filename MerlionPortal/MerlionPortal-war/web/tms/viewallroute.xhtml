@@ -105,7 +105,7 @@
                             </p:column>
                             <p:column>
                                 <p:selectOneMenu id="node" value="#{routeViewEditManagedBean.nodeId}"  style="width:300px" required="true" requiredMessage="Please select a Origin">
-                                    <p:ajax listener="#{routeViewEditManagedBean.onNodeChange()}" update="routeData" />
+                                    <p:ajax listener="#{routeViewEditManagedBean.onNodeChange()}" update="route" />
                                     <f:selectItem itemLabel="Select Node" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{routeViewEditManagedBean.nodes}" var="node" itemLabel="ID:#{node.nodeId} Name:#{node.locationName}"  itemValue="#{node.nodeId}"/>
                                 </p:selectOneMenu>
@@ -113,7 +113,7 @@
                         </p:row>
                     </p:panelGrid>
 
-                    <p:dataTable id="routeData" var="route" sortMode="multiple" editable="true" value="#{routeViewEditManagedBean.routes}" 
+                    <p:dataTable id="route" var="route" sortMode="multiple" editable="true" value="#{routeViewEditManagedBean.routes}" 
                                  widgetVar="routeTable"
                                  emptyMessage="No Route found"
                                  rowKey="#{route.routeId}">
@@ -145,7 +145,7 @@
                         </p:column>
 
                         <p:column headerText = "Delete Route">
-                            <p:commandButton action="#{routeViewEditManagedBean.deleteRoute(route)}" update="routeData" value="Delete">
+                            <p:commandButton action="#{routeViewEditManagedBean.deleteRoute(route)}" update="route" value="Delete">
                                 <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this Route?" icon="ui-icon-alert" />
                             </p:commandButton> 
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

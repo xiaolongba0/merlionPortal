@@ -89,100 +89,64 @@
             </p:breadCrumb>
             <h:form id="form">
 
-            <p:panel id="panel" header="Add Transportation Asset">
-                <p:ajaxStatus style="width:16px;height:16px;">
-                    <f:facet name="start">
-                        <h:graphicImage value="/img/load.gif" />
-                    </f:facet>
-                    <f:facet name="complete">
-                        <h:outputText value="" />
-                    </f:facet>
-                </p:ajaxStatus>
+                <p:panel id="panel" header="Add Transportation Asset">
+                    <p:ajaxStatus style="width:16px;height:16px;">
+                        <f:facet name="start">
+                            <h:graphicImage value="/img/load.gif" />
+                        </f:facet>
+                        <f:facet name="complete">
+                            <h:outputText value="" />
+                        </f:facet>
+                    </p:ajaxStatus>
 
-                <p:panelGrid>
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="location" value="Location Name: " />
-                        </p:column>
-                        <p:column>
-                            <p:selectOneMenu id="location" value="#{tAssetManagedBean.locationlocationId}"  style="width:210px" required="true" requiredMessage="Please select a location">
-                                <f:selectItem itemLabel="Select Location" itemValue="" noSelectionOption="true" />
-                                <f:selectItems value="#{tAssetManagedBean.locations}" var="location" itemLabel="ID:#{location.locationId}   Name:#{location.locationName}"  itemValue="#{location.locationId}"/>
-                            </p:selectOneMenu>
-                        </p:column>
-                    </p:row>
+                    <h:panelGrid columns="3">
+                        <p:outputLabel for="location" value="Location Name: " /><p:spacer width="20" height="20" />
+                        <p:selectOneMenu id="location" value="#{tAssetManagedBean.locationlocationId}"  style="width:210px" required="true" requiredMessage="Please select a location"><p:spacer width="20" height="20" />
+                            <f:selectItem itemLabel="Select Location" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{tAssetManagedBean.locations}" var="location" itemLabel="ID:#{location.locationId}   Name:#{location.locationName}"  itemValue="#{location.locationId}"/>
+                        </p:selectOneMenu>
 
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="assetType" style="font-weight: bold" value="Asset Type : " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="assetType" requiredMessage="assetType is required." id="assetType" value="#{tAssetManagedBean.assetType}">
-                                <f:validateLength minimum="1" maximum="25" />
-                            </p:inputText>
-                        </p:column>
-                    </p:row>  
+                        <p:outputLabel  value="Asset Type: " /><p:spacer width="20" height="20" />
+                        <p:selectOneRadio  value="#tAssetManagedBean.assetType}">
+                            <f:selectItem itemLabel="Truck" itemValue="Truck" />
+                            <f:selectItem itemLabel="Ship" itemValue="Ship" />
+                            <f:selectItem itemLabel="Plane" itemValue="Plane"/>
+                        </p:selectOneRadio>
 
-                    <p:row>
-                        <p:column>
-                            <h:outputLabel for="capacity" style="font-weight: bold" value="Capacity(TEU) : *" />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="capacity" requiredMessage="capacity is required." id="capacity" value="#{tAssetManagedBean.capacity}">
-                                <f:validateLength minimum="1" maximum="25" />
-                            </p:inputText>
-                        </p:column>
-                    </p:row>  
+                        <h:outputLabel for="capacity" style="font-weight: bold" value="Capacity(TEU) : *" /><p:spacer width="20" height="20" />
+                        <p:inputText required="true" label="capacity" requiredMessage="capacity is required." id="capacity" value="#{tAssetManagedBean.capacity}">
+                            <f:validateLength minimum="1" maximum="25" />
+                        </p:inputText>
+                        <p:outputLabel for="price" style="font-weight: bold" value="Price : " /><p:spacer width="20" height="20" />
 
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="price" style="font-weight: bold" value="Price : " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="price" requiredMessage="priceis required." id="price" value="#{tAssetManagedBean.price}">
-                                <f:validateLength minimum="1" maximum="25" />
-                            </p:inputText>
-                        </p:column>
-                    </p:row>  
+                        <p:inputText required="true" label="price" requiredMessage="priceis required." id="price" value="#{tAssetManagedBean.price}">
+                            <f:validateLength minimum="1" maximum="25" />
+                        </p:inputText>
 
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="speed" style="font-weight: bold" value="Speed(Km/h) : " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="speed" requiredMessage="speed is required." id="speed" value="#{tAssetManagedBean.speed}">
-                                <f:validateLength minimum="1" maximum="25" />
-                            </p:inputText>
-                        </p:column>
-                    </p:row>  
+                        <p:outputLabel for="speed" style="font-weight: bold" value="Speed(Km/h) : " /><p:spacer width="20" height="20" />
 
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="status" style="font-weight: bold" value="Status(description) : " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="status" requiredMessage="statusis required." id="status" value="#{tAssetManagedBean.status}">
-                                <f:validateLength minimum="1" maximum="100" />
-                            </p:inputText>
-                        </p:column>
-                    </p:row>  
+                        <p:inputText required="true" label="speed" requiredMessage="speed is required." id="speed" value="#{tAssetManagedBean.speed}">
+                            <f:validateLength minimum="1" maximum="25" />
+                        </p:inputText>
 
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="quantity" style="font-weight: bold" value="Quantity : " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="status" requiredMessage="statusis required." id="quantity" value="#{tAssetManagedBean.quantity}">
-                                <f:validateLength minimum="1" maximum="100" />
-                            </p:inputText>
-                        </p:column>
-                    </p:row>  
+                        <p:outputLabel for="status" style="font-weight: bold" value="Remark : " /><p:spacer width="20" height="20" />
 
-                </p:panelGrid>
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                        <p:inputText required="true" label="status" requiredMessage="statusis required." id="status" value="#{tAssetManagedBean.status}">
+                            <f:validateLength minimum="1" maximum="100" />
+                        </p:inputText>
 
-                <p:commandButton id="btn" value="Create New Transportation Asset" update="form" actionListener="#{tAssetManagedBean.createNewTAsset}" ajax="true" />
-            </p:panel>
+                        <p:outputLabel for="quantity" style="font-weight: bold" value="Quantity : " /><p:spacer width="20" height="20" />
+
+                        <p:inputText required="true" label="status" requiredMessage="statusis required." id="quantity" value="#{tAssetManagedBean.quantity}">
+                            <f:validateLength minimum="1" maximum="100" />
+                        </p:inputText>
+
+                        <br></br>
+                    </h:panelGrid>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+                    <p:commandButton id="btn" value="Create New Transportation Asset" update="form" actionListener="#{tAssetManagedBean.createNewTAsset}" ajax="true" />
+                </p:panel>
             </h:form>
         </ui:define>
     </ui:composition>
