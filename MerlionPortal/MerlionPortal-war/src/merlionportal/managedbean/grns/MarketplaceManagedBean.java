@@ -168,6 +168,9 @@ public class MarketplaceManagedBean {
     }
 
     public String getWarehouseName(Integer warehouId) {
+        if (warehouId == null) {
+            return "";
+        }
         return postsSB.getWarehouseLocation(warehouId);
     }
 
