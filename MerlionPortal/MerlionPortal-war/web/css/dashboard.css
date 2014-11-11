@@ -35,7 +35,7 @@
     background: url('../img/wms.jpg') -90px;
 }
 .oestile{
-    background: url('../img/tile-oes.jpg') -80px -10px;
+    background: url('../img/OES.jpg') -300px -200px;
 }
 .mrptile{
     background: url('../img/MRP.jpg');
@@ -44,7 +44,7 @@
     background: url('../img/TMS.jpg') -30px;
 }
 .grnstile{
-    background: url('../img/tile-grns.jpg');
+    background: url('../img/GRNS.jpg') -300px -80px;
 }
 
 .row-fluid>.col-md-4{

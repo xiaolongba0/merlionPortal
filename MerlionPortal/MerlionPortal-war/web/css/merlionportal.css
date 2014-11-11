@@ -315,7 +315,7 @@ h2.system-welcome{
     background: url('../img/wms.jpg') -0px -0px no-repeat;
 }
 .oes-system-banner{
-    background: url('../img/OES.jpg') -0px -0px no-repeat;
+    background: url('../img/OES.jpg') 0px -220px no-repeat;
 }
 .tms-system-banner{
     background: url('../img/TMS.jpg') -0px -0px no-repeat;
