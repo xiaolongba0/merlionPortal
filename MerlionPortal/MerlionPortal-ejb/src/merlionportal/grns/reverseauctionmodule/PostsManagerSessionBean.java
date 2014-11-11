@@ -8,6 +8,7 @@ package merlionportal.grns.reverseauctionmodule;
 import entity.Bid;
 import entity.Post;
 import entity.SystemUser;
+import entity.Warehouse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,6 +51,21 @@ public class PostsManagerSessionBean {
         return result;
     }
 
+    public List<Post> getAllSTPosts(int companyId) {
+        List<Post> result = new ArrayList();
+        Query q = em.createQuery("SELECT p FROM Post p");
+        for (Object o : q.getResultList()) {
+            Post p = (Post) o;
+            //rmb to change to companyId!=p.getSystemUser..... !!!!
+            if (companyId == p.getSystemUser().getCompanycompanyId().getCompanyId() && p.getServiceType().equals("Transportation Space")) {
+                if (this.checkPostValidity(p)) {
+                    result.add(p);
+                }
+            }
+        }
+        return result;
+    }
+
     public List<Post> getAllWPosts(int companyId) {
         List<Post> result = new ArrayList();
         Query q = em.createQuery("SELECT p FROM Post p");
@@ -65,13 +81,29 @@ public class PostsManagerSessionBean {
         return result;
     }
 
+    public List<Post> getAllSWPosts(int companyId) {
+        List<Post> result = new ArrayList();
+        Query q = em.createQuery("SELECT p FROM Post p");
+        for (Object o : q.getResultList()) {
+            Post p = (Post) o;
+            //rmb to change to companyId!=p.getSystemUser..... !!!!!!
+            if (companyId == p.getSystemUser().getCompanycompanyId().getCompanyId() && p.getServiceType().equals("Warehouse Space")) {
+                if (this.checkPostValidity(p)) {
+                    result.add(p);
+                }
+            }
+        }
+        return result;
+    }
+
     public List<Post> getMyActiveTPosts(int companyId) {
         List<Post> result = new ArrayList();
         Query q = em.createQuery("SELECT p FROM Post p");
         for (Object o : q.getResultList()) {
             Post p = (Post) o;
             if (companyId == p.getSystemUser().getCompanycompanyId().getCompanyId()
-                    && p.getStatus().equalsIgnoreCase("Valid") && p.getServiceType().equals("Transportation")) {
+                    && p.getStatus().equalsIgnoreCase("Valid") && 
+                    (p.getServiceType().equals("Transportation")||p.getServiceType().equals("Transportation Space"))) {
                 result.add(p);
             }
         }
@@ -84,7 +116,8 @@ public class PostsManagerSessionBean {
         for (Object o : q.getResultList()) {
             Post p = (Post) o;
             if (companyId == p.getSystemUser().getCompanycompanyId().getCompanyId()
-                    && p.getStatus().equalsIgnoreCase("Valid") && p.getServiceType().equals("Warehouse")) {
+                    && p.getStatus().equalsIgnoreCase("Valid") && 
+                    (p.getServiceType().equals("Warehouse")||p.getServiceType().equals("Warehouse Space"))) {
                 result.add(p);
             }
         }
@@ -97,7 +130,8 @@ public class PostsManagerSessionBean {
         for (Object o : q.getResultList()) {
             Post p = (Post) o;
             if (companyId == p.getSystemUser().getCompanycompanyId().getCompanyId()
-                    && p.getStatus().equalsIgnoreCase("Expired") && p.getServiceType().equals("Warehouse")) {
+                    && p.getStatus().equalsIgnoreCase("Expired") &&
+                    (p.getServiceType().equals("Warehouse")||p.getServiceType().equals("Warehouse Space"))) {
                 result.add(p);
             }
         }
@@ -110,7 +144,8 @@ public class PostsManagerSessionBean {
         for (Object o : q.getResultList()) {
             Post p = (Post) o;
             if (companyId == p.getSystemUser().getCompanycompanyId().getCompanyId()
-                    && p.getStatus().equalsIgnoreCase("Expired") && p.getServiceType().equals("Transportation")) {
+                    && p.getStatus().equalsIgnoreCase("Expired") && 
+                    (p.getServiceType().equals("Transportation")||p.getServiceType().equals("Transportation Space"))) {
                 result.add(p);
             }
         }
@@ -123,11 +158,11 @@ public class PostsManagerSessionBean {
     }
 
     public void bidPost(Double amount, Integer userId, Post post) {
-        
+
         Bid newBid = new Bid();
         SystemUser myUser = em.find(SystemUser.class, userId);
-        if(myUser.getBidList()==null){
-            List<Bid> myBidslist=new ArrayList();
+        if (myUser.getBidList() == null) {
+            List<Bid> myBidslist = new ArrayList();
             myUser.setBidList(myBidslist);
         }
         newBid.setAmount(amount);
@@ -161,5 +196,15 @@ public class PostsManagerSessionBean {
         myBid.setAmount(newprice);
         em.merge(myBid);
         em.flush();
+    }
+
+    public String getWarehouseLocation(Integer wId) {
+        Warehouse myw = em.find(Warehouse.class, wId);
+        return myw.getStreet() + "," + myw.getCity() + "," + myw.getCountry();
+    }
+
+    public String getWarehouseName(Integer wId) {
+        Warehouse myw = em.find(Warehouse.class, wId);
+        return myw.getName();
     }
 }

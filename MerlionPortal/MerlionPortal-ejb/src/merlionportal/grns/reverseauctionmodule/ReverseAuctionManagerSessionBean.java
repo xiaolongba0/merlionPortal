@@ -11,6 +11,7 @@ import entity.Contract;
 import entity.Post;
 import entity.ServicePO;
 import entity.SystemUser;
+import entity.Warehouse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -216,7 +217,34 @@ public class ReverseAuctionManagerSessionBean {
         em.merge(systemUser);
         em.flush();
     }
-
+public void postTPost(String description, String destination, String origin,
+            Date deliveryDate, String currency,
+            Date expireDate, Integer systemU, Integer totalVolum) {
+        List<Bid> bidList = new ArrayList();
+        SystemUser systemUser = em.find(SystemUser.class, systemU);
+        List<Post> myPostlist = new ArrayList();
+        if (systemUser.getPostList() == null) {
+            systemUser.setPostList(myPostlist);
+        }
+        Post newPost = new Post();
+        newPost.setServiceType("Transportation Space");
+        newPost.setDescription(description);
+        newPost.setCurrency(currency);
+        newPost.setDeliveryDate(deliveryDate);
+        newPost.setDestination(destination);
+        newPost.setOrigin(origin);
+        Date todayDate = new Date();
+        newPost.setPostDate(todayDate);
+        newPost.setQuantityInTEU(totalVolum);
+        newPost.setStatus("Valid");
+        newPost.setExpireDate(expireDate);
+        newPost.setSystemUser(systemUser);
+        newPost.setBidList(bidList);
+        em.persist(newPost);
+        systemUser.getPostList().add(newPost);
+        em.merge(systemUser);
+        em.flush();
+    }
     public void submitWPost(List<Contract> wList, String description, Date sStart, Date sEnd,
             Double wareSpace, String currency, Date expireDate, Integer sysUser) {
         SystemUser systemUser = em.find(SystemUser.class, sysUser);
@@ -249,6 +277,50 @@ public class ReverseAuctionManagerSessionBean {
         em.merge(systemUser);
         em.flush();
 
+    }
+    public void postWPost(Integer warehouId,String description, Date sStart, Date sEnd,
+            Double wareSpace, String currency, Date expireDate, Integer sysUser) {
+        SystemUser systemUser = em.find(SystemUser.class, sysUser);
+        List<Post> myPostlist = new ArrayList();
+        if (systemUser.getPostList() == null) {
+            systemUser.setPostList(myPostlist);
+        }
+        Post newPost = new Post();
+        List<Bid> bidList = new ArrayList();
+        newPost.setServiceType("Warehouse Space");
+        newPost.setDescription(description);
+        newPost.setCurrency(currency);
+        Date todayDate = new Date();
+        newPost.setPostDate(todayDate);
+        newPost.setStorageStartDate(sStart);
+        newPost.setStorageEndDate(sEnd);
+        newPost.setWarehouseSpace(wareSpace);
+        newPost.setStatus("Valid");
+        newPost.setExpireDate(expireDate);
+        newPost.setSystemUser(systemUser);
+        newPost.setBidList(bidList);
+        em.persist(newPost);
+        systemUser.getPostList().add(newPost);
+        em.merge(systemUser);
+        em.flush();
+
+    }
+
+    public Boolean checkValidWarehouse(Integer wId, Integer companyId) {
+        Warehouse myw = em.find(Warehouse.class, wId);
+        if (myw.getCompanyId() == companyId) {
+            return true;
+        }
+        return false;
+    }
+
+    public String getWarehouseName(Integer wId) {
+        Warehouse myw = em.find(Warehouse.class, wId);
+        return myw.getName();
+    }
+    public String getWarehouseLocation(Integer wId) {
+        Warehouse myw = em.find(Warehouse.class, wId);
+        return myw.getStreet()+","+myw.getCity()+","+myw.getCountry();
     }
 
 }
