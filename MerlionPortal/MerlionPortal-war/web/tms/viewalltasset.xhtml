@@ -100,6 +100,8 @@
                             <p:column>
                                 <p:selectOneMenu id="location" value="#{TTassetViewEditManagedBean.locationId}"  style="width:300px" required="true" requiredMessage="Please select a location">
                                     <p:ajax listener="#{TTassetViewEditManagedBean.onLocationChange()}" update="tAssetData" />
+                                    <p:ajax listener="#{TTassetViewEditManagedBean.onLocationfromChange()}" update="fromRoute" />
+                                    <p:ajax listener="#{TTassetViewEditManagedBean.onLocationToChange()}" update="toRoute" />
                                     <f:selectItem itemLabel="Select Location" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{tAssetManagedBean.locations}" var="location" itemLabel="ID:#{location.locationId} Name:#{location.locationName}"  itemValue="#{location.locationId}"/>
                                 </p:selectOneMenu>
@@ -181,8 +183,90 @@
                         </p:column>
 
                     </p:dataTable>
+                    <br></br>
 
 <!--<p:chart type="pie" model="#{TTassetViewEditManagedBean.pieModel1}" style="width:400px;height:300px" />-->
+                    <!--                  //////////////////////////////////////////////////////////////-->
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="fromRoute" value="Route Departs from Selected Location: " />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="fromRoute" value="#{TTassetViewEditManagedBean.fromRouteId}"  style="width:300px" required="true" requiredMessage="Please select a Destination">
+                                    <p:ajax listener="#{TTassetViewEditManagedBean.onFromRouteChange()}" update="fromAssetData" />
+                                    <f:selectItem itemLabel="Select Destination" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{TTassetViewEditManagedBean.fromRoutes}" var="froute" itemLabel="ID:#{froute.routeId} To:#{froute.destination}"  itemValue="#{froute.routeId}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:dataTable id="fromAssetData" var="fAsset" sortMode="multiple" editable="true" value="#{TTassetViewEditManagedBean.fromAssets}" 
+                                 widgetVar="fromAssetTable"
+                                 emptyMessage="No Transportation Asset found"
+                                 rowKey="#{fAsset.scheduleId}">
+
+                        <p:column filterBy="#{fAsset.transporationAssetassetId.assetId}" filterMatchMode="exact" headerText="TAsset ID" >
+                            <h:outputText value="#{fAsset.transporationAssetassetId.assetId}" />
+                        </p:column>
+
+                        <p:column  filterBy="#{fAsset.transporationAssetassetId.assetType}" filterMatchMode="contains" headerText="Asset Type">
+                            <h:outputText value="#{fAsset.transporationAssetassetId.assetType}" />
+                        </p:column>                
+
+                        <p:column  headerText="Load">
+
+                            <h:outputText value="#{fAsset.assetLoad}" />
+                        </p:column>
+
+
+                        <p:column  headerText="Arriving Date">
+                            <h:outputText value="#{fAsset.endDate}" />
+                        </p:column>
+
+                    </p:dataTable>
+                    <br></br>
+
+                    <!--                  //////////////////////////////////////////////////////////////-->
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="toRoute" value="Route Arrives at Selected Location " />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="toRoute" value="#{TTassetViewEditManagedBean.toRouteId}"  style="width:300px" required="true" requiredMessage="Please select a Origin">
+                                    <p:ajax listener="#{TTassetViewEditManagedBean.onToRouteChange()}" update="toAssetData" />
+                                    <f:selectItem itemLabel="Select Origin" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{TTassetViewEditManagedBean.toRoutes}" var="toroute" itemLabel="ID:#{toroute.routeId} From:#{toroute.origin}"  itemValue="#{toroute.routeId}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:dataTable id="toAssetData" var="toAsset" sortMode="multiple" editable="true" value="#{TTassetViewEditManagedBean.toAssets}" 
+                                 widgetVar="toAssetTable"
+                                 emptyMessage="No Transportation Asset found"
+                                 rowKey="#{toAsset.scheduleId}">
+
+
+                        <p:column filterBy="#{toAsset.transporationAssetassetId.assetId}" filterMatchMode="exact" headerText="TAsset ID" >
+                            <h:outputText value="#{toAsset.transporationAssetassetId.assetId}" />
+                        </p:column>
+
+                        <p:column  filterBy="#{toAsset.transporationAssetassetId.assetType}" filterMatchMode="contains" headerText="Asset Type">
+                            <h:outputText value="#{toAsset.transporationAssetassetId.assetType}" />
+                        </p:column>                
+
+                        <p:column  headerText="Load">
+
+                            <h:outputText value="#{toAsset.assetLoad}" />
+                        </p:column>
+
+
+                        <p:column  headerText="Arriving Date">
+                            <h:outputText value="#{toAsset.endDate}" />
+                        </p:column>
+
+                    </p:dataTable>
 
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 </p:panel>
