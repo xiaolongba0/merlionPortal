@@ -50,6 +50,10 @@ body{
     margin-bottom:5px;
 }
 
+.ui-datatable{
+    margin-top:10px;
+}
+
 .message-link{
     text-decoration:underline;
     cursor:pointer;
