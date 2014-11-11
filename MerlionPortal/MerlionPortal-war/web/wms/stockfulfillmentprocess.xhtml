@@ -120,7 +120,7 @@
                     <h:panelGrid columns="1">
                         <p:messages id="messages" autoUpdate="true" closable="true" /><p:spacer width="40" height="20" />
 
-                        <p:commandButton id="btn" value="Complete" action="wmsindex.xhtml?faces-redirect=true" icon=" ui-icon-circle-check" >
+                        <p:commandButton id="btn" value="Complete" action="viewoutgoingorders.xhtml?faces-redirect=true" icon=" ui-icon-circle-check" >
                             <p:ajax listener="#{orderFulfillmentProcessManagedBean.carryOutOrderFulfillment()}"/>
                         </p:commandButton>
                         <p:spacer width="40" height="20" />

@@ -120,10 +120,17 @@
                                     <h:outputText value="#{order.quantity}" />
                                 </p:column>
 
-                                <p:column headerText="">
-                                    <p:commandButton  action="#{receivingPutawayManagedBean.getOrder(order)}" value="Process Order">
-                                    </p:commandButton> 
+                                <p:column filterBy="#{order.status}" filterMatchMode="contains" headerText="Status">
+                                    <h:outputText value="#{order.status}" />
                                 </p:column>
+
+                                <p:column>
+                                    <p:commandButton  action="#{receivingPutawayManagedBean.getOrder(order)}" value="Process Order" rendered="#{order.status == 'Processing'}" />
+                                </p:column>
+                                <p:column>
+                                        <p:commandButton  action="#{receivingPutawayManagedBean.rejectOrder(order)}" value="Reject Order" rendered="#{order.status == 'Processing'}" />
+                                </p:column>
+
                             </p:dataTable>
                             <br></br>
                             <p:messages id="msgs" autoUpdate="true" closable="true" />
@@ -179,13 +186,19 @@
                                     <h:outputText value="#{order.servicePOId}" />
                                 </p:column>
 
+                                <p:column filterBy="#{order.status}" filterMatchMode="contains" headerText="Status">
+                                    <h:outputText value="#{order.status}" />
+                                </p:column>
+
                                 <p:column>
-                                    <p:commandButton  action="#{receivingPutawayManagedBean.getOrder(order)}" value="Process Order" rendered="#{(order.status).equalsIgnoreCase(Processing)}">
-                                    </p:commandButton> 
+                                    <c:if test="#{order.status eq 'Processing'}" >
+                                        <p:commandButton  action="#{receivingPutawayManagedBean.getOrder(order)}" value="Process Order" />
+                                    </c:if>
                                 </p:column>
                                 <p:column>
-                                    <p:commandButton  action="#{receivingPutawayManagedBean.rejectOrder(order.orderId)}" value="Reject Order">
-                                    </p:commandButton> 
+                                    <c:if test="#{order.status eq 'Processing'}" >
+                                        <p:commandButton  action="#{receivingPutawayManagedBean.rejectOrder(order)}" value="Reject Order" />
+                                    </c:if>
                                 </p:column>
 
                             </p:dataTable>

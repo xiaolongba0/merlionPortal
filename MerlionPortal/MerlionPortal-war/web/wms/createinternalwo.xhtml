@@ -79,6 +79,14 @@
                         </f:facet>
                     </p:ajaxStatus>
 
+                    <h:outputLabel for="orderType" style="font-weight: bold" value="Order Type:   *" /><p:spacer width="20" height="20" />
+                    <p:selectOneMenu id="orderType" value="#{internalWarehouseOrderManagedBean.orderType}" style="width:200px">
+                        <p:ajax update=":formMain" />Receiving Order
+                        <f:selectItem itemLabel="Select Warehouse Order Type" itemValue="" noSelectionOption="true" />
+                        <f:selectItem itemLabel="Fulfillment Order" itemValue="Fulfillment Order" />
+                        <f:selectItem itemLabel="Receiving Order" itemValue="Receiving Order" />
+                    </p:selectOneMenu>
+
 
                     <p:selectOneRadio id="myRadioID" value="#{internalWarehouseOrderManagedBean.radioValue}" layout="custom">
                         <f:selectItem itemLabel="Choose ID" itemValue="1"/>
@@ -100,21 +108,28 @@
                         <p:inputText id="input01" value="#{internalWarehouseOrderManagedBean.productId}" disabled="#{internalWarehouseOrderManagedBean.radioValue != '2'}">
                         </p:inputText>
                     </h:panelGrid>
-                    
+
                     <h:panelGrid columns="3"> 
+
+
                         <h:outputLabel for="warehouse" style="font-weight: bold" value="Warehouse:   *" /><p:spacer width="20" height="20" />
                         <p:selectOneMenu id="warehouse" value="#{internalWarehouseOrderManagedBean.warehouseId}"  style="width:300px" required="true" requiredMessage="Please select a warehouse">
                             <f:selectItem itemLabel="Select Warehouse" itemValue="" noSelectionOption="true" />
                             <f:selectItems value="#{internalWarehouseOrderManagedBean.warehouses}" var="warehouse" itemLabel="ID:#{warehouse.warehouseId} Name:#{warehouse.name}"  itemValue="#{warehouse.warehouseId}"/>
+                            <c:if test="#{internalWarehouseOrderManagedBean.orderType eq 'Receiving Order'}" >
+                                <p:ajax listener="#{internalWarehouseOrderManagedBean.getBinTypes(internalWarehouseOrderManagedBean.warehouseId)}" update=":formMain:binTypes" />
+                            </c:if>
                         </p:selectOneMenu>
+                    </h:panelGrid>
+                    <h:panelGrid id="binTypes" columns="3" >
+                        <c:if test="#{internalWarehouseOrderManagedBean.orderType eq 'Receiving Order'}" >
+                            <h:outputLabel style="font-weight: bold" value="Bin Type:   *" /><p:spacer width="20" height="20" />
+                            <p:selectOneMenu value="#{internalWarehouseOrderManagedBean.binType}"  style="width:300px" required="true" requiredMessage="Please select a Bin Type">
+                                <f:selectItem itemLabel="Select Bin Type" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{internalWarehouseOrderManagedBean.binTypes}" var="binTypes" itemLabel= "#{binTypes}"/>
+                            </p:selectOneMenu>
+                        </c:if>
 
-                        <h:outputLabel for="orderType" style="font-weight: bold" value="Order Type:   *" /><p:spacer width="20" height="20" />
-                        <p:selectOneMenu id="orderType" value="#{internalWarehouseOrderManagedBean.orderType}" style="width:200px">
-                            <p:ajax update=":formMain" />Receiving Order
-                            <f:selectItem itemLabel="Select Warehouse Order Type" itemValue="" noSelectionOption="true" />
-                            <f:selectItem itemLabel="Fulfillment Order" itemValue="Fulfillment Order" />
-                            <f:selectItem itemLabel="Receiving Order" itemValue="Receiving Order" />
-                        </p:selectOneMenu>
 
                         <h:outputLabel for="quantity" style="font-weight: bold" value="Quantity:   *" /><p:spacer width="40" height="20" />
                         <p:inputText required="true" label="quantity" requiredMessage="Quantity is required." id="quantity" value="#{internalWarehouseOrderManagedBean.quantity}">
@@ -130,8 +145,8 @@
                             <p:calendar id="endDate" required="true" requiredMessage="Receiving Date is required" value="#{internalWarehouseOrderManagedBean.receiveDate}" pattern="dd-MM-yyyy" mask="true" mindate="#{createWarehouseRequestMB.today}" />
                         </c:if>
 
-                    </h:panelGrid>
 
+                    </h:panelGrid>
                     <h:panelGrid columns="1">
                         <p:messages id="messages" autoUpdate="true" closable="true" /><p:spacer width="40" height="20" />
                         <p:commandButton id="btn" value="Create New Internal Order" update="formMain" actionListener="#{internalWarehouseOrderManagedBean.createNewWarehouseOrder()}" ajax="true" >

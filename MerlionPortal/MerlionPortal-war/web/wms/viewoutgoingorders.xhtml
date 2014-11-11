@@ -120,9 +120,12 @@
                                     <h:outputText value="#{order.quantity}" />
                                 </p:column>
 
-                                <p:column headerText="">
-                                    <p:commandButton  action="#{orderFulfillmentManagedBean.getOrder(order)}" value="Process Order">
-                                    </p:commandButton> 
+                                <p:column filterBy="#{order.status}" filterMatchMode="contains" headerText="Status">
+                                    <h:outputText value="#{order.status}" />
+                                </p:column>
+
+                                <p:column>
+                                    <p:commandButton  action="#{orderFulfillmentManagedBean.getOrder(order)}" value="Process Order" rendered="#{order.status == 'Processing'}" />
                                 </p:column>
                             </p:dataTable>
                             <br></br>
@@ -179,9 +182,12 @@
                                     <h:outputText value="#{order.servicePOId}" />
                                 </p:column>
 
-                                <p:column headerText="">
-                                    <p:commandButton  action="#{orderFulfillmentManagedBean.getOrder(order)}" value="Process Order">
-                                    </p:commandButton> 
+                                <p:column filterBy="#{order.status}" filterMatchMode="contains" headerText="Status">
+                                    <h:outputText value="#{order.status}" />
+                                </p:column>
+
+                                <p:column>
+                                    <p:commandButton  action="#{orderFulfillmentManagedBean.getOrder(order)}" value="Process Order" rendered="#{order.status == 'Processing'}" />
                                 </p:column>
                             </p:dataTable>
                             <br></br>
