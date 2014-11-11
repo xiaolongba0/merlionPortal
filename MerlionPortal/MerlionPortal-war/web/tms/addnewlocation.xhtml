@@ -22,15 +22,10 @@
         <ui:define name="left">
             <h:form id="formMain">
                 <p:menu>
-                    <p:submenu label ="Map">
-                        <p:submenu label="Node" >
-                            <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
-                            <p:menuitem value="View All Nodes" url="viewallnode.xhtml" />
-                        </p:submenu>
-                        <p:submenu label="Route" >
-                            <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
-                            <p:menuitem value="View All Routes" url="viewallroute.xhtml"/>
-                        </p:submenu>
+                    <p:submenu label ="Map Settings">
+                        <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
+                        <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
+                        <p:menuitem value="View Connections" url="viewconnection.xhtml"/>
                     </p:submenu>
                     <p:submenu label =" Manage Your Transportation">
                         <p:menuitem value="TMS Home" url="tmsindex.xhtml"  style="background-color: lavender"/>
@@ -109,7 +104,7 @@
                         </p:selectOneRadio>
 
                         <p:outputLabel for="nodeId" value="Physical Location: " /><p:spacer width="20" height="20" />
-                       
+
                         <p:selectOneMenu id="nodeId" value="#{tLocationManagerBean.nodeId}"  style="width:210px" required="true" requiredMessage="Please Select Physical Location">
                             <f:selectItem itemLabel="Select Physical Location" itemValue="" noSelectionOption="true" />
                             <f:selectItems value="#{tLocationManagerBean.nodes}" var="nodeId" itemLabel="ID:#{nodeId.nodeId}   Name:#{nodeId.locationName}"  itemValue="#{nodeId.nodeId}"/>
@@ -127,7 +122,7 @@
                         </p:inputText>
                         <br></br>
                     </h:panelGrid>
-                    
+
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                     <p:commandButton id="btn" value="Create New Location" update="form" actionListener="#{tLocationManagerBean.createNewLocation()}" ajax="true" >
                     </p:commandButton>

@@ -22,15 +22,10 @@
         <ui:define name="left">
             <h:form id="formMain">
                 <p:menu>
-                    <p:submenu label ="Map">
-                        <p:submenu label="Node" >
-                            <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
-                            <p:menuitem value="View All Nodes" url="viewallnode.xhtml" />
-                        </p:submenu>
-                        <p:submenu label="Route" >
-                            <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
-                            <p:menuitem value="View All Routes" url="viewallroute.xhtml"/>
-                        </p:submenu>
+                    <p:submenu label ="Map Settings">
+                        <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
+                        <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
+                        <p:menuitem value="View Connections" url="viewconnection.xhtml"/>
                     </p:submenu>
                     <p:submenu label =" Manage Your Transportation">
                         <p:menuitem value="TMS Home" url="tmsindex.xhtml"  style="background-color: lavender"/>
@@ -99,21 +94,21 @@
                             <h:outputText value="" />
                         </f:facet>
                     </p:ajaxStatus>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="operator" value="Operator Name: " />
-                            </p:column>
-                            <p:column>
-                                <p:selectOneMenu id="operator" value="#{tOperatorScheduleViewEditManagedBean.operatorId}"  style="width:300px" required="true" requiredMessage="Please select a Operator">
-                                    <p:ajax listener="#{tOperatorScheduleViewEditManagedBean.onOperatorChange()}" update="scheduleData" />
-                                    <f:selectItem itemLabel="Select Operator" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tOperatorScheduleViewEditManagedBean.operators}" var="operator" itemLabel="ID:#{operator.operatorId} Name:#{operator.operatorName}"  itemValue="#{operator.operatorId}"/>
-                                </p:selectOneMenu>
-                            </p:column>
-                        </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="operator" value="Operator Name: " />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="operator" value="#{tOperatorScheduleViewEditManagedBean.operatorId}"  style="width:300px" required="true" requiredMessage="Please select a Operator">
+                                <p:ajax listener="#{tOperatorScheduleViewEditManagedBean.onOperatorChange()}" update="scheduleData" />
+                                <f:selectItem itemLabel="Select Operator" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{tOperatorScheduleViewEditManagedBean.operators}" var="operator" itemLabel="ID:#{operator.operatorId} Name:#{operator.operatorName}"  itemValue="#{operator.operatorId}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
 
 
-                        <p:dataTable id="scheduleData" var="oschedule" sortMode="multiple" editable="true" value="#{tOperatorScheduleViewEditManagedBean.oschedules}" 
+                    <p:dataTable id="scheduleData" var="oschedule" sortMode="multiple" editable="true" value="#{tOperatorScheduleViewEditManagedBean.oschedules}" 
                                  widgetVar="scheduleTable"
                                  emptyMessage="No schedule found"
                                  rowKey="#{oschedule.operatorScheduleId}">
@@ -165,7 +160,7 @@
                     </p:dataTable>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 </p:panel>
- 
+
             </h:form>
         </ui:define>
     </ui:composition>
