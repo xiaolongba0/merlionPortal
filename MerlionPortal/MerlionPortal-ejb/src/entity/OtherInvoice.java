@@ -80,9 +80,9 @@ public class OtherInvoice implements Serializable {
     @Column(name = "receiveDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date receiveDate;
+    @Size(max = 255)
     @Column(name = "accountInfo")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date accountInfo;
+    private String accountInfo;
     @Column(name = "creditCardNo")
     private BigInteger creditCardNo;
     @Column(name = "swiftcode")
@@ -183,11 +183,11 @@ public class OtherInvoice implements Serializable {
         this.receiveDate = receiveDate;
     }
 
-    public Date getAccountInfo() {
+    public String getAccountInfo() {
         return accountInfo;
     }
 
-    public void setAccountInfo(Date accountInfo) {
+    public void setAccountInfo(String accountInfo) {
         this.accountInfo = accountInfo;
     }
 
