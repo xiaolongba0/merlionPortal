@@ -8,6 +8,7 @@ package merlionportal.managedbean.mrp2;
 import entity.Mrp;
 import entity.SystemUser;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -34,50 +35,51 @@ public class MaterialReqManagedBean {
     @EJB
     UserAccountManagementSessionBean uamb;
     private SystemUser loginedUser;
-    Integer companyId;
-    Integer productId;
+    private Integer companyId;
+    private Integer productId;
 
-    int wk1Demand;
-    int wk2Demand;
-    int wk3Demand;
-    int wk4Demand;
-    int wk5Demand;
+    private int wk1Demand;
+    private int wk2Demand;
+    private int wk3Demand;
+    private int wk4Demand;
+    private int wk5Demand;
 
-    int quantity;
-    int grossReq1;
-    int grossReq2;
-    int grossReq3;
-    int grossReq4;
-    int grossReq5;
+   private int quantity;
+   private int grossReq1;
+   private int grossReq2;
+   private int grossReq3;
+   private int grossReq4;
+   private int grossReq5;
 
-    int scheduledRec1;
-    int scheduledRec2;
-    int scheduledRec3;
-    int scheduledRec4;
-    int scheduledRec5;
+  private  int scheduledRec1;
+  private  int scheduledRec2;
+   private int scheduledRec3;
+   private int scheduledRec4;
+   private int scheduledRec5;
 
-    int plannedRec1;
-    int plannedRec2;
-    int plannedRec3;
-    int plannedRec4;
-    int plannedRec5;
-    int onHand1;
-    int onHand2;
-    int onHand3;
-    int onHand4;
-    int onHand5;
-    int plannedOrder1;
-    int plannedOrder2;
-    int plannedOrder3;
-    int plannedOrder4;
-    int plannedOrder5;
-    int leadTime;
+   private int plannedRec1;
+   private int plannedRec2;
+   private int plannedRec3;
+   private int plannedRec4;
+   private int plannedRec5;
+   private int onHand1;
+   private int onHand2;
+   private int onHand3;
+   private int onHand4;
+   private int onHand5;
+   private int plannedOrder1;
+   private int plannedOrder2;
+   private int plannedOrder3;
+   private int plannedOrder4;
+   private int plannedOrder5;
+   private int leadTime;
 
-    Integer mpsId;
-    List<Mrp> mrps;
-    Mrp mrp;
-    List<String> testing;
-    Integer minOnHand;
+   private Integer mpsId;
+   private List<Mrp> mrps;
+   private Mrp mrp;
+   private List<String> testing;
+   private int minOnHand;
+   private List<Integer> listOfSentPO;
 
     @PostConstruct
     public void init() {
@@ -118,10 +120,11 @@ public class MaterialReqManagedBean {
         grossReq5 = wk5Demand * quantity;
 
         mpsId = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mpsId");
-        minOnHand = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("minOnHand");
+        minOnHand = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("minOnHand");
         systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP compute material requirement planning. ");
         mrps = materialReqPlanningSessionBean.addNewMrpList(productId, mpsId, wk1Demand, wk2Demand, wk3Demand, wk4Demand, wk5Demand, minOnHand);
-
+         
+        listOfSentPO = new ArrayList<Integer>();
     }
 
     public MaterialReqManagedBean() {
@@ -134,8 +137,14 @@ public class MaterialReqManagedBean {
       
       public String proceedToPO(){
            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mrps", mrps);
+           FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listOfSentPO", listOfSentPO);
           return ("allpo");
       }
+      
+      public String doNotToPO(){
+          return ("mrp");
+      }
+          
 
     //For testing passing a list only
     public List<String> testingList() {

@@ -26,11 +26,11 @@ public class ForecastGetParameterManagedBean implements Serializable {
     @EJB
     private SystemLogSessionBean systemLogSB;
 
-    Integer companyId;
+    private Integer companyId;
 
-    double expectedGrowth;
-    int periodicity;
-    int size;
+    private double expectedGrowth;
+    private int periodicity;
+    private int size;
     private SystemUser loginedUser;
 
     @PostConstruct

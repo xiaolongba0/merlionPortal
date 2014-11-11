@@ -73,7 +73,7 @@ private Product product;
  //   private Integer newComponentId;
      private SystemUser loginedUser;
      
-     List<Company> companies;
+    private List<Company> companies;
 
  
      

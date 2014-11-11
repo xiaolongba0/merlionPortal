@@ -30,10 +30,10 @@ public class ForecastManagedBean implements Serializable {
 
     
 
-    Integer companyId;
-    Integer productId;
-    Product product;
-    List<Product> products;
+    private Integer companyId;
+    private Integer productId;
+    private Product product;
+    private List<Product> products;
     private SystemUser loginedUser;
 
     @PostConstruct

@@ -20,10 +20,10 @@ public class ProductComponentGetBOM implements Serializable {
 
     @EJB
     ForecastSessionBean forecastSessionBean;
-    Integer companyId = 12345;
-    Integer productId;
-    Product product;
-    List<Product> products;
+    private Integer companyId = 12345;
+    private Integer productId;
+    private Product product;
+    private List<Product> products;
 
     public Integer getProductId() {
         return productId;

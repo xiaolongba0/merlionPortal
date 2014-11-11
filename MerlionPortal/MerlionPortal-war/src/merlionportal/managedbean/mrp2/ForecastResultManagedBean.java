@@ -46,37 +46,37 @@ public class ForecastResultManagedBean implements Serializable {
     @EJB
     private SystemLogSessionBean systemLogSB;
 
-    Integer companyId;
+    private Integer companyId;
 
-    List<String> yearMonth;
-    List purchasingNum;
-    Vector<String> monthlyDate;
-    Vector<Integer> salesdata;
+    private List<String> yearMonth;
+    private List purchasingNum;
+    private Vector<String> monthlyDate;
+    private Vector<Integer> salesdata;
 
-    Vector<String> monthlyDateT;
-    Vector<Integer> salesdataT;
+    private Vector<String> monthlyDateT;
+    private Vector<Integer> salesdataT;
 
-    Vector<Double> deseasonizedD;
-    Vector<Integer> deseasonizedDC;
-    Vector<Integer> tValue;
-    Vector<Double> predictedDeseasonalizedD;
-    Vector<Double> seasonalFactor;
-    Vector<Double> finalSeasonalFactor;
-    Vector<Integer> forecastR;
+    private Vector<Double> deseasonizedD;
+    private Vector<Integer> deseasonizedDC;
+    private Vector<Integer> tValue;
+    private Vector<Double> predictedDeseasonalizedD;
+    private Vector<Double> seasonalFactor;
+    private Vector<Double> finalSeasonalFactor;
+    private Vector<Integer> forecastR;
 
-    Vector<String> monthlyDateR;
-    LineChartModel forecastSales;
+    private Vector<String> monthlyDateR;
+    private LineChartModel forecastSales;
 
-    double expectedGrowth;
-    int periodicity;
-    Integer productId;
+    private double expectedGrowth;
+    private int periodicity;
+    private Integer productId;
 
-    List<String> dateList;
-    List<Integer> quantityList;
+    private List<String> dateList;
+    private List<Integer> quantityList;
     private SystemUser loginedUser;
-    Integer forecastResultID;
-    List<MonthForecastResult> monthForecastResults;
-    MonthForecastResult monthForecastResult;
+    private Integer forecastResultID;
+    private List<MonthForecastResult> monthForecastResults;
+    private MonthForecastResult monthForecastResult;
 
     //variables for forecasting
     @PostConstruct

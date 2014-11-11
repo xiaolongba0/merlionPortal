@@ -42,18 +42,16 @@ public class MPSBufferManagedBean {
       @EJB
     private SystemLogSessionBean systemLogSB;
     private SystemUser loginedUser;
-    Integer companyId;
+    private Integer companyId;
 
-    List<Integer> weeklyDemand;
-    Vector<Integer> forecastData;
-    Vector<String> forecastDate;
+   private List<Integer> weeklyDemand;
+   private Vector<Integer> forecastData;
+   private Vector<String> forecastDate;
 
-    
-    int thisMonthDemand = 4000;
-    int buffer;
-    int currentInv;
-    int requiredDemand;
-    int requiredAmt1;
+   private int buffer;
+   private int currentInv;
+   private int requiredDemand;
+   private int requiredAmt1;
     
     Integer productId;
 
@@ -105,10 +103,6 @@ public class MPSBufferManagedBean {
             System.out.println("RRRRRRRRRRRRRRR");
         }
     }*/
-
-    public int getThisMonthDemand() {
-        return thisMonthDemand;
-    }
 
 
     public int getRequiredAmt1() {

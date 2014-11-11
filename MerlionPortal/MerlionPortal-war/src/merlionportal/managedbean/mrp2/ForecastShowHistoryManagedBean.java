@@ -45,15 +45,15 @@ public class ForecastShowHistoryManagedBean implements Serializable {
     @EJB
     private SystemLogSessionBean systemLogSB;
 
-    Integer companyId;
+   private Integer companyId;
 
     private LineChartModel purchaseHistory;
-    Vector<String> monthlyDate;
-    Vector<Integer> salesdata;
-    Integer productId;
+    private Vector<String> monthlyDate;
+    private Vector<Integer> salesdata;
+    private Integer productId;
 
-    List<String> dateList;
-    List<Integer> quantityList;
+   private List<String> dateList;
+   private List<Integer> quantityList;
 
     private SystemUser loginedUser;
 

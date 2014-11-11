@@ -57,9 +57,9 @@ public class ProductComponentViewEditManagedBean {
     //private Double productId = 1.0;
     private final static String[] currencies;
 
-    Integer productId;
-    Product product;
-    List<Product> products;
+    private Integer productId;
+    private Product product;
+    private List<Product> products;
 
     private SystemUser loginedUser;
 

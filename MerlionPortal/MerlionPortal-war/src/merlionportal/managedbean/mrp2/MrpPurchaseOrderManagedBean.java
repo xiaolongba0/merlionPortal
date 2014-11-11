@@ -10,6 +10,7 @@ import entity.ProductOrder;
 import entity.ProductOrderLineItem;
 import entity.SystemUser;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -48,12 +49,12 @@ public class MrpPurchaseOrderManagedBean {
     LoginSessionBean loginSessionBean;
 
     private SystemUser loginedUser;
-    Integer companyId;
-    Integer productId;
+    private Integer companyId;
+    private Integer productId;
 
-    List<ProductOrderLineItem> lineItemList;
-    List<ProductOrder> pos;
-    List<Mrp> mrps;
+    private List<ProductOrderLineItem> lineItemList;
+    private List<ProductOrder> pos;
+    private List<Mrp> mrps;
 
     @EJB
     private BackorderSessionBean backorderSB;
@@ -82,6 +83,9 @@ public class MrpPurchaseOrderManagedBean {
     private Boolean tempStatus;
     private int temp;
     private Integer poReference;
+    private List<Integer> listOfSentPO;
+    private List<ProductOrder> tempPOS;
+    private List<Integer> tempToDeletePO;
 
     @PostConstruct
     public void init() {
@@ -113,10 +117,11 @@ public class MrpPurchaseOrderManagedBean {
 
     public void createPO() {
         pos = productOrderSessionBean.createPO(productId, companyId, loginedUser, mrps);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pos", pos);
         systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP create PO. ");
     }
 
-    public void sendPO() {
+    public void sendPO(Integer poReference) {
         //hash password
         HashMap<String, Integer> sessionMap = loginSessionBean.verifyAccount(userIDTemp, MD5Generator.hash(password));
         if (sessionMap == null) {
@@ -134,6 +139,14 @@ public class MrpPurchaseOrderManagedBean {
                 if (systemAccessRightSB.checkOESGeneratePO(userIDID)) {
                     tempStatus = true;
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Correct", "PO is sent!"));
+
+                    listOfSentPO = (List<Integer>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("listOfSentPO");
+                    listOfSentPO.add(poReference);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listOfSentPO", listOfSentPO);
+                    for (int i = 0; i < listOfSentPO.size(); i++) {
+                        System.out.println("11.23PM: check stored poReference: " + listOfSentPO.get(i));
+                    }
+
                     System.out.println("+++++++++++++++++++++++++++quotation correct");
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Quotation is not available!"));
@@ -144,7 +157,7 @@ public class MrpPurchaseOrderManagedBean {
         }
     }
 
-    public void cancelPO() {
+    public void cancelPO(Integer poReference) {
 
         productOrderSessionBean.cancelAPO(poReference);
 
@@ -166,8 +179,30 @@ public class MrpPurchaseOrderManagedBean {
         this.pos = pos;
     }
 
-    public String backToMrpHome() {
-        return ("mrp");
+    public void backToMrpHome() {
+        listOfSentPO = (List<Integer>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("listOfSentPO");
+        // get list of all original POs
+        tempPOS = (List<ProductOrder>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("pos");
+        tempToDeletePO = new ArrayList<Integer>();
+        int count1 = 0;
+
+        for (int i = 0; i < tempPOS.size(); i++) {
+            for (int j = 0; j < listOfSentPO.size(); j++) {
+                if (listOfSentPO.get(j).equals(tempPOS.get(i).getProductPOId())) {
+                } else {
+                    count1++;
+                }
+            }
+            if (count1 == listOfSentPO.size()) {
+                tempToDeletePO.add(tempPOS.get(i).getProductPOId());
+                this.cancelPO(tempPOS.get(i).getProductPOId());
+                System.out.println("12.05pm: to delete: " + tempPOS.get(i).getProductPOId());
+            }
+
+            count1 = 0;
+        }
+
+      //  return "mrp?faces-redirect=true";
     }
 
 //    public String cancelPO() {
@@ -189,14 +224,13 @@ public class MrpPurchaseOrderManagedBean {
         return password;
     }
 
-    public void setPoReference(Integer poReference) {
-        this.poReference = poReference;
-    }
+    /*   public void setPoReference(Integer poReference) {
+     this.poReference = poReference;
+     }
 
-    public Integer getPoReference() {
-        return poReference;
-    }
-
+     public Integer getPoReference() {
+     return poReference;
+     }*/
     public void setShipto() {
         if (contactPerson.isEmpty() || contactPerson == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Contact Person is required"));

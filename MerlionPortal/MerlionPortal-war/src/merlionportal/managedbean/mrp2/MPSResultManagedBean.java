@@ -45,44 +45,44 @@ public class MPSResultManagedBean {
     @EJB
     UserAccountManagementSessionBean uamb;
     private SystemUser loginedUser;
-    Integer companyId;
-    Integer productId;
+    private Integer companyId;
+    private Integer productId;
 
-    List<Integer> weeklyDemand;
-    Vector<Integer> forecastData;
-    Vector<String> forecastDate;
+    private List<Integer> weeklyDemand;
+    private Vector<Integer> forecastData;
+    private Vector<String> forecastDate;
 
     int thisMonthDemand = 4000;
-    int buffer;
-    int currentInv;
-    int requiredDemand;
-    int requiredAmt1;
-    int requiredAmt2;
-    String requiredDate1;
-    String requiredDate2;
-    int weeksPerMonth;
+    private int buffer;
+    private int currentInv;
+    private int requiredDemand;
+    private int requiredAmt1;
+    private int requiredAmt2;
+    private String requiredDate1;
+    private String requiredDate2;
+    private int weeksPerMonth;
 
-    String week1S;
-    int week1WorkingDays;
-    String week2S;
-    int week2WorkingDays;
-    String week3S;
-    int week3WorkingDays;
-    String week4S;
-    int week4WorkingDays;
-    String week5S;
-    int week5WorkingDays;
-    int totalWorkingDays;
+    private String week1S;
+    private int week1WorkingDays;
+    private String week2S;
+    private int week2WorkingDays;
+    private String week3S;
+    private int week3WorkingDays;
+    private String week4S;
+    private int week4WorkingDays;
+    private String week5S;
+    private int week5WorkingDays;
+    private int totalWorkingDays;
 
-    int wk1Demand;
-    int wk2Demand;
-    int wk3Demand;
-    int wk4Demand;
-    int wk5Demand;
-    Integer fResultId;
-    Integer mpsId;
-    int tempNum;
-    Integer minOnHand;
+    private int wk1Demand;
+    private int wk2Demand;
+    private int wk3Demand;
+    private int wk4Demand;
+    private int wk5Demand;
+    private Integer fResultId;
+    private Integer mpsId;
+    private int tempNum;
+    private int minOnHand;
 
     @PostConstruct
     public void init() {
@@ -246,11 +246,11 @@ public class MPSResultManagedBean {
         systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "MRP compute demand. ");
     }
 
-    public void setMinOnHand(Integer minOnHand) {
+    public void setMinOnHand(int minOnHand) {
         this.minOnHand = minOnHand;
     }
 
-    public Integer getMinOnHand() {
+    public int getMinOnHand() {
         return minOnHand;
     }
 
