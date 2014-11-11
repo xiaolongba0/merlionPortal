@@ -70,6 +70,10 @@
         </ui:define>
 
         <ui:define name="right">
+            <p:breadCrumb>
+                <p:menuitem value="WMS Home" url="wmsindex.xhtml" />
+                <p:menuitem value="View Notification" url="viewallnotification.xhtml" />
+            </p:breadCrumb>
             <h:form id="formMain">
                 <p:dataTable id="productOrder" var="productOrder" value="#{viewNotificationManagedBean.productOrders}"  scrollable="true" scrollWidth="150%" scrollHeight="300" resizableColumns="true" selectionMode="single" selection="#{retrieveSavedOrder.selectedOrder}" rowKey="#{productOrder.productPOId}"
                              >

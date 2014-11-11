@@ -70,6 +70,11 @@
         </ui:define>
 
         <ui:define name="right">
+            <p:breadCrumb>
+                <p:menuitem value="WMS Home" url="wmsindex.xhtml" />
+                <p:menuitem value="Process Transport Order" url="viewsourcetransportorder.xhtml" />
+                <p:menuitem value="View Moving Out Stock" url="viewstockmovingout.xhtml" />
+            </p:breadCrumb>
             <h:form id="formMain">
 
                 <p:dataTable id="movingStockData" var="movingStock" sortMode="multiple" editable="true" value="#{movingStockViewManagedBean.sourceMovingStocks}" 
