@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -58,12 +59,14 @@ public class InternalWarehouseOrderManagedBean {
     private Integer quantity;
     private Boolean internalOrder;
     private Integer servicePOId;
+    private String binType;
 
     private Integer warehouseId;
     private List<Warehouse> warehouses;
 
     private Integer productId;
     private List<Product> productList;
+    private Set<String> binTypes;
 
     /**
      * Creates a new instance of InternalWarehouseOrderManagedBean
@@ -97,11 +100,11 @@ public class InternalWarehouseOrderManagedBean {
     public void createNewWarehouseOrder() {
 
         try {
-            System.out.println("[INSIDE INTERNAL WAREHOUSE ORDER MB]===========================Warehouse Order");
+            System.out.println("[INSIDE INTERNAL WAREHOUSE ORDER MB]===========================Warehouse Order, productId" + productId);
             myCompanyId = companyId;
             internalOrder = true;
-            Integer newOrderId = osb.createInternalOrder(myCompanyId, orderType, fulfillmentDate, receiveDate, quantity, productId, internalOrder, servicePOId, warehouseId);
-            if (newOrderId != null) {
+            Integer newOrderId = osb.createInternalOrder(myCompanyId, orderType, fulfillmentDate, receiveDate, quantity, productId, internalOrder, servicePOId, warehouseId, binType);
+            if (newOrderId != null & productId != null) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success! New Order with  ID = " + newOrderId + " is created!", ""));
                 clearAllFields();
                 systemLogSB.recordSystemLog(userId, "WMS create warehouse internal order");
@@ -112,6 +115,11 @@ public class InternalWarehouseOrderManagedBean {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+    
+    public void getBinTypes (Integer warehouseId){
+        
+        binTypes = osb.displayBinType(warehouseId);
     }
 
     public void clearAllFields() {
@@ -125,6 +133,7 @@ public class InternalWarehouseOrderManagedBean {
         internalOrder = null;
         servicePOId = null;
         warehouseId = null;
+        binType = null;
 
     }
 
@@ -246,6 +255,22 @@ public class InternalWarehouseOrderManagedBean {
 
     public void setProductList(List<Product> productList) {
         this.productList = productList;
+    }
+
+    public String getBinType() {
+        return binType;
+    }
+
+    public void setBinType(String binType) {
+        this.binType = binType;
+    }
+
+    public Set<String> getBinTypes() {
+        return binTypes;
+    }
+
+    public void setBinTypes(Set<String> binTypes) {
+        this.binTypes = binTypes;
     }
 
 }

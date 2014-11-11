@@ -122,10 +122,11 @@ public class ReceivingPutawayManagedBean {
         return "receivingputawayprocess?faces-redirect=true";
     }
 
-    public void rejectOrder(Integer wmsOrderId) {
-        System.out.println("RECEVINGPUTAWAYMANAGEDBEAN =============== rejectOrder " + wmsOrderId);
-        boolean result = osb.rejectOrder(wmsOrderId);
+    public void rejectOrder(WmsOrder wmsOrder) {
+        System.out.println("RECEVINGPUTAWAYMANAGEDBEAN =============== rejectOrder " + wmsOrder.getOrderId());
+        boolean result = osb.rejectOrder(wmsOrder.getOrderId());
         if (result) {
+            wmsOrder.setStatus("Rejected");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success! Order rejected!", ""));
             systemLogSB.recordSystemLog(userId, "WMS reject receiving putaway order");
         } else {
