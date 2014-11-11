@@ -105,6 +105,7 @@ public class PurchaseOrderSessionBean {
                 System.out.println("FY 6NOV test get product name:" + pLine.getProductproductId().getProductName());
 
                 po.getProductOrderLineItemList().add(pLine);
+                po.setPrice(mrps.get(i).getPlannedOrder1() * product.getComponentList().get(i).getCost());
                 entityManager.merge(po);
                 entityManager.flush();
                 pos.add(po);
