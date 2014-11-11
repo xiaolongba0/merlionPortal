@@ -7,6 +7,7 @@ package merlionportal.managedbean.grns;
 
 import entity.Post;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -22,7 +23,7 @@ import merlionportal.grns.reverseauctionmodule.PostsManagerSessionBean;
  */
 @Named(value = "marketplaceManagedBean")
 @ViewScoped
-public class MarketplaceManagedBean {
+public class MarketplaceManagedBean implements Serializable {
 
     @EJB
     private PostsManagerSessionBean postsSB;
@@ -36,7 +37,7 @@ public class MarketplaceManagedBean {
 
     private List<Post> filteredPosts;
     private Post selectedPost;
-    private Post selectedWPost;
+    private Post selectedMyPost;
     private Post selectedSTpost;
     private Post selectedSWpost;
 
@@ -116,13 +117,15 @@ public class MarketplaceManagedBean {
         this.allWPosts = allWPosts;
     }
 
-    public Post getSelectedWPost() {
-        return selectedWPost;
+    public Post getSelectedMyPost() {
+        return selectedMyPost;
     }
 
-    public void setSelectedWPost(Post selectedWPost) {
-        this.selectedWPost = selectedWPost;
+    public void setSelectedMyPost(Post selectedMyPost) {
+        this.selectedMyPost = selectedMyPost;
     }
+
+  
 
     public Post getSelectedSTpost() {
         return selectedSTpost;
@@ -143,9 +146,11 @@ public class MarketplaceManagedBean {
     public String bidSelectedPost() {
         if (selectedPost == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please select One Post to bid"));
+            return "viewallposts.xhtml";
+
         }
 
-        System.out.println("bid selected");
+        System.out.println("T bid selected");
         if (selectedPost != null) {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedPost");
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedPost", selectedPost);
@@ -156,9 +161,11 @@ public class MarketplaceManagedBean {
     public String bidSelectedSTPost() {
         if (selectedSTpost == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please select One Post to bid"));
+            return "viewallposts.xhtml";
+
         }
 
-        System.out.println("bid selected");
+        System.out.println(" ST bid selected");
         if (selectedSTpost != null) {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedPost");
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedPost", selectedSTpost);
@@ -169,9 +176,11 @@ public class MarketplaceManagedBean {
     public String bidSelectedSWPost() {
         if (selectedSWpost == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please select One Post to bid"));
+            return "viewallposts.xhtml";
+
         }
 
-        System.out.println("bid selected");
+        System.out.println("SW bid selected");
         if (selectedSWpost != null) {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedPost");
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedPost", selectedSWpost);
@@ -180,14 +189,14 @@ public class MarketplaceManagedBean {
     }
 
     public String bidSelectedWPost() {
-        if (selectedWPost == null) {
+        System.out.println("W bid selected");
+        if (selectedMyPost == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please select One Post to bid"));
+            return "viewallposts.xhtml";
         }
-
-        System.out.println("bid selected");
-        if (selectedWPost != null) {
+        if (selectedMyPost != null) {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedPost");
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedPost", selectedWPost);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedPost", selectedMyPost);
         }
         return "bidpost.xhtml?faces-redirect=true";
     }

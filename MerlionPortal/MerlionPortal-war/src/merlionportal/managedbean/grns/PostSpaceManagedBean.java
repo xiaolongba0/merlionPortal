@@ -39,8 +39,8 @@ public class PostSpaceManagedBean {
     private String currency;
     private Date expireDate;
     private Integer serviceType;
-    private String warehouseLocation;
-    private String warehouseName;
+    private String warehouseLocation = "";
+    private String warehouseName = "";
     private String description;
     private Boolean summitable;
 
@@ -173,12 +173,16 @@ public class PostSpaceManagedBean {
     }
 
     public void updateWinfo() {
+        serviceType = 2;
+        System.out.println("UPDATE WARE HOUSE INFO!!!!!!---------------START");
         if (warehouseId == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please Enter Warehouse Id."));
 
         } else {
-            if (reverseSB.checkValidWarehouse(warehouseId, companyId)) {
-                serviceType = 2;
+            if (!reverseSB.checkValidWarehouse(warehouseId, companyId)) {
+                warehouseId=null;
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Invalid Warehouse Id please re-selecte."));
+            } else {
                 warehouseName = reverseSB.getWarehouseName(warehouseId);
                 warehouseLocation = reverseSB.getWarehouseLocation(warehouseId);
             }
@@ -211,23 +215,17 @@ public class PostSpaceManagedBean {
 
     public void postRequest() {
         if (serviceType == 1) {
-            if (orign == null || desti == null || volume == null || deliveryDate == null) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please fillin all filed."));
-            } else {
-                reverseSB.postTPost(description, desti, orign, deliveryDate, currency, expireDate, userId, volume);
-                summitable = false;
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Post successful"));
-            }
+
+            reverseSB.postTPost(description, desti, orign, deliveryDate, currency, expireDate, userId, volume);
+            summitable = false;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Post successful"));
+
         }
         if (serviceType == 2) {
-            if (warehouseId == null || warehouseName == null || warehouseLocation == null || startDate == null || endDate == null || totalSpace == null) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Please fillin all filed."));
-            } else {
-                reverseSB.postWPost(warehouseId, description, startDate, endDate, totalSpace, currency, expireDate, userId);
-                summitable = false;
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Post successful"));
+            reverseSB.postWPost(warehouseId, description, startDate, endDate, totalSpace, currency, expireDate, userId);
+            summitable = false;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Post successful"));
 
-            }
         }
     }
 

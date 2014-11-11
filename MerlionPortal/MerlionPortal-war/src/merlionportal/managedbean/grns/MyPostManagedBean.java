@@ -57,9 +57,7 @@ public class MyPostManagedBean {
         needCancel = false;
         openPost = false;
         myPost = (Post) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedPost");
-        myPost = (Post) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedPost");
         String serviceT = myPost.getServiceType();
-        System.out.println("service Type" + serviceT);
         if (serviceT.equals("Transportation")) {
             serviceType = 1;
         }
@@ -78,15 +76,22 @@ public class MyPostManagedBean {
         }
     }
 
-    public void cancelThisRequest() {
+    public String cancelThisRequest() {
         postsSB.cancelPost(myPost);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "This Post is canceled", ""));
+        return "viewmypost.xhtml";
 
     }
 
-    public void acceptThisRequest() {
+    public String acceptThisRequest() {
+        if (selectedBid == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one bid to process", ""));
+            return "viewmypost.xhtml";
+
+        }
         postsSB.acceptBidConvertToGrnsServiceOrder(myPost, selectedBid);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "This Bid is accepted and GRNS Service Order is Generated", ""));
+        return "viewmypost.xhtml";
 
     }
 
