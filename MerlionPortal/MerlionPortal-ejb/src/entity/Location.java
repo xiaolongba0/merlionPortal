@@ -53,11 +53,11 @@ public class Location implements Serializable {
     private String locationType;
     @Column(name = "companyId")
     private Integer companyId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "locationlocationId")
+    private List<TransportationAsset> transportationAssetList;
     @JoinColumn(name = "nodeId", referencedColumnName = "nodeId")
     @ManyToOne(optional = false)
     private Node nodeId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "locationlocationId")
-    private List<TransportationAsset> transportationAssetList;
 
     public Location() {
     }
@@ -98,14 +98,6 @@ public class Location implements Serializable {
         this.companyId = companyId;
     }
 
-    public Node getNodeId() {
-        return nodeId;
-    }
-
-    public void setNodeId(Node nodeId) {
-        this.nodeId = nodeId;
-    }
-
     @XmlTransient
     public List<TransportationAsset> getTransportationAssetList() {
         return transportationAssetList;
@@ -113,6 +105,14 @@ public class Location implements Serializable {
 
     public void setTransportationAssetList(List<TransportationAsset> transportationAssetList) {
         this.transportationAssetList = transportationAssetList;
+    }
+
+    public Node getNodeId() {
+        return nodeId;
+    }
+
+    public void setNodeId(Node nodeId) {
+        this.nodeId = nodeId;
     }
 
     @Override

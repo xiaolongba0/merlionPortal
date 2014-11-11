@@ -67,10 +67,10 @@ public class Company implements Serializable {
     private String description;
     @Column(name = "package")
     private Integer package1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "companycompanyId")
-    private List<SystemUser> systemUserList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     private List<UserRole> userRoleList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "companycompanyId")
+    private List<SystemUser> systemUserList;
 
     public Company() {
     }
@@ -144,21 +144,21 @@ public class Company implements Serializable {
     }
 
     @XmlTransient
-    public List<SystemUser> getSystemUserList() {
-        return systemUserList;
-    }
-
-    public void setSystemUserList(List<SystemUser> systemUserList) {
-        this.systemUserList = systemUserList;
-    }
-
-    @XmlTransient
     public List<UserRole> getUserRoleList() {
         return userRoleList;
     }
 
     public void setUserRoleList(List<UserRole> userRoleList) {
         this.userRoleList = userRoleList;
+    }
+
+    @XmlTransient
+    public List<SystemUser> getSystemUserList() {
+        return systemUserList;
+    }
+
+    public void setSystemUserList(List<SystemUser> systemUserList) {
+        this.systemUserList = systemUserList;
     }
 
     @Override

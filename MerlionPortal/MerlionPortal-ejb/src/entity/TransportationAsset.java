@@ -78,6 +78,8 @@ public class TransportationAsset implements Serializable {
         @JoinColumn(name = "TransportationOrder_transportationOrderId", referencedColumnName = "transportationOrderId")})
     @ManyToMany
     private List<TransportationOrder> transportationOrderList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "transportationAsset")
+    private List<PlanAssetSchedule> planAssetScheduleList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "transporationAssetassetId")
     private List<AssetSchedule> assetScheduleList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "transporationAssetassetId")
@@ -180,6 +182,15 @@ public class TransportationAsset implements Serializable {
 
     public void setTransportationOrderList(List<TransportationOrder> transportationOrderList) {
         this.transportationOrderList = transportationOrderList;
+    }
+
+    @XmlTransient
+    public List<PlanAssetSchedule> getPlanAssetScheduleList() {
+        return planAssetScheduleList;
+    }
+
+    public void setPlanAssetScheduleList(List<PlanAssetSchedule> planAssetScheduleList) {
+        this.planAssetScheduleList = planAssetScheduleList;
     }
 
     @XmlTransient

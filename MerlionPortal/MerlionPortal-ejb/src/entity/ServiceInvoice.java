@@ -65,11 +65,11 @@ public class ServiceInvoice implements Serializable {
     @Column(name = "createDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "serviceInvoice")
+    private Payment payment;
     @JoinColumn(name = "invoiceId", referencedColumnName = "servicePOId", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private ServicePO servicePO;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "serviceInvoice")
-    private Payment payment;
 
     public ServiceInvoice() {
     }
@@ -142,20 +142,20 @@ public class ServiceInvoice implements Serializable {
         this.createDate = createDate;
     }
 
-    public ServicePO getServicePO() {
-        return servicePO;
-    }
-
-    public void setServicePO(ServicePO servicePO) {
-        this.servicePO = servicePO;
-    }
-
     public Payment getPayment() {
         return payment;
     }
 
     public void setPayment(Payment payment) {
         this.payment = payment;
+    }
+
+    public ServicePO getServicePO() {
+        return servicePO;
+    }
+
+    public void setServicePO(ServicePO servicePO) {
+        this.servicePO = servicePO;
     }
 
     @Override

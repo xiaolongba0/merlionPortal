@@ -43,11 +43,11 @@ public class Mps implements Serializable {
     private Integer buffer;
     @Column(name = "demand")
     private Integer demand;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "mps")
+    private MRPList mRPList;
     @JoinColumn(name = "mpsId", referencedColumnName = "forecastResultId", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private ForecastResult forecastResult;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "mps")
-    private MRPList mRPList;
 
     public Mps() {
     }
@@ -80,20 +80,20 @@ public class Mps implements Serializable {
         this.demand = demand;
     }
 
-    public ForecastResult getForecastResult() {
-        return forecastResult;
-    }
-
-    public void setForecastResult(ForecastResult forecastResult) {
-        this.forecastResult = forecastResult;
-    }
-
     public MRPList getMRPList() {
         return mRPList;
     }
 
     public void setMRPList(MRPList mRPList) {
         this.mRPList = mRPList;
+    }
+
+    public ForecastResult getForecastResult() {
+        return forecastResult;
+    }
+
+    public void setForecastResult(ForecastResult forecastResult) {
+        this.forecastResult = forecastResult;
     }
 
     @Override
