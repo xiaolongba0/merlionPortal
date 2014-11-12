@@ -147,7 +147,7 @@ public class QuotationManagedBean implements Serializable {
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Quotation generated."));
-            quotationMB.generateQuotation(selectedRequest, inputText);
+            quotationMB.generateQuotation(selectedRequest, inputText,currency);
             systemLogSB.recordSystemLog(userId, "OES Generate Quotation. ");
             inputText = null;
         }

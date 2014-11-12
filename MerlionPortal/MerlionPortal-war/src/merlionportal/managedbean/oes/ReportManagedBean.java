@@ -53,7 +53,6 @@ public class ReportManagedBean {
 
     @PostConstruct
     public void init() {
-        systemLogSB.recordSystemLog(userId, "OES View Report. ");
         boolean redirect = true;
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("userId")) {
             userId = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userId");
@@ -70,6 +69,8 @@ public class ReportManagedBean {
                 ex.printStackTrace();
             }
         }
+        systemLogSB.recordSystemLog(userId, "OES View Report. ");
+
     }
 
     public String allValidOrders() {
