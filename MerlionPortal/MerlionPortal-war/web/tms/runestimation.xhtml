@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">
+        <ui:param name="pageName" value="Add new transportation order" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+
+            </ui:insert>
+        </ui:define>
+        <ui:define name="left">
+            <h:form id="formMain">
+                <p:menu>
+                    <c:if test="#{dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:submenu label ="Map Settings">
+                            <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
+                            <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
+                            <p:menuitem value="View Connections" url="viewconnection.xhtml"/>
+                        </p:submenu>
+                        <p:submenu label =" Manage Your Transportation">
+                            <p:menuitem value="TMS Home" url="tmsindex.xhtml"/>
+                        </p:submenu>
+                    </c:if>                     
+                    <c:if test="#{dashboardBean.checkTMSCanManageTransportationAsset() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:submenu label="Location" >
+                            <p:menuitem value="Add A Location" url="addnewlocation.xhtml"/>
+                            <p:menuitem value="View All Locations" url="viewalllocation.xhtml"/>
+                        </p:submenu>
+                        <p:submenu label="Transportation Asset Management" >
+                            <p:menuitem value="Add Transportation Assets" url="addnewtasset.xhtml" />
+                            <p:menuitem value="Location Dashboard" url="viewalltasset.xhtml" />
+                        </p:submenu>
+                        <p:submenu label="Asset Dispatching" >
+                            <p:menuitem value="Dispatch a Asset" url="addnewtassetschedule.xhtml" />
+                            <p:menuitem value="View Current Tasks" url="viewalltassetschedule.xhtml" />
+                        </p:submenu>
+                    </c:if>
+                    <c:if test="#{dashboardBean.checkTMSCanManageAssetMaintenence() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:submenu label="Asset Maintenance" >
+                            <p:menuitem value="Create Maintenance" url="addnewmaintenancelog.xhtml"  />
+                            <p:menuitem value="View All Maintenance" url="viewallmaintenancelog.xhtml" />
+                        </p:submenu>
+                    </c:if>
+                    <c:if test="#{dashboardBean.checkTMSCanUseHRFunction() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:submenu label="Human Resource Management" >
+                            <p:menuitem value="New Operator" url="addnewoperator.xhtml"  />
+                            <p:menuitem value="Operator List" url="viewalloperator.xhtml" />
+                        </p:submenu>
+                        <p:submenu label="Operator Schedule" >
+                            <p:menuitem value="Add A Operator Schedule" url="addnewoperatorschedule.xhtml" />
+                            <p:menuitem value="View All Operator Schedule" url="viewalloperatorschedule.xhtml" />
+                        </p:submenu>
+                    </c:if>
+
+                    <c:if test="#{dashboardBean.checkTMSCanManageTransportationOrder()|| dashboardBean.checkTMSCanManageLog()||dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:submenu label="Transportation Order" >
+                            <c:if test="#{dashboardBean.checkTMSCanManageTransportationOrder()||dashboardBean.loginedUser.userType == 'superuser'}">
+                                <p:menuitem value="Run Cost Simulation" url="runestimation.xhtml" />
+                                <p:menuitem value="View Past Simulations" url="viewestimation.xhtml" />
+                                <p:menuitem value="Create Transportation Order" url="addnewtorder.xhtml" />
+                                <p:menuitem value="View All Orders" url="viewalltorder.xhtml" />
+                            </c:if>
+                            <p:menuitem value="Track Order Information" url="viewalllog.xhtml"/>
+                            <c:if test="#{dashboardBean.checkTMSCanManageLog()||dashboardBean.loginedUser.userType == 'superuser'}">
+                                <p:menuitem value="Create Log For Order" url="addnewlog.xhtml" />
+                            </c:if>
+                        </p:submenu>
+                    </c:if>
+                    <c:if test="#{dashboardBean.checkTMSCanManageTransportationOrder()||dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:submenu label="Transportation Request" >
+                            <p:menuitem value="Create A Transportation Request" url="addnewrequest.xhtml" />
+                            <p:menuitem value="View All Request" url="viewallrequest.xhtml" />
+                        </p:submenu>
+                        <p:submenu label="Transportation Service Fulfillment Check" >
+                            <p:menuitem value="Fulfillment Check" url="transportationservicefulfillmentcheck.xhtml" />
+                        </p:submenu>
+                    </c:if>
+                </p:menu>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">   
+            <p:breadCrumb>
+                <p:menuitem value="TMS Home" url="tmsindex.xhtml" />
+                <p:menuitem value="Transportation Order" url="tmsindex.xhtml" />
+                <p:menuitem value="Run Cost Simulation" url="runEstimation.xhtml" />
+            </p:breadCrumb>
+            <h:form id="form">
+
+                <br/>
+                <p:panel id="panel" header="Add New Transportation Order">
+                    <p:ajaxStatus style="width:16px;height:16px;">
+                        <f:facet name="start">
+                            <h:graphicImage value="/img/load.gif" />
+                        </f:facet>
+                        <f:facet name="complete">
+                            <h:outputText value="" />
+                        </f:facet>
+                    </p:ajaxStatus>
+                    <h:panelGrid columns="3">
+
+                        <p:outputLabel value="Transportation Type: " /><p:spacer width="20" height="20" />
+                        <p:selectOneRadio  value="#{estimationManagerBean.type}">
+                            <f:selectItem itemLabel="Land" itemValue="Land" />
+                            <f:selectItem itemLabel="Sea" itemValue="Sea" />
+                            <f:selectItem itemLabel="Air" itemValue="Air" />
+                        </p:selectOneRadio>                         
+
+                        <h:outputLabel for="cargoWeight" style="font-weight: bold" value="Cargo Weight (TEU):  " /><p:spacer width="20" height="20" />
+
+                        <p:inputText required="true" label="nodeType" requiredMessage="Node Type is required." id="cargoWeight" value="#{estimationManagerBean.totalLoad}">
+                            <f:validateLength minimum="1" maximum="19" />
+                        </p:inputText>
+
+                        <h:outputLabel for="destination" style="font-weight: bold" value="Destination:  " /><p:spacer width="20" height="20" />
+
+                        <p:selectOneMenu id="destination" value="#{estimationManagerBean.destinationId}"  style="width:210px" required="true" requiredMessage="Please select a Destination">
+                            <f:selectItem itemLabel="Select Destination" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{estimationManagerBean.destinations}" var="destination" itemLabel="Name:#{destination.locationName}"  itemValue="#{destination.locationId}"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel for="origin" style="font-weight: bold" value="Origin:  " /><p:spacer width="20" height="20" />
+
+                        <p:selectOneMenu id="origin" value="#{estimationManagerBean.originId}"  style="width:210px" required="true" requiredMessage="Please select a Origin">
+                            <f:selectItem itemLabel="Select Origin" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{estimationManagerBean.origins}" var="origin" itemLabel="Name:#{origin.locationName}"  itemValue="#{origin.locationId}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="endDate" value="Expected Delivery Date " /><p:spacer width="20" height="20" />
+                        <p:calendar id="endDate" required="true" requiredMessage="Start Date is required" value="#{estimationManagerBean.timeEnd}" pattern="dd-MM-yyyy" mask="true" mindate="#{tAssetScheduleManagerBean.today}" />
+
+                    </h:panelGrid> 
+                    <br></br>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:commandButton id="btn" value="Run Simulation" update="form" actionListener="#{estimationManagerBean.createNewOrder(order)}" ajax="true" >
+                    </p:commandButton>
+
+                </p:panel>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>                        
+
