@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -64,6 +65,7 @@ public class CreateUserManagedBean {
     GetCompanyRoleSessionBean gcrsb;
     @EJB
     private SystemLogSessionBean systemLogSB;
+
     /**
      * Creates a new instance of createUserManagerBean
      */
@@ -109,7 +111,9 @@ public class CreateUserManagedBean {
             }
             //test if email alr exist in database
             if (uamb.getUserByEmail(emailAddress) == null) {
-                int result = uamb.createSystemUser(operatorId, companyId, roleListInt, firstName, lastName, emailAddress, MD5Generator.hash(password), postalAddress,
+                Random random = new Random();
+                String newPassword = MD5Generator.hash(Integer.toString(random.nextInt(5000) + 1000)).substring(0, 15);
+                int result = uamb.createSystemUser(operatorId, companyId, roleListInt, firstName, lastName, emailAddress, MD5Generator.hash(newPassword), postalAddress,
                         contactNumber, salution, credit);
                 if (result == -1) {
                     System.out.println("Access Denied");
@@ -121,7 +125,7 @@ public class CreateUserManagedBean {
                     String subject = "System User Account";
 
                     String content = "<h2>Hi user" + lastName + " " + firstName + ",</h2><p>A new account has been created for you. <br/> Please kindly use your email " + emailAddress + " and the password below to login to your account.<br/><br/>"
-                            + "Password: <strong>" + password + "</strong><br/><br/>"
+                            + "Password: <strong>" + newPassword + "</strong><br/><br/>"
                             + " Thank you. <br/><br/>Best Regards,<br/>Administrator, Merlion Portal";
                     this.clearAllFields();
                     if (Postman.sendMail(sender, recipients, subject, content)) {
