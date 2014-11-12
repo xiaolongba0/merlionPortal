@@ -128,7 +128,13 @@
                                     <p:commandButton  action="#{receivingPutawayManagedBean.getOrder(order)}" value="Process Order" rendered="#{order.status == 'Processing'}" />
                                 </p:column>
                                 <p:column>
-                                        <p:commandButton  action="#{receivingPutawayManagedBean.rejectOrder(order)}" value="Reject Order" rendered="#{order.status == 'Processing'}" />
+                                    <p:commandButton  action="#{receivingPutawayManagedBean.rejectOrder(order)}" value="Reject Order" rendered="#{order.status == 'Processing'}" >
+                                        <p:confirm header="Confirm Rejection" message="Are you sure that you want to reject this order?" icon="ui-icon-alert" />
+                                    </p:commandButton> 
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                    </p:confirmDialog>
                                 </p:column>
 
                             </p:dataTable>
@@ -189,16 +195,17 @@
                                 <p:column filterBy="#{order.status}" filterMatchMode="contains" headerText="Status">
                                     <h:outputText value="#{order.status}" />
                                 </p:column>
-
                                 <p:column>
-                                    <c:if test="#{order.status eq 'Processing'}" >
-                                        <p:commandButton  action="#{receivingPutawayManagedBean.getOrder(order)}" value="Process Order" />
-                                    </c:if>
+                                    <p:commandButton  action="#{receivingPutawayManagedBean.getOrder(order)}" value="Process Order" rendered="#{order.status == 'Processing'}" />
                                 </p:column>
                                 <p:column>
-                                    <c:if test="#{order.status eq 'Processing'}" >
-                                        <p:commandButton  action="#{receivingPutawayManagedBean.rejectOrder(order)}" value="Reject Order" />
-                                    </c:if>
+                                    <p:commandButton  action="#{receivingPutawayManagedBean.rejectOrder(order)}" value="Reject Order" rendered="#{order.status == 'Processing'}" >
+                                        <p:confirm header="Confirm Rejection" message="Are you sure that you want to reject this order?" icon="ui-icon-alert" />
+                                    </p:commandButton> 
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                    </p:confirmDialog>
                                 </p:column>
 
                             </p:dataTable>
