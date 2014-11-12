@@ -21,6 +21,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -36,7 +37,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PlanAssetSchedule.findByStartDate", query = "SELECT p FROM PlanAssetSchedule p WHERE p.startDate = :startDate"),
     @NamedQuery(name = "PlanAssetSchedule.findByEndDate", query = "SELECT p FROM PlanAssetSchedule p WHERE p.endDate = :endDate"),
     @NamedQuery(name = "PlanAssetSchedule.findByOperatorId", query = "SELECT p FROM PlanAssetSchedule p WHERE p.operatorId = :operatorId"),
-    @NamedQuery(name = "PlanAssetSchedule.findByAssetLoad", query = "SELECT p FROM PlanAssetSchedule p WHERE p.assetLoad = :assetLoad")})
+    @NamedQuery(name = "PlanAssetSchedule.findByAssetLoad", query = "SELECT p FROM PlanAssetSchedule p WHERE p.assetLoad = :assetLoad"),
+    @NamedQuery(name = "PlanAssetSchedule.findByOrigin", query = "SELECT p FROM PlanAssetSchedule p WHERE p.origin = :origin"),
+    @NamedQuery(name = "PlanAssetSchedule.findByDestination", query = "SELECT p FROM PlanAssetSchedule p WHERE p.destination = :destination")})
 public class PlanAssetSchedule implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -54,6 +57,12 @@ public class PlanAssetSchedule implements Serializable {
     private Integer operatorId;
     @Column(name = "assetLoad")
     private Integer assetLoad;
+    @Size(max = 255)
+    @Column(name = "origin")
+    private String origin;
+    @Size(max = 255)
+    @Column(name = "destination")
+    private String destination;
     @JoinColumn(name = "transportationAsset", referencedColumnName = "assetId")
     @ManyToOne(optional = false)
     private TransportationAsset transportationAsset;
@@ -103,6 +112,22 @@ public class PlanAssetSchedule implements Serializable {
 
     public void setAssetLoad(Integer assetLoad) {
         this.assetLoad = assetLoad;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 
     public TransportationAsset getTransportationAsset() {
