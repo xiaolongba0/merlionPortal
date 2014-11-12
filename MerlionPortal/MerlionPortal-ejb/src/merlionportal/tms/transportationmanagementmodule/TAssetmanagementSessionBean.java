@@ -24,6 +24,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import entity.TransportationOrder;
+import javax.ejb.EJB;
+import merlionportal.tms.routeoptimizationmodule.DijkstraLand;
+import merlionportal.tms.routeoptimizationmodule.DijkstraAir;
+import merlionportal.tms.routeoptimizationmodule.DijkstraSea;
 
 /**
  *
@@ -35,6 +39,13 @@ public class TAssetmanagementSessionBean {
 
     @PersistenceContext
     EntityManager em;
+
+    @EJB
+    private DijkstraLand dijLand;
+    @EJB
+    private DijkstraAir dijAir;
+    @EJB
+    private DijkstraSea dijSea;
 
     public List<Node> viewTheNodes() {
 
@@ -176,8 +187,20 @@ public class TAssetmanagementSessionBean {
 //        }
 //        return false;
     public Integer addRoute2(Integer distance, String routeType, Integer startNodeId, Integer endNodeId) {
+        Boolean test = false;
+        switch (routeType) {
+            case "Land":
+                test= dijLand.createConnection(startNodeId, endNodeId, distance);
+                break;
+            case "Sea":
+                test=dijSea.createConnection(startNodeId, endNodeId, distance);
+                break;
+            case "Air":
+                test=dijAir.createConnection(startNodeId, endNodeId, distance);
+                break;
+        }
+        System.out.println("DIJ Create Successfully"+test);
         System.out.println("[INSIDE EJB]================================Add New Route");
-
         Query query1 = em.createNamedQuery("Node.findAll");
 
         List<Node> allMyNode = query1.getResultList();
@@ -416,7 +439,6 @@ public class TAssetmanagementSessionBean {
         tAsset.setStatus(status);
         tAsset.setAssetLoad(0);
         tAsset.setRouteId(0);
-
 
         List<MaintenanceLog> maintLogList = new ArrayList();
         tAsset.setMaintenanceLogList(maintLogList);
@@ -744,14 +766,14 @@ public class TAssetmanagementSessionBean {
         Query query = em.createNamedQuery("Route.findByDestination").setParameter("destination", destination);
         List<Route> thisRouteList = query.getResultList();
         Route thisRoute = new Route();
-        for(Route o : thisRouteList){
-            if(o == schedule.getRoute()){
+        for (Route o : thisRouteList) {
+            if (o == schedule.getRoute()) {
                 thisRoute = o;
             }
-        }        
-        
+        }
+
         String endNodename = thisRoute.getDestination();
-        System.out.println("==================================The destination is :" +endNodename);
+        System.out.println("==================================The destination is :" + endNodename);
         Query query2 = em.createNamedQuery("Node.findByLocationName").setParameter("locationName", endNodename);
         Node endnode = (Node) query2.getSingleResult();
 
@@ -800,7 +822,6 @@ public class TAssetmanagementSessionBean {
         }
 
     }
-
 
 //    public Integer addPLANAssetSchedule(Date startDate, Date endDate, Integer loading, Integer tAssetId, Integer operatorId) {
 //
