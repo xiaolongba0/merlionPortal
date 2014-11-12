@@ -1,12 +1,127 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
-</html>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+    <ui:composition template="${root}/templates/${import}">
+        <ui:param name="pageName" value="View all transportation orders" />
 
+        <ui:define name="more-imports">
+            <ui:insert>
+                <!--                import CSS style or Javascript here, if any-->
+
+            </ui:insert>
+        </ui:define>
+        <ui:define name="left">
+            <h:form id="formMain">
+                <p:menu>
+                    <p:submenu label ="Map Settings">
+                        <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
+                        <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
+                        <p:menuitem value="View Connections" url="viewconnection.xhtml"/>
+                    </p:submenu>
+                    <p:submenu label =" Manage Your Transportation">
+                        <p:menuitem value="TMS Home" url="tmsindex.xhtml"  style="background-color: lavender"/>
+                    </p:submenu>
+                    <p:submenu label="Location" >
+                        <p:menuitem value="Add A Location" url="addnewlocation.xhtml"/>
+                        <p:menuitem value="View All Locations" url="viewalllocation.xhtml"/>
+                    </p:submenu>
+                    <p:submenu label="Transportation Asset Management" >
+                        <p:menuitem value="Add Transportation Assets" url="addnewtasset.xhtml" />
+                        <p:menuitem value="Location Dashboard" url="viewalltasset.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Asset Dispatching" >
+                        <p:menuitem value="Dispatch a Asset" url="addnewtassetschedule.xhtml" />
+                        <p:menuitem value="View Current Tasks" url="viewalltassetschedule.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Asset Maintenance" >
+                        <p:menuitem value="Create Maintenance" url="addnewmaintenancelog.xhtml"  />
+                        <p:menuitem value="View All Maintenance" url="viewallmaintenancelog.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Human Resource Management" >
+                        <p:menuitem value="New Operator" url="addnewoperator.xhtml"  />
+                        <p:menuitem value="Operator List" url="viewalloperator.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Operator Schedule" >
+                        <p:menuitem value="Add A Operator Schedule" url="addnewoperatorschedule.xhtml" />
+                        <p:menuitem value="View All Operator Schedule" url="viewalloperatorschedule.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Transportation Order" >
+                        <p:menuitem value="Create Transportation Order" url="addnewtorder.xhtml" />
+                        <p:menuitem value="View All Orders" url="viewalltorder.xhtml" />
+                        <p:menuitem value="View Order Details" url="viewalllog.xhtml"/>
+                    </p:submenu>
+                    <p:submenu label="Transportation Order" >
+                        <p:menuitem value="Create Log For Order" url="addnewlog.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Transportation Request" >
+                        <p:menuitem value="Create A Transportation Request" url="addnewrequest.xhtml" />
+                        <p:menuitem value="View All Request" url="viewallrequest.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Transportation Service Fulfillment Check" >
+                        <p:menuitem value="Fulfillment Check" url="transportationservicefulfillmentcheck.xhtml" />
+                    </p:submenu>
+
+                </p:menu>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">   
+            <p:breadCrumb>
+                <p:menuitem value="CRMS Home" url="crmsindex.xhtml" />
+                <p:menuitem value="View All Orders" url="viewallservicepos.xhtml" />
+                <p:menuitem value="Generate Service Invoice" url="generateserviceinvoice.xhtml" />
+            </p:breadCrumb>
+            <h:form id="form">
+                <p:dataTable id="order" var="order" sortMode="multiple" editable="true" value="#{estimationViewEditManagedBean.estimations}" 
+                             widgetVar="ordersTable"
+                             emptyMessage="No order found"
+                             rowKey="#{order.estId}">
+                    <f:facet name="header">                    
+                        <p:outputPanel>
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('nodeTable').filter()" />
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:column filterBy="#{order.estId}" filterMatchMode="exact" headerText="Estimation ID" >
+                        <h:outputText value="#{order.estId}" />
+                    </p:column>
+                    <p:column filterBy="#{order.type}" filterMatchMode="exact" headerText="Type" >
+                        <h:outputText value="#{order.type}" />
+                    </p:column>
+                    <p:column filterBy="#{order.totalLoad}" filterMatchMode="exact" headerText="Total Load" >
+                        <h:outputText value="#{order.totalLoad}"/>
+                    </p:column>
+                    <p:column filterBy="#{order.origin}" filterMatchMode="exact" headerText="Origin" >
+                        <h:outputText value="#{order.origin}" />
+                    </p:column>
+                    <p:column filterBy="#{order.destination}" filterMatchMode="exact" headerText="Destination" >
+                        <h:outputText value="#{order.destination}" />
+                    </p:column>
+                    <p:column filterBy="#{order.startDate}" filterMatchMode="exact" headerText="Recommended Shipping Date" >
+                        <h:outputText value="#{order.startDate}" />
+                    </p:column>
+                    <p:column filterBy="#{order.endDate}" filterMatchMode="exact" headerText="Expected Delivery Date" >
+                        <h:outputText value="#{order.endDate}" />
+                    </p:column>
+                    <p:column filterBy="#{order.cost}" filterMatchMode="exact" headerText="Total Cost" >
+                        <h:outputText value="#{order.cost}" />
+                    </p:column>
+
+                </p:dataTable>
+                <br></br>
+                <p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>                        
