@@ -53,7 +53,7 @@ public class PaymentManagerSessionBean {
         for (Object o : q.getResultList()) {
             ProductInvoice ordr = (ProductInvoice) o;
             ProductOrder myOrder = em.find(ProductOrder.class, ordr.getSalesOrderId());
-            if (myOrder.getCompanyId() == companyId || ordr.getStatus().equals("Waiting For Confirmation")) {
+            if (myOrder.getCompanyId() == companyId && !ordr.getStatus().equalsIgnoreCase("Paid")) {
                 result.add(ordr);
             }
         }
