@@ -209,14 +209,6 @@ public class RouteOptimizationSessionBean {
 
     }
 
-    public boolean checkConnectivity(Integer originId, Integer destinationId, String Type) {
-        if (this.checkDestNode(originId, destinationId, Type) > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public Integer calculateDays(Node start, Node end, String type) {
         List<Route> bestRoutes = new ArrayList();
         bestRoutes = this.routeOptimize(start, end, type);
@@ -270,7 +262,7 @@ public class RouteOptimizationSessionBean {
         List<Route> leeee = new ArrayList();
 
         for (Route r : temp) {
-            if (r.getEndNodeId() != start.getNodeId()) {
+            if (!Objects.equals(r.getEndNodeId(), start.getNodeId())) {
                 if (r.getRouteType().equals(type)) {
                     leeee.add(r);
                 }
@@ -278,24 +270,37 @@ public class RouteOptimizationSessionBean {
         }
         return leeee;
     }
+// return destId of route; compare with DestinationId
 
     public Integer checkDestNode(Integer originId, Integer destinationId, String type) {
         Node origin = em.find(Node.class, originId);
-        Integer returnthis = -1;
         for (Route o : origin.getRouteList()) {
             Integer destId = o.getEndNodeId();
             Node destNode = em.find(Node.class, destId);
-            List<Route> test = this.getRoutesExcludeReturn(origin, destNode, type);
-            for (Route r : test) {
-                if ((int) destinationId == (int) destId) {
-                    returnthis = destId;
-                    break;
-                } else {
-                    return checkDestNode(destId, r.getEndNodeId(), type);
-                }
+            for (Route x : this.getRoutesExcludeReturn(origin, destNode, type)) {
+                return x.getEndNodeId();
             }
         }
-        return returnthis;
+        return -1;
+    }
+
+    public Boolean checkConnectivity(Integer originId, Integer destinationId, String type) {
+        boolean A = true;
+        while (A) {
+            Node origin = em.find(Node.class, originId);
+            for (Route o : origin.getRouteList()) {
+                Integer destId = o.getEndNodeId();
+                if (Objects.equals(destId, destinationId)) {
+                    A = false;
+                    return true;
+                } else if (checkDestNode(destId, destinationId, type) == destinationId) {
+                    A = false;
+                    return true;
+                }
+            }
+            
+        }
+        return false;
     }
 
     public List<Route> routeOptimize(Node start, Node end, String Type) {
