@@ -20,16 +20,18 @@
             </ui:insert>
         </ui:define>
         <ui:define name="left">
- <h:form id="formMain">
+              <h:form id="formMain">
                 <p:menu>
-                    <p:submenu label ="Map Settings">
-                        <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
-                        <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
-                        <p:menuitem value="View Connections" url="viewconnection.xhtml"/>
-                    </p:submenu>
-                    <p:submenu label =" Manage Your Transportation">
-                        <p:menuitem value="TMS Home" url="tmsindex.xhtml"/>
-                    </p:submenu>
+                    <c:if test="#{dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:submenu label ="Map Settings">
+                            <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
+                            <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
+                            <p:menuitem value="View Connections" url="viewconnection.xhtml"/>
+                        </p:submenu>
+                        <p:submenu label =" Manage Your Transportation">
+                            <p:menuitem value="TMS Home" url="tmsindex.xhtml"/>
+                        </p:submenu>
+                    </c:if>                     
                     <c:if test="#{dashboardBean.checkTMSCanManageTransportationAsset() ||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:submenu label="Location" >
                             <p:menuitem value="Add A Location" url="addnewlocation.xhtml"/>
@@ -64,14 +66,12 @@
                     <c:if test="#{dashboardBean.checkTMSCanManageTransportationOrder()|| dashboardBean.checkTMSCanManageLog()||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:submenu label="Transportation Order" >
                             <c:if test="#{dashboardBean.checkTMSCanManageTransportationOrder()||dashboardBean.loginedUser.userType == 'superuser'}">
+                                <p:menuitem value="Run Cost Simulation" url="runestimation.xhtml" />
+                                <p:menuitem value="View Past Simulations" url="viewestimation.xhtml" />
                                 <p:menuitem value="Create Transportation Order" url="addnewtorder.xhtml" />
                                 <p:menuitem value="View All Orders" url="viewalltorder.xhtml" />
-                                <p:submenu label="Order Simulation" >
-                                    <p:menuitem value="Run Cost Simulation" url="runEstimation.xhtml" />
-                                    <p:menuitem value="View Past Simulation" url="viewEstimation.xhtml" />
-                                </p:submenu>
                             </c:if>
-                            <p:menuitem value="View Order Details" url="viewalllog.xhtml"/>
+                            <p:menuitem value="Track Order Information" url="viewalllog.xhtml"/>
                             <c:if test="#{dashboardBean.checkTMSCanManageLog()||dashboardBean.loginedUser.userType == 'superuser'}">
                                 <p:menuitem value="Create Log For Order" url="addnewlog.xhtml" />
                             </c:if>
@@ -86,7 +86,6 @@
                             <p:menuitem value="Fulfillment Check" url="transportationservicefulfillmentcheck.xhtml" />
                         </p:submenu>
                     </c:if>
-
                 </p:menu>
             </h:form>
         </ui:define>
@@ -114,7 +113,7 @@
                     <p:ajax event="rowEdit" listener="#{tLocationViewEditManagedBean.onRowEdit}" update=":form:msgs"/>
                     <p:ajax event="rowEditCancel" listener="#{tLocationViewEditManagedBean.onRowCancel}" update=":form:msgs"/>
 
-                    <p:column filterBy="#{location.locationId}" filterMatchMode="exact" headerText="Facility ID" >
+                    <p:column filterBy="#{location.locationId}" filterMatchMode="exact" headerText="Facility ID" style="width:100px">
                         <h:outputText value="#{location.locationId}" />
                     </p:column>
 
@@ -133,7 +132,7 @@
                     </p:column>
 
 
-                    <p:column headerText = "Delete Facility">
+                    <p:column headerText = "Delete Facility" style="width:100px">
                         <p:commandButton action="#{tLocationViewEditManagedBean.deleteLocation(location)}" update="location" value="Delete">
                             <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this location?" icon="ui-icon-alert" />
                         </p:commandButton> 
@@ -142,11 +141,6 @@
                             <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                         </p:confirmDialog>
                     </p:column>
-
-                    <p:column style="width:32px">
-                        <p:rowEditor />
-                    </p:column>
-
                 </p:dataTable>
                 <br></br>
                 <p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />

@@ -20,7 +20,7 @@
             </ui:insert>
         </ui:define>
         <ui:define name="left">
- <h:form id="formMain">
+            <h:form id="formMain">
                 <p:menu>
                     <p:submenu label ="Map Settings">
                         <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
@@ -64,14 +64,15 @@
                     <c:if test="#{dashboardBean.checkTMSCanManageTransportationOrder()|| dashboardBean.checkTMSCanManageLog()||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:submenu label="Transportation Order" >
                             <c:if test="#{dashboardBean.checkTMSCanManageTransportationOrder()||dashboardBean.loginedUser.userType == 'superuser'}">
+
+                                <p:menuitem value="Run Cost Simulation" url="runestimation.xhtml" />
+                                <p:menuitem value="View Past Simulations" url="viewestimation.xhtml" />
+
                                 <p:menuitem value="Create Transportation Order" url="addnewtorder.xhtml" />
                                 <p:menuitem value="View All Orders" url="viewalltorder.xhtml" />
-                                <p:submenu label="Order Simulation" >
-                                    <p:menuitem value="Run Cost Simulation" url="runEstimation.xhtml" />
-                                    <p:menuitem value="View Past Simulation" url="viewEstimation.xhtml" />
-                                </p:submenu>
+
                             </c:if>
-                            <p:menuitem value="View Order Details" url="viewalllog.xhtml"/>
+                            <p:menuitem value="Track Order Information" url="viewalllog.xhtml"/>
                             <c:if test="#{dashboardBean.checkTMSCanManageLog()||dashboardBean.loginedUser.userType == 'superuser'}">
                                 <p:menuitem value="Create Log For Order" url="addnewlog.xhtml" />
                             </c:if>
@@ -93,9 +94,9 @@
 
         <ui:define name="right">   
             <p:breadCrumb>
-                <p:menuitem value="CRMS Home" url="crmsindex.xhtml" />
-                <p:menuitem value="View All Orders" url="viewallservicepos.xhtml" />
-                <p:menuitem value="Generate Service Invoice" url="generateserviceinvoice.xhtml" />
+                <p:menuitem value="TMS Home" url="tmsindex.xhtml" />
+                <p:menuitem value="Transportation Order" url="tmsindex.xhtml" />
+                <p:menuitem value="Tracking Shippment" url="viewalllog.xhtml" />
             </p:breadCrumb>
             <h:form id="form">
 
@@ -118,7 +119,7 @@
                                 <p:selectOneMenu id="order" value="#{tOLogViewEditManagedBean.orderId}"  style="width:300px" required="true" requiredMessage="Please select a order">
                                     <p:ajax listener="#{tOLogViewEditManagedBean.onOrderChange()}" update="logData" />
                                     <f:selectItem itemLabel="Select Order" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tOLogViewEditManagedBean.orders}" var="order" itemLabel="Order Id:#{order.transportationOrderId}"  itemValue="#{order.transportationOrderId}"/>
+                                    <f:selectItems value="#{tOLogViewEditManagedBean.orders}" var="order" itemLabel="Order Id:#{order.transportationOrderId} From: #{order.origin} - To:#{order.destination}"  itemValue="#{order.transportationOrderId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
@@ -128,7 +129,7 @@
                                  widgetVar="logTable"
                                  emptyMessage="No Log found"
                                  rowKey="#{log.logId}">
-                
+
                         <p:column filterBy="#{log.logId}" filterMatchMode="exact" headerText="Log ID" >
                             <h:outputText value="#{log.logId}" />
                         </p:column>
