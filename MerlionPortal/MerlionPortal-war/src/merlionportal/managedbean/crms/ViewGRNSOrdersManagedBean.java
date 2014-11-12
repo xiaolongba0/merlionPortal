@@ -35,10 +35,10 @@ public class ViewGRNSOrdersManagedBean {
     private List<GrnsServiceOrder> sentOrders;
     private List<GrnsServiceOrder> ReceivedOrders;
 
-    private List<ServicePO> filteredServicePO;
+    private List<GrnsServiceOrder> filteredServicePO;
 
-    private ServicePO selectedSentOrder;
-    private ServicePO selectedReceivedOrder;
+    private GrnsServiceOrder selectedSentOrder;
+    private GrnsServiceOrder selectedReceivedOrder;
 
     private List<String> status;
 
@@ -85,6 +85,7 @@ public class ViewGRNSOrdersManagedBean {
         }
     }
     public String viewReceivedOrderDetail() {
+        System.out.println("sdkjfalsjdflasdlf");
         if (selectedReceivedOrder != null) {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("selectedGRNSOrder");
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedGRNSOrder", selectedReceivedOrder);
@@ -127,30 +128,31 @@ public class ViewGRNSOrdersManagedBean {
         this.ReceivedOrders = ReceivedOrders;
     }
 
-    public List<ServicePO> getFilteredServicePO() {
+    public List<GrnsServiceOrder> getFilteredServicePO() {
         return filteredServicePO;
     }
 
-    public void setFilteredServicePO(List<ServicePO> filteredServicePO) {
+    public void setFilteredServicePO(List<GrnsServiceOrder> filteredServicePO) {
         this.filteredServicePO = filteredServicePO;
     }
 
-    public ServicePO getSelectedSentOrder() {
+    public GrnsServiceOrder getSelectedSentOrder() {
         return selectedSentOrder;
     }
 
-    public void setSelectedSentOrder(ServicePO selectedSentOrder) {
+    public void setSelectedSentOrder(GrnsServiceOrder selectedSentOrder) {
         this.selectedSentOrder = selectedSentOrder;
     }
 
-    public ServicePO getSelectedReceivedOrder() {
+    public GrnsServiceOrder getSelectedReceivedOrder() {
         return selectedReceivedOrder;
     }
 
-    public void setSelectedReceivedOrder(ServicePO selectedReceivedOrder) {
+    public void setSelectedReceivedOrder(GrnsServiceOrder selectedReceivedOrder) {
         this.selectedReceivedOrder = selectedReceivedOrder;
     }
 
+    
     public List<String> getStatus() {
         return status;
     }

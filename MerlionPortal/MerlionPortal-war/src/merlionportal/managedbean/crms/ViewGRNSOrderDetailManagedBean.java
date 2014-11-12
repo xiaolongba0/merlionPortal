@@ -40,12 +40,12 @@ public class ViewGRNSOrderDetailManagedBean {
 
     private String requesterCompanyName;
     private String providerCompanyName;
+    private String status;
 
-    private int method;
+    private String method;
     private Date receivedDate;
     private String accountInfo;
     private BigInteger creditCardNo;
-    private Double amount;
     private Integer swiftcode;
     private BigInteger checkNumber;
     private OtherInvoice invoice;
@@ -76,18 +76,20 @@ public class ViewGRNSOrderDetailManagedBean {
         if (order != null) {
             requesterCompanyName = userAccountSB.getCompany(order.getServiceRequester()).getName();
             providerCompanyName = userAccountSB.getCompany(order.getServiceProvider()).getName();
-
             price = order.getPrice();
             invoice = grnsSB.getOtherInvoiceFromOrder(order.getOrderId());
+            status = order.getStatus();
+
         }
 
     }
 
     public void recordPaymentInfo() {
         int invoiceId = grnsSB.getOtherInvoiceIdFromOrder(order.getOrderId());
-        boolean result = grnsSB.recordPaymentInformation(invoiceId, method, receivedDate, accountInfo, creditCardNo, amount, swiftcode, checkNumber);
+        boolean result = grnsSB.recordPaymentInformation(invoiceId, method, receivedDate, accountInfo, creditCardNo, swiftcode, checkNumber);
         if (result) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Payment Information if recorded", ""));
+            status = "Payment Info Recorded";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Payment Information is recorded", ""));
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Something went wrong!", ""));
@@ -99,12 +101,18 @@ public class ViewGRNSOrderDetailManagedBean {
         int invoiceId = grnsSB.getOtherInvoiceIdFromOrder(order.getOrderId());
         boolean result = grnsSB.updateGRNSPaymentStatus(invoiceId);
         if (result) {
+            status = "Paid";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Payment Status updated", ""));
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Something went wrong!", ""));
 
         }
+    }
+
+    public void onMethodChange() {
+        System.out.println("method is " + method);
+        System.out.println("method is " + method);
     }
 
     public Integer getUserId() {
@@ -147,11 +155,11 @@ public class ViewGRNSOrderDetailManagedBean {
         this.providerCompanyName = providerCompanyName;
     }
 
-    public int getMethod() {
+    public String getMethod() {
         return method;
     }
 
-    public void setMethod(int method) {
+    public void setMethod(String method) {
         this.method = method;
     }
 
@@ -179,14 +187,6 @@ public class ViewGRNSOrderDetailManagedBean {
         this.creditCardNo = creditCardNo;
     }
 
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
     public Integer getSwiftcode() {
         return swiftcode;
     }
@@ -203,6 +203,14 @@ public class ViewGRNSOrderDetailManagedBean {
         this.checkNumber = checkNumber;
     }
 
+    public OtherInvoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(OtherInvoice invoice) {
+        this.invoice = invoice;
+    }
+
     public Double getPrice() {
         return price;
     }
@@ -211,12 +219,12 @@ public class ViewGRNSOrderDetailManagedBean {
         this.price = price;
     }
 
-    public OtherInvoice getInvoice() {
-        return invoice;
+    public String getStatus() {
+        return status;
     }
 
-    public void setInvoice(OtherInvoice invoice) {
-        this.invoice = invoice;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 }

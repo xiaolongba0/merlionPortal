@@ -67,23 +67,21 @@ public class GRNSOrderSessionBean {
         return returnList;
     }
 
-    public boolean recordPaymentInformation(Integer invoiceId, Integer method, Date receivedDate, String accountInfo, BigInteger creditCardNo, Double amount, Integer swiftcode, BigInteger checkNumber) {
+    public boolean recordPaymentInformation(Integer invoiceId, String method, Date receivedDate, String accountInfo, BigInteger creditCardNo, Integer swiftcode, BigInteger checkNumber) {
         OtherInvoice invoice = em.find(OtherInvoice.class, invoiceId);
-        if (method == 1) {
+        invoice.setMethod(method);
+        if (method.equals("Telegraphic Transfer")) {
             invoice.setSwiftcode(swiftcode);
             invoice.setAccountInfo(accountInfo);
-            invoice.setPrice(amount);
             invoice.setReceiveDate(receivedDate);
 
-        } else if (method == 2) {
+        } else if (method.equals("Credit Card")) {
             invoice.setCreditCardNo(creditCardNo);
-            invoice.setPrice(amount);
             invoice.setReceiveDate(receivedDate);
 
-        } else if (method == 3) {
+        } else if (method.equals("Paper Check")) {
             invoice.setCheckNumber(checkNumber);
             invoice.setReceiveDate(receivedDate);
-            invoice.setPrice(amount);
 
         } else {
             //Method not supported
@@ -133,6 +131,9 @@ public class GRNSOrderSessionBean {
         invoice.setReceiverCompanyId(requester);
         invoice.setPrice(price);
         invoice.setCreatorId(creatorId);
+        
+        em.persist(invoice);
+        em.flush();
 
         return true;
     }

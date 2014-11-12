@@ -13,11 +13,13 @@ import entity.Warehouse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import merlionportal.crms.ordermanagementmodule.GRNSOrderSessionBean;
 
 /**
  *
@@ -29,6 +31,9 @@ public class PostsManagerSessionBean {
 
     @PersistenceContext(unitName = "MerlionPortal-ejbPU")
     private EntityManager em;
+
+    @EJB
+    GRNSOrderSessionBean grnsSB;
 
     public void persist(Object object) {
         em.persist(object);
@@ -185,6 +190,7 @@ public class PostsManagerSessionBean {
 
     public void acceptBidConvertToGrnsServiceOrder(Post myPost, Bid bid) {
         GrnsServiceOrder grnsOrder = new GrnsServiceOrder();
+        grnsOrder.setOrderId(myPost.getPostId());
         grnsOrder.setCreateDate(new Date());
         grnsOrder.setCurrency(myPost.getCurrency());
         grnsOrder.setServiceType(myPost.getServiceType());
@@ -193,11 +199,15 @@ public class PostsManagerSessionBean {
         grnsOrder.setDescription(myPost.getDescription());
 
         if (myPost.getServicePOList().isEmpty() && myPost.getContractList().isEmpty()) {
-            grnsOrder.setServiceProvider(bid.getSystemUser().getCompanycompanyId().getCompanyId());
-            grnsOrder.setServiceRequester(myPost.getSystemUser().getCompanycompanyId().getCompanyId());
-        } else {
             grnsOrder.setServiceProvider(myPost.getSystemUser().getCompanycompanyId().getCompanyId());
             grnsOrder.setServiceRequester(bid.getSystemUser().getCompanycompanyId().getCompanyId());
+            grnsSB.createGRNSOrderInvoice(myPost.getPostId(),myPost.getSystemUser().getSystemUserId() , myPost.getSystemUser().getCompanycompanyId().getCompanyId(), bid.getSystemUser().getCompanycompanyId().getCompanyId(), bid.getAmount());
+
+        } else {
+            grnsOrder.setServiceProvider(bid.getSystemUser().getCompanycompanyId().getCompanyId());
+            grnsOrder.setServiceRequester(myPost.getSystemUser().getCompanycompanyId().getCompanyId());
+            grnsSB.createGRNSOrderInvoice(myPost.getPostId(), bid.getSystemUser().getSystemUserId(), myPost.getSystemUser().getCompanycompanyId().getCompanyId(), bid.getSystemUser().getCompanycompanyId().getCompanyId(), bid.getAmount());
+
         }
 
         if (grnsOrder.getServiceType().equals("Transportation")) {
@@ -211,9 +221,10 @@ public class PostsManagerSessionBean {
             grnsOrder.setStorageEndDate(myPost.getStorageEndDate());
             grnsOrder.setWarehouseSpace(myPost.getWarehouseSpace());
         }
-        
+
         em.persist(grnsOrder);
         em.flush();
+
     }
 
     public List<Bid> viewAllMyBids(int companyId) {

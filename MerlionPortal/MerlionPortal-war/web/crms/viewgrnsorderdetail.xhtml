@@ -107,7 +107,7 @@
                         <p:outputLabel value="Price:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewGRNSOrderDetailMB.order.price}" />
                         <p:outputLabel value="Status:" /><p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewGRNSOrderDetailMB.order.status}" style="color: red"  />
+                        <h:outputText value="#{viewGRNSOrderDetailMB.status}" style="color: red"  />
                         <p:outputLabel value="Description:" /><p:spacer width="20" height="20" />
                         <h:outputText value="#{viewGRNSOrderDetailMB.order.description}" />
 
@@ -115,11 +115,11 @@
                 </p:fieldset>
             </h:form>
 
-            <h:form id="form2" >
+            <h:form >
                 <p:dialog header="Record Payment Information" widgetVar="dlg1" minHeight="40">
                     <p:outputLabel for="method" value="Payment Method: " />
                     <p:selectOneMenu id="method" value="#{viewGRNSOrderDetailMB.method}" style="width:250px">
-                        <p:ajax  update="change" />
+                        <p:ajax listener="#{viewGRNSOrderDetailMB.onMethodChange}" update="change" />                        
                         <f:selectItem itemLabel="Please select payment method" itemValue="" noSelectionOption="true"  />
                         <f:selectItem itemLabel="Telegraphic Transfer" itemValue="Telegraphic Transfer"  />
                         <f:selectItem itemLabel="Credit Card" itemValue="Credit Card" />
@@ -135,7 +135,7 @@
                             <h:outputText value="#{viewGRNSOrderDetailMB.price}" />
                             <p:outputLabel value="Expected Receive Date:" /> <p:spacer width="20" height="20" />
                             <p:calendar value="#{viewGRNSOrderDetailMB.receivedDate}" />
-                            <p:commandButton value="Submit Payment Info" action="#{viewGRNSOrderDetailMB.recordPaymentInfo()}" update=":form" />
+                            <p:commandButton value="Submit Payment Info" action="#{viewGRNSOrderDetailMB.recordPaymentInfo()}"  update=":form" />
 
                         </h:panelGrid >
                         <h:panelGrid id="cc" rendered="#{viewGRNSOrderDetailMB.method eq 'Credit Card'}" columns="3">
@@ -145,7 +145,7 @@
                             <h:outputText value="#{viewGRNSOrderDetailMB.price}" />
                             <p:outputLabel value="Expected Receive Date:" /> <p:spacer width="20" height="20" />
                             <p:calendar value="#{viewGRNSOrderDetailMB.receivedDate}" />
-                            <p:commandButton value="Submit Payment Info" action="#{viewGRNSOrderDetailMB.recordPaymentInfo()}" update=":form" />
+                            <p:commandButton value="Submit Payment Info" action="#{viewGRNSOrderDetailMB.recordPaymentInfo()}"  update=":form" />
 
                         </h:panelGrid>
                         <h:panelGrid id="pc" rendered="#{viewGRNSOrderDetailMB.method eq 'Paper Check'}" columns="3">
@@ -155,9 +155,11 @@
                             <h:outputText value="#{viewGRNSOrderDetailMB.price}" />
                             <p:outputLabel value="Expected Receive Date:" /> <p:spacer width="20" height="20" />
                             <p:calendar value="#{viewGRNSOrderDetailMB.receivedDate}" />
-                            <p:commandButton value="Submit Payment Info" action="#{viewGRNSOrderDetailMB.recordPaymentInfo()}" update=":form" />
+                            <p:commandButton value="Submit Payment Info" action="#{viewGRNSOrderDetailMB.recordPaymentInfo()}"  update=":form :form3 :form4" />
 
                         </h:panelGrid>
+                        <p:messages id="messages" autoUpdate="true" showDetail="true" closable="true" />
+
                     </h:panelGroup>
                 </p:dialog>
             </h:form>
@@ -175,35 +177,35 @@
                             <h:outputText value="#{viewGRNSOrderDetailMB.invoice.accountInfo}" />
                         </c:if>
 
-                        <c:if test="#{viewGRNSOrderDetailMB.order.payment.method eq 'Paper Check'}" >
+                        <c:if test="#{viewGRNSOrderDetailMB.invoice.method eq 'Paper Check'}" >
                             <p:outputLabel value="Check Number:" /> <p:spacer width="20" height="20" />
                             <h:outputText value="#{viewGRNSOrderDetailMB.invoice.checkNumber}" />
                         </c:if>
 
-                        <c:if test="#{viewGRNSOrderDetailMB.order.payment.method eq 'Credit Card'}" >
+                        <c:if test="#{viewGRNSOrderDetailMB.invoice.method eq 'Credit Card'}" >
                             <p:outputLabel value="Credit Card Number:" /> <p:spacer width="20" height="20" />
                             <h:outputText value="#{viewGRNSOrderDetailMB.invoice.creditCardNo}" />
                         </c:if>
 
 
                         <p:outputLabel value="Amount:" /> <p:spacer width="20" height="20" />
-                        <h:outputText value="#{viewGRNSOrderDetailMB.invoice.amount}" />
+                        <h:outputText value="#{viewGRNSOrderDetailMB.invoice.price}" />
                         <p:outputLabel value="Expected Receive Date:" /> <p:spacer width="20" height="20" />
                         <h:outputText value="#{viewGRNSOrderDetailMB.invoice.receiveDate}" />
                     </h:panelGrid>
                 </p:dialog>
-                </c:if>
             </h:form>
+            <p:messages id="messages" autoUpdate="true" showDetail="true" closable="true" />
 
             <h:form id="form3">
                 <!--Requester record payment information-->
-                <c:if test="#{(viewGRNSOrderDetailMB.order.status eq 'Confirmed')and (viewGRNSOrderDetailMB.order.serviceRequester eq viewGRNSOrderDetailMB.companyId)}" >
+                <c:if test="#{(viewGRNSOrderDetailMB.status eq 'Confirmed')and (viewGRNSOrderDetailMB.order.serviceRequester eq viewGRNSOrderDetailMB.companyId)}" >
                     <p:commandButton value="Record Payment Information"  type="button" onclick="PF('dlg1').show();" />
                 </c:if>
             </h:form>
             <h:form id="form4" >
                 <!--Provider update payment status-->
-                <c:if test="#{(viewGRNSOrderDetailMB.order.status eq 'Payment Info Recorded')and (viewGRNSOrderDetailMB.order.serviceProvider eq viewGRNSOrderDetailMB.companyId)}" >
+                <c:if test="#{(viewGRNSOrderDetailMB.status eq 'Payment Info Recorded')and (viewGRNSOrderDetailMB.order.serviceProvider eq viewGRNSOrderDetailMB.companyId)}" >
                     <p:commandButton value="Update Payment Status" action="#{viewGRNSOrderDetailMB.updatePaymentStatus()}" update=":form :form3 :form4" ajax="true" >
                         <p:confirm header="Confirmation" message="Payment information has been verified and payment is received. 
                                    Please click on yes button to update payment status." icon="ui-icon-alert" />

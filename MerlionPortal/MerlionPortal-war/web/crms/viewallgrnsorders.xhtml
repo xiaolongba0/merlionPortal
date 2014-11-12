@@ -106,7 +106,7 @@
                         </p:column>
                     </p:dataTable>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                    <p:commandButton value="View GRNS Order" action="#{viewGRNSOrdersManagedBean.viewSentOrderDetail()}" />
+                    <p:commandButton value="View GRNS Order" action="#{viewGRNSOrdersManagedBean.viewSentOrderDetail()}" ajax="false" />
                 </p:panel>
                 <p:panel  header="Received GRNS Order"  style="margin-bottom:20px">
                     <p:dataTable var="poR" value="#{viewGRNSOrdersManagedBean.receivedOrders}" widgetVar="poTable2" rowKey="#{poR.orderId}"
@@ -143,7 +143,7 @@
                         </p:column>
                     </p:dataTable>
                     <p:messages id="msg" showDetail="true" autoUpdate="true" closable="true" />
-                    <p:commandButton value="View GRNS Order" action="#{viewGRNSOrdersManagedBean.viewReceivedOrderDetail()}" />
+                    <p:commandButton value="View GRNS Order" action="#{viewGRNSOrdersManagedBean.viewReceivedOrderDetail()}" ajax="false" />
                 </p:panel>
             </h:form>
 
