@@ -797,6 +797,214 @@ public class MerlionPortalFilter implements Filter {
                             }
                         } else {
                             //All company has access
+                            if (requestURI.contains("/tms/addnewlocation.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageTransportationAsset(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/addnewlog.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageLog(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/addnewmaintenancelog.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageAssetMaintenence(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/addnewnode.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/addnewrequest.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageTransportationOrder(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/addnewoperator.xhtml")) {
+                                if (systemAccessRightsb.checkCanUseHRFunction(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/addnewoperatorschedule.xhtml")) {
+                                if (systemAccessRightsb.checkCanUseHRFunction(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/addnewroute.xhtml")) {
+                                if ((int) userId == 1) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/addnewtasset.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageTransportationAsset(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/addnewtassetschedule.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageTransportationAsset(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/addnewtorder.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageTransportationOrder(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/runestimation.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageTransportationOrder(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/transportationservicefulfillmentcheck.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageTransportationOrder(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/viewalllocation.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageTransportationAsset(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/viewalllog.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageTransportationOrder(userId) || systemAccessRightsb.checkCanManageLog(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/viewallmaintenancelog.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageAssetMaintenence(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/viewallnode.xhtml")) {
+                                if ((int) userId == 1) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/viewalloperator.xhtml")) {
+                                if (systemAccessRightsb.checkCanUseHRFunction(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/viewalloperatorschedule.xhtml")) {
+                                if (systemAccessRightsb.checkCanUseHRFunction(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/viewallrequest.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageTransportationOrder(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/viewallroute.xhtml")) {
+                                if ((int) userId == 1) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/viewalltasset.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageTransportationAsset(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/viewalltassetschedule.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageTransportationAsset(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/viewalltorder.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageTransportationOrder(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/viewconnection.xhtml")) {
+                                if ((int) userId == 1) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/viewestimation.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageTransportationOrder(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/tms/viewtransportationrequestdetail.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageTransportationOrder(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/tms/tmsindex.xhtml";
+                                }
+                            }
                         }
 
                     } else {
@@ -825,7 +1033,7 @@ public class MerlionPortalFilter implements Filter {
                         } else {
                             //Check company package
                             if (requestURI.contains("/grns/aggregaterequests.xhtml")) {
-                                if (systemAccessRightsb.checkCanManagePost(userId)|| systemAccessRightsb.checkFromMerlionLogistic(userId)) {
+                                if (systemAccessRightsb.checkCanManagePost(userId) || systemAccessRightsb.checkFromMerlionLogistic(userId)) {
                                 } else {
                                     //User cannot access this page
                                     redirect = true;
