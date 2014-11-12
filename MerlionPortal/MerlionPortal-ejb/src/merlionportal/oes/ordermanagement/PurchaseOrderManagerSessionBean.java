@@ -74,7 +74,7 @@ public class PurchaseOrderManagerSessionBean {
         pLine.setProductOrderproductPOId(mypo);
         em.persist(pLine);
         mypo.getProductOrderLineItemList().add(pLine);
-        mypo.setPrice(mypo.getPrice()+pLine.getQuantity()*pLine.getPrice());
+        mypo.setPrice(mypo.getPrice() + pLine.getQuantity() * pLine.getPrice());
         em.merge(mypo);
         em.flush();
     }
@@ -94,7 +94,7 @@ public class PurchaseOrderManagerSessionBean {
     public void generateSo(int operator, ProductOrder mpo) {
         List<ProductOrderLineItem> myList = new ArrayList();
         mpo.setStatus(2);
-        mpo.setSalesPersonId(operator);        
+        mpo.setSalesPersonId(operator);
         int cId = mpo.getCreatorId();
         SystemUser myCustomer = em.find(SystemUser.class, cId);
         int credit = myCustomer.getCreditLimit() - mpo.getPrice().intValue();
@@ -131,6 +131,14 @@ public class PurchaseOrderManagerSessionBean {
         result.add(com.getContactPersonName());
         result.add(com.getContactNumber());
         return result;
+    }
+
+    public String getMyQuotationCurrency(Integer quotationId) {
+        if(quotationId==null){
+            return "";
+        }
+        quotation = em.find(Quotation.class, quotationId);
+        return quotation.getCurrency();
     }
 
     public List<ProductOrderLineItem> copyFromQuotation(int quotationId) {
