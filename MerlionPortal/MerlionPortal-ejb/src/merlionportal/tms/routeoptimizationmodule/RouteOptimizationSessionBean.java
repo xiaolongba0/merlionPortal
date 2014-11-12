@@ -96,11 +96,12 @@ public class RouteOptimizationSessionBean {
         newEst.setOrigin(start.getLocationName());
         newEst.setDestination(end.getLocationName());
         newEst.setEndDate(endDate);
-        Integer days = this.calculateDays(start, end, type);
+        Integer distance = this.solve(start,end,type);
+        Integer days = this.calculateDays(distance, type);
         System.out.println("Calculated Days Needed:  "+ days);
-        Date startDate = this.addDays(endDate, days);
+        Date startDate = this.addDays(endDate, -days);
         newEst.setStartDate(startDate);
-        Integer cost = this.calculateCost(start, end, type, totalLoad);
+        Integer cost = this.calculateCost(distance, type, totalLoad);
         newEst.setCost((double) cost);
         newEst.setTotalLoad(totalLoad);
         newEst.setType(type);
@@ -219,41 +220,45 @@ public class RouteOptimizationSessionBean {
         return startDate;
 
     }
-
-    public Integer calculateDays(Node start, Node end, String type) {
+    public Integer solve(Node start, Node end, String type){
+        Integer temp = dijLand.solve(10, start.getNodeId()-1, end.getNodeId()-1);
+        return temp;
+    }
+    public Integer calculateDays(Integer distance, String type) {
         Integer days = 0;
 
         Integer temp = 0;
         switch (type) {
             case "Land":
-                temp = dijLand.solve(10, start.getNodeId(), end.getNodeId()) / 1000;
+                temp = distance / 1000;
+                System.out.println("FUCK this temp : "+ temp);
                 break;
             case "Sea":
-                temp = dijSea.solve(10, start.getNodeId(), end.getNodeId()) / 500;
+                temp = distance/ 500;
                 break;
             case "Air":
-                temp = dijAir.solve(10, start.getNodeId(), end.getNodeId()) / 15000;
+                temp = distance / 15000;
                 break;
         }
         days = days + temp;
         return days;
     }
 
-    public Integer calculateCost(Node start, Node end, String type, Integer totalLoad) {
+    public Integer calculateCost(Integer distance, String type, Integer totalLoad) {
         Integer temp = 0;
         Integer quantity = 0;
         switch (type) {
             case "Land":
                 quantity = (int) Math.ceil(totalLoad / 2);
-                temp = dijLand.solve(10, start.getNodeId(), end.getNodeId());
+                temp = distance * 2 * quantity;
                 break;
             case "Sea":
                 quantity = (int) Math.ceil(totalLoad / 100);
-                temp = dijSea.solve(10, start.getNodeId(), end.getNodeId());
+                temp = distance * 125 * quantity;
                 break;
             case "Air":
                 quantity = (int) Math.ceil(totalLoad / 3);
-                temp = dijAir.solve(10, start.getNodeId(), end.getNodeId());
+                temp = distance * 18000 * quantity ;
                 break;
 
         }
