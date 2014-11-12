@@ -264,16 +264,15 @@ public class ReceivingPutawaySessionBean {
     public Integer countAvailbleStocksInCompany(Integer companyId, Integer productId) {
 
         Integer totalQuantity = 0;
-        List<Stock> allStocks = new ArrayList<>();
         Query query = em.createNamedQuery("Stock.findByProductId").setParameter("productId", productId);
 
         for (Object o : query.getResultList()) {
             stock = (Stock) o;
-
-            if (!stock.getStorageBin().getRented()) {
-                totalQuantity = totalQuantity + stock.getAvailableStock();
-                System.out.println("Total Quantity  " + totalQuantity);
-
+            if (stock.getStorageBin().getWarehouseZone().getWarehouse().getCompanyId() == companyId) {
+                if (!stock.getStorageBin().getRented()) {
+                    totalQuantity = totalQuantity + stock.getAvailableStock();
+                    System.out.println("Total Quantity  " + totalQuantity);
+                }
             }
         }
 
