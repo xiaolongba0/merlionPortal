@@ -7,6 +7,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -42,18 +44,16 @@ public class PlanAssetSchedule implements Serializable {
     @Basic(optional = false)
     @Column(name = "planScheduleId")
     private Integer planScheduleId;
-    @Size(max = 45)
     @Column(name = "startDate")
-    private String startDate;
-    @Size(max = 45)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date startDate;
     @Column(name = "endDate")
-    private String endDate;
-    @Size(max = 45)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date endDate;
     @Column(name = "operatorId")
-    private String operatorId;
-    @Size(max = 45)
+    private Integer operatorId;
     @Column(name = "assetLoad")
-    private String assetLoad;
+    private Integer assetLoad;
     @JoinColumn(name = "transportationAsset", referencedColumnName = "assetId")
     @ManyToOne(optional = false)
     private TransportationAsset transportationAsset;
@@ -73,35 +73,35 @@ public class PlanAssetSchedule implements Serializable {
         this.planScheduleId = planScheduleId;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
-    public String getOperatorId() {
+    public Integer getOperatorId() {
         return operatorId;
     }
 
-    public void setOperatorId(String operatorId) {
+    public void setOperatorId(Integer operatorId) {
         this.operatorId = operatorId;
     }
 
-    public String getAssetLoad() {
+    public Integer getAssetLoad() {
         return assetLoad;
     }
 
-    public void setAssetLoad(String assetLoad) {
+    public void setAssetLoad(Integer assetLoad) {
         this.assetLoad = assetLoad;
     }
 
