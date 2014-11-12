@@ -38,19 +38,19 @@
                 </c:if>
                 <c:if test="#{dashboardBean.checkMRPCanManageUseForecast() || dashboardBean.loginedUser.userType == 'superuser'}">
                     <p:submenu label="MRP">
-                                <p:menuitem value="MRP Process" url="forecast.xhtml" />
-                            </p:submenu>
+                        <p:menuitem value="MRP Process" url="forecast.xhtml" />
+                    </p:submenu>
                 </c:if>
 
             </p:menu>
         </ui:define>
 
         <ui:define name="right">
-             <p:breadCrumb>
+            <p:breadCrumb>
                 <p:menuitem value="MRP Home" url="mrp.xhtml" />
                 <p:menuitem value="Add New Component" url="addnewcomponent.xhtml" />
             </p:breadCrumb>
-            
+
             <h:form id="formMain">
                 <p:growl id="growl" showDetail="true" sticky="true" /> 
                 <p:panel id="panel" header="Add Component">
@@ -188,7 +188,7 @@
                                 </h:selectOneMenu>
                             </p:column>
                         </p:row>
-                         <p:row>
+                        <p:row>
                             <p:column>
                                 <p:outputLabel for="supplierContactPerson" style="font-weight: bold" value="Supplier Contact Person: " />
                             </p:column>
