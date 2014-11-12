@@ -26,6 +26,10 @@ import entity.TransportationOrder;
 import entity.Estimation;
 import entity.PlanAssetSchedule;
 import java.util.Calendar;
+import javax.ejb.EJB;
+import merlionportal.tms.routeoptimizationmodule.DijkstraAir;
+import merlionportal.tms.routeoptimizationmodule.DijkstraLand;
+import merlionportal.tms.routeoptimizationmodule.DijkstraSea;
 
 /**
  *
@@ -37,6 +41,12 @@ public class RouteOptimizationSessionBean {
 
     @PersistenceContext
     EntityManager em;
+    @EJB
+    private DijkstraLand dijLand;
+    @EJB
+    private DijkstraAir dijAir;
+    @EJB
+    private DijkstraSea dijSea;
 
     public Date addDays(Date date, int days) {
         Calendar cal = Calendar.getInstance();
@@ -78,34 +88,35 @@ public class RouteOptimizationSessionBean {
         System.out.println("[INSIDE Route Optimization >>>>>>>>> Creating new Estimation");
 
         Estimation newEst = new Estimation();
-        if (this.checkConnectivity(originId, destinationId, type) > 1) {
 
-            Node start = em.find(Node.class, originId);
-            Node end = em.find(Node.class, destinationId);
+        Node start = em.find(Node.class, originId);
+        Node end = em.find(Node.class, destinationId);
 
-            newEst.setCompanyId(companyId);
-            newEst.setOrigin(start.getLocationName());
-            newEst.setDestination(end.getLocationName());
-            newEst.setEndDate(endDate);
-            Integer days = this.calculateDays(start, end, type);
-            Date startDate = this.addDays(endDate, days);
-            newEst.setStartDate(startDate);
-            Integer cost = this.calculateCost(start, end, type, totalLoad);
-            newEst.setCost((double) cost);
+        newEst.setCompanyId(companyId);
+        newEst.setOrigin(start.getLocationName());
+        newEst.setDestination(end.getLocationName());
+        newEst.setEndDate(endDate);
+        Integer days = this.calculateDays(start, end, type);
+        System.out.println("Calculated Days Needed:  "+ days);
+        Date startDate = this.addDays(endDate, days);
+        newEst.setStartDate(startDate);
+        Integer cost = this.calculateCost(start, end, type, totalLoad);
+        newEst.setCost((double) cost);
+        newEst.setTotalLoad(totalLoad);
+        newEst.setType(type);
+        
 
-            List<PlanAssetSchedule> planList = new ArrayList();
-            newEst.setPlanAssetScheduleList(planList);
+        List<PlanAssetSchedule> planList = new ArrayList();
+        newEst.setPlanAssetScheduleList(planList);
 
-            System.out.println("==========Origin========== :" + start.getLocationName());
-            System.out.println("==========Destination===== :" + end.getLocationName());
+        System.out.println("==========Origin========== :" + start.getLocationName());
+        System.out.println("==========Destination===== :" + end.getLocationName());
 
-            em.persist(newEst);
-            em.flush();
+        em.persist(newEst);
+        em.flush();
 
-            System.out.println("[EJB]================================Successfully Created Empty Estimation");
-            return newEst.getEstId();
-        }
-        return -1;
+        System.out.println("[EJB]================================Successfully Created Empty Estimation");
+        return newEst.getEstId();
     }
 
     public Boolean runEstimation(Integer companyId, Integer originId, Integer destinationId, String type, Date endDate, Integer totalLoad) {
@@ -210,51 +221,43 @@ public class RouteOptimizationSessionBean {
     }
 
     public Integer calculateDays(Node start, Node end, String type) {
-        List<Route> bestRoutes = new ArrayList();
-        bestRoutes = this.routeOptimize(start, end, type);
         Integer days = 0;
-        for (Route r : bestRoutes) {
-            Integer temp = 0;
-            switch (type) {
-                case "Land":
-                    temp = r.getDistance() / 1000;
-                    break;
-                case "Sea":
-                    temp = r.getDistance() / 500;
-                    break;
-                case "Air":
-                    temp = (int) Math.ceil(r.getDistance() / 15000);
-                    break;
-            }
-            days = days + temp;
+
+        Integer temp = 0;
+        switch (type) {
+            case "Land":
+                temp = dijLand.solve(10, start.getNodeId(), end.getNodeId()) / 1000;
+                break;
+            case "Sea":
+                temp = dijSea.solve(10, start.getNodeId(), end.getNodeId()) / 500;
+                break;
+            case "Air":
+                temp = dijAir.solve(10, start.getNodeId(), end.getNodeId()) / 15000;
+                break;
         }
+        days = days + temp;
         return days;
     }
 
     public Integer calculateCost(Node start, Node end, String type, Integer totalLoad) {
-        List<Route> bestRoutes = new ArrayList();
-        bestRoutes = this.routeOptimize(start, end, type);
-        Integer cost = 0;
-        for (Route r : bestRoutes) {
-            Integer temp = 0;
-            Integer quantity = 0;
-            switch (type) {
-                case "Land":
-                    quantity = (int) Math.ceil(totalLoad / 2);
-                    temp = quantity * r.getDistance() * 2;
-                    break;
-                case "Sea":
-                    quantity = (int) Math.ceil(totalLoad / 100);
-                    temp = quantity * r.getDistance() * 125;
-                    break;
-                case "Air":
-                    quantity = (int) Math.ceil(totalLoad / 3);
-                    temp = quantity * r.getDistance() * 18000;
-                    break;
-            }
-            cost = cost + temp;
+        Integer temp = 0;
+        Integer quantity = 0;
+        switch (type) {
+            case "Land":
+                quantity = (int) Math.ceil(totalLoad / 2);
+                temp = dijLand.solve(10, start.getNodeId(), end.getNodeId());
+                break;
+            case "Sea":
+                quantity = (int) Math.ceil(totalLoad / 100);
+                temp = dijSea.solve(10, start.getNodeId(), end.getNodeId());
+                break;
+            case "Air":
+                quantity = (int) Math.ceil(totalLoad / 3);
+                temp = dijAir.solve(10, start.getNodeId(), end.getNodeId());
+                break;
+
         }
-        return cost;
+        return temp;
     }
 
     public List<Route> getRoutesExcludeReturn(Node start, Node end, String type) {
@@ -288,7 +291,7 @@ public class RouteOptimizationSessionBean {
         }
         return -1;
     }
-        //    public Boolean checkConnectivity(Integer originId, Integer destinationId, String type) {
+    //    public Boolean checkConnectivity(Integer originId, Integer destinationId, String type) {
     //        boolean A = true;
     //        Integer tempId = originId;
     //        while (A) {
