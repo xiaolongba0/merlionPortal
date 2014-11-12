@@ -28,7 +28,7 @@
                 <c:if test="#{dashboardBean.checkGRNSCanManagePost() ||dashboardBean.loginedUser.companycompanyId.companyId==1 ||dashboardBean.loginedUser.userType == 'superuser'}">
                     <p:submenu label="Start an Auction" styleClass="display:block">
                         <c:if test="#{dashboardBean.loginedUser.companycompanyId.companyId==1 ||dashboardBean.loginedUser.userType == 'superuser'}">
-                            <p:menuitem value="Reverse Auction Requests" url="aggregaterequests.xhtml" style="background:#aa5050; color:white"/>
+                            <p:menuitem value="Aggregate Requests" url="aggregaterequests.xhtml" style="background:#aa5050; color:white"/>
                         </c:if>
                         <p:menuitem value="Auction Spare Space" url="postmyspace.xhtml" />
                     </p:submenu>
@@ -51,7 +51,7 @@
             <h:form>
                 <p:breadCrumb>
                     <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
-                    <p:menuitem value="Aggregate Service Requests" url="aggregaterequests.xhtml" /> 
+                    <p:menuitem value="Reverse Auction Requests" url="aggregaterequests.xhtml" /> 
                 </p:breadCrumb>
                 <p:tabView>
                     <p:tab title="Transportation Requests">
@@ -111,7 +111,7 @@
                         </p:dataTable>
                         <br></br>
                         <p:commandButton action="#{aggregateRequestsManagedBean.checkTAggregatable()}" value="Check Aggregatable"/> 
-                        <p:commandButton action="#{aggregateRequestsManagedBean.postTRequest()}" value="Post Request"/> 
+                        <p:commandButton action="#{aggregateRequestsManagedBean.postTRequest()}" value="Post Reverse Auction"/> 
                     </p:tab>
                     <p:tab title="Warehouse Requests"> 
                         <h:panelGrid columns="1" cellpadding="10">  

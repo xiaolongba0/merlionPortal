@@ -35,7 +35,7 @@
                 </c:if>
                 <c:if test="#{dashboardBean.checkGRNSCanManageBid() ||dashboardBean.loginedUser.userType == 'superuser'}">
                     <p:submenu label="Marketplace" styleClass="display:block">
-                        <p:menuitem value="Place bid" url="viewallposts.xhtml" style="background:#aa5050; color:white"/>
+                        <p:menuitem value="Place Bid" url="viewallposts.xhtml" style="background:#aa5050; color:white"/>
                     </p:submenu>
                 </c:if>
                 <p:submenu label="Manage My Auctions" styleClass="display:block">
@@ -49,8 +49,8 @@
         <ui:define name="right">
             <p:breadCrumb>
                 <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
-                <p:menuitem value="All Posts" url="viewallposts.xhtml" /> 
-                <p:menuitem value="Bid Post" url="bidpost.xhtml" />
+                <p:menuitem value="View All Posts" url="viewallposts.xhtml" /> 
+                <p:menuitem value="Place Bid" url="bidpost.xhtml" />
             </p:breadCrumb>
             <h:form id="postForm">
 

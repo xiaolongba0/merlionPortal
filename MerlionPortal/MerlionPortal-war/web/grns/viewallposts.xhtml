@@ -35,7 +35,7 @@
                 </c:if>
                 <c:if test="#{dashboardBean.checkGRNSCanManageBid() ||dashboardBean.loginedUser.userType == 'superuser'}">
                     <p:submenu label="Marketplace" styleClass="display:block">
-                        <p:menuitem value="Place bid" url="viewallposts.xhtml" style="background:#aa5050; color:white"/>
+                        <p:menuitem value="Place Bid" url="viewallposts.xhtml" style="background:#aa5050; color:white"/>
                     </p:submenu>
                 </c:if>
                 <p:submenu label="Manage My Auctions" styleClass="display:block">
@@ -48,7 +48,6 @@
         </ui:define>
 
         <ui:define name="right">
-            <h3 style="margin-top:0">Aggregate Service Requests</h3>
             <h:form>
                 <p:breadCrumb>
                     <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
@@ -56,7 +55,7 @@
                 </p:breadCrumb>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 <p:tabView>
-                    <p:tab title="Transportation Posts">
+                    <p:tab title="Transport Reverse Auction">
                         <p:dataTable id="allTPosts" var="myTPost" selectionMode="single" sortMode="single" value="#{marketplaceManagedBean.allTPosts}" 
                                      widgetVar="allTPostTable"
                                      selection="#{marketplaceManagedBean.selectedPost}"
@@ -107,7 +106,7 @@
                         <p:commandButton action="#{marketplaceManagedBean.bidSelectedPost()}" value="Start T Bidding"/> 
                     </p:tab>
 
-                    <p:tab title="Transportation Space Post">
+                    <p:tab title="Transport Auction">
                         <p:dataTable id="stpost" var="stpost" selectionMode="single" sortMode="single" value="#{marketplaceManagedBean.allSTPosts}" 
                                      widgetVar="TPostTable"
                                      selection="#{marketplaceManagedBean.selectedSTpost}"
@@ -156,7 +155,7 @@
                         </p:dataTable>
                         <p:commandButton action="#{marketplaceManagedBean.bidSelectedSTPost()}" value="Start Bidding"/> 
                     </p:tab>
-                    <p:tab title="Warehouse Requests"> 
+                    <p:tab title="Warehouse Reverse Auction"> 
                         <h:panelGrid columns="1" cellpadding="10">  
                             <p:dataTable id="mywarehouse" var="mywpost" selectionMode="single" sortMode="single" value="#{marketplaceManagedBean.allWPosts}" 
                                          widgetVar="WPostTable"
@@ -205,7 +204,7 @@
                     </p:tab>
 
 
-                    <p:tab title="Warehouse Space Requests"> 
+                    <p:tab title="Warehouse Reverse Auction"> 
                         <h:panelGrid columns="1" cellpadding="10">  
                             <p:dataTable id="WPosts" var="WPost" selectionMode="single" sortMode="single" value="#{marketplaceManagedBean.allSWPosts}" 
                                          widgetVar="allWPostTable"
