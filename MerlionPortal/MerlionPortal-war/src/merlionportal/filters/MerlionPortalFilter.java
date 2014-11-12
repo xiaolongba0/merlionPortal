@@ -231,6 +231,222 @@ public class MerlionPortalFilter implements Filter {
                             }
                         } else {
                             //All company has access
+                            if (requestURI.contains("/crms/createkeyaccount.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageKeyAccount(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/createrequestforquotation.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateQuotationRequst(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/createservice.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageServiceCatalog(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/createservicecontract.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateServiceQuotationAndContract(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/createservicepo.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateServicePO(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/generateserviceinvoice.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateServiceSO(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/generateservicequotation.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateServiceQuotationAndContract(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/renewservicecontract.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateServiceQuotationAndContract(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/serviceyellowpages.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateQuotationRequst(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/showstatisticresult.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageKeyAccount(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/uploadsignedcontract.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateServiceQuotationAndContract(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/viewallcontracts.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateServiceQuotationAndContract(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/viewallgrnsorders.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateServicePO(userId) || systemAccessRightsb.checkCanGenerateServiceSO(userId) || systemAccessRightsb.checkCanUpdateCustomerCredit(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/viewallinvoices.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateServicePO(userId) || systemAccessRightsb.checkCanGenerateServiceSO(userId) || systemAccessRightsb.checkCanUpdateCustomerCredit(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/viewallkeyaccounts.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageKeyAccount(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/viewallquotations.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateQuotationRequst(userId) || systemAccessRightsb.checkCanGenerateServiceQuotationAndContract(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/viewallrequests.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateQuotationRequst(userId) || systemAccessRightsb.checkCanGenerateServiceQuotationAndContract(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/viewallservicepos.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateServicePO(userId) || systemAccessRightsb.checkCanGenerateServiceSO(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/viewcompanyservices.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageServiceCatalog(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/viewcontractdetail.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateServiceQuotationAndContract(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/viewgrnsorderdetail.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateServicePO(userId) || systemAccessRightsb.checkCanGenerateServiceSO(userId) || systemAccessRightsb.checkCanUpdateCustomerCredit(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/viewinvoicedetail.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateServicePO(userId) || systemAccessRightsb.checkCanGenerateServiceSO(userId) || systemAccessRightsb.checkCanUpdateCustomerCredit(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/vieworderstatistics.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageKeyAccount(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/viewquotationdetail.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateQuotationRequst(userId) || systemAccessRightsb.checkCanGenerateServiceQuotationAndContract(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/viewservicepodetail.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateServicePO(userId) || systemAccessRightsb.checkCanGenerateServiceSO(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/viewwarehouserentalinvoicedetail.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateServicePO(userId) || systemAccessRightsb.checkCanGenerateServiceSO(userId) || systemAccessRightsb.checkCanUpdateCustomerCredit(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/crms/warehouserentalinvoice.xhtml")) {
+                                if (systemAccessRightsb.checkCanGenerateServicePO(userId) || systemAccessRightsb.checkCanGenerateServiceSO(userId) || systemAccessRightsb.checkCanUpdateCustomerCredit(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/crms/crmsindex.xhtml";
+                                }
+                            }
                         }
 
                     } else {
@@ -379,47 +595,151 @@ public class MerlionPortalFilter implements Filter {
                             if (filterbean.retrieveCompanyPac(companyId) == 1 || filterbean.retrieveCompanyPac(companyId) == 2 || filterbean.retrieveCompanyPac(companyId) == 4) {
                                 //check if user can user mrp
                                 if (systemAccessRightsb.canUseWMS(userId)) {
-                                    if (requestURI.contains("/wms/addnewwarehouse.xhtml")) {
-                                        if (systemAccessRightsb.checkWMSManageWarehouse(userId)) {
+                                    if (requestURI.contains("/wms/createinternalwo.xhtml")) {
+                                        if (systemAccessRightsb.checkCanManageReceivingGoods(userId) || systemAccessRightsb.checkCanManageOrderFulfillment(userId)) {
                                         } else {
                                             //User cannot access this page
                                             redirect = true;
                                             newPage = ctxtPath + "/wms/wmsindex.xhtml";
                                         }
                                     }
-                                    if (requestURI.contains("/wms/addstoragetype.xhtml")) {
-                                        if (systemAccessRightsb.checkWMSManageWarehouse(userId)) {
+                                    if (requestURI.contains("/wms/createstockaudit.xhtml")) {
+                                        if (systemAccessRightsb.checkCanManageStockAuditProcess(userId)) {
                                         } else {
                                             //User cannot access this page
                                             redirect = true;
                                             newPage = ctxtPath + "/wms/wmsindex.xhtml";
                                         }
                                     }
-                                    if (requestURI.contains("/wms/addstoragebin.xhtml")) {
-                                        if (systemAccessRightsb.checkWMSManageWarehouse(userId)) {
+                                    if (requestURI.contains("/wms/createtransportorder.xhtml")) {
+                                        if (systemAccessRightsb.checkCanManageReceivingGoods(userId) || systemAccessRightsb.checkCanManageOrderFulfillment(userId) || systemAccessRightsb.checkCanManageStockTransportOrder(userId)) {
                                         } else {
                                             //User cannot access this page
                                             redirect = true;
                                             newPage = ctxtPath + "/wms/wmsindex.xhtml";
                                         }
                                     }
-                                    if (requestURI.contains("/wms/viewallwarehouse.xhtml")) {
-                                        if (systemAccessRightsb.checkWMSManageWarehouse(userId)) {
+                                    if (requestURI.contains("/wms/createwarehouserequest.xhtml")) {
+                                        if (systemAccessRightsb.checkCanManageReceivingGoods(userId) || systemAccessRightsb.checkCanManageOrderFulfillment(userId)) {
                                         } else {
                                             //User cannot access this page
                                             redirect = true;
                                             newPage = ctxtPath + "/wms/wmsindex.xhtml";
                                         }
                                     }
-                                    if (requestURI.contains("/wms/viewstoragebin.xhtml")) {
-                                        if (systemAccessRightsb.checkWMSManageWarehouse(userId)) {
+                                    if (requestURI.contains("/wms/receivingputawayprocess.xhtml")) {
+                                        if (systemAccessRightsb.checkCanManageReceivingGoods(userId)) {
                                         } else {
                                             //User cannot access this page
                                             redirect = true;
                                             newPage = ctxtPath + "/wms/wmsindex.xhtml";
                                         }
                                     }
-                                    if (requestURI.contains("/wms/viewstoragetype.xhtml")) {
+                                    if (requestURI.contains("/wms/stockauditprocess.xhtml")) {
+                                        if (systemAccessRightsb.checkCanManageStockAuditProcess(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/wms/stockfulfillmentprocess.xhtml")) {
+                                        if (systemAccessRightsb.checkCanManageOrderFulfillment(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/wms/viewallnotification.xhtml")) {
+                                        if (systemAccessRightsb.checkCanManageReceivingGoods(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/wms/viewallpendingrequests.xhtml")) {
+                                        if (systemAccessRightsb.checkCanManageReceivingGoods(userId) || systemAccessRightsb.checkCanManageOrderFulfillment(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/wms/viewallstockaudit.xhtml")) {
+                                        if (systemAccessRightsb.checkCanManageStockAuditProcess(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/wms/viewdesttransportorder.xhtml")) {
+                                        if (systemAccessRightsb.checkCanManageReceivingGoods(userId) || systemAccessRightsb.checkCanManageOrderFulfillment(userId) || systemAccessRightsb.checkCanManageStockTransportOrder(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/wms/viewduestockaudit.xhtml")) {
+                                        if (systemAccessRightsb.checkCanManageStockAuditProcess(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/wms/viewincomingorders.xhtml")) {
+                                        if (systemAccessRightsb.checkCanManageReceivingGoods(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/wms/viewoutgoingorders.xhtml")) {
+                                        if (systemAccessRightsb.checkCanManageOrderFulfillment(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/wms/viewserviceorderdetail.xhtml")) {
+                                        if (systemAccessRightsb.checkCanManageReceivingGoods(userId) || systemAccessRightsb.checkCanManageOrderFulfillment(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/wms/viewsourcetransportorder.xhtml")) {
+                                        if (systemAccessRightsb.checkCanManageReceivingGoods(userId) || systemAccessRightsb.checkCanManageOrderFulfillment(userId) || systemAccessRightsb.checkCanManageStockTransportOrder(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/wms/viewstockcoming.xhtml")) {
+                                        if (systemAccessRightsb.checkCanManageReceivingGoods(userId) || systemAccessRightsb.checkCanManageOrderFulfillment(userId) || systemAccessRightsb.checkCanManageStockTransportOrder(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/wms/viewstockmovingout.xhtml")) {
+                                        if (systemAccessRightsb.checkCanManageReceivingGoods(userId) || systemAccessRightsb.checkCanManageOrderFulfillment(userId) || systemAccessRightsb.checkCanManageStockTransportOrder(userId)) {
+                                        } else {
+                                            //User cannot access this page
+                                            redirect = true;
+                                            newPage = ctxtPath + "/wms/wmsindex.xhtml";
+                                        }
+                                    }
+                                    if (requestURI.contains("/wms/warehouseservicefulfillmentcheck.xhtml")) {
                                         if (systemAccessRightsb.checkWMSManageWarehouse(userId)) {
                                         } else {
                                             //User cannot access this page
@@ -504,7 +824,30 @@ public class MerlionPortalFilter implements Filter {
                             }
                         } else {
                             //Check company package
-                            //2PL and 3/4/5PL has access
+                            if (requestURI.contains("/grns/aggregaterequests.xhtml")) {
+                                if (systemAccessRightsb.checkCanManagePost(userId)|| systemAccessRightsb.checkFromMerlionLogistic(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/grns/grnsindexpage.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/grns/viewallposts.xhtml")) {
+                                if (systemAccessRightsb.checkCanManageBid(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/grns/grnsindexpage.xhtml";
+                                }
+                            }
+                            if (requestURI.contains("/grns/postmyspace.xhtml")) {
+                                if (systemAccessRightsb.checkCanManagePost(userId)) {
+                                } else {
+                                    //User cannot access this page
+                                    redirect = true;
+                                    newPage = ctxtPath + "/grns/grnsindexpage.xhtml";
+                                }
+                            }
                         }
                     } else {
                         //session is not valid
