@@ -44,6 +44,8 @@
                         <p:menuitem value="Create Service PO" url="createservicepo.xhtml" />
                         <p:menuitem value="View All Orders" url="viewallservicepos.xhtml" />
                         <p:menuitem value="View All Invoices" url="viewallinvoices.xhtml" />
+                        <p:menuitem value="View All GRNS Orders" url="viewallgrnsorders.xhtml" />
+                        <p:menuitem value="View Warehouse Rental Invoice" url="warehouserentalinvoice.xhtml" />
                     </p:submenu>
                     <p:submenu label="Key Account Management" styleClass="display:block">
                         <p:menuitem value="View Order Statistics" url="vieworderstatistics.xhtml" />
@@ -56,10 +58,10 @@
 
         <ui:define name="right">
             <p:breadCrumb>
-                    <p:menuitem value="CRMS Home" url="crmsindex.xhtml" />
-                    <p:menuitem value="Create Service Contract" url="createservicecontract.xhtml" />
-                </p:breadCrumb>
-             <p:panel id="basic" header="Create Service Contract" style="margin-bottom:20px">
+                <p:menuitem value="CRMS Home" url="crmsindex.xhtml" />
+                <p:menuitem value="Create Service Contract" url="createservicecontract.xhtml" />
+            </p:breadCrumb>
+            <p:panel id="basic" header="Create Service Contract" style="margin-bottom:20px">
                 <h:form id="form">
                     <p:ajaxStatus style="width:16px;height:16px;">
                         <f:facet name="start">
