@@ -21,7 +21,7 @@
         </ui:define>
         <ui:define name="left">
             <h:form id="formMain">
-                 <p:menu>
+                <p:menu>
                     <p:submenu label ="Map Settings">
                         <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
                         <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
@@ -113,18 +113,7 @@
                                  widgetVar="logTable"
                                  emptyMessage="No Log found"
                                  rowKey="#{log.logId}">
-
-                        <f:facet name="header">                    
-                            <p:outputPanel>
-                                <h:outputText value="Search Log:" />
-                                <p:inputText id="globalFilter" onkeyup="PF('transportationAssetTable').filter()" />
-                            </p:outputPanel>
-                        </f:facet>
-
-                        <p:ajax event="rowEdit" listener="#{tOLogViewEditManagedBean.onRowEdit}"/>
-                        <p:ajax event="rowEditCancel" listener="#{tOLogViewEditManagedBean.onRowCancel}"/>                
-
-
+                
                         <p:column filterBy="#{log.logId}" filterMatchMode="exact" headerText="Log ID" >
                             <h:outputText value="#{log.logId}" />
                         </p:column>
@@ -138,33 +127,17 @@
                         </p:column>
 
                         <p:column  headerText="Action">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{log.action}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{log.action}" style="width:100%" label="Action"/></f:facet>
-                            </p:cellEditor>
+
+                            <h:outputText value="#{log.action}" />
                         </p:column>
 
 
                         <p:column  headerText="Description">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{log.actionMessage}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{log.actionMessage}" style="width:100%" label="Description"/></f:facet>
-                            </p:cellEditor>
+
+                            <h:outputText value="#{log.actionMessage}" />
+
                         </p:column>
 
-                        <p:column headerText = "Delete Transportation Asset">
-                            <p:commandButton action="#{tOLogViewEditManagedBean.deleteLog(log)}" update="logData" value="Delete">
-                                <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this Log?" icon="ui-icon-alert" />
-                            </p:commandButton> 
-                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                            </p:confirmDialog>
-                        </p:column>
-
-                        <p:column style="width:32px">
-                            <p:rowEditor />
-                        </p:column>
 
                     </p:dataTable>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />

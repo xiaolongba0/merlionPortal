@@ -143,18 +143,14 @@
 
 
 
-                        <p:column headerText = "Delete Schedule">
-                            <p:commandButton action="#{tOperatorScheduleViewEditManagedBean.deleteAssetSchedule(oschedule)}" update="scheduleData" value="Delete"  >
-                                <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this schedule?" icon="ui-icon-alert" />
+                        <p:column headerText = "Update Operator Status">
+                            <p:commandButton action="#{tOperatorScheduleViewEditManagedBean.deleteAssetSchedule(oschedule)}" update="scheduleData" value="Update"  >
+                                <p:confirm header="Confirm Deletion" message="Are you sure that Selected Operator is back?" icon="ui-icon-alert" />
                             </p:commandButton> 
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                             </p:confirmDialog>
-                        </p:column>
-
-                        <p:column style="width:32px">
-                            <p:rowEditor />
                         </p:column>
 
                     </p:dataTable>

@@ -21,7 +21,7 @@
         </ui:define>
         <ui:define name="left">
             <h:form id="formMain">
-                 <p:menu>
+                <p:menu>
                     <p:submenu label ="Map Settings">
                         <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
                         <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
@@ -94,88 +94,58 @@
                             <h:outputText value="" />
                         </f:facet>
                     </p:ajaxStatus>
-                    <p:panelGrid>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="cargoType" style="font-weight: bold" value="Shippment Type: " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="nodeName" requiredMessage="Node Name is required." id="cargoType" value="#{tOrderManagerBean.cargoType}">
-                                    <f:validateLength minimum="4" maximum="40" />
-                                </p:inputText>
-                            </p:column>                       
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="cargoWeight" style="font-weight: bold" value="Cargo Weight (TEU):  " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="nodeType" requiredMessage="Node Type is required." id="cargoWeight" value="#{tOrderManagerBean.cargoWeight}">
-                                    <f:validateLength minimum="1" maximum="19" />
-                                </p:inputText>
-                            </p:column>                             
-                        </p:row>  
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="destination" style="font-weight: bold" value="Destination:  " />
-                            </p:column>
-                            <p:column>
-                                <p:selectOneMenu id="destination" value="#{tOrderManagerBean.destination}"  style="width:210px" required="true" requiredMessage="Please select a Destination">
-                                    <f:selectItem itemLabel="Select Destination" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tOrderManagerBean.destinations}" var="destination" itemLabel="Name:#{destination.locationName}"  itemValue="#{destination.locationId}"/>
-                                </p:selectOneMenu>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="origin" style="font-weight: bold" value="Origin:  " />
-                            </p:column>
-                            <p:column>
-                                <p:selectOneMenu id="origin" value="#{tOrderManagerBean.origin}"  style="width:210px" required="true" requiredMessage="Please select a Origin">
-                                    <f:selectItem itemLabel="Select Origin" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tOrderManagerBean.origins}" var="origin" itemLabel="Name:#{origin.locationName}"  itemValue="#{origin.locationId}"/>
-                                </p:selectOneMenu>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="referenceId" style="font-weight: bold" value="Document No.:  " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="nodeType" requiredMessage="Documenet No. is required." id="referenceId" value="#{tOrderManagerBean.referenceId}">
-                                    <f:validateLength minimum="1" maximum="19" />
-                                </p:inputText>
-                            </p:column>                             
-                        </p:row>  
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="referenceType" style="font-weight: bold" value="Document Type:  " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="nodeType" requiredMessage="Reference Type is required." id="referenceType" value="#{tOrderManagerBean.referenceType}">
-                                    <f:validateLength minimum="1" maximum="19" />
-                                </p:inputText>
-                            </p:column>                             
-                        </p:row>  
+                    <p:panelGrid columns="3">
 
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="startDate" value="Start Date " /><p:spacer width="20" height="20" /></p:column>
-                            <p:column>
-                                <p:calendar id="startDate" required="true" requiredMessage="Start Date is required" value="#{tOrderManagerBean.timeEnd}" pattern="dd-MM-yyyy" mask="true" mindate="#{tAssetScheduleManagerBean.today}" />
-                            </p:column>
-                        </p:row> 
+                        <p:outputLabel value="Transportation Type: " /><p:spacer width="20" height="20" />
+                        <p:selectOneRadio  value="#{tOrderManagerBean.cargoType}">
+                            <f:selectItem itemLabel="Land" itemValue="Land" />
+                            <f:selectItem itemLabel="Sea" itemValue="Sea" />
+                            <f:selectItem itemLabel="Air" itemValue="Air" />
+                        </p:selectOneRadio>                         
 
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="creatorId" style="font-weight: bold" value="Your User Id:  " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="nodeType" requiredMessage="Creator  is required." id="creatorId" value="#{tOrderManagerBean.creatorId}">
-                                    <f:validateLength minimum="1" maximum="19" />
-                                </p:inputText>
-                            </p:column>                             
-                        </p:row>  
+                        <h:outputLabel for="cargoWeight" style="font-weight: bold" value="Cargo Weight (TEU):  " /><p:spacer width="20" height="20" />
+
+                        <p:inputText required="true" label="nodeType" requiredMessage="Node Type is required." id="cargoWeight" value="#{tOrderManagerBean.cargoWeight}">
+                            <f:validateLength minimum="1" maximum="19" />
+                        </p:inputText>
+
+                        <h:outputLabel for="destination" style="font-weight: bold" value="Destination:  " /><p:spacer width="20" height="20" />
+
+                        <p:selectOneMenu id="destination" value="#{tOrderManagerBean.destination}"  style="width:210px" required="true" requiredMessage="Please select a Destination">
+                            <f:selectItem itemLabel="Select Destination" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{tOrderManagerBean.destinations}" var="destination" itemLabel="Name:#{destination.locationName}"  itemValue="#{destination.locationId}"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel for="origin" style="font-weight: bold" value="Origin:  " /><p:spacer width="20" height="20" />
+
+                        <p:selectOneMenu id="origin" value="#{tOrderManagerBean.origin}"  style="width:210px" required="true" requiredMessage="Please select a Origin">
+                            <f:selectItem itemLabel="Select Origin" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{tOrderManagerBean.origins}" var="origin" itemLabel="Name:#{origin.locationName}"  itemValue="#{origin.locationId}"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel for="referenceId" style="font-weight: bold" value="Document No.:  " /><p:spacer width="20" height="20" />
+
+                        <p:inputText required="true" label="nodeType" requiredMessage="Documenet No. is required." id="referenceId" value="#{tOrderManagerBean.referenceId}">
+                            <f:validateLength minimum="1" maximum="19" />
+                        </p:inputText>
+
+                        <h:outputLabel for="referenceType" style="font-weight: bold" value="Document Type:  " /><p:spacer width="20" height="20" />
+
+                        <p:inputText required="true" label="nodeType" requiredMessage="Reference Type is required." id="referenceType" value="#{tOrderManagerBean.referenceType}">
+                            <f:validateLength minimum="1" maximum="19" />
+                        </p:inputText>
+
+                        <p:outputLabel for="endDate" value="Expected Delivery Date " /><p:spacer width="20" height="20" />
+
+                        <p:calendar id="endDate" required="true" requiredMessage="Start Date is required" value="#{tOrderManagerBean.timeEnd}" pattern="dd-MM-yyyy" mask="true" mindate="#{tAssetScheduleManagerBean.today}" />
+
+
+
+                        <p:outputLabel value="Operator Id: " /><p:spacer width="20" height="20" />
+
+                        <h:outputText value="#{tOrderManagerBean.creatorId}" />
+
+
 
                     </p:panelGrid>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
