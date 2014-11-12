@@ -23,7 +23,7 @@
         <ui:define name="left">
             <p:menu styleClass="menu-width">
                 <p:submenu label =" WMS HOME" styleClass="display:block">
-                    <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender" />
+                    <p:menuitem value="WMS Home" url="wmsindex.xhtml" />
                 </p:submenu>
                 <p:submenu label =" Warehouse" styleClass="display:block">
                     <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
@@ -52,7 +52,7 @@
                 <c:if test="#{dashboardBean.checkWMSCanManageStockTransportOrder()||dashboardBean.checkWMSCanManageOrderFulfillment()||dashboardBean.checkWMSCanManageReceivingGoods()||dashboardBean.loginedUser.userType == 'superuser'}">
                     <p:submenu label="Stock Transport Order" styleClass="display:block" >
                         <p:menuitem value="Create Transport Order" url="createtransportorder.xhtml"/>
-                        <p:menuitem value="View Transport Order To Be Processed" url="viewsourcetransportorder.xhtml"/>
+                        <p:menuitem value="Process Transport Order" url="viewsourcetransportorder.xhtml"/>
                         <p:menuitem value="All Incoming Transport Orders" url="viewdesttransportorder.xhtml"/>
                     </p:submenu>
                 </c:if>
@@ -63,7 +63,7 @@
                             <p:menuitem value="View Receiving Orders" url="viewincomingorders.xhtml"/>
                         </c:if>
                         <c:if test="#{dashboardBean.checkWMSCanManageOrderFulfillment()||dashboardBean.loginedUser.userType == 'superuser'}">
-                            <p:menuitem value="View Fulfillment Orders" url="viewoutgoingorders.xhtml"/>
+                            <p:menuitem value="View Fulfillment Orders" url="viewoutgoingorders.xhtml"  style="background:#aa5050; color:white"/>
                         </c:if>
                     </p:submenu>
                 </c:if>

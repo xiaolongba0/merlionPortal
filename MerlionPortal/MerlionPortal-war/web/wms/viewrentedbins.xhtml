@@ -23,7 +23,7 @@
         <ui:define name="left">
             <p:menu styleClass="menu-width">
                 <p:submenu label =" WMS HOME" styleClass="display:block">
-                    <p:menuitem value="WMS Home" url="wmsindex.xhtml" style="background-color: lavender" />
+                    <p:menuitem value="WMS Home" url="wmsindex.xhtml" />
                 </p:submenu>
                 <p:submenu label =" Warehouse" styleClass="display:block">
                     <p:menuitem value="Add A Warehouse" url="addnewwarehouse.xhtml" />
@@ -52,7 +52,7 @@
                 <c:if test="#{dashboardBean.checkWMSCanManageStockTransportOrder()||dashboardBean.checkWMSCanManageOrderFulfillment()||dashboardBean.checkWMSCanManageReceivingGoods()||dashboardBean.loginedUser.userType == 'superuser'}">
                     <p:submenu label="Stock Transport Order" styleClass="display:block" >
                         <p:menuitem value="Create Transport Order" url="createtransportorder.xhtml"/>
-                        <p:menuitem value="View Transport Order To Be Processed" url="viewsourcetransportorder.xhtml"/>
+                        <p:menuitem value="Process Transport Order" url="viewsourcetransportorder.xhtml"/>
                         <p:menuitem value="All Incoming Transport Orders" url="viewdesttransportorder.xhtml"/>
                     </p:submenu>
                 </c:if>
@@ -68,7 +68,7 @@
                     </p:submenu>
                 </c:if>
                 <p:submenu label="Rented Bins Management" styleClass="display:block" >
-                    <p:menuitem value="View Rented Bins" url="viewrentedbins.xhtml"/>
+                    <p:menuitem value="View Rented Bins" url="viewrentedbins.xhtml" style="background:#aa5050; color:white" />
                     <p:menuitem value="View Stock In Rented Bins" url="viewstockinrentedbins.xhtml"/>
                 </p:submenu>
                 <c:if test="#{dashboardBean.checkWMSCanManageReceivingGoods()|| dashboardBean.checkWMSCanManageOrderFulfillment() ||dashboardBean.loginedUser.userType == 'superuser'}">
