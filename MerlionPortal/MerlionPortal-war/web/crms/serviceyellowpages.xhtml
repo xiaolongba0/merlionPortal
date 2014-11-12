@@ -27,7 +27,7 @@
                     <p:submenu label="CRMS HOME" styleClass="display:block">
                         <p:menuitem value="CRMS Home" url="crmsindex.xhtml"/>     
                         <c:if test="#{dashboardBean.checkCRMSCanGenerateQuotationRequst() ||dashboardBean.loginedUser.userType == 'superuser'}">
-                            <p:menuitem value="Service Yellow Pages" url="serviceyellowpages.xhtml"/>
+                            <p:menuitem value="Service Yellow Pages" url="serviceyellowpages.xhtml" style="background:#aa5050; color:white" />
                         </c:if>
                     </p:submenu>
                     <c:if test="#{dashboardBean.checkCRMSCanManageServiceCatalog()||dashboardBean.loginedUser.userType == 'superuser'}">

@@ -38,7 +38,7 @@
                     </c:if>
                     <c:if test="#{dashboardBean.checkCRMSCanGenerateQuotationRequst()|| dashboardBean.checkCRMSCanGenerateServiceQuotationAndContract() ||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:submenu label="Quotation Management" styleClass="display:block">
-                            <p:menuitem value="View All Requests" url="viewallrequests.xhtml" />
+                            <p:menuitem value="View All Requests" url="viewallrequests.xhtml" style="background:#aa5050; color:white" />
                             <p:menuitem value="View All Quotations" url="viewallquotations.xhtml" />
                         </p:submenu>
                     </c:if>

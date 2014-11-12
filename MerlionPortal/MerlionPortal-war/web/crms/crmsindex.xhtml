@@ -23,7 +23,7 @@
             <h:form id="formMain">
                 <p:menu>
                     <p:submenu label="CRMS HOME" styleClass="display:block">
-                        <p:menuitem value="CRMS Home" url="crmsindex.xhtml"/>     
+                        <p:menuitem value="CRMS Home" url="crmsindex.xhtml" style="background:#aa5050; color:white" />     
                         <c:if test="#{dashboardBean.checkCRMSCanGenerateQuotationRequst() ||dashboardBean.loginedUser.userType == 'superuser'}">
                             <p:menuitem value="Service Yellow Pages" url="serviceyellowpages.xhtml"/>
                         </c:if>

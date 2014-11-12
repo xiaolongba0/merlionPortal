@@ -45,7 +45,7 @@
                     <c:if test="#{dashboardBean.checkCRMSCanGenerateServiceQuotationAndContract() ||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:submenu label="Contract Management" styleClass="display:block">
                             <p:menuitem value="Create Service Contract" url="createservicecontract.xhtml" />
-                            <p:menuitem value="View All Contracts" url="viewallcontracts.xhtml" />
+                            <p:menuitem value="View All Contracts" url="viewallcontracts.xhtml"　style="background:#aa5050; color:white" />
                             <p:menuitem value="Renew Contracts" url="renewservicecontract.xhtml" />
                         </p:submenu>
                     </c:if>

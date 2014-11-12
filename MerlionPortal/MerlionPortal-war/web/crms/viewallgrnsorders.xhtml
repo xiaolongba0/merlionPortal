@@ -57,7 +57,7 @@
                             </c:if>
                             <c:if test="#{dashboardBean.checkCRMSCanUpdateCustomerCredit()||dashboardBean.checkCRMSCanGenerateServiceSO() || dashboardBean.checkCRMSCanGenerateServicePO() ||dashboardBean.loginedUser.userType == 'superuser'}">
                                 <p:menuitem value="View All Invoices" url="viewallinvoices.xhtml" />
-                                <p:menuitem value="View All GRNS Orders" url="viewallgrnsorders.xhtml" />
+                                <p:menuitem value="View All GRNS Orders" url="viewallgrnsorders.xhtml" style="background:#aa5050; color:white" />
                                 <p:menuitem value="View Warehouse Rental Invoice" url="warehouserentalinvoice.xhtml" />
                             </c:if>
                         </p:submenu>
