@@ -249,15 +249,15 @@ public class RouteOptimizationSessionBean {
             switch (type) {
                 case "Land":
                     quantity = (int) Math.ceil(totalLoad / 2);
-                    temp = quantity * r.getDistance()*2;
+                    temp = quantity * r.getDistance() * 2;
                     break;
                 case "Sea":
                     quantity = (int) Math.ceil(totalLoad / 100);
-                    temp = quantity * r.getDistance()*125;
+                    temp = quantity * r.getDistance() * 125;
                     break;
                 case "Air":
                     quantity = (int) Math.ceil(totalLoad / 3);
-                    temp = quantity * r.getDistance()*18000;
+                    temp = quantity * r.getDistance() * 18000;
                     break;
             }
             cost = cost + temp;
@@ -265,32 +265,44 @@ public class RouteOptimizationSessionBean {
         return cost;
     }
 
-    public Integer
-            checkDestNode(Integer originId, Integer destinationId, String type) {
-        Node origin = em.find(Node.class, originId);
-        for (Route o
-                : origin.getRouteList()) {
-            Integer tempNodeId = o.getEndNodeId();
-            Node tempNode = em.find(Node.class, tempNodeId);
-            for (Route r : tempNode.getRouteList()) {
-                Integer thisNodeId = r.getEndNodeId();
+    public List<Route> getRoutesExcludeReturn(Node start, Node end, String type) {
+        List<Route> temp = end.getRouteList();
+        List<Route> leeee = new ArrayList();
 
-                if ((int) destinationId == (int) tempNodeId) {
-                    return tempNodeId;
-                } else {
-                    return checkDestNode(tempNodeId, thisNodeId, type);
+        for (Route r : temp) {
+            if (r.getEndNodeId() != start.getNodeId()) {
+                if (r.getRouteType().equals(type)) {
+                    leeee.add(r);
                 }
             }
-
         }
-
-        return -1;
-
+        return leeee;
     }
 
+    public Integer checkDestNode(Integer originId, Integer destinationId, String type) {
+        Node origin = em.find(Node.class, originId);
+        Integer returnthis = -1;
+        for (Route o : origin.getRouteList()) {
+            Integer destId = o.getEndNodeId();
+            Node destNode = em.find(Node.class, destId);
+            List<Route> test = this.getRoutesExcludeReturn(origin, destNode, type);
+            for (Route r : test) {
+                if ((int) destinationId == (int) destId) {
+                    returnthis = destId;
+                    break;
+                } else {
+                    return checkDestNode(destId, r.getEndNodeId(), type);
+                }
+            }
+        }
+        return returnthis;
+    }
 
     public List<Route> routeOptimize(Node start, Node end, String Type) {
         List<Route> routes = new ArrayList();
+        if (this.checkConnectivity(start.getNodeId(), end.getNodeId(), Type)) {
+
+        }
         return routes;
     }
 
