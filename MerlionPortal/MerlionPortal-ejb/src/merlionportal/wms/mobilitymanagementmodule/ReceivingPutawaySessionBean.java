@@ -298,7 +298,7 @@ public class ReceivingPutawaySessionBean {
         return totalQuantity;
     }
 
-    public Boolean deleteStock(Integer stockId) {
+    public boolean deleteStock(Integer stockId) {
 
         Query query = em.createNamedQuery("Stock.findByStockId").setParameter("stockId", stockId);
         Stock stock = (Stock) query.getSingleResult();
@@ -380,22 +380,6 @@ public class ReceivingPutawaySessionBean {
         return false;
     }
 
-    // to be EDITED
-//    public List<ServicePO> viewOrdersToBeReceived(int companyId) {
-//
-//        List<ServicePO> searchResult = new ArrayList();
-//        Query q = em.createQuery("SELECT s FROM ServicePO s WHERE s.receiverCompanyId = :receiverCompanyId");
-//        q.setParameter("receiverCompanyId", companyId);
-//
-//        for (Object o : q.getResultList()) {
-//            ServicePO wOrder = (ServicePO) o;
-//            if (wOrder.getStatus() == 6 || wOrder.getStatus() == 11) {
-//                searchResult.add(wOrder);
-//            }
-//        }
-//        return searchResult;
-//
-//    }
     // This method is called is after goods have arrived at warehouse then they are rejected
     public boolean rejectOrder(Integer servicePOId) {
 
