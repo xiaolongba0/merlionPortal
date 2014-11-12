@@ -28,7 +28,7 @@
                         <p:menuitem value="View Connections" url="viewconnection.xhtml"/>
                     </p:submenu>
                     <p:submenu label =" Manage Your Transportation">
-                        <p:menuitem value="TMS Home" url="tmsindex.xhtml"  style="background-color: lavender"/>
+                        <p:menuitem value="TMS Home" url="tmsindex.xhtml"/>
                     </p:submenu>
                     <c:if test="#{dashboardBean.checkTMSCanManageTransportationAsset() ||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:submenu label="Location" >
@@ -66,6 +66,10 @@
                             <c:if test="#{dashboardBean.checkTMSCanManageTransportationOrder()||dashboardBean.loginedUser.userType == 'superuser'}">
                                 <p:menuitem value="Create Transportation Order" url="addnewtorder.xhtml" />
                                 <p:menuitem value="View All Orders" url="viewalltorder.xhtml" />
+                                <p:submenu label="Order Simulation" >
+                                    <p:menuitem value="Run Cost Simulation" url="runEstimation.xhtml" />
+                                    <p:menuitem value="View Past Simulation" url="viewEstimation.xhtml" />
+                                </p:submenu>
                             </c:if>
                             <p:menuitem value="View Order Details" url="viewalllog.xhtml"/>
                             <c:if test="#{dashboardBean.checkTMSCanManageLog()||dashboardBean.loginedUser.userType == 'superuser'}">
