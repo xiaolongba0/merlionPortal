@@ -53,8 +53,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "UserRole.findByCanGenerateServiceQuotationAndContract", query = "SELECT u FROM UserRole u WHERE u.canGenerateServiceQuotationAndContract = :canGenerateServiceQuotationAndContract"),
     @NamedQuery(name = "UserRole.findByCanManageTransportationAsset", query = "SELECT u FROM UserRole u WHERE u.canManageTransportationAsset = :canManageTransportationAsset"),
     @NamedQuery(name = "UserRole.findByCanManageTransportationOrder", query = "SELECT u FROM UserRole u WHERE u.canManageTransportationOrder = :canManageTransportationOrder"),
-    @NamedQuery(name = "UserRole.findByCanManageLocation", query = "SELECT u FROM UserRole u WHERE u.canManageLocation = :canManageLocation"),
-    @NamedQuery(name = "UserRole.findByCanManageAssetType", query = "SELECT u FROM UserRole u WHERE u.canManageAssetType = :canManageAssetType"),
+    @NamedQuery(name = "UserRole.findByCanManageLog", query = "SELECT u FROM UserRole u WHERE u.canManageLog = :canManageLog"),
+    @NamedQuery(name = "UserRole.findByCanManageAssetMaintenence", query = "SELECT u FROM UserRole u WHERE u.canManageAssetMaintenence = :canManageAssetMaintenence"),
     @NamedQuery(name = "UserRole.findByCanUseHRFunction", query = "SELECT u FROM UserRole u WHERE u.canUseHRFunction = :canUseHRFunction"),
     @NamedQuery(name = "UserRole.findByCanManageWarehouse", query = "SELECT u FROM UserRole u WHERE u.canManageWarehouse = :canManageWarehouse"),
     @NamedQuery(name = "UserRole.findByCanManageStockAuditProcess", query = "SELECT u FROM UserRole u WHERE u.canManageStockAuditProcess = :canManageStockAuditProcess"),
@@ -145,12 +145,12 @@ public class UserRole implements Serializable {
     private boolean canManageTransportationOrder;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "canManageLocation")
-    private boolean canManageLocation;
+    @Column(name = "canManageLog")
+    private boolean canManageLog;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "canManageAssetType")
-    private boolean canManageAssetType;
+    @Column(name = "canManageAssetMaintenence")
+    private boolean canManageAssetMaintenence;
     @Basic(optional = false)
     @NotNull
     @Column(name = "canUseHRFunction")
@@ -200,7 +200,7 @@ public class UserRole implements Serializable {
         this.userRoleId = userRoleId;
     }
 
-    public UserRole(Integer userRoleId, String roleName, boolean canGeneratePO, boolean canGenerateSO, boolean canGenerateQuotationAndProductContract, boolean canGenerateSalesReport, boolean canManageUser, boolean canUseForecast, boolean canManageProductAndComponent, boolean canGenerateMRPList, boolean canGenerateServicePO, boolean canUpdateCustomerCredit, boolean canGenerateServiceSO, boolean canGenerateQuotationRequest, boolean canManageServiceCatalog, boolean canGenerateServiceQuotationAndContract, boolean canManageTransportationAsset, boolean canManageTransportationOrder, boolean canManageLocation, boolean canManageAssetType, boolean canUseHRFunction, boolean canManageWarehouse, boolean canManageStockAuditProcess, boolean canManageStockTransportOrder, boolean canManageReceivingGoods, boolean canManageOrderFulfillment, boolean canManageKeyAccount, boolean canManageBid, boolean canManagePost) {
+    public UserRole(Integer userRoleId, String roleName, boolean canGeneratePO, boolean canGenerateSO, boolean canGenerateQuotationAndProductContract, boolean canGenerateSalesReport, boolean canManageUser, boolean canUseForecast, boolean canManageProductAndComponent, boolean canGenerateMRPList, boolean canGenerateServicePO, boolean canUpdateCustomerCredit, boolean canGenerateServiceSO, boolean canGenerateQuotationRequest, boolean canManageServiceCatalog, boolean canGenerateServiceQuotationAndContract, boolean canManageTransportationAsset, boolean canManageTransportationOrder, boolean canManageLog, boolean canManageAssetMaintenence, boolean canUseHRFunction, boolean canManageWarehouse, boolean canManageStockAuditProcess, boolean canManageStockTransportOrder, boolean canManageReceivingGoods, boolean canManageOrderFulfillment, boolean canManageKeyAccount, boolean canManageBid, boolean canManagePost) {
         this.userRoleId = userRoleId;
         this.roleName = roleName;
         this.canGeneratePO = canGeneratePO;
@@ -219,8 +219,8 @@ public class UserRole implements Serializable {
         this.canGenerateServiceQuotationAndContract = canGenerateServiceQuotationAndContract;
         this.canManageTransportationAsset = canManageTransportationAsset;
         this.canManageTransportationOrder = canManageTransportationOrder;
-        this.canManageLocation = canManageLocation;
-        this.canManageAssetType = canManageAssetType;
+        this.canManageLog = canManageLog;
+        this.canManageAssetMaintenence = canManageAssetMaintenence;
         this.canUseHRFunction = canUseHRFunction;
         this.canManageWarehouse = canManageWarehouse;
         this.canManageStockAuditProcess = canManageStockAuditProcess;
@@ -384,20 +384,20 @@ public class UserRole implements Serializable {
         this.canManageTransportationOrder = canManageTransportationOrder;
     }
 
-    public boolean getCanManageLocation() {
-        return canManageLocation;
+    public boolean getCanManageLog() {
+        return canManageLog;
     }
 
-    public void setCanManageLocation(boolean canManageLocation) {
-        this.canManageLocation = canManageLocation;
+    public void setCanManageLog(boolean canManageLog) {
+        this.canManageLog = canManageLog;
     }
 
-    public boolean getCanManageAssetType() {
-        return canManageAssetType;
+    public boolean getCanManageAssetMaintenence() {
+        return canManageAssetMaintenence;
     }
 
-    public void setCanManageAssetType(boolean canManageAssetType) {
-        this.canManageAssetType = canManageAssetType;
+    public void setCanManageAssetMaintenence(boolean canManageAssetMaintenence) {
+        this.canManageAssetMaintenence = canManageAssetMaintenence;
     }
 
     public boolean getCanUseHRFunction() {
