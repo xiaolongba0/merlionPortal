@@ -34,8 +34,6 @@ public class ProductManagedBean {
 
     @EJB
     private ProductSessionBean productSessionBean;
-   @EJB
-    private MaterialReqPlanningSessionBean mrpsb;
     @EJB
     UserAccountManagementSessionBean uamb;
        @EJB
@@ -97,7 +95,6 @@ private Product product;
         
         products = productSessionBean.getMyProducts(companyId);
         companies = productSessionBean.getAllCompanies();
-    //    mrpsb.addNewMrpListBackorder(1, 100);
         
 }
     
