@@ -44,9 +44,9 @@
     </body>
     <script>
         function displayContent() {            
-//            if (contentId.innerHTML == "0") {
-                document.getElementById("unread-msg").style.disply = "none";
-//            }
+            if (document.getElementById("unread-msg").innerHTML == "0") {
+                document.getElementById("unread-msg").style.display = "none";
+            }
         }
         displayContent();
     </script>
