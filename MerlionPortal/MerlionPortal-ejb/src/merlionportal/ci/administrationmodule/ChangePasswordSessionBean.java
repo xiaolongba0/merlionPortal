@@ -9,9 +9,9 @@ import javax.persistence.PersistenceContext;
 @Stateless
 @LocalBean
 public class ChangePasswordSessionBean {
-
-    @PersistenceContext
-    EntityManager em;
+    
+    @PersistenceContext(unitName = "MerlionPortal-ejbPU")
+    private EntityManager em;
 
     public boolean changeToNewPassword(String password, Integer userId) {
         boolean result = false;
@@ -36,5 +36,9 @@ public class ChangePasswordSessionBean {
             }
         }
         return result;
+    }
+
+    public void persist(Object object) {
+        em.persist(object);
     }
 }

@@ -25,7 +25,7 @@ public class SystemAccessRightSessionBean {
     UserAccountManagementSessionBean uamb;
     @EJB
     CheckAccessRightBean carb;
-    @PersistenceContext
+    @PersistenceContext(unitName = "MerlionPortal-ejbPU")
     EntityManager em;
 
     // Add business logic below. (Right-click in editor and choose
@@ -206,7 +206,7 @@ public class SystemAccessRightSessionBean {
 
         if (loginedUser != null) {
             if (carb.userHasRight(loginedUser, Right.canManageTransportationAsset) || carb.userHasRight(loginedUser, Right.canManageTransportationOrder)
-                    || carb.userHasRight(loginedUser, Right.canManageLocation) || carb.userHasRight(loginedUser, Right.canManageAssetType)
+                    || carb.userHasRight(loginedUser, Right.canManageLog) || carb.userHasRight(loginedUser, Right.canManageAssetMaintenence)
                     || carb.userHasRight(loginedUser, Right.canUseHRFunction)) {
                 return true;
             }

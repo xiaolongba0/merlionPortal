@@ -28,7 +28,7 @@ public class RoleManagementSessionBean {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    @PersistenceContext
+    @PersistenceContext(unitName = "MerlionPortal-ejbPU")
     EntityManager em;
 
     @EJB
@@ -50,7 +50,7 @@ public class RoleManagementSessionBean {
     public int createCompanyRole(Integer operatorId, Integer companyId, String roleName, String description, boolean canGeneratePO, boolean canGenerateSO, boolean canGenerateQuotationAndProductContract, boolean canGenerateSalesReport,
             boolean canManageUser, boolean canUseForecast, boolean canManageProductAndComponent, boolean canGenerateMRPList, boolean canGenerateServicePO, boolean canUpdateCustomerCredit, boolean canGenerateServiceSO,
             boolean canGenerateQuotationRequest, boolean canManageServiceCatalog, boolean canGenerateServiceQuotationAndContract, boolean canManageKeyAccount,
-            boolean canManageTransportationAsset, boolean canManageTransportationOrder, boolean canManageLocation, boolean canManageAssetType, boolean canUseHRFunction,
+            boolean canManageTransportationAsset, boolean canManageTransportationOrder, boolean canManageLog, boolean canManageAssetMaintenance, boolean canUseHRFunction,
             boolean canManageWarehouse, boolean canManageStockAuditProcess, boolean canManageStockTransportOrder, boolean canManageReceivingGoods,
             boolean canManageOrderFulfillment, boolean canManageBid, boolean canManagePost) {
 
@@ -93,8 +93,8 @@ public class RoleManagementSessionBean {
 
                 companyRole.setCanManageTransportationAsset(canManageTransportationAsset);
                 companyRole.setCanManageTransportationOrder(canManageTransportationOrder);
-                companyRole.setCanManageLocation(canManageLocation);
-                companyRole.setCanManageAssetType(canManageAssetType);
+                companyRole.setCanManageLog(canManageLog);
+                companyRole.setCanManageAssetMaintenence(canManageAssetMaintenance);
                 companyRole.setCanUseHRFunction(canUseHRFunction);
 
                 companyRole.setCanManageWarehouse(canManageWarehouse);
@@ -226,8 +226,8 @@ public class RoleManagementSessionBean {
 
                 userRole.setCanManageTransportationAsset(changedRole.getCanManageTransportationAsset());
                 userRole.setCanManageTransportationOrder(changedRole.getCanManageTransportationOrder());
-                userRole.setCanManageLocation(changedRole.getCanManageLocation());
-                userRole.setCanManageAssetType(changedRole.getCanManageAssetType());
+                userRole.setCanManageLog(changedRole.getCanManageLog());
+                userRole.setCanManageAssetMaintenence(changedRole.getCanManageAssetMaintenence());
                 userRole.setCanUseHRFunction(changedRole.getCanUseHRFunction());
 
                 userRole.setCanManageWarehouse(changedRole.getCanManageWarehouse());

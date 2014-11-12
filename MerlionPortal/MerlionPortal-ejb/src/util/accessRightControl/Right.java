@@ -44,8 +44,8 @@ public class Right {
     //TMS transportation asset
     public static final int canManageTransportationAsset = 1040;
     public static final int canManageTransportationOrder = 1041;
-    public static final int canManageLocation = 1042;
-    public static final int canManageAssetType = 1043;
+    public static final int canManageLog = 1042;
+    public static final int canManageAssetMaintenence = 1043;
     public static final int canUseHRFunction = 1044;
  
     

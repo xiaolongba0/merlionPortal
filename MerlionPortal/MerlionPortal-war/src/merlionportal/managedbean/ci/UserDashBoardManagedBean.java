@@ -103,7 +103,7 @@ public class UserDashBoardManagedBean {
     public boolean canUseTMS() {
         if (loginedUser != null) {
             if (carb.userHasRight(loginedUser, Right.canManageTransportationAsset) || carb.userHasRight(loginedUser, Right.canManageTransportationOrder)
-                    || carb.userHasRight(loginedUser, Right.canManageLocation) || carb.userHasRight(loginedUser, Right.canManageAssetType)
+                    || carb.userHasRight(loginedUser, Right.canManageLog) || carb.userHasRight(loginedUser, Right.canManageAssetMaintenence)
                     || carb.userHasRight(loginedUser, Right.canUseHRFunction)) {
                 return true;
             }

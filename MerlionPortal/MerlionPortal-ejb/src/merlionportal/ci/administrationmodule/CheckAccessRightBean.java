@@ -120,13 +120,13 @@ public class CheckAccessRightBean implements Serializable {
                     hasRight = true;
                 }
                 break;
-            case Right.canManageLocation:
-                if (role.getCanManageLocation()) {
+            case Right.canManageLog:
+                if (role.getCanManageLog() ) {
                     hasRight = true;
                 }
                 break;
-            case Right.canManageAssetType:
-                if (role.getCanManageAssetType()) {
+            case Right.canManageAssetMaintenence:
+                if (role.getCanManageAssetMaintenence()) {
                     hasRight = true;
                 }
                 break;
@@ -232,11 +232,11 @@ public class CheckAccessRightBean implements Serializable {
             case Right.canManageTransportationOrder:
                 role.setCanManageTransportationOrder(approve);
                 break;
-            case Right.canManageLocation:
-                role.setCanManageLocation(approve);
+            case Right.canManageLog:
+                role.setCanManageLog(approve);
                 break;
-            case Right.canManageAssetType:
-                role.setCanManageAssetType(approve);
+            case Right.canManageAssetMaintenence:
+                role.setCanManageAssetMaintenence(approve);
                 break;
             case Right.canUseHRFunction:
                 role.setCanUseHRFunction(approve);

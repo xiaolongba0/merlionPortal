@@ -17,7 +17,7 @@ import javax.persistence.Query;
 @LocalBean
 public class LoginSessionBean {
 
-    @PersistenceContext
+    @PersistenceContext(unitName = "MerlionPortal-ejbPU")
     EntityManager em;
     private int tryouts = 0;
 

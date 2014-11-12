@@ -25,7 +25,7 @@ public class GetCompanyRoleSessionBean {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    @PersistenceContext
+    @PersistenceContext(unitName = "MerlionPortal-ejbPU")
     EntityManager em;
     
     public List<UserRole> getAllRolesInCompany(Integer companyId){

@@ -30,7 +30,7 @@ public class UserAccountManagementSessionBean {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     //Used by platform superuser
-    @PersistenceContext
+    @PersistenceContext(unitName = "MerlionPortal-ejbPU")
     EntityManager em;
 
     @EJB
