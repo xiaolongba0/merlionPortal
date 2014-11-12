@@ -22,11 +22,13 @@
         <ui:define name="left">
             <h:form id="formMain">
                 <p:menu>
-                    <p:submenu label ="Map Settings">
-                        <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
-                        <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
-                        <p:menuitem value="View Connections" url="viewconnection.xhtml"/>
-                    </p:submenu>
+                    <c:if test="#{dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:submenu label ="Map Settings">
+                            <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
+                            <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
+                            <p:menuitem value="View Connections" url="viewconnection.xhtml"/>
+                        </p:submenu>
+                    </c:if>  
                     <p:submenu label =" Manage Your Transportation">
                         <p:menuitem value="TMS Home" url="tmsindex.xhtml"/>
                     </p:submenu>

@@ -31,10 +31,10 @@
                             <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
                             <p:menuitem value="View Connections" url="viewconnection.xhtml"/>
                         </p:submenu>
-                        <p:submenu label =" Manage Your Transportation">
-                            <p:menuitem value="TMS Home" url="tmsindex.xhtml"/>
-                        </p:submenu>
-                    </c:if>                     
+                    </c:if>  
+                    <p:submenu label =" Manage Your Transportation">
+                        <p:menuitem value="TMS Home" url="tmsindex.xhtml"/>
+                    </p:submenu>                    
                     <c:if test="#{dashboardBean.checkTMSCanManageTransportationAsset() ||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:submenu label="Location" >
                             <p:menuitem value="Add A Location" url="addnewlocation.xhtml"/>
