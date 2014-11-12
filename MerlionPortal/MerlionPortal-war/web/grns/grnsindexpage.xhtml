@@ -23,26 +23,26 @@
         <ui:define name="left">
             <p:menu styleClass="menu-width">
                 <p:submenu label="Home" styleClass="display:block">
-                    <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
+                    <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" style="background:#aa5050; color:white"/>
                 </p:submenu>
                 <c:if test="#{dashboardBean.checkGRNSCanManagePost() ||dashboardBean.loginedUser.companycompanyId.companyId==1 ||dashboardBean.loginedUser.userType == 'superuser'}">
-                    <p:submenu label="Posting" styleClass="display:block">
+                    <p:submenu label="Start an Auction" styleClass="display:block">
                         <c:if test="#{dashboardBean.loginedUser.companycompanyId.companyId==1 ||dashboardBean.loginedUser.userType == 'superuser'}">
-                            <p:menuitem value="Aggregate Requests" url="aggregaterequests.xhtml" />
+                            <p:menuitem value="Reverse Auction Requests" url="aggregaterequests.xhtml" />
                         </c:if>
-                        <p:menuitem value="Post Spare Space" url="postmyspace.xhtml" />
+                        <p:menuitem value="Auction Spare Space" url="postmyspace.xhtml" />
                     </p:submenu>
                 </c:if>
                 <c:if test="#{dashboardBean.checkGRNSCanManageBid() ||dashboardBean.loginedUser.userType == 'superuser'}">
                     <p:submenu label="Marketplace" styleClass="display:block">
-                        <p:menuitem value="Start Bidding" url="viewallposts.xhtml" />
+                        <p:menuitem value="Place bid" url="viewallposts.xhtml" />
                     </p:submenu>
                 </c:if>
-                <p:submenu label="Manage My Posts" styleClass="display:block">
-                    <p:menuitem value="All My Posts" url="allmyposts.xhtml" />
+                <p:submenu label="Manage My Auctions" styleClass="display:block">
+                    <p:menuitem value="All My Auctions" url="allmyposts.xhtml" />
                 </p:submenu>
                 <p:submenu label="Manage My Bids" styleClass="display:block">
-                    <p:menuitem value="All My biddings" url="allmybids.xhtml" />
+                    <p:menuitem value="All My Bids" url="allmybids.xhtml" />
                 </p:submenu>
             </p:menu>
         </ui:define>
