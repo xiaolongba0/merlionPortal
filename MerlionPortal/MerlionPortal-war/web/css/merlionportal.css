@@ -268,7 +268,7 @@ body{
     margin: 0 auto -80px; /* the bottom margin is the negative value of the footer's height */
 }
 .footer{
-    background-color:#732829;
+    background-color:#661919;
     color:#fff;
     padding:25px;
     overflow: hidden;
@@ -469,5 +469,6 @@ ol.d {
 }
 .ui-breadcrumb ul li .ui-menuitem-link{
     margin-top:0px;
-    color: #cc1010;
+    color: #aa5050;
 }
+
