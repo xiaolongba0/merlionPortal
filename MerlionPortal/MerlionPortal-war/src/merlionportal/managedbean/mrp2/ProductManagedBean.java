@@ -36,7 +36,7 @@ public class ProductManagedBean {
     private ProductSessionBean productSessionBean;
     @EJB
     UserAccountManagementSessionBean uamb;
-       @EJB
+    @EJB
     private SystemLogSessionBean systemLogSB;
     private String productName;
     private String description;
