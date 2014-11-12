@@ -190,13 +190,13 @@ public class TAssetmanagementSessionBean {
         Boolean test = false;
         switch (routeType) {
             case "Land":
-                test= dijLand.createConnection(startNodeId, endNodeId, distance);
+                test= dijLand.createConnection(startNodeId-1, endNodeId-1, distance);
                 break;
             case "Sea":
-                test=dijSea.createConnection(startNodeId, endNodeId, distance);
+                test=dijSea.createConnection(startNodeId-1, endNodeId-1, distance);
                 break;
             case "Air":
-                test=dijAir.createConnection(startNodeId, endNodeId, distance);
+                test=dijAir.createConnection(startNodeId-1, endNodeId-1, distance);
                 break;
         }
         System.out.println("DIJ Create Successfully"+test);

@@ -97,7 +97,7 @@ public class TOrderManagementSessionBean {
 //    
 
 //    If asset Is available ==>
-    public Integer AddNewTransportationOrder(String cargoType, Integer cargoWeight, Integer companyId, Integer creatorId, Integer destination, Integer origin, Integer referenceId, Integer referenceType, Date endDate) {
+    public Integer AddNewTransportationOrder(String cargoType, Integer cargoWeight, Integer companyId, Integer creatorId, Integer destination, Integer origin, Integer referenceId, Integer referenceType, Date endDate, Date startDate) {
         System.out.println("[INSIDE EJB]================================Add New Transportation Order");
         if(origin>-1){
             
