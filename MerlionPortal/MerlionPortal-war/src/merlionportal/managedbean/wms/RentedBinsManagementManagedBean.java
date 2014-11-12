@@ -102,14 +102,6 @@ public class RentedBinsManagementManagedBean {
     }
     
 
-    public ProductSessionBean getPsb() {
-        return psb;
-    }
-
-    public void setPsb(ProductSessionBean psb) {
-        this.psb = psb;
-    }
-
     public SystemUser getLoginedUser() {
         return loginedUser;
     }
