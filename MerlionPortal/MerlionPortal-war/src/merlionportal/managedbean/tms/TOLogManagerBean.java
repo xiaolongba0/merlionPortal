@@ -51,7 +51,7 @@ public class TOLogManagerBean {
     private String action;
     private String actionMessage;
     private Integer orderId;
-    private Integer OperatorId;
+    private Integer operatorId;
     private Date timeStamp;
 
     /**
@@ -78,7 +78,7 @@ public class TOLogManagerBean {
             }
         }
         orders = tomsb.viewTOrderForCompany(companyId);
-        operators = tpomsb.viewMyOperator(companyId);
+        operatorId = loginedUser.getSystemUserId();
         timeStamp = Calendar.getInstance().getTime();
     }
 
@@ -86,7 +86,7 @@ public class TOLogManagerBean {
 
         try {
             System.out.println("[INSIDE WAR FILE]===========================Create New Node");
-            newLogId = tomsb.addNewLog(orderId, OperatorId, action, actionMessage, timeStamp);
+            newLogId = tomsb.addNewLog(orderId, operatorId, action, actionMessage, timeStamp);
             if (newLogId > -1) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Node Order!", ""));
                 systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS created new log");
@@ -106,7 +106,7 @@ public class TOLogManagerBean {
         action = null;
         actionMessage = null;
         orderId = null;
-        OperatorId = null;
+        operatorId = null;
         timeStamp = null;
 
     }
@@ -176,12 +176,14 @@ public class TOLogManagerBean {
     }
 
     public Integer getOperatorId() {
-        return OperatorId;
+        return operatorId;
     }
 
-    public void setOperatorId(Integer OperatorId) {
-        this.OperatorId = OperatorId;
+    public void setOperatorId(Integer operatorId) {
+        this.operatorId = operatorId;
     }
+
+
 
     public Date getTimeStamp() {
         return timeStamp;
