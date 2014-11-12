@@ -25,19 +25,24 @@
                 <p:submenu label="Home" styleClass="display:block">
                     <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
                 </p:submenu>
-                <p:submenu label="Posting" styleClass="display:block">
-                    <p:menuitem value="Aggregate Requests" url="aggregaterequests.xhtml" />
-                    <p:menuitem value="Post Spare Space" url="postmyspace.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="Marketplace" styleClass="display:block">
-                    <p:menuitem value="Start Bidding" url="viewallposts.xhtml" />
-                </p:submenu>
+                <c:if test="#{dashboardBean.checkGRNSCanManagePost() ||dashboardBean.loginedUser.companycompanyId.companyId==1 ||dashboardBean.loginedUser.userType == 'superuser'}">
+                    <p:submenu label="Posting" styleClass="display:block">
+                        <c:if test="#{dashboardBean.loginedUser.companycompanyId.companyId==1 ||dashboardBean.loginedUser.userType == 'superuser'}">
+                            <p:menuitem value="Aggregate Requests" url="aggregaterequests.xhtml" />
+                        </c:if>
+                        <p:menuitem value="Post Spare Space" url="postmyspace.xhtml" />
+                    </p:submenu>
+                </c:if>
+                <c:if test="#{dashboardBean.checkGRNSCanManageBid() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                    <p:submenu label="Marketplace" styleClass="display:block">
+                        <p:menuitem value="Start Bidding" url="viewallposts.xhtml" />
+                    </p:submenu>
+                </c:if>
                 <p:submenu label="Manage My Posts" styleClass="display:block">
-                    <p:menuitem value="All Posts" url="allmyposts.xhtml" />
+                    <p:menuitem value="All My Posts" url="allmyposts.xhtml" />
                 </p:submenu>
                 <p:submenu label="Manage My Bids" styleClass="display:block">
-                    <p:menuitem value="My biddings" url="allmybids.xhtml" />
+                    <p:menuitem value="All My biddings" url="allmybids.xhtml" />
                 </p:submenu>
             </p:menu>
         </ui:define>
@@ -75,7 +80,7 @@
                     </p:panel>
                     <br></br>
                 </c:if>
-                
+
                 <c:if test="#{updateMyBidManagedBean.serviceType==3}">
                     <p:panel id="basicInfo3" header="Service Information" style="margin-bottom:20px">
                         <h:panelGrid columns="2" cellpadding="10">
@@ -89,7 +94,7 @@
                     </p:panel>
                     <br></br>                    
                 </c:if>
-                
+
                 <c:if test="#{updateMyBidManagedBean.serviceType==4}">
                     <p:panel id="basicInfo4" header="Service Information" style="margin-bottom:20px">
                         <h:panelGrid columns="2" cellpadding="10">
@@ -105,7 +110,7 @@
                     </p:panel>
                     <br></br>
                 </c:if>
-                
+
                 <p:panel id="termsCondition" header="Terms and Condition" style="margin-bottom:20px">
                     <h:panelGrid columns="1" cellpadding="10">
                         <h:outputText value="#{updateMyBidManagedBean.myPost.description}"/>
@@ -121,8 +126,8 @@
                 </p:panel>
                 <br></br>
                 <c:if test="#{updateMyBidManagedBean.isUpdatable()}">
-                      <p>Please Enter your Price: </p><p:inputText value="#{updateMyBidManagedBean.bids}"/>
-                      <p:commandButton action="#{updateMyBidManagedBean.updateMyBid()}" value="Submit Bid" update="postInfo"/>
+                    <p>Please Enter your Price: </p><p:inputText value="#{updateMyBidManagedBean.bids}"/>
+                    <p:commandButton action="#{updateMyBidManagedBean.updateMyBid()}" value="Submit Bid" update="postInfo"/>
                 </c:if>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 <p:commandButton action="allmybids.xhtml?faces-redirect=true" value="Go Back" icon="ui-icon-circle-arrow-w"/> 

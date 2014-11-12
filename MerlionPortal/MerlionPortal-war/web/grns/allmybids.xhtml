@@ -21,23 +21,28 @@
         </ui:define>
 
         <ui:define name="left">
-           <p:menu styleClass="menu-width">
+            <p:menu styleClass="menu-width">
                 <p:submenu label="Home" styleClass="display:block">
                     <p:menuitem value="GRNS Home" url="grnsindexpage.xhtml" />
                 </p:submenu>
-                <p:submenu label="Posting" styleClass="display:block">
-                    <p:menuitem value="Aggregate Requests" url="aggregaterequests.xhtml" />
-                    <p:menuitem value="Post Spare Space" url="postmyspace.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="Marketplace" styleClass="display:block">
-                    <p:menuitem value="Start Bidding" url="viewallposts.xhtml" />
-                </p:submenu>
+                <c:if test="#{dashboardBean.checkGRNSCanManagePost() ||dashboardBean.loginedUser.companycompanyId.companyId==1 ||dashboardBean.loginedUser.userType == 'superuser'}">
+                    <p:submenu label="Posting" styleClass="display:block">
+                        <c:if test="#{dashboardBean.loginedUser.companycompanyId.companyId==1 ||dashboardBean.loginedUser.userType == 'superuser'}">
+                            <p:menuitem value="Aggregate Requests" url="aggregaterequests.xhtml" />
+                        </c:if>
+                        <p:menuitem value="Post Spare Space" url="postmyspace.xhtml" />
+                    </p:submenu>
+                </c:if>
+                <c:if test="#{dashboardBean.checkGRNSCanManageBid() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                    <p:submenu label="Marketplace" styleClass="display:block">
+                        <p:menuitem value="Start Bidding" url="viewallposts.xhtml" />
+                    </p:submenu>
+                </c:if>
                 <p:submenu label="Manage My Posts" styleClass="display:block">
-                    <p:menuitem value="All Posts" url="allmyposts.xhtml" />
+                    <p:menuitem value="All My Posts" url="allmyposts.xhtml" />
                 </p:submenu>
                 <p:submenu label="Manage My Bids" styleClass="display:block">
-                    <p:menuitem value="My biddings" url="allmybids.xhtml" />
+                    <p:menuitem value="All My biddings" url="allmybids.xhtml" />
                 </p:submenu>
             </p:menu>
         </ui:define>
@@ -66,7 +71,7 @@
                                   headerText="Bidder Company" filterMatchMode="contains">
                             <h:outputText value="#{allMyBidsManagedBean.viewCompanyName(myBid.post.systemUser.companycompanyId.companyId)}" />
                         </p:column>
-                        
+
                         <p:column filterBy="#{myBid.amount}" headerText="My Bid" >
                             <h:outputText value="#{myBid.amount}" />
                         </p:column>
@@ -74,15 +79,15 @@
                             <h:outputText value="#{myBid.post.expireDate}" />
                         </p:column>
                         <p:column filterBy="#{allMyBidsManagedBean.viewBidStatus(myBid)}" filterMatchMode="in" headerText="Bid Status">
-                        <f:facet name="filter">
-                            <p:selectCheckboxMenu label="Select" 
-                                                  onchange="PF('bidsTable').filter()" 
-                                                  panelStyle="width:150px" scrollHeight="150">
-                                <f:selectItems value="#{allMyBidsManagedBean.bidStatus}"/>
-                            </p:selectCheckboxMenu>
-                        </f:facet>
-                        <h:outputText value="#{allMyBidsManagedBean.viewBidStatus(myBid)}" />
-                    </p:column>
+                            <f:facet name="filter">
+                                <p:selectCheckboxMenu label="Select" 
+                                                      onchange="PF('bidsTable').filter()" 
+                                                      panelStyle="width:150px" scrollHeight="150">
+                                    <f:selectItems value="#{allMyBidsManagedBean.bidStatus}"/>
+                                </p:selectCheckboxMenu>
+                            </f:facet>
+                            <h:outputText value="#{allMyBidsManagedBean.viewBidStatus(myBid)}" />
+                        </p:column>
 
                     </p:dataTable>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
