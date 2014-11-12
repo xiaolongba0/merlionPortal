@@ -156,16 +156,16 @@ public class AdminDashboardManagedBean implements Serializable {
     public boolean checkWMSManageWarehouse(){
         return systemAccessRightSB.checkWMSManageWarehouse(userId);
     }
-    public boolean checkCanManageStockAuditProcess(){
+    public boolean checkWMSCanManageStockAuditProcess(){
         return systemAccessRightSB.checkCanManageStockAuditProcess(userId);
     }
-    public boolean checkCanManageStockTransportOrder(){
+    public boolean checkWMSCanManageStockTransportOrder(){
         return systemAccessRightSB.checkCanManageStockTransportOrder(userId);
     }
-    public boolean checkCanManageReceivingGoods(){
+    public boolean checkWMSCanManageReceivingGoods(){
         return systemAccessRightSB.checkCanManageReceivingGoods(userId);
     }
-    public boolean checkCanManageOrderFulfillment(){
+    public boolean checkWMSCanManageOrderFulfillment(){
         return systemAccessRightSB.checkCanManageOrderFulfillment(userId);
     }
     
@@ -175,25 +175,25 @@ public class AdminDashboardManagedBean implements Serializable {
     
     
 //    CRMS
-    public boolean checkCanGenerateServicePO(){
+    public boolean checkCRMSCanGenerateServicePO(){
         return systemAccessRightSB.checkCanGenerateServicePO(userId);
     }
-    public boolean checkCanUpdateCustomerCredit(){
+    public boolean checkCRMSCanUpdateCustomerCredit(){
         return systemAccessRightSB.checkCanUpdateCustomerCredit(userId);
     }
-    public boolean checkCanGenerateServiceSO(){
+    public boolean checkCRMSCanGenerateServiceSO(){
         return systemAccessRightSB.checkCanGenerateServiceSO(userId);
     }
-    public boolean checkCanGenerateQuotationRequst(){
+    public boolean checkCRMSCanGenerateQuotationRequst(){
         return systemAccessRightSB.checkCanGenerateQuotationRequst(userId);
     }
-    public boolean checkCanManageServiceCatalog(){
+    public boolean checkCRMSCanManageServiceCatalog(){
         return systemAccessRightSB.checkCanManageServiceCatalog(userId);
     }
-    public boolean checkCanGenerateServiceQuotationAndContract(){
+    public boolean checkCRMSCanGenerateServiceQuotationAndContract(){
         return systemAccessRightSB.checkCanGenerateServiceQuotationAndContract(userId);
     }
-    public boolean checkCanManageKeyAccount(){
+    public boolean checkCRMSCanManageKeyAccount(){
         return systemAccessRightSB.checkCanManageKeyAccount(userId);
     }
     
@@ -203,19 +203,19 @@ public class AdminDashboardManagedBean implements Serializable {
     
     
 //    TMS
-    public boolean checkCanManageTransportationAsset(){
+    public boolean checkTMSCanManageTransportationAsset(){
         return systemAccessRightSB.checkCanManageTransportationAsset(userId);
     }
-    public boolean checkCanManageTransportationOrder(){
+    public boolean checkTMSCanManageTransportationOrder(){
         return systemAccessRightSB.checkCanManageTransportationOrder(userId);
     }
-    public boolean checkCanManageLog(){
+    public boolean checkTMSCanManageLog(){
         return systemAccessRightSB.checkCanManageLog(userId);
     }
-    public boolean checkCanManageAssetMaintenence(){
+    public boolean checkTMSCanManageAssetMaintenence(){
         return systemAccessRightSB.checkCanManageAssetMaintenence(userId);
     }
-    public boolean checkCanUseHRFunction(){
+    public boolean checkTMSCanUseHRFunction(){
         return systemAccessRightSB.checkCanUseHRFunction(userId);
     }
 //    END OF TMS
@@ -223,10 +223,10 @@ public class AdminDashboardManagedBean implements Serializable {
     
     
 //    GRNS
-    public boolean checkCanManageBid(){
+    public boolean checkGRNSCanManageBid(){
         return systemAccessRightSB.checkCanManageBid(userId);
     }
-    public boolean checkCanManagePost(){
+    public boolean checkGRNSCanManagePost(){
         return systemAccessRightSB.checkCanManagePost(userId);
     }
 //    END OF GRNS
