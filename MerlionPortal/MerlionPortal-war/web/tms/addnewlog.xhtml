@@ -20,16 +20,18 @@
             </ui:insert>
         </ui:define>
         <ui:define name="left">
-           <h:form id="formMain">
+            <h:form id="formMain">
                 <p:menu>
-                    <p:submenu label ="Map Settings">
-                        <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
-                        <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
-                        <p:menuitem value="View Connections" url="viewconnection.xhtml"/>
-                    </p:submenu>
-                    <p:submenu label =" Manage Your Transportation">
-                        <p:menuitem value="TMS Home" url="tmsindex.xhtml"/>
-                    </p:submenu>
+                    <c:if test="#{dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:submenu label ="Map Settings">
+                            <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
+                            <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
+                            <p:menuitem value="View Connections" url="viewconnection.xhtml"/>
+                        </p:submenu>
+                        <p:submenu label =" Manage Your Transportation">
+                            <p:menuitem value="TMS Home" url="tmsindex.xhtml"/>
+                        </p:submenu>
+                    </c:if>                     
                     <c:if test="#{dashboardBean.checkTMSCanManageTransportationAsset() ||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:submenu label="Location" >
                             <p:menuitem value="Add A Location" url="addnewlocation.xhtml"/>
@@ -64,14 +66,12 @@
                     <c:if test="#{dashboardBean.checkTMSCanManageTransportationOrder()|| dashboardBean.checkTMSCanManageLog()||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:submenu label="Transportation Order" >
                             <c:if test="#{dashboardBean.checkTMSCanManageTransportationOrder()||dashboardBean.loginedUser.userType == 'superuser'}">
+                                <p:menuitem value="Run Cost Simulation" url="runestimation.xhtml" />
+                                <p:menuitem value="View Past Simulations" url="viewestimation.xhtml" />
                                 <p:menuitem value="Create Transportation Order" url="addnewtorder.xhtml" />
                                 <p:menuitem value="View All Orders" url="viewalltorder.xhtml" />
-                                <p:submenu label="Order Simulation" >
-                                    <p:menuitem value="Run Cost Simulation" url="runEstimation.xhtml" />
-                                    <p:menuitem value="View Past Simulation" url="viewEstimation.xhtml" />
-                                </p:submenu>
                             </c:if>
-                            <p:menuitem value="View Order Details" url="viewalllog.xhtml"/>
+                            <p:menuitem value="Track Order Information" url="viewalllog.xhtml"/>
                             <c:if test="#{dashboardBean.checkTMSCanManageLog()||dashboardBean.loginedUser.userType == 'superuser'}">
                                 <p:menuitem value="Create Log For Order" url="addnewlog.xhtml" />
                             </c:if>
@@ -86,16 +86,15 @@
                             <p:menuitem value="Fulfillment Check" url="transportationservicefulfillmentcheck.xhtml" />
                         </p:submenu>
                     </c:if>
-
                 </p:menu>
             </h:form>
         </ui:define>
 
         <ui:define name="right">   
             <p:breadCrumb>
-                <p:menuitem value="CRMS Home" url="crmsindex.xhtml" />
-                <p:menuitem value="View All Orders" url="viewallservicepos.xhtml" />
-                <p:menuitem value="Generate Service Invoice" url="generateserviceinvoice.xhtml" />
+                <p:menuitem value="TMS Home" url="tmsindex.xhtml" />
+                <p:menuitem value="Transportation Order" url="tmsindex.xhtml" />
+                <p:menuitem value="Add New Log" url="addnewlog.xhtml" />
             </p:breadCrumb>
             <h:form id="form">
                 <br/>
@@ -108,47 +107,34 @@
                             <h:outputText value="" />
                         </f:facet>
                     </p:ajaxStatus>
-                    <p:panelGrid>
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="order" style="font-weight: bold" value="orderId:  " />
-                            </p:column>
-                            <p:column>
-                                <p:selectOneMenu id="order" value="#{tOLogManagerBean.orderId}"  style="width:210px" required="true" requiredMessage="Please select a Order">
-                                    <f:selectItem itemLabel="Select Order" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tOLogManagerBean.orders}" var="order" itemLabel="OrderNumber:#{order.transportationOrderId}"  itemValue="#{order.transportationOrderId}"/>
-                                </p:selectOneMenu>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="operator" style="font-weight: bold" value="OperatorID:  " />
-                            </p:column>
-                            <p:column>
-                                <h:outputText value="#{tOLogManagerBean.operatorId}" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="action" style="font-weight: bold" value="Action: " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="nodeName" requiredMessage="Action is required." id="action" value="#{tOLogManagerBean.action}">
-                                </p:inputText>
-                            </p:column>                       
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="actionMessage" style="font-weight: bold" value="Description:  " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText required="true" label="nodeType" requiredMessage="Descriptionis required." id="cargoWeight" value="#{tOLogManagerBean.actionMessage}">
-                                    <f:validateLength minimum="1" maximum="400" />
-                                </p:inputText>
-                            </p:column>                             
-                        </p:row>  
+                    <h:panelGrid columns="3">
 
-                    </p:panelGrid>
+                        <h:outputLabel for="order" style="font-weight: bold" value="orderId:  " /><p:spacer width="20" height="20" />
+
+                        <p:selectOneMenu id="order" value="#{tOLogManagerBean.orderId}"  style="width:210px" required="true" requiredMessage="Please select a Order">
+                            <f:selectItem itemLabel="Select Order" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{tOLogManagerBean.orders}" var="order" itemLabel="OrderNumber:#{order.transportationOrderId}"  itemValue="#{order.transportationOrderId}"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel for="operator" style="font-weight: bold" value="OperatorID:  " /><p:spacer width="20" height="20" />
+
+                        <h:outputText value="#{tOLogManagerBean.operatorId}" />
+
+                        <h:outputLabel for="action" style="font-weight: bold" value="Action: " /><p:spacer width="20" height="20" />
+                        <p:selectOneRadio  value="#{tOLogManagerBean.action}">
+                            <f:selectItem itemLabel="Departure" itemValue="Departure" />
+                            <f:selectItem itemLabel="Arrival  " itemValue="Arrival" />
+                            <f:selectItem itemLabel="clearance" itemValue="clearance" />
+                        </p:selectOneRadio>                     
+
+                        <h:outputLabel for="actionMessage" style="font-weight: bold" value="Description:  " /><p:spacer width="20" height="20" />
+
+                        <p:inputText required="true" label="nodeType" requiredMessage="Descriptionis required." id="actionMessage" value="#{tOLogManagerBean.actionMessage}">
+                            <f:validateLength minimum="1" maximum="400" />
+                        </p:inputText>
+
+
+                    </h:panelGrid><br></br>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                     <p:commandButton id="btn" value="Create New Log" update="form" actionListener="#{tOLogManagerBean.createNewLog(log)}" ajax="true" >
                     </p:commandButton>
