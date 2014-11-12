@@ -38,7 +38,7 @@
                     <p:submenu label="Orders" styleClass="display:block">
                         <c:if test="#{dashboardBean.checkOESCanGeneratePO()|| dashboardBean.loginedUser.userType == 'superuser'}">
                             <p:menuitem value="Create Order" url="pogeneration.xhtml" />
-                            <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
+                            <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" style="background:#aa5050; color:white" />
                         </c:if>
                         <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
                             <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" /> 

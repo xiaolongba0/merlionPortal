@@ -30,7 +30,7 @@
                 </p:submenu>
 
                 <p:submenu label="Quotation" styleClass="display:block">
-                    <p:menuitem value="View All Request" url="viewallrequests.xhtml" />
+                    <p:menuitem value="View All Request" url="viewallrequests.xhtml" style="background:#aa5050; color:white" />
                     <p:menuitem value="View Quotation" url="displayallquotations.xhtml" />
                 </p:submenu>
                 <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">

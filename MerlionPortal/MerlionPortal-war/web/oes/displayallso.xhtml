@@ -41,7 +41,7 @@
                         </c:if>
                         <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
                             <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" /> 
-                            <p:menuitem value="Order Status" url="displayallso.xhtml" />
+                            <p:menuitem value="Order Status" url="displayallso.xhtml" style="background:#aa5050; color:white" />
                         </c:if>
                         <c:if test="#{dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
                             <p:menuitem value="Reject Order" url="returnorder.xhtml" />

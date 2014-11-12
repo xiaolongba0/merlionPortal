@@ -40,7 +40,7 @@
                             <p:menuitem value="Retrieve Saved Order" url="retrievesavedorder.xhtml" />
                         </c:if>
                         <c:if test="#{dashboardBean.checkOESCanGeneratePO()||dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
-                            <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" /> 
+                            <p:menuitem value="All Purcahse Order" url="viewallpo.xhtml" style="background:#aa5050; color:white" /> 
                             <p:menuitem value="Order Status" url="displayallso.xhtml" />
                         </c:if>
                         <c:if test="#{dashboardBean.checkOESCanGenerateSO() ||dashboardBean.loginedUser.userType == 'superuser'}">
