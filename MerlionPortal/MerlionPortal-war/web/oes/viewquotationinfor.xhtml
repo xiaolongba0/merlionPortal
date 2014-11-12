@@ -117,6 +117,9 @@
                     <p:column headerText="Price">
                         <h:outputText value="#{lineItem.lineItemPrice}" />
                     </p:column>
+                    <p:column headerText="Currency">
+                        <h:outputText value="#{quotationManagedBean.selectedQuotation.currency}" />
+                    </p:column>
                 </p:dataTable>
                 <br></br>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />

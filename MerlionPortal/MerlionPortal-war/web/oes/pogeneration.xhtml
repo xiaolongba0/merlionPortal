@@ -65,7 +65,7 @@
                         <p:menuitem value="Sales Reports" url="reportdashboard.xhtml" />
                     </p:submenu>
                 </c:if>
-                
+
             </p:menu>
         </ui:define>
 
@@ -144,9 +144,10 @@
 
                 <p:outputLabel for="quotation"  value="Quotation Number: " />
                 <p:inputText id="quotation" value="#{purchaseOrderManagedBean.qutatuonId}"  label="Quotation Number"></p:inputText>
-                <p:commandButton value="Search" actionListener="#{purchaseOrderManagedBean.searchForQuotation()}" update="productsTalbe" ajax="true"></p:commandButton>
+                <p:commandButton value="Search" actionListener="#{purchaseOrderManagedBean.searchForQuotation()}" update="productsTalbe currency" ajax="true"></p:commandButton>
                 <br></br>
                 <br></br>
+                <p:outputLabel value="Currency: " /><h:outputText id="currency" value="#{purchaseOrderManagedBean.getMyQuotationCurrency()}"/>
                 <p:dataTable id="productsTalbe" var="lineItem" value="#{purchaseOrderManagedBean.itemList}" editable="true">
                     <p:growl id="msgs" showDetail="true"/>
                     <p:ajax event="rowEdit" listener="#{purchaseOrderManagedBean.onRowEdit}" update="quantityColumn" />
