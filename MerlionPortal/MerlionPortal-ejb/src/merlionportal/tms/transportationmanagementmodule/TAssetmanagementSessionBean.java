@@ -14,6 +14,7 @@ import entity.TransportationAsset;
 import entity.AssetSchedule;
 import entity.MaintenanceLog;
 import entity.TransportationOperator;
+import entity.PlanAssetSchedule;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -246,6 +247,16 @@ public class TAssetmanagementSessionBean {
         return allMyLocation;
     }
 
+    public Integer findMyDestinationLocationId(Node node, Integer companyId) {
+        List<Location> allLocations = this.viewMyLocations(companyId);
+        for (Location o : allLocations) {
+            if (o.getNodeId() == node) {
+                return o.getLocationId();
+            }
+        }
+        return -1;
+    }
+
     public List<Location> viewMyMaintLocations(Integer companyId) {
         List<Location> allMyLocation = new ArrayList<>();
         System.out.println("In viewMyLocation, Company ID ============================= : " + companyId);
@@ -365,10 +376,17 @@ public class TAssetmanagementSessionBean {
         if (locationId != null) {
             Location tempLocation = em.find(Location.class, locationId);
             Node node = tempLocation.getNodeId();
+            System.out.println("endNode Id" + node.getNodeId());
             destination = node.getLocationName();
-            Query query = em.createNamedQuery("Route.findByDestination").setParameter(destination, destination);
+            System.out.println("destination" + destination);
+            Query query = em.createNamedQuery("Route.findAll");
+            List<Route> tempList = query.getResultList();
 
-            returnThisRoutes = query.getResultList();
+            for (Route o : tempList) {
+                if (o.getDestination().equals(destination)) {
+                    returnThisRoutes.add(o);
+                }
+            }
         }
         return returnThisRoutes;
     }
@@ -398,6 +416,9 @@ public class TAssetmanagementSessionBean {
         tAsset.setStatus(status);
         tAsset.setAssetLoad(0);
         tAsset.setRouteId(0);
+
+        List<PlanAssetSchedule> planScheduleList = new ArrayList();
+        tAsset.setPlanAssetScheduleList(planScheduleList);
 
         List<MaintenanceLog> maintLogList = new ArrayList();
         tAsset.setMaintenanceLogList(maintLogList);
@@ -512,6 +533,28 @@ public class TAssetmanagementSessionBean {
         temp = locationTemp.getTransportationAssetList();
         for (TransportationAsset tAsset : temp) {
             if (tAsset.getIsAvailable() == true) {
+                available.add(tAsset);
+            }
+        }
+        return available;
+    }
+
+    public List<TransportationAsset> viewtNotAvailableAssetForALocation(Integer locationId) {
+
+        System.out.println("In viewMyTransportationAsset at, Location ID ============================= : " + locationId);
+        System.out.println("viewAssetForALocation");
+        Location locationTemp = new Location();
+
+        if (locationId != null) {
+            locationTemp = em.find(Location.class, locationId);
+            System.out.println("In viewMyTransportationAssets, finding location" + locationTemp);
+        }
+
+        List<TransportationAsset> temp = new ArrayList();
+        List<TransportationAsset> available = new ArrayList();
+        temp = locationTemp.getTransportationAssetList();
+        for (TransportationAsset tAsset : temp) {
+            if (tAsset.getIsAvailable() == false) {
                 available.add(tAsset);
             }
         }
@@ -655,6 +698,7 @@ public class TAssetmanagementSessionBean {
             schedule.setAssetLoad(loading);
             Route tempRoute = em.find(Route.class, routeId);
             schedule.setRoute(tempRoute);
+            tempRoute.getAssetScheduleList().add(schedule);
 
             schedule.setOperatorId(operatorId);
             tAsset.getAssetScheduleList().add(schedule);
@@ -662,6 +706,7 @@ public class TAssetmanagementSessionBean {
 
             em.persist(schedule);
             em.merge(tAsset);
+            em.merge(tempRoute);
 
             em.flush();
 
@@ -686,21 +731,51 @@ public class TAssetmanagementSessionBean {
     }
 
     // Edit in progress
-    public Boolean deleteTAssetSchedule(Integer scheduleId) {
+    public Boolean deleteTAssetSchedule(Integer scheduleId, Integer companyId) {
 
-        Query query = em.createNamedQuery("AssetSchedule.findByScheduleId").setParameter("scheduleId", scheduleId);
-        AssetSchedule schedule = (AssetSchedule) query.getSingleResult();
+        AssetSchedule schedule = em.find(AssetSchedule.class, scheduleId);
         System.out.println("Delete Schedule ================= : " + schedule);
         if (schedule == null) {
             return false;
         }
         TransportationAsset tAsset = schedule.getTransporationAssetassetId();
         tAsset.setIsAvailable(Boolean.TRUE);
+        Integer assetId = tAsset.getAssetId();
+
+        String destination = schedule.getRoute().getDestination();
+        Query query = em.createNamedQuery("Route.findByDestination").setParameter("destination", destination);
+        List<Route> thisRouteList = query.getResultList();
+        Route thisRoute = new Route();
+        for(Route o : thisRouteList){
+            if(o == schedule.getRoute()){
+                thisRoute = o;
+            }
+        }        
+        
+        String endNodename = thisRoute.getDestination();
+        System.out.println("==================================The destination is :" +endNodename);
+        Query query2 = em.createNamedQuery("Node.findByLocationName").setParameter("locationName", endNodename);
+        Node endnode = (Node) query2.getSingleResult();
+
+        Integer locationId = this.findMyDestinationLocationId(endnode, companyId);
+        Location destinationLocation = em.find(Location.class, locationId);
+        System.out.println("The Destination Entity" + destinationLocation);
+        System.out.println("The Destination Location Name: " + destinationLocation.getLocationName());
+        destinationLocation.getTransportationAssetList().add(tAsset);
+        tAsset.setLocationlocationId(destinationLocation);
+        em.merge(tAsset);
+        em.flush();
+        Integer originId = this.findMyDestinationLocationId(thisRoute.getStartNodeId(), companyId);
+        Location originLocation = em.find(Location.class, originId);
+        originLocation.getTransportationAssetList().remove(tAsset);
+
         Route route = schedule.getRoute();
         route.getAssetScheduleList().remove(schedule);
         tAsset.getAssetScheduleList().remove(schedule);
+        em.merge(destinationLocation);
         em.merge(route);
-        em.merge(tAsset);
+        em.merge(originLocation);
+
         em.remove(schedule);
         em.flush();
 
@@ -727,8 +802,85 @@ public class TAssetmanagementSessionBean {
         }
 
     }
-// check if asset is free during start date and end date;
 
+    public List<PlanAssetSchedule> viewPLANAssetScheduleforTAsset(Integer tAssetId) {
+
+        System.out.println("In viewTAssetScheduleforTAsset, TAsset ID ============================= : " + tAssetId);
+        TransportationAsset assetTemp = null;
+
+        if (tAssetId != null) {
+            assetTemp = em.find(TransportationAsset.class, tAssetId);
+            System.out.println("In view my transportation assets, finding location" + assetTemp);
+        }
+        return assetTemp.getPlanAssetScheduleList();
+
+    }
+
+    // Edit in progress
+    public Boolean deletePLANAssetSchedule(Integer scheduleId) {
+
+        PlanAssetSchedule schedule = em.find(PlanAssetSchedule.class, scheduleId);
+        System.out.println("Delete Schedule ================= : " + schedule);
+        if (schedule == null) {
+            return false;
+        }
+        TransportationAsset tAsset = schedule.getTransportationAsset();
+        tAsset.getPlanAssetScheduleList().remove(schedule);
+        em.merge(tAsset);
+        em.remove(schedule);
+        em.flush();
+
+        System.out.println("END OF DELETE Schedule FUNCTION IN SESSION BEAN");
+        return true;
+    }
+
+    //Edit in progress
+    public boolean editPLANAssetSchedule(Date startDate, Date endDate, Integer assetScheduleId) {
+
+        PlanAssetSchedule schedule = em.find(PlanAssetSchedule.class, assetScheduleId);
+
+        if (schedule != null) {
+//            schedule.setStartDate(startDate);
+//            schedule.setEndDate(endDate);
+
+            em.merge(schedule);
+            em.flush();
+
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+//    public Integer addPLANAssetSchedule(Date startDate, Date endDate, Integer loading, Integer tAssetId, Integer operatorId) {
+//
+//        System.out.println("[INSIDE EJB]================================Add Transportation Asset Schedule");
+//
+//        TransportationAsset tAsset = em.find(TransportationAsset.class, tAssetId);
+//        if (tAsset != null) {
+//            PlanAssetSchedule schedule = new PlanAssetSchedule();
+//            schedule.setStartDate(startDate);
+//            schedule.setEndDate(endDate);
+//            schedule.setTransportationAsset(tAsset);
+//            schedule.setAssetLoad(loading);
+//
+//            schedule.setOperatorId(operatorId);
+//            tAsset.getPlanAssetScheduleList().add(schedule);
+//            tAsset.setIsAvailable(Boolean.FALSE);
+//
+//            em.persist(schedule);
+//            em.merge(tAsset);
+//
+//            em.flush();
+//
+//            return schedule.getPlanScheduleId();
+//        } else {
+//            return -1;
+//        }
+//
+//    }
+// check if asset is free during start date and end date;
     public boolean checkAssetAvailableSchedule(Date startDate, Date endDate, Integer assetId) {
         TransportationAsset tempAsset = em.find(TransportationAsset.class, assetId);
 
@@ -749,35 +901,23 @@ public class TAssetmanagementSessionBean {
         return true;
     }
 
-    // select a transportation asset from location to depart from 
-    public boolean moveAssetToRoute(Integer assetId, Integer routeId, Integer loading, Date startDate, Date endDate, Integer operatorId) {
-
+    public boolean checkAssetAvailablePLANSchedule(Date startDate, Date endDate, Integer assetId) {
         TransportationAsset tempAsset = em.find(TransportationAsset.class, assetId);
-        Location tempLocation = tempAsset.getLocationlocationId();
 
-        List<TransportationAsset> tempAssetList = new ArrayList();
-        tempAssetList = tempLocation.getTransportationAssetList();
+        List<AssetSchedule> tempScheduleList = new ArrayList();
+        tempScheduleList = tempAsset.getAssetScheduleList();
 
-        Integer tempScheduleId = this.addTAssetSchedule(startDate, endDate, loading, assetId, operatorId, routeId);
-
-        AssetSchedule scheduelTemp = em.find(AssetSchedule.class, tempScheduleId);
-        Route tempRoute = em.find(Route.class, routeId);
-
-        tempRoute.getAssetScheduleList().add(scheduelTemp);
-        tempAssetList.remove(tempAsset);
-
-        em.persist(scheduelTemp);
-        em.remove(tempAsset);
-        em.merge(tempLocation);
-        em.merge(tempRoute);
-
-        em.flush();
-
-        return true;
-    }
-
-    public boolean moveAssetToLocation(Integer assetId, Integer locationId) {
-
+        for (AssetSchedule o : tempScheduleList) {
+            Date tempStart = o.getStartDate();
+            Date tempEnd = o.getEndDate();
+            if (startDate.after(tempStart) && startDate.before(tempEnd)) {
+                return false;
+            } else if (endDate.before(tempEnd) && endDate.after(tempStart)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
         return true;
     }
 
