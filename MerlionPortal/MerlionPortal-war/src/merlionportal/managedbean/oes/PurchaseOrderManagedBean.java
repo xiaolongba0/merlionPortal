@@ -143,7 +143,6 @@ public class PurchaseOrderManagedBean {
     }
 
     public void searchForQuotation() {
-        System.out.println(qutatuonId);
         if (purchaseMB.checkQuotationValidity(qutatuonId)) {
             itemList = purchaseMB.copyFromQuotation(qutatuonId);
         } else {
@@ -256,11 +255,11 @@ public class PurchaseOrderManagedBean {
         this.itemList = itemList;
     }
 
-    public int getQutatuonId() {
+    public Integer getQutatuonId() {
         return qutatuonId;
     }
 
-    public void setQutatuonId(int qutatuonId) {
+    public void setQutatuonId(Integer qutatuonId) {
         this.qutatuonId = qutatuonId;
     }
 
