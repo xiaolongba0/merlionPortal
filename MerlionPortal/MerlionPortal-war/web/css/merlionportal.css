@@ -71,7 +71,7 @@ body{
 }
 
 .ui-menu.ui-widget li > .ui-menuitem-link.ui-state-hover{
-    background:gray;
+    background:#aaa;
 }
 
 .input-addon-fixedwidth{
