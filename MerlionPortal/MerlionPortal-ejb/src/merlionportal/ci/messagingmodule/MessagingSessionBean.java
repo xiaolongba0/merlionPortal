@@ -104,4 +104,14 @@ public class MessagingSessionBean {
             return -1;
         }
     }
+    public int getNumberOfUnreadMessages(Integer userId){
+        Query q = em.createNamedQuery("Message.findByReceiver").setParameter("receiver", userId);
+        int count = 0;
+        for(Message m: (List<Message>)q.getResultList()){
+            if(m.getStatus()==9990){
+                count++;
+            }
+        }
+        return count;
+    }
 }

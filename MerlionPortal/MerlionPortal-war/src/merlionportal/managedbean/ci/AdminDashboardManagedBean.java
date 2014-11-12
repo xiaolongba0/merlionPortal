@@ -11,6 +11,7 @@ import javax.inject.Named;
 import merlionportal.ci.administrationmodule.CheckAccessRightBean;
 import merlionportal.ci.administrationmodule.SystemAccessRightSessionBean;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
+import merlionportal.ci.messagingmodule.MessagingSessionBean;
 import util.accessRightControl.Right;
 
 @Named(value = "dashboardBean")
@@ -19,6 +20,7 @@ public class AdminDashboardManagedBean implements Serializable {
 
     private SystemUser loginedUser;
     private Integer userId;
+    private Integer numberOfUnread;
     
 
     @EJB
@@ -27,6 +29,8 @@ public class AdminDashboardManagedBean implements Serializable {
     CheckAccessRightBean carb;
     @EJB
     SystemAccessRightSessionBean systemAccessRightSB;
+    @EJB
+    MessagingSessionBean msb;
 
     public AdminDashboardManagedBean() {
     }
@@ -48,6 +52,7 @@ public class AdminDashboardManagedBean implements Serializable {
                 ex.printStackTrace();
             }
         }
+        numberOfUnread = msb.getNumberOfUnreadMessages(userId);
         
     }
 
@@ -248,7 +253,14 @@ public class AdminDashboardManagedBean implements Serializable {
         this.userId = userId;
     }
 
-   
+    public Integer getNumberOfUnread() {
+        return numberOfUnread;
+    }
+
+    public void setNumberOfUnread(Integer numberOfUnread) {
+        this.numberOfUnread = numberOfUnread;
+    }
+
     
 
 
