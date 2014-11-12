@@ -114,13 +114,6 @@ public class PurchaseOrderManagerSessionBean {
         return result;
     }
 
-    public Boolean checkAvailavility() {
-        return true;
-    }
-
-    public String checkTimeToFulfill() {
-        return "Need 5 days";
-    }
 
     public List<String> getCustomerCompany(int userid) {
         SystemUser cus = em.find(SystemUser.class, userid);
