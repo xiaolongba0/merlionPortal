@@ -77,7 +77,7 @@ public class TAssetScheduleManagerBean {
             }
         }
         locations = tamsb.viewMyLocations(companyId);
-        operators = tomsb.viewMyOperator(companyId);
+        operators = tomsb.viewMyAvailableOperator(companyId);
         today = Calendar.getInstance().getTime();
     }
 

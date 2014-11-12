@@ -66,7 +66,7 @@ public class TOperatorScheduleManagerBean {
                 ex.printStackTrace();
             }
         }
-        operators = tomsb.viewMyOperator(companyId);
+        operators = tomsb.viewMyAvailableOperator(companyId);
         System.out.println("View Operators for company Id: " + companyId);
         today = Calendar.getInstance().getTime();
     }
@@ -90,6 +90,7 @@ public class TOperatorScheduleManagerBean {
     private void clearAllFields() {
         startDate = null;
         endDate = null;
+        operatorId = null;
     }
 
     public List<TransportationOperator> getOperators() {

@@ -77,7 +77,7 @@ public class TAssetScheduleViewEditManagedBean {
     
     public void onLocationChange() {
         if (locationId != null) {
-            tassetss = tamsb.viewtAssetForALocation(locationId);
+            tassetss = tamsb.viewtNotAvailableAssetForALocation(locationId);
         }
     }
 
@@ -105,7 +105,7 @@ public class TAssetScheduleViewEditManagedBean {
 
     public void deleteAssetSchedule(AssetSchedule schedule) {
         try {
-            boolean result = tamsb.deleteTAssetSchedule(schedule.getScheduleId());
+            boolean result = tamsb.deleteTAssetSchedule(schedule.getScheduleId(),companyId);
             if (result) {
                 schedules.remove(schedule);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Asset Schedule is deleted"));

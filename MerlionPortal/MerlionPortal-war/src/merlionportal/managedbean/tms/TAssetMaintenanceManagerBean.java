@@ -84,7 +84,7 @@ public class TAssetMaintenanceManagerBean {
             }
         }
         locations = tassetManagementSessionBean.viewMyLocations(companyId);
-        operators = tomsb.viewMyOperator(companyId);
+        operatorId = loginedUser.getSystemUserId();
         today = Calendar.getInstance().getTime();
 
     }
@@ -134,10 +134,11 @@ public class TAssetMaintenanceManagerBean {
 
     private void clearAllFields() {
         locationId = null;
+        routeId = null;
         tassssssetId = null;
         cost = null;
         description = null;
-        operatorId = null;
+//        operatorId = null;
         startDate = null;
         endDate = null;
     }

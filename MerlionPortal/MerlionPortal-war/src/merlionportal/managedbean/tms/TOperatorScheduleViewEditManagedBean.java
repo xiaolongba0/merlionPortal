@@ -96,7 +96,7 @@ public class TOperatorScheduleViewEditManagedBean {
 
     public void deleteAssetSchedule(OperatorSchedule oschedule) {
         try {
-            boolean result = tomsb.deleteOschedule(operatorId);
+            boolean result = tomsb.deleteOschedule(oschedule.getOperatorScheduleId());
             if (result) {
                 oschedules.remove(oschedule);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Operator Schedule is deleted"));

@@ -97,7 +97,7 @@ public class TAssetViewEditManagedBean {
         System.out.println("===============================[In Managed Bean - get Locations]");
         System.out.println("[In Managed Bean - getLocation] location ID : " + locationId);
         if (locationId != null) {
-            tassets = tassetManagementSessionBean.viewtAssetForALocation(locationId);
+            tassets = tassetManagementSessionBean.viewtAvailableAssetForALocation(locationId);
             available = tassetManagementSessionBean.countAvailableAssetForALocation(locationId);
             maintenance = tassetManagementSessionBean.countMaintAssetForALocation(locationId);
             total = tassetManagementSessionBean.counttAssetForALocation(locationId);
