@@ -78,7 +78,7 @@ public class RouteOptimizationSessionBean {
         System.out.println("[INSIDE Route Optimization >>>>>>>>> Creating new Estimation");
 
         Estimation newEst = new Estimation();
-        if (this.checkConnectivity(originId, destinationId, type)) {
+        if (this.checkConnectivity(originId, destinationId, type) > 1) {
 
             Node start = em.find(Node.class, originId);
             Node end = em.find(Node.class, destinationId);
@@ -272,40 +272,61 @@ public class RouteOptimizationSessionBean {
     }
 // return destId of route; compare with DestinationId
 
-    public Integer checkDestNode(Integer originId, Integer destinationId, String type) {
+    public Integer checkConnectivity(Integer originId, Integer destinationId, String type) {
         Node origin = em.find(Node.class, originId);
         for (Route o : origin.getRouteList()) {
             Integer destId = o.getEndNodeId();
-            Node destNode = em.find(Node.class, destId);
-            for (Route x : this.getRoutesExcludeReturn(origin, destNode, type)) {
-                return x.getEndNodeId();
+            if (destId == destinationId) {
+                return 1;
+            } else {
+                Node destNode = em.find(Node.class, destId);
+                for (Route x : this.getRoutesExcludeReturn(origin, destNode, type)) {
+                    return checkConnectivity(x.getEndNodeId(), destinationId, type);
+                }
             }
+            return -1;
         }
         return -1;
     }
-
-    public Boolean checkConnectivity(Integer originId, Integer destinationId, String type) {
-        boolean A = true;
-        while (A) {
-            Node origin = em.find(Node.class, originId);
-            for (Route o : origin.getRouteList()) {
-                Integer destId = o.getEndNodeId();
-                if (Objects.equals(destId, destinationId)) {
-                    A = false;
-                    return true;
-                } else if (checkDestNode(destId, destinationId, type) == destinationId) {
-                    A = false;
-                    return true;
-                }
-            }
-            
-        }
-        return false;
-    }
+        //    public Boolean checkConnectivity(Integer originId, Integer destinationId, String type) {
+    //        boolean A = true;
+    //        Integer tempId = originId;
+    //        while (A) {
+    //            Node origin = em.find(Node.class, tempId);
+    //            oloop:
+    //            for (Route o : origin.getRouteList()) {
+    //                Integer destId = o.getEndNodeId();
+    //                if(destId == destinationId){
+    //                    A = false;
+    //                    return true;
+    //                }
+    //                Node destNode = em.find(Node.class, destId);
+    //                for (Route x : this.getRoutesExcludeReturn(origin, destNode, type)) {
+    //                    if(x.getEndNodeId()==destinationId){
+    //                        A = false;
+    //                        return true;
+    //                    }
+    //                }
+    //                tempId = destId;
+    //                origin = em.find(Node.class, tempId);
+    //            }
+    //
+    //        }
+    //        return false;
+    //    }
 
     public List<Route> routeOptimize(Node start, Node end, String Type) {
         List<Route> routes = new ArrayList();
-        if (this.checkConnectivity(start.getNodeId(), end.getNodeId(), Type)) {
+        if (this.checkConnectivity(start.getNodeId(), end.getNodeId(), Type) > 1) {
+
+            for (int i = 5; i > 0; i--) {
+                for (Route o : start.getRouteList()) {
+                    if (Objects.equals(o.getEndNodeId(), end.getNodeId())) {
+                        routes.add(o);
+                    }
+
+                }
+            }
 
         }
         return routes;
