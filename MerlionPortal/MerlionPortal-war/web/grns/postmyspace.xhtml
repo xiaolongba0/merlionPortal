@@ -57,7 +57,7 @@
                 <p:tab title="Transportation Space">
                     <h:form id="summitable1">
 
-                        <h:panelGrid columns="1" cellpadding="10">
+                        <h:panelGrid columns="1" cellpadding="10" width="100%">
                             <p:panel header="Service Information" style="margin-bottom:20px">
                                 <h:panelGrid columns="2" cellpadding="10">
                                     <p>Service Type : </p><h:outputText value="Transportation Space"/>
@@ -72,57 +72,57 @@
                             <br></br>
                         </h:panelGrid>
                         <p:panel id="postInfo" header="Post Information" style="margin-bottom:20px">
-                            <h:panelGrid columns="2" cellpadding="10">
-                                <p:row>
-                                    <p:column>
-                                        <h:outputLabel for="currency" style="font-weight: bold" value="Currency:   *" />
-                                    </p:column>
-                                    <p:column>                        
-                                        <h:selectOneMenu id="currency" value="#{postSpaceManagedBean.currency}" label="Currency">
-                                            <f:selectItem itemLabel="Select Currency" itemValue="" noSelectionOption="true" />
 
-                                            <f:selectItem itemLabel="US Dollar (USD)" itemValue="US Dollar (USD)" />
-                                            <f:selectItem itemLabel="European Euro (EUR)" itemValue="European Euro (EUR)" />
-                                            <f:selectItem itemLabel="Japan Yen (JPY)" itemValue="Japan Yen (JPY)" />
-                                            <f:selectItem itemLabel="Pound Sterling (GBP)" itemValue="Pound Sterling (GBP)" />
-                                            <f:selectItem itemLabel="Australian Dollar (AUD)" itemValue="Australian Dollar (AUD)" />
-                                            <f:selectItem itemLabel="Swiss Franc (CHF)" itemValue="Swiss Franc (CHF)" />
-                                            <f:selectItem itemLabel="Canadian Dollar (CAD)" itemValue="Canadian Dollar (CAD)" />
-                                            <f:selectItem itemLabel="Hong Kong Dollar (HKD)" itemValue="Hong Kong Dollar (HKD)" />
-                                            <f:selectItem itemLabel="Swedish Krona (SEK)" itemValue="Swedish Krona (SEK)" />
-                                            <f:selectItem itemLabel="New Zealand Dollar (NZD)" itemValue="New Zealand Dollar (NZD)" />
 
-                                            <f:selectItem itemLabel="South African Rand (ZAR)" itemValue="South African Rand (ZAR)" />
-                                            <f:selectItem itemLabel="Russian Ruble (RUB)" itemValue="Russian Ruble (RUB)" />
-                                            <f:selectItem itemLabel="Indian Rupee (INR)" itemValue="Indian Rupee (INR)" />
-                                            <f:selectItem itemLabel="Singapore Dollar (SGD)" itemValue="Singapore Dollar (SGD)" />
-                                            <f:selectItem itemLabel="Bulgarian Lev (BGN)" itemValue="Bulgarian Lev (BGN)" />
-                                            <f:selectItem itemLabel="Chinese Yuan Renminbi (CNY)" itemValue="Chinese Yuan Renminbi (CNY)" />
-                                            <f:selectItem itemLabel="Thailand Baht (THB)" itemValue="Thailand Baht (THB)" />
-                                            <f:selectItem itemLabel="Hungary Forint(HUF)" itemValue="Hungary Forint(HUF)" />   
-                                            <f:selectItem itemLabel="Norwegian Krone (NOK)" itemValue="Norwegian Krone (NOK)" />
-                                            <f:selectItem itemLabel="Mexican Peso (MXN)" itemValue="Mexican Peso (MXN)" />
-                                        </h:selectOneMenu>
-                                    </p:column>
-                                </p:row>
-                                <p:outputLabel for="endDate" value="Expiry Date" /><p:spacer width="20" height="20" />
-                                <p:calendar id="endDate" value="#{postSpaceManagedBean.expireDate}" />
-                                <h3 style="margin-top: 0">Terms and Conditions</h3>
-                                <p>Please terms and Conditions below</p>
-                                <p:inputTextarea id="display" rows="10" cols="80" value="#{postSpaceManagedBean.description}" />
-                            </h:panelGrid>
+                            <h:outputLabel for="currency" style="font-weight: bold" value="Currency:   *" />
+
+
+                            <h:selectOneMenu id="currency" value="#{postSpaceManagedBean.currency}" label="Currency">
+                                <f:selectItem itemLabel="Select Currency" itemValue="" noSelectionOption="true" />
+
+                                <f:selectItem itemLabel="US Dollar (USD)" itemValue="US Dollar (USD)" />
+                                <f:selectItem itemLabel="European Euro (EUR)" itemValue="European Euro (EUR)" />
+                                <f:selectItem itemLabel="Japan Yen (JPY)" itemValue="Japan Yen (JPY)" />
+                                <f:selectItem itemLabel="Pound Sterling (GBP)" itemValue="Pound Sterling (GBP)" />
+                                <f:selectItem itemLabel="Australian Dollar (AUD)" itemValue="Australian Dollar (AUD)" />
+                                <f:selectItem itemLabel="Swiss Franc (CHF)" itemValue="Swiss Franc (CHF)" />
+                                <f:selectItem itemLabel="Canadian Dollar (CAD)" itemValue="Canadian Dollar (CAD)" />
+                                <f:selectItem itemLabel="Hong Kong Dollar (HKD)" itemValue="Hong Kong Dollar (HKD)" />
+                                <f:selectItem itemLabel="Swedish Krona (SEK)" itemValue="Swedish Krona (SEK)" />
+                                <f:selectItem itemLabel="New Zealand Dollar (NZD)" itemValue="New Zealand Dollar (NZD)" />
+
+                                <f:selectItem itemLabel="South African Rand (ZAR)" itemValue="South African Rand (ZAR)" />
+                                <f:selectItem itemLabel="Russian Ruble (RUB)" itemValue="Russian Ruble (RUB)" />
+                                <f:selectItem itemLabel="Indian Rupee (INR)" itemValue="Indian Rupee (INR)" />
+                                <f:selectItem itemLabel="Singapore Dollar (SGD)" itemValue="Singapore Dollar (SGD)" />
+                                <f:selectItem itemLabel="Bulgarian Lev (BGN)" itemValue="Bulgarian Lev (BGN)" />
+                                <f:selectItem itemLabel="Chinese Yuan Renminbi (CNY)" itemValue="Chinese Yuan Renminbi (CNY)" />
+                                <f:selectItem itemLabel="Thailand Baht (THB)" itemValue="Thailand Baht (THB)" />
+                                <f:selectItem itemLabel="Hungary Forint(HUF)" itemValue="Hungary Forint(HUF)" />   
+                                <f:selectItem itemLabel="Norwegian Krone (NOK)" itemValue="Norwegian Krone (NOK)" />
+                                <f:selectItem itemLabel="Mexican Peso (MXN)" itemValue="Mexican Peso (MXN)" />
+                            </h:selectOneMenu>
+
+                            <p:spacer width="20" height="20" />
+                            <p:outputLabel for="endDate" value="Expiry Date:" />
+                            <p:calendar id="endDate" value="#{postSpaceManagedBean.expireDate}" />
+                            <div><p:spacer width="20" height="20" /></div>
+                            <p:outputLabel>Terms and Conditions</p:outputLabel>
+                            <div><i>Please enter the terms and Conditions below</i></div>
+                            <p:inputTextarea id="display" rows="10" cols="80" value="#{postSpaceManagedBean.description}" />
+
                         </p:panel>
                         <br></br>
                         <p:commandButton action="#{postSpaceManagedBean.postRequest()}" value="Post" /> 
                         <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-
+                        <div><p:spacer width="20" height="20" /></div>
                     </h:form>
 
                 </p:tab>
                 <p:tab title="Warhhouse Space">
                     <h:form id="summitable2" >
 
-                        <h:panelGrid columns="1" cellpadding="10">
+                        <h:panelGrid columns="1" cellpadding="10" width="100%">
                             <p:panel id="basicInfo1" header="Service Information" style="margin-bottom:20px">
                                 <h:panelGrid columns="2" cellpadding="10">
                                     <p>Service Type : </p><h:outputText value="Warehouse Space"/>
@@ -138,50 +138,50 @@
                             </p:panel>
                         </h:panelGrid>
                         <p:panel id="postInfo" header="Post Information" style="margin-bottom:20px">
-                            <h:panelGrid columns="2" cellpadding="10">
-                                <p:row>
-                                    <p:column>
-                                        <h:outputLabel for="currency" style="font-weight: bold" value="Currency:   *" />
-                                    </p:column>
-                                    <p:column>                        
-                                        <h:selectOneMenu id="currency" value="#{postSpaceManagedBean.currency}" label="Currency">
-                                            <f:selectItem itemLabel="Select Currency" itemValue="" noSelectionOption="true" />
 
-                                            <f:selectItem itemLabel="US Dollar (USD)" itemValue="US Dollar (USD)" />
-                                            <f:selectItem itemLabel="European Euro (EUR)" itemValue="European Euro (EUR)" />
-                                            <f:selectItem itemLabel="Japan Yen (JPY)" itemValue="Japan Yen (JPY)" />
-                                            <f:selectItem itemLabel="Pound Sterling (GBP)" itemValue="Pound Sterling (GBP)" />
-                                            <f:selectItem itemLabel="Australian Dollar (AUD)" itemValue="Australian Dollar (AUD)" />
-                                            <f:selectItem itemLabel="Swiss Franc (CHF)" itemValue="Swiss Franc (CHF)" />
-                                            <f:selectItem itemLabel="Canadian Dollar (CAD)" itemValue="Canadian Dollar (CAD)" />
-                                            <f:selectItem itemLabel="Hong Kong Dollar (HKD)" itemValue="Hong Kong Dollar (HKD)" />
-                                            <f:selectItem itemLabel="Swedish Krona (SEK)" itemValue="Swedish Krona (SEK)" />
-                                            <f:selectItem itemLabel="New Zealand Dollar (NZD)" itemValue="New Zealand Dollar (NZD)" />
 
-                                            <f:selectItem itemLabel="South African Rand (ZAR)" itemValue="South African Rand (ZAR)" />
-                                            <f:selectItem itemLabel="Russian Ruble (RUB)" itemValue="Russian Ruble (RUB)" />
-                                            <f:selectItem itemLabel="Indian Rupee (INR)" itemValue="Indian Rupee (INR)" />
-                                            <f:selectItem itemLabel="Singapore Dollar (SGD)" itemValue="Singapore Dollar (SGD)" />
-                                            <f:selectItem itemLabel="Bulgarian Lev (BGN)" itemValue="Bulgarian Lev (BGN)" />
-                                            <f:selectItem itemLabel="Chinese Yuan Renminbi (CNY)" itemValue="Chinese Yuan Renminbi (CNY)" />
-                                            <f:selectItem itemLabel="Thailand Baht (THB)" itemValue="Thailand Baht (THB)" />
-                                            <f:selectItem itemLabel="Hungary Forint(HUF)" itemValue="Hungary Forint(HUF)" />   
-                                            <f:selectItem itemLabel="Norwegian Krone (NOK)" itemValue="Norwegian Krone (NOK)" />
-                                            <f:selectItem itemLabel="Mexican Peso (MXN)" itemValue="Mexican Peso (MXN)" />
-                                        </h:selectOneMenu>
-                                    </p:column>
-                                </p:row>
-                                <p:outputLabel for="expDate" value="Expiry Date" /><p:spacer width="20" height="20" />
-                                <p:calendar id="expDate" value="#{postSpaceManagedBean.expireDate}" />
-                                <h3 style="margin-top: 0">Terms and Conditions</h3>
-                                <p>Please terms and Conditions below</p>
-                                <p:inputTextarea id="display" rows="10" cols="50" value="#{postSpaceManagedBean.description}" />
-                            </h:panelGrid>
+                            <h:outputLabel for="currency" style="font-weight: bold" value="Currency:   *" />
+
+
+                            <h:selectOneMenu id="currency" value="#{postSpaceManagedBean.currency}" label="Currency">
+                                <f:selectItem itemLabel="Select Currency" itemValue="" noSelectionOption="true" />
+
+                                <f:selectItem itemLabel="US Dollar (USD)" itemValue="US Dollar (USD)" />
+                                <f:selectItem itemLabel="European Euro (EUR)" itemValue="European Euro (EUR)" />
+                                <f:selectItem itemLabel="Japan Yen (JPY)" itemValue="Japan Yen (JPY)" />
+                                <f:selectItem itemLabel="Pound Sterling (GBP)" itemValue="Pound Sterling (GBP)" />
+                                <f:selectItem itemLabel="Australian Dollar (AUD)" itemValue="Australian Dollar (AUD)" />
+                                <f:selectItem itemLabel="Swiss Franc (CHF)" itemValue="Swiss Franc (CHF)" />
+                                <f:selectItem itemLabel="Canadian Dollar (CAD)" itemValue="Canadian Dollar (CAD)" />
+                                <f:selectItem itemLabel="Hong Kong Dollar (HKD)" itemValue="Hong Kong Dollar (HKD)" />
+                                <f:selectItem itemLabel="Swedish Krona (SEK)" itemValue="Swedish Krona (SEK)" />
+                                <f:selectItem itemLabel="New Zealand Dollar (NZD)" itemValue="New Zealand Dollar (NZD)" />
+
+                                <f:selectItem itemLabel="South African Rand (ZAR)" itemValue="South African Rand (ZAR)" />
+                                <f:selectItem itemLabel="Russian Ruble (RUB)" itemValue="Russian Ruble (RUB)" />
+                                <f:selectItem itemLabel="Indian Rupee (INR)" itemValue="Indian Rupee (INR)" />
+                                <f:selectItem itemLabel="Singapore Dollar (SGD)" itemValue="Singapore Dollar (SGD)" />
+                                <f:selectItem itemLabel="Bulgarian Lev (BGN)" itemValue="Bulgarian Lev (BGN)" />
+                                <f:selectItem itemLabel="Chinese Yuan Renminbi (CNY)" itemValue="Chinese Yuan Renminbi (CNY)" />
+                                <f:selectItem itemLabel="Thailand Baht (THB)" itemValue="Thailand Baht (THB)" />
+                                <f:selectItem itemLabel="Hungary Forint(HUF)" itemValue="Hungary Forint(HUF)" />   
+                                <f:selectItem itemLabel="Norwegian Krone (NOK)" itemValue="Norwegian Krone (NOK)" />
+                                <f:selectItem itemLabel="Mexican Peso (MXN)" itemValue="Mexican Peso (MXN)" />
+                            </h:selectOneMenu>
+
+                            <p:spacer width="20" height="20" />
+                            <p:outputLabel for="endDate" value="Expiry Date:" />
+                            <p:calendar id="endDate" value="#{postSpaceManagedBean.expireDate}" />
+                            <div><p:spacer width="20" height="20" /></div>
+                            <p:outputLabel>Terms and Conditions</p:outputLabel>
+                            <div><i>Please enter the terms and Conditions below</i></div>
+                            <p:inputTextarea id="display" rows="10" cols="80" value="#{postSpaceManagedBean.description}" />
+
                         </p:panel>
-                        <br></br>
-                        <p:messages id="msg" showDetail="true" autoUpdate="true" closable="true" />
-
-                        <p:commandButton action="#{postSpaceManagedBean.postRequest()}" value="Post" update="summitable2"/> 
+                        <br/>
+                        <p:commandButton action="#{postSpaceManagedBean.postRequest()}" value="Post" /> 
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                        <div><p:spacer width="20" height="20" /></div>
                     </h:form>
 
                 </p:tab>
