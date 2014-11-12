@@ -25,33 +25,50 @@
                 <p:menu>
                     <p:submenu label="CRMS HOME" styleClass="display:block">
                         <p:menuitem value="CRMS Home" url="crmsindex.xhtml"/>     
-                        <p:menuitem value="Service Yellow Pages" url="serviceyellowpages.xhtml"/>
+                        <c:if test="#{dashboardBean.checkCRMSCanGenerateQuotationRequst() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                            <p:menuitem value="Service Yellow Pages" url="serviceyellowpages.xhtml"/>
+                        </c:if>
                     </p:submenu>
-                    <p:submenu label="Service Catalog Management" styleClass="display:block">
-                        <p:menuitem value="Create New Service" url="createservice.xhtml" />
-                        <p:menuitem value="View All Services" url="viewcompanyservices.xhtml" />
-                    </p:submenu>
-                    <p:submenu label="Quotation Management" styleClass="display:block">
-                        <p:menuitem value="View All Requests" url="viewallrequests.xhtml" />
-                        <p:menuitem value="View All Quotations" url="viewallquotations.xhtml" />
-                    </p:submenu>
-                    <p:submenu label="Contract Management" styleClass="display:block">
-                        <p:menuitem value="Create Service Contract" url="createservicecontract.xhtml" />
-                        <p:menuitem value="View All Contracts" url="viewallcontracts.xhtml" />
-                        <p:menuitem value="Renew Contracts" url="renewservicecontract.xhtml" />
-                    </p:submenu>
-                    <p:submenu label="Order Management" styleClass="display:block">
-                        <p:menuitem value="Create Service PO" url="createservicepo.xhtml" />
-                        <p:menuitem value="View All Orders" url="viewallservicepos.xhtml" />
-                        <p:menuitem value="View All Invoices" url="viewallinvoices.xhtml" />
-                        <p:menuitem value="View All GRNS Orders" url="viewallgrnsorders.xhtml" />
-                        <p:menuitem value="View Warehouse Rental Invoice" url="warehouserentalinvoice.xhtml" />
-                    </p:submenu>
-                    <p:submenu label="Key Account Management" styleClass="display:block">
-                        <p:menuitem value="View Order Statistics" url="vieworderstatistics.xhtml" />
-                        <p:menuitem value="Create Key Account" url="createkeyaccount.xhtml" />
-                        <p:menuitem value="View All Key Accounts" url="viewallkeyaccounts.xhtml" />
-                    </p:submenu>
+                    <c:if test="#{dashboardBean.checkCRMSCanManageServiceCatalog()||dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:submenu label="Service Catalog Management" styleClass="display:block">
+                            <p:menuitem value="Create New Service" url="createservice.xhtml" />
+                            <p:menuitem value="View All Services" url="viewcompanyservices.xhtml" />
+                        </p:submenu>
+                    </c:if>
+                    <c:if test="#{dashboardBean.checkCRMSCanGenerateQuotationRequst()|| dashboardBean.checkCRMSCanGenerateServiceQuotationAndContract() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:submenu label="Quotation Management" styleClass="display:block">
+                            <p:menuitem value="View All Requests" url="viewallrequests.xhtml" />
+                            <p:menuitem value="View All Quotations" url="viewallquotations.xhtml" />
+                        </p:submenu>
+                    </c:if>
+                    <c:if test="#{dashboardBean.checkCRMSCanGenerateServiceQuotationAndContract() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:submenu label="Contract Management" styleClass="display:block">
+                            <p:menuitem value="Create Service Contract" url="createservicecontract.xhtml" />
+                            <p:menuitem value="View All Contracts" url="viewallcontracts.xhtml" />
+                            <p:menuitem value="Renew Contracts" url="renewservicecontract.xhtml" />
+                        </p:submenu>
+                    </c:if>
+                    <c:if test="#{dashboardBean.checkCRMSCanGenerateServiceSO() || dashboardBean.checkCRMSCanUpdateCustomerCredit()|| dashboardBean.checkCRMSCanGenerateServicePO() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:submenu label="Order Management" styleClass="display:block">
+                            <c:if test="#{dashboardBean.checkCRMSCanGenerateServiceSO() || dashboardBean.checkCRMSCanGenerateServicePO() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                                <p:menuitem value="Create Service PO" url="createservicepo.xhtml" />
+                                <p:menuitem value="View All Orders" url="viewallservicepos.xhtml" />
+                            </c:if>
+                            <c:if test="#{dashboardBean.checkCRMSCanUpdateCustomerCredit()||dashboardBean.checkCRMSCanGenerateServiceSO() || dashboardBean.checkCRMSCanGenerateServicePO() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                                <p:menuitem value="View All Invoices" url="viewallinvoices.xhtml" />
+                                <p:menuitem value="View All GRNS Orders" url="viewallgrnsorders.xhtml" />
+                                <p:menuitem value="View Warehouse Rental Invoice" url="warehouserentalinvoice.xhtml" />
+                            </c:if>
+                        </p:submenu>
+                    </c:if>
+                    <c:if test="#{dashboardBean.checkCRMSCanManageKeyAccount() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                        <p:submenu label="Key Account Management" styleClass="display:block">
+                            <p:menuitem value="View Order Statistics" url="vieworderstatistics.xhtml" />
+                            <p:menuitem value="Create Key Account" url="createkeyaccount.xhtml" />
+                            <p:menuitem value="View All Key Accounts" url="viewallkeyaccounts.xhtml" />
+                        </p:submenu>
+                    </c:if>
+
                 </p:menu>
             </h:form>
         </ui:define>
