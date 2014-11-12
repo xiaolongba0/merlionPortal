@@ -126,7 +126,7 @@
                             <p:column>
                                 <p:selectOneMenu id="route" value="#{tAssetMaintenanceManagerBean.routeId}"  style="width:300px" required="true" requiredMessage="Please select a Destination">
                                     <f:selectItem itemLabel="Select Destination" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tAssetMaintenanceManagerBean.routes}" var="route" itemLabel="ID:#{route.routeId} To:#{route.destination}"  itemValue="#{route.routeId}"/>
+                                    <f:selectItems value="#{tAssetMaintenanceManagerBean.routes}" var="route" itemLabel="ID:#{route.routeId} To:#{route.destination} - #{route.routeType}"  itemValue="#{route.routeId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>

@@ -78,9 +78,9 @@
 
         <ui:define name="right">   
             <p:breadCrumb>
-                <p:menuitem value="CRMS Home" url="crmsindex.xhtml" />
-                <p:menuitem value="View All Orders" url="viewallservicepos.xhtml" />
-                <p:menuitem value="Generate Service Invoice" url="generateserviceinvoice.xhtml" />
+                <p:menuitem value="TMS Home" url="tmsindex.xhtml" />
+                <p:menuitem value="Facilities Management" url="tmsindex.xhtml" />
+                <p:menuitem value="View All Facilities" url="viewalllocation.xhtml" />
             </p:breadCrumb>
             <h:form id="form">
 
@@ -99,18 +99,18 @@
                     <p:ajax event="rowEdit" listener="#{tLocationViewEditManagedBean.onRowEdit}" update=":form:msgs"/>
                     <p:ajax event="rowEditCancel" listener="#{tLocationViewEditManagedBean.onRowCancel}" update=":form:msgs"/>
 
-                    <p:column filterBy="#{location.locationId}" filterMatchMode="exact" headerText="Location ID" >
+                    <p:column filterBy="#{location.locationId}" filterMatchMode="exact" headerText="Facility ID" >
                         <h:outputText value="#{location.locationId}" />
                     </p:column>
 
-                    <p:column  filterBy="#{location.locationName}" filterMatchMode="contains" headerText="Name Of Location">
+                    <p:column  filterBy="#{location.locationName}" filterMatchMode="contains" headerText="Name Of Facility">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{location.locationName}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{location.locationName}" style="width:100%" label="Name Of Location"/></f:facet>
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column  filterBy="#{location.locationType}" filterMatchMode="contains" headerText="Location Type">
+                    <p:column  filterBy="#{location.locationType}" filterMatchMode="contains" headerText="Remarks">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{location.locationType}" /></f:facet>
                             <f:facet name="input"><p:inputText value="#{location.locationType}" style="width:100%" label="Location Type"/></f:facet>
@@ -118,7 +118,7 @@
                     </p:column>
 
 
-                    <p:column headerText = "Delete Location">
+                    <p:column headerText = "Delete Facility">
                         <p:commandButton action="#{tLocationViewEditManagedBean.deleteLocation(location)}" update="location" value="Delete">
                             <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this location?" icon="ui-icon-alert" />
                         </p:commandButton> 

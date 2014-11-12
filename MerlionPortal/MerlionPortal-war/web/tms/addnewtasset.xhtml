@@ -78,9 +78,9 @@
 
         <ui:define name="right">   
             <p:breadCrumb>
-                <p:menuitem value="CRMS Home" url="crmsindex.xhtml" />
-                <p:menuitem value="View All Orders" url="viewallservicepos.xhtml" />
-                <p:menuitem value="Generate Service Invoice" url="generateserviceinvoice.xhtml" />
+                <p:menuitem value="TMS Home" url="tmsindex.xhtml" />
+                <p:menuitem value="Transportation Asset Management" url="tmsindex.xhtml" />
+                <p:menuitem value="Add Transportation Assets" url="addnewtasset.xhtml" />
             </p:breadCrumb>
             <h:form id="form">
 
@@ -101,7 +101,7 @@
                             <f:selectItems value="#{tAssetManagedBean.locations}" var="location" itemLabel="ID:#{location.locationId}   Name:#{location.locationName}"  itemValue="#{location.locationId}"/>
                         </p:selectOneMenu>
 
-                        <p:outputLabel  value="Asset Type: " /><p:spacer width="20" height="20" />
+                        <p:outputLabel  value="Asset Type: *" /><p:spacer width="20" height="20" />
                         <p:selectOneRadio  value="#{tAssetManagedBean.assetType}">
                             <f:selectItem itemLabel="Truck" itemValue="Truck" />
                             <f:selectItem itemLabel="Ship" itemValue="Ship" />
@@ -112,7 +112,7 @@
                         <p:inputText required="true" label="capacity" requiredMessage="capacity is required." id="capacity" value="#{tAssetManagedBean.capacity}">
                             <f:validateLength minimum="1" maximum="25" />
                         </p:inputText>
-                        <p:outputLabel for="price" style="font-weight: bold" value="Price : " /><p:spacer width="20" height="20" />
+                        <p:outputLabel for="price" style="font-weight: bold" value="Price($/Km) : " /><p:spacer width="20" height="20" />
 
                         <p:inputText required="true" label="price" requiredMessage="priceis required." id="price" value="#{tAssetManagedBean.price}">
                             <f:validateLength minimum="1" maximum="25" />
