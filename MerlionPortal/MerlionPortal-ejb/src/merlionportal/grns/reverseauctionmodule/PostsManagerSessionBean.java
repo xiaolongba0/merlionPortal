@@ -160,7 +160,7 @@ public class PostsManagerSessionBean {
 
     public Boolean checkPostValidity(Post myPost) {
         Date todayDate = new Date();
-        if(myPost.getStatus().equalsIgnoreCase("Expired")||myPost.getExpireDate().before(todayDate)){
+        if (myPost.getStatus().equalsIgnoreCase("Expired") || myPost.getExpireDate().before(todayDate)) {
             return false;
         }
         return true;
@@ -201,7 +201,7 @@ public class PostsManagerSessionBean {
         if (myPost.getServicePOList().isEmpty() && myPost.getContractList().isEmpty()) {
             grnsOrder.setServiceProvider(myPost.getSystemUser().getCompanycompanyId().getCompanyId());
             grnsOrder.setServiceRequester(bid.getSystemUser().getCompanycompanyId().getCompanyId());
-            grnsSB.createGRNSOrderInvoice(myPost.getPostId(),myPost.getSystemUser().getSystemUserId() , myPost.getSystemUser().getCompanycompanyId().getCompanyId(), bid.getSystemUser().getCompanycompanyId().getCompanyId(), bid.getAmount());
+            grnsSB.createGRNSOrderInvoice(myPost.getPostId(), myPost.getSystemUser().getSystemUserId(), myPost.getSystemUser().getCompanycompanyId().getCompanyId(), bid.getSystemUser().getCompanycompanyId().getCompanyId(), bid.getAmount());
 
         } else {
             grnsOrder.setServiceProvider(bid.getSystemUser().getCompanycompanyId().getCompanyId());
@@ -221,8 +221,19 @@ public class PostsManagerSessionBean {
             grnsOrder.setStorageEndDate(myPost.getStorageEndDate());
             grnsOrder.setWarehouseSpace(myPost.getWarehouseSpace());
         }
-
+        myPost.setStatus("Closed");
+        em.merge(myPost);
+        em.flush();
         em.persist(grnsOrder);
+        em.flush();
+        for (Object o : myPost.getBidList()) {
+            Bid p = (Bid) o;
+            p.setSelected(false);
+            em.merge(p);
+            em.flush();
+        }
+        bid.setSelected(true);
+        em.merge(bid);
         em.flush();
 
     }
