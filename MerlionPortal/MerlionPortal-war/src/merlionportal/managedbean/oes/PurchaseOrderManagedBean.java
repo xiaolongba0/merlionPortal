@@ -7,6 +7,7 @@ package merlionportal.managedbean.oes;
 
 import entity.ProductOrder;
 import entity.ProductOrderLineItem;
+import entity.Quotation;
 import java.io.IOException;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -20,6 +21,7 @@ import merlionportal.ci.administrationmodule.SystemAccessRightSessionBean;
 import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.mrp.backordermodule.BackorderSessionBean;
 import merlionportal.oes.ordermanagement.PurchaseOrderManagerSessionBean;
+import merlionportal.wms.mobilitymanagementmodule.ReceivingPutawaySessionBean;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -29,6 +31,9 @@ import org.primefaces.event.RowEditEvent;
 @Named(value = "purchaseOrderManagedBean")
 @ViewScoped
 public class PurchaseOrderManagedBean {
+
+    @EJB
+    private ReceivingPutawaySessionBean receivingSB;
 
     @EJB
     private BackorderSessionBean backorderSB;
@@ -53,9 +58,9 @@ public class PurchaseOrderManagedBean {
     private String shipto;
     private String postalCode;
     private List<ProductOrderLineItem> itemList;
-    private int qutatuonId;
+    private Integer qutatuonId;
     private ProductOrder myPo;
-
+    
     public PurchaseOrderManagedBean() {
     }
 
@@ -101,13 +106,16 @@ public class PurchaseOrderManagedBean {
         }
         shipto = address1 + " " + address2 + " " + address3 + " " + "," + city + "," + country + " " + postalCode;
         System.out.println("Shipto Adress is not null" + shipto);
-        
+
     }
 
     public String checkAvailability(ProductOrderLineItem line) {
         String result = "Available";
-        if (line != null) {
-            Boolean productAvailable = false;
+        Boolean productAvailable = true;
+        if (line.getQuantity() != null) {
+            if (receivingSB.countAvailbleStocksInCompany(companyId, line.getProductproductId().getProductId()) >= line.getQuantity()) {
+                productAvailable = true;
+            }
             if (!productAvailable && line.getQuantity() != null) {
                 result = backorderSB.getWaitingTime(line.getProductproductId().getProductId(), line.getQuantity());
             }
@@ -142,6 +150,13 @@ public class PurchaseOrderManagedBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Quotation id invalid"));
         }
 
+    }
+
+    public String getMyQuotationCurrency() {
+        if (qutatuonId == null) {
+
+        }
+        return purchaseMB.getMyQuotationCurrency(qutatuonId);
     }
 
     public Integer getCompanyId() {
