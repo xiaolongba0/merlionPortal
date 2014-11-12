@@ -417,8 +417,6 @@ public class TAssetmanagementSessionBean {
         tAsset.setAssetLoad(0);
         tAsset.setRouteId(0);
 
-        List<PlanAssetSchedule> planScheduleList = new ArrayList();
-        tAsset.setPlanAssetScheduleList(planScheduleList);
 
         List<MaintenanceLog> maintLogList = new ArrayList();
         tAsset.setMaintenanceLogList(maintLogList);
@@ -803,55 +801,6 @@ public class TAssetmanagementSessionBean {
 
     }
 
-    public List<PlanAssetSchedule> viewPLANAssetScheduleforTAsset(Integer tAssetId) {
-
-        System.out.println("In viewTAssetScheduleforTAsset, TAsset ID ============================= : " + tAssetId);
-        TransportationAsset assetTemp = null;
-
-        if (tAssetId != null) {
-            assetTemp = em.find(TransportationAsset.class, tAssetId);
-            System.out.println("In view my transportation assets, finding location" + assetTemp);
-        }
-        return assetTemp.getPlanAssetScheduleList();
-
-    }
-
-    // Edit in progress
-    public Boolean deletePLANAssetSchedule(Integer scheduleId) {
-
-        PlanAssetSchedule schedule = em.find(PlanAssetSchedule.class, scheduleId);
-        System.out.println("Delete Schedule ================= : " + schedule);
-        if (schedule == null) {
-            return false;
-        }
-        TransportationAsset tAsset = schedule.getTransportationAsset();
-        tAsset.getPlanAssetScheduleList().remove(schedule);
-        em.merge(tAsset);
-        em.remove(schedule);
-        em.flush();
-
-        System.out.println("END OF DELETE Schedule FUNCTION IN SESSION BEAN");
-        return true;
-    }
-
-    //Edit in progress
-    public boolean editPLANAssetSchedule(Date startDate, Date endDate, Integer assetScheduleId) {
-
-        PlanAssetSchedule schedule = em.find(PlanAssetSchedule.class, assetScheduleId);
-
-        if (schedule != null) {
-//            schedule.setStartDate(startDate);
-//            schedule.setEndDate(endDate);
-
-            em.merge(schedule);
-            em.flush();
-
-            return true;
-        } else {
-            return false;
-        }
-
-    }
 
 //    public Integer addPLANAssetSchedule(Date startDate, Date endDate, Integer loading, Integer tAssetId, Integer operatorId) {
 //
