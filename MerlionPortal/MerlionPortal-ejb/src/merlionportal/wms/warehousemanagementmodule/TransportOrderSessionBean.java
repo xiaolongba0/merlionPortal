@@ -403,7 +403,6 @@ public class TransportOrderSessionBean {
         TransportOrder transportOrder = new TransportOrder();
         transportOrder = em.find(TransportOrder.class, transportOrderId);
         Integer transportQuantity = transportOrder.getTotalQuantity();
-        Integer newStockQuantity = transportQuantity;
 
         if (transportOrder != null) {
 
@@ -431,14 +430,15 @@ public class TransportOrderSessionBean {
 
             //unreserve stock FUYAO PLEASE CHECK HERE :D THANKS <3 
             List<MovingStock> allSourceStocks = new ArrayList();
-            allSourceStocks = viewDestMovingStock(transportOrderId);
-
+            allSourceStocks = viewSourceMovingStock(transportOrderId);
+            System.out.println("All Source Stocks " + allSourceStocks);
             int count = 0;
 
             // go through all the relevant storage bins to retrieve the stock
             while (count < allSourceStocks.size()) {
                 System.out.println("Count = " + count);
-                Integer sourceBinId = allSourceStocks.get(i).getSourceStorageBinId();
+                Integer sourceBinId = allSourceStocks.get(count).getSourceStorageBinId();
+
                 StorageBin bin = new StorageBin();
 
                 bin = em.find(StorageBin.class, sourceBinId);
@@ -467,23 +467,20 @@ public class TransportOrderSessionBean {
                 }
 
                 int j = 0;
-                while (j < stockList.size() & newStockQuantity != 0) {
+                while (j < stockList.size() & transportQuantity != 0) {
                     Stock stock = new Stock();
                     stock = stockList.get(j);
-                    Integer stockQuantity = stock.getQuantity();
+                    Integer avaStockQuantity = stock.getAvailableStock();
 
-                    System.out.println("Stock Quantity = " + stockQuantity);
+                    System.out.println("Stock Quantity = " + avaStockQuantity);
                     System.out.println("Transport Quantity = " + transportQuantity);
 
-                    // the quantity to be added back after cancellation
-                    newStockQuantity = stockQuantity + newStockQuantity;
-
                     // check if the bin is full
-                    // if the bin is full
-                    if (newStockQuantity > bin.getAvailableSpace()) {
-                        System.out.println("NEW STOCK QUANTITY = " + newStockQuantity);
+                    // if the quantity is more than the bin space
+                    if (transportQuantity > bin.getAvailableSpace()) {
+                        System.out.println("NEW STOCK QUANTITY1 = " + transportQuantity);
 
-                        newStockQuantity = newStockQuantity - bin.getAvailableSpace();
+                        transportQuantity = transportQuantity - bin.getAvailableSpace();
                         Integer reservedStock = stock.getReservedStock() - bin.getAvailableSpace();
                         stock.setReservedStock(reservedStock);
                         Integer availableStock = stock.getAvailableStock() + bin.getAvailableSpace();
@@ -494,15 +491,15 @@ public class TransportOrderSessionBean {
 
                     } // if the space available in the bin is more than or equal to the space I need to put back the stock 
                     else {
-                        System.out.println("NEW STOCK QUANTITY = " + newStockQuantity);
-                        Integer reservedStock = stock.getReservedStock() - newStockQuantity;
+                        System.out.println("NEW STOCK QUANTITY2 = " + transportQuantity);
+                        Integer reservedStock = stock.getReservedStock() - transportQuantity;
                         stock.setReservedStock(reservedStock);
-                        Integer availableStock = stock.getAvailableStock() + newStockQuantity;
+                        Integer availableStock = stock.getAvailableStock() + transportQuantity;
                         stock.setAvailableStock(availableStock);
                         stock.setQuantity(availableStock + reservedStock);
                         em.merge(stock);
                         em.flush();
-                        newStockQuantity = 0;
+                        transportQuantity = 0;
                     }
                     j++;
                 }
@@ -582,7 +579,7 @@ public class TransportOrderSessionBean {
                         Integer reservedStock = newStockQuantity - stock.getAvailableStock();
                         stock.setReservedStock(reservedStock);
                         System.out.println("NEW RESERVED STOCK = " + reservedStock);
-                        
+
                         bin.setInuseSpace(bin.getInuseSpace() - transportQuantity);
                         bin.setAvailableSpace(bin.getAvailableSpace() + transportQuantity);
                         transportQuantity = 0;
