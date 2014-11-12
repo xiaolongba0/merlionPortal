@@ -24,7 +24,7 @@
         <ui:define name="left">
             <p:menu styleClass="menu-width">
                 <p:submenu label="MRP HOME" styleClass="display:block">
-                    <p:menuitem value="MRP II Home" url="mrp.xhtml" style="background-color: lavender"/>
+                    <p:menuitem value="MRP II Home" url="mrp.xhtml" />
                 </p:submenu>
                 <c:if test="#{dashboardBean.checkMRPCanManageProductComponent() || dashboardBean.loginedUser.userType == 'superuser'}">
                     <p:submenu label="Product Catalog Management">
@@ -38,8 +38,8 @@
                 </c:if>
                 <c:if test="#{dashboardBean.checkMRPCanManageUseForecast() || dashboardBean.loginedUser.userType == 'superuser'}">
                     <p:submenu label="MRP">
-                                <p:menuitem value="MRP Process" url="forecast.xhtml" />
-                            </p:submenu>
+                        <p:menuitem value="MRP Process" url="forecast.xhtml" style="background:#aa5050; color:white" />
+                    </p:submenu>
                 </c:if>
 
             </p:menu>
@@ -47,7 +47,7 @@
         </ui:define>
 
         <ui:define name="right">
-                <p:breadCrumb>
+            <p:breadCrumb>
                 <p:menuitem value="MRP Home" url="mrp.xhtml" />
                 <p:menuitem value="MRP Process" url="forecast.xhtml" />
             </p:breadCrumb>

@@ -24,11 +24,11 @@
         <ui:define name="left">
             <p:menu styleClass="menu-width">
                 <p:submenu label="MRP HOME" styleClass="display:block">
-                    <p:menuitem value="MRP II Home" url="mrp.xhtml" style="background-color: lavender"/>
+                    <p:menuitem value="MRP II Home" url="mrp.xhtml" />
                 </p:submenu>
                 <c:if test="#{dashboardBean.checkMRPCanManageProductComponent() || dashboardBean.loginedUser.userType == 'superuser'}">
                     <p:submenu label="Product Catalog Management">
-                        <p:menuitem value="Add New Product" url="addnewproduct.xhtml" />
+                        <p:menuitem value="Add New Product" url="addnewproduct.xhtml" style="background:#aa5050; color:white" />
                         <p:menuitem value="View, Edit and Delete" url="viewallproducts.xhtml" />
                     </p:submenu>
                     <p:submenu label="BOM Management">
