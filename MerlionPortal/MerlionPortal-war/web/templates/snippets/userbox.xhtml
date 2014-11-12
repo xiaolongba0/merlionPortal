@@ -8,7 +8,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html">
 
     <body>
-        
+
         <ui:composition>
             <div class="user-info">
 
@@ -19,9 +19,13 @@
                         <span class="glyphicon glyphicon-lock"></span>
                         ${dashboardBean.loginedUser.companycompanyId.name}
                     </div>
+
+
+
                     <a href="${request.contextPath}/admin/message.xhtml" title="Message"><span class="inbox glyphicon glyphicon-envelope"></span></a>
+                    <div id="unread-msg">${dashboardBean.numberOfUnread}</div>
                     <a href="${request.contextPath}/viewsystemlog.xhtml" title="View log"><span class="viewlog glyphicon glyphicon-list-alt"></span></a>
-  
+
                 </div>
 
                 <hr/>
@@ -32,10 +36,20 @@
                     <c:forEach items="#{dashboardBean.loginedUser.userRoleList}" var="role" rendered="#{dashboardBean.loginedUser.userRoleList ne null}" >
                         <li><span class="glyphicon glyphicon-unchecked"></span>#{role.roleName}</li>
                     </c:forEach>
-                    
+
                 </ul>
 
             </div>
         </ui:composition>
     </body>
+    <script>
+        function displayContent() {
+            var contentId = document.getElementById("unread-msg");
+            alert(contentId.innerHTML);
+//            if (contentId.innerHTML == "0") {
+                document.getElementById("unread-msg").style.disply = "none";
+//            }
+        }
+        displayContent();
+    </script>
 </html>
