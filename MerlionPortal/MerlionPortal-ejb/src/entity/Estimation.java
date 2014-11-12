@@ -42,7 +42,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Estimation.findByCost", query = "SELECT e FROM Estimation e WHERE e.cost = :cost"),
     @NamedQuery(name = "Estimation.findByTotalLoad", query = "SELECT e FROM Estimation e WHERE e.totalLoad = :totalLoad"),
     @NamedQuery(name = "Estimation.findByEndDate", query = "SELECT e FROM Estimation e WHERE e.endDate = :endDate"),
-    @NamedQuery(name = "Estimation.findByStartDate", query = "SELECT e FROM Estimation e WHERE e.startDate = :startDate")})
+    @NamedQuery(name = "Estimation.findByStartDate", query = "SELECT e FROM Estimation e WHERE e.startDate = :startDate"),
+    @NamedQuery(name = "Estimation.findByCompanyId", query = "SELECT e FROM Estimation e WHERE e.companyId = :companyId")})
 public class Estimation implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -70,6 +71,8 @@ public class Estimation implements Serializable {
     @Column(name = "startDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
+    @Column(name = "companyId")
+    private Integer companyId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "estimation")
     private List<PlanAssetSchedule> planAssetScheduleList;
 
@@ -142,6 +145,14 @@ public class Estimation implements Serializable {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 
     @XmlTransient
