@@ -93,7 +93,7 @@
                     </h:panelGrid>
                 </p:fieldset>
                 <br></br>
-                <p>Status : </p><h:outputText value="#{orderDetailMangedBean.displayStatus()}"/>
+                <p>Status : </p><h:outputText value="#{orderDetailMangedBean.displayStatus()}" style="color: orange"/>
                 <br></br>
                 <br></br>
                 <p:dataTable var="lineItem" value="#{orderDetailMangedBean.order.productOrderLineItemList}">
