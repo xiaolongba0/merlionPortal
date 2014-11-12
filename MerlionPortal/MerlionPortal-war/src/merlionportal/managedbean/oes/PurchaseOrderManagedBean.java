@@ -60,7 +60,7 @@ public class PurchaseOrderManagedBean {
     private List<ProductOrderLineItem> itemList;
     private Integer qutatuonId;
     private ProductOrder myPo;
-    
+
     public PurchaseOrderManagedBean() {
     }
 
@@ -154,7 +154,7 @@ public class PurchaseOrderManagedBean {
 
     public String getMyQuotationCurrency() {
         if (qutatuonId == null) {
-
+            return "";
         }
         return purchaseMB.getMyQuotationCurrency(qutatuonId);
     }
