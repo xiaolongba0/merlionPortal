@@ -148,6 +148,89 @@ public class AdminDashboardManagedBean implements Serializable {
         return systemAccessRightSB.checkMRPGenerateMRPList(userId);
     }
 //    END OF MRP
+  
+    
+    
+    
+//    WMS
+    public boolean checkWMSManageWarehouse(){
+        return systemAccessRightSB.checkWMSManageWarehouse(userId);
+    }
+    public boolean checkCanManageStockAuditProcess(){
+        return systemAccessRightSB.checkCanManageStockAuditProcess(userId);
+    }
+    public boolean checkCanManageStockTransportOrder(){
+        return systemAccessRightSB.checkCanManageStockTransportOrder(userId);
+    }
+    public boolean checkCanManageReceivingGoods(){
+        return systemAccessRightSB.checkCanManageReceivingGoods(userId);
+    }
+    public boolean checkCanManageOrderFulfillment(){
+        return systemAccessRightSB.checkCanManageOrderFulfillment(userId);
+    }
+    
+//    END OF WMS
+   
+    
+    
+    
+//    CRMS
+    public boolean checkCanGenerateServicePO(){
+        return systemAccessRightSB.checkCanGenerateServicePO(userId);
+    }
+    public boolean checkCanUpdateCustomerCredit(){
+        return systemAccessRightSB.checkCanUpdateCustomerCredit(userId);
+    }
+    public boolean checkCanGenerateServiceSO(){
+        return systemAccessRightSB.checkCanGenerateServiceSO(userId);
+    }
+    public boolean checkCanGenerateQuotationRequst(){
+        return systemAccessRightSB.checkCanGenerateQuotationRequst(userId);
+    }
+    public boolean checkCanManageServiceCatalog(){
+        return systemAccessRightSB.checkCanManageServiceCatalog(userId);
+    }
+    public boolean checkCanGenerateServiceQuotationAndContract(){
+        return systemAccessRightSB.checkCanGenerateServiceQuotationAndContract(userId);
+    }
+    public boolean checkCanManageKeyAccount(){
+        return systemAccessRightSB.checkCanManageKeyAccount(userId);
+    }
+    
+//    END OF CRMS
+   
+    
+    
+    
+//    TMS
+    public boolean checkCanManageTransportationAsset(){
+        return systemAccessRightSB.checkCanManageTransportationAsset(userId);
+    }
+    public boolean checkCanManageTransportationOrder(){
+        return systemAccessRightSB.checkCanManageTransportationOrder(userId);
+    }
+    public boolean checkCanManageLog(){
+        return systemAccessRightSB.checkCanManageLog(userId);
+    }
+    public boolean checkCanManageAssetMaintenence(){
+        return systemAccessRightSB.checkCanManageAssetMaintenence(userId);
+    }
+    public boolean checkCanUseHRFunction(){
+        return systemAccessRightSB.checkCanUseHRFunction(userId);
+    }
+//    END OF TMS
+    
+    
+    
+//    GRNS
+    public boolean checkCanManageBid(){
+        return systemAccessRightSB.checkCanManageBid(userId);
+    }
+    public boolean checkCanManagePost(){
+        return systemAccessRightSB.checkCanManagePost(userId);
+    }
+//    END OF GRNS
+    
     
     public SystemUser getLoginedUser() {
         return loginedUser;

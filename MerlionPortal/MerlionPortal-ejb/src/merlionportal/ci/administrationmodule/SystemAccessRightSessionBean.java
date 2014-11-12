@@ -30,12 +30,10 @@ public class SystemAccessRightSessionBean {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    
 //***********************************
 //***             OES             ***
 //***                             ***
 //***********************************
-
 //    OES System
     public boolean canUseOES(Integer userId) {
         SystemUser loginedUser = getUser(userId);
@@ -49,6 +47,7 @@ public class SystemAccessRightSessionBean {
         return false;
     }
 // OES Rights
+
     public boolean checkOESGeneratePO(Integer userId) {
         SystemUser loginedUser = getUser(userId);
 
@@ -60,7 +59,8 @@ public class SystemAccessRightSessionBean {
         return false;
 
     }
-    public boolean checkOESGenerateQuotation(Integer userId){
+
+    public boolean checkOESGenerateQuotation(Integer userId) {
         SystemUser loginedUser = getUser(userId);
 
         if (loginedUser != null) {
@@ -82,7 +82,7 @@ public class SystemAccessRightSessionBean {
         return false;
     }
 
-    public boolean checkOESReport(Integer userId){
+    public boolean checkOESReport(Integer userId) {
         SystemUser loginedUser = getUser(userId);
 
         if (loginedUser != null) {
@@ -92,8 +92,7 @@ public class SystemAccessRightSessionBean {
         }
         return false;
     }
-    
-    
+
 //***********************************
 //***             MRP             ***
 //***                             ***
@@ -110,9 +109,9 @@ public class SystemAccessRightSessionBean {
         }
         return false;
     }
-    
+
 //    MRP Rights check
-    public boolean checkMRPUseForecast(Integer userId){
+    public boolean checkMRPUseForecast(Integer userId) {
         SystemUser loginedUser = getUser(userId);
 
         if (loginedUser != null) {
@@ -122,7 +121,8 @@ public class SystemAccessRightSessionBean {
         }
         return false;
     }
-    public boolean checkMRPManageProduct(Integer userId){
+
+    public boolean checkMRPManageProduct(Integer userId) {
         SystemUser loginedUser = getUser(userId);
 
         if (loginedUser != null) {
@@ -132,7 +132,8 @@ public class SystemAccessRightSessionBean {
         }
         return false;
     }
-    public boolean checkMRPGenerateMRPList(Integer userId){
+
+    public boolean checkMRPGenerateMRPList(Integer userId) {
         SystemUser loginedUser = getUser(userId);
 
         if (loginedUser != null) {
@@ -143,8 +144,6 @@ public class SystemAccessRightSessionBean {
         return false;
     }
 
-    
-    
 //***********************************
 //***            CRMS             ***
 //***                             ***
@@ -164,9 +163,84 @@ public class SystemAccessRightSessionBean {
         return false;
 
     }
-    
-    
-    
+
+    public boolean checkCanGenerateServicePO(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canGenerateServicePO)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkCanUpdateCustomerCredit(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canUpdateCustomerCredit)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkCanGenerateServiceSO(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canGenerateServiceSO)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkCanGenerateQuotationRequst(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canGenerateQuotationRequest)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkCanManageServiceCatalog(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canManageServiceCatalog)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkCanGenerateServiceQuotationAndContract(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canGenerateServiceQuotationAndContract)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkCanManageKeyAccount(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canManageKeyAccount)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 //***********************************
 //***             WMS             ***
 //***                             ***
@@ -184,8 +258,8 @@ public class SystemAccessRightSessionBean {
         }
         return false;
     }
-    
-    public boolean checkWMSManageWarehouse(Integer userId){
+
+    public boolean checkWMSManageWarehouse(Integer userId) {
         SystemUser loginedUser = getUser(userId);
 
         if (loginedUser != null) {
@@ -195,7 +269,51 @@ public class SystemAccessRightSessionBean {
         }
         return false;
     }
-    
+
+    public boolean checkCanManageStockAuditProcess(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canManageStockAuditProcess)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkCanManageStockTransportOrder(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canManageStockTransportOrder)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkCanManageReceivingGoods(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canManageReceivingGoods)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkCanManageOrderFulfillment(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canManageOrderFulfillment)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 //***********************************
 //***             TMS             ***
 //***                             ***
@@ -214,9 +332,62 @@ public class SystemAccessRightSessionBean {
         return false;
 
     }
-    
-    
-    
+
+    public boolean checkCanManageTransportationAsset(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canManageTransportationAsset)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkCanManageTransportationOrder(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canManageTransportationOrder)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkCanManageLog(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canManageLog)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkCanManageAssetMaintenence(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canManageAssetMaintenence)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkCanUseHRFunction(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canUseHRFunction)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 //***********************************
 //***             GRNS            ***
 //***                             ***
@@ -226,6 +397,28 @@ public class SystemAccessRightSessionBean {
         SystemUser loginedUser = getUser(userId);
         if (loginedUser != null) {
             if (carb.userHasRight(loginedUser, Right.canManageBid) || carb.userHasRight(loginedUser, Right.canManagePost)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkCanManageBid(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canManageBid)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkCanManagePost(Integer userId) {
+        SystemUser loginedUser = getUser(userId);
+
+        if (loginedUser != null) {
+            if (carb.userHasRight(loginedUser, Right.canManagePost)) {
                 return true;
             }
         }
