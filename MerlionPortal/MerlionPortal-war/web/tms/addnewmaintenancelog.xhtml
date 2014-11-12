@@ -113,8 +113,20 @@
                             </p:column>
                             <p:column>
                                 <p:selectOneMenu id="tasset" value="#{tAssetMaintenanceManagerBean.tassssssetId}"  style="width:300px" required="true" requiredMessage="Please select a Transportation Asset">
+                                    <p:ajax listener="#{tAssetMaintenanceManagerBean.onChangeLocationS()}" update="route" />
                                     <f:selectItem itemLabel="Select Transportation Asset" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{tAssetMaintenanceManagerBean.transassetss}" var="tasset" itemLabel="ID:#{tasset.assetId} Type:#{tasset.assetType}"  itemValue="#{tasset.assetId}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="route" value="Destination: " />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="route" value="#{tAssetMaintenanceManagerBean.routeId}"  style="width:300px" required="true" requiredMessage="Please select a Destination">
+                                    <f:selectItem itemLabel="Select Destination" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{tAssetMaintenanceManagerBean.routes}" var="route" itemLabel="ID:#{route.routeId} To:#{route.destination}"  itemValue="#{route.routeId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>
@@ -140,13 +152,10 @@
                         </p:row>  
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="toperator" value="Operator Id: " />
-                            </p:column>
-                            <p:column>
-                                <p:selectOneMenu id="toperator" value="#{tAssetMaintenanceManagerBean.operatorId}"  style="width:300px" required="true" requiredMessage="Please select a Transportation Asset">
-                                    <f:selectItem itemLabel="Select Transportation Operator" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tAssetMaintenanceManagerBean.operators}" var="toperator" itemLabel="ID:#{toperator.operatorId} Name:#{toperator.operatorName}"  itemValue="#{toperator.operatorId}"/>
-                                </p:selectOneMenu>
+                                <p:outputLabel value="Operator Id: " />
+                                </p:column>
+                                <p:column>
+                            <h:outputText value="#{tAssetMaintenanceManagerBean.operatorId}" />
                             </p:column>
                         </p:row>
                         <p:row>
@@ -165,9 +174,11 @@
 
                             </p:column>
                         </p:row>  
-                    </p:panelGrid>
+                    </p:panelGrid><br></br>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                     <p:commandButton id="btn" value="Create New Transportation Schedule" update="form" actionListener="#{tAssetMaintenanceManagerBean.createMaintenanceLog()}" ajax="true" />
+                    <br></br>
+                    <h:outputText value="*Please make sure to select Maintenance Center" />
                 </p:panel>
 
             </h:form>

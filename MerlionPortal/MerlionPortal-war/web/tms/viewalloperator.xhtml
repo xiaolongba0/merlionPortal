@@ -121,7 +121,7 @@
                     </p:column>
 
 
-                    <p:column headerText = "Delete Operator">
+                    <p:column headerText = "Delete Operator*">
                         <p:commandButton action="#{tOperatorViewEditManagedBean.deleteTOperator(operator)}" update="operator" value="Delete">
                             <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this operator?" icon="ui-icon-alert" />
                         </p:commandButton> 
@@ -134,8 +134,9 @@
                     <p:column style="width:32px">
                         <p:rowEditor />
                     </p:column>
-
+                     
                 </p:dataTable>
+                <h:outputText value="*Please inform System Admin for User Deletion" />
                 <br></br>
                 <p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
             </h:form>

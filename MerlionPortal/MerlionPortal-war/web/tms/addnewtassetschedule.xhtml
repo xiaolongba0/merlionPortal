@@ -84,7 +84,7 @@
             </p:breadCrumb>
             <h:form id="form">
                 <br/>
-                <p:panel id="panel" header="Add Schedule">
+                <p:panel id="panel" header="Dispatch a Asset">
                     <p:ajaxStatus style="width:16px;height:16px;">
                         <f:facet name="start">
                             <h:graphicImage value="/img/load.gif" />
@@ -97,7 +97,7 @@
 
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="location" value="location Name: " />
+                                <p:outputLabel for="location" value="Depart From: " />
                             </p:column>
                             <p:column>
                                 <p:selectOneMenu id="location" value="#{tAssetScheduleManagerBean.locationId}"  style="width:300px" required="true" requiredMessage="Please select a Location">
@@ -133,12 +133,12 @@
                         </p:row>
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="toperator" value="Operator Id: " />
+                                <p:outputLabel for="toperator" value="Select Driver: " />
                             </p:column>
                             <p:column>
                                 <p:selectOneMenu id="toperator" value="#{tAssetScheduleManagerBean.operatorId}"  style="width:300px" required="true" requiredMessage="Please select a Transportation Asset">
                                     <f:selectItem itemLabel="Select Transportation Operator" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{tAssetScheduleManagerBean.operators}" var="toperator" itemLabel="ID:#{toperator.operatorId} Type:#{toperator.operatorName}"  itemValue="#{toperator.operatorId}"/>
+                                    <f:selectItems value="#{tAssetScheduleManagerBean.operators}" var="toperator" itemLabel="ID:#{toperator.operatorId} Name:#{toperator.operatorName} Type:#{toperator.operatorType}" itemValue="#{toperator.operatorId}"/>
                                 </p:selectOneMenu>
                             </p:column>
                         </p:row>

@@ -21,7 +21,7 @@
         </ui:define>
         <ui:define name="left">
             <h:form id="formMain">
-                 <p:menu>
+                <p:menu>
                     <p:submenu label ="Map Settings">
                         <p:menuitem value="Add A Node" url="addnewnode.xhtml"/>
                         <p:menuitem value="Add A Route" url="addnewroute.xhtml"/>
@@ -84,7 +84,7 @@
             </p:breadCrumb>
             <h:form id="form">
                 <br/>
-                <p:panel id="panel" header=" View Transportation Assets for A Location">
+                <p:panel id="panel" header=" View On Going Tasks">
                     <p:ajaxStatus style="width:16px;height:16px;">
                         <f:facet name="start">
                             <h:graphicImage value="/img/load.gif" />
@@ -96,7 +96,7 @@
                     <p:panelGrid>
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="location" value="location Name: " />
+                                <p:outputLabel for="location" value="Show Asset Coming From: " />
                             </p:column>
                             <p:column>
                                 <p:selectOneMenu id="location" value="#{tAssetScheduleViewEditManagedBean.locationId}"  style="width:300px" required="true" requiredMessage="Please select a Location">
@@ -108,7 +108,7 @@
                         </p:row>
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="tAsset" value="Transportation Asset Type: " />
+                                <p:outputLabel for="tAsset" value="Select Transportation Asset Type: " />
                             </p:column>
                             <p:column>
                                 <p:selectOneMenu id="tAsset" value="#{tAssetScheduleViewEditManagedBean.tassetid}"  style="width:300px" required="true" requiredMessage="Please select a Transportation Asset">
@@ -135,40 +135,33 @@
                         <p:ajax event="rowEdit" listener="#{tAssetScheduleViewEditManagedBean.onRowEdit}"/>
                         <p:ajax event="rowEditCancel" listener="#{tAssetScheduleViewEditManagedBean.onRowCancel}"/>                
 
-                        <p:column filterBy="#{schedule.scheduleId}" filterMatchMode="exact" headerText="Schedule ID" >
+                        <p:column  headerText="Schedule ID" >
                             <h:outputText value="#{schedule.scheduleId}" />
                         </p:column>
-
-                        <p:column  headerText="startDate" filterBy="#{schedule.startDate}" filterMatchMode="contains">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{schedule.startDate}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{sschedule.startDate}" style="width:100%" label="Description"/></f:facet>
-                            </p:cellEditor>
+                        <p:column headerText="Origin" >
+                            <h:outputText value="#{schedule.route.origin}" />
+                        </p:column>
+                        <p:column headerText="Start Date">
+                            <h:outputText value="#{schedule.startDate}" />
                         </p:column>
 
-                        <p:column  headerText="endDate" filterBy="#{schedule.endDate}" filterMatchMode="contains">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{schedule.endDate}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{schedule.endDate}" style="width:100%" label="Bin Type"/></f:facet>
-                            </p:cellEditor>
+                        <p:column  headerText="End Date">
+                            <h:outputText value="#{schedule.endDate}" />
                         </p:column>
 
+                        <p:column  headerText="Destination" >
+                            <h:outputText value="#{schedule.route.destination}" />
+                        </p:column>
 
-
-                        <p:column headerText = "Delete Schedule">
-                            <p:commandButton action="#{tAssetScheduleViewEditManagedBean.deleteAssetSchedule(schedule)}" update="scheduleData" value="Delete"  >
-                                <p:confirm header="Confirm Deletion" message="Are you sure that you want to delete this schedule?" icon="ui-icon-alert" />
+                        <p:column headerText = "Asset Arrived">
+                            <p:commandButton action="#{tAssetScheduleViewEditManagedBean.deleteAssetSchedule(schedule)}" update="scheduleData" value="Arrived"  >
+                                <p:confirm header="Confirm Arrived" message="Are you sure that this asset has arrived?" icon="ui-icon-alert" />
                             </p:commandButton> 
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                             </p:confirmDialog>
                         </p:column>
-
-                        <p:column style="width:32px">
-                            <p:rowEditor />
-                        </p:column>
-
                     </p:dataTable>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 </p:panel>
