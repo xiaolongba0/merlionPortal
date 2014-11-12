@@ -39,7 +39,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PlanAssetSchedule.findByOperatorId", query = "SELECT p FROM PlanAssetSchedule p WHERE p.operatorId = :operatorId"),
     @NamedQuery(name = "PlanAssetSchedule.findByAssetLoad", query = "SELECT p FROM PlanAssetSchedule p WHERE p.assetLoad = :assetLoad"),
     @NamedQuery(name = "PlanAssetSchedule.findByOrigin", query = "SELECT p FROM PlanAssetSchedule p WHERE p.origin = :origin"),
-    @NamedQuery(name = "PlanAssetSchedule.findByDestination", query = "SELECT p FROM PlanAssetSchedule p WHERE p.destination = :destination")})
+    @NamedQuery(name = "PlanAssetSchedule.findByDestination", query = "SELECT p FROM PlanAssetSchedule p WHERE p.destination = :destination"),
+    @NamedQuery(name = "PlanAssetSchedule.findByType", query = "SELECT p FROM PlanAssetSchedule p WHERE p.type = :type"),
+    @NamedQuery(name = "PlanAssetSchedule.findByAssetQuantity", query = "SELECT p FROM PlanAssetSchedule p WHERE p.assetQuantity = :assetQuantity"),
+    @NamedQuery(name = "PlanAssetSchedule.findByFreeSpace", query = "SELECT p FROM PlanAssetSchedule p WHERE p.freeSpace = :freeSpace")})
 public class PlanAssetSchedule implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -63,9 +66,16 @@ public class PlanAssetSchedule implements Serializable {
     @Size(max = 255)
     @Column(name = "destination")
     private String destination;
-    @JoinColumn(name = "transportationAsset", referencedColumnName = "assetId")
+    @Size(max = 45)
+    @Column(name = "type")
+    private String type;
+    @Column(name = "assetQuantity")
+    private Integer assetQuantity;
+    @Column(name = "freeSpace")
+    private Integer freeSpace;
+    @JoinColumn(name = "estimation", referencedColumnName = "estId")
     @ManyToOne(optional = false)
-    private TransportationAsset transportationAsset;
+    private Estimation estimation;
 
     public PlanAssetSchedule() {
     }
@@ -130,12 +140,36 @@ public class PlanAssetSchedule implements Serializable {
         this.destination = destination;
     }
 
-    public TransportationAsset getTransportationAsset() {
-        return transportationAsset;
+    public String getType() {
+        return type;
     }
 
-    public void setTransportationAsset(TransportationAsset transportationAsset) {
-        this.transportationAsset = transportationAsset;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Integer getAssetQuantity() {
+        return assetQuantity;
+    }
+
+    public void setAssetQuantity(Integer assetQuantity) {
+        this.assetQuantity = assetQuantity;
+    }
+
+    public Integer getFreeSpace() {
+        return freeSpace;
+    }
+
+    public void setFreeSpace(Integer freeSpace) {
+        this.freeSpace = freeSpace;
+    }
+
+    public Estimation getEstimation() {
+        return estimation;
+    }
+
+    public void setEstimation(Estimation estimation) {
+        this.estimation = estimation;
     }
 
     @Override
