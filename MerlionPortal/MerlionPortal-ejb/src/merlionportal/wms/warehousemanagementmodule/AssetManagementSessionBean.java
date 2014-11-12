@@ -389,7 +389,7 @@ public class AssetManagementSessionBean {
 
     }
 
-    // all my rented bins
+    // all my rented bins that I have rented from others
     public List<StorageBin> viewAllRentedBins(Integer rentedCompanyId) {
 
         Query query = em.createNamedQuery("StorageBin.findByRentedCompanyId").setParameter("rentedCompanyId", rentedCompanyId);
