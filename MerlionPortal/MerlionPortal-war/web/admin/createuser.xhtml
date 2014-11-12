@@ -5,6 +5,7 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition template="${root}/templates/templateadmin.xhtml">
@@ -58,9 +59,6 @@
                             <h:inputText required="true" requiredMessage="Email Address is required" value="#{createUserManagerBean.emailAddress}" styleClass="form-control">
                                 <f:validator validatorId="custom.emailValidator" />
                             </h:inputText>
-
-                            <p:outputLabel style="font-weight: bold" value="Password * : "/>
-                            <h:inputText required="true" requiredMessage="Password is required" value="#{createUserManagerBean.password}" styleClass="form-control" />
 
                             <p:outputLabel style="font-weight: bold" value="Postal Address * : " styleClass="pad-it"/>
                             <h:inputText required="true" requiredMessage="Postal Address is required" value="#{createUserManagerBean.postalAddress}" styleClass="form-control" />
