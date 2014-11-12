@@ -39,6 +39,7 @@
                 <c:if test="#{dashboardBean.checkMRPCanManageUseForecast() || dashboardBean.loginedUser.userType == 'superuser'}">
                     <p:submenu label="MRP">
                         <p:menuitem value="MRP Process" url="forecast.xhtml" />
+                        <p:menuitem value="View Previous MRP Result" url="viewmrphistory.xhtml" />
                     </p:submenu>
                 </c:if>
 
