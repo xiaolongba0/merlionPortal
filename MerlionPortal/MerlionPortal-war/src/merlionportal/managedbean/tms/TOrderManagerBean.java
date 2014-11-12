@@ -48,6 +48,7 @@ public class TOrderManagerBean {
     private Integer referenceId;
     private Integer referenceType;
     private Date timeEnd;
+    private Date timeStart;
     private Integer newOrderId;
     private List<Location> origins;
     private List<Location> destinations;
@@ -85,7 +86,7 @@ public class TOrderManagerBean {
 
         try {
             System.out.println("[INSIDE WAR FILE]===========================Create New Order");
-            newOrderId = tomsb.AddNewTransportationOrder(cargoType, cargoWeight, companyId, creatorId, destination, origin, referenceId, referenceType, timeEnd);
+            newOrderId = tomsb.AddNewTransportationOrder(cargoType, cargoWeight, companyId, creatorId, destination, origin, referenceId, referenceType, timeEnd, timeStart);
             
             
             if (newOrderId > -1) {
@@ -108,6 +109,7 @@ public class TOrderManagerBean {
         creatorId = null;
         destination = null;
         timeEnd = null;
+        timeStart = null;
         origin = null;
         referenceId = null;
         referenceType = null;
@@ -149,6 +151,14 @@ public class TOrderManagerBean {
 
     public Integer getCreatorId() {
         return creatorId;
+    }
+
+    public Date getTimeStart() {
+        return timeStart;
+    }
+
+    public void setTimeStart(Date timeStart) {
+        this.timeStart = timeStart;
     }
 
     public void setCreatorId(Integer creatorId) {
