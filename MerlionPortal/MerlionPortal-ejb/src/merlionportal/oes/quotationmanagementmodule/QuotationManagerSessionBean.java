@@ -138,10 +138,11 @@ public class QuotationManagerSessionBean {
 
     }
 
-    public void generateQuotation(Quotation myQuotation, String Description) {
+    public void generateQuotation(Quotation myQuotation, String Description,String currency) {
         myQuotation.setDescription(Description);
         Date date = this.getCurrentTime();
         myQuotation.setCreateDate(date);
+        myQuotation.setCurrency(currency);
         myQuotation.setStatus(2);
         em.merge(myQuotation);
         em.flush();
