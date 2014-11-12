@@ -1,12 +1,151 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
-</html>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
+    <c:set var="import" value="templateuser.xhtml"/>
+    <c:if test="#{dashboardBean.canUseCI() || dashboardBean.loginedUser.userType == 'superuser'}">
+        <c:set var="import" value="templateadmin.xhtml"/>
+    </c:if>
+
+    <ui:composition template="${root}/templates/${import}">        
+        <ui:param name="pageName" value="View All Warehouse Rental Invoice" />
+
+        <ui:define name="more-imports">
+            <ui:insert>
+            </ui:insert>
+        </ui:define>
+
+        <ui:define name="left">
+            <h:form id="formMain">
+                <p:menu>
+                    <p:submenu label="CRMS HOME" styleClass="display:block">
+                        <p:menuitem value="CRMS Home" url="crmsindex.xhtml"/>     
+                        <p:menuitem value="Service Yellow Pages" url="serviceyellowpages.xhtml"/>
+                    </p:submenu>
+                    <p:submenu label="Service Catalog Management" styleClass="display:block">
+                        <p:menuitem value="Create New Service" url="createservice.xhtml" />
+                        <p:menuitem value="View All Services" url="viewcompanyservices.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Quotation Management" styleClass="display:block">
+                        <p:menuitem value="View All Requests" url="viewallrequests.xhtml" />
+                        <p:menuitem value="View All Quotations" url="viewallquotations.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Contract Management" styleClass="display:block">
+                        <p:menuitem value="Create Service Contract" url="createservicecontract.xhtml" />
+                        <p:menuitem value="View All Contracts" url="viewallcontracts.xhtml" />
+                        <p:menuitem value="Renew Contracts" url="renewservicecontract.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Order Management" styleClass="display:block">
+                        <p:menuitem value="Create Service PO" url="createservicepo.xhtml" />
+                        <p:menuitem value="View All Orders" url="viewallservicepos.xhtml" />
+                        <p:menuitem value="View All Invoices" url="viewallinvoices.xhtml" />
+                    </p:submenu>
+                    <p:submenu label="Key Account Management" styleClass="display:block">
+                        <p:menuitem value="View Order Statistics" url="vieworderstatistics.xhtml" />
+                        <p:menuitem value="Create Key Account" url="createkeyaccount.xhtml" />
+                        <p:menuitem value="View All Key Accounts" url="viewallkeyaccounts.xhtml" />
+                    </p:submenu>
+                </p:menu>
+            </h:form>
+        </ui:define>
+
+        <ui:define name="right">
+            <p:breadCrumb>
+                <p:menuitem value="CRMS Home" url="crmsindex.xhtml" />
+                <p:menuitem value="View All Warehouse Rental Invoices" url="viewallinvoices.xhtml" />
+            </p:breadCrumb>
+            <h:form id="form">
+                <p:ajaxStatus style="width:16px;height:16px;">
+                    <f:facet name="start">
+                        <h:graphicImage value="/img/load.gif" />
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+                <p:panel  header="Sent Invoices"  style="margin-bottom:20px">
+                    <p:dataTable var="invoice" value="#{viewWarehouseRentalMB.sentInvoices}" widgetVar="invoiceTable" rowKey="#{invoice.invoiceId}"
+                                 emptyMessage="No invoices found with given criteria" selectionMode="single" selection="#{viewWarehouseRentalMB.selectedSentInvoice}"
+                                 filteredValue="#{viewWarehouseRentalMB.filteredInvoices}" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="20,50,100">
+
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Search all fields:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('invoiceTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:column filterBy="#{invoice.invoiceId}" headerText="Invoice ID" filterMatchMode="contains">
+                            <h:outputText value="#{invoice.invoiceId}" />
+                        </p:column>
+                        <p:column filterBy="#{invoice.invoiceId}" headerText="Order ID" filterMatchMode="contains">
+                            <h:outputText value="#{invoice.invoiceId}" />
+                        </p:column>
+                        <p:column headerText="Receiver Company ID" filterBy="#{invoice.receiverCompanyId}" filterMatchMode="contains">
+                            <h:outputText value="#{invoice.receiverCompanyId}" />
+                        </p:column>
+                        <p:column filterBy="#{invoice.createdDate}" headerText="Created Date" filterMatchMode="contains">
+                            <h:outputText value="#{invoice.createdDate}" />
+                        </p:column>
+
+                        <p:column filterBy="#{invoice.status}" headerText="Status" filterMatchMode="in">
+                            <f:facet name="filter">
+                                <p:selectCheckboxMenu label="Status" onchange="PF('invoiceTable').filter()" panelStyle="width:250px" scrollHeight="150">
+                                    <f:selectItems value="#{viewWarehouseRentalMB.status}" />
+                                </p:selectCheckboxMenu>
+                            </f:facet>
+                            <h:outputText value="#{invoice.status}" />
+                        </p:column>
+                    </p:dataTable>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:commandButton value="View Invoice" action="#{viewWarehouseRentalMB.viewASentInvoice()}" />
+                </p:panel>
+                <p:panel  header="Received Invoices"  style="margin-bottom:20px">
+                    <p:dataTable var="reinvoice" value="#{viewWarehouseRentalMB.receivedInvoices}" widgetVar="invoicetable2" rowKey="#{reinvoice.invoiceId}"
+                                 emptyMessage="No invoice found with given criteria" selectionMode="single" selection="#{viewWarehouseRentalMB.selectedReceivedInvoice}" 
+                                 filteredValue="#{viewWarehouseRentalMB.filteredInvoices}" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="20,50,100">
+
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Search all fields:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('invoicetable2').filter()" style="width:150px" placeholder="Enter keyword"/>
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:column filterBy="#{reinvoice.invoiceId}" headerText="Invoice ID" filterMatchMode="contains">
+                            <h:outputText value="#{reinvoice.invoiceId}" />
+                        </p:column>
+                        <p:column filterBy="#{reinvoice.invoiceId}" headerText="Order ID" filterMatchMode="contains">
+                            <h:outputText value="#{reinvoice.invoiceId}" />
+                        </p:column>
+                        <p:column filterBy="#{reinvoice.senderCompanyId}" headerText="Sender Company ID" filterMatchMode="contains">
+                            <h:outputText value="#{reinvoice.senderCompanyId}" />
+                        </p:column>
+                        <p:column filterBy="#{reinvoice.createdDate}" headerText="Created Date" filterMatchMode="contains">
+                            <h:outputText value="#{reinvoice.createdDate}" />
+                        </p:column>
+                        <p:column filterBy="#{reinvoice.status}" headerText="Status" filterMatchMode="in">
+                            <f:facet name="filter">
+                                <p:selectCheckboxMenu label="Status" onchange="PF('invoicetable2').filter()" panelStyle="width:250px" scrollHeight="150">
+                                    <f:selectItems value="#{viewWarehouseRentalMB.status}" />
+                                </p:selectCheckboxMenu>
+                            </f:facet>
+                            <h:outputText value="#{reinvoice.status}" />
+                        </p:column>
+                    </p:dataTable>
+                    <p:messages id="msg" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:commandButton value="View Invoice" action="#{viewWarehouseRentalMB.viewAReceivedInvoice()}" />
+                </p:panel>
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</html>

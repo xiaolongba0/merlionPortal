@@ -44,6 +44,7 @@ public class ContractManagementSessionBean {
 //    3. Waiting for review
 //    4. Waiting To be Signed
 //    5. Valid
+
     public int createTransportationServiceContract(Integer quotationId, String condition, Integer creatorId) {
 
         Contract contract = new Contract();
@@ -118,9 +119,8 @@ public class ContractManagementSessionBean {
             em.persist(contract);
             em.merge(quotation);
             em.flush();
-            
+
             grnsSB.createWarehouseSpaceContractInvoice(contract.getContractId(), creatorId, contract.getPartyA(), contract.getPartyB(), contract.getWarehouseRental());
-           
 
             return contract.getContractId();
         } else {
@@ -236,7 +236,9 @@ public class ContractManagementSessionBean {
             em.merge(quotation);
             em.merge(contract);
             em.flush();
-
+            if (renewContract.getServiceType().equals("Warehouse")) {
+                grnsSB.createWarehouseSpaceContractInvoice(renewContract.getContractId(), creatorId, renewContract.getPartyA(), renewContract.getPartyB(), renewContract.getWarehouseRental());
+            }
             return 1;
         } else {
             return -1;

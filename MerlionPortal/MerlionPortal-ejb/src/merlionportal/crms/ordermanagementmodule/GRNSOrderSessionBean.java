@@ -131,7 +131,7 @@ public class GRNSOrderSessionBean {
         invoice.setReceiverCompanyId(requester);
         invoice.setPrice(price);
         invoice.setCreatorId(creatorId);
-        
+
         em.persist(invoice);
         em.flush();
 
@@ -149,6 +149,9 @@ public class GRNSOrderSessionBean {
         invoice.setPrice(price);
         invoice.setCreatorId(creatorId);
 
+        em.persist(invoice);
+        em.flush();
+
         return true;
     }
 
@@ -162,5 +165,21 @@ public class GRNSOrderSessionBean {
         Query q = em.createNamedQuery("OtherInvoice.findByGrnsOrderId").setParameter("grnsOrderId", orderId);
         OtherInvoice in = (OtherInvoice) q.getSingleResult();
         return in;
+    }
+
+    public List<OtherInvoice> getAllWarehouseRentalInvoiceSent(Integer myCompanyId) {
+        Query q = em.createQuery("SELECT o FROM OtherInvoice o WHERE o.senderCompanyId = :senderCompanyId AND o.grnsOrder = :grnsOrder");
+        q.setParameter("senderCompanyId", myCompanyId);
+        q.setParameter("grnsOrder", false);
+
+        return q.getResultList();
+    }
+
+    public List<OtherInvoice> getAllWarehouseRentalInvoiceReceived(Integer myCompanyId) {
+        Query q = em.createQuery("SELECT o FROM OtherInvoice o WHERE o.receiverCompanyId = :receiverCompanyId AND o.grnsOrder = :grnsOrder");
+        q.setParameter("receiverCompanyId", myCompanyId);
+        q.setParameter("grnsOrder", false);
+
+        return q.getResultList();
     }
 }

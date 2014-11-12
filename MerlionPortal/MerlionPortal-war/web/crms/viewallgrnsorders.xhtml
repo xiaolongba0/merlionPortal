@@ -69,7 +69,7 @@
                         <h:outputText value="" />
                     </f:facet>
                 </p:ajaxStatus>
-                <p:panel  header="Sent Service PO"  style="margin-bottom:20px">
+                <p:panel  header="GRNS Service To Be Received"  style="margin-bottom:20px">
                     <p:dataTable var="po" value="#{viewGRNSOrdersManagedBean.sentOrders}" widgetVar="poTable" rowKey="#{po.orderId}"
                                  emptyMessage="No Order found with given criteria" selectionMode="single" selection="#{viewGRNSOrdersManagedBean.selectedSentOrder}"
                                  filteredValue="#{viewGRNSOrdersManagedBean.filteredServicePO}" paginator="true"
@@ -108,7 +108,7 @@
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                     <p:commandButton value="View GRNS Order" action="#{viewGRNSOrdersManagedBean.viewSentOrderDetail()}" ajax="false" />
                 </p:panel>
-                <p:panel  header="Received GRNS Order"  style="margin-bottom:20px">
+                <p:panel  header="GRNS Service To Be Performed"  style="margin-bottom:20px">
                     <p:dataTable var="poR" value="#{viewGRNSOrdersManagedBean.receivedOrders}" widgetVar="poTable2" rowKey="#{poR.orderId}"
                                  emptyMessage="No Order found with given criteria" selectionMode="single" selection="#{viewGRNSOrdersManagedBean.selectedReceivedOrder}" 
                                  filteredValue="#{viewGRNSOrdersManagedBean.filteredServicePO}" paginator="true"
