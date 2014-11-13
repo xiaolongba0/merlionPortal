@@ -20,7 +20,7 @@
             </ui:insert>
         </ui:define>
         <ui:define name="left">
-              <h:form id="formMain">
+            <h:form id="formMain">
                 <p:menu>
                     <c:if test="#{dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:submenu label ="Map Settings">
@@ -116,6 +116,9 @@
                                     <p:ajax listener="#{TTassetViewEditManagedBean.onLocationChange()}" update="tAssetData" />
                                     <p:ajax listener="#{TTassetViewEditManagedBean.onLocationfromChange()}" update="fromRoute" />
                                     <p:ajax listener="#{TTassetViewEditManagedBean.onLocationToChange()}" update="toRoute" />
+                                    <p:ajax listener="#{TTassetViewEditManagedBean.onLocationChangeChart()}" update="avaChart" />
+                                    <p:ajax listener="#{TTassetViewEditManagedBean.onLocationChangeChart2()}" update="avaCharta" />
+
                                     <f:selectItem itemLabel="Select Location" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{tAssetManagedBean.locations}" var="location" itemLabel="ID:#{location.locationId} Name:#{location.locationName}"  itemValue="#{location.locationId}"/>
                                 </p:selectOneMenu>
@@ -123,14 +126,17 @@
                         </p:row>
                     </p:panelGrid>
 
+                    <p:chart id="avaChart" type="pie" model ="#{TTassetViewEditManagedBean.pieModel1}" style="width:500px;height:300px" />
+                    <p:chart id="avaCharta" type="pie" model ="#{TTassetViewEditManagedBean.pieModel2}" style="width:500px;height:300px" />
+
                     <p:dataTable id="tAssetData" var="tAsset" sortMode="multiple" editable="true" value="#{TTassetViewEditManagedBean.tassets}" 
                                  widgetVar="transportationAssetTable"
                                  emptyMessage="No Transportation Asset found"
                                  rowKey="#{tAsset.assetId}">
-                
-                            <p:outputPanel>
-                                <h:outputText value="Transportation Asset Schedule:" />
-                            </p:outputPanel>
+
+                        <p:outputPanel>
+                            <h:outputText value="Transportation Asset Schedule:" />
+                        </p:outputPanel>
 
                         <p:ajax event="rowEdit" listener="#{TTassetViewEditManagedBean.onRowEdit}"/>
                         <p:ajax event="rowEditCancel" listener="#{TTassetViewEditManagedBean.onRowCancel}"/>                
