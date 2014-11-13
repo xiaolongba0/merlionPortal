@@ -4,6 +4,21 @@
     height:200px;
     width:100%;
 }
+/*.dashboard-welcome{
+    border: 1px solid #ddd;
+    border-radius:0px 0px 6px 6px;
+}*/
+.dashboard-welcome>h5{
+    padding:10px 30px;
+    margin-top:0px;
+    margin-bottom: 0px;
+    background:black;
+    color:white;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius:0px 0px 6px 6px;
+}
 
 .tile-texts{
     color:white;
