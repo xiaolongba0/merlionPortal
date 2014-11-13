@@ -429,4 +429,12 @@ public class SystemAccessRightSessionBean {
         return em.find(SystemUser.class, userId);
 
     }
+
+    public boolean checkFromMerlionLogistic(Integer userId) {
+        if ((int) this.getUser(userId).getCompanycompanyId().getCompanyId() == 1) {
+            return true;
+        }
+        return false;
+    }
+
 }
