@@ -21,7 +21,6 @@ import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionB
 import java.util.List;
 import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 
-
 /**
  *
  * @author Yuanbo
@@ -30,7 +29,6 @@ import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 @RequestScoped
 public class TAssetManagerBean {
 
-
     @EJB
     private TAssetmanagementSessionBean tassetManagementSessionBean;
     @EJB
@@ -38,15 +36,12 @@ public class TAssetManagerBean {
     @EJB
     private SystemLogSessionBean systemLogSB;
 
-
-
-
     private Integer companyId;
 
     private SystemUser loginedUser;
-    
+
 //    ----------Asset
-    private String assetType; 
+    private String assetType;
 
     private Integer capacity;
     private Integer speed;
@@ -56,7 +51,6 @@ public class TAssetManagerBean {
     private Integer newAssetId;
     private Integer quantity;
     private List<Location> locations;
-
 
     /**
      * Creates a new instance of AssestManagedBean
@@ -83,44 +77,43 @@ public class TAssetManagerBean {
             }
         }
         locations = tassetManagementSessionBean.viewMyDistLocations(companyId);
-        
+
     }
-    
 
-
-    public void createNewTAsset (ActionEvent location) {
+    public void createNewTAsset(ActionEvent location) {
 
         try {
             System.out.println("[INSIDE WAR FILE]===========================Create New Asset");
             System.out.println("TransportationAssetType:" + assetType);
-           
-            for(int i= 0; i<quantity; i++){
-            newAssetId = tassetManagementSessionBean.addTAsset(assetType, capacity, locationlocationId, price, speed, companyId, status);
-            System.out.println("NEW TRANSPORTATION ASSET ID =================: " + newAssetId);
-            if (newAssetId == -1) {
-                clearAllFields();
-                System.out.println("============== FAILED TO ADD TRANSPORTATION ASSET DUE TO LOCATION ID ===============");
 
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to Add Transportation Asset. Please check LOCATION ID! ", ""));
-            } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New TransportationAsset Added!", ""));
-                systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS created new asset");
-            }
+            for (int i = 0; i < quantity; i++) {
+                newAssetId = tassetManagementSessionBean.addTAsset(assetType, capacity, locationlocationId, price, speed, companyId, status);
+                System.out.println("NEW TRANSPORTATION ASSET ID =================: " + newAssetId);
+                if (newAssetId == -1) {
+                    System.out.println("============== FAILED TO ADD TRANSPORTATION ASSET DUE TO LOCATION ID ===============");
+
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to Add Transportation Asset. Please check LOCATION ID! ", ""));
+                } else {
+                    clearAllFields();
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New TransportationAsset Added!", ""));
+                    systemLogSB.recordSystemLog(loginedUser.getSystemUserId(), "TMS created new asset");
+                }
             }
             System.out.println("[WAR FILE]===========================Create New Transportation Asset");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }   
-    
-    private void clearAllFields(){
-        
+    }
+
+    private void clearAllFields() {
+
         assetType = null;
         capacity = null;
         price = null;
         speed = null;
         status = null;
     }
+
     /**
      * @return the companyId
      */
@@ -274,8 +267,5 @@ public class TAssetManagerBean {
     public void setLocations(List<Location> locations) {
         this.locations = locations;
     }
-    
 
-  
-    
 }
