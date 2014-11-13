@@ -97,6 +97,8 @@
                 <p:menuitem value="Operator List" url="viewalloperator.xhtml" />
             </p:breadCrumb>
             <h:form id="form">
+                
+                <p:chart type="bar" model="#{tOperatorViewEditManagedBean.barModel}" style="width:800px;height:300px"/>
 
                 <p:dataTable id="operator" var="operator" sortMode="multiple" editable="true" value="#{tOperatorViewEditManagedBean.operators}" 
                              widgetVar="operatorsTable"
