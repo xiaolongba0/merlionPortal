@@ -190,16 +190,16 @@ public class TAssetmanagementSessionBean {
         Boolean test = false;
         switch (routeType) {
             case "Land":
-                test= dijLand.createConnection(startNodeId-1, endNodeId-1, distance);
+                test = dijLand.createConnection(startNodeId - 1, endNodeId - 1, distance);
                 break;
             case "Sea":
-                test=dijSea.createConnection(startNodeId-1, endNodeId-1, distance);
+                test = dijSea.createConnection(startNodeId - 1, endNodeId - 1, distance);
                 break;
             case "Air":
-                test=dijAir.createConnection(startNodeId-1, endNodeId-1, distance);
+                test = dijAir.createConnection(startNodeId - 1, endNodeId - 1, distance);
                 break;
         }
-        System.out.println("DIJ Create Successfully"+test);
+        System.out.println("DIJ Create Successfully" + test);
         System.out.println("[INSIDE EJB]================================Add New Route");
         Query query1 = em.createNamedQuery("Node.findAll");
 
@@ -944,4 +944,31 @@ public class TAssetmanagementSessionBean {
 //    public Integer numberOfFreeShipOnLocation(Integer locationId) {
 //
 //    }
+    public List<String> retrieveListOfNodeFromANode(Integer nodeId) {
+        Node node = em.find(Node.class, nodeId);
+        List<String> returnList = new ArrayList();
+        for (Route r : (List<Route>) node.getRouteList()) {
+            returnList.add(r.getDestination() + " " + r.getRouteType());
+        }
+        return returnList;
+    }
+
+    public List<Integer> retrieveListOfNodeIdFromANode(Integer nodeId) {
+        List<Integer> returnList = new ArrayList();
+        Node node = em.find(Node.class, nodeId);
+        for (Route r : (List<Route>) node.getRouteList()) {
+            returnList.add(r.getEndNodeId());
+        }
+        return returnList;
+    }
+
+    public String retrieveInitialNodeFromId(Integer nodeId) {
+        Node node = em.find(Node.class, nodeId);
+        return node.getLocationName();
+
+    }
+
+    public Node retrieveNodeFromId(Integer nodeId) {
+        return em.find(Node.class, nodeId);
+    }
 }

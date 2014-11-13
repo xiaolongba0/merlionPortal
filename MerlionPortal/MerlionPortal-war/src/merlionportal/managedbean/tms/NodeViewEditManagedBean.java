@@ -9,15 +9,19 @@ import javax.inject.Named;
 import entity.SystemUser;
 import entity.Node;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionBean;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.mindmap.DefaultMindmapNode;
+import org.primefaces.model.mindmap.MindmapNode;
 
 /**
  *
@@ -25,7 +29,11 @@ import merlionportal.tms.transportationmanagementmodule.TAssetmanagementSessionB
  */
 @Named(value = "nodeViewEditManagedBean")
 @ViewScoped
-public class NodeViewEditManagedBean {
+public class NodeViewEditManagedBean implements Serializable {
+
+    private MindmapNode root;
+
+    private MindmapNode selectedNode;
 
     @EJB
     private TAssetmanagementSessionBean tassetmanagementSessionBean;
@@ -40,6 +48,10 @@ public class NodeViewEditManagedBean {
     private String nodeName;
     private String nodeType;
     private Integer companyId;
+
+    public NodeViewEditManagedBean() {
+
+    }
 
     @PostConstruct
     public void init() {
@@ -57,6 +69,15 @@ public class NodeViewEditManagedBean {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+        }
+        String initialNodeName = tassetmanagementSessionBean.retrieveInitialNodeFromId(1);
+//        Node initialNode = tassetmanagementSessionBean.retrieveNodeFromId(1);
+        root = new DefaultMindmapNode(initialNodeName, 1, "eb6161", false);
+        List<Integer> nodeIdList = tassetmanagementSessionBean.retrieveListOfNodeIdFromANode(1);
+        List<String> nodeNameList = tassetmanagementSessionBean.retrieveListOfNodeFromANode(1);
+        for (int i = 0; i < nodeNameList.size(); i++) {
+            MindmapNode temp = new DefaultMindmapNode(nodeNameList.get(i), nodeIdList.get(i), "eb6161", true);
+            root.addNode(temp);
         }
 
     }
@@ -81,6 +102,29 @@ public class NodeViewEditManagedBean {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void onNodeSelect(SelectEvent event) {
+        MindmapNode node = (MindmapNode) event.getObject();
+        int nodeid = (int) node.getData();
+        int parentId = (int) node.getParent().getData();
+        System.out.println("Selected Node Id :" + nodeid);
+        //populate if not already loaded
+//        Node initialNode = tassetmanagementSessionBean.retrieveNodeFromId(1);
+        List<Integer> nodeIdList = tassetmanagementSessionBean.retrieveListOfNodeIdFromANode(nodeid);
+        List<String> nodeNameList = tassetmanagementSessionBean.retrieveListOfNodeFromANode(nodeid);
+        for (int i = 0; i < nodeNameList.size(); i++) {
+
+            MindmapNode temp = new DefaultMindmapNode(nodeNameList.get(i), nodeIdList.get(i), "eb6161", true);
+            System.out.println("i :" + i);
+            if (nodeIdList.get(i) != parentId) {
+                node.addNode(temp);
+            }
+        }
+    }
+
+    public void onNodeDblselect(SelectEvent event) {
+        this.selectedNode = (MindmapNode) event.getObject();
     }
 
     public SystemUser getLoginedUser() {
@@ -125,6 +169,22 @@ public class NodeViewEditManagedBean {
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
+    }
+
+    public MindmapNode getRoot() {
+        return root;
+    }
+
+    public void setRoot(MindmapNode root) {
+        this.root = root;
+    }
+
+    public MindmapNode getSelectedNode() {
+        return selectedNode;
+    }
+
+    public void setSelectedNode(MindmapNode selectedNode) {
+        this.selectedNode = selectedNode;
     }
 
 }
