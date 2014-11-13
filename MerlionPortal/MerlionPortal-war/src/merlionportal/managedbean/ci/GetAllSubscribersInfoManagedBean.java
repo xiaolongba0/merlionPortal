@@ -65,8 +65,7 @@ public class GetAllSubscribersInfoManagedBean {
         packages.add("Non-Manufacturing 1PL");
         packages.add("2PL");
         packages.add("3/4PL");
-        packages.add("5PL");
-        packages.add("Platform Provider");
+        packages.add("Merlion Logistic");
 
     }
 
@@ -116,11 +115,9 @@ public class GetAllSubscribersInfoManagedBean {
             packageNumber = "3/4PL";
         }
         if (package1 == 0) {
-            packageNumber = "Platform Provider";
+            packageNumber = "Merlion Logistic";
         }
-        if (package1 == 5) {
-            packageNumber = "5PL";
-        }
+
         return packageNumber;
     }
 
