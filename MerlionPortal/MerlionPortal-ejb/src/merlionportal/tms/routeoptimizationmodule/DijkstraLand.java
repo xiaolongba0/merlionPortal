@@ -7,14 +7,14 @@ package merlionportal.tms.routeoptimizationmodule;
 
 
 import javax.ejb.LocalBean;
-import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import util.accessRightControl.Awesome;
 
 /**
  *
  * @author Yuanbo
  */
-@Stateful
+@Stateless
 @LocalBean
 public class DijkstraLand {
 
