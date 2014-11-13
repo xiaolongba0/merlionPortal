@@ -108,7 +108,55 @@ public class TOperatormanagementSessionBean {
         Query query = em.createNamedQuery("TransportationOperator.findByCompanyId").setParameter("companyId", companyId);
         tempList = query.getResultList();
         for (TransportationOperator o : tempList) {
-            if (o.getIsAvailable()) {
+            if (o.getIsAvailable() && o.getOperatorType().equals("Operator")) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public Integer countMyNotAvailableOperator(Integer companyId) {
+        Integer count = 0;
+        List<TransportationOperator> tempList = new ArrayList();
+        System.out.println("In viewMyOperator, company ID ============================= : " + companyId);
+        System.out.println("ehhh===================== : " + companyId);
+
+        Query query = em.createNamedQuery("TransportationOperator.findByCompanyId").setParameter("companyId", companyId);
+        tempList = query.getResultList();
+        for (TransportationOperator o : tempList) {
+            if (!o.getIsAvailable() && o.getOperatorType().equals("Operator")) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public Integer countMyAvailableDriver(Integer companyId) {
+        Integer count = 0;
+        List<TransportationOperator> tempList = new ArrayList();
+        System.out.println("In viewMyOperator, company ID ============================= : " + companyId);
+        System.out.println("ehhh===================== : " + companyId);
+
+        Query query = em.createNamedQuery("TransportationOperator.findByCompanyId").setParameter("companyId", companyId);
+        tempList = query.getResultList();
+        for (TransportationOperator o : tempList) {
+            if (o.getIsAvailable() && o.getOperatorType().equals("Driver")) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public Integer countMyNotAvailableDriver(Integer companyId) {
+        Integer count = 0;
+        List<TransportationOperator> tempList = new ArrayList();
+        System.out.println("In viewMyOperator, company ID ============================= : " + companyId);
+        System.out.println("ehhh===================== : " + companyId);
+
+        Query query = em.createNamedQuery("TransportationOperator.findByCompanyId").setParameter("companyId", companyId);
+        tempList = query.getResultList();
+        for (TransportationOperator o : tempList) {
+            if (!o.getIsAvailable() && o.getOperatorType().equals("Driver")) {
                 count++;
             }
         }
@@ -260,8 +308,8 @@ public class TOperatormanagementSessionBean {
     }
 
     public Boolean deleteOschedule(Integer operatorScheduleId) {
-        
-        System.out.println("The selected operator schedule ID  "+ operatorScheduleId);;
+
+        System.out.println("The selected operator schedule ID  " + operatorScheduleId);;
         OperatorSchedule oSchedule = em.find(OperatorSchedule.class, operatorScheduleId);
         System.out.println("Delete OperatorSchedule ================= : " + oSchedule);
         if (oSchedule == null) {

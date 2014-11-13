@@ -529,9 +529,9 @@ public class TAssetmanagementSessionBean {
         Integer count = 0;
         List<TransportationAsset> temp = locationTemp.getTransportationAssetList();
         for (TransportationAsset tAsset : temp) {
-            if (tAsset.getIsAvailable() == true) {
+
                 count++;
-            }
+         
         }
         return count;
 
@@ -601,6 +601,7 @@ public class TAssetmanagementSessionBean {
                 count++;
             }
         }
+        System.out.println("Print Count for Location !!!" + count);
         return count;
     }
 
