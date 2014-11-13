@@ -17,7 +17,7 @@ import util.accessRightControl.Awesome;
 @LocalBean
 public class DijkstraAir {
 
-    private Awesome heap = new Awesome();
+    private  Awesome heap;
     private static int[][] graph = new int[10][10];
 
     public DijkstraAir() {
@@ -52,6 +52,7 @@ public class DijkstraAir {
 //        System.out.println(dij.solve(6, 0, 5));
 //    }
     public int solve(Integer numOfNodes, Integer source, Integer dest) {
+        heap = new Awesome();
         heap.push(source, 0);
         while (!heap.isEmpty()) {
             int u = heap.pop();

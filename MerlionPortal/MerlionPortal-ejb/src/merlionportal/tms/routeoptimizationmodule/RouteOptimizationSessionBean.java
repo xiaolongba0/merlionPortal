@@ -96,16 +96,15 @@ public class RouteOptimizationSessionBean {
         newEst.setOrigin(start.getLocationName());
         newEst.setDestination(end.getLocationName());
         newEst.setEndDate(endDate);
-        Integer distance = this.solve(start,end,type);
+        Integer distance = this.solve(start, end, type);
         Integer days = this.calculateDays(distance, type);
-        System.out.println("Calculated Days Needed:  "+ days);
+        System.out.println("Calculated Days Needed:  " + days);
         Date startDate = this.addDays(endDate, -days);
         newEst.setStartDate(startDate);
         Integer cost = this.calculateCost(distance, type, totalLoad);
         newEst.setCost((double) cost);
         newEst.setTotalLoad(totalLoad);
         newEst.setType(type);
-        
 
         List<PlanAssetSchedule> planList = new ArrayList();
         newEst.setPlanAssetScheduleList(planList);
@@ -220,10 +219,27 @@ public class RouteOptimizationSessionBean {
         return startDate;
 
     }
-    public Integer solve(Node start, Node end, String type){
-        Integer temp = dijLand.solve(10, start.getNodeId()-1, end.getNodeId()-1);
+
+    public Integer solve(Node start, Node end, String type) {
+        Integer temp = 0;
+        switch (type) {
+            case "Land":
+                temp = dijLand.solve(10, start.getNodeId() - 1, end.getNodeId() - 1);
+                System.out.println("FUCK this LAND temp : " + temp);
+                break;
+            case "Sea":
+                temp = dijSea.solve(10, start.getNodeId() - 1, end.getNodeId() - 1);
+                System.out.println("FUCK this Sea temp : " + temp);
+                break;
+            case "Air":
+                temp = dijAir.solve(10, start.getNodeId() - 1, end.getNodeId() - 1);
+                System.out.println("FUCK this Air temp : " + temp);
+                break;
+        }
+        
         return temp;
     }
+
     public Integer calculateDays(Integer distance, String type) {
         Integer days = 0;
 
@@ -231,13 +247,15 @@ public class RouteOptimizationSessionBean {
         switch (type) {
             case "Land":
                 temp = distance / 1000;
-                System.out.println("FUCK this temp : "+ temp);
+                System.out.println("FUCK DAYS Land this temp : " + temp);
                 break;
             case "Sea":
-                temp = distance/ 500;
+                temp = distance / 500;
+                System.out.println("FUCK DAYS Sea this temp : " + temp);
                 break;
             case "Air":
                 temp = distance / 15000;
+                System.out.println("FUCK DAYS Air this temp : " + temp);
                 break;
         }
         days = days + temp;
@@ -258,7 +276,7 @@ public class RouteOptimizationSessionBean {
                 break;
             case "Air":
                 quantity = (int) Math.ceil(totalLoad / 3);
-                temp = distance * 18000 * quantity ;
+                temp = distance * 18000 * quantity;
                 break;
 
         }

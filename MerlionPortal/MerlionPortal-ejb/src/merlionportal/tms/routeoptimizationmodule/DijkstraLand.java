@@ -18,7 +18,7 @@ import util.accessRightControl.Awesome;
 @LocalBean
 public class DijkstraLand {
 
-    private  Awesome heap = new Awesome();
+    private  Awesome heap;
     private static int[][] graph = new int[10][10];
 
     public DijkstraLand() {
@@ -55,7 +55,7 @@ public class DijkstraLand {
 
     public Integer solve(Integer numOfNodes, Integer source, Integer dest) {
         System.out.println("Solve = ===== > "+"NON  "+ numOfNodes+"  Source  "+source+"  dest  "+dest);
-
+        heap = new Awesome();
         for(int i=0;i<10;i++){
             for(int k = 0;k<10;k++){
                 System.out.println(graph[i][k]);
