@@ -85,6 +85,7 @@ public class NodeViewEditManagedBean implements Serializable {
     public List<Node> getNodes() {
         System.out.println("===============================[In Managed Bean - getNode!]");
         nodes = tassetmanagementSessionBean.viewTheNodes();
+        
 
         // for checking
         for (Object obj : nodes) {
