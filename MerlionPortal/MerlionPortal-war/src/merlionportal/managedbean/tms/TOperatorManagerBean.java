@@ -1,4 +1,3 @@
-
 package merlionportal.managedbean.tms;
 
 import javax.inject.Named;
@@ -20,7 +19,6 @@ import merlionportal.ci.administrationmodule.GetCompanyRoleSessionBean;
 import java.util.List;
 import merlionportal.utility.MD5Generator;
 
-
 /**
  *
  * @author Yuanbo
@@ -36,13 +34,10 @@ public class TOperatorManagerBean {
     @EJB
     private GetCompanyRoleSessionBean gcrsb;
 
-
-
-
     private Integer companyId;
 
     private SystemUser loginedUser;
-    
+
 //  -------------Operator
     private String operatorName;
     private String operatorLastName;
@@ -57,6 +52,7 @@ public class TOperatorManagerBean {
     private String contactNumber;
     private List<UserRole> roles;
     private Integer roleId;
+
     /**
      * Creates a new instance of AssestManagedBean
      */
@@ -83,38 +79,40 @@ public class TOperatorManagerBean {
         }
         operators = toperatorManagementSessionBean.viewMyOperator(companyId);
         roles = gcrsb.getAllRolesInCompany(companyId);
-                
+
     }
-    
 
-
-    public void createNewOperator (ActionEvent company) {
+    public void createNewOperator(ActionEvent company) {
 
         try {
             System.out.println("[INSIDE WAR FILE]===========================Create New Operator");
             System.out.println("OperatorType:" + operatorType);
             Integer operatorId = loginedUser.getSystemUserId();
-            String hashedPass = MD5Generator.hash(password);
-            newOperatorId = toperatorManagementSessionBean.addNewOperator(operatorId ,operatorName, operatorLastName, gender, birthday, operatorType, operatorStatus, companyId, emailaddress, contactNumber, hashedPass, roleId);
-            System.out.println("NEW TRANSPORTATION ASSET ID =================: " + newOperatorId);
-            if (newOperatorId == -1) {
-                clearAllFields();
-                System.out.println("============== FAILED TO ADD TRANSPORTATION ASSET DUE TO LOCATION ID ===============");
+            String hashedPass = MD5Generator.hash("pass");
+            if (uamb.getUserByEmail(emailaddress) == null) {
+                newOperatorId = toperatorManagementSessionBean.addNewOperator(operatorId, operatorName, operatorLastName, gender, birthday, operatorType, operatorStatus, companyId, emailaddress, contactNumber, hashedPass, roleId);
+                System.out.println("NEW TRANSPORTATION ASSET ID =================: " + newOperatorId);
+                if (newOperatorId == -1) {
+                    clearAllFields();
+                    System.out.println("============== FAILED TO ADD TRANSPORTATION ASSET DUE TO LOCATION ID ===============");
 
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to Add Transportation Operator. Please check Company Id! ", ""));
-            } else {
-                 clearAllFields();
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Transportation Operator Added!", ""));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to Add Transportation Operator. Please check Company Id! ", ""));
+                } else {
+                    clearAllFields();
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Transportation Operator Added!", ""));
+                }
+
+                System.out.println("[WAR FILE]===========================Create New Transportation Asset");
+            }else{
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email Exists!", ""));
             }
-            
-            System.out.println("[WAR FILE]===========================Create New Transportation Asset");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }   
-    
-    private void clearAllFields(){
-        
+    }
+
+    private void clearAllFields() {
+
         operatorName = null;
         operatorLastName = null;
         gender = null;
@@ -125,7 +123,7 @@ public class TOperatorManagerBean {
         password = null;
         emailaddress = null;
         roleId = null;
-        
+
     }
 
     public Integer getCompanyId() {
@@ -175,7 +173,6 @@ public class TOperatorManagerBean {
     public void setGender(String gender) {
         this.gender = gender;
     }
-
 
     public String getOperatorType() {
         return operatorType;
@@ -248,8 +245,5 @@ public class TOperatorManagerBean {
     public void setRoles(List<UserRole> roles) {
         this.roles = roles;
     }
-     
 
-  
-    
 }
