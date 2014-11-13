@@ -9,6 +9,7 @@ import entity.AssetSchedule;
 import entity.TransportationAsset;
 import entity.Location;
 import entity.Route;
+import java.io.Serializable;
 import java.io.IOException;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -31,7 +32,7 @@ import org.primefaces.model.chart.PieChartModel;
  */
 @Named(value = "TTassetViewEditManagedBean")
 @ViewScoped
-public class TAssetViewEditManagedBean {
+public class TAssetViewEditManagedBean implements Serializable {
 
     @EJB
     private TAssetmanagementSessionBean tassetManagementSessionBean;
@@ -67,6 +68,7 @@ public class TAssetViewEditManagedBean {
 
     private SystemUser loginedUser;
     private PieChartModel pieModel1;
+    private PieChartModel pieModel2;
 
     public TAssetViewEditManagedBean() {
     }
@@ -90,7 +92,12 @@ public class TAssetViewEditManagedBean {
             }
         }
         locations = tassetManagementSessionBean.viewMyLocations(companyId);
-//        createPieModel1();
+        available = 0;
+        maintenance = 0;
+        total = 0;
+        pieModel1 = createPieModel1(available, maintenance, total);
+        pieModel2 = createPieModel2(available, maintenance, total);
+
     }
 
     public void onLocationChange() {
@@ -98,14 +105,10 @@ public class TAssetViewEditManagedBean {
         System.out.println("[In Managed Bean - getLocation] location ID : " + locationId);
         if (locationId != null) {
             tassets = tassetManagementSessionBean.viewtAvailableAssetForALocation(locationId);
-            available = tassetManagementSessionBean.countAvailableAssetForALocation(locationId);
-            maintenance = tassetManagementSessionBean.countMaintAssetForALocation(locationId);
-            total = tassetManagementSessionBean.counttAssetForALocation(locationId);
             if (tassets == null) {
                 System.out.println("============== FAILED TO VIEW STORAGE TYPE ===============");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Failed to View Storage Type. Please check if warehouse ID exists! ", ""));
             }
-
         }
 
     }
@@ -113,6 +116,21 @@ public class TAssetViewEditManagedBean {
     // Show routes from location A
     public void onLocationfromChange() {
         fromRoutes = tassetManagementSessionBean.viewRoutesForLocation(locationId);
+    }
+
+    public void onLocationChangeChart() {
+        available = tassetManagementSessionBean.countAvailableAssetForALocation(locationId);
+        System.out.println("Available Number : " + available);
+        total = tassetManagementSessionBean.counttAssetForALocation(locationId);
+        System.out.println("Total Number : " + total);
+        pieModel1 = createPieModel1(available, 0, total);
+    }
+
+    public void onLocationChangeChart2() {
+        maintenance = tassetManagementSessionBean.countMaintAssetForALocation(locationId);
+        System.out.println("Maintenance Number : " + maintenance);
+        total = tassetManagementSessionBean.counttAssetForALocation(locationId);
+        pieModel2 = createPieModel2(0, maintenance, total);
     }
 
     // show routes to location A
@@ -138,22 +156,43 @@ public class TAssetViewEditManagedBean {
 
     }
 
-    private void createPieModel1() {
-        pieModel1 = new PieChartModel();
+    private PieChartModel createPieModel1(Integer available, Integer maintenance, Integer total) {
+        PieChartModel pieModel2 = new PieChartModel();
 
         Integer a = available;
         Integer m = maintenance;
         Integer t = total;
-        Integer u = t - 1 - m;
+        Integer u = t - a - m;
 
-        pieModel1.set("Available", a);
-        pieModel1.set("On task", u);
-        pieModel1.set("Under Maintenance", m);
+        pieModel2.set("Available", a);
+        pieModel2.set("On task", u);
 
-        pieModel1.setTitle("Transportation Asset Summary");
-        pieModel1.setLegendPosition("w");
-        pieModel1.setShowDataLabels(true);
-        pieModel1.setDiameter(t);
+        pieModel2.setTitle("Transportation Task Summary");
+        pieModel2.setLegendPosition("w");
+        pieModel2.setShowDataLabels(true);
+        pieModel2.setDiameter(t);
+
+        return pieModel2;
+
+    }
+
+    private PieChartModel createPieModel2(Integer available, Integer maintenance, Integer total) {
+        PieChartModel pieModel2 = new PieChartModel();
+
+        Integer a = available;
+        Integer m = maintenance;
+        Integer t = total;
+        Integer u = t - a - m;
+
+        pieModel2.set("Not been Maintained", u);
+        pieModel2.set("Have been Maintained", m);
+
+        pieModel2.setTitle("Transportation Status Summary");
+        pieModel2.setLegendPosition("w");
+        pieModel2.setShowDataLabels(true);
+        pieModel2.setDiameter(t);
+
+        return pieModel2;
 
     }
 
@@ -364,8 +403,6 @@ public class TAssetViewEditManagedBean {
         this.fromAssets = fromAssets;
     }
 
-
-
     public List<Route> getToRoutes() {
         return toRoutes;
     }
@@ -396,6 +433,14 @@ public class TAssetViewEditManagedBean {
 
     public void setFromRouteId(Integer fromRouteId) {
         this.fromRouteId = fromRouteId;
+    }
+
+    public PieChartModel getPieModel2() {
+        return pieModel2;
+    }
+
+    public void setPieModel2(PieChartModel pieModel2) {
+        this.pieModel2 = pieModel2;
     }
 
 }

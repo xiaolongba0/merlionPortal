@@ -24,8 +24,11 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
-
-
+import java.io.Serializable;
+import org.primefaces.model.chart.Axis;
+import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
 
 /**
  *
@@ -34,24 +37,15 @@ import org.primefaces.event.RowEditEvent;
 @Named(value = "tOperatorViewEditManagedBean")
 @ViewScoped
 public class TOperatorViewEditManagedBean {
+
     @EJB
     private TOperatormanagementSessionBean toperatorManagementSessionBean;
     @EJB
     private UserAccountManagementSessionBean uamb;
-    
 
     private List<TransportationOperator> operators;
     private TransportationOperator operator;
 
-//    private Integer locationId;
-//    private String assetType;
-//    private Integer capacity;
-//    private Integer speed;
-//    private Integer price;
-//    private Location locationlocationId;
-//    private String status;
-//    private Integer newAssetId;
-//    private Integer quantity;
     private Integer companyId;
     private String operatorName;
     private String operatorStatus;
@@ -62,12 +56,19 @@ public class TOperatorViewEditManagedBean {
     private Integer newOperatorId;
 
     private SystemUser loginedUser;
+    private BarChartModel barModel;
+    private Integer avD;
+    private Integer nD;
+    private Integer avO;
+    private Integer nO;
+
     /**
      * Creates a new instance of TOperatorViewEditManagedBean
      */
     public TOperatorViewEditManagedBean() {
     }
-        @PostConstruct
+
+    @PostConstruct
     public void init() {
 
         boolean redirect = true;
@@ -86,9 +87,14 @@ public class TOperatorViewEditManagedBean {
             }
         }
         operators = toperatorManagementSessionBean.viewMyOperator(companyId);
-        
+        avD = toperatorManagementSessionBean.countMyAvailableDriver(companyId);
+        nD = toperatorManagementSessionBean.countMyNotAvailableDriver(companyId);
+        avO = toperatorManagementSessionBean.countMyAvailableOperator(companyId);
+        nO = toperatorManagementSessionBean.countMyNotAvailableOperator(companyId);
+        barModel = initBarModel(avD, nD, avO, nO);
+
     }
-    
+
     public void onCompanyChange() {
         System.out.println("===============================[In Managed Bean - get Operators]");
         System.out.println("[In Managed Bean - getCompany] company ID : " + companyId);
@@ -101,6 +107,40 @@ public class TOperatorViewEditManagedBean {
 
         }
 
+    }
+
+    private BarChartModel initBarModel(Integer availableDriver, Integer notDriver, Integer availableOpt, Integer notOpt) {
+        BarChartModel model = new BarChartModel();
+
+        ChartSeries boys = new ChartSeries();
+        boys.setLabel("Available Driver");
+        boys.set(" ", availableDriver);
+
+        ChartSeries boys2 = new ChartSeries();
+        boys2.setLabel("On Leave Driver");
+        boys2.set(" ", notDriver);
+
+        ChartSeries boys3 = new ChartSeries();
+        boys3.setLabel("Available Operator");
+        boys3.set(" ", availableOpt);
+
+        ChartSeries girls = new ChartSeries();
+        girls.setLabel("On Leave Opertor");
+        girls.set(" ", notOpt);
+
+        model.addSeries(boys);
+        model.addSeries(boys2);
+        model.addSeries(boys3);
+        model.addSeries(girls);
+
+        model.setTitle("HR Status Summary");
+        model.setLegendPosition("ne");
+        Axis xAxis = model.getAxis(AxisType.X);
+        xAxis.setLabel("Status");
+        Axis yAxis = model.getAxis(AxisType.Y);
+        yAxis.setLabel("HeadCount");
+
+        return model;
     }
 
     public void onRowEdit(RowEditEvent event) {
@@ -221,6 +261,44 @@ public class TOperatorViewEditManagedBean {
         this.loginedUser = loginedUser;
     }
 
+    public BarChartModel getBarModel() {
+        return barModel;
+    }
 
+    public void setBarModel(BarChartModel barModel) {
+        this.barModel = barModel;
+    }
+
+    public Integer getAvD() {
+        return avD;
+    }
+
+    public void setAvD(Integer avD) {
+        this.avD = avD;
+    }
+
+    public Integer getnD() {
+        return nD;
+    }
+
+    public void setnD(Integer nD) {
+        this.nD = nD;
+    }
+
+    public Integer getAvO() {
+        return avO;
+    }
+
+    public void setAvO(Integer avO) {
+        this.avO = avO;
+    }
+
+    public Integer getnO() {
+        return nO;
+    }
+
+    public void setnO(Integer nO) {
+        this.nO = nO;
+    }
 
 }

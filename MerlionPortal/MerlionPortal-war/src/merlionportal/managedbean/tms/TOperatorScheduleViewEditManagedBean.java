@@ -99,7 +99,7 @@ public class TOperatorScheduleViewEditManagedBean {
             boolean result = tomsb.deleteOschedule(oschedule.getOperatorScheduleId());
             if (result) {
                 oschedules.remove(oschedule);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Operator Schedule is deleted"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success!", "Operator is Updated and can back to work! Schedule is deleted"));
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Something went wrong"));
 
