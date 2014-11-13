@@ -8,6 +8,10 @@ and open the template in the editor.
     Author     : Julietta
 */
 
-.ui-fieldset-content>table>tbody>tr>td{
-    width:10%;
+tr>td:nth-child(1){
+    width:25%;
+}
+
+tr>td:nth-child(2){
+    width:60%;
 }
