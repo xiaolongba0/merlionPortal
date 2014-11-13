@@ -33,9 +33,9 @@
                         <p:menuitem value="TMS Home" url="tmsindex.xhtml" style="background:#aa5050; color:white"/>
                     </p:submenu>                    
                     <c:if test="#{dashboardBean.checkTMSCanManageTransportationAsset() ||dashboardBean.loginedUser.userType == 'superuser'}">
-                        <p:submenu label="Location" >
-                            <p:menuitem value="Add A Location" url="addnewlocation.xhtml"/>
-                            <p:menuitem value="View All Locations" url="viewalllocation.xhtml"/>
+                        <p:submenu label="Facilities Management" >
+                            <p:menuitem value="Add New Facility" url="addnewlocation.xhtml"/>
+                            <p:menuitem value="View All Facilities" url="viewalllocation.xhtml"/>
                         </p:submenu>
                         <p:submenu label="Transportation Asset Management" >
                             <p:menuitem value="Add Transportation Assets" url="addnewtasset.xhtml" />
