@@ -5,6 +5,7 @@
  */
 package merlionportal.wms.warehousemanagementmodule;
 
+import static com.sun.xml.bind.util.CalendarConv.formatter;
 import entity.Stock;
 import entity.StockAudit;
 import entity.StorageBin;
@@ -172,11 +173,15 @@ public class StockAuditSessionBean {
 
     }
 
-    public List<StockAudit> viewDueStockAuditsForAWarehouse(Integer warehouseId) {
+    public List<StockAudit> viewDueStockAuditsForAWarehouse(Integer warehouseId) throws ParseException {
 
         List<StockAudit> allMyStockAudits = new ArrayList<>();
         System.out.println("In viewDUEStockAudits=============================");
-
+        Date today = new Date (); 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String today2 = sdf.format(today);
+        
+        System.out.println("TODAY" + today2);
         List<WarehouseZone> allWarehouseZones = new ArrayList<>();
         allWarehouseZones = amsb.viewWarehouseZoneForAWarehouse(warehouseId);
 
@@ -197,7 +202,10 @@ public class StockAuditSessionBean {
 
             for (Object o : query.getResultList()) {
                 stockAudit = (StockAudit) o;
-                if (compareDate(stockAudit.getCreatedDate())) {
+                
+                String date2 = sdf.format(stockAudit.getCreatedDate());
+                System.out.println("DATE" + date2 );
+                if (today2.equalsIgnoreCase(date2)) {
                     allMyStockAudits.add(stockAudit);
                 }
             }

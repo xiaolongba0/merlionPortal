@@ -626,6 +626,7 @@ public class TransportOrderSessionBean {
                 StorageBin bin = new StorageBin();
                 bin = em.find(StorageBin.class, destBinId);
                 bin.setReservedSpace(bin.getReservedSpace() - allDestStocks.get(i).getMovingQuantity());
+                bin.setInuseSpace(bin.getInuseSpace() + allDestStocks.get(i).getMovingQuantity());
                 System.out.println(bin.getReservedSpace() - allDestStocks.get(i).getMovingQuantity());
 
                 // add stocks
