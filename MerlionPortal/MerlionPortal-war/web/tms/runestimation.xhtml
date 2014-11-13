@@ -122,6 +122,12 @@
                         <p:inputText required="true" label="nodeType" requiredMessage="Node Type is required." id="cargoWeight" value="#{estimationManagerBean.totalLoad}">
                             <f:validateLength minimum="1" maximum="19" />
                         </p:inputText>
+                        <h:outputLabel for="origin" style="font-weight: bold" value="Origin:  " /><p:spacer width="20" height="20" />
+
+                        <p:selectOneMenu id="origin" value="#{estimationManagerBean.originId}"  style="width:210px" required="true" requiredMessage="Please select a Origin">
+                            <f:selectItem itemLabel="Select Origin" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{estimationManagerBean.origins}" var="origin" itemLabel="Name:#{origin.locationName}"  itemValue="#{origin.locationId}"/>
+                        </p:selectOneMenu>
 
                         <h:outputLabel for="destination" style="font-weight: bold" value="Destination:  " /><p:spacer width="20" height="20" />
 
@@ -130,12 +136,7 @@
                             <f:selectItems value="#{estimationManagerBean.destinations}" var="destination" itemLabel="Name:#{destination.locationName}"  itemValue="#{destination.locationId}"/>
                         </p:selectOneMenu>
 
-                        <h:outputLabel for="origin" style="font-weight: bold" value="Origin:  " /><p:spacer width="20" height="20" />
 
-                        <p:selectOneMenu id="origin" value="#{estimationManagerBean.originId}"  style="width:210px" required="true" requiredMessage="Please select a Origin">
-                            <f:selectItem itemLabel="Select Origin" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{estimationManagerBean.origins}" var="origin" itemLabel="Name:#{origin.locationName}"  itemValue="#{origin.locationId}"/>
-                        </p:selectOneMenu>
 
                         <p:outputLabel for="endDate" value="Expected Delivery Date " /><p:spacer width="20" height="20" />
                         <p:calendar id="endDate" required="true" requiredMessage="Start Date is required" value="#{estimationManagerBean.timeEnd}" pattern="dd-MM-yyyy" mask="true" mindate="#{tAssetScheduleManagerBean.today}" />

@@ -107,7 +107,7 @@
                             <p:inputText id="globalFilter" onkeyup="PF('nodeTable').filter()" />
                         </p:outputPanel>
                     </f:facet>
-                    <p:column filterBy="#{order.estId}" filterMatchMode="exact" headerText="ID" >
+                    <p:column filterBy="#{order.estId}" filterMatchMode="exact" headerText="ID" style="width:50px" >
                         <h:outputText value="#{order.estId}" />
                     </p:column>
                     <p:column filterBy="#{order.type}" filterMatchMode="exact" headerText="Type" >
@@ -129,7 +129,7 @@
                         <h:outputText value="#{order.endDate}" />
                     </p:column>
                     <p:column filterBy="#{order.cost}" filterMatchMode="exact" headerText="Total Cost" >
-                        <h:outputText value="#{order.cost}" />
+                        <h:outputText value="$#{order.cost}" />
                     </p:column>
 
                 </p:dataTable>

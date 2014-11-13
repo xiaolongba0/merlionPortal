@@ -99,7 +99,7 @@
             <h:form id="form">
 
                 <br/>
-                <p:panel id="panel" header=" View Transportation Assets for A Location">
+                <p:panel id="panel" header=" View Selected Operator Schedule">
                     <p:ajaxStatus style="width:16px;height:16px;">
                         <f:facet name="start">
                             <h:graphicImage value="/img/load.gif" />
@@ -159,7 +159,7 @@
 
                         <p:column headerText = "Update Operator Status">
                             <p:commandButton action="#{tOperatorScheduleViewEditManagedBean.deleteAssetSchedule(oschedule)}" update="scheduleData" value="Update"  >
-                                <p:confirm header="Confirm Deletion" message="Are you sure that Selected Operator is back?" icon="ui-icon-alert" />
+                                <p:confirm header="Confirm Action" message="Are you sure that Selected Operator is back?" icon="ui-icon-alert" />
                             </p:commandButton> 
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
