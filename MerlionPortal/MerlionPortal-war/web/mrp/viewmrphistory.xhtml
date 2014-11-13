@@ -65,7 +65,7 @@
                     <h:panelGrid>
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="product" value="Product Name: " />
+                                <p:outputLabel for="product" value="Product Name:     " />
                             </p:column>
                             <p:column>
                                 <p:selectOneMenu id="product" value="#{mrpHistoryManagedBean.productId}"  style="width:210px" required="true" requiredMessage="Please select a product">
@@ -77,12 +77,12 @@
                         </p:row>
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="mrplist" value="Select a MRP ID: " />
+                                <p:outputLabel for="mrplist" value="Select a MRP ID:    " />
                             </p:column>
                             <p:column>
                                 <p:selectOneMenu id="mrplist" value="#{mrpHistoryManagedBean.mrplistId}"  style="width:210px" required="true" requiredMessage="Please select a mrp Id">
                                     <p:ajax listener="#{mrpHistoryManagedBean.onChangeMRP}" update="mrps" />
-                                    <f:selectItem itemLabel="Select Warehouse Zone" itemValue="" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="Select MRP ID" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{mrpHistoryManagedBean.mrplists}" var="mrplist" itemLabel="ID:#{mrplist.mrpListId} Created Date:#{mrplist.mrpDate}"  itemValue="#{mrplist.mrpListId}"/>
                                 </p:selectOneMenu>
                             </p:column>
