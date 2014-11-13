@@ -22,17 +22,19 @@ public class DijkstraLand {
     private static int[][] graph = new int[10][10];
 
     public DijkstraLand() {
-//        graph = new int[10][10];
-//        /*
-//         * The graph value assignment is just for checking the code. node A is
-//         * referred as node 0, node B is referred as node 1 and so on. finally
-//         * node F is referred as node 5.
-//         */
-//        for(int i =0;i<10;i++){
-//            for(int k = 0; k<10; k++){
-//                graph[i][k] = -1;
-//            }
-//        }
+        graph[0][1]=graph[1][0]=50;
+        graph[1][2]=graph[2][1]=50;
+        graph[0][6]=graph[6][0]=30;
+        graph[1][6]=graph[6][1]=60;
+        graph[2][6]=graph[6][2]=20;
+        
+        
+        graph[3][4]=graph[4][3]=1000;
+        graph[3][5]=graph[5][3]=3000;
+        graph[4][5]=graph[5][4]=1000;
+        graph[3][7]=graph[7][3]=2000;
+        graph[4][7]=graph[7][4]=2000;
+        graph[5][7]=graph[7][5]=2000;
     }
 
     public Boolean createConnection(Integer startId, Integer endId, Integer dest) {

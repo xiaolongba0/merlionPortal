@@ -21,18 +21,9 @@ public class DijkstraSea {
     private static int[][] graph = new int[10][10];
 
     public DijkstraSea() {
-//        graph = new int[10][10];
-//        /*
-//         * The graph value assignment is just for checking the code. node A is
-//         * referred as node 0, node B is referred as node 1 and so on. finally
-//         * node F is referred as node 5.
-//         */
-////        graph[0][0] = graph[0][1] = graph[0][3] = graph[0][4] = graph[0][5] = graph[1][0] = graph[1][1] = graph[1][4] = graph[1][5] = graph[2][2] = graph[2][5] = graph[3][0] = graph[3][3] = graph[4][0] = graph[4][1] = graph[4][4] = graph[5][0] = graph[5][1] = graph[5][2] = graph[5][5] = 0;
-////        graph[1][2] = graph[2][1] = graph[2][3] = graph[3][2] = graph[3][4] = graph[4][3] = graph[4][5] = graph[5][4] = 1;
-////        graph[1][3] = graph[3][1] = 3;
-////        graph[0][2] = graph[2][0] = 4;
-////        graph[2][4] = graph[4][2] = 5;
-////        graph[3][5] = graph[5][3] = 8;
+        graph[0][5]=graph[5][0]=5000;
+        graph[0][3]=graph[3][0]=10000;
+        graph[3][5]=graph[5][3]=6000;
     }
 
     public boolean createConnection(Integer startId, Integer endId, Integer dest) {
