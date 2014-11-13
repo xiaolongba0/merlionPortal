@@ -109,32 +109,32 @@ public class MaterialReqPlanningSessionBean {
             leadTime = product.getComponentList().get(i).getLeadTime();
             //draw last month's history
             if (leadTime > 0) {
-                scheduledRec1 = 2000;
+                scheduledRec1 = 1500;
             } else {
                 scheduledRec1 = 0;
             }
             if (leadTime > 1) {
-                scheduledRec2 = 2000;
+                scheduledRec2 = 1200;
             } else {
                 scheduledRec2 = 0;
             }
             if (leadTime > 2) {
-                scheduledRec3 = 2000;
+                scheduledRec3 = 1000;
             } else {
                 scheduledRec3 = 0;
             }
             if (leadTime > 3) {
-                scheduledRec4 = 2000;
+                scheduledRec4 = 1000;
             } else {
                 scheduledRec4 = 0;
             }
             if (leadTime > 4) {
-                scheduledRec5 = 2000;
+                scheduledRec5 = 1000;
             } else {
                 scheduledRec5 = 0;
             }
 
-            initialOnHand = 1000;
+            initialOnHand = 500;
             if (leadTime > 0) {
                 plannedRec1 = 0;
                 onHand1 = scheduledRec1 + initialOnHand - GrossReq1;
