@@ -11,9 +11,13 @@
     
     background-color: rgba(245,245,245,0.8);
     border-radius: 10px;
-    padding-bottom: 20px;
-    margin-top:150px;
-    margin-left: 440px
+    width:450px;
+    margin-top:200px;
+    margin-left: 50%;
+    right:225px;
+    padding-top:5px;
+    padding-left:55px;
+    padding-bottom: 25px;
 }
 
 /*.bg-img > .wrapper > .login-nav{
