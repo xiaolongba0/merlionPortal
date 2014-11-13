@@ -243,7 +243,7 @@
                                 </f:facet>
                             </p:ajaxStatus>
 
-                            <p:selectOneRadio id="myRadioID" value="#{stockViewEditManagedBean.radioValue}" layout="custom">
+                            <p:selectOneRadio id="myRadioID" value="#{stockViewEditManagedBean.radioValue2}" layout="custom">
                                 <f:selectItem itemLabel="Choose ID" itemValue="1"/>
                                 <f:selectItem itemLabel="Enter " itemValue="2"/>
                                 <p:ajax process="@this" update="formMain" />
@@ -253,7 +253,7 @@
                                 <p:radioButton id="id00" for="myRadioID" itemIndex="0"/>
                                 <h:outputLabel for="id00" value="Choose Product ID "/>
 
-                                <p:selectOneMenu id="product" value="#{stockViewEditManagedBean.productId2}"  style="width:200px" disabled="#{stockViewEditManagedBean.radioValue != '1'}">
+                                <p:selectOneMenu id="product" value="#{stockViewEditManagedBean.productId2}"  style="width:200px" disabled="#{stockViewEditManagedBean.radioValue2 != '1'}">
                                     <f:selectItem itemLabel="Select Product ID" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{stockViewEditManagedBean.productList}" var="product" itemLabel="ID:#{product.productId}   Name:#{product.productName}" itemValue="#{product.productId}"/>
                                     <p:ajax listener="#{stockViewEditManagedBean.viewAllStocks()}" update=":tv:datafield" />
@@ -261,7 +261,7 @@
 
                                 <p:radioButton id="id01" for="myRadioID" itemIndex="1"/>
                                 <h:outputLabel for="id01" value="Enter Product ID "/>
-                                <p:inputText id="input01" value="#{stockViewEditManagedBean.productId2}" disabled="#{stockViewEditManagedBean.radioValue != '2'}">
+                                <p:inputText id="input01" value="#{stockViewEditManagedBean.productId2}" disabled="#{stockViewEditManagedBean.radioValue2 != '2'}">
                                     <p:ajax listener="#{stockViewEditManagedBean.viewAllStocks()}" update=":tv:datafield" />
                                 </p:inputText>
                             </h:panelGrid>

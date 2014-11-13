@@ -135,7 +135,7 @@
                             </p:column>
                             <p:column>
                                 <p:inputText required="true" label="storageBinName" requiredMessage="Storage Bin Name is required." id="storageBinName" value="#{createStorageBinManagedBean.storageBinName}">
-                                    <f:validateLength minimum="1" maximum="25" />
+                                    <f:validateLength minimum="1" maximum="100" />
                                 </p:inputText>
                             </p:column>
                         </p:row>
@@ -145,7 +145,7 @@
                             </p:column>
                             <p:column>
                                 <p:inputText required="true" label="description" requiredMessage="Description is required." id="description" value="#{createStorageBinManagedBean.storagebinDescription}">
-                                    <f:validateLength minimum="1" maximum="100" />
+                                    <f:validateLength minimum="1" maximum="200" />
                                 </p:inputText>
                             </p:column>
                         </p:row>  
