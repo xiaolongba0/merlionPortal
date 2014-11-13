@@ -25,6 +25,7 @@ import merlionportal.ci.administrationmodule.UserAccountManagementSessionBean;
 import merlionportal.ci.loggingmodule.SystemLogSessionBean;
 import merlionportal.mrp.materialrequirementmodule.MaterialReqPlanningSessionBean;
 import merlionportal.mrp.mpsmodule.MpsSessionBean;
+import merlionportal.wms.mobilitymanagementmodule.ReceivingPutawaySessionBean;
 
 /**
  *
@@ -41,6 +42,8 @@ public class MPSBufferManagedBean {
     UserAccountManagementSessionBean uamb;
       @EJB
     private SystemLogSessionBean systemLogSB;
+      @EJB
+     private ReceivingPutawaySessionBean receivingPutAwaySessionBean;
     private SystemUser loginedUser;
     private Integer companyId;
 
@@ -88,7 +91,10 @@ public class MPSBufferManagedBean {
     public void computeDemand() {
         requiredAmt1 = forecastData.get(1);
         
-        currentInv = mpsSessionBean.getCurrentInventory(productId);
+        currentInv = receivingPutAwaySessionBean.countAvailbleStocksInCompany(companyId, productId);
+      /*  if(currentInv <= 0 || currentInv > 400){
+            currentInv = 100;
+        }*/
         requiredDemand = requiredAmt1 - currentInv;
     }
 
