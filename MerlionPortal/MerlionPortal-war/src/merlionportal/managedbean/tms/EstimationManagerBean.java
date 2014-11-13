@@ -79,13 +79,13 @@ public class EstimationManagerBean {
     public void createNewOrder(ActionEvent order) {
 
         try {
-            System.out.println("[INSIDE WAR FILE]===========================Create New Order");
+            System.out.println("[INSIDE WAR FILE]===========================Create New Estimation");
             newEstId = rosb.addNewEstimation(companyId, originId, destinationId, type, timeEnd, totalLoad);
 
             if (newEstId > -1) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Node Order!", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Simulation Created!", ""));
                 clearAllFields();
-                System.out.println("[WAR FILE]===========================Create New Order");
+                System.out.println("[WAR FILE]===========================Create New Estimation");
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Something went wrong!", ""));
             }
