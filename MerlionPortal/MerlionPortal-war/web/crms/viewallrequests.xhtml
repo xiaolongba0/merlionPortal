@@ -31,15 +31,15 @@
                         </c:if>
                     </p:submenu>
                     <c:if test="#{dashboardBean.checkCRMSCanManageServiceCatalog()||dashboardBean.loginedUser.userType == 'superuser'}">
-                        <p:submenu label="Service Catalog Management" styleClass="display:block">
+                        <p:submenu label="Service Catalog Management" styleClass="display:block" >
                             <p:menuitem value="Create New Service" url="createservice.xhtml" />
                             <p:menuitem value="View All Services" url="viewcompanyservices.xhtml" />
                         </p:submenu>
                     </c:if>
-                    <c:if test="#{dashboardBean.checkCRMSCanGenerateQuotationRequst()|| dashboardBean.checkCRMSCanGenerateServiceQuotationAndContract() ||dashboardBean.loginedUser.userType == 'superuser'}">
+                    <c:if test="#{dashboardBean.checkCRMSCanGenerateQuotationRequst()|| dashboardBean.checkCRMSCanGenerateServiceQuotationAndContract() ||dashboardBean.loginedUser.userType == 'superuser'}" >
                         <p:submenu label="Quotation Management" styleClass="display:block">
-                            <p:menuitem value="View All Requests" url="viewallrequests.xhtml"　style="background:#aa5050; color:white" />
-                            <p:menuitem value="View All Quotations" url="viewallquotations.xhtml" />
+                            <p:menuitem value="View All Requests" url="viewallrequests.xhtml" style="background:#aa5050; color:white"  />
+                            <p:menuitem value="View All Quotations" url="viewallquotations.xhtml"  />
                         </p:submenu>
                     </c:if>
                     <c:if test="#{dashboardBean.checkCRMSCanGenerateServiceQuotationAndContract() ||dashboardBean.loginedUser.userType == 'superuser'}">

@@ -23,7 +23,6 @@
         <ui:define name="left">
             <h:form id="formMain">
                 <p:menu>
-                    <p:menu>
                     <p:submenu label="CRMS HOME" styleClass="display:block">
                         <p:menuitem value="CRMS Home" url="crmsindex.xhtml"/>     
                         <c:if test="#{dashboardBean.checkCRMSCanGenerateQuotationRequst() ||dashboardBean.loginedUser.userType == 'superuser'}">
@@ -69,7 +68,6 @@
                             <p:menuitem value="View All Key Accounts" url="viewallkeyaccounts.xhtml" />
                         </p:submenu>
                     </c:if>
-                </p:menu>
                 </p:menu>
             </h:form>
         </ui:define>

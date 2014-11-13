@@ -53,7 +53,7 @@
                         <p:submenu label="Order Management" styleClass="display:block">
                             <c:if test="#{dashboardBean.checkCRMSCanGenerateServiceSO() || dashboardBean.checkCRMSCanGenerateServicePO() ||dashboardBean.loginedUser.userType == 'superuser'}">
                                 <p:menuitem value="Create Service PO" url="createservicepo.xhtml" />
-                                <p:menuitem value="View All Orders" url="viewallservicepos.xhtml"　style="background:#aa5050; color:white" />
+                                <p:menuitem value="View All Orders" url="viewallservicepos.xhtml" style="background:#aa5050; color:white"  />
                             </c:if>
                             <c:if test="#{dashboardBean.checkCRMSCanUpdateCustomerCredit()||dashboardBean.checkCRMSCanGenerateServiceSO() || dashboardBean.checkCRMSCanGenerateServicePO() ||dashboardBean.loginedUser.userType == 'superuser'}">
                                 <p:menuitem value="View All Invoices" url="viewallinvoices.xhtml" />
