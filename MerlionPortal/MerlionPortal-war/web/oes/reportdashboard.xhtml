@@ -64,38 +64,37 @@
                         <p:menuitem value="Sales Reports" url="reportdashboard.xhtml" style="background:#aa5050; color:white" />
                     </p:submenu>
                 </c:if>
-                
+
             </p:menu>
         </ui:define>
 
         <ui:define name="right">
             <p:breadCrumb>
-                    <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
-                    <p:menuitem value="Report Dashboard" url="reportdashboard.xhtml" />
-                </p:breadCrumb>
+                <p:menuitem value="OES Home" url="oesindexpage.xhtml" />
+                <p:menuitem value="Report Dashboard" url="reportdashboard.xhtml" />
+            </p:breadCrumb>
             <c:set var="root" value="${request.contextPath}" />
-            <div class="dashboard-content">
-                <div class="row">
-                    <h2>All Reports</h2>
-                    <div>Please select one report to continue</div>
-                    <div class="dashboard-box">
-                        <!--Sales Trend-->
-                        <c:set var="disableoes" value="true" />                      
-                        <c:set var="disableoes" value="false" />
-                        <p:commandLink action="reportsalestrend.xhtml?faces-redirect=true" disabled="${disableoes}" >
-                            <p:graphicImage value="../img/salestrend.png"/>
-                        </p:commandLink>
-                    </div>
-                    <div class="dashboard-box">
-                        <!--Sales Summary-->
-                        <c:set var="disablemrp" value="true" />                    
-                        <c:set var="disablemrp" value="false" />
-                        <p:commandLink action="reportsalessum.xhtml?faces-redirect=true" disabled="${disablemrp}" >
-                            <p:graphicImage value="../img/monthlyreport.png"/>
-                        </p:commandLink>  
-                    </div>
+            <div>
+                <h2>All Reports</h2>
+                <div>Please select one report to continue</div>
+                <div style="padding: 15px 0px;">
+                    <!--Sales Trend-->
+                    <c:set var="disableoes" value="true" />                      
+                    <c:set var="disableoes" value="false" />
+                    <p:commandLink action="reportsalestrend.xhtml?faces-redirect=true" disabled="${disableoes}">
+                        <p:graphicImage value="../img/salestrend.png"/>
+                    </p:commandLink>
                 </div>
-                <div class="row">
+                <div style="padding: 15px 0px;">
+                    <!--Sales Summary-->
+                    <c:set var="disablemrp" value="true" />                    
+                    <c:set var="disablemrp" value="false" />
+                    <p:commandLink action="reportsalessum.xhtml?faces-redirect=true" disabled="${disablemrp}" >
+                        <p:graphicImage value="../img/monthlyreport.png"/>
+                    </p:commandLink>  
+                </div>
+
+                <div style="padding: 15px 0px;">
                     <div class="dashboard-box">
                         <!--Customer History-->
                         <c:set var="disablecrms" value="true" />
