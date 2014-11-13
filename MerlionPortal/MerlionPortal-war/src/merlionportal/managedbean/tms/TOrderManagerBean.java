@@ -86,7 +86,7 @@ public class TOrderManagerBean {
 
         try {
             System.out.println("[INSIDE WAR FILE]===========================Create New Order");
-            newOrderId = tomsb.AddNewTransportationOrder(cargoType, cargoWeight, companyId, creatorId, destination, origin, referenceId, referenceType, timeEnd, timeStart);
+            newOrderId = tomsb.AddNewTransportationOrder(cargoType, cargoWeight, companyId, creatorId, destination, origin, referenceId, 1, timeEnd, timeStart);
             
             
             if (newOrderId > -1) {
