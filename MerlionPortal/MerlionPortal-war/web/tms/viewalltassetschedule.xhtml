@@ -43,7 +43,7 @@
                         </p:submenu>
                         <p:submenu label="Asset Dispatching" >
                             <p:menuitem value="Dispatch a Asset" url="addnewtassetschedule.xhtml" />
-                            <p:menuitem value="View Current Tasks" url="viewalltassetschedule.xhtml" />
+                            <p:menuitem value="View Current Tasks" url="viewalltassetschedule.xhtml" style="background:#aa5050; color:white"/>
                         </p:submenu>
                     </c:if>
                     <c:if test="#{dashboardBean.checkTMSCanManageAssetMaintenence() ||dashboardBean.loginedUser.userType == 'superuser'}">

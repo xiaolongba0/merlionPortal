@@ -55,7 +55,7 @@
                     <c:if test="#{dashboardBean.checkTMSCanUseHRFunction() ||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:submenu label="Human Resource Management" >
                             <p:menuitem value="New Operator" url="addnewoperator.xhtml"  />
-                            <p:menuitem value="Operator List" url="viewalloperator.xhtml" />
+                            <p:menuitem value="Operator List" url="viewalloperator.xhtml" style="background:#aa5050; color:white"/>
                         </p:submenu>
                         <p:submenu label="Operator Schedule" >
                             <p:menuitem value="Add A Operator Schedule" url="addnewoperatorschedule.xhtml" />

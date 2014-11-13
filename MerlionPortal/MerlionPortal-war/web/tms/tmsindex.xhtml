@@ -30,7 +30,7 @@
                         </p:submenu>
                     </c:if>  
                     <p:submenu label =" Manage Your Transportation">
-                        <p:menuitem value="TMS Home" url="tmsindex.xhtml"/>
+                        <p:menuitem value="TMS Home" url="tmsindex.xhtml" style="background:#aa5050; color:white"/>
                     </p:submenu>                    
                     <c:if test="#{dashboardBean.checkTMSCanManageTransportationAsset() ||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:submenu label="Location" >

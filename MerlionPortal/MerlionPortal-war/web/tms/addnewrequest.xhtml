@@ -81,7 +81,7 @@
                     </c:if>
                     <c:if test="#{dashboardBean.checkTMSCanManageTransportationOrder()||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:submenu label="Transportation Request" >
-                            <p:menuitem value="Create A Transportation Request" url="addnewrequest.xhtml" />
+                            <p:menuitem value="Create A Transportation Request" url="addnewrequest.xhtml" style="background:#aa5050; color:white"/>
                             <p:menuitem value="View All Request" url="viewallrequest.xhtml" />
                         </p:submenu>
                         <p:submenu label="Transportation Service Fulfillment Check" >

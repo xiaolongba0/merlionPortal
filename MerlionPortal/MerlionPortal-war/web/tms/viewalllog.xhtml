@@ -74,7 +74,7 @@
                                 <p:menuitem value="View All Orders" url="viewalltorder.xhtml" />
 
                             </c:if>
-                            <p:menuitem value="Track Order Information" url="viewalllog.xhtml"/>
+                            <p:menuitem value="Track Order Information" url="viewalllog.xhtml" style="background:#aa5050; color:white"/>
                             <c:if test="#{dashboardBean.checkTMSCanManageLog()||dashboardBean.loginedUser.userType == 'superuser'}">
                                 <p:menuitem value="Create Log For Order" url="addnewlog.xhtml" />
                             </c:if>

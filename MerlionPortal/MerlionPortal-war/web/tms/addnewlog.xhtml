@@ -73,7 +73,7 @@
                             </c:if>
                             <p:menuitem value="Track Order Information" url="viewalllog.xhtml"/>
                             <c:if test="#{dashboardBean.checkTMSCanManageLog()||dashboardBean.loginedUser.userType == 'superuser'}">
-                                <p:menuitem value="Create Log For Order" url="addnewlog.xhtml" />
+                                <p:menuitem value="Create Log For Order" url="addnewlog.xhtml" style="background:#aa5050; color:white"/>
                             </c:if>
                         </p:submenu>
                     </c:if>

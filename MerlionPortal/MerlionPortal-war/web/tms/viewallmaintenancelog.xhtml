@@ -49,7 +49,7 @@
                     <c:if test="#{dashboardBean.checkTMSCanManageAssetMaintenence() ||dashboardBean.loginedUser.userType == 'superuser'}">
                         <p:submenu label="Asset Maintenance" >
                             <p:menuitem value="Create Maintenance" url="addnewmaintenancelog.xhtml"  />
-                            <p:menuitem value="View All Maintenance" url="viewallmaintenancelog.xhtml" />
+                            <p:menuitem value="View All Maintenance" url="viewallmaintenancelog.xhtml" style="background:#aa5050; color:white"/>
                         </p:submenu>
                     </c:if>
                     <c:if test="#{dashboardBean.checkTMSCanUseHRFunction() ||dashboardBean.loginedUser.userType == 'superuser'}">

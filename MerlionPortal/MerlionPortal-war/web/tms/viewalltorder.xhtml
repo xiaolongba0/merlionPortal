@@ -69,7 +69,7 @@
                                 <p:menuitem value="Run Cost Simulation" url="runestimation.xhtml" />
                                 <p:menuitem value="View Past Simulations" url="viewestimation.xhtml" />
                                 <p:menuitem value="Create Transportation Order" url="addnewtorder.xhtml" />
-                                <p:menuitem value="View All Orders" url="viewalltorder.xhtml" />
+                                <p:menuitem value="View All Orders" url="viewalltorder.xhtml" style="background:#aa5050; color:white"/>
                             </c:if>
                             <p:menuitem value="Track Order Information" url="viewalllog.xhtml"/>
                             <c:if test="#{dashboardBean.checkTMSCanManageLog()||dashboardBean.loginedUser.userType == 'superuser'}">
