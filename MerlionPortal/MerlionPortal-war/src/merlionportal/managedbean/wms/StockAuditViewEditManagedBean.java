@@ -11,6 +11,7 @@ import entity.StockAudit;
 import entity.SystemUser;
 import entity.Warehouse;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -112,7 +113,7 @@ public class StockAuditViewEditManagedBean {
         }
     }
 
-    public void viewDueStockAudits() {
+    public void viewDueStockAudits() throws ParseException {
         System.out.println("[In Managed Bean - viewDueStockAudits] =============================== Warehouse ID : " + warehouseId);
 
         if (warehouseId != null) {

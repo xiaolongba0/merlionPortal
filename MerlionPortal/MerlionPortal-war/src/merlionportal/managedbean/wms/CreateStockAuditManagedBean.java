@@ -128,6 +128,7 @@ public class CreateStockAuditManagedBean {
         failQuantity = null;
         actualQuantity = null;
         remarks = null;
+        radioValue = null;
     }
 
     public void onChangeWarehouse() {

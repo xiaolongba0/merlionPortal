@@ -49,6 +49,7 @@ public class StockViewEditManagedBean {
     private Integer productId3;
     private Stock stock;
     private Integer radioValue;
+    private Integer radioValue2;
     private Integer totalQuantity;
 
     private List<Product> productList;
@@ -271,6 +272,14 @@ public class StockViewEditManagedBean {
 
     public void setProductId3(Integer productId3) {
         this.productId3 = productId3;
+    }
+
+    public Integer getRadioValue2() {
+        return radioValue2;
+    }
+
+    public void setRadioValue2(Integer radioValue2) {
+        this.radioValue2 = radioValue2;
     }
 
 }

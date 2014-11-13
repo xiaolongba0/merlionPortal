@@ -141,6 +141,7 @@ public class CreateStockManagedBean {
         quantity = null;
         productId = null;
         expiryDate = null;
+        radioValue = null;
     }
 
     public SystemUser getLoginedUser() {
